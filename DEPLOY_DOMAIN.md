@@ -1,6 +1,8 @@
-# Deploy `mydailyhint.com`
+# Deploy `mydailyhint.com` on Render
 
-This repo is prepared for Render because the app has three production pieces:
+Use this only if Render is hosting the website too. If the website is hosted on Vercel, use `VERCEL_DEPLOY.md` instead and keep Render for only the API and database.
+
+This app has three production pieces:
 
 - `mydailyhint-web`: the static React site
 - `mydailyhint-api`: the Node API server
@@ -10,7 +12,7 @@ This repo is prepared for Render because the app has three production pieces:
 
 Render deploys from a Git repository. Push this workspace to GitHub before creating the Blueprint.
 
-## 2. Create the Render Blueprint
+## 2. Create the Render services
 
 1. Open Render and choose **New > Blueprint**.
 2. Select this GitHub repo.
@@ -20,7 +22,6 @@ Render deploys from a Git repository. Push this workspace to GitHub before creat
 
 Render will create:
 
-- `mydailyhint-web`
 - `mydailyhint-api`
 - `mydailyhint-db`
 
@@ -30,7 +31,7 @@ Render will create:
 
 ## 4. Connect the domain
 
-The Blueprint already adds these domains to the static site:
+If you want Render to host the website instead of Vercel, create a Render static site and add these domains:
 
 - `mydailyhint.com`
 - `www.mydailyhint.com`

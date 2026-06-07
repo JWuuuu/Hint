@@ -30,19 +30,3 @@ services:
           property: connectionString
       - key: LOG_LEVEL
         value: info
-
-  - type: web
-    name: mydailyhint-web
-    runtime: static
-    buildCommand: corepack enable && corepack prepare pnpm@10.25.0 --activate && pnpm install --frozen-lockfile && pnpm run build:web
-    staticPublishPath: artifacts/hint/dist/public
-    domains:
-      - mydailyhint.com
-      - www.mydailyhint.com
-    envVars:
-      - key: VITE_API_BASE_URL
-        value: https://mydailyhint-api.onrender.com
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
