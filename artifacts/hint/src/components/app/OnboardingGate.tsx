@@ -266,6 +266,14 @@ function IntroPanel({
           data-page={introIndex}
           aria-hidden="true"
         >
+          <div className="hint-onboarding-oracle-radiance">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
           <div className="hint-onboarding-oracle-portal">
             <span />
             <span />
