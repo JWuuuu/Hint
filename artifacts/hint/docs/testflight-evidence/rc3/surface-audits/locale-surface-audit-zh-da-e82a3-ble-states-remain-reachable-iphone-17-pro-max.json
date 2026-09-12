@@ -1,0 +1,1793 @@
+{
+  "language": "zh",
+  "theme": "dark",
+  "report": [
+    {
+      "route": "/app",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 今日 ",
+            " 你的 Hint 正在 等你。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "牌卡反思 ✦"
+          ],
+          "controls": [
+            {
+              "label": "揭示今日 Hint✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "揭示今日 Hint 牌",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "点击查看更多",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ 点击查看更多 ",
+              "width": 96.25,
+              "height": 44
+            },
+            {
+              "label": "牌卡反思 ✦",
+              "width": 116,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " 今日 ",
+            " 你的 Hint 正在 等你。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "牌卡反思 ✦"
+          ],
+          "controls": [
+            {
+              "label": "揭示今日 Hint✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "揭示今日 Hint 牌",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "点击查看更多",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ 点击查看更多 ",
+              "width": 96.25,
+              "height": 44
+            },
+            {
+              "label": "牌卡反思 ✦",
+              "width": 116,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " 今日 ",
+            " 你的 Hint 正在 等你。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "牌卡反思 ✦"
+          ],
+          "controls": [
+            {
+              "label": "揭示今日 Hint✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "揭示今日 Hint 牌",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "点击查看更多",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ 点击查看更多 ",
+              "width": 96.25,
+              "height": 44
+            },
+            {
+              "label": "牌卡反思 ✦",
+              "width": 116,
+              "height": 63
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/daily",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "每日星空牌",
+            "好运会偏向一个诚实的问题。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "周二8日9月",
+            "周三9日9月",
+            "今晚10日9月",
+            "周五11日9月",
+            "周六12日9月"
+          ],
+          "controls": [
+            {
+              "label": "日",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "周",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "月",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "年",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "每日日历",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "上一步 日",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "下一步 日",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "2026年9月8日",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月9日",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月10日",
+              "width": 71.609375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月11日",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月12日",
+              "width": 71.59375,
+              "height": 76
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "整理身边一个小平面。外在空间会影响内在空间。",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "消息发出前，再读一遍。时机也是提示的一部分。",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "写一句不需要发出去的话。不是每个真相都需要观众。",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/astrology",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "占星",
+            "从出生资料开始"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "十二星座",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生星盘",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "当下行运",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生资料",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "双人星盘",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "报告预览",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "先了解十二星座",
+              "width": 104.296875,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "占星",
+            "从出生资料开始"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "十二星座",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生星盘",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "当下行运",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生资料",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "双人星盘",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "报告预览",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "先了解十二星座",
+              "width": 104.296875,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "占星",
+            "从出生资料开始"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "十二星座",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生星盘",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "当下行运",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生资料",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "双人星盘",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "报告预览",
+              "width": 63.6875,
+              "height": 44
+            },
+            {
+              "label": "先了解十二星座",
+              "width": 104.296875,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/animal-tarot",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 动物露台 ",
+            " 让一位动物伙伴走近你。 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " 让一位动物伙伴走近你。 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " 抽取动物牌 "
+          ],
+          "controls": [
+            {
+              "label": " 抽取动物牌 ",
+              "width": 130.5,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " 让一位动物伙伴走近你。 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " 抽取动物牌 "
+          ],
+          "controls": [
+            {
+              "label": " 抽取动物牌 ",
+              "width": 130.5,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/collection",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 你的牌卡记录 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "开启今日稀有奖励：愚者",
+              "width": 204.890625,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "权杖三",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖四",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖五",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖六",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖七",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖八",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖九",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖十",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖侍从",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖骑士",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖王后",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "权杖国王",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "圣杯王牌",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "圣杯二",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "圣杯三",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "星币三",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币四",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币五",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币六",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币七",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币八",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币九",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币十",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币侍从",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币骑士",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币王后",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "星币国王",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/personalities",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "找到你的类型",
+            "感到压力时，你通常会："
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "留出个人空间",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "保持希望",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "制定计划",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "迅速反应",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "找到你的类型",
+            "感到压力时，你通常会："
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "留出个人空间",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "保持希望",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "制定计划",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "迅速反应",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "找到你的类型",
+            "感到压力时，你通常会："
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "留出个人空间",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "保持希望",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "制定计划",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "迅速反应",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/ask",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "先说出来，再让它成为一次解读。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "我想找到真正的问题。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "在抽牌前，你可以先陪我理一下吗？",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "我一直在想某个人。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "发送",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "先说出来，再让它成为一次解读。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "我想找到真正的问题。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "在抽牌前，你可以先陪我理一下吗？",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "我一直在想某个人。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "发送",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "先说出来，再让它成为一次解读。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "我想找到真正的问题。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "在抽牌前，你可以先陪我理一下吗？",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "我一直在想某个人。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "发送",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/readings",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "解读记录",
+            " 你的 Hint 记录 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "全部1",
+              "width": 83.421875,
+              "height": 44
+            },
+            {
+              "label": "塔罗0",
+              "width": 83.421875,
+              "height": 44
+            },
+            {
+              "label": "每日1",
+              "width": 83.421875,
+              "height": 44
+            },
+            {
+              "label": "星盘",
+              "width": 53.8125,
+              "height": 44
+            },
+            {
+              "label": "问题0",
+              "width": 83.421875,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/profile",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "资料",
+            "夜间访客"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "编辑资料",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "建立另一个本机档案",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "深色房间",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "明亮房间",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "选择语言",
+              "width": 92.515625,
+              "height": 44
+            },
+            {
+              "label": "减少动画",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "声音与触感",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "夜间访客"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "编辑资料",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "建立另一个本机档案",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "深色房间",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "明亮房间",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "选择语言",
+              "width": 92.515625,
+              "height": 44
+            },
+            {
+              "label": "减少动画",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "声音与触感",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "建立另一个本机档案",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "深色房间",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "明亮房间",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "选择语言",
+              "width": 92.515625,
+              "height": 44
+            },
+            {
+              "label": "减少动画",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "声音与触感",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/rooms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "选择你现在需要的房间。",
+            "自我整理",
+            "塔罗"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "搜索房间",
+              "width": 348,
+              "height": 48
+            },
+            {
+              "label": "全部",
+              "width": 49.84375,
+              "height": 44
+            },
+            {
+              "label": "自我整理",
+              "width": 73.6875,
+              "height": 44
+            },
+            {
+              "label": "塔罗",
+              "width": 49.84375,
+              "height": 44
+            },
+            {
+              "label": "关系",
+              "width": 49.84375,
+              "height": 44
+            },
+            {
+              "label": "星盘",
+              "width": 49.84375,
+              "height": 44
+            },
+            {
+              "label": "内在自我",
+              "width": 73.6875,
+              "height": 44
+            },
+            {
+              "label": "成长",
+              "width": 49.84375,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 12,
+              "height": 12
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "自我整理",
+            "塔罗",
+            "关系",
+            "星盘"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "关系",
+            "星盘",
+            "内在自我"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/journal",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "情绪日记"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "柔软",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "轻一点",
+              "width": 65.765625,
+              "height": 44
+            },
+            {
+              "label": "沉重",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "安静",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "有希望",
+              "width": 65.765625,
+              "height": 44
+            },
+            {
+              "label": "保存这一页",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "重试",
+              "width": 47.8125,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "情绪日记"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "柔软",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "轻一点",
+              "width": 65.765625,
+              "height": 44
+            },
+            {
+              "label": "沉重",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "安静",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "有希望",
+              "width": 65.765625,
+              "height": 44
+            },
+            {
+              "label": "保存这一页",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "重试",
+              "width": 47.8125,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "柔软",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "轻一点",
+              "width": 65.765625,
+              "height": 44
+            },
+            {
+              "label": "沉重",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "安静",
+              "width": 53.84375,
+              "height": 44
+            },
+            {
+              "label": "有希望",
+              "width": 65.765625,
+              "height": 44
+            },
+            {
+              "label": "保存这一页",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "重试",
+              "width": 47.8125,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/dream",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "梦境解读"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "梦境解读"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "梦境解读"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/compatibility",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Shared chart room",
+            "以清晰的方式比较两份星盘。",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "创建邀请链接",
+              "width": 131.359375,
+              "height": 48
+            },
+            {
+              "label": "姓名",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "以清晰的方式比较两份星盘。",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "创建邀请链接",
+              "width": 131.359375,
+              "height": 48
+            },
+            {
+              "label": "姓名",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生日期",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生时间",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生地点",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "查找地点",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "姓名",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生日期",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生时间",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生地点",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "查找地点",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "纬度",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "经度",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "时区",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "时区偏移",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "保存出生资料",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/login",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "登录或注册"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "建立另一个本机档案",
+              "width": 386,
+              "height": 44
+            },
+            {
+              "label": "注册",
+              "width": 60.71875,
+              "height": 44
+            },
+            {
+              "label": "登录",
+              "width": 60.71875,
+              "height": 44
+            },
+            {
+              "label": "邮箱",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "手机",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "生成演示码",
+              "width": 378,
+              "height": 48
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "邮箱",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "手机",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "生成演示码",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "使用测试账号",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "生成演示码",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "使用测试账号",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/about",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "关于 Hint"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "关于 Hint"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "关于 Hint"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "隐私政策"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "隐私政策"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "隐私政策"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/terms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "条款"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "条款"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "条款"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/disclaimer",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "免责声明"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "免责声明"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "免责声明"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "联系"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "联系"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "联系"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "runtimeErrors": [],
+  "navigationDiagnostics": []
+}

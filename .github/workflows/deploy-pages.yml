@@ -1,8 +1,6 @@
 name: Deploy GitHub Pages
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -15,7 +13,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify:
+    uses: ./.github/workflows/quality.yml
   build:
+    needs: verify
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,7 +40,17 @@ jobs:
         env:
           BASE_PATH: /Hint/
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+          VITE_HINT_PUBLIC_URL: ${{ vars.VITE_HINT_PUBLIC_URL }}
+          VITE_HINT_DOWNLOAD_URL: ${{ vars.VITE_HINT_DOWNLOAD_URL }}
         run: pnpm run build:web
+
+      - name: Verify the exact Pages build
+        env:
+          HINT_E2E_PORT: '5188'
+          HINT_E2E_BASE_PATH: /Hint
+        run: |
+          pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+          pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

@@ -1,10 +1,11 @@
 import type { AstroSynastryResponse, AstroTransitsResponse, BirthProfile } from "../../types/astrology";
-import { apiUrl } from "../api";
+import { apiFetch, apiUrl } from "../api";
 
-async function postJson<T>(url: string, body: unknown): Promise<T> {
+async function postJson<T>(url: string, body: unknown, signal?: AbortSignal): Promise<T> {
   const endpoint = url.startsWith("/") ? apiUrl(url as `/${string}`) : url;
-  const response = await fetch(endpoint, {
+  const response = await apiFetch(endpoint, {
     method: "POST",
+    signal,
     headers: { "content-type": "application/json" },
     body: JSON.stringify(body),
   });
@@ -13,6 +14,7 @@ async function postJson<T>(url: string, body: unknown): Promise<T> {
 }
 
 export type AstroNatalResponse = {
+  calculation?: import("../../types/astrology").AstroCalculation;
   source: "astrologyapi" | "fallback" | "validation";
   mode: "live" | "fallback" | "partial";
   cached: boolean;
@@ -89,25 +91,25 @@ export type AstroInterpretationResponse = {
   bullets?: string[];
 };
 
-export async function getNatalChart(profile: BirthProfile) {
-  return postJson<AstroNatalResponse>("/api/astro/natal", { profile });
+export async function getNatalChart(profile: BirthProfile, signal?: AbortSignal) {
+  return postJson<AstroNatalResponse>("/api/astro/natal", { profile }, signal);
 }
 
-export async function getTransits(profile: BirthProfile, date: string, range: "daily" | "weekly" = "daily") {
+export async function getTransits(profile: BirthProfile, date: string, range: "daily" | "weekly" = "daily", signal?: AbortSignal) {
   const suffix = range === "weekly" ? "?range=weekly" : "";
-  return postJson<AstroTransitsResponse>(`/api/astro/transits${suffix}`, { profile, date });
+  return postJson<AstroTransitsResponse>(`/api/astro/transits${suffix}`, { profile, date }, signal);
 }
 
-export async function getSynastry(userProfile: BirthProfile, partnerProfile: BirthProfile) {
-  return postJson<AstroSynastryResponse>("/api/astro/synastry", { userProfile, partnerProfile });
+export async function getSynastry(userProfile: BirthProfile, partnerProfile: BirthProfile, signal?: AbortSignal) {
+  return postJson<AstroSynastryResponse>("/api/astro/synastry", { userProfile, partnerProfile }, signal);
 }
 
-export async function getGeoDetails(place: string, maxRows = 6) {
-  return postJson<AstroGeoResponse>("/api/astro/geo-details", { place, maxRows });
+export async function getGeoDetails(place: string, maxRows = 6, signal?: AbortSignal) {
+  return postJson<AstroGeoResponse>("/api/astro/geo-details", { place, maxRows }, signal);
 }
 
-export async function getTimezoneDetails(latitude: number, longitude: number, date?: string) {
-  return postJson<AstroTimezoneResponse>("/api/astro/timezone", { latitude, longitude, dateISO: date });
+export async function getTimezoneDetails(latitude: number, longitude: number, date?: string, signal?: AbortSignal) {
+  return postJson<AstroTimezoneResponse>("/api/astro/timezone", { latitude, longitude, dateISO: date }, signal);
 }
 
 export async function getAstroInterpretation(kind: "placement" | "signs" | "transit" | "synastry" | "reportPreview", data: Record<string, unknown>, tone: "warm" | "direct" | "mirror" = "warm") {

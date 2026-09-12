@@ -1,0 +1,66 @@
+{
+  "brief": {
+    "status": 200,
+    "ms": 3122,
+    "body": {
+      "signal_type": "clear_signal",
+      "overall_summary": "Focus on developing a consistent daily practice that encourages creativity and exploration in your skill. Your journey begins with an open heart, nurturing growth in the present while seeking deeper understanding.",
+      "cards": [
+        {
+          "position": "Past",
+          "card_name": "The Fool",
+          "orientation": "upright",
+          "meaning": "You've started an exciting new journey, full of possibilities, trusting in the process without knowing the outcome."
+        },
+        {
+          "position": "Present",
+          "card_name": "The Empress",
+          "orientation": "upright",
+          "meaning": "Right now, your efforts are nurturing growth; embrace the creative process and allow yourself time to flourish."
+        },
+        {
+          "position": "Next",
+          "card_name": "The Hermit",
+          "orientation": "upright",
+          "meaning": "Moving forward, spend time in reflection to find deeper insights and truths about your learning experience."
+        }
+      ],
+      "final_action_advice": "Dedicate a few minutes each day to practice and notice what unfolds from your efforts.",
+      "follow_up_invitation": "I'd love to hear more about the skill you're learning and any challenges you're facing!",
+      "source": "api"
+    }
+  },
+  "detailed": {
+    "status": 200,
+    "ms": 4963,
+    "body": {
+      "signal_type": "clear_signal",
+      "overall_summary": "You should focus on consistency in your learning practice. The cards suggest that your past excitement can fuel your present growth, while reflecting on your experiences will help deepen your understanding. By committing time daily and nurturing your skill, you're laying the groundwork for even greater insights.",
+      "cards": [
+        {
+          "position": "Past",
+          "card_name": "The Fool",
+          "orientation": "upright",
+          "meaning": "This card indicates you began your skill journey with enthusiasm and trust, embracing the unknown. You may have felt carefree and open to all possibilities, which set a positive tone for your development. Think back to that initial excitement and identify what drew you to this skill. Pick one aspect of it to dive into during your practice. Beware of falling into indecision; that initial eagerness can fade if you constantly switch paths without committing."
+        },
+        {
+          "position": "Present",
+          "card_name": "The Empress",
+          "orientation": "upright",
+          "meaning": "Currently, you're in a nurturing phase where your practice is growing. This card symbolizes abundance and creativity, inviting you to allow your skills to develop organically without rushing the process. Dedicate a few minutes to a focused practice session on one exercise. Observe how consistent efforts build your skill over time. Monitor if you are allowing yourself the space to create freely. A lack of self-compassion could stifle your growth."
+        },
+        {
+          "position": "Next",
+          "card_name": "The Hermit",
+          "orientation": "upright",
+          "meaning": "In the near future, introspection will help you uncover deeper truths about your learning. This period of reflection can provide clarity, allowing you to understand what techniques resonate with you. After your daily practice, spend a few minutes reflecting on what you learned. This can help you identify patterns and adjust your approach. Don't overlook the need for solitude. If you feel rushed to share your progress with others, it might disrupt your personal insight."
+        }
+      ],
+      "final_action_advice": "Commit to practicing one specific exercise each day for a few minutes, then reflect to see how it evolves your skill. This will help you assess your progress without distraction.",
+      "follow_up_invitation": "I'd be interested to know more about the skill you're exploring and any specific hurdles you're encountering!",
+      "cards_connection": "The Fool's fresh start provides a buoyant foundation for the Empress' urging to nurture your skills. As you cultivate your practice, The Hermit advises stepping back to reflect, suggesting that quiet moments will deepen your learning and ensure sustained growth. These connections show a path from initial enthusiasm to thoughtful reflection.",
+      "watch_for": "Pay attention to your ability to focus consistently on one practice. Shuffling between tutorials or rejecting your progress could hinder the clarity you need to grow.",
+      "source": "api"
+    }
+  }
+}

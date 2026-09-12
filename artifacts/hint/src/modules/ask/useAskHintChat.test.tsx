@@ -1,0 +1,136 @@
+// @vitest-environment jsdom
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { useAskHintChat } from "./useAskHintChat";
+import { saveAskConversation, listAskHistory } from "./askHistory";
+import { writeTextDraft, readTextDraft, textDraftKey } from "../../lib/textDraft";
+const { send, visit } = vi.hoisted(() => ({ send: vi.fn(), visit: { closed: false, onLeave: undefined as (() => void) | undefined } }));
+vi.mock("../../components/app/roomVisits", () => ({ roomVisitWasClosed: () => visit.closed, markRoomVisitStarted: () => { visit.closed = false; } }));
+vi.mock("../../components/app/RoomVisitBoundary", () => ({ useRoomVisit: (options: { onLeave?: () => void }) => { visit.onLeave = options.onLeave; } }));
+vi.mock("@workspace/api-client-react", () => ({ sendAmbientChatMessage: send }));
+vi.mock("../../lib/i18n", () => ({ useLanguage: () => ({ t: (key: string) => key }) }));
+vi.mock("../../lib/identity", () => ({ getAnonId: () => "fixture" }));
+vi.mock("../../lib/clearHistory", () => ({ historyClearVersion: (owner: string) => localStorage.getItem(`hint_history_clear_version_v1:${owner}`) ?? "" }));
+beforeEach(() => { localStorage.clear(); send.mockReset(); visit.closed = false; visit.onLeave = undefined; window.history.replaceState(null, "", "/app/ask"); });
+afterEach(() => vi.restoreAllMocks());
+it("keeps failed questions across remount, retries once, then clears the confirmed draft", async () => {
+  send.mockRejectedValueOnce(new Error("503"));
+  const first = renderHook(() => useAskHintChat());
+  act(() => first.result.current.setDraft("Will this draft survive?"));
+  await act(() => first.result.current.sendMessage(first.result.current.draft));
+  expect(first.result.current.draft).toBe("Will this draft survive?");
+  expect(first.result.current.error).toBeTruthy();
+  first.unmount();
+  const second = renderHook(() => useAskHintChat());
+  expect(second.result.current.draft).toBe("Will this draft survive?");
+  send.mockResolvedValueOnce({ message: "A response", createdAt: "2026-09-09T00:00:00Z" });
+  await act(() => second.result.current.sendMessage(second.result.current.draft));
+  expect(second.result.current.draft).toBe("");
+  expect(second.result.current.messages).toHaveLength(2);
+  second.unmount();
+});
+it("aborts on leaving and ignores a late response; repeated send makes only one request", async () => {
+  let finish!: (reply: object) => void;
+  send.mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+  const first = renderHook(() => useAskHintChat());
+  act(() => first.result.current.setDraft("Keep me"));
+  act(() => { void first.result.current.sendMessage("Keep me"); void first.result.current.sendMessage("Keep me"); });
+  expect(send).toHaveBeenCalledTimes(1);
+  const signal = send.mock.calls[0][1].signal as AbortSignal;
+  first.unmount();
+  expect(signal.aborted).toBe(true);
+  await act(async () => finish({ message: "Late", createdAt: "2026-09-09" }));
+  const second = renderHook(() => useAskHintChat());
+  expect(second.result.current.draft).toBe("Keep me");
+  expect(second.result.current.messages).toHaveLength(0);
+  second.unmount();
+});
+it("restores successful exchanges separately from an unsent follow-up draft", async () => {
+  send.mockResolvedValue({ message: "Saved response", createdAt: "2026-09-09T00:00:00Z" });
+  const first = renderHook(() => useAskHintChat());
+  act(() => first.result.current.setDraft("First question"));
+  await act(() => first.result.current.sendMessage("First question"));
+  act(() => first.result.current.setDraft("Unsent follow-up"));
+  expect(first.result.current.historySaved).toBe(true); first.unmount();
+  const second = renderHook(() => useAskHintChat());
+  expect(second.result.current.messages.map(message => message.content)).toEqual(["First question", "Saved response"]);
+  expect(second.result.current.draft).toBe("Unsent follow-up"); second.unmount();
+});
+it("keeps a successful response on screen and retries history persistence without another AI request", async () => {
+  send.mockResolvedValue({ message: "Response stays visible", createdAt: "2026-09-09T00:00:00Z" });
+  const first = renderHook(() => useAskHintChat());
+  act(() => first.result.current.setDraft("Question"));
+  const write = Storage.prototype.setItem;
+  const denied = vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (this: Storage, key, value) {
+    if (key.startsWith("hint_ask_history")) throw new Error("Full");
+    return write.call(this, key, value);
+  });
+  await act(() => first.result.current.sendMessage("Question"));
+  expect(first.result.current.messages).toHaveLength(2); expect(first.result.current.historySaved).toBe(false);
+  denied.mockRestore(); act(() => first.result.current.retrySaveHistory());
+  expect(first.result.current.historySaved).toBe(true); expect(send).toHaveBeenCalledTimes(1);
+  first.unmount();
+});
+it("does not resurrect a conversation when another tab clears history during a request", async () => {
+  let finish!: (reply: object) => void;
+  send.mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+  const first = renderHook(() => useAskHintChat());
+  act(() => first.result.current.setDraft("Old question"));
+  act(() => { void first.result.current.sendMessage("Old question"); });
+  act(() => { localStorage.removeItem("hint_text_draft_v1:fixture:ask:"); localStorage.setItem("hint_history_clear_version_v1:fixture", "cleared"); window.dispatchEvent(new Event("storage")); });
+  await act(async () => finish({ message: "Late answer", createdAt: "2026-09-09" }));
+  expect(first.result.current.messages).toEqual([]); expect(first.result.current.draft).toBe("");
+  expect(localStorage.getItem("hint_ask_history_v1:fixture")).toBeNull(); first.unmount();
+});
+it("starts a closed room blank without overwriting its draft and restores it only on request", () => {
+  const key = textDraftKey("ask", "fixture");
+  const before = writeTextDraft(key, "A previous question").draft;
+  visit.closed = true;
+  const view = renderHook(() => useAskHintChat());
+  expect(view.result.current.draft).toBe(""); expect(view.result.current.canRestoreDraft).toBe(true);
+  expect(readTextDraft(key)).toEqual(before);
+  writeTextDraft(key, "Updated in another tab");
+  act(() => view.result.current.restoreDraft());
+  expect(view.result.current.draft).toBe("Updated in another tab"); expect(visit.closed).toBe(false);
+  view.unmount();
+  const reload = renderHook(() => useAskHintChat());
+  expect(reload.result.current.draft).toBe("Updated in another tab"); reload.unmount();
+});
+it("keeps a fresh draft separate from the prior active conversation across refresh", () => {
+  saveAskConversation({ id: "prior", anonId: "fixture", createdAt: "2026-09-10", updatedAt: "2026-09-10", messages: [{ id: "old", role: "assistant", content: "Prior saved answer", createdAt: "2026-09-10" }] });
+  visit.closed = true;
+  const fresh = renderHook(() => useAskHintChat());
+  expect(fresh.result.current.messages).toEqual([]);
+  act(() => fresh.result.current.setDraft("A different question")); fresh.unmount();
+  const reload = renderHook(() => useAskHintChat());
+  expect(reload.result.current.draft).toBe("A different question"); expect(reload.result.current.messages).toEqual([]);
+  expect(listAskHistory("fixture")).toHaveLength(1);
+  act(() => reload.result.current.openConversation("prior"));
+  expect(reload.result.current.messages[0]?.content).toBe("Prior saved answer"); reload.unmount();
+});
+it("honors an explicit History conversation link after closing the room", () => {
+  saveAskConversation({ id: "history-id", anonId: "fixture", createdAt: "2026-09-10", updatedAt: "2026-09-10", messages: [{ id: "answer", role: "assistant", content: "History answer", createdAt: "2026-09-10" }] });
+  visit.closed = true; window.history.replaceState(null, "", "/app/ask?conversation=history-id");
+  const view = renderHook(() => useAskHintChat());
+  expect(view.result.current.messages[0]?.content).toBe("History answer"); view.unmount();
+});
+it("does not mistake the current visit's refresh URL for an explicit History restore after departure", async () => {
+  send.mockResolvedValue({ message: "Saved response", createdAt: "2026-09-10T00:00:00Z" });
+  const first = renderHook(() => useAskHintChat());
+  act(() => first.result.current.setDraft("Prior question"));
+  await act(() => first.result.current.sendMessage("Prior question")); first.unmount();
+  visit.closed = true;
+  const returning = renderHook(() => useAskHintChat());
+  expect(returning.result.current.messages).toEqual([]); expect(listAskHistory("fixture")).toHaveLength(1); returning.unmount();
+});
+it("invalidates a reply immediately on confirmed departure before React unmounts", async () => {
+  let finish!: (reply: object) => void;
+  send.mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+  const view = renderHook(() => useAskHintChat());
+  act(() => view.result.current.setDraft("Leave while sending"));
+  act(() => { void view.result.current.sendMessage("Leave while sending"); });
+  act(() => visit.onLeave?.());
+  expect(send.mock.calls[0][1].signal.aborted).toBe(true);
+  await act(async () => finish({ message: "Too late", createdAt: "2026-09-10" }));
+  expect(listAskHistory("fixture")).toEqual([]); expect(view.result.current.draft).toBe("Leave while sending"); view.unmount();
+});

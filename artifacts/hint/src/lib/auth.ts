@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { captureIdentityContext, localAccountStorageKey } from "./identity";
 
 const AUTH_STORAGE_KEY = "hint_local_auth_v1";
 const AUTH_UPDATED_EVENT = "hint:local-auth-updated";
@@ -30,9 +31,20 @@ function normalizeIdentifier(input: { provider: LocalAccount["provider"]; identi
 
 export function getLocalAccount(): LocalAccount | null {
   try {
-    const raw = window.localStorage.getItem(AUTH_STORAGE_KEY);
+    const identity = captureIdentityContext();
+    const ownedKey = localAccountStorageKey(identity.owner);
+    const owned = window.localStorage.getItem(ownedKey);
+    const raw = owned ?? window.localStorage.getItem(AUTH_STORAGE_KEY);
+    identity.assertCurrent();
     if (!raw) return null;
     const parsed = JSON.parse(raw) as LocalAccount & { email?: string };
+    if (!parsed) return null; // An owned null tombstone prevents legacy sign-in resurrection.
+    if (owned === null) {
+      // Only stable, currently selected legacy bytes can be adopted. Preserve
+      // the original for recovery; all future writes use the captured owner.
+      try { window.localStorage.setItem(ownedKey, raw); } catch { /* The legacy record remains durable and readable. */ }
+      identity.assertCurrent();
+    }
     if (!parsed.identifier && parsed.email) {
       return {
         ...parsed,
@@ -55,9 +67,11 @@ export function saveLocalAccount(input: {
   name?: string;
   verifiedAt?: string;
 }): LocalAccount {
-  const existing = getLocalAccount();
+  const identity = captureIdentityContext();
+  const previous = getLocalAccount();
   const now = new Date().toISOString();
   const identifier = normalizeIdentifier(input);
+  const existing = previous?.identifier === identifier && previous.provider === input.provider ? previous : null;
   const account: LocalAccount = {
     identifier,
     provider: input.provider,
@@ -69,23 +83,21 @@ export function saveLocalAccount(input: {
     lastSignedInAt: now,
   };
 
-  try {
-    window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(account));
-    window.dispatchEvent(new Event(AUTH_UPDATED_EVENT));
-  } catch {
-    // The app still treats the submitted account as the current session value.
-  }
+  // Publish a saved account only after the write succeeds. Callers retain their
+  // form and display a retry message when storage is unavailable.
+  identity.assertCurrent();
+  window.localStorage.setItem(localAccountStorageKey(identity.owner), JSON.stringify(account));
+  identity.assertCurrent();
+  window.dispatchEvent(new Event(AUTH_UPDATED_EVENT));
 
   return account;
 }
 
 export function clearLocalAccount() {
-  try {
-    window.localStorage.removeItem(AUTH_STORAGE_KEY);
-    window.dispatchEvent(new Event(AUTH_UPDATED_EVENT));
-  } catch {
-    // Best effort only.
-  }
+  const identity = captureIdentityContext();
+  window.localStorage.setItem(localAccountStorageKey(identity.owner), "null");
+  identity.assertCurrent();
+  window.dispatchEvent(new Event(AUTH_UPDATED_EVENT));
 }
 
 export function useLocalAccount() {

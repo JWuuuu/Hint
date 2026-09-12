@@ -16,7 +16,7 @@ export const ZODIAC_SIGNS: ZodiacSign[] = [
   "pisces",
 ];
 
-const ELEMENT_BY_SIGN: Record<ZodiacSign, ElementBalance["dominant"]> = {
+const ELEMENT_BY_SIGN: Record<ZodiacSign, NonNullable<ElementBalance["dominant"]>> = {
   aries: "fire",
   leo: "fire",
   sagittarius: "fire",
@@ -31,7 +31,7 @@ const ELEMENT_BY_SIGN: Record<ZodiacSign, ElementBalance["dominant"]> = {
   pisces: "water",
 };
 
-const MODALITY_BY_SIGN: Record<ZodiacSign, ModalityBalance["dominant"]> = {
+const MODALITY_BY_SIGN: Record<ZodiacSign, NonNullable<ModalityBalance["dominant"]>> = {
   aries: "cardinal",
   cancer: "cardinal",
   libra: "cardinal",
@@ -129,7 +129,7 @@ function elementBalance(placements: PlanetPlacement[]): ElementBalance {
     if (!placement.sign) continue;
     scores[ELEMENT_BY_SIGN[placement.sign]] += placement.body === "sun" || placement.body === "moon" || placement.body === "rising" ? 2 : 1;
   }
-  const dominant = Object.entries(scores).sort((a, b) => b[1] - a[1])[0]![0] as ElementBalance["dominant"];
+  const dominant = Object.entries(scores).sort((a, b) => b[1] - a[1])[0]![0] as NonNullable<ElementBalance["dominant"]>;
   const meaning = {
     fire: "You trust momentum once the next move is visible.",
     earth: "You trust what can become real.",
@@ -145,7 +145,7 @@ function modalityBalance(placements: PlanetPlacement[]): ModalityBalance {
     if (!placement.sign) continue;
     scores[MODALITY_BY_SIGN[placement.sign]] += placement.body === "sun" || placement.body === "moon" || placement.body === "rising" ? 2 : 1;
   }
-  const dominant = Object.entries(scores).sort((a, b) => b[1] - a[1])[0]![0] as ModalityBalance["dominant"];
+  const dominant = Object.entries(scores).sort((a, b) => b[1] - a[1])[0]![0] as NonNullable<ModalityBalance["dominant"]>;
   const meaning = {
     cardinal: "You stabilize by choosing the first clean action.",
     fixed: "You stabilize by holding the line once it matters.",

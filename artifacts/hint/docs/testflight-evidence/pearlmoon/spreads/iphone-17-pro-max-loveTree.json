@@ -1,0 +1,62 @@
+{
+  "spread": "loveTree",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "dawn",
+  "readingId": "tarot-1789080290980-suz3ei",
+  "positions": [
+    "Root",
+    "Trunk",
+    "Environment",
+    "Past",
+    "Future",
+    "Crown",
+    "Fruit"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-62-yi0oc45",
+      "cardId": "nine-wands",
+      "name": "Nine of Wands",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-0-uz0bc4t",
+      "cardId": "five-pentacles",
+      "name": "Five of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-39-9lkpevj",
+      "cardId": "queen-pentacles",
+      "name": "Queen of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-16-xytbgwj",
+      "cardId": "page-swords",
+      "name": "Page of Swords",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-68-zio8r7c",
+      "cardId": "page-wands",
+      "name": "Page of Wands",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-72-5adfa8k",
+      "cardId": "9-hermit",
+      "name": "The Hermit",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-25-1smla5y",
+      "cardId": "nine-pentacles",
+      "name": "Nine of Pentacles",
+      "orientation": "upright"
+    }
+  ],
+  "readingRequests": 1
+}

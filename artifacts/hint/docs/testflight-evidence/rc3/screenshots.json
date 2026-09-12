@@ -1,0 +1,156 @@
+[
+  {
+    "file": "screenshots/se-tarot-es-preview.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-sharing-results/personality-sharing-es-Tar-a3f1d-rts-a-localized-private-PNG-iphone-se/tarot-es-preview.png",
+    "sha256": "cf686025d3986e313693d9939dffa359481314966775a482577d2e392ca89b93",
+    "candidate": "RC3",
+    "review": "Same-candidate export/preview from passed sharing suite. English words remain complete; Japanese glyphs render; Tarot original-English reflection explicitly labeled. QR uses an isolated local fixture URL, not release configuration."
+  },
+  {
+    "file": "screenshots/se-tarot-es-export.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-sharing-results/personality-sharing-es-Tar-a3f1d-rts-a-localized-private-PNG-iphone-se/tarot-es.png",
+    "sha256": "0fc45fafc0628b8c35b5ac752096c069d67bf8b665bd0a0d09a2772a84aa96b7",
+    "candidate": "RC3",
+    "review": "Same-candidate export/preview from passed sharing suite. English words remain complete; Japanese glyphs render; Tarot original-English reflection explicitly labeled. QR uses an isolated local fixture URL, not release configuration."
+  },
+  {
+    "file": "screenshots/se-personality-en-export.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-sharing-results/personality-sharing-Person-9e08d-eview-revokes-the-old-image-iphone-se/personality-download.png",
+    "sha256": "39e069ef16ce56956b585726e3c078890ad2b0bb681984617308cfdac7874cb6",
+    "candidate": "RC3",
+    "review": "Same-candidate export/preview from passed sharing suite. English words remain complete; Japanese glyphs render; Tarot original-English reflection explicitly labeled. QR uses an isolated local fixture URL, not release configuration."
+  },
+  {
+    "file": "screenshots/se-personality-ja-export.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-sharing-results/personality-sharing-Person-9c20a-Japanese-text-in-a-real-PNG-iphone-se/personality-japanese.png",
+    "sha256": "e00b6581dcc562b55b99c9cbecac7918484c1096926b1ad388ded8600bd08a11",
+    "candidate": "RC3",
+    "review": "Same-candidate export/preview from passed sharing suite. English words remain complete; Japanese glyphs render; Tarot original-English reflection explicitly labeled. QR uses an isolated local fixture URL, not release configuration."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-bottom.png",
+    "sha256": "87092c7c7656db01ce23c827643c9c1e3c2a3664c56917bcee7745193933feca",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-lucky.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-lucky.png",
+    "sha256": "55f71f63b2aff04617159b52d68f4cb46bcf213754913443bd376d93fa93aab5",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-middle.png",
+    "sha256": "14dbba8a1819b3185b83874678bf36754963b734d6a73f651054de479580431f",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-top.png",
+    "sha256": "d3d09221e3caa2b68d13fcd31e6f4cefe7aa9f371da45870727b5bf22afc7953",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-navigation-es-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/navigation-text-layout-Nav-c7e72-achable-targets-at-200-text-iphone-se/navigation-es-200.png",
+    "sha256": "dce98e19283fbc05ee730d7a2088f6980537849b4255d331cf0b0ba99c6f6c87",
+    "candidate": "RC3",
+    "review": "Normal and 200% navigation text stays within expanded 2\u20133-line bar; normal captures can include the profile entry fade."
+  },
+  {
+    "file": "screenshots/se-navigation-es-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/navigation-text-layout-Nav-c7e72-achable-targets-at-200-text-iphone-se/navigation-es-normal.png",
+    "sha256": "8aff3514c97e2f33b840a286d60ae4b1d515caf0f04040362c05f7ece22bb1d9",
+    "candidate": "RC3",
+    "review": "Normal and 200% navigation text stays within expanded 2\u20133-line bar; normal captures can include the profile entry fade."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-bottom.png",
+    "sha256": "6ea3e59fba9f443be7814ffeb6a4741c6fc46aaab978843bb2ce0ac5faa77e51",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-lucky.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-lucky.png",
+    "sha256": "2afec876d68baa4c0de5f8bd159e0daddb1cdd1a71c996eb4fc00432cf42de53",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-middle.png",
+    "sha256": "0a3e90481c8cf7c805e1fb0be6f1c2b8bb37cdc2123cade83c043258a7ce3b22",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-top.png",
+    "sha256": "2ac9059eaa36461c97bb7d5aefef0e489068c4268be405e3de7faa49da0e73ec",
+    "candidate": "RC3",
+    "review": "200% dates/periods reflow without overlap; complete lucky text wraps. Final note field is above navigation; enlarged placeholder remains clipped inside its fixed textarea viewport."
+  },
+  {
+    "file": "screenshots/se-navigation-ja-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/navigation-text-layout-Nav-103be-achable-targets-at-200-text-iphone-se/navigation-ja-200.png",
+    "sha256": "0c41df40360e12e4d387c75038bd89270d38ee999439619beccf8948efba495f",
+    "candidate": "RC3",
+    "review": "Normal and 200% navigation text stays within expanded 2\u20133-line bar; normal captures can include the profile entry fade."
+  },
+  {
+    "file": "screenshots/se-navigation-ja-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/navigation-text-layout-Nav-103be-achable-targets-at-200-text-iphone-se/navigation-ja-normal.png",
+    "sha256": "284b308833261845c3f6c804d079f82f9dacdc774e23b2a1d4dfa91d055d76c9",
+    "candidate": "RC3",
+    "review": "Normal and 200% navigation text stays within expanded 2\u20133-line bar; normal captures can include the profile entry fade."
+  },
+  {
+    "file": "screenshots/promax-es-bright-app-daily-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-surface-final-results/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-bottom.png",
+    "sha256": "6a131c69a9cd11c734a2b5bf22adba9b3e2d765e7334f561a36906cc59194714",
+    "candidate": "RC3",
+    "review": "Top/middle/bottom of normal-size Daily are readable; final note and last content are reachable. Artwork retains some baked English labels; no claim that every bitmap pixel is localized."
+  },
+  {
+    "file": "screenshots/promax-es-bright-app-daily-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-surface-final-results/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-middle.png",
+    "sha256": "ae41c339ac15a22a252c510de58dba34f5d0ee73c47aaff0b48ec503b0102eef",
+    "candidate": "RC3",
+    "review": "Top/middle/bottom of normal-size Daily are readable; final note and last content are reachable. Artwork retains some baked English labels; no claim that every bitmap pixel is localized."
+  },
+  {
+    "file": "screenshots/promax-es-bright-app-daily-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-surface-final-results/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-top.png",
+    "sha256": "e3719a79f1daf3017cf0a10623136729ea120d195a72cfd1341b872c11e72ff3",
+    "candidate": "RC3",
+    "review": "Top/middle/bottom of normal-size Daily are readable; final note and last content are reachable. Artwork retains some baked English labels; no claim that every bitmap pixel is localized."
+  },
+  {
+    "file": "screenshots/promax-ja-bright-app-daily-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-surface-final-results/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-bottom.png",
+    "sha256": "188e9a3567964ef9afdc6ba448e1370c7d4a503c929ba51d2830c11c94304b28",
+    "candidate": "RC3",
+    "review": "Top/middle/bottom of normal-size Daily are readable; final note and last content are reachable. Artwork retains some baked English labels; no claim that every bitmap pixel is localized."
+  },
+  {
+    "file": "screenshots/promax-ja-bright-app-daily-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-surface-final-results/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-middle.png",
+    "sha256": "da4f964e1176414d3d608930f917166d7a1f2c2ced116731e8ee866ab3f09019",
+    "candidate": "RC3",
+    "review": "Top/middle/bottom of normal-size Daily are readable; final note and last content are reachable. Artwork retains some baked English labels; no claim that every bitmap pixel is localized."
+  },
+  {
+    "file": "screenshots/promax-ja-bright-app-daily-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc3-surface-final-results/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-top.png",
+    "sha256": "88d84bc0bc666455bf9e4b400016f4c592350a5be2afd38049aa91a44bc2cd0b",
+    "candidate": "RC3",
+    "review": "Top/middle/bottom of normal-size Daily are readable; final note and last content are reachable. Artwork retains some baked English labels; no claim that every bitmap pixel is localized."
+  }
+]

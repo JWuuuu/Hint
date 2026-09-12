@@ -1,0 +1,187 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/Users/jwu/Documents/Hint-main/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/tmp/hint-letter-20260910/playwright.entry-fixed.config.ts",
+      "--workers=1",
+      "--grep",
+      "Me Tarot setup",
+      "letter-ritual-layout.spec.ts"
+    ],
+    "configFile": "/tmp/hint-letter-20260910/playwright.entry-fixed.config.ts",
+    "rootDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-letter-20260910/entry-fixed-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/tmp/hint-letter-20260910/entry-fixed-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/tmp/hint-letter-20260910/entry-fixed-e2e.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "letter-ritual-layout.spec.ts",
+      "file": "letter-ritual-layout.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Me Tarot setup has a visible bounded entrance into the ready room",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2733,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T00:07:29.981Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "Me-entry-observations",
+                      "contentType": "application/json",
+                      "body": "W3siYXQiOjEyNDgsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6ODUuOTYwODE1NDI5Njg3NX0seyJhdCI6MTMxMSwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxMDYuNjI2MDk4NjMyODEyNX0seyJhdCI6MTM0NywiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxMzMuNjcxMzg2NzE4NzV9LHsiYXQiOjEzNjQsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTQ3LjE5NDMzNTkzNzV9LHsiYXQiOjEzODEsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU2LjA5NzEwNjkzMzU5Mzc1fSx7ImF0IjoxNDAyLCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1Ni43NTQ2OTk3MDcwMzEyNX0seyJhdCI6MTQxNCwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTcuMTA5NjgwMTc1NzgxMjV9LHsiYXQiOjE0MzEsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU3LjUwMjgwNzYxNzE4NzV9LHsiYXQiOjE0NTMsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU3LjkxNDEwODI3NjM2NzJ9LHsiYXQiOjE0NjUsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU4LjEwMDQwMjgzMjAzMTI1fSx7ImF0IjoxNDgxLCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OC4zMTM5MDM4MDg1OTM3NX0seyJhdCI6MTQ5OCwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTguNTAzMTczODI4MTI1fSx7ImF0IjoxNTE0LCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OC42NTEwMDA5NzY1NjI1fSx7ImF0IjoxNTMxLCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OC43ODAxNTEzNjcxODc1fSx7ImF0IjoxNTQ4LCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OC44Nzg3MjMxNDQ1MzEyNX0seyJhdCI6MTU2NCwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTguOTY2MTg2NTIzNDM3NX0seyJhdCI6MTU4MSwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTkuMDI1MzkwNjI1fSx7ImF0IjoxNjAwLCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OS4wNzM0MjUyOTI5Njg3NX0seyJhdCI6MTYxNCwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTkuMDk5ODk5MjkxOTkyMn0seyJhdCI6MTYzMSwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTkuMTE2MzMzMDA3ODEyNX0seyJhdCI6MTY0OCwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTkuMTE5OTk1MTE3MTg3NX1d"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-8aeff415f8ec40511375",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 70,
+          "column": 1
+        },
+        {
+          "title": "Me Tarot setup has a visible bounded entrance into the ready room",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2525,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T00:07:33.090Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "Me-entry-observations",
+                      "contentType": "application/json",
+                      "body": "W3siYXQiOjEyMDYsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6ODUuNzk5OTg3NzkyOTY4NzV9LHsiYXQiOjEyNjAsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6OTkuNDAxMDkyNTI5Mjk2ODh9LHsiYXQiOjEyOTYsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTI0Ljg4Nzk2OTk3MDcwMzEyfSx7ImF0IjoxMzA2LCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjEzMi4wODQ2NTU3NjE3MTg3NX0seyJhdCI6MTMxOSwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNDIuODc1OTE1NTI3MzQzNzV9LHsiYXQiOjEzMzksImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU2LjAyMzAxMDI1MzkwNjI1fSx7ImF0IjoxMzUyLCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1Ni40NzY4MDY2NDA2MjV9LHsiYXQiOjEzNzMsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU3LjA4NDE2NzQ4MDQ2ODc1fSx7ImF0IjoxMzg5LCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1Ny40NjAyODEzNzIwNzAzfSx7ImF0IjoxNDA2LCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1Ny43NzU3NzIwOTQ3MjY1Nn0seyJhdCI6MTQyMiwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTguMDU2MDQ1NTMyMjI2NTZ9LHsiYXQiOjE0MzksImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU4LjI4OTE4NDU3MDMxMjV9LHsiYXQiOjE0NTUsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU4LjQ3MjM1MTA3NDIxODc1fSx7ImF0IjoxNDcyLCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OC42MzM5NzIxNjc5Njg3NX0seyJhdCI6MTQ4OSwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTguNzY2MzQyMTYzMDg1OTR9LHsiYXQiOjE1MDgsImhhc0xvYWRlciI6ZmFsc2UsIm1hcmtXaWR0aCI6MTU4Ljg3ODcyMzE0NDUzMTI1fSx7ImF0IjoxNTIyLCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OC45NTMyMDEyOTM5NDUzfSx7ImF0IjoxNTM5LCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OS4wMTU1NDg3MDYwNTQ3fSx7ImF0IjoxNTU2LCJoYXNMb2FkZXIiOmZhbHNlLCJtYXJrV2lkdGgiOjE1OS4wNjY3MTE0MjU3ODEyNX0seyJhdCI6MTU3MiwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTkuMDk3MDQ1ODk4NDM3NX0seyJhdCI6MTU4OSwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTkuMTE1MTEyMzA0Njg3NX0seyJhdCI6MTYwNiwiaGFzTG9hZGVyIjpmYWxzZSwibWFya1dpZHRoIjoxNTkuMTE5OTk1MTE3MTg3NX1d"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-5f6d02c28c78d5ea699c",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 70,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-11T00:07:29.792Z",
+    "duration": 5986.219,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

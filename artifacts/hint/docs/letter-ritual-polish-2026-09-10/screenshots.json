@@ -1,0 +1,80 @@
+[
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/pick-before-se.png",
+    "source": "/tmp/hint-letter-20260910/before-pick-se.png",
+    "sha256": "26eb16d146b002b9f80d0a12080e7c1733cc7a26ec9daeb346bb0d268479017d",
+    "note": "使用者回報版本；修改前 SE 選牌畫面。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/pick-before-pro-max.png",
+    "source": "/tmp/hint-letter-20260910/before-pick-max.png",
+    "sha256": "778bfe9cb3c509889e93761e31d2d41169d256402afa29484e1f5e0c8dfb8616",
+    "note": "使用者回報版本；修改前 Pro Max 選牌畫面。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/wash-ready-se.png",
+    "source": "/tmp/hint-wash-refinement-20260910/results/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-se/wash-ready.png",
+    "sha256": "7cf2dfeae7a47b1d2823658b2c9c614d90e0de38fb390acfbc2dcc4b3893fb26",
+    "note": "最終候選 5218；SE 洗牌桌面。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/wash-gathering-se.png",
+    "source": "/tmp/hint-wash-refinement-20260910/results/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-se/wash-gathering.png",
+    "sha256": "a389f1c77cc062a2fe7f40ef16282a42c1bc4f671b94d76239c7183c90d99f62",
+    "note": "最終候選 5218；SE 收牌中，保留桌面幾何。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/wash-moving-pro-max.png",
+    "source": "/tmp/hint-wash-refinement-20260910/results/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-17-pro-max/wash-in-motion.png",
+    "sha256": "1590bf63cc8ad0b64bb6fe3872ed8a20d70ad7b2f9f6aa4df808482b4290f4df",
+    "note": "最終候選 5218；Pro Max 洗牌中。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/spread-before-se.png",
+    "source": "/tmp/hint-spread-polish-20260910/before-results/tarot-spread-navigation-sp-ea33c-al-targets-beside-the-cards-iphone-se/test-failed-1.png",
+    "sha256": "c12ca9a52ec4016e924bfa7a3ea3d00b5c7c0f17bc6954b60775d7a28c9dee9b",
+    "note": "舊版 SE，牌陣左右操作改善前。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/home-zh-dark-inspection.png",
+    "source": "/tmp/hint-space-navigation-20260910/home-pseudo-before.png",
+    "sha256": "7ae0993a50a41090c0639dd402f52f1faad9966491bb09d37cc408caeeeede25",
+    "note": "最終候選5219，簡中深色 Home 真實文字／觸控範圍檢查；無產品修改。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/pick-after-pro-max.png",
+    "source": "/tmp/hint-letter-20260910/final-results/letter-ritual-layout-selec-f20de-above-the-complete-card-arc-iphone-17-pro-max/pick-three.png",
+    "sha256": "94cbdc0b986bcf37d8912feaa083ecbfef7b6fb02c22fa7755d97566fb805c37",
+    "note": "最終候選5219；Pro Max 三張牌槽與卡弧分開。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/astrology-home-pro-max.png",
+    "source": "/tmp/hint-letter-20260910/final-results/space-navigation-Every-spa-05925-le-direct-Home-exit-group-1-iphone-17-pro-max/-app-astrology.png",
+    "sha256": "7ca01104e91fea08c389d097fb338f06d1fe7de55c5fb93b7bd3f145218b8db5",
+    "note": "最終候選5219；Astrology 頂部 Home 返回。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/pro-max-personal-spread.png",
+    "source": "/tmp/hint-letter-20260910/frame-evidence/pro-max-personal-spread.png",
+    "sha256": "92418b4eaaa4f4312fa8a859e7bfd3d2f93d1b2aefd8fabe4210dc2ec53bfd6a",
+    "note": "最終候選5219實際 DevicePreview；Pro Max440×956以1:1顯示於640×1080截圖。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/se-personal-spread-bottom.png",
+    "source": "/tmp/hint-letter-20260910/frame-evidence/se-personal-spread-bottom.png",
+    "sha256": "dbcc375186ab86caae2ca1d70dad95ca729a658f92a9d6c933ae92afeeed609e",
+    "note": "最終候選5219實際 DevicePreview；SE375×667，底部54px主要按鈕完整可點，32px底部空間。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/pick-after-se.png",
+    "source": "/tmp/hint-letter-20260910/final-results/letter-ritual-layout-selec-f20de-above-the-complete-card-arc-iphone-se/pick-three.png",
+    "sha256": "c4fa368cee42e4fe0fd93968140e9b225f67a8cd27929f39320494da2463602d",
+    "note": "最終候選5219；中斷前已完成的SE三張牌選牌，卡弧與已選牌槽保留空間。"
+  },
+  {
+    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/letter-ritual-polish-2026-09-10/screens/spread-after-se.png",
+    "source": "/tmp/hint-letter-20260910/resume-results/tarot-spread-navigation-sp-ea33c-al-targets-beside-the-cards-iphone-se/spread-lateral-navigation.png",
+    "sha256": "8e0f5c74828f9e137e3c8feb3964d7b522cf627af887a82725bd5f797bb38d28",
+    "note": "最終候選5219；續跑SE牌陣左右導航畫面。"
+  }
+]

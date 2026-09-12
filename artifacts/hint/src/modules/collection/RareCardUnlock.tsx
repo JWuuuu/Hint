@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../lib/LocalizedText";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Lock, Sparkles } from "lucide-react";
@@ -5,6 +6,8 @@ import { ACCENT, GLASS } from "../../modules/hold/atmosphere";
 import type { CollectionCard } from "../../shared/tarot/cardCollection";
 import { SafeImage } from "../../shared/ui/SafeImage";
 import "./rare-card-unlock.css";
+import { useMotionPolicy } from "../../lib/motionPolicy";
+import { useLanguage } from "../../lib/i18n";
 
 const FALLBACK_IMAGE = "/brand/tarot/cards/19-TheSun.jpg";
 const ANIMATION_DURATION_MS = 4300;
@@ -38,9 +41,7 @@ function RareCardFront({
         fallbackLabel="Card"
       />
       <span className="rare-badge">
-        <Sparkles size={large ? 14 : 11} />
-        Rare
-      </span>
+        <Sparkles size={large ? 14 : 11} /><LocalizedText text={" Rare "} /></span>
     </div>
   );
 }
@@ -54,13 +55,14 @@ function PopoutAnimation({
   image: string;
   animationKey: number;
 }) {
+  const { t } = useLanguage();
   return (
     <div
       key={animationKey}
       className="rare-popout-layer"
       role="status"
       aria-live="polite"
-      aria-label={`${card.name} rare card unlocked`}
+      aria-label={t("quality.openRare").replace("{card}", card.name)}
       data-testid="rare-card-popout"
     >
       <div className="rare-popout-stage" aria-hidden="true">
@@ -101,19 +103,23 @@ export function RareCardUnlock({
   rewardOpened?: boolean;
   lockedMessage?: string;
 }) {
+  const { reduced, pageVisible } = useMotionPolicy();
+  const { t } = useLanguage();
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
-  const [savedUnlocked, setSavedUnlocked] = useState(card.unlocked || rewardOpened);
+  // A revealed reward is viewable even when Collection persistence has failed.
+  const [revealComplete, setRevealComplete] = useState(card.unlocked || rewardOpened);
   const timerRef = useRef<number | null>(null);
   const frameRef = useRef<number | null>(null);
   const lastAutoUnlockKeyRef = useRef(0);
+  const playingRef = useRef(false);
 
   const cardImage = card.image ?? FALLBACK_IMAGE;
-  const frontVisible = isAnimating || savedUnlocked;
-  const unlockStateClass = isAnimating ? "is-unlocking" : savedUnlocked ? "is-saved" : "";
+  const frontVisible = isAnimating || revealComplete;
+  const unlockStateClass = isAnimating ? "is-unlocking" : revealComplete ? "is-saved" : "";
 
   useEffect(() => {
-    setSavedUnlocked(card.unlocked || rewardOpened);
+    setRevealComplete(card.unlocked || rewardOpened);
   }, [card.cardId, card.unlocked, rewardOpened]);
 
   useEffect(() => {
@@ -122,6 +128,14 @@ export function RareCardUnlock({
       if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (!reduced && pageVisible) return;
+    if (timerRef.current) window.clearTimeout(timerRef.current);
+    if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
+    timerRef.current = null; frameRef.current = null; playingRef.current = false;
+    setIsAnimating(false);
+  }, [reduced, pageVisible]);
 
   useEffect(() => {
     if (autoUnlockKey > 0 && autoUnlockKey !== lastAutoUnlockKeyRef.current) {
@@ -133,24 +147,27 @@ export function RareCardUnlock({
   }, [autoUnlockKey]);
 
   function playRareMoment() {
+    if (playingRef.current) return;
     const shouldPersistUnlock = !rewardOpened;
 
     if (timerRef.current) window.clearTimeout(timerRef.current);
     if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
 
     setIsAnimating(false);
-    setSavedUnlocked(true);
+    setRevealComplete(true);
+    if (shouldPersistUnlock) onUnlock(card.cardId);
+    if (reduced || !pageVisible) return;
+    playingRef.current = true;
 
     frameRef.current = window.requestAnimationFrame(() => {
+      frameRef.current = null;
       setAnimationKey((value) => value + 1);
       setIsAnimating(true);
 
-      if (shouldPersistUnlock) {
-        onUnlock(card.cardId);
-      }
-
       timerRef.current = window.setTimeout(() => {
         setIsAnimating(false);
+        playingRef.current = false;
+        timerRef.current = null;
       }, ANIMATION_DURATION_MS);
     });
   }
@@ -158,12 +175,8 @@ export function RareCardUnlock({
   return (
     <section className="rare-unlock-panel">
       <div className="rare-unlock-copy">
-        <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.2em]" style={{ color: ACCENT.gold }}>
-          Rare card unlock
-        </p>
-        <h3 className="mt-4 font-serif text-[28px] font-light leading-tight sm:text-[40px]" style={{ color: GLASS.text }}>
-          Some nights, the deck gives back.
-        </h3>
+        <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.2em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Rare card unlock "} /></p>
+        <h3 className="mt-4 font-serif text-[28px] font-light leading-tight sm:text-[40px]" style={{ color: GLASS.text }}><LocalizedText text={" Some nights, the deck gives back. "} /></h3>
         <p className="mt-4 max-w-md font-sans text-[13.5px] leading-relaxed sm:text-[15px]" style={{ color: GLASS.muted }}>
           {lockedMessage ?? "Keep a streak and rarer arcana surface. Turn tonight's reward and see what came up for you."}
         </p>
@@ -175,9 +188,10 @@ export function RareCardUnlock({
             style={{ color: "#231d2a", background: "linear-gradient(135deg, #f6df9f, #cba866)", boxShadow: "0 16px 30px rgba(219,142,85,0.22)" }}
           >
             <Sparkles size={15} />
-            {isAnimating ? `${card.name} is opening` : savedUnlocked ? "Replay rare unlock" : "Open tonight's reward"}
+            {t(revealComplete ? "quality.replayRare" : "quality.openRare").replace("{card}", card.name)}
           </button>
         </div>
+        {card.unlocked && <p role="status" className="mt-3 text-sm">{t("quality.savedLocal")}</p>}
       </div>
 
       <div className={`rare-unlock-stage ${unlockStateClass}`}>

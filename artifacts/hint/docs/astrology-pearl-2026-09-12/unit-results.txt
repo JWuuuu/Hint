@@ -1,0 +1,98 @@
+
+ RUN  v3.2.7 /Users/jwu/Documents/Hint-main/artifacts/hint
+
+ ✓ src/modules/tarot/components/TarotRoomFlow.motion.test.tsx (1 test) 2646ms
+   ✓ stops manual table-current work on native background and recovers one loop after resume  2646ms
+ ✓ src/modules/tarot/components/SpreadPreviewCarousel.test.tsx (14 tests) 753ms
+   ✓ Personal spread navigation > retargets rapid taps and reversal without an old completion replacing the current spread  304ms
+ ✓ src/modules/features/compatibilityRecovery.test.tsx (16 tests) 628ms
+ ✓ src/modules/me/MeView.test.tsx (16 tests) 518ms
+ ✓ src/modules/astrology/components/TogetherReading.test.tsx (10 tests) 338ms
+ ✓ src/modules/tarot/components/TarotRoomFlow.component.test.tsx (30 tests) 7394ms
+   ✓ Tarot Room components > keeps server-local HTTP success retryable after restoration without replacing cards or chat  1402ms
+   ✓ Tarot Room components > keeps an unsaved reading and chat in memory, warns before leaving, and retries the same archive  941ms
+   ✓ Tarot Room components > restores an archived reading and durably appends follow-up chat  321ms
+   ✓ Tarot Room components > shows a stable local reading on failure and replaces it only after retry  734ms
+   ✓ Tarot Room components > restores a pending interpretation with an explicit durable retry  706ms
+   ✓ Tarot Room components > restores a local interpretation with an explicit durable retry  705ms
+ ✓ src/modules/home/data/dailyLuckyCopy.test.tsx (11 tests) 291ms
+ ✓ src/modules/astrology/useBirthChart.test.tsx (15 tests) 307ms
+ ✓ src/components/app/RoomTransitions.test.tsx (35 tests) 263ms
+ ✓ src/components/app/accountFlows.test.tsx (3 tests) 253ms
+ ✓ src/modules/readings/ReadingsView.test.tsx (4 tests) 225ms
+ ✓ src/modules/features/AstrologyView.component.test.tsx (10 tests) 236ms
+ ✓ src/components/app/RoomVisitBoundary.test.tsx (8 tests) 202ms
+ ✓ src/modules/features/dailyNoteRecovery.test.tsx (4 tests) 173ms
+ ✓ src/modules/animal-tarot/AnimalTarotView.test.tsx (2 tests) 148ms
+ ✓ src/modules/hold/chat/components/SpeechButton.test.tsx (3 tests) 152ms
+ ✓ src/modules/features/PersonalitiesView.test.tsx (3 tests) 127ms
+ ✓ src/modules/features/JournalView.test.tsx (7 tests) 128ms
+ ✓ src/lib/useProfile.identity.test.tsx (2 tests) 120ms
+ ✓ src/modules/tarot/components/CardWashRitual.input.test.tsx (2 tests) 99ms
+ ✓ src/components/app/ProfileForm.test.tsx (4 tests) 94ms
+ ✓ src/components/app/AppChrome.test.tsx (7 tests) 87ms
+ ✓ src/modules/collection/CardCollectionView.test.tsx (2 tests) 95ms
+ ✓ src/modules/collection/RareCardUnlock.test.tsx (2 tests) 94ms
+ ✓ src/modules/tarot/components/CardWashRitual.motion.test.tsx (1 test) 89ms
+ ✓ src/modules/astrology/components/NatalWheel.test.tsx (4 tests) 73ms
+ ✓ src/lib/deviceSession.test.ts (4 tests) 74ms
+ ✓ src/modules/tarot/logic/shareReceipt.test.ts (17 tests) 66ms
+ ✓ src/modules/tarot/components/DetailedTarotReading.component.test.tsx (1 test) 63ms
+ ✓ src/modules/ask/AskHint.test.tsx (2 tests) 50ms
+ ✓ src/lib/identity.test.ts (14 tests) 33ms
+ ✓ src/lib/motionPolicy.test.tsx (8 tests) 22ms
+ ✓ src/components/app/OnboardingAstrology.test.tsx (4 tests) 26ms
+ ✓ src/modules/ask/useAskHintChat.test.tsx (10 tests) 24ms
+ ✓ src/lib/birthDetails.test.ts (4 tests) 13ms
+ ✓ src/lib/astro/userBirthProfile.identity.test.ts (3 tests) 14ms
+ ✓ src/modules/tarot/logic/useTarotReducedMotion.test.ts (5 tests) 10ms
+ ✓ src/modules/tarot/logic/readingPersistence.test.ts (24 tests) 9ms
+ ✓ src/modules/astrology/chartState.test.ts (19 tests) 11ms
+ ✓ src/lib/dailyReceipts.test.ts (3 tests) 9ms
+ ✓ src/lib/api.test.ts (9 tests) 9ms
+ ✓ src/lib/clearHistory.test.ts (7 tests) 6ms
+ ✓ src/components/dev/DevicePreview.test.tsx (2 tests) 6ms
+ ✓ src/lib/auth.test.ts (7 tests) 4ms
+ ✓ src/modules/features/personalityProgress.test.ts (5 tests) 4ms
+ ✓ src/modules/features/journalDraft.test.ts (5 tests) 3ms
+ ✓ src/lib/textDraft.test.ts (3 tests) 3ms
+ ✓ src/shared/tarot/cardCollection.test.ts (2 tests) 2ms
+ ✓ src/lib/feedback.test.ts (19 tests) 524ms
+ ✓ src/lib/i18n.test.ts (5 tests) 228ms
+ ✓ src/lib/mobile/deepLinks.test.ts (11 tests) 59ms
+ ✓ src/lib/speechRecognition.test.ts (10 tests) 110ms
+ ✓ src/modules/home/data/dailyCardCopy.test.ts (5 tests) 57ms
+ ✓ src/modules/astrology/reportModel.test.ts (5 tests) 24ms
+ ✓ src/modules/astrology/astrologyLibrary.test.ts (9 tests) 13ms
+ ✓ src/modules/tarot/logic/receiptLayout.test.ts (21 tests) 6ms
+ ✓ src/modules/tarot/logic/washContinuity.test.ts (5 tests) 13ms
+ ✓ src/modules/tarot/logic/washPhysics.test.ts (6 tests) 14ms
+ ✓ src/modules/astrology/components/AstrologyGuide.test.ts (2 tests) 10ms
+ ✓ src/modules/tarot/logic/requestTarotFollowUp.test.ts (15 tests) 7ms
+ ✓ src/lib/generatedTransport.test.ts (10 tests) 6ms
+ ✓ src/modules/tarot/logic/requestDetailedTarotReading.test.ts (6 tests) 6ms
+ ✓ src/modules/tarot/logic/activeTarotSession.test.ts (14 tests) 7ms
+ ✓ src/modules/tarot/logic/receiptPrivacy.test.ts (81 tests) 6ms
+ ✓ src/modules/tarot/logic/buildTarotChatContext.test.ts (7 tests) 3ms
+ ✓ src/modules/features/personalityCopy.test.ts (1 test) 3ms
+ ✓ src/lib/deviceSessionCore.test.ts (8 tests) 4ms
+ ✓ src/lib/publicUrls.test.ts (11 tests) 3ms
+ ✓ src/lib/mobile/appLifecycle.test.ts (2 tests) 2ms
+ ✓ src/modules/tarot/logic/pickWheelGeometry.test.ts (5 tests) 3ms
+ ✓ src/lib/mobile/abortCompatibility.test.ts (1 test) 3ms
+ ✓ src/modules/tarot/logic/ritualDeckOrder.test.ts (11 tests) 3ms
+ ✓ src/lib/identityLock.test.ts (3 tests) 2ms
+ ✓ src/modules/me/utils.test.ts (3 tests) 2ms
+ ✓ src/modules/tarot/logic/selectCards.test.ts (3 tests) 2ms
+ ✓ src/modules/tarot/logic/washRitualMachine.test.ts (11 tests) 2ms
+ ✓ src/product/roomPreload.test.ts (2 tests) 2ms
+ ✓ src/modules/home/data/dailyCardSync.test.ts (4 tests) 2ms
+ ✓ src/lib/localProfileDestination.test.ts (2 tests) 1ms
+ ✓ src/modules/tarot/logic/ritualFlowMachine.test.ts (11 tests) 2ms
+ ✓ src/lib/readingDays.test.ts (1 test) 1ms
+
+ Test Files  81 passed (81)
+      Tests  684 passed (684)
+   Start at  18:13:38
+   Duration  22.95s (transform 1.40s, setup 0ms, collect 7.43s, tests 17.12s, environment 12.73s, prepare 2.10s)
+

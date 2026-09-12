@@ -1,4 +1,5 @@
 import { useEffect, type RefObject } from "react";
+import { useMotionPolicy } from "../../lib/motionPolicy";
 
 type Point = readonly [number, number];
 type Edge = readonly [number, number];
@@ -70,12 +71,12 @@ export function useSkyDeckPassby(
   firstLaunch: boolean,
   preview = false,
 ) {
+  const { reduced, pageVisible } = useMotionPolicy();
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || typeof window === "undefined") return;
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return;
+    if (reduced || !pageVisible) return;
 
     const context = canvas.getContext("2d");
     if (!context) return;
@@ -394,5 +395,5 @@ export function useSkyDeckPassby(
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("resize", reset);
     };
-  }, [canvasRef, firstLaunch, preview]);
+  }, [canvasRef, firstLaunch, preview, reduced, pageVisible]);
 }

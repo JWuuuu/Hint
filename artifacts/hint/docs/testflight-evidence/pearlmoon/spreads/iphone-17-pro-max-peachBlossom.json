@@ -1,0 +1,48 @@
+{
+  "spread": "peachBlossom",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "dawn",
+  "readingId": "tarot-1789080232200-2f5amd",
+  "positions": [
+    "Appears",
+    "Image",
+    "Block",
+    "Trend",
+    "Gain"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-70-xipnlvt",
+      "cardId": "18-moon",
+      "name": "The Moon",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-73-jm4v8cb",
+      "cardId": "four-swords",
+      "name": "Four of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-30-5lmzjsa",
+      "cardId": "ten-swords",
+      "name": "Ten of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-63-1q5fyk0",
+      "cardId": "page-wands",
+      "name": "Page of Wands",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-33-66w97d3",
+      "cardId": "seven-wands",
+      "name": "Seven of Wands",
+      "orientation": "upright"
+    }
+  ],
+  "readingRequests": 1
+}

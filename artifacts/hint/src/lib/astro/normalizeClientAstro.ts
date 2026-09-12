@@ -28,31 +28,25 @@ function isBody(value: unknown): value is PlanetBody {
   return typeof value === "string" && BODIES.includes(value as PlanetBody);
 }
 
-function elementBalance(value: Record<string, unknown> | undefined): ElementBalance {
-  const dominant = ["fire", "earth", "air", "water"].includes(String(value?.dominant)) ? String(value?.dominant) as ElementBalance["dominant"] : "earth";
-  return {
-    fire: Number(value?.fire ?? 0),
-    earth: Number(value?.earth ?? 0),
-    air: Number(value?.air ?? 0),
-    water: Number(value?.water ?? 0),
-    dominant,
-    meaning: String(value?.meaning ?? "You trust what can become real."),
+/** Count only returned planets, never an assumed default or a chart angle. */
+function balances(placements: PlanetPlacement[]) {
+  const element: ElementBalance = { fire:0, earth:0, air:0, water:0, meaning:"" };
+  const modality: ModalityBalance = { cardinal:0, fixed:0, mutable:0, meaning:"" };
+  const elements = ["fire","earth","air","water"] as const;
+  const modes = ["cardinal","fixed","mutable"] as const;
+  for (const p of placements) if (p.body !== "rising" && p.sign) {
+    const i=SIGNS.indexOf(p.sign); element[elements[i % 4]]++; modality[modes[i % 3]]++;
+  }
+  const dominant = <T extends string>(keys: readonly T[], values: Record<T, number>) => {
+    const max=Math.max(...keys.map(k=>values[k])); const winners=keys.filter(k=>values[k]===max);
+    return max>0 && winners.length===1 ? winners[0] : undefined;
   };
-}
-
-function modalityBalance(value: Record<string, unknown> | undefined): ModalityBalance {
-  const dominant = ["cardinal", "fixed", "mutable"].includes(String(value?.dominant)) ? String(value?.dominant) as ModalityBalance["dominant"] : "fixed";
-  return {
-    cardinal: Number(value?.cardinal ?? 0),
-    fixed: Number(value?.fixed ?? 0),
-    mutable: Number(value?.mutable ?? 0),
-    dominant,
-    meaning: String(value?.meaning ?? "You stabilize by holding the line once it matters."),
-  };
+  element.dominant=dominant(elements,element); modality.dominant=dominant(modes,modality);
+  return {elementBalance:element,modalityBalance:modality};
 }
 
 export function normalizeClientNatal(profile: BirthProfile, response: AstroNatalResponse): NatalChart | null {
-  if (!response.chart) return null;
+  if (response.source !== "astrologyapi" || response.mode !== "live" || !Array.isArray(response.chart?.placements)) return null;
   const placements: PlanetPlacement[] = response.chart.placements
     .filter((placement) => isBody(placement.body))
     .map((placement) => {
@@ -60,21 +54,21 @@ export function normalizeClientNatal(profile: BirthProfile, response: AstroNatal
       return {
         body: placement.body as PlanetBody,
         sign,
-        degree: placement.degree,
-        house: placement.house,
+        degree: typeof placement.degree === "number" && Number.isFinite(placement.degree) && placement.degree >= 0 && placement.degree < 30 ? placement.degree : undefined,
+        house: Number.isInteger(placement.house) && placement.house! >= 1 && placement.house! <= 12 ? placement.house : undefined,
         retrograde: placement.retrograde,
         element: placement.element as PlanetPlacement["element"],
         modality: placement.modality as PlanetPlacement["modality"],
         meaning: sign ? SIGN_MEANINGS[sign] : "This point needs more birth data to read precisely.",
       };
     });
-  const aspects: Aspect[] = response.chart.aspects
+  const aspects: Aspect[] = (response.chart.aspects ?? [])
     .filter((aspect) => ASPECTS.includes(aspect.type as Aspect["type"]))
     .map((aspect) => ({
       from: aspect.from,
       to: aspect.to,
       type: aspect.type as Aspect["type"],
-      orb: aspect.orb ?? 0,
+      orb: typeof aspect.orb === "number" && Number.isFinite(aspect.orb) && aspect.orb >= 0 && aspect.orb <= 180 ? aspect.orb : undefined,
       strength: aspect.strength,
       meaning: "This aspect describes how two chart points exchange pressure, ease, or focus.",
     }));
@@ -85,25 +79,26 @@ export function normalizeClientNatal(profile: BirthProfile, response: AstroNatal
   const marsSign = placements.find((placement) => placement.body === "mars")?.sign;
 
   return {
+    calculation: response.calculation,
     id: response.profileHash,
     provider: response.source === "astrologyapi" ? "astrologyapi" : "fallback",
     source: response.source === "astrologyapi" ? "astrologyapi" : "fallback",
     mode: response.mode,
     calculatedAt: response.fetchedAt,
-    birthProfile: profile,
+    birthProfile: structuredClone(profile),
     placements,
     aspects,
-    houses: response.chart.houses.map((house) => ({
+    houses: (response.chart.houses ?? []).filter(house => Number.isInteger(house.house) && house.house >= 1 && house.house <= 12).map((house) => ({
       ...house,
       sign: isSign(house.sign) ? house.sign : undefined,
+      degree: typeof house.degree === "number" && Number.isFinite(house.degree) && house.degree >= 0 && house.degree < 30 ? house.degree : undefined,
     })),
     sunSign,
     moonSign,
     risingSign,
     venusSign,
     marsSign,
-    elementBalance: elementBalance(response.chart.elementBalance),
-    modalityBalance: modalityBalance(response.chart.modalityBalance),
+    ...balances(placements),
     validation: response.validation,
     summary: {
       headline: response.chart.summary?.headline ?? "Personal chart",

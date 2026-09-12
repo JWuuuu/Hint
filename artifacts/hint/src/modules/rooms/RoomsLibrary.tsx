@@ -1,213 +1,48 @@
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, Search, Sparkles } from "lucide-react";
-import { ACCENT } from "../hold/atmosphere";
+import { Search, ArrowRight } from "lucide-react";
+import { AppScreen, ScreenHeader } from "../../components/app/AppChrome";
 import { getModulesBySection } from "../home/data/modules";
-import { ModuleTileWrapper } from "../home/components/ModuleTile";
 import { useLanguage } from "../../lib/i18n";
 import type { SectionKey } from "../home/types/home.types";
 
-type RoomFilter = SectionKey | "all";
-
 export function RoomsLibrary() {
-  const { t } = useLanguage();
-  const [activeFilter, setActiveFilter] = useState<RoomFilter>("all");
+  const { t, language } = useLanguage();
+
+  const [filter, setFilter] = useState<SectionKey | "all">("all");
+  const [query, setQuery] = useState("");
+  const [includeUpcoming, setIncludeUpcoming] = useState(false);
   const groups = useMemo(() => getModulesBySection(), []);
-  const totalRooms = useMemo(
-    () => groups.reduce((total, group) => total + group.modules.length, 0),
-    [groups],
-  );
-  const liveRooms = useMemo(
-    () => groups.flatMap((group) => group.modules).filter((module) => module.href),
-    [groups],
-  );
-  const visibleGroups = useMemo(
-    () =>
-      activeFilter === "all"
-        ? groups
-        : groups.filter((group) => group.section.key === activeFilter),
-    [activeFilter, groups],
-  );
-  const activeLiveRooms = useMemo(
-    () =>
-      activeFilter === "all"
-        ? liveRooms
-        : liveRooms.filter((module) => module.section === activeFilter),
-    [activeFilter, liveRooms],
-  );
-  const filterOptions = useMemo(
-    () => [
-      { key: "all" as const, label: "All", count: totalRooms },
-      ...groups.map((group) => ({
-        key: group.section.key,
-        label: t(`section.${group.section.key}.label`),
-        count: group.modules.length,
-      })),
-    ],
-    [groups, t, totalRooms],
-  );
+  const translated = (id: string, part: "title" | "hint", fallback: string) => {
+    const key = `module.${id}.${part}`;
+    return t(key) === key ? fallback : t(key);
+  };
+  const visible = groups.filter(({ section }) => filter === "all" || section.key === filter).map(({ section, modules }) => ({ section, modules: modules.filter((module) => {
+    if (!includeUpcoming && (!module.href || module.id === "dream")) return false;
+    return `${translated(module.id, "title", module.title)} ${translated(module.id, "hint", module.hint)} ${t(`section.${section.key}.label`)}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase());
+  }) })).filter((group) => group.modules.length);
+  const count = visible.reduce((sum, group) => sum + group.modules.length, 0);
 
-  return (
-    <div className="h-full w-full overflow-y-auto overscroll-none pb-16">
-      <div className="mx-auto w-full max-w-lg px-4 pt-32 sm:max-w-3xl sm:px-6 md:pt-32 lg:max-w-6xl lg:pt-28">
-        <motion.header
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: "easeOut" }}
-          className="mb-7"
-        >
-          <Link
-            href="/app"
-            className="mb-5 inline-flex h-9 items-center gap-2 rounded-[8px] border px-3 font-sans text-[11px] uppercase tracking-[0.18em]"
-            style={{
-              color: "var(--hint-muted)",
-              borderColor: "var(--hint-border)",
-              background: "var(--hint-surface-soft)",
-            }}
-          >
-            <ArrowLeft size={14} />
-            {t("common.home")}
-          </Link>
-
-          <div
-            className="rounded-[8px] border p-5 sm:p-6"
-            style={{
-              background: "var(--hint-surface-strong)",
-              borderColor: "var(--hint-border)",
-              boxShadow: "var(--hint-elevated-shadow)",
-            }}
-          >
-            <p className="font-serif text-[11px] uppercase tracking-[0.32em]" style={{ color: ACCENT.aqua }}>
-              {t("rooms.eyebrow")}
-            </p>
-            <div className="mt-3 grid gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-              <div>
-                <h1 className="font-serif text-[34px] leading-none sm:text-[48px]" style={{ color: "var(--hint-text)" }}>
-                  {t("rooms.title")}
-                </h1>
-                <p className="mt-3 max-w-xl font-sans text-[13.5px] leading-relaxed" style={{ color: "var(--hint-muted)" }}>
-                  {t("rooms.subtitle")}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="rounded-[8px] border px-3 py-1.5 font-sans text-[11px] font-black uppercase tracking-[0.14em]" style={{ color: ACCENT.gold, borderColor: "rgba(206,178,110,0.24)", background: "rgba(206,178,110,0.08)" }}>
-                    {liveRooms.length} open now
-                  </span>
-                  <span className="rounded-[8px] border px-3 py-1.5 font-sans text-[11px] font-black uppercase tracking-[0.14em]" style={{ color: "var(--hint-muted)", borderColor: "var(--hint-border)", background: "var(--hint-input-bg)" }}>
-                    {totalRooms} total rooms
-                  </span>
-                </div>
-              </div>
-              <div
-                className="flex h-11 items-center gap-3 rounded-[8px] border px-4"
-                style={{
-                  background: "var(--hint-input-bg)",
-                  borderColor: "var(--hint-border)",
-                }}
-              >
-                <Search size={16} style={{ color: ACCENT.gold }} />
-                <span className="font-sans text-[12.5px]" style={{ color: "var(--hint-faint)" }}>
-                  {t("rooms.searchSoon")}
-                </span>
-              </div>
-            </div>
-          </div>
-        </motion.header>
-
-        <div className="mb-6 flex gap-2 overflow-x-auto rounded-[16px] border p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" style={{ background: "var(--hint-surface-strong)", borderColor: "var(--hint-border)" }}>
-          {filterOptions.map((option) => {
-            const selected = activeFilter === option.key;
-            return (
-              <button
-                key={option.key}
-                type="button"
-                onClick={() => setActiveFilter(option.key)}
-                aria-pressed={selected}
-                className="flex h-10 shrink-0 items-center gap-2 rounded-[12px] border px-3 font-sans text-[12px] font-black transition-[transform,opacity] duration-200 hover:-translate-y-0.5"
-                style={{
-                  background: selected ? "linear-gradient(145deg, rgba(243,212,144,0.9), rgba(122,226,214,0.72))" : "transparent",
-                  borderColor: selected ? "rgba(255,255,255,0.34)" : "transparent",
-                  color: selected ? "#17110c" : "var(--hint-muted)",
-                }}
-              >
-                <span>{option.label}</span>
-                <span className="rounded-full px-2 py-0.5 text-[10px]" style={{ background: selected ? "rgba(0,0,0,0.12)" : "var(--hint-input-bg)", color: selected ? "#17110c" : "var(--hint-faint)" }}>
-                  {option.count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {activeLiveRooms.length ? (
-          <motion.section
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.58, ease: "easeOut" }}
-            className="mb-8"
-          >
-            <div className="mb-4 flex items-center justify-between gap-4 px-1">
-              <div>
-                <h2 className="inline-flex items-center gap-2 font-serif text-[22px] leading-none" style={{ color: ACCENT.gold }}>
-                  <Sparkles size={18} />
-                  Open now
-                </h2>
-                <p className="mt-2 max-w-lg font-sans text-[12.5px] leading-relaxed" style={{ color: "var(--hint-muted)" }}>
-                  Live paths you can enter immediately.
-                </p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-              {activeLiveRooms.map((module, idx) => (
-                <ModuleTileWrapper
-                  key={`live-${module.id}`}
-                  module={module}
-                  index={idx}
-                  baseDelay={0}
-                  variant="library"
-                />
-              ))}
-            </div>
-          </motion.section>
-        ) : null}
-
-        <div className="flex flex-col gap-8">
-          {visibleGroups.map(({ section, modules }, i) => (
-            <motion.section
-              key={section.key}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.18 }}
-              transition={{ duration: 0.58, delay: i * 0.06, ease: "easeOut" }}
-            >
-              <div className="mb-4 flex items-end justify-between gap-4 px-1">
-                <div>
-                  <h2 className="font-serif text-[22px] leading-none" style={{ color: ACCENT.gold }}>
-                    {t(`section.${section.key}.label`)}
-                  </h2>
-                  <p className="mt-2 max-w-lg font-sans text-[12.5px] leading-relaxed" style={{ color: "var(--hint-muted)" }}>
-                    {t(`section.${section.key}.intro`)}
-                  </p>
-                </div>
-                <span className="font-sans text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--hint-faint)" }}>
-                  {modules.length} {t("rooms.count")}
-                </span>
-              </div>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-                {modules.map((m, idx) => (
-                  <ModuleTileWrapper
-                    key={m.id}
-                    module={m}
-                    index={idx}
-                    baseDelay={0}
-                    variant="library"
-                  />
-                ))}
-              </div>
-            </motion.section>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <AppScreen>
+    <ScreenHeader title={t("rooms.title")} eyebrow={t("rooms.eyebrow")} subtitle={t("rooms.subtitle")} backHref="/app" />
+    <label className="mb-3 flex min-h-12 items-center gap-3 rounded-[16px] border px-4" style={{ background: "var(--hint-input-bg)", borderColor: "var(--hint-border)", color: "var(--hint-text)" }}>
+      <Search size={18} aria-hidden className="shrink-0" />
+      <input type="search" aria-label={t("quality.searchRooms")} placeholder={t("quality.searchRooms")} value={query} onChange={(event) => setQuery(event.target.value)} className="min-h-12 min-w-0 w-full bg-transparent text-[16px] outline-none" />
+    </label>
+    <nav aria-label={t("quality.roomCategories")} className="mb-3 flex flex-wrap gap-2">
+      {([{ key: "all", label: t("quality.allRooms") }, ...groups.map(({ section }) => ({ key: section.key, label: t(`section.${section.key}.label`) }))]).map((item) => <button key={item.key} type="button" aria-pressed={filter === item.key} onClick={() => setFilter(item.key as SectionKey | "all")} className="min-h-11 rounded-full border px-3 text-[12px]" style={{ borderColor: filter === item.key ? "var(--hint-aqua)" : "var(--hint-border)", background: filter === item.key ? "var(--hint-surface-strong)" : "var(--hint-surface-soft)", color: "var(--hint-text)" }}>{item.label}</button>)}
+    </nav>
+    <label className="mb-4 flex min-h-11 items-center gap-3 text-[13px]" style={{ color: "var(--hint-muted)" }}><input type="checkbox" checked={includeUpcoming} onChange={(event) => setIncludeUpcoming(event.target.checked)} />{t("quality.includePreviews")}</label>
+    <p role="status" className="mb-4 text-[12px]" style={{ color: "var(--hint-muted)" }}>{t("quality.roomCount").replace("{count}", count.toLocaleString(language))}</p>
+    {!count ? <div className="rounded-[20px] border p-5" style={{ borderColor: "var(--hint-border)", color: "var(--hint-text)" }}><h2 className="font-serif text-[24px]">{t("quality.noRooms")}</h2><p className="mt-2 text-[13px]">{t("quality.noRoomsHint")}</p><button type="button" onClick={() => { setQuery(""); setFilter("all"); }} className="mt-3 min-h-11 underline">{t("quality.resetFilters")}</button></div> : null}
+    <div className="grid gap-6">{visible.map(({ section, modules }) => <section key={section.key}>
+      <h2 className="mb-3 font-serif text-[24px]" style={{ color: "var(--hint-text)" }}>{t(`section.${section.key}.label`)}</h2>
+      <div className="grid grid-cols-2 gap-3">{modules.map((module) => {
+        const Sigil = module.sigil;
+        const content = <><div className="mb-4 flex items-start justify-between gap-2"><span className="block size-7 shrink-0" style={{ color: "var(--hint-aqua)" }}><Sigil /></span>{module.id === "dream" || !module.href ? <span className="text-[10px]" style={{ color: "var(--hint-muted)" }}>{module.href ? t("quality.preview") : t("quality.upcoming")}</span> : <ArrowRight size={16} aria-hidden />}</div><h3 className="break-words font-serif text-[21px] leading-tight">{translated(module.id, "title", module.title)}</h3><p className="mt-2 text-[12px] leading-relaxed" style={{ color: "var(--hint-muted)" }}>{translated(module.id, "hint", module.hint)}</p></>;
+        const style = { background: "var(--hint-surface-soft)", borderColor: "var(--hint-border)", color: "var(--hint-text)" };
+        return module.href ? <Link key={module.id} href={module.href} className="min-w-0 rounded-[20px] border p-4" style={style}>{content}</Link> : <div key={module.id} className="min-w-0 rounded-[20px] border p-4" style={style}>{content}</div>;
+      })}</div>
+    </section>)}</div>
+  </AppScreen>;
 }

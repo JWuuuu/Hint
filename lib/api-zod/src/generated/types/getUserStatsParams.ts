@@ -7,5 +7,8 @@
  */
 
 export type GetUserStatsParams = {
-anonId: string;
+/**
+ * Ignored; ownership comes from the authenticated installation
+ */
+anonId?: string;
 };

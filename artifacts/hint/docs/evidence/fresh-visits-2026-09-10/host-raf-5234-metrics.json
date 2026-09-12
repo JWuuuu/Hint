@@ -1,0 +1,162 @@
+[
+  {
+    "browserOnly": true,
+    "physicalDeviceEvidence": false,
+    "device": "iphone-17-pro-max",
+    "intervalMs": 1550,
+    "samples": [
+      {
+        "feature": "tarot",
+        "visit": 1,
+        "metrics": {
+          "samples": 90,
+          "p50": 17,
+          "p95": 25,
+          "max": 78,
+          "over100": 0,
+          "elapsed": 1561
+        }
+      },
+      {
+        "feature": "astrology",
+        "visit": 1,
+        "metrics": {
+          "samples": 93,
+          "p50": 17,
+          "p95": 22,
+          "max": 24,
+          "over100": 0,
+          "elapsed": 1553
+        }
+      },
+      {
+        "feature": "tarot",
+        "visit": 2,
+        "metrics": {
+          "samples": 88,
+          "p50": 17,
+          "p95": 27,
+          "max": 84,
+          "over100": 0,
+          "elapsed": 1552
+        }
+      },
+      {
+        "feature": "astrology",
+        "visit": 2,
+        "metrics": {
+          "samples": 93,
+          "p50": 17,
+          "p95": 21,
+          "max": 26,
+          "over100": 0,
+          "elapsed": 1554
+        }
+      },
+      {
+        "feature": "tarot",
+        "visit": 3,
+        "metrics": {
+          "samples": 90,
+          "p50": 17,
+          "p95": 26,
+          "max": 73,
+          "over100": 0,
+          "elapsed": 1564
+        }
+      },
+      {
+        "feature": "astrology",
+        "visit": 3,
+        "metrics": {
+          "samples": 93,
+          "p50": 17,
+          "p95": 22,
+          "max": 24,
+          "over100": 0,
+          "elapsed": 1561
+        }
+      }
+    ]
+  },
+  {
+    "browserOnly": true,
+    "physicalDeviceEvidence": false,
+    "device": "iphone-se",
+    "intervalMs": 1550,
+    "samples": [
+      {
+        "feature": "tarot",
+        "visit": 1,
+        "metrics": {
+          "samples": 90,
+          "p50": 17,
+          "p95": 26,
+          "max": 70,
+          "over100": 0,
+          "elapsed": 1570
+        }
+      },
+      {
+        "feature": "astrology",
+        "visit": 1,
+        "metrics": {
+          "samples": 93,
+          "p50": 17,
+          "p95": 20,
+          "max": 22,
+          "over100": 0,
+          "elapsed": 1558
+        }
+      },
+      {
+        "feature": "tarot",
+        "visit": 2,
+        "metrics": {
+          "samples": 89,
+          "p50": 17,
+          "p95": 26,
+          "max": 82,
+          "over100": 0,
+          "elapsed": 1563
+        }
+      },
+      {
+        "feature": "astrology",
+        "visit": 2,
+        "metrics": {
+          "samples": 92,
+          "p50": 17,
+          "p95": 21,
+          "max": 32,
+          "over100": 0,
+          "elapsed": 1555
+        }
+      },
+      {
+        "feature": "tarot",
+        "visit": 3,
+        "metrics": {
+          "samples": 87,
+          "p50": 17,
+          "p95": 28,
+          "max": 95,
+          "over100": 0,
+          "elapsed": 1563
+        }
+      },
+      {
+        "feature": "astrology",
+        "visit": 3,
+        "metrics": {
+          "samples": 92,
+          "p50": 17,
+          "p95": 20,
+          "max": 33,
+          "over100": 0,
+          "elapsed": 1556
+        }
+      }
+    ]
+  }
+]

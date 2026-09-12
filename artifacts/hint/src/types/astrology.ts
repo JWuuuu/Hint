@@ -54,7 +54,7 @@ export type Aspect = {
   from: PlanetBody | string;
   to: PlanetBody | string;
   type: "conjunction" | "sextile" | "square" | "trine" | "opposition";
-  orb: number;
+  orb?: number;
   meaning: string;
   strength?: number;
 };
@@ -71,7 +71,7 @@ export type ElementBalance = {
   earth: number;
   air: number;
   water: number;
-  dominant: "fire" | "earth" | "air" | "water";
+  dominant?: "fire" | "earth" | "air" | "water";
   meaning: string;
 };
 
@@ -79,11 +79,19 @@ export type ModalityBalance = {
   cardinal: number;
   fixed: number;
   mutable: number;
-  dominant: "cardinal" | "fixed" | "mutable";
+  dominant?: "cardinal" | "fixed" | "mutable";
   meaning: string;
 };
 
+export type AstroCalculation = {
+  zodiacSystem: "tropical";
+  requestedHouseSystem: string;
+  houseSystem: string | null;
+  returned: { placements: number; houses: number; aspects: number };
+};
+
 export type NatalChart = {
+  calculation?: AstroCalculation;
   id: string;
   provider: "mock" | "api" | "astrologyapi" | "fallback";
   source: "mock" | "api" | "astrologyapi" | "fallback" | "sample";
@@ -187,6 +195,16 @@ export type RelationshipAstrology = {
 };
 
 export type SynastryAspect = {
+  id?: string;
+  fromOwner?: "user";
+  toOwner?: "partner";
+  fromLongitude?: number;
+  toLongitude?: number;
+  orb?: number;
+  separation?: number;
+  exactAngle?: number;
+  allowedOrb?: number;
+  source?: "hint-geometry";
   from: string;
   to: string;
   type: string;
@@ -203,6 +221,9 @@ export type SynastrySummary = {
 };
 
 export type AstroSynastryResponse = {
+  schemaVersion?: number;
+  calculation?: { method: string; aspectSource: string; zodiacSystem: string; orbs: Record<string, number> };
+  natal?: { user: import("@/lib/astro/astroClient").AstroNatalResponse; partner: import("@/lib/astro/astroClient").AstroNatalResponse };
   source: "astrologyapi" | "fallback";
   mode: "live" | "fallback";
   cached: boolean;

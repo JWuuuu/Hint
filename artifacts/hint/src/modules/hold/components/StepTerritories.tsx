@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Check, ChevronRight, Mic, MicOff, Sparkles } from "lucide-react";
@@ -272,12 +273,8 @@ function TarotIntakeArtwork({ spread }: { spread?: SpreadChoice }) {
         ))}
       </div>
       <div className="absolute inset-x-5 bottom-5 top-auto flex flex-col justify-center px-0 text-center">
-        <p className="font-sans text-[9px] font-semibold uppercase tracking-[0.2em] sm:text-[10px]" style={{ color: GOLD.ink }}>
-          Energy-selected
-        </p>
-        <p className="mt-1 font-serif text-[23px] leading-tight sm:text-[28px]" style={{ color: IVORY.primary, textShadow: TEXT_HALO.soft }}>
-          The cards wait for your hand.
-        </p>
+        <p className="font-sans text-[9px] font-semibold uppercase tracking-[0.2em] sm:text-[10px]" style={{ color: GOLD.ink }}><LocalizedText text={" Energy-selected "} /></p>
+        <p className="mt-1 font-serif text-[23px] leading-tight sm:text-[28px]" style={{ color: IVORY.primary, textShadow: TEXT_HALO.soft }}><LocalizedText text={" The cards wait for your hand. "} /></p>
         <p className="mt-2 line-clamp-2 font-sans text-[11px] leading-relaxed sm:text-[12px]" style={{ color: IVORY.dim }}>
           {spread
             ? `${spread.label} · ${spread.cardCount} ${spread.cardCount === 1 ? "card" : "cards"}`
@@ -1356,18 +1353,12 @@ export function StepTerritories({ roomSetup, onSubmit }: Props) {
                     <p
                       className="font-sans text-[10px] font-semibold uppercase tracking-[0.22em]"
                       style={{ color: GOLD.ink }}
-                    >
-                      Hint question
-                    </p>
+                    ><LocalizedText text={" Hint question "} /></p>
                     <h1
                       className="font-serif text-[30px] leading-tight sm:text-[36px]"
                       style={{ color: IVORY.primary, textShadow: TEXT_HALO.strong }}
-                    >
-                      What do you want Hint to look into?
-                    </h1>
-                    <p className="mx-auto max-w-[21rem] font-sans text-[13px] leading-relaxed" style={{ color: IVORY.mute }}>
-                      Big, small, messy, or specific. Ask it in your own words; Hint will choose a reading shape from the question.
-                    </p>
+                    ><LocalizedText text={" What do you want Hint to look into? "} /></h1>
+                    <p className="mx-auto max-w-[21rem] font-sans text-[13px] leading-relaxed" style={{ color: IVORY.mute }}><LocalizedText text={" Big, small, messy, or specific. Ask it in your own words; Hint will choose a reading shape from the question. "} /></p>
                   </div>
 
                   <div
@@ -1414,7 +1405,7 @@ export function StepTerritories({ roomSetup, onSubmit }: Props) {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <FieldLabel>Try a question</FieldLabel>
+                        <FieldLabel><LocalizedText text={"Try a question"} /></FieldLabel>
                         <p className="mt-1 font-sans text-[11px] leading-none" style={{ color: IVORY.dim }}>
                           {visibleQuestionGroup.label}
                         </p>
@@ -1428,9 +1419,7 @@ export function StepTerritories({ roomSetup, onSubmit }: Props) {
                           borderColor: "rgba(228,198,138,0.24)",
                           background: "rgba(228,198,138,0.08)",
                         }}
-                      >
-                        More
-                      </button>
+                      ><LocalizedText text={" More "} /></button>
                     </div>
                     <div className="grid gap-2">
                       {visibleQuestionPrompts.map((prompt) => (
@@ -1455,7 +1444,7 @@ export function StepTerritories({ roomSetup, onSubmit }: Props) {
                   </div>
 
                   <div className="space-y-3">
-                    <FieldLabel>What kind of question is it?</FieldLabel>
+                    <FieldLabel><LocalizedText text={"What kind of question is it?"} /></FieldLabel>
                     <div className="grid grid-cols-2 gap-2">
                       {TERRITORIES.map((item) => (
                         <Chip
@@ -1470,7 +1459,7 @@ export function StepTerritories({ roomSetup, onSubmit }: Props) {
                   </div>
 
                   <div className="space-y-3">
-                    <FieldLabel>Add context if it matters</FieldLabel>
+                    <FieldLabel><LocalizedText text={"Add context if it matters"} /></FieldLabel>
                     <div className="relative">
                       <textarea
                         value={context}
@@ -1906,9 +1895,7 @@ export function StepTerritories({ roomSetup, onSubmit }: Props) {
               <PrimaryButton
                 onClick={goNext}
                 disabled={submitted}
-              >
-                Choose spread
-                <ChevronRight size={14} />
+              ><LocalizedText text={" Choose spread "} /><ChevronRight size={14} />
               </PrimaryButton>
             )}
           </footer>

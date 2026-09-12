@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import {
   MessageSquare,
   UserRound,
@@ -55,9 +56,7 @@ export function MoreGrid() {
                 {t(it.labelKey)}
               </span>
               {it.comingSoon ? (
-                <span className="font-sans text-[8px] uppercase tracking-[0.12em]" style={{ color: GLASS.faint }}>
-                  Soon
-                </span>
+                <span className="font-sans text-[8px] uppercase tracking-[0.12em]" style={{ color: GLASS.faint }}><LocalizedText text={" Soon "} /></span>
               ) : null}
             </>
           );

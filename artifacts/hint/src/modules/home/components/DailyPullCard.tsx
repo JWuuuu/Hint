@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
@@ -292,9 +293,7 @@ export function DailyPullCard({ delay = 0, autoRevealKey = 0 }: Props = {}) {
                 {pull.whisper}
               </p>
               {saved && (
-                <p className="font-sans text-[11px]" style={{ color: IVORY.dim }}>
-                  Saved to Readings
-                </p>
+                <p className="font-sans text-[11px]" style={{ color: IVORY.dim }}><LocalizedText text={" Saved to Readings "} /></p>
               )}
             </motion.div>
           )}
@@ -315,9 +314,7 @@ export function DailyPullCard({ delay = 0, autoRevealKey = 0 }: Props = {}) {
               <p
                 className="font-sans text-[11px] font-medium uppercase tracking-[0.14em]"
                 style={{ color: IVORY.mute }}
-              >
-                Ask Hint
-              </p>
+              ><LocalizedText text={" Ask Hint "} /></p>
             </div>
             {chat.messages.length > 0 && (
               <div className="mb-3 max-h-60 space-y-4 overflow-y-auto pr-1">

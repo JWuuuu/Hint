@@ -1,0 +1,101 @@
+{
+  "label": "tarot-normal",
+  "metrics": {
+    "input": {
+      "x": 165.75931930541992,
+      "y": 887.1833190917969,
+      "width": 289.5503845214844,
+      "height": 44.54620361328125
+    },
+    "inputHittable": true,
+    "elapsed": 275,
+    "contentOpacity": "1",
+    "contentTransform": "matrix(1.012414, 0, 0, 1.012414, -1.595151, 4.012088)",
+    "headingOpacity": "1",
+    "headingAncestorOpacity": "1",
+    "overlayCount": 0
+  },
+  "review": {
+    "records": [
+      {
+        "start": 1949,
+        "duration": 1300,
+        "keyframes": [
+          {
+            "transform": "translate3d(-3.340909090909091px, 8.402981171548117px, 0) scale(1.026)"
+          },
+          {
+            "transform": "translate3d(0, 0, 0) scale(1)"
+          }
+        ],
+        "samples": [
+          {
+            "elapsed": 2,
+            "opacity": "1",
+            "transform": "matrix(1.026, 0, 0, 1.026, -3.340909, 8.402981)",
+            "overlays": 0,
+            "inputHittable": true,
+            "headingOpacityChain": [
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1"
+            ]
+          },
+          {
+            "elapsed": 252,
+            "opacity": "1",
+            "transform": "matrix(1.013335, 0, 0, 1.013335, -1.713534, 4.309843)",
+            "overlays": 0,
+            "inputHittable": true,
+            "headingOpacityChain": [
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1"
+            ]
+          },
+          {
+            "elapsed": 651,
+            "opacity": "1",
+            "transform": "matrix(1.003305, 0, 0, 1.003305, -0.424654, 1.068081)",
+            "overlays": 0,
+            "inputHittable": true,
+            "headingOpacityChain": [
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1"
+            ]
+          },
+          {
+            "elapsed": 1401,
+            "opacity": "1",
+            "transform": "none",
+            "overlays": 0,
+            "inputHittable": true,
+            "headingOpacityChain": [
+              "1",
+              "1",
+              "1",
+              "1",
+              "1",
+              "1"
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "finalTransform": "none",
+    "finalOpacity": "1",
+    "active": 0
+  },
+  "errors": []
+}

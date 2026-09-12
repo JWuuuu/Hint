@@ -94,6 +94,12 @@ export type NormalizedBirthChart = {
   };
   source: "api" | "fallback";
   approximate?: boolean;
+  calculation?: {
+    zodiacSystem: "tropical";
+    requestedHouseSystem: string;
+    houseSystem: string | null;
+    returned: { placements: number; houses: number; aspects: number };
+  };
 };
 
 export type AstrologyStatus = {
@@ -315,8 +321,8 @@ function parseBirthday(birthday: string) {
 }
 
 function parseBirthTime(time?: string) {
-  const match = time?.match(/^(\d{1,2}):(\d{2})/);
-  if (!match) return { hour: 12, min: 0 };
+  const match = time?.match(/^(\d{2}):(\d{2})$/);
+  if (!match || Number(match[1]) > 23 || Number(match[2]) > 59) return null;
   return {
     hour: Math.max(0, Math.min(23, Number(match[1]))),
     min: Math.max(0, Math.min(59, Number(match[2]))),
@@ -325,37 +331,28 @@ function parseBirthTime(time?: string) {
 
 function ianaTimezoneOffset(timezone: string, input: Pick<BirthProfileInput, "birthday" | "birthTime">) {
   const birthday = parseBirthday(input.birthday);
-  if (!birthday) return undefined;
   const time = parseBirthTime(input.birthTime);
+  if (!birthday || !time) return undefined;
   try {
-    const utcDate = new Date(Date.UTC(birthday.year, birthday.month - 1, birthday.day, time.hour, time.min, 0));
-    const formatter = new Intl.DateTimeFormat("en-US", {
-      timeZone: timezone,
-      hour12: false,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    const parts = Object.fromEntries(formatter.formatToParts(utcDate).map((part) => [part.type, part.value]));
-    const localAsUtc = Date.UTC(
-      Number(parts.year),
-      Number(parts.month) - 1,
-      Number(parts.day),
-      Number(parts.hour),
-      Number(parts.minute),
-      Number(parts.second),
-    );
-    return Math.round(((localAsUtc - utcDate.getTime()) / 36e5) * 100) / 100;
-  } catch {
-    return undefined;
-  }
+    const wallTime = Date.UTC(birthday.year, birthday.month - 1, birthday.day, time.hour, time.min);
+    const formatter = new Intl.DateTimeFormat("en-US", { timeZone: timezone, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    const representedWallTime = (utc: number) => {
+      const parts = Object.fromEntries(formatter.formatToParts(new Date(utc)).map(part => [part.type, part.value]));
+      return Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour), Number(parts.minute), Number(parts.second));
+    };
+    let candidate = wallTime;
+    for (let i = 0; i < 4; i++) candidate += wallTime - representedWallTime(candidate);
+    if (representedWallTime(candidate) !== wallTime) return undefined; // A skipped local time.
+    // Repeated local times need an explicit reviewed offset instead of guessing a fold.
+    for (let delta = -180; delta <= 180; delta += 15) {
+      if (delta !== 0 && representedWallTime(candidate + delta * 60_000) === wallTime) return undefined;
+    }
+    return (wallTime - candidate) / 3_600_000;
+  } catch { return undefined; }
 }
 
 function parseTimezoneOffset(timezone: string | number | undefined, input: Pick<BirthProfileInput, "birthday" | "birthTime">) {
-  if (!timezone) return undefined;
+  if (timezone === undefined || typeof timezone === "string" && !timezone.trim()) return undefined;
   if (typeof timezone === "number") return Number.isFinite(timezone) ? timezone : undefined;
   const numeric = Number(timezone);
   if (Number.isFinite(numeric)) return numeric;
@@ -534,15 +531,15 @@ async function providerPost(endpoint: string, payload: Record<string, unknown>) 
   return response.json() as Promise<unknown>;
 }
 
-function buildProviderPayload(input: BirthProfileInput) {
+export function buildProviderPayload(input: BirthProfileInput) {
   const birthday = parseBirthday(input.birthday);
-  const city = cityCoordinate(input);
-  const latitude = input.latitude ?? city?.latitude;
-  const longitude = input.longitude ?? city?.longitude;
-  const timezone = typeof input.timezone === "number" ? input.timezone : city?.timeZone ?? input.timezone;
+  const latitude = input.latitude;
+  const longitude = input.longitude;
+  const timezone = input.timezone;
   const tzone = parseTimezoneOffset(timezone, input);
   if (!birthday || latitude === undefined || longitude === undefined || tzone === undefined) return null;
   const time = parseBirthTime(input.birthTime);
+  if (!time) return null;
   return {
     day: birthday.day,
     month: birthday.month,
@@ -562,7 +559,7 @@ function normalizeBody(value: unknown): AstrologyBody | undefined {
 }
 
 function readNumber(value: unknown): number | undefined {
-  const numeric = typeof value === "number" ? value : typeof value === "string" ? Number(value) : NaN;
+  const numeric = typeof value === "number" ? value : typeof value === "string" && value.trim() ? Number(value) : NaN;
   return Number.isFinite(numeric) ? numeric : undefined;
 }
 
@@ -639,7 +636,7 @@ function readProviderAspects(payload: unknown): NonNullable<NormalizedBirthChart
     const to = normalizeBody(row.to ?? row.planet2 ?? row.p2 ?? row.aspected_planet ?? row.target);
     const type = normalizeAspectType(row.type ?? row.aspect ?? row.aspect_name);
     if (!from || !to || !type) continue;
-    const orb = readNumber(row.orb ?? row.orb_value ?? row.diff);
+    const orb = readNumber(row.orb ?? row.orb_value);
     const strength = readNumber(row.strength ?? row.score ?? row.power);
     aspects.push({ from, to, type, orb, strength });
   }
@@ -657,18 +654,13 @@ function normalizeProviderChart(input: BirthProfileInput, planetsPayload: unknow
   const base64 = typeof chart["base64"] === "string" ? chart["base64"] : typeof chart["chart"] === "string" ? chart["chart"] : undefined;
   const providerHouses = readProviderHouses(chartPayload);
   const providerAspects = readProviderAspects(chartPayload);
-  const fallback = buildFallbackChart(input, "provider-unavailable");
-  const houseOne = providerHouses.find((house) => house.house === 1);
-  const byBody = new Map(providerPlacements.map((placement) => [placement.body, placement]));
-  const placements = fallback.placements.map((fallbackPlacement) => {
-    if (fallbackPlacement.body === "rising" && houseOne?.sign) {
-      return enrichPlacement("rising", houseOne.sign, houseOne.degree, 1, false);
-    }
-    return byBody.get(fallbackPlacement.body) ?? fallbackPlacement;
-  });
+  const placements = [...providerPlacements];
+  // A first-house cusp is not an Ascendant in every house system (for example,
+  // whole-sign houses). Preserve only an explicitly returned Ascendant placement.
   const dominantElement = countMostCommon(placements.map((placement) => placement.element));
   const dominantModality = countMostCommon(placements.map((placement) => placement.modality));
   const summary = chartSummaryFor(placements, false);
+  const returnedHouseSystem = chart["house_type"] ?? chart["house_system"];
 
   return {
     provider: "astrologyapi",
@@ -682,13 +674,18 @@ function normalizeProviderChart(input: BirthProfileInput, planetsPayload: unknow
     marsSign: placements.find((placement) => placement.body === "mars")?.sign,
     dominantElement,
     dominantModality,
-    moonPhase: fallback.moonPhase,
     natalWheel: svg || base64 ? { svg, base64, source: "api" } : { source: "symbolic" },
-    aspects: providerAspects.length ? providerAspects : fallback.aspects,
-    houses: providerHouses.length ? providerHouses : fallback.houses,
+    aspects: providerAspects,
+    houses: providerHouses,
     chartSummary: summary,
     source: "api",
     approximate: false,
+    calculation: {
+      zodiacSystem: "tropical",
+      requestedHouseSystem: envValue("HOUSE_SYSTEM") || "placidus",
+      houseSystem: typeof returnedHouseSystem === "string" && returnedHouseSystem.trim() ? returnedHouseSystem.trim() : null,
+      returned: { placements: placements.length, houses: providerHouses.length, aspects: providerAspects.length },
+    },
   };
 }
 
@@ -720,7 +717,7 @@ export async function calculateBirthChart(input: BirthProfileInput, options: { f
     }
   }
 
-  chartCache.set(key, chart);
+  if (chart.source === "api") chartCache.set(key, chart);
   return chart;
 }
 

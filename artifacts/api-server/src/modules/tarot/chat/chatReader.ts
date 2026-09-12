@@ -28,6 +28,7 @@ export async function generateTarotChatReply(params: {
   initialReading: string;
   messages: TarotChatTurn[];
   followUp: string;
+  signal?: AbortSignal;
 }): Promise<string> {
   const sessionContext = buildSessionContextBlock({
     originalQuestion: params.originalQuestion,
@@ -55,8 +56,12 @@ export async function generateTarotChatReply(params: {
     model: openaiModel,
     max_completion_tokens: 700,
     messages,
-  });
+  }, { signal: params.signal, timeout: 11_500 });
 
-  const reply = response.choices[0]?.message?.content?.trim() ?? "";
-  return reply || "I'm still with you. Could you say that again, a little differently?";
+  const choice = response.choices[0];
+  const reply = choice?.message.content?.trim();
+  if (choice?.finish_reason !== "stop" || choice.message.refusal || !reply) {
+    throw new Error("Tarot follow-up did not complete");
+  }
+  return reply;
 }

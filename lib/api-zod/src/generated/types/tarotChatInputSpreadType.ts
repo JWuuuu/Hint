@@ -13,4 +13,10 @@ export const TarotChatInputSpreadType = {
   single: 'single',
   three: 'three',
   relationship: 'relationship',
+  futureLover: 'futureLover',
+  peachBlossom: 'peachBlossom',
+  reconciliation: 'reconciliation',
+  trueHeart: 'trueHeart',
+  loveTree: 'loveTree',
+  xRelationship: 'xRelationship',
 } as const;

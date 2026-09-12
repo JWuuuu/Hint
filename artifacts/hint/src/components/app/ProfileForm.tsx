@@ -1,7 +1,9 @@
+import { validBirthDate, birthDetailsError } from "../../lib/birthDetails";
 import { useState } from "react";
 import { ACCENT, GLASS } from "../../modules/hold/atmosphere";
 import type { Profile, ProfileInput } from "@workspace/api-client-react";
 import { useLanguage } from "../../lib/i18n";
+import { translateText } from "../../lib/LocalizedText";
 
 /**
  * ProfileForm — the on-brand identity ritual. Captures name + date of birth,
@@ -29,9 +31,9 @@ function Field({
   optionalText?: string;
 }) {
   return (
-    <label className="block">
+    <label className="block min-w-0">
       <span
-        className="font-serif text-[10px] uppercase tracking-[0.28em] flex items-center gap-2 mb-2"
+        className="font-serif text-[10px] leading-relaxed uppercase tracking-[0.28em] flex flex-wrap items-center gap-x-2 gap-y-1 mb-2 [overflow-wrap:anywhere]"
         style={{ color: GLASS.muted }}
       >
         {label}
@@ -47,7 +49,7 @@ function Field({
 }
 
 const inputClass =
-  "w-full h-12 rounded-[8px] px-4 font-serif text-[15px] bg-transparent focus:outline-none transition-colors";
+  "min-w-0 w-full min-h-12 rounded-[8px] px-4 py-3 font-serif text-[16px] leading-normal bg-transparent focus:outline-none transition-colors";
 
 const inputStyle = {
   background: "rgba(0,0,0,0.25)",
@@ -63,7 +65,7 @@ function formatBirthDateInput(value: string) {
 }
 
 function isCompleteBirthDate(value: string) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value);
+  return validBirthDate(value);
 }
 
 export function ProfileForm({
@@ -73,14 +75,14 @@ export function ProfileForm({
   isSaving,
   onCancel,
 }: Props) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [name, setName] = useState(initial?.name ?? "");
   const [birthDate, setBirthDate] = useState(formatBirthDateInput(initial?.birthDate ?? ""));
   const [birthTime, setBirthTime] = useState(initial?.birthTime ?? "");
   const [birthPlace, setBirthPlace] = useState(initial?.birthPlace ?? "");
   const [error, setError] = useState<string | null>(null);
 
-  const canSubmit = name.trim().length > 0 && isCompleteBirthDate(birthDate);
+  const canSubmit = name.trim().length > 0 && isCompleteBirthDate(birthDate) && !birthDetailsError({ birthDate, birthTime });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -92,6 +94,10 @@ export function ProfileForm({
     void Promise.resolve(onSubmit({
       name: name.trim(),
       birthDate,
+      latitude: birthPlace === initial?.birthPlace ? initial?.latitude : null,
+      longitude: birthPlace === initial?.birthPlace ? initial?.longitude : null,
+      timezone: birthPlace === initial?.birthPlace ? initial?.timezone : null,
+      timezoneOffset: birthPlace === initial?.birthPlace && birthDate === initial?.birthDate ? initial?.timezoneOffset : null,
       birthTime: birthTime.trim() || undefined,
       birthPlace: birthPlace.trim() || undefined,
     })).catch(() => {
@@ -131,7 +137,7 @@ export function ProfileForm({
         />
       </Field>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label={t("profile.timeLabel")} optional optionalText={t("profile.optional")}>
           <input
             type="time"
@@ -156,8 +162,8 @@ export function ProfileForm({
       </div>
 
       {error && (
-        <p className="font-sans text-[12px]" style={{ color: ACCENT.lavender }}>
-          {error}
+        <p role="alert" className="font-sans text-[12px] leading-relaxed [overflow-wrap:anywhere]" style={{ color: ACCENT.lavender }}>
+          {translateText(error, language)}
         </p>
       )}
 
@@ -165,7 +171,7 @@ export function ProfileForm({
         <button
           type="submit"
           disabled={isSaving}
-          className="inline-flex items-center justify-center w-full h-12 rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em] transition-opacity disabled:opacity-50"
+          className="inline-flex min-h-12 items-center justify-center w-full rounded-[8px] px-4 py-3 font-serif text-[12px] leading-relaxed uppercase tracking-[0.24em] [overflow-wrap:anywhere] transition-opacity disabled:opacity-50"
           style={{
             background: "rgba(206,178,110,0.14)",
             border: "1px solid rgba(206,178,110,0.34)",
@@ -179,7 +185,7 @@ export function ProfileForm({
           <button
             type="button"
             onClick={onCancel}
-            className="font-serif text-[11px] uppercase tracking-[0.22em] py-2"
+            className="min-h-11 min-w-11 font-serif text-[11px] uppercase tracking-[0.22em] py-2"
             style={{ color: GLASS.faint }}
           >
             {t("profile.cancel")}

@@ -1,0 +1,1769 @@
+{
+  "language": "es",
+  "theme": "bright",
+  "report": [
+    {
+      "route": "/app",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " Hoy ",
+            " Tu Hint está esperando."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "Reflexión de la carta ✦"
+          ],
+          "controls": [
+            {
+              "label": "Revelar el Hint de hoy✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "Revelar la carta Hint de hoy",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "Toca para ver más detalles",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ Toca para ver más detalles ",
+              "width": 163.375,
+              "height": 44
+            },
+            {
+              "label": "Reflexión de la carta ✦",
+              "width": 142.265625,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " Hoy ",
+            " Tu Hint está esperando."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "Reflexión de la carta ✦"
+          ],
+          "controls": [
+            {
+              "label": "Revelar el Hint de hoy✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "Revelar la carta Hint de hoy",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "Toca para ver más detalles",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ Toca para ver más detalles ",
+              "width": 163.375,
+              "height": 44
+            },
+            {
+              "label": "Reflexión de la carta ✦",
+              "width": 142.265625,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " Hoy ",
+            " Tu Hint está esperando."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "Reflexión de la carta ✦"
+          ],
+          "controls": [
+            {
+              "label": "Revelar el Hint de hoy✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "Revelar la carta Hint de hoy",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "Toca para ver más detalles",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ Toca para ver más detalles ",
+              "width": 163.375,
+              "height": 44
+            },
+            {
+              "label": "Reflexión de la carta ✦",
+              "width": 142.265625,
+              "height": 63
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/daily",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Carta diaria del cielo",
+            "Tu energía mejora cuando tiene una forma."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "mar8sept",
+            "mié9sept",
+            "Esta noche10sept",
+            "vie11sept",
+            "sáb12sept"
+          ],
+          "controls": [
+            {
+              "label": "Día",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "Semana",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "Mes",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "Año",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "Calendario diario",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "Anterior Día",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "Siguiente Día",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "8 sept 2026",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "9 sept 2026",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "10 sept 2026",
+              "width": 71.609375,
+              "height": 76
+            },
+            {
+              "label": "11 sept 2026",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "12 sept 2026",
+              "width": 71.59375,
+              "height": 76
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Nombra la pregunta real antes de abrir la sala de tarot.Evita que la lectura se disperse.",
+              "width": 356,
+              "height": 77.0625
+            },
+            {
+              "label": "Ordena una superficie pequeña cerca de ti.El espacio exterior mueve el espacio interior.",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "Relee el mensaje una vez antes de enviarlo.El momento también forma parte de la señal.",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/astrology",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Astrología",
+            "Empieza por tus datos natales"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Signos zodiacales",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Carta natal",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Tránsitos",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Datos natales",
+              "width": 89.359375,
+              "height": 44
+            },
+            {
+              "label": "Juntos",
+              "width": 52.359375,
+              "height": 44
+            },
+            {
+              "label": "Vistas previas de informes",
+              "width": 157.21875,
+              "height": 44
+            },
+            {
+              "label": "Explorar primero los signos",
+              "width": 174.109375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Astrología",
+            "Empieza por tus datos natales"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Signos zodiacales",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Carta natal",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Tránsitos",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Datos natales",
+              "width": 89.359375,
+              "height": 44
+            },
+            {
+              "label": "Juntos",
+              "width": 52.359375,
+              "height": 44
+            },
+            {
+              "label": "Vistas previas de informes",
+              "width": 157.21875,
+              "height": 44
+            },
+            {
+              "label": "Explorar primero los signos",
+              "width": 174.109375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Astrología",
+            "Empieza por tus datos natales"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Signos zodiacales",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Carta natal",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Tránsitos",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "Datos natales",
+              "width": 89.359375,
+              "height": 44
+            },
+            {
+              "label": "Juntos",
+              "width": 52.359375,
+              "height": 44
+            },
+            {
+              "label": "Vistas previas de informes",
+              "width": 157.21875,
+              "height": 44
+            },
+            {
+              "label": "Explorar primero los signos",
+              "width": 174.109375,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/animal-tarot",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " Terraza animal ",
+            " Deja que un animal se acerque. "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " Deja que un animal se acerque. "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " Sacar carta animal "
+          ],
+          "controls": [
+            {
+              "label": " Sacar carta animal ",
+              "width": 191.28125,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " Deja que un animal se acerque. "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " Sacar carta animal "
+          ],
+          "controls": [
+            {
+              "label": " Sacar carta animal ",
+              "width": 191.28125,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/collection",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " La memoria de tu mazo "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Abrir la recompensa rara de hoy: El Carro",
+              "width": 308.953125,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "Tres de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Cuatro de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Cinco de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Seis de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Siete de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Ocho de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Nueve de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Diez de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Sota de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Caballero de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Reina de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Rey de Bastos",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "As de Copas",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Dos de Copas",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Tres de Copas",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "Tres de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Cuatro de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Cinco de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Seis de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Siete de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Ocho de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Nueve de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Diez de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Sota de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Caballero de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Reina de Oros",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "Rey de Oros",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/personalities",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Encuentra tu tipo",
+            "Cuando tienes estrés, sueles:"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Tomarte espacio",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Mantener la esperanza",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Hacer un plan",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Reaccionar rápido",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Encuentra tu tipo",
+            "Cuando tienes estrés, sueles:"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Tomarte espacio",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Mantener la esperanza",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Hacer un plan",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Reaccionar rápido",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Encuentra tu tipo",
+            "Cuando tienes estrés, sueles:"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Tomarte espacio",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Mantener la esperanza",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Hacer un plan",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "Reaccionar rápido",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/ask",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Dilo antes de convertirlo en una lectura."
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Necesito encontrar la pregunta real.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "¿Puedes acompañarme antes de sacar cartas?",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "No dejo de pensar en alguien.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "Enviar",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Dilo antes de convertirlo en una lectura."
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Necesito encontrar la pregunta real.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "¿Puedes acompañarme antes de sacar cartas?",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "No dejo de pensar en alguien.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "Enviar",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Dilo antes de convertirlo en una lectura."
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Necesito encontrar la pregunta real.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "¿Puedes acompañarme antes de sacar cartas?",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "No dejo de pensar en alguien.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "Enviar",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/readings",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Lecturas",
+            " Tu memoria de Hint "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Todo1",
+              "width": 86.5,
+              "height": 44
+            },
+            {
+              "label": "Tarot0",
+              "width": 88.296875,
+              "height": 44
+            },
+            {
+              "label": "Diario1",
+              "width": 92.609375,
+              "height": 44
+            },
+            {
+              "label": "Astrología",
+              "width": 87.921875,
+              "height": 44
+            },
+            {
+              "label": "Preguntas0",
+              "width": 116.1875,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/profile",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Perfil",
+            "Visitante nocturno"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "Editar perfil",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "Crear otro perfil local",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "Sala oscura",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Sala clara",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Elegir idioma",
+              "width": 83.25,
+              "height": 44
+            },
+            {
+              "label": "Reducir movimiento",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "Sonido y hápticos",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Visitante nocturno"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "Editar perfil",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "Crear otro perfil local",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "Sala oscura",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Sala clara",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Elegir idioma",
+              "width": 83.25,
+              "height": 44
+            },
+            {
+              "label": "Reducir movimiento",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "Sonido y hápticos",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Crear otro perfil local",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "Sala oscura",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Sala clara",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Elegir idioma",
+              "width": 83.25,
+              "height": 44
+            },
+            {
+              "label": "Reducir movimiento",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "Sonido y hápticos",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/rooms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Elige el tipo de sala que necesitas.",
+            "Reflexión",
+            "Tarot"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Buscar salas",
+              "width": 348,
+              "height": 48
+            },
+            {
+              "label": "Todas",
+              "width": 58,
+              "height": 44
+            },
+            {
+              "label": "Reflexión",
+              "width": 74.734375,
+              "height": 44
+            },
+            {
+              "label": "Tarot",
+              "width": 53.890625,
+              "height": 44
+            },
+            {
+              "label": "Relaciones",
+              "width": 83.609375,
+              "height": 44
+            },
+            {
+              "label": "Astrología",
+              "width": 80.375,
+              "height": 44
+            },
+            {
+              "label": "Yo interior",
+              "width": 81.46875,
+              "height": 44
+            },
+            {
+              "label": "Crecimiento",
+              "width": 91.0625,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 12,
+              "height": 12
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Tarot",
+            "Relaciones"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Relaciones",
+            "Astrología",
+            "Yo interior"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/journal",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Diario emocional"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "Tierno",
+              "width": 64.609375,
+              "height": 44
+            },
+            {
+              "label": "Más ligero",
+              "width": 85.21875,
+              "height": 44
+            },
+            {
+              "label": "Pesado",
+              "width": 68.859375,
+              "height": 44
+            },
+            {
+              "label": "Quieto",
+              "width": 65.953125,
+              "height": 44
+            },
+            {
+              "label": "Esperanzado",
+              "width": 100.078125,
+              "height": 44
+            },
+            {
+              "label": "Guardar esta página",
+              "width": 378,
+              "height": 48
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Diario emocional"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "Tierno",
+              "width": 64.609375,
+              "height": 44
+            },
+            {
+              "label": "Más ligero",
+              "width": 85.21875,
+              "height": 44
+            },
+            {
+              "label": "Pesado",
+              "width": 68.859375,
+              "height": 44
+            },
+            {
+              "label": "Quieto",
+              "width": 65.953125,
+              "height": 44
+            },
+            {
+              "label": "Esperanzado",
+              "width": 100.078125,
+              "height": 44
+            },
+            {
+              "label": "Guardar esta página",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "Reintentar",
+              "width": 83.0625,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "Tierno",
+              "width": 64.609375,
+              "height": 44
+            },
+            {
+              "label": "Más ligero",
+              "width": 85.21875,
+              "height": 44
+            },
+            {
+              "label": "Pesado",
+              "width": 68.859375,
+              "height": 44
+            },
+            {
+              "label": "Quieto",
+              "width": 65.953125,
+              "height": 44
+            },
+            {
+              "label": "Esperanzado",
+              "width": 100.078125,
+              "height": 44
+            },
+            {
+              "label": "Guardar esta página",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "Reintentar",
+              "width": 83.0625,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/dream",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Decodificador de sueños"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Decodificador de sueños"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/compatibility",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Shared chart room",
+            "Compara dos cartas con claridad.",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Crear enlace de invitación",
+              "width": 213.65625,
+              "height": 48
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Compara dos cartas con claridad.",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Crear enlace de invitación",
+              "width": 213.65625,
+              "height": 48
+            },
+            {
+              "label": "Nombre",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "Fecha de nacimiento",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "Hora de nacimiento",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "Lugar de nacimiento",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "Buscar lugar",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Nombre",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "Fecha de nacimiento",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "Hora de nacimiento",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "Lugar de nacimiento",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "Buscar lugar",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "Latitud",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "Longitud",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "Zona horaria",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "Desfase horario",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "Guardar datos de nacimiento",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/login",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Inicia sesión o regístrate"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Crear otro perfil local",
+              "width": 386,
+              "height": 44
+            },
+            {
+              "label": "Registrarse",
+              "width": 125.890625,
+              "height": 44
+            },
+            {
+              "label": "Iniciar sesión",
+              "width": 139.375,
+              "height": 44
+            },
+            {
+              "label": "Email",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Teléfono",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "Email",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "Teléfono",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "Generar código de prueba",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "Usar cuenta de prueba",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "Generar código de prueba",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "Usar cuenta de prueba",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/about",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Acerca de Hint"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Acerca de Hint"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Acerca de Hint"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Política de privacidad"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Política de privacidad"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Política de privacidad"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/terms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Términos"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Términos"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Términos"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/disclaimer",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Aviso"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Aviso"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Aviso"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Contacto"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Contacto"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Contacto"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "runtimeErrors": [],
+  "navigationDiagnostics": []
+}

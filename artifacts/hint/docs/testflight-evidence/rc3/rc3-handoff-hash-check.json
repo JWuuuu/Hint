@@ -1,0 +1,25 @@
+{
+  "recorded": "2026-09-10T20:10:15.688693+00:00",
+  "checks": [
+    {
+      "scope": "workspace runtime",
+      "files": 1356,
+      "manifestSha256": "cb5ff5d514bcd31b8b7db88e933511fc46fb95329bc4eac4a18be1d4bbc5b18c",
+      "mismatches": []
+    },
+    {
+      "scope": "frozen runtime",
+      "files": 1356,
+      "manifestSha256": "cb5ff5d514bcd31b8b7db88e933511fc46fb95329bc4eac4a18be1d4bbc5b18c",
+      "mismatches": []
+    },
+    {
+      "scope": "frozen web build",
+      "files": 498,
+      "manifestSha256": "1c3e5a3e61553a6eb743d668be658b955ce99c7e70d0eec2c8e144414674f53c",
+      "mismatches": [],
+      "unlistedFiles": []
+    }
+  ],
+  "allMatched": true
+}

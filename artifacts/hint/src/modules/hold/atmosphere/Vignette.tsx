@@ -3,7 +3,7 @@
  * Makes the black feel like a room with depth, not a screen.
  */
 
-import { motion } from "framer-motion";
+import { motion } from "../../../lib/quietMotion";
 
 export function Vignette() {
   return (

@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ACCENT, GLASS } from "../../hold/atmosphere";
@@ -123,9 +124,7 @@ export function EmotionalWeatherCard({ delay = 0 }: Props) {
         <p
           className="relative mt-5 font-sans text-[10.5px] uppercase tracking-[0.24em] text-center"
           style={{ color: GLASS.faint }}
-        >
-          Tap to set tonight's mood
-        </p>
+        ><LocalizedText text={" Tap to set tonight's mood "} /></p>
       </motion.section>
 
       <MoodSheet
@@ -194,9 +193,7 @@ function MoodSheet({
             <p
               className="font-serif text-[11px] uppercase tracking-[0.32em] text-center mb-8"
               style={{ color: ACCENT.aqua }}
-            >
-              How heavy is tonight?
-            </p>
+            ><LocalizedText text={" How heavy is tonight? "} /></p>
 
             <div className="text-center mb-1">
               <span

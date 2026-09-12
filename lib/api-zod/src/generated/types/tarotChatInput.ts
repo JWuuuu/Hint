@@ -14,6 +14,8 @@ export interface TarotChatInput {
   originalQuestion: string;
   /** The emotional territory the user selected */
   territory: string;
+  /** The context the user shared before drawing cards */
+  emotionalContext?: string;
   spreadType: TarotChatInputSpreadType;
   /** The cards that were drawn for this session */
   cards: TarotCardDraw[];

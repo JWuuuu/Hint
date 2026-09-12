@@ -1,0 +1,7 @@
+{
+  "kind": "Stopped PostgreSQL data directory backup and restore",
+  "samePostgresBuild": true,
+  "allTableDigestsMatch": true,
+  "tables": 11,
+  "migrationLedgerRows": 6
+}

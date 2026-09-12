@@ -1,3 +1,4 @@
+import { LocalizedText } from "../lib/LocalizedText";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -88,9 +89,7 @@ export function BottomNav({ theme, onThemeToggle }: BottomNavProps) {
           }}
           aria-label={t("nav.homeAria")}
         >
-          <HintLogo className="size-8 rounded-[10px] border border-white/25 shadow-[0_10px_24px_rgba(0,0,0,0.2)] lg:size-10 lg:rounded-[13px]" />
-          Hint
-        </Link>
+          <HintLogo className="size-8 rounded-[10px] border border-white/25 shadow-[0_10px_24px_rgba(0,0,0,0.2)] lg:size-10 lg:rounded-[13px]" /><LocalizedText text={" Hint "} /></Link>
 
         <div
           className="hidden min-w-0 rounded-[14px] border p-1 lg:flex lg:w-auto lg:flex-1 lg:justify-center lg:gap-2 lg:rounded-full"

@@ -1,5 +1,6 @@
-﻿import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion } from "../../lib/quietMotion";
+import { useMotionPolicy } from "../../lib/motionPolicy";
 import { Link } from "wouter";
 import { ArrowLeft, MessageCircle, Sparkles } from "lucide-react";
 import { IVORY, GOLD, TEXT_HALO } from "../hold/atmosphere";
@@ -7,6 +8,10 @@ import { ChatMessage } from "../hold/chat/components/ChatMessage";
 import { FollowUpInput, type FollowUpInputHandle } from "../hold/chat/components/FollowUpInput";
 import { useAskHintChat } from "./useAskHintChat";
 import { useLanguage } from "../../lib/i18n";
+import { listAskHistory, subscribeToAskHistory } from "./askHistory";
+import { getAnonId } from "../../lib/identity";
+import { useState } from "react";
+import { roomResumeText } from "../../components/app/roomResumeCopy";
 
 /**
  * Ask Hint — a standalone ambient chat. No cards on the table, no
@@ -15,15 +20,19 @@ import { useLanguage } from "../../lib/i18n";
  */
 export function AskHint() {
   const chat = useAskHintChat();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { reduced } = useMotionPolicy();
   const inputRef = useRef<FollowUpInputHandle | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [history, setHistory] = useState(() => listAskHistory(getAnonId()));
+  useEffect(() => subscribeToAskHistory(() => setHistory(listAskHistory(getAnonId()))), []);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-  }, [chat.messages.length, chat.isThinking]);
+    const hasActivity = chat.messages.length > 0 || chat.isThinking;
+    el.scrollTo({ top: hasActivity ? el.scrollHeight : 0, behavior: reduced || !hasActivity ? "auto" : "smooth" });
+  }, [chat.messages.length, chat.isThinking, reduced]);
 
   const empty = chat.messages.length === 0;
   const starters = [t("ask.starter.1"), t("ask.starter.2"), t("ask.starter.3")];
@@ -32,10 +41,10 @@ export function AskHint() {
     <div className="flex h-full min-h-0 w-full flex-col items-center">
       <div className="flex h-full min-h-0 w-full max-w-[42rem] flex-col">
         {/* Header */}
-        <header className="flex shrink-0 transform-gpu items-center justify-between px-5 pb-3 pt-[calc(var(--hint-safe-top)+1rem)]">
+        <header className="flex shrink-0 items-center justify-between px-5 pb-3 pt-[calc(var(--hint-safe-top)+1rem)]">
           <Link
             href="/app"
-            className="inline-flex h-9 items-center gap-2 rounded-[8px] border px-3 font-sans text-[11px] uppercase tracking-[0.18em] transition-colors duration-700"
+            className="inline-flex min-h-11 items-center gap-2 rounded-[8px] border px-3 font-sans text-[11px] uppercase tracking-[0.18em] transition-colors duration-700"
             style={{ color: IVORY.mute }}
           >
             <ArrowLeft size={14} />
@@ -49,46 +58,45 @@ export function AskHint() {
           </span>
           <span className="w-[60px]" aria-hidden />
         </header>
+        <div className="shrink-0 px-5 text-xs">
+          {chat.canRestoreDraft && <div className="mb-2 rounded-2xl border p-3" style={{ borderColor: "var(--hint-border)", color: "var(--hint-muted)" }}>
+            <p>{roomResumeText(language, "draftReady")}</p>
+            <button type="button" className="min-h-11 py-2 text-left underline" onClick={() => { chat.restoreDraft(); inputRef.current?.focus(); }}>{roomResumeText(language, "restoreDraft")}</button>
+          </div>}
+          {history.length > 0 && <details className="mb-2">
+            <summary className="min-h-11 cursor-pointer py-3">{t("quality.askHistory")}</summary>
+            <div className="max-h-40 overflow-y-auto">
+              {history.map(item => <button key={item.id} type="button" disabled={chat.isThinking || chat.historySaved === false} onClick={() => chat.openConversation(item.id)} className="block min-h-11 w-full break-words py-3 text-left">{item.messages.find(message => message.role === "user")?.content}</button>)}
+            </div>
+          </details>}
+          {chat.messages.length > 0 && <button type="button" disabled={chat.isThinking || chat.historySaved === false} className="min-h-11 underline" onClick={chat.newConversation}>{t("quality.askNew")}</button>}
+          {chat.historySaved === false && <p role="alert">{t("quality.askUnsaved")} <button type="button" className="min-h-11 underline" onClick={chat.retrySaveHistory}>{t("quality.retry")}</button></p>}
+          {chat.historySaved === true && <p role="status">{t("quality.askSaved")}</p>}
+        </div>
 
         {/* Scrollable thread */}
         <div
           ref={scrollRef}
-          className="hint-app-scroll flex-1 space-y-8 px-5 py-6 scroll-smooth"
+          className="hint-app-scroll flex-1 space-y-8 px-5 py-6"
         >
           {empty ? (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.985 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.42, ease: [0.18, 0.78, 0.22, 1] }}
+            <div
               className="mx-auto flex w-full max-w-xl flex-col items-center gap-6 pt-10 text-center select-none"
             >
               <div 
-                className="relative w-full transform-gpu overflow-hidden rounded-[22px] border p-5 sm:p-7"
+                className="w-full rounded-[8px] border p-5 sm:p-7"
                 style={{
-                  background:
-                    "linear-gradient(145deg, color-mix(in srgb, var(--hint-card-surface) 92%, transparent), color-mix(in srgb, var(--hint-surface-soft) 86%, transparent))",
+                  background: "var(--hint-card-surface)",
                   borderColor: "var(--hint-border)",
                   boxShadow: "var(--hint-elevated-shadow)",
-                  contain: "layout paint style",
                 }}
               >
                 <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-8 top-0 h-px"
-                  style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.54), transparent)" }}
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute right-[-3rem] top-[-3rem] h-32 w-32 rounded-full opacity-55 blur-2xl"
-                  style={{ background: "radial-gradient(circle, rgba(206,178,110,0.20), transparent 68%)" }}
-                />
-                <div
-                  className="relative mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-[18px]"
+                  className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-[8px]"
                   style={{
                     color: GOLD.ink,
-                    background: "linear-gradient(145deg, rgba(255,244,223,0.84), rgba(206,178,110,0.14))",
-                    border: "1px solid rgba(206,178,110,0.28)",
-                    boxShadow: "0 14px 30px rgba(93,70,117,0.12), inset 0 1px 0 rgba(255,255,255,0.72)",
+                    background: "rgba(206,178,110,0.10)",
+                    border: "1px solid rgba(206,178,110,0.24)",
                   }}
                 >
                   <MessageCircle size={22} strokeWidth={1.7} />
@@ -112,34 +120,28 @@ export function AskHint() {
                   {t("ask.body")}
                 </p>
                 <div className="mt-6 flex flex-col gap-2 text-left">
-                  {starters.map((starter, index) => (
-                    <motion.button
+                  {starters.map((starter) => (
+                    <button
                       key={starter}
                       type="button"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.28, ease: [0.2, 0.78, 0.2, 1], delay: 0.06 + index * 0.04 }}
-                      whileTap={{ scale: 0.985 }}
                       onClick={() => {
                         inputRef.current?.setValue(starter);
                         inputRef.current?.focus();
                       }}
-                      className="flex min-h-12 transform-gpu items-center justify-between gap-3 rounded-[14px] border px-4 py-3 text-left font-sans text-[14px] font-medium leading-snug transition-[background,border-color,transform] duration-200 hover:-translate-y-0.5"
+                      className="flex min-h-12 items-center justify-between gap-3 rounded-[10px] border px-4 py-3 text-left font-sans text-[14px] font-medium leading-snug transition-colors"
                       style={{
                         color: IVORY.body,
-                        background: "color-mix(in srgb, var(--hint-card-surface-muted) 88%, transparent)",
+                        background: "var(--hint-card-surface-muted)",
                         borderColor: "var(--hint-border)",
                       }}
                     >
                       <span>{starter}</span>
-                      <span className="grid size-7 shrink-0 place-items-center rounded-full" style={{ background: "rgba(206,178,110,0.10)", color: GOLD.ink }}>
-                        <Sparkles size={13} />
-                      </span>
-                    </motion.button>
+                      <Sparkles size={14} style={{ color: GOLD.ink }} />
+                    </button>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ) : (
             chat.messages.map((m) => <ChatMessage key={m.id} message={m} />)
           )}
@@ -175,12 +177,16 @@ export function AskHint() {
               style={{ color: IVORY.mute }}
             >
               {chat.error}
+              <button type="button" className="ml-3 min-h-11 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>
             </p>
           )}
         </div>
 
+        {chat.draftError && <p role="status" className="px-5 text-sm">{t("quality.draftFailed")}</p>}
         {/* Input */}
         <FollowUpInput
+          value={chat.draft}
+          onValueChange={chat.setDraft}
           ref={inputRef}
           onSend={(t) => void chat.sendMessage(t)}
           isThinking={chat.isThinking}

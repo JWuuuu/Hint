@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../lib/LocalizedText";
 import { useState } from "react";
 import type { DailyTransit } from "../../lib/astro/providers/types";
 
@@ -6,9 +7,7 @@ export function SkyDeckEvidenceDrawer({ evidence }: { evidence: DailyTransit[] }
 
   return (
     <section className="skydeck-evidence">
-      <button type="button" className="skydeck-evidence__toggle" onClick={() => setOpen((value) => !value)}>
-        Sky Evidence
-        <span aria-hidden="true">{open ? "Close" : "Open"}</span>
+      <button type="button" className="skydeck-evidence__toggle" onClick={() => setOpen((value) => !value)}><LocalizedText text={" Sky Evidence "} /><span aria-hidden="true">{open ? "Close" : "Open"}</span>
       </button>
       {open && (
         <div className="skydeck-evidence__body">

@@ -1,0 +1,77 @@
+{
+  "scope": "Test-harness predicate and observer checks; no browser launched",
+  "syntaxDiagnostics": 0,
+  "classifierChecks": [
+    {
+      "name": "exact readings native diagnostic during matching navigation",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "exact reading-days native diagnostic during matching navigation",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "outside goto",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "Chromium",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "different host",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "different port",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "different endpoint",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "wrong departing route",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "real TypeError",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "missing stack",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "mismatched message",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "ordinary exception",
+      "expected": false,
+      "actual": false
+    }
+  ],
+  "observedTrueRuntimeEvents": [
+    {
+      "kind": "error",
+      "message": "real runtime failure"
+    },
+    {
+      "kind": "unhandledrejection",
+      "message": "real rejected promise"
+    }
+  ],
+  "preventedRuntimeEvents": 0
+}

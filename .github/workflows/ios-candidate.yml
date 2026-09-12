@@ -1,0 +1,41 @@
+name: Prepare iOS candidate (no upload)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    uses: ./.github/workflows/quality.yml
+    with:
+      mobile: true
+  package:
+    needs: verify
+    runs-on: macos-15
+    env:
+      HINT_ASSOCIATED_DOMAIN: ${{ vars.HINT_ASSOCIATED_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-web-${{ github.sha }}
+          path: artifacts/hint/dist/
+      - name: Require the same verified source
+        run: test "$(cat artifacts/hint/dist/verified-source.txt)" = "$(git rev-parse HEAD)"
+      - run: pnpm --filter @workspace/hint exec cap sync ios
+      - run: pnpm --filter @workspace/hint exec node scripts/check-native-assets.mjs
+      - run: pnpm --filter @workspace/hint exec node scripts/check-ios-release.mjs --build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-ios-simulator-${{ github.sha }}
+          path: artifacts/hint/tmp/ios-derived-data/Build/Products/Debug-iphonesimulator/App.app
+          if-no-files-found: error
+      # A signed device archive, physical-device evidence and TestFlight upload
+      # are separate release steps. This workflow cannot publish.

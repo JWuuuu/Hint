@@ -1,11 +1,13 @@
-﻿import type {
+import { LocalizedText } from "../../lib/LocalizedText";
+import type {
   ButtonHTMLAttributes,
   ComponentType,
   HTMLAttributes,
   ReactNode,
 } from "react";
-import { motion } from "framer-motion";
+import { motion } from "../../lib/quietMotion";
 import { Link } from "wouter";
+import { ArrowLeft, House } from "lucide-react";
 import { useLanguage } from "../../lib/i18n";
 
 /**
@@ -17,10 +19,10 @@ import { useLanguage } from "../../lib/i18n";
 export function AppScreen({ children }: { children: ReactNode }) {
   return (
     <div
-      className="hint-app-scroll h-full w-full flex flex-col items-center pb-[calc(7.5rem+var(--hint-safe-bottom))] scroll-pt-[calc(1.25rem+var(--hint-safe-top))]"
+      className="hint-app-scroll h-full w-full flex flex-col items-center pb-[calc(7.75rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))] scroll-pt-[calc(1.25rem+var(--hint-safe-top))]"
       style={{ background: "transparent" }}
     >
-      <div className="w-full max-w-[var(--hint-app-width)] px-4 pt-[calc(0.95rem+var(--hint-safe-top))] sm:px-5">
+      <div className="w-full max-w-[var(--hint-app-width)] px-3.5 pt-[calc(1rem+var(--hint-safe-top))] sm:px-4">
         {children}
       </div>
     </div>
@@ -30,16 +32,20 @@ export function AppScreen({ children }: { children: ReactNode }) {
 export function BackLink({
   href = "/app",
   label,
+  className = "",
 }: {
   href?: string;
   label?: string;
+  className?: string;
 }) {
   const { t } = useLanguage();
+  const isHome = href === "/app" || href === "/app/";
 
   return (
     <Link
       href={href}
-      className="hint-glass-button hint-tap-sparkle inline-flex min-h-9 items-center gap-1 rounded-full border px-3 py-1 font-sans text-[12px] font-bold transition active:scale-[0.98]"
+      data-space-home={isHome ? "true" : undefined}
+      className={`hint-glass-button hint-tap-sparkle inline-flex min-h-11 min-w-11 max-w-full items-center gap-2 rounded-full border px-3 py-2 font-sans text-[12px] font-bold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${className}`}
       style={{
         color: "var(--hint-text)",
         background: "color-mix(in srgb, var(--hint-surface-soft) 86%, transparent)",
@@ -49,9 +55,28 @@ export function BackLink({
         WebkitBackdropFilter: "blur(20px) saturate(1.25)",
       }}
     >
-      ← {label ?? t("common.home")}
+      {isHome ? <House size={16} aria-hidden="true" className="shrink-0" strokeWidth={1.6} /> : <ArrowLeft size={16} aria-hidden="true" className="shrink-0" />}
+      <span className="min-w-0 break-words text-left"><LocalizedText text={label ?? t("common.home")} /></span>
     </Link>
   );
+}
+
+/** Explicit destinations also work after a direct link or browser refresh. */
+export function SpaceNavigation({
+  backHref,
+  backLabel,
+  backClassName,
+}: {
+  backHref?: string;
+  backLabel?: string;
+  backClassName?: string;
+}) {
+  const { t } = useLanguage();
+  const hasParent = backHref && backHref !== "/app" && backHref !== "/app/";
+  return <div data-space-navigation className="mb-3 flex min-w-0 flex-wrap items-center gap-2">
+    {hasParent && <BackLink href={backHref} label={backLabel ?? t("common.back")} className={backClassName} />}
+    <BackLink href="/app" label={hasParent ? undefined : backLabel} className={hasParent ? undefined : backClassName} />
+  </div>;
 }
 
 export function ScreenHeader({
@@ -59,8 +84,9 @@ export function ScreenHeader({
   title,
   subtitle,
   sigil: Sigil,
-  backHref = "/",
+  backHref = "/app",
   backLabel,
+  backClassName,
   showBack = true,
 }: {
   eyebrow?: string;
@@ -69,30 +95,29 @@ export function ScreenHeader({
   sigil?: ComponentType;
   backHref?: string;
   backLabel?: string;
+  backClassName?: string;
   showBack?: boolean;
 }) {
   return (
     <motion.header
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.36, ease: [0.2, 0.78, 0.2, 1] }}
-      className="mb-5 transform-gpu"
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="mb-5"
     >
       {showBack ? (
-        <div className="mb-3">
-          <BackLink href={backHref} label={backLabel} />
-        </div>
+        <SpaceNavigation backHref={backHref} backLabel={backLabel} backClassName={backClassName} />
       ) : null}
       <div className="flex items-center gap-3">
         {Sigil && (
           <div
-            className="hint-glass-card hint-app-card flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px]"
+            className="hint-glass-card hint-app-card hint-shimmer-border flex h-12 w-12 shrink-0 items-center justify-center rounded-[20px]"
             style={{
               background: "var(--hint-liquid-panel-strong)",
               border: "1px solid var(--hint-liquid-border)",
             }}
           >
-            <div className="h-5 w-5">
+            <div className="w-6 h-6">
               <Sigil />
             </div>
           </div>
@@ -103,26 +128,23 @@ export function ScreenHeader({
               className="mb-1.5 font-sans text-[10px] font-black uppercase tracking-[0.18em]"
               style={{ color: "var(--hint-rose)" }}
             >
-              {eyebrow}
+              <LocalizedText text={eyebrow} />
             </p>
           )}
           <h1
-            className="hint-app-title font-sans text-[25px] font-black leading-[0.98] tracking-normal"
+            className="hint-app-title font-serif text-[29px] font-normal leading-none"
             style={{ color: "var(--hint-text)" }}
           >
-            {title}
+            <LocalizedText text={title} />
           </h1>
         </div>
       </div>
       {subtitle && (
         <p
           className="mt-2.5 max-w-md font-sans text-[13px] leading-relaxed"
-          style={{
-            color: "var(--hint-muted)",
-            textShadow: "0 1px 12px rgba(12, 8, 18, 0.42)",
-          }}
+          style={{ color: "var(--hint-muted)" }}
         >
-          {subtitle}
+          <LocalizedText text={subtitle} />
         </p>
       )}
     </motion.header>
@@ -143,7 +165,7 @@ export function GlassPanel({
 }) {
   return (
     <div
-      className={`hint-glass-card hint-app-card hint-card-lift relative overflow-hidden rounded-[18px] ${padded ? "p-4" : ""} ${className}`}
+      className={`hint-glass-card hint-app-card hint-card-lift relative overflow-hidden rounded-[26px] ${padded ? "p-4" : ""} ${className}`}
       style={{
         background: hero
           ? "var(--hint-surface-strong)"

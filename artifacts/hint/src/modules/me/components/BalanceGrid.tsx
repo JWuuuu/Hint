@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { Coins, Star, FileText, Ticket } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ACCENT, GLASS } from "../../hold/atmosphere";
@@ -37,9 +38,7 @@ export function BalanceGrid() {
               <span className="font-sans text-[11px]" style={{ color: GLASS.faint }}>
                 {t(it.labelKey)}
               </span>
-              <span className="font-sans text-[8px] uppercase tracking-[0.12em]" style={{ color: GLASS.faint }}>
-                Soon
-              </span>
+              <span className="font-sans text-[8px] uppercase tracking-[0.12em]" style={{ color: GLASS.faint }}><LocalizedText text={" Soon "} /></span>
             </div>
           );
         })}

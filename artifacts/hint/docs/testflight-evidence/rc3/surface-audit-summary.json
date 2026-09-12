@@ -1,0 +1,194 @@
+{
+  "testsPassed": 16,
+  "routeVisits": 304,
+  "pageErrors": 0,
+  "trueWindowErrorsOrUnhandledRejections": 0,
+  "nativeNavigationDiagnostics": [
+    {
+      "report": "surface-audits/locale-surface-audit-ja-da-65cef-ble-states-remain-reachable-iphone-se.json",
+      "name": "Fetch API cannot load http",
+      "message": "/127.0.0.1:5196/api/reading-days?anonId=9315050b-9b5d-4562-9ec6-01d09877b167 due to access control checks.",
+      "stack": "Fetch API cannot load http://127.0.0.1:5196/api/reading-days?anonId=9315050b-9b5d-4562-9ec6-01d09877b167 due to access control checks.\n    at KM (http://127.0.0.1:5196/assets/index-wggXop4-.js:864:69653)",
+      "navigation": {
+        "from": "http://127.0.0.1:5196/app/daily?hintPreview=embedded",
+        "to": "/app/astrology?hintPreview=embedded",
+        "startedAt": 134277.212459
+      },
+      "elapsedMs": 5.271833000006154
+    },
+    {
+      "report": "surface-audits/locale-surface-audit-ko-br-76994-ble-states-remain-reachable-iphone-se.json",
+      "name": "Fetch API cannot load http",
+      "message": "/127.0.0.1:5196/api/reading-days?anonId=5db98a84-1f44-4f24-b523-354f1b6f261d due to access control checks.",
+      "stack": "Fetch API cannot load http://127.0.0.1:5196/api/reading-days?anonId=5db98a84-1f44-4f24-b523-354f1b6f261d due to access control checks.\n    at KM (http://127.0.0.1:5196/assets/index-wggXop4-.js:864:69653)",
+      "navigation": {
+        "from": "http://127.0.0.1:5196/app/daily?hintPreview=embedded",
+        "to": "/app/astrology?hintPreview=embedded",
+        "startedAt": 160517.740917
+      },
+      "elapsedMs": 3.3022500000079162
+    }
+  ],
+  "reports": [
+    {
+      "file": "surface-audits/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "es",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "5bdd117a37791f1a79be4547275555019d6e1381ccdc8220e64065e2bdb67009"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-se.json",
+      "language": "es",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "82b999a45f1eab025a703d74e289b3b1186b2aed55fe8c5e8ba70ac9767659e4"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-es-da-86bc1-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "es",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "e369dc6dc89f7f4ff61c37a6d2e375f1c1d99051bd3ef257a50dfaacce6860ca"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-es-da-86bc1-ble-states-remain-reachable-iphone-se.json",
+      "language": "es",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "3b3cdb096e3ac5ac47ef2f1a0128ded9a89cfd1e5d07e572fc5a24cc68947b8f"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "ja",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "cb294abce35a3a6a86eee7fe542c54a700fbfaf99c87758407b4e9d1aebe6cf8"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-se.json",
+      "language": "ja",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "3b0b7bb8738eebc4fd8bee5f9d27466f72cbb3ade495f43915aa95655e1446ee"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ja-da-65cef-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "ja",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "dc1daea656bc06590597e479cda08c464cfd7fa6333c8a79718bbbbc12dd69bc"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ja-da-65cef-ble-states-remain-reachable-iphone-se.json",
+      "language": "ja",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 1,
+      "sha256": "b357e2ab8d19adb148faad038b73fbe27970e5430e91951a8d03c1f841829a98"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ko-br-76994-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "ko",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "fbba13daa0527cd6f7cd803337bb728b20948afbc2d957854978495c591a809d"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ko-br-76994-ble-states-remain-reachable-iphone-se.json",
+      "language": "ko",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 1,
+      "sha256": "a086c371a5fa476a881dc7188b3a04c4bb35775cf959bdafce41ea6104e02cc2"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ko-da-3534c-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "ko",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "aa58ac9d641eef5764430af4020fa43dad791f2a9ff8c1faf09020ef72a2c643"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-ko-da-3534c-ble-states-remain-reachable-iphone-se.json",
+      "language": "ko",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "c9d233245ebd59260c348be776ff40cfd864b53cd3cfa95b30fbd108cda838b6"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-zh-br-a611f-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "zh",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "5c62d29a8e0a7d6d2823e40902e11845b087560893c58d70b5198588a5d9dfd8"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-zh-br-a611f-ble-states-remain-reachable-iphone-se.json",
+      "language": "zh",
+      "theme": "bright",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "bf4ff098cf156358a668644771862fcf9cdc8d667a8386587cb85c6c7ec51dd6"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-zh-da-e82a3-ble-states-remain-reachable-iphone-17-pro-max.json",
+      "language": "zh",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "1592a533d7cd3b79bc5b99d4dbf7921532fb7413dae6c50c3a1953a20d3e8542"
+    },
+    {
+      "file": "surface-audits/locale-surface-audit-zh-da-e82a3-ble-states-remain-reachable-iphone-se.json",
+      "language": "zh",
+      "theme": "dark",
+      "routes": 19,
+      "pageErrors": 0,
+      "runtimeErrors": 0,
+      "navigationDiagnostics": 0,
+      "sha256": "1ab53bf0e1f65a443e5ee430a4c70f8cf83d1dc26ce71e438087f5cba7add196"
+    }
+  ]
+}

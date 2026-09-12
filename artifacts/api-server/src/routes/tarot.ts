@@ -10,6 +10,7 @@ import { generateTarotReading } from "../modules/tarot/ai/tarotReader.js";
 import {
   buildLocalStructuredTarotReading,
   generateStructuredTarotReading,
+  structuredTarotReadingSchema,
 } from "../modules/tarot/ai/structuredTarotReader.js";
 import {
   buildLocalSpreadRecommendation,
@@ -97,7 +98,7 @@ router.post("/tarot/spread-recommendation", async (req, res) => {
     return;
   }
 
-  if (!consumeAiBudget(req, res, { feature: "tarot_spread_recommendation", dailyLimit: 20 })) {
+  if (!await consumeAiBudget(req, res, { feature: "tarot_spread_recommendation", dailyLimit: 20 })) {
     return;
   }
 
@@ -123,7 +124,7 @@ router.post("/tarot/reading", async (req, res) => {
   // Cards are predetermined server-side — before user interaction
   const drawnCards = drawCards(spreadType);
 
-  if (!consumeAiBudget(req, res, { feature: "tarot_reading", dailyLimit: 5 })) {
+  if (!await consumeAiBudget(req, res, { feature: "tarot_reading", dailyLimit: 5 })) {
     return;
   }
 
@@ -209,6 +210,9 @@ const structuredReadingCardInputSchema = z.object({
 });
 
 const structuredReadingInputSchema = z.object({
+  depth: z.enum(["brief", "detailed"]).default("brief"),
+  originalReading: structuredTarotReadingSchema.optional(),
+  additionalContext: z.string().max(600).optional(),
   question: z.string().min(1).max(1000),
   spreadType: z.enum([
     "single",
@@ -258,12 +262,24 @@ router.post("/tarot/structured-reading", async (req, res) => {
     res.status(400).json({ error: "Selected card count does not match the spread." });
     return;
   }
+  if (data.depth === "detailed" && (!data.originalReading ||
+      data.originalReading.cards.length !== data.cards.length ||
+      data.cards.some((card, index) => {
+        const original = data.originalReading!.cards[index]!;
+        return original.card_name !== card.name || original.position !== card.position || original.orientation !== card.orientation;
+      }))) {
+    res.status(400).json({ error: "Detailed reading requires the original reading for the same selected cards." });
+    return;
+  }
 
-  if (!consumeAiBudget(req, res, { feature: "tarot_structured_reading", dailyLimit: 10 })) {
+  if (!await consumeAiBudget(req, res, { feature: "tarot_structured_reading", dailyLimit: 10 })) {
     return;
   }
 
   const drawnCards = rehydrateStructuredCards(data.cards);
+  const controller = new AbortController();
+  const cancel = () => { if (!res.writableEnded) controller.abort(); };
+  res.once("close", cancel);
 
   try {
     const reading = await generateStructuredTarotReading({
@@ -271,16 +287,27 @@ router.post("/tarot/structured-reading", async (req, res) => {
       emotionalContext: data.emotionalContext,
       drawnCards,
       spreadType: data.spreadType,
+      signal: controller.signal,
+      depth: data.depth,
+      originalReading: data.originalReading,
+      additionalContext: data.additionalContext,
     });
-    res.json(reading);
+    if (!res.destroyed) res.json({ ...reading, source: "api" });
   } catch (err) {
+    if (controller.signal.aborted || res.destroyed) return;
     logger.error({ err }, "Failed to generate structured tarot reading");
-    res.json(buildLocalStructuredTarotReading({
+    if (data.depth === "detailed") {
+      res.status(503).json({ error: "Detailed reading is unavailable. Your original reading is unchanged." });
+      return;
+    }
+    res.json({ ...buildLocalStructuredTarotReading({
       question: data.question,
       emotionalContext: data.emotionalContext,
       drawnCards,
       spreadType: data.spreadType,
-    }));
+    }), source: "local" });
+  } finally {
+    res.off("close", cancel);
   }
 });
 
@@ -328,6 +355,9 @@ const chatInputSchema = z.object({
 
 function buildLocalTarotChatReply(data: z.infer<typeof chatInputSchema>): string {
   const focal = data.cards[0];
+  const chinese = /[\u3400-\u9fff]/.test(
+    `${data.followUp} ${data.originalQuestion} ${data.territory}`,
+  );
   const meaning = focal
     ? focal.isReversed
       ? focal.card.reversed
@@ -336,6 +366,19 @@ function buildLocalTarotChatReply(data: z.infer<typeof chatInputSchema>): string
   const cardLine = focal
     ? `${focal.card.name}${focal.isReversed ? " reversed" : ""} points back to this: ${meaning}`
     : "The reading is still pointing you back to your original question.";
+
+  if (chinese) {
+    const chineseCardLine = focal
+      ? `${focal.card.name}${focal.isReversed ? "逆位" : "正位"}提醒你：先把确定的事实和自己的猜测分开，再看哪一步最诚实。`
+      : "这次解读仍然把你带回最初的问题。";
+    return [
+      "实时 AI 解读暂时不可用，先沿着本地牌面继续。",
+      chineseCardLine,
+      `关于你的追问：“${data.followUp}”`,
+      "从你确定知道的事情开始，再说清哪些部分只是期待、猜测或担心。答案通常就在两者之间。",
+      "如果还想深入，可以补充一个具体细节。",
+    ].join("\n\n");
+  }
 
   return [
     "The live AI reader is unavailable right now, so here is the simple thread.",
@@ -355,7 +398,7 @@ router.post("/tarot/chat", async (req, res) => {
 
   const data = parsed.data;
 
-  if (!consumeAiBudget(req, res, { feature: "tarot_chat", dailyLimit: 20 })) {
+  if (!await consumeAiBudget(req, res, { feature: "tarot_chat", dailyLimit: 20 })) {
     return;
   }
 
@@ -379,6 +422,10 @@ router.post("/tarot/chat", async (req, res) => {
   });
 
   let message: string;
+  let source: "api" | "local" = "api";
+  const controller = new AbortController();
+  const cancel = () => { if (!res.writableEnded) controller.abort(); };
+  res.once("close", cancel);
 
   try {
     message = await generateTarotChatReply({
@@ -390,8 +437,10 @@ router.post("/tarot/chat", async (req, res) => {
       initialReading: data.initialReading,
       messages: data.messages,
       followUp: data.followUp,
+      signal: controller.signal,
     });
   } catch (err) {
+    if (controller.signal.aborted || res.destroyed) return;
     logger.error({ err }, "Failed to generate tarot chat reply");
     if (!isQuotaError(err)) {
       res.status(502).json({
@@ -401,10 +450,15 @@ router.post("/tarot/chat", async (req, res) => {
     }
 
     message = buildLocalTarotChatReply(data);
+    source = "local";
+  } finally {
+    res.off("close", cancel);
   }
 
+  if (res.destroyed) return;
   res.json({
     message,
+    source,
     createdAt: new Date().toISOString(),
   });
 });

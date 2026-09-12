@@ -1,0 +1,3 @@
+/* Actual room content stays fully visible while its subtle depth settles.
+   Navigation and body-portaled dialogs are outside this transform. */
+[data-room-content] { transform-origin: 50% 50%; }

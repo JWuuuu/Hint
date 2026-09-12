@@ -1,0 +1,76 @@
+{
+  "source": "http://127.0.0.1:5234",
+  "device": "iPhone 17 Pro Max,440x956",
+  "canvas": {
+    "width": 720,
+    "height": 1280
+  },
+  "fictionalData": true,
+  "liveAPIs": false,
+  "appSourceModified": false,
+  "raw": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/demo-2026-09-11/raw/page@59bf507a13b9a61ecabef616e96488a1.webm",
+  "rawElapsed": 57.215303375000005,
+  "shots": [
+    {
+      "name": "intro",
+      "start": 1.231561833,
+      "end": 4.233343917
+    },
+    {
+      "name": "home",
+      "start": 4.236022417,
+      "end": 9.588047833000001
+    },
+    {
+      "name": "tarot-arrival",
+      "start": 9.914640833,
+      "end": 13.799226292
+    },
+    {
+      "name": "spread",
+      "start": 13.806952042,
+      "end": 16.294612417
+    },
+    {
+      "name": "wash",
+      "start": 18.758771167,
+      "end": 23.603106708
+    },
+    {
+      "name": "pick",
+      "start": 26.926181292000003,
+      "end": 31.325602707999998
+    },
+    {
+      "name": "reveal",
+      "start": 31.326276708,
+      "end": 36.186307375
+    },
+    {
+      "name": "astrology-arrival",
+      "start": 36.683488375,
+      "end": 41.43688975
+    },
+    {
+      "name": "zodiac",
+      "start": 41.79756675,
+      "end": 45.312997042
+    },
+    {
+      "name": "chart",
+      "start": 46.093342750000005,
+      "end": 48.790631417
+    },
+    {
+      "name": "me",
+      "start": 48.950432500000005,
+      "end": 53.895065417
+    },
+    {
+      "name": "outro",
+      "start": 53.895716458,
+      "end": 56.988175375
+    }
+  ],
+  "errors": []
+}

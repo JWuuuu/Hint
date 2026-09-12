@@ -1,0 +1,74 @@
+vite v7.3.3 building client environment for production...
+transforming...
+✓ 2469 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../../tmp/hint-pearl-20260912/candidate/index.html                                1.89 kB │ gzip:   0.67 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/CompatibilityView-e9Xy6kEZ.css     0.35 kB │ gzip:   0.21 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/JournalView-D-kDQIKp.css           2.31 kB │ gzip:   0.69 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-CSFRmj9C.css                 7.40 kB │ gzip:   2.04 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-BuDgHwm3.css                 8.29 kB │ gzip:   2.20 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-CiIarSlK.css                12.28 kB │ gzip:   3.15 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-CWNE9Dd5.css                14.51 kB │ gzip:   3.81 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/astrology-guide-DLMQybM-.css      21.54 kB │ gzip:   4.88 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-DXr6HjE-.css               299.47 kB │ gzip:  51.16 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/chevron-left-CaXjr8RQ.js           0.13 kB │ gzip:   0.14 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/chevron-right-iTyURZIl.js          0.13 kB │ gzip:   0.14 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/bookmark-DR7_ULTQ.js               0.16 kB │ gzip:   0.16 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/search-CUTRy6QZ.js                 0.17 kB │ gzip:   0.17 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/lock-yn2bR4gJ.js                   0.20 kB │ gzip:   0.19 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/moon-ClI_Knq2.js                   0.22 kB │ gzip:   0.20 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/message-circle-BSl1xBRs.js         0.24 kB │ gzip:   0.21 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/wind-BUIscr-t.js                   0.25 kB │ gzip:   0.20 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-DrKHP-bY.js                  0.35 kB │ gzip:   0.25 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-ChyXkCN_.js                  0.35 kB │ gzip:   0.25 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/web-CgP_sRbs.js                    0.37 kB │ gzip:   0.25 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/send-horizontal-huXTEddQ.js        0.38 kB │ gzip:   0.27 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/textDraft-DE4Rvya_.js              0.57 kB │ gzip:   0.34 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-DHMf4ZAz.js                  0.63 kB │ gzip:   0.40 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/web-DPQI_b7i.js                    0.85 kB │ gzip:   0.40 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/web-DkgNkbfl.js                    0.99 kB │ gzip:   0.50 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/askHistory-DKpxe5QV.js             1.02 kB │ gzip:   0.50 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/receiptLayout-DuXRXx4k.js          1.34 kB │ gzip:   0.81 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/localDailyReadings-B4Qgn2cL.js     1.39 kB │ gzip:   0.66 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-DtyU1o6s.js                  1.48 kB │ gzip:   0.76 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/roomResumeCopy-B1bDJCUN.js         1.52 kB │ gzip:   1.03 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/localRitualProgress-CM-Gd6G4.js    2.04 kB │ gzip:   1.01 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/utils-BEGk8VBG.js                  2.11 kB │ gzip:   1.08 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/roomVisuals-DQePGyd4.js            2.44 kB │ gzip:   0.97 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/clearHistory-Cl-j621s.js           2.62 kB │ gzip:   1.12 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/reportStore-C2vHnTle.js            2.68 kB │ gzip:   1.22 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/createHiddenDeck-DUkOmOWN.js       2.92 kB │ gzip:   1.49 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/DreamView-DOVoiv-M.js              3.42 kB │ gzip:   1.16 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/cardCollection-B9iIFaY-.js         3.68 kB │ gzip:   1.52 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/SafeImage-CalQvvH2.js              5.53 kB │ gzip:   2.28 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/sigils-CETHKwog.js                 5.87 kB │ gzip:   1.72 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/shareReceipt-Cp44kISn.js           7.10 kB │ gzip:   3.37 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/JournalView-DMv9tk90.js            8.13 kB │ gzip:   3.10 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-DDrozjwY.js                  8.26 kB │ gzip:   3.36 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-hyQMVK2s.js                  8.32 kB │ gzip:   3.01 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/web-iJgeZwD6.js                    8.77 kB │ gzip:   2.99 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-x2F23fZv.js                 13.64 kB │ gzip:   4.25 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-CSOjTbD0.js                 15.02 kB │ gzip:   5.50 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-CYbyjuBj.js                 15.70 kB │ gzip:   4.25 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-Xnz32Oyt.js                 16.59 kB │ gzip:   5.90 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/CompatibilityView-BbRZ-gw0.js     22.13 kB │ gzip:   7.04 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/ReadingsView-5z_XaFh1.js          22.41 kB │ gzip:   6.50 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/browser-BmB--e8o.js               25.78 kB │ gzip:  10.13 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/relationshipContext-maLeBSSx.js   26.73 kB │ gzip:  10.58 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/AstrologyView-CX0ItHSi.js         31.52 kB │ gzip:   9.14 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/PersonalitiesView-CpclDXLl.js     53.21 kB │ gzip:  24.22 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/DailyPullView-Bfw45fIS.js         63.95 kB │ gzip:  16.16 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-CvYDL02o.js                 67.78 kB │ gzip:  25.72 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/HomeDashboard-DAw1knWR.js         92.98 kB │ gzip:  27.50 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/CardSigil-CWEcwV-c.js             98.02 kB │ gzip:  39.18 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/astrology-guide-xvOkA0hI.js      143.11 kB │ gzip:  58.35 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/localTarotReadings-BIZ-I-uy.js   156.79 kB │ gzip:  54.12 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-Ce4VaaBr.js                209.42 kB │ gzip:  66.27 kB
+../../../../../../tmp/hint-pearl-20260912/candidate/assets/index-D1LECk4f.js                988.69 kB │ gzip: 332.00 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.86s

@@ -1,0 +1,45 @@
+{
+  "rc2RuntimeSha256": "619ab5e3325f2a22505ea648677ad90097fa0e6258268ce5a31a23cf41a66fb0",
+  "rc3RuntimeSha256": "cb5ff5d514bcd31b8b7db88e933511fc46fb95329bc4eac4a18be1d4bbc5b18c",
+  "changedRuntimeFiles": [
+    "artifacts/hint/src/modules/tarot/components/TarotHintReadingChat.tsx"
+  ],
+  "unchangedApiLibraryRuntimeFileCount": 121,
+  "unchangedApiTestFiles": [
+    {
+      "path": "artifacts/api-server/src/lib/requestContext.test.ts",
+      "sha256": "62035068657c6e11ca35ac42663ad63cd14131262911bb85b92ecf07ec26997c"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "sha256": "60d5fb385b6bd286719ec2663881b1e9b7a3f173317dc309992d67207fa0bd49"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/astrology/birthPayload.test.ts",
+      "sha256": "89ff56bd8da0120ea95178525fdec08498d05d4065e03235b7b4b14586b87437"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "sha256": "2b0f60d85d936eeb142e1190ed6f2c4c7523455a2971b95e1064da728631c127"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "sha256": "3b7f43afa0b73f4d25bca63ff50563c6603e71e5466b043c728d9bf2027826ac"
+    },
+    {
+      "path": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "sha256": "2b89c0c72f06fc8203f07e250e7fb949236c6d77043a7ff0f7456b3af1852d75"
+    },
+    {
+      "path": "artifacts/api-server/src/quality/migrations.integration.test.ts",
+      "sha256": "37385efed255603122452ea9a3acc5c26f046de53addfaab4a8d9d90a6fbccb2"
+    },
+    {
+      "path": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "sha256": "d767cc7d092fa94f6ba341e9117fa2a6abd631c5b7d93660d0dac5ba1ac7d2b9"
+    }
+  ],
+  "retainedApiEvidence": "../rc2-backend-tests.log",
+  "retainedApiEvidenceSha256": "423840bceb993c4ec517f616f6e3d1d11ae5805097b490eb06a954c8ae53abe4",
+  "interpretation": "47 isolated PostgreSQL/API tests were run for RC2; their API/library runtime and all 8 API test files are byte-identical in RC3. This is retained evidence, not a new RC3 database run."
+}

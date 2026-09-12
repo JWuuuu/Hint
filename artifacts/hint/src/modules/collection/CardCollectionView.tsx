@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { LocalizedText } from "../../lib/LocalizedText";
+import { useLanguage } from "../../lib/i18n";
+import { wasDailyHistoryCleared } from "../../lib/clearHistory";
+import { getAnonId, getLocalDateString } from "../../lib/identity";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocalDay } from "../../lib/useLocalDay";
 import { Link } from "wouter";
 import { Lock, Sparkles } from "lucide-react";
-import { AppScreen, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
+import { AppScreen, GlassPanel, SectionLabel, SpaceNavigation } from "../../components/app/AppChrome";
 import {
   getOrCreateDailyReceipt,
   openDailyReceipt,
+  getCachedDailyReceipt,
+  subscribeToDailyReceiptFallbacks,
   type DailyReceipt,
 } from "../../lib/dailyReceipts";
 import { ACCENT, GLASS } from "../../modules/hold/atmosphere";
@@ -15,10 +22,11 @@ import {
   saveLocalCollectionUnlock,
 } from "../../shared/tarot/cardCollection";
 import { RareCardUnlock } from "./RareCardUnlock";
+import { getDailyPullById } from "../home/data/dailyPulls";
 
 function formatDate(iso?: string) {
-  if (!iso) return "Locked";
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  if (!iso) return "";
+  return new Date(iso).toLocaleDateString(document.documentElement.lang || "en", { month: "short", day: "numeric" });
 }
 
 function CollectionCardTile({
@@ -45,7 +53,7 @@ function CollectionCardTile({
           ? "color-mix(in srgb, var(--hint-surface-soft) 72%, transparent)"
           : "var(--hint-deck-card-bg)",
         boxShadow: card.unlocked || rewardPending
-          ? "0 14px 34px rgba(75,52,92,0.14), inset 0 1px 0 rgba(255,255,255,0.14)"
+          ? "0 14px 30px color-mix(in srgb, var(--hint-lavender) 10%, transparent), inset 0 1px 0 rgba(255,255,255,0.42)"
           : "inset 0 0 28px color-mix(in srgb, var(--hint-gold, #cba866) 7%, transparent)",
       }}
     >
@@ -97,8 +105,15 @@ function CollectionCardTile({
 }
 
 export function CardCollectionView() {
-  const collection = useCardCollection();
-  const [fallbackReward] = useState(() => getDailyCollectionReward());
+  const { t, language } = useLanguage();
+  const owner = getAnonId();
+  const day = useLocalDay();
+  const activeDay = useRef(day); activeDay.current = day;
+  const [saveError, setSaveError] = useState(false);
+  const rawCollection = useCardCollection();
+  const localizeCard = (card: typeof rawCollection.cards[number]) => ({ ...card, name: getDailyPullById(card.cardId, language).cardName });
+  const collection = { ...rawCollection, cards: rawCollection.cards.map(localizeCard), recent: rawCollection.recent.map(localizeCard) };
+  const fallbackReward = useMemo(() => getDailyCollectionReward(owner), [owner, day]);
   const [dailyReward, setDailyReward] = useState<DailyReceipt | null>(null);
   const rewardCardId = dailyReward?.assignedCardId ?? fallbackReward.cardId;
   const defaultRareCard = collection.cards.find((card) => card.cardId === rewardCardId)
@@ -114,28 +129,39 @@ export function CardCollectionView() {
 
   useEffect(() => {
     let mounted = true;
+    const update = () => {
+      if (!mounted || activeDay.current !== day) return;
+      const receipt = getCachedDailyReceipt("collection-rare-reward", { anonId: owner, dailyKey: day });
+      if (receipt) setDailyReward(receipt);
+    };
+    setDailyReward(getCachedDailyReceipt("collection-rare-reward", { anonId: owner, dailyKey: day }));
+    setSelectedRareCardId(fallbackReward.cardId);
+    setSaveError(false);
+    const unsubscribe = subscribeToDailyReceiptFallbacks(update);
     getOrCreateDailyReceipt("collection-rare-reward", {
-      fallbackAssignedCardId: fallbackReward.cardId,
+      anonId: owner, dailyKey: day, fallbackAssignedCardId: fallbackReward.cardId,
     }).then((receipt) => {
-      if (!mounted) return;
+      if (!mounted || activeDay.current !== day) return;
       setDailyReward(receipt);
       if (receipt.assignedCardId) setSelectedRareCardId(receipt.assignedCardId);
-      if (receipt.openedAt && receipt.assignedCardId) {
-        saveLocalCollectionUnlock(receipt.assignedCardId, "reward");
+      if (receipt.openedAt && receipt.assignedCardId && !wasDailyHistoryCleared(owner, day)) {
+        setSaveError(!saveLocalCollectionUnlock(receipt.assignedCardId, "reward", owner));
       }
     });
     return () => {
       mounted = false;
+      unsubscribe();
     };
-  }, [fallbackReward.cardId]);
+  }, [fallbackReward.cardId, day, owner]);
 
   async function unlockRareCard(cardId: string) {
     if (!dailyReward || cardId !== rewardCardId) return;
     const openedReward = await openDailyReceipt("collection-rare-reward", {
-      fallbackAssignedCardId: cardId,
+      anonId: owner, dailyKey: day, fallbackAssignedCardId: cardId,
     });
+    if (activeDay.current !== day) return;
     setDailyReward(openedReward);
-    saveLocalCollectionUnlock(cardId, "reward");
+    setSaveError(!saveLocalCollectionUnlock(openedReward.assignedCardId ?? cardId, "reward", owner));
   }
 
   function selectRareCard(cardId: string) {
@@ -145,17 +171,13 @@ export function CardCollectionView() {
 
   return (
     <AppScreen>
+      <SpaceNavigation />
+      {saveError && <button type="button" onClick={() => void unlockRareCard(rewardCardId)} className="min-h-11 text-sm">{t("quality.saveRetry")}</button>}
       <header className="mb-7 flex flex-col gap-4">
         <div className="min-w-0">
-          <p className="font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}>
-            Collection
-          </p>
-          <h1 className="mt-2 font-serif text-[30px] leading-none" style={{ color: GLASS.text }}>
-            Your deck memory
-          </h1>
-          <p className="mt-3 max-w-xl font-sans text-[13px] leading-relaxed" style={{ color: GLASS.muted }}>
-            Cards enter the collection when they appear in Daily or the Tarot Room. Tonight's rare reward is assigned once and stays open after you unlock it.
-          </p>
+          <p className="font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Collection "} /></p>
+          <h1 className="mt-2 font-serif text-[30px] leading-none" style={{ color: GLASS.text }}><LocalizedText text={" Your deck memory "} /></h1>
+          <p className="mt-3 max-w-xl font-sans text-[13px] leading-relaxed" style={{ color: GLASS.muted }}><LocalizedText text={" Cards enter the collection when they appear in Daily or the Tarot Room. Tonight's rare reward is assigned once and stays open after you unlock it. "} /></p>
         </div>
         <Link
           href="/app/tarot"
@@ -164,11 +186,9 @@ export function CardCollectionView() {
             color: "var(--hint-text)",
             background: "color-mix(in srgb, var(--hint-surface-soft) 86%, transparent)",
             borderColor: "color-mix(in srgb, var(--hint-gold, #cba866) 34%, var(--hint-border))",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 10px 24px color-mix(in srgb, var(--hint-gold, #cba866) 10%, transparent)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), 0 10px 24px color-mix(in srgb, var(--hint-gold, #cba866) 10%, transparent)",
           }}
-        >
-          Draw in Tarot Room
-        </Link>
+        ><LocalizedText text={" Draw in Tarot Room "} /></Link>
       </header>
 
       <RareCardUnlock
@@ -179,7 +199,7 @@ export function CardCollectionView() {
         rewardOpened={selectedRareCardId === rewardCardId ? rewardOpened : selectedRareCard.unlocked}
         lockedMessage={
           selectedRareCardId === rewardCardId
-            ? `Today's reward stays in your deck once opened. Next reset: ${formatDate(dailyReward?.expiresAt ?? fallbackReward.expiresAt)}.`
+            ? t("quality.collectionReward").replace("{date}", formatDate(dailyReward?.expiresAt ?? fallbackReward.expiresAt))
             : "Unlocked cards can replay the moment. Locked rare cards wait for their own daily reward."
         }
       />
@@ -189,15 +209,14 @@ export function CardCollectionView() {
           <div>
             <div className="flex items-end justify-between gap-4">
               <div>
-                <SectionLabel>Progress</SectionLabel>
+                <SectionLabel><LocalizedText text={"Progress"} /></SectionLabel>
                 <p className="mt-2 font-serif text-[42px] leading-none" style={{ color: GLASS.text }}>
                   {collection.unlocked}
                   <span className="text-[22px]" style={{ color: GLASS.faint }}> / {collection.total}</span>
                 </p>
               </div>
               <span className="hint-status-pill rounded-full border px-3 py-1.5 font-sans text-[11px] font-black uppercase tracking-[0.14em]" style={{ color: ACCENT.aqua }}>
-                {collection.rareUnlocked} rare
-              </span>
+                {collection.rareUnlocked}<LocalizedText text={" rare "} /></span>
             </div>
             <div className="mt-5 h-2 overflow-hidden rounded-full" style={{ background: "color-mix(in srgb, var(--hint-border) 64%, transparent)" }}>
               <div className="h-full rounded-full" style={{ width: `${progress}%`, background: `linear-gradient(90deg, ${ACCENT.gold}, var(--hint-rose, #cba6c4), ${ACCENT.aqua})` }} />
@@ -214,7 +233,7 @@ export function CardCollectionView() {
       </GlassPanel>
 
       <section className="mt-8">
-        <SectionLabel>All cards</SectionLabel>
+        <SectionLabel><LocalizedText text={"All cards"} /></SectionLabel>
         <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
           {collection.cards.map((card) => (
             <article key={card.cardId} className="min-w-0">
@@ -226,10 +245,10 @@ export function CardCollectionView() {
                 aria-label={
                   card.rare
                     ? card.cardId === rewardCardId
-                      ? `Open today's rare reward for ${card.name}`
+                      ? t("quality.openRare").replace("{card}", card.name)
                       : card.unlocked
-                        ? `Replay rare unlock for ${card.name}`
-                        : `${card.name} locked`
+                        ? t("quality.replayRare").replace("{card}", card.name)
+                        : t("quality.lockedCard").replace("{card}", card.name)
                     : card.name
                 }
               >
@@ -246,14 +265,12 @@ export function CardCollectionView() {
                   </span>
                 ) : null}
                 {card.cardId === rewardCardId && !rewardOpened ? (
-                  <span className="absolute bottom-1.5 left-1.5 right-1.5 truncate rounded-full px-1.5 py-1 text-center font-sans text-[8px] font-black uppercase tracking-[0.08em]" style={{ background: "var(--hint-special-action-bg)", color: "var(--hint-special-action-text)" }}>
-                    Today
-                  </span>
+                  <span className="absolute bottom-1.5 left-1.5 right-1.5 truncate rounded-full px-1.5 py-1 text-center font-sans text-[8px] font-black uppercase tracking-[0.08em]" style={{ background: "var(--hint-special-action-bg)", color: "var(--hint-special-action-text)" }}><LocalizedText text={" Today "} /></span>
                 ) : null}
                 </div>
               </button>
               <p className="mt-2 truncate font-serif text-[12px]" style={{ color: card.unlocked ? GLASS.text : GLASS.faint }}>
-                {card.unlocked ? card.name : "Locked"}
+                <LocalizedText text={card.unlocked ? card.name : "Locked"} />
               </p>
               <p className="mt-0.5 truncate font-sans text-[10px] uppercase tracking-[0.12em]" style={{ color: GLASS.faint }}>
                 {formatDate(card.lastSeenAt)}

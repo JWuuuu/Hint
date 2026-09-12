@@ -7,7 +7,7 @@
  * the warmth tints the black without ever lifting overall brightness.
  */
 
-import { motion } from "framer-motion";
+import { motion } from "../../../lib/quietMotion";
 
 interface Pocket {
   x: string;

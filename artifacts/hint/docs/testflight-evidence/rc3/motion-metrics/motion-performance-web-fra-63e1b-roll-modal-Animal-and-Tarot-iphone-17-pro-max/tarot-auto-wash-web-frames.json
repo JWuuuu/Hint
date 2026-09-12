@@ -1,0 +1,20 @@
+{
+  "browserOnly": true,
+  "device": "iphone-17-pro-max",
+  "metrics": {
+    "samples": 93,
+    "p50": 17,
+    "p95": 27,
+    "max": 38,
+    "over100": 0,
+    "longestStallRun": 0
+  },
+  "idleBaseline": {
+    "samples": 95,
+    "p50": 17,
+    "p95": 25,
+    "max": 28,
+    "over100": 0,
+    "longestStallRun": 0
+  }
+}

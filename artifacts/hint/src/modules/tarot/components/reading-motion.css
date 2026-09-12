@@ -1,0 +1,38 @@
+.tarot-reading-motion {
+  --tarot-disclosure-duration: 380ms;
+  --tarot-fade-duration: 220ms;
+  --tarot-settle-ease: cubic-bezier(0.22, 0.8, 0.22, 1);
+}
+.tarot-detail-disclosure {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--tarot-disclosure-duration) var(--tarot-settle-ease);
+  overflow-anchor: none;
+}
+.tarot-detail-disclosure[data-open="true"] { grid-template-rows: 1fr; }
+.tarot-detail-clip { min-height: 0; overflow: hidden; }
+.tarot-detail-content {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--tarot-fade-duration) ease-out, transform var(--tarot-disclosure-duration) var(--tarot-settle-ease);
+}
+.tarot-detail-disclosure[data-open="true"] > .tarot-detail-clip > .tarot-detail-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+.tarot-reading-press { transition: transform 160ms var(--tarot-settle-ease), opacity 160ms ease; }
+.tarot-reading-press:active:not(:disabled) { transform: scale(0.985); }
+.tarot-reading-spinner { animation: tarot-reading-spin 1100ms linear infinite; }
+@keyframes tarot-reading-spin { to { transform: rotate(360deg); } }
+.tarot-reading-motion[data-reduced-motion="true"] {
+  --tarot-disclosure-duration: 1ms;
+  --tarot-fade-duration: 1ms;
+}
+.tarot-reading-motion[data-reduced-motion="true"] .tarot-reading-press { transition-duration: 1ms; transform: none; }
+.tarot-reading-motion[data-reduced-motion="true"] .tarot-detail-content { transform: none; }
+.tarot-reading-motion[data-reduced-motion="true"] .tarot-reading-spinner { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .tarot-reading-motion { --tarot-disclosure-duration: 1ms; --tarot-fade-duration: 1ms; }
+  .tarot-reading-press, .tarot-detail-content { transition-duration: 1ms; transform: none; }
+  .tarot-reading-spinner { animation: none; }
+}

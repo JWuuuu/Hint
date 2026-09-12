@@ -17,19 +17,26 @@ export type WashResult = {
   movementScore: number;
 };
 
-const INNER_RADIUS = 160;
-const OUTER_RADIUS = 500;
-
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
 function clampFieldX(value: number) {
-  return clamp(value, 10, 90);
+  return clamp(value, 16, 84);
 }
 
 function clampFieldY(value: number) {
-  return clamp(value, 11, 89);
+  return clamp(value, 17, 85);
+}
+
+function radialBasis(x: number, y: number, index: number) {
+  const dx = x - 50;
+  const dy = y - 52;
+  const distance = Math.hypot(dx, dy);
+  // The exact center has no angle. Give it a stable outward direction rather
+  // than multiplying every force by a zero tangent and pinning that card.
+  const angle = distance < 0.1 ? index * 2.399963229728653 : Math.atan2(dy, dx);
+  return { x: Math.cos(angle), y: Math.sin(angle), distance };
 }
 
 function isBaseLayer(card: RitualCard, index: number) {
@@ -56,18 +63,22 @@ function getWashRadius(index: number, baseLayer: boolean, laneShift = 0) {
   const innerLane = isInnerWashLane(index);
   const middleLane = isMiddleWashLane(index);
   const shared = innerLane
-    ? 13 + (index % 6) * 2.15
+    ? 9 + (index % 6) * 1.1
     : middleLane
-      ? 25 + (lane % 8) * 2.55
-      : 36 + lane * 1.08;
+      ? 17 + (lane % 8) * 1.0
+      : 26 + lane * 0.35;
   const layerDrift = innerLane
-    ? Math.sin(index * 1.27 + laneShift * 0.42) * 3.8
+    ? Math.sin(index * 1.27 + laneShift * 0.42) * 1
     : middleLane
-      ? Math.sin(index * 1.09 + laneShift * 0.36) * (baseLayer ? 5.2 : 6.1)
+      ? Math.sin(index * 1.09 + laneShift * 0.36) * (baseLayer ? 1.3 : 1.6)
       : baseLayer
-        ? Math.sin(index * 1.27 + laneShift * 0.42) * 6.1
-        : Math.cos(index * 1.19 + laneShift * 0.38) * 6.9;
-  return clamp(shared + layerDrift, innerLane ? 10 : middleLane ? 21 : 32, 56);
+        ? Math.sin(index * 1.27 + laneShift * 0.42) * 1.8
+        : Math.cos(index * 1.19 + laneShift * 0.38) * 2.1;
+  return clamp(
+    shared + layerDrift,
+    innerLane ? 8 : middleLane ? 15 : 24,
+    innerLane ? 17 : middleLane ? 25 : 33,
+  );
 }
 
 function getRingPull(distance: number, desiredDistance: number, strength: number) {
@@ -165,22 +176,37 @@ function getOrbitPoint(
   const homeDistance = Math.hypot(homeDx, homeDy);
   const seedAngle = index * 2.399963229728653;
   const innerLane = isInnerWashLane(index);
-  const angle = homeDistance > 3
-    ? Math.atan2(homeDy, homeDx) + Math.sin(index * 1.37) * 0.52
-    : seedAngle;
+  const angle = seedAngle + (homeDistance > 3 ? Math.atan2(homeDy, homeDx) * 0.18 : 0)
+    + Math.sin(index * 1.37) * 0.24;
   const turnedAngle = angle + orbitTurn + Math.sin(index * 0.73) * 0.16;
   const laneShift = Math.sin(orbitTurn * 4.4 + index * 1.11 + card.rotate * 0.025 + card.x * 0.035 + card.y * 0.022) * 7.2;
   const radius = getWashRadius(index, baseLayer, laneShift) * (baseLayer ? 1.0 : 1.05);
   const xScale = innerLane
-    ? 1.08 + Math.sin(index * 0.43) * 0.08
-    : 1.18 + Math.sin(index * 0.43) * 0.10;
+    ? 0.96 + Math.sin(index * 0.43) * 0.05
+    : 1.04 + Math.sin(index * 0.43) * 0.06;
   const yScale = innerLane
-    ? 0.94 + Math.cos(index * 0.51) * 0.08
-    : 1.04 + Math.cos(index * 0.51) * 0.10;
+    ? 0.9 + Math.cos(index * 0.51) * 0.05
+    : 0.98 + Math.cos(index * 0.51) * 0.06;
   return {
-    x: 50 + Math.cos(turnedAngle) * radius * xScale + Math.sin(seedAngle * 1.7) * 3.1,
-    y: 52 + Math.sin(turnedAngle) * radius * yScale + Math.cos(seedAngle * 1.3) * 2.6,
+    x: 50 + Math.cos(turnedAngle) * radius * xScale + Math.sin(seedAngle * 1.7) * 1.6,
+    y: 52 + Math.sin(turnedAngle) * radius * yScale + Math.cos(seedAngle * 1.3) * 1.4,
   };
+}
+
+// Positions are table percentages. Contact acts locally; friction carries a
+// card a short distance after the hand passes, without an autonomous orbit.
+function coastCard(card: RitualCard): RitualCard {
+  const friction = 0.83;
+  const rest = (v: number) => Math.abs(v) < 0.002 ? 0 : v * friction;
+  let velocityX = rest(card.velocityX ?? 0);
+  let velocityY = rest(card.velocityY ?? 0);
+  const velocityRotate = rest(card.velocityRotate ?? 0);
+  const x = clampFieldX(card.x + velocityX);
+  const y = clampFieldY(card.y + velocityY);
+  if (x !== card.x + velocityX) velocityX *= -0.18;
+  if (y !== card.y + velocityY) velocityY *= -0.18;
+  const rotation = card.rotate + velocityRotate;
+  return { ...card, x, y, rotate: rotation, rotation, velocityX, velocityY, velocityRotate };
 }
 
 export function applyWashForce(
@@ -189,428 +215,92 @@ export function applyWashForce(
 ): WashResult {
   const activeVisualIds: string[] = [];
   let movementScore = 0;
-  const pointerSpeed = Math.min(18, Math.max(1, Math.hypot(pointer.movementX, pointer.movementY)));
-  const forceScale = clamp(pointer.forceScale ?? 1, 0.12, 1);
-  const tableCenterX = pointer.width / 2;
-  const tableCenterY = pointer.height / 2;
-  const spinDirection = pointer.spinDirection;
-
+  const width = Math.max(1, pointer.width);
+  const height = Math.max(1, pointer.height);
+  const handTravel = Math.hypot(pointer.movementX, pointer.movementY);
+  const speed = Math.min(22, handTravel);
+  // Lighter contact for small hand movements. Auto Wash supplies its own force
+  // envelope, while the existing speed cap and friction keep touch controlled.
+  const strength = clamp(pointer.forceScale ?? 1.45, 0, 1.45);
+  const contactRadius = Math.min(width, height) * 0.34;
+  const hand = radialBasis(pointer.x / width * 100, pointer.y / height * 100, 0);
+  const handRadial = (pointer.movementX * hand.x + pointer.movementY * hand.y) / Math.max(1, handTravel);
+  const handTangent = Math.abs(-pointer.movementX * hand.y + pointer.movementY * hand.x) / Math.max(1, handTravel);
+  const handX = hand.x * handRadial - hand.y * handTangent * pointer.spinDirection;
+  const handY = hand.y * handRadial + hand.x * handTangent * pointer.spinDirection;
   const cards = ritualCards.map((card, index) => {
-    const baseLayer = isBaseLayer(card, index);
-    const home = getHome(card);
-    const cardX = (card.x / 100) * pointer.width;
-    const cardY = (card.y / 100) * pointer.height;
-    const distance = Math.hypot(cardX - pointer.x, cardY - pointer.y);
-    const centerDx = cardX - tableCenterX;
-    const centerDy = cardY - tableCenterY;
-    const centerDistance = Math.max(22, Math.hypot(centerDx, centerDy));
-    const tangentX = (-centerDy / centerDistance) * spinDirection;
-    const tangentY = (centerDx / centerDistance) * spinDirection;
-    const tableDx = card.x - 50;
-    const tableDy = card.y - 52;
-    const tableDistance = Math.max(1, Math.hypot(tableDx, tableDy));
-    const tableRadialX = tableDx / tableDistance;
-    const tableRadialY = tableDy / tableDistance;
-    const manualLaneShift = Math.sin(index * 0.91 + card.rotate * 0.038 + card.x * 0.052 + card.y * 0.031 + pointerSpeed * 0.26) * 8.6;
-    const desiredDistance = getWashRadius(index, baseLayer, manualLaneShift);
-    const orbitPoint = getOrbitPoint(card, index, baseLayer);
-    const centerPush = Math.max(0, desiredDistance * 0.72 - tableDistance) * (baseLayer ? 0.018 : 0.023);
-    const ringPull = getRingPull(tableDistance, desiredDistance, baseLayer ? 0.018 : 0.016) + centerPush;
-    const ringPullX = tableRadialX * ringPull;
-    const ringPullY = tableRadialY * ringPull;
-    const rawOrbitPullX = (orbitPoint.x - card.x) * (baseLayer ? 0.010 : 0.013);
-    const rawOrbitPullY = (orbitPoint.y - card.y) * (baseLayer ? 0.010 : 0.013);
-    const orbitPull = projectWithForwardSpin(
-      rawOrbitPullX,
-      rawOrbitPullY,
-      tangentX,
-      tangentY,
-      tableRadialX,
-      tableRadialY,
+    const distance = Math.hypot(card.x / 100 * width - pointer.x, card.y / 100 * height - pointer.y);
+    const contact = Math.exp(-2.5 * (distance / contactRadius) ** 2);
+    const pressure = contact * speed / 18 * strength;
+    const radial = radialBasis(card.x, card.y, index);
+    const tangentX = -radial.y * pointer.spinDirection;
+    const tangentY = radial.x * pointer.spinDirection;
+    // Carry nearby cards with the hand, including inward strokes. A purely
+    // table-centred tangent gradually evacuates the middle into a rigid ring.
+    const sweep = projectWithForwardSpin(
+      handX * 0.7 + tangentX * 0.3,
+      handY * 0.7 + tangentY * 0.3,
+      tangentX, tangentY, radial.x, radial.y,
     );
-    const rawHomePullX = (home.x - card.x) * (baseLayer ? 0.005 : 0.0028);
-    const rawHomePullY = (home.y - card.y) * (baseLayer ? 0.005 : 0.0028);
-    const homePull = projectWithForwardSpin(
-      rawHomePullX,
-      rawHomePullY,
-      tangentX,
-      tangentY,
-      tableRadialX,
-      tableRadialY,
-    );
-    const currentVelocityX = card.velocityX ?? 0;
-    const currentVelocityY = card.velocityY ?? 0;
-    const currentVelocityRotate = card.velocityRotate ?? 0;
-    const carriedVelocity = projectWithForwardSpin(
-      currentVelocityX,
-      currentVelocityY,
-      tangentX,
-      tangentY,
-      tableRadialX,
-      tableRadialY,
-    );
-
-    if (distance > OUTER_RADIUS) {
-      const ambient = (pointerSpeed > 2 ? 0.052 : 0.018) * forceScale;
-      const drift = (baseLayer ? 0.095 : 0.092) * forceScale;
-      const velocityCarry = baseLayer ? 0.22 : 0.24;
-      const rotationCarry = baseLayer ? 0.22 : 0.18;
-      const move = projectWithForwardSpin(
-        carriedVelocity.x * velocityCarry + tangentX * drift + ringPullX * 0.38 + orbitPull.x * 0.78 + homePull.x * 0.46 + (Math.random() - 0.5) * ambient,
-        carriedVelocity.y * velocityCarry + tangentY * drift + ringPullY * 0.38 + orbitPull.y * 0.78 + homePull.y * 0.46 + (Math.random() - 0.5) * ambient,
-        tangentX,
-        tangentY,
-        tableRadialX,
-        tableRadialY,
-      );
-      const nextPoint = rotateAroundWashCenter(
-        card.x + move.x,
-        card.y + move.y,
-        spinDirection * 0.012,
-      );
-      const finalPoint = keepForwardOrbit(
-        card.x,
-        card.y,
-        nextPoint.x,
-        nextPoint.y,
-        spinDirection,
-        0.0038,
-      );
-      return {
-        ...card,
-        x: finalPoint.x,
-        y: finalPoint.y,
-        rotate: clamp(card.rotate + currentVelocityRotate * rotationCarry + spinDirection * (baseLayer ? 0.10 : 0.13), -64, 64),
-        rotation: clamp(card.rotation + currentVelocityRotate * rotationCarry + spinDirection * (baseLayer ? 0.10 : 0.13), -64, 64),
-        velocityX: carriedVelocity.x * (baseLayer ? 0.46 : 0.52) + tangentX * (baseLayer ? 0.014 : 0.018),
-        velocityY: carriedVelocity.y * (baseLayer ? 0.46 : 0.52) + tangentY * (baseLayer ? 0.013 : 0.017),
-        velocityRotate: currentVelocityRotate * (baseLayer ? 0.46 : 0.52) + spinDirection * (baseLayer ? 0.014 : 0.018),
-        lift: (card.lift ?? 0) * 0.62,
-      };
-    }
-
-    const near = distance <= INNER_RADIUS;
-    const falloff = Math.max(0, 1 - Math.max(0, distance - INNER_RADIUS) / (OUTER_RADIUS - INNER_RADIUS));
-    const impact = near ? 1 : falloff;
-    const strength = (baseLayer
-      ? near
-        ? 6.6 + Math.random() * 6.2
-        : 3.8 + Math.random() * 4.4 * falloff
-      : near
-        ? 11.8 + Math.random() * 10.2
-        : 5.9 + Math.random() * 6.4 * falloff) * forceScale;
-    const handBlend = near ? 1 : 0.62 + falloff * 0.28;
-    const layerGrip = baseLayer ? 0.48 : 0.58;
-    const crossMix = Math.sin(index * 1.53 + pointer.x * 0.018 + pointer.y * 0.014 + card.rotate * 0.041);
-    const slipMix = Math.cos(index * 1.87 + pointer.x * 0.024 - pointer.y * 0.018 + card.y * 0.033);
-    const radialMixX = tableRadialX * crossMix * (near ? 9.0 : 5.8 * falloff) * forceScale;
-    const radialMixY = tableRadialY * crossMix * (near ? 7.4 : 4.8 * falloff) * forceScale;
-    const crossTangentX = -tangentY * slipMix * (near ? 4.6 : 3.1 * falloff) * forceScale;
-    const crossTangentY = tangentX * slipMix * (near ? 4.6 : 3.1 * falloff) * forceScale;
-    const dx = tangentX * strength * handBlend * layerGrip + radialMixX + crossTangentX;
-    const dy = tangentY * strength * handBlend * layerGrip + radialMixY + crossTangentY;
-    const rotateDelta = (baseLayer
-      ? near ? 1.35 + Math.random() * 1.9 : 0.62 + Math.random() * 1.2
-      : near ? 2.7 + Math.random() * 3.1 : 1.1 + Math.random() * 2.1) * spinDirection * forceScale;
-
-    activeVisualIds.push(card.visualId);
-    movementScore += Math.max(0.38, impact) * (near ? 1.55 : 0.72) * (baseLayer ? 0.68 : 0.88);
-
-    const forceX = (dx / pointer.width) * 100;
-    const forceY = (dy / pointer.height) * 100;
-    const forceMove = projectWithForwardSpin(
-      forceX,
-      forceY,
-      tangentX,
-      tangentY,
-      tableRadialX,
-      tableRadialY,
-    );
-    const nextVelocityX = carriedVelocity.x * (baseLayer ? 0.34 : 0.36) + forceMove.x * (baseLayer ? 0.23 : 0.32);
-    const nextVelocityY = carriedVelocity.y * (baseLayer ? 0.34 : 0.36) + forceMove.y * (baseLayer ? 0.23 : 0.32);
-    const nextVelocityRotate = currentVelocityRotate * (baseLayer ? 0.28 : 0.28) + rotateDelta * (baseLayer ? 0.12 : 0.15) + pointerSpeed * (baseLayer ? 0.0024 : 0.0037) * spinDirection;
-    const rotation = clamp(card.rotate + rotateDelta + pointerSpeed * (baseLayer ? 0.0015 : 0.0025) * spinDirection, -64, 64);
-    const move = projectWithForwardSpin(
-      forceMove.x + ringPullX * 0.28 + orbitPull.x * 1.18 + homePull.x * 0.52,
-      forceMove.y + ringPullY * 0.28 + orbitPull.y * 1.18 + homePull.y * 0.52,
-      tangentX,
-      tangentY,
-      tableRadialX,
-      tableRadialY,
-    );
-    const nextPoint = rotateAroundWashCenter(
-      card.x + move.x,
-      card.y + move.y,
-      spinDirection * (near ? 0.018 : 0.013),
-    );
-    const finalPoint = keepForwardOrbit(
-      card.x,
-      card.y,
-      nextPoint.x,
-      nextPoint.y,
-      spinDirection,
-      near ? 0.0054 : 0.0038,
-    );
-
-    return {
-      ...card,
-      x: finalPoint.x,
-      y: finalPoint.y,
-      rotate: rotation,
-      rotation,
-      velocityX: nextVelocityX,
-      velocityY: nextVelocityY,
-      velocityRotate: nextVelocityRotate,
-      lift: near ? (baseLayer ? 0.12 : 0.36) : (card.lift ?? 0) * 0.7,
-    };
+    const radialForce = radial.distance < 4 ? 0.12 : 0;
+    const mobility = 0.64 + (index % 7) * 0.035;
+    const velocityX = clamp((card.velocityX ?? 0) * 0.7 + (sweep.x * mobility + radial.x * radialForce) * pressure, -1.05, 1.05);
+    const velocityY = clamp((card.velocityY ?? 0) * 0.7 + (sweep.y * mobility + radial.y * radialForce) * pressure, -1.05, 1.05);
+    const velocityRotate = (card.velocityRotate ?? 0) * 0.65 + pointer.spinDirection * pressure * (0.42 + index % 9 * 0.065);
+    const next = coastCard({ ...card, velocityX, velocityY, velocityRotate });
+    const moved = Math.hypot(next.x - card.x, next.y - card.y);
+    movementScore += moved;
+    if (pressure > 0.025) activeVisualIds.push(card.visualId);
+    return next;
   });
-
   return { cards, activeVisualIds, movementScore };
 }
 
 export function loosenDeckForWash(ritualCards: readonly RitualCard[]): RitualCard[] {
   return ritualCards.map((card, index) => {
-    const baseLayer = isBaseLayer(card, index);
-    const innerLane = isInnerWashLane(index);
-    const home = getHome(card);
-    const orbitPoint = getOrbitPoint(card, index, baseLayer);
-    const angle = Math.atan2(card.y - 52, card.x - 50) + (index % 9 - 4) * 0.04;
-    const distance = Math.hypot(card.x - 50, card.y - 52);
-    const laneShift = Math.sin(index * 1.21 + card.rotate * 0.03 + card.x * 0.04 + card.y * 0.025) * 8.0;
-    const desiredDistance = getWashRadius(index, baseLayer, laneShift);
-    const centerPush = Math.max(0, desiredDistance * 0.66 - distance) * (innerLane ? 0.12 : 0.16);
-    const radial = clamp(
-      (desiredDistance - distance) * (innerLane ? 0.092 : baseLayer ? 0.118 : 0.104) + centerPush,
-      innerLane ? -1.8 : -3.8,
-      innerLane ? 3.9 : 5.7,
-    )
-      + (Math.random() - 0.5) * (innerLane ? 0.9 : baseLayer ? 1.5 : 1.9);
-    const tangent = innerLane
-      ? 1.65 + Math.random() * 1.55
-      : baseLayer
-        ? 2.45 + Math.random() * 2.35
-        : 3.05 + Math.random() * 2.75;
-    const rotation = clamp(card.rotate + (Math.random() - 0.5) * (baseLayer ? 4.5 : 6.5), -58, 58);
-    const orbitBlend = innerLane
-      ? baseLayer
-        ? 0.68
-        : 0.72
-      : baseLayer
-        ? 0.48
-        : 0.54;
-    const spreadX =
-      card.x +
-      (orbitPoint.x - card.x) * orbitBlend +
-      (home.x - card.x) * (baseLayer ? 0.0008 : 0.0004) +
-      Math.cos(angle) * radial -
-      Math.sin(angle) * tangent;
-    const spreadY =
-      card.y +
-      (orbitPoint.y - card.y) * orbitBlend +
-      (home.y - card.y) * (baseLayer ? 0.0008 : 0.0004) +
-      Math.sin(angle) * radial +
-      Math.cos(angle) * tangent;
-    const opened = rotateAroundWashCenter(
-      spreadX,
-      spreadY,
-      0.020 + (index % 5) * 0.002,
-    );
-
-    return {
-      ...card,
-      x: clampFieldX(opened.x),
-      y: clampFieldY(opened.y),
-      rotate: rotation,
-      rotation,
-      velocityX: Math.cos(angle + Math.PI / 2) * (baseLayer ? 0.11 + Math.random() * 0.08 : 0.14 + Math.random() * 0.12),
-      velocityY: Math.sin(angle + Math.PI / 2) * (baseLayer ? 0.11 + Math.random() * 0.08 : 0.14 + Math.random() * 0.12),
-      velocityRotate: (baseLayer ? 0.085 + Math.random() * 0.07 : 0.12 + Math.random() * 0.11),
-      lift: baseLayer ? 0 : 0.16,
-      zIndex: baseLayer ? index : 120 + index,
-    };
+    const angle = index * 2.399963229728653 + Math.sin(index * 1.31) * 0.15;
+    const radius = Math.sqrt((index + 0.65) / Math.max(1, ritualCards.length));
+    const x = clampFieldX(50 + Math.cos(angle) * radius * 33);
+    const y = clampFieldY(52 + Math.sin(angle) * radius * 32);
+    const rotation = Math.sin(index * 2.13 + 0.4) * 52 + Math.cos(index * 0.71) * 14;
+    return { ...card, x, y, homeX: x, homeY: y, rotate: rotation, rotation,
+      velocityX: 0, velocityY: 0, velocityRotate: 0, lift: 0, gatherDelay: 0,
+      washLayer: index % 2 === 0 ? "base" : "top", zIndex: index };
   });
 }
 
 export function applyTableCurrent(
   ritualCards: readonly RitualCard[],
-  tick: number,
-  intensity = 1,
-  spinDirection: 1 | -1 = 1,
+  _elapsed: number,
+  _strength = 1,
+  _spinDirection: 1 | -1 = 1,
 ): RitualCard[] {
-  const pulse = 0.82 + Math.sin(tick / 860) * 0.12 + Math.sin(tick / 1540) * 0.08;
-
-  return ritualCards.map((card, index) => {
-    const baseLayer = isBaseLayer(card, index);
-    const home = getHome(card);
-    const orbitTurn = spinDirection * tick / (baseLayer ? 17000 : 14200);
-    const orbitPoint = getOrbitPoint(card, index, baseLayer, orbitTurn);
-    const dx = card.x - 50;
-    const dy = card.y - 52;
-    const distance = Math.max(8, Math.hypot(dx, dy));
-    const tangentX = (-dy / distance) * spinDirection;
-    const tangentY = (dx / distance) * spinDirection;
-    const radialX = dx / distance;
-    const radialY = dy / distance;
-    const band = baseLayer ? 0.22 + ((index % 9) / 62) : 0.30 + ((index % 11) / 48);
-    const current = intensity * pulse * band;
-    const laneShift = Math.sin(tick / 1680 + index * 1.17 + card.rotate * 0.022) * 10.4;
-    const desiredDistance = getWashRadius(index, baseLayer, laneShift);
-    const centerPush = Math.max(0, desiredDistance * 0.72 - distance) * (baseLayer ? 0.018 : 0.023);
-    const ringPull = getRingPull(distance, desiredDistance, baseLayer ? 0.019 : 0.016) + centerPush;
-    const orbitPull = projectWithForwardSpin(
-      (orbitPoint.x - card.x) * (baseLayer ? 0.005 : 0.0068),
-      (orbitPoint.y - card.y) * (baseLayer ? 0.005 : 0.0068),
-      tangentX,
-      tangentY,
-      radialX,
-      radialY,
-    );
-    const homePull = projectWithForwardSpin(
-      (home.x - card.x) * (baseLayer ? 0.0018 : 0.001),
-      (home.y - card.y) * (baseLayer ? 0.0018 : 0.001),
-      tangentX,
-      tangentY,
-      radialX,
-      radialY,
-    );
-    const velocityCarry = baseLayer ? 0.18 : 0.24;
-    const carriedVelocity = projectWithForwardSpin(
-      card.velocityX ?? 0,
-      card.velocityY ?? 0,
-      tangentX,
-      tangentY,
-      radialX,
-      radialY,
-    );
-    const crossPhase = tick / (baseLayer ? 1850 : 1580) + index * 0.67;
-    const reversePhase = tick / (baseLayer ? 2500 : 2140) - index * 0.49;
-    const laneCross =
-      Math.sin(crossPhase) *
-      Math.cos(reversePhase) *
-      current *
-      (baseLayer ? 0.082 : 0.118);
-    const fold = Math.sin(tick / 2100 + index * 1.43 + card.x * 0.034) * current;
-    const radialLaneMotion = laneCross + fold * (baseLayer ? 0.034 : 0.050);
-    const rotation = clamp(
-      card.rotate
-        + (card.velocityRotate ?? 0) * (baseLayer ? 0.13 : 0.15)
-        + spinDirection * current * (baseLayer ? 0.074 : 0.098)
-        + fold * (baseLayer ? 0.030 : 0.046),
-      -64,
-      64,
-    );
-    const move = projectWithForwardSpin(
-      carriedVelocity.x * velocityCarry
-        + tangentX * current * (baseLayer ? 0.072 : 0.090)
-        + radialX * ringPull * 0.50
-        + orbitPull.x * 1.36
-        + homePull.x * 0.58
-        + radialX * radialLaneMotion,
-      carriedVelocity.y * velocityCarry
-        + tangentY * current * (baseLayer ? 0.068 : 0.084)
-        + radialY * ringPull * 0.50
-        + orbitPull.y * 1.36
-        + homePull.y * 0.58
-        + radialY * radialLaneMotion,
-      tangentX,
-      tangentY,
-      radialX,
-      radialY,
-    );
-    const nextPoint = rotateAroundWashCenter(
-      card.x + move.x,
-      card.y + move.y,
-      spinDirection * current * 0.112,
-    );
-    const finalPoint = keepForwardOrbit(
-      card.x,
-      card.y,
-      nextPoint.x,
-      nextPoint.y,
-      spinDirection,
-      0.0064 + current * 0.014,
-    );
-
-    return {
-      ...card,
-      x: finalPoint.x,
-      y: finalPoint.y,
-      rotate: rotation,
-      rotation,
-      velocityX:
-        carriedVelocity.x * (baseLayer ? 0.34 : 0.39) +
-        tangentX * current * (baseLayer ? 0.010 : 0.013) +
-        radialX * radialLaneMotion * (baseLayer ? 0.006 : 0.008),
-      velocityY:
-        carriedVelocity.y * (baseLayer ? 0.34 : 0.39) +
-        tangentY * current * (baseLayer ? 0.010 : 0.013) +
-        radialY * radialLaneMotion * (baseLayer ? 0.006 : 0.008),
-      velocityRotate: (card.velocityRotate ?? 0) * (baseLayer ? 0.34 : 0.39) + spinDirection * current * (baseLayer ? 0.008 : 0.011),
-      lift: (card.lift ?? 0) * 0.58,
-      zIndex: baseLayer ? index : 120 + index,
-    };
-  });
+  return ritualCards.map(coastCard);
 }
 
 export function applyAutoWashWave(
   ritualCards: readonly RitualCard[],
-  elapsedMs: number,
+  elapsed: number,
+  spinDirection: 1 | -1 = 1,
 ): RitualCard[] {
-  const direction = 1;
-  const phase = elapsedMs / 1000;
-  const wave = 1.58 + Math.sin(phase * Math.PI * 4.2) * 0.56;
+  // An unhurried virtual hand sweeps across the inner and outer cards. Use the
+  // same contact physics as touch, with no lane reversal or angle clamping.
+  const pointAt = (time: number) => {
+    const angle = time / 1800 * Math.PI * 2 * spinDirection;
+    const radius = 78 + Math.sin(time / 1150 * Math.PI * 2) * 29;
+    return { x: 200 + Math.cos(angle) * radius, y: 208 + Math.sin(angle) * radius };
+  };
+  const point = pointAt(elapsed);
+  const previous = pointAt(elapsed - 1000 / 60);
+  return applyWashForce(ritualCards, {
+    ...point, width: 400, height: 400, spinDirection,
+    movementX: point.x - previous.x, movementY: point.y - previous.y,
+    forceScale: Math.min(1, 0.3 + elapsed / 450),
+  }).cards;
+}
 
-  return ritualCards.map((card, index) => {
-    const baseLayer = isBaseLayer(card, index);
-    const home = getHome(card);
-    const orbitPoint = getOrbitPoint(card, index, baseLayer);
-    const dx = card.x - 50;
-    const dy = card.y - 52;
-    const distance = Math.max(4, Math.hypot(dx, dy));
-    const angle = Math.atan2(dy, dx);
-    const tangent = angle + direction * Math.PI / 2;
-    const ringOffset = Math.sin(phase * 9.2 + index * 0.41) * 1.22;
-    const laneShift = Math.sin(phase * 10.4 + index * 1.09 + card.rotate * 0.028) * 13.4;
-    const desiredDistance = getWashRadius(index, baseLayer, laneShift);
-    const ringPull = getRingPull(distance, desiredDistance, baseLayer ? 0.020 : 0.016);
-    const orbitPullX = (orbitPoint.x - card.x) * (baseLayer ? 0.034 : 0.044);
-    const orbitPullY = (orbitPoint.y - card.y) * (baseLayer ? 0.034 : 0.044);
-    const force = (baseLayer ? 1.02 + (index % 7) * 0.046 : 1.38 + (index % 13) * 0.052) * wave;
-    const rotation = clamp(
-      card.rotate
-        + direction * (baseLayer ? 0.82 + (index % 5) * 0.056 : 1.20 + (index % 7) * 0.082)
-        + Math.sin(phase * 7.4 + index) * (baseLayer ? 0.22 : 0.36),
-      -62,
-      62,
-    );
-
-    return {
-      ...card,
-      x: clampFieldX(
-        card.x
-          + Math.cos(tangent) * force
-          + Math.cos(angle) * ringPull * 0.12
-          + orbitPullX
-          + Math.cos(angle + ringOffset) * (baseLayer ? 0.42 : 0.35)
-          + (home.x - card.x) * (baseLayer ? 0.005 : 0.002),
-      ),
-      y: clampFieldY(
-        card.y
-          + Math.sin(tangent) * force
-          + Math.sin(angle) * ringPull * 0.12
-          + orbitPullY
-          + Math.sin(angle + ringOffset) * (baseLayer ? 0.36 : 0.31)
-          + (home.y - card.y) * (baseLayer ? 0.005 : 0.002),
-      ),
-      rotate: rotation,
-      rotation,
-      velocityX: Math.cos(tangent) * force * (baseLayer ? 0.18 : 0.23),
-      velocityY: Math.sin(tangent) * force * (baseLayer ? 0.18 : 0.23),
-      velocityRotate: direction * (baseLayer ? 0.24 + (index % 5) * 0.026 : 0.34 + (index % 5) * 0.036),
-      lift: 0,
-      zIndex: baseLayer ? index : 120 + index,
-    };
-  });
+function nearestCardAngle(from: number, target: number) {
+  return from + ((target - from + 180) % 360 + 360) % 360 - 180;
 }
 
 export function gatherDeckToCenter(ritualCards: readonly RitualCard[]): RitualCard[] {
@@ -622,7 +312,7 @@ export function gatherDeckToCenter(ritualCards: readonly RitualCard[]): RitualCa
     const outsideFirstDelay = 1 - distance / maxDistance;
     const row = index % 13;
     const stack = Math.floor(index / 13);
-    const rotation = (row - 6) * 0.9 + Math.sin(index * 1.47) * 1.4;
+    const rotation = nearestCardAngle(card.rotate, (row - 6) * 0.9 + Math.sin(index * 1.47) * 1.4);
     return {
       ...card,
       x: 50 + (row - 6) * 0.16 + Math.sin(index * 1.31) * 1.05,
@@ -641,11 +331,12 @@ export function gatherDeckToCenter(ritualCards: readonly RitualCard[]): RitualCa
 
 export function squareDeckAtCenter(ritualCards: readonly RitualCard[]): RitualCard[] {
   return ritualCards.map((card, index) => {
-    const rotation = (index % 9 - 4) * 0.24;
+    const depth = ritualCards.length - 1 - index;
+    const rotation = nearestCardAngle(card.rotate, 0);
     return {
       ...card,
-      x: 50 + (index % 11 - 5) * 0.048,
-      y: 52 - (index % 22) * 0.046,
+      x: 50 + Math.min(depth, 8) * 0.035,
+      y: 52 + Math.min(depth, 8) * 0.055,
       rotate: rotation,
       rotation,
       velocityX: 0,

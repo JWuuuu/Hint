@@ -1,0 +1,2 @@
+"NSMicrophoneUsageDescription" = "마이크로 질문을 말할 수 있습니다. 직접 입력할 수도 있습니다.";
+"NSSpeechRecognitionUsageDescription" = "말한 질문을 텍스트로 바꾸어 보내기 전에 확인할 수 있게 합니다.";

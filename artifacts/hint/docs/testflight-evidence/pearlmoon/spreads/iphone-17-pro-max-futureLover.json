@@ -1,0 +1,62 @@
+{
+  "spread": "futureLover",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "stars",
+  "readingId": "tarot-1789080212947-nyakvp",
+  "positions": [
+    "Arrival",
+    "Signal",
+    "Pull",
+    "Approach",
+    "Challenge",
+    "Gain",
+    "Direction"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-37-yagxhoy",
+      "cardId": "five-wands",
+      "name": "Five of Wands",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-63-4469pzb",
+      "cardId": "nine-swords",
+      "name": "Nine of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-31-4m3hssa",
+      "cardId": "four-swords",
+      "name": "Four of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-27-tqdeu69",
+      "cardId": "king-wands",
+      "name": "King of Wands",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-21-xxir8fj",
+      "cardId": "seven-swords",
+      "name": "Seven of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-62-gg4cpxg",
+      "cardId": "ten-swords",
+      "name": "Ten of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-35-1dppqyd",
+      "cardId": "five-pentacles",
+      "name": "Five of Pentacles",
+      "orientation": "reversed"
+    }
+  ],
+  "readingRequests": 1
+}

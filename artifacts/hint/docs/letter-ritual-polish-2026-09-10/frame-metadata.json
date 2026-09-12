@@ -1,0 +1,54 @@
+{
+  "source": "http://127.0.0.1:5219/app/tarot?hintPreview=frame",
+  "environment": "Production WebKit browser screenshot with actual Hint DevicePreview hardware frame; independent fictional context, all APIs503 except fictional local spread recommendation. No user browser or real records accessed.",
+  "screenshots": [
+    {
+      "file": "pro-max-personal-spread.png",
+      "image": {
+        "width": 640,
+        "height": 1080
+      },
+      "device": "iPhone 17 Pro Max",
+      "screen": {
+        "width": 440,
+        "height": 956
+      },
+      "frame": {
+        "x": 100,
+        "y": 79,
+        "width": 440,
+        "height": 956
+      }
+    },
+    {
+      "file": "se-personal-spread-bottom.png",
+      "image": {
+        "width": 640,
+        "height": 820
+      },
+      "device": "iPhone SE",
+      "screen": {
+        "width": 375,
+        "height": 667
+      },
+      "frame": {
+        "x": 132.5,
+        "y": 79,
+        "width": 375,
+        "height": 667
+      },
+      "useSpread": {
+        "top": 580.71875,
+        "bottom": 634.71875,
+        "left": 26,
+        "right": 349,
+        "width": 323,
+        "height": 54,
+        "viewport": {
+          "width": 375,
+          "height": 667
+        }
+      }
+    }
+  ]
+}

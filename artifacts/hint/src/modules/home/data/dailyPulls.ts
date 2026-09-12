@@ -7,6 +7,7 @@
 
 import type { HintLanguage } from "../../../lib/i18n";
 import type { DailyPull } from "../types/home.types";
+import { DAILY_DETAILS, DAILY_NARRATIVE, MINOR_NAMES } from "./dailyCardCopy";
 
 interface MajorEntry {
   id: string;
@@ -282,7 +283,7 @@ const MAJORS_ZH: MajorEntry[] = [
   { id: "16-tower", name: "高塔", whisper: "有些东西正在倒下，是因为它本来就该松动。你不必接住全部。" },
   { id: "17-star", name: "星星", whisper: "希望可以回来。哪怕很小，哪怕只属于今晚。" },
   { id: "18-moon", name: "月亮", whisper: "现在还不是全部清楚的时候。今晚你不欠自己一个结论。" },
-  { id: "19-sun", name: "太阳", whisper: "今天有一个干净的小答案。不要把它变得比实际更复杂。" },
+  { id: "19-sun", name: "太阳", whisper: "今天有一件简单而纯粹的小事。不要把它变得比实际更复杂。" },
   { id: "20-judgement", name: "审判", whisper: "有什么在把你叫回自己身边。先听见，再回应。" },
   { id: "21-world", name: "世界", whisper: "一个章节安静地完成了。继续往前，先为它做个标记。" },
 ];
@@ -322,7 +323,7 @@ const MAJORS_JA: MajorEntry[] = [
   { id: "6-lovers", name: "恋人", whisper: "愛している二つのものの間の選択。どちらも間違いではなく、片方がよりあなたのものです。" },
   { id: "7-chariot", name: "戦車", whisper: "自分の一日を自分で動かして。そうすれば明日の朝、感覚が変わります。" },
   { id: "8-strength", name: "力", whisper: "いちばん頑張ってきた自分の部分に、もっとやさしくして。" },
-  { id: "9-hermit", name: "隠者", whisper: "今夜は大きな部屋ではなく、小さな灯りのための時間です。自分のそばにいて。" },
+  { id: "9-hermit", name: "隠者", whisper: "今夜は騒がしい部屋ではなく、小さな灯りのための時間です。自分のそばにいて。" },
   { id: "10-wheel", name: "運命の輪", whisper: "何かが回り始めています。押す必要はありません。ただ気づいて。" },
   { id: "11-justice", name: "正義", whisper: "誰かに真実を求める前に、まず自分に本当のことを言って。" },
   { id: "12-hanged-man", name: "吊るされた男", whisper: "行き詰まりは、一つの角度だけで見ているから。少し逆さまになってみて。" },
@@ -684,13 +685,30 @@ export function localizeDailyPull(pull: DailyPull, language: HintLanguage): Dail
   const canonical = DAILY_TAROT_BY_ID.get(pull.cardId);
   const merged = canonical ? { ...toDailyPull(canonical), ...pull } : pull;
   const translated = LOCALIZED_MAJOR_DECKS[language].find((entry) => entry.id === pull.cardId);
-
-  return translated
-    ? {
-        ...merged,
-        cardId: translated.id,
-        cardName: translated.name,
-        whisper: translated.whisper,
-      }
-    : merged;
+  if (language === "en") return merged;
+  const details = DAILY_DETAILS[language]!;
+  const narrative = DAILY_NARRATIVE[language];
+  if (translated) return {
+    ...merged, ...details[pull.cardId], cardName: translated.name, whisper: translated.whisper,
+    themeNote: narrative.majorTheme[pull.cardId],
+  };
+  const [rankId, suitId] = pull.cardId.split("-") as [MinorRank, MinorSuit];
+  const rank = details[rankId], suit = details[suitId];
+  if (!rank || !suit) return merged;
+  const names = MINOR_NAMES[language];
+  const rankName = names.ranks[RANKS.indexOf(rankId)], suitName = names.suits[SUITS.indexOf(suitId)];
+  const suitNarrative = narrative.suit[suitId];
+  const whisper = narrative.minorWhisper
+    .replace("{rankWhisper}", narrative.rankWhisper[rankId])
+    .replace("{domain}", suitNarrative.domain)
+    .replace("{suitWhisper}", suitNarrative.whisper);
+  const themeNote = narrative.minorTheme.replace("{domain}", suitNarrative.domain);
+  return {
+    ...merged,
+    cardName: language === "zh" ? `${suitName}${rankName}` : language === "ja" ? `${suitName}の${rankName}` : language === "ko" ? `${suitName} ${rankName}` : `${rankName} de ${suitName}`,
+    keyword: `${rank.keyword} · ${suit.keyword}`,
+    whisper,
+    do: `${rank.do} ${suit.do}`, avoid: `${rank.avoid} ${suit.avoid}`,
+    love: `${rank.love} ${suit.love}`, work: `${rank.work} ${suit.work}`, self: `${rank.self} ${suit.self}`, themeNote,
+  };
 }

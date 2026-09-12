@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
@@ -379,6 +380,7 @@ export function TarotRitualChamber({
           stage={stage}
           ritualCards={deckState.ritualCards}
           washProgress={washProgress}
+          washDirection={washDirection}
           theme={theme}
           onBeginWash={beginWash}
           onWash={wash}
@@ -434,7 +436,7 @@ export function TarotRitualChamber({
         />
       )}
 
-      <span className="sr-only">{deckState.hiddenDeckOrder.length} face-down cards placed.</span>
+      <span className="sr-only">{deckState.hiddenDeckOrder.length}<LocalizedText text={" face-down cards placed."} /></span>
     </motion.div>
   );
 }

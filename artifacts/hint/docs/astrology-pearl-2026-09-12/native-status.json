@@ -1,0 +1,8 @@
+{
+  "xcodeSelect": "/Library/Developer/CommandLineTools",
+  "simulatorSDK": "unavailable",
+  "appleTeamId": "not configured by user",
+  "productionUrls": "not configured by user",
+  "physicalDeviceTested": false,
+  "nativeReleaseReady": false
+}

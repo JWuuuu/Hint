@@ -1,0 +1,35 @@
+{
+  "source": "ee5efe1de0a2fac1d2fec23b32368489fca6ab12d99962d6b00044c0b1e92c4f",
+  "unitComponent": {
+    "passed": 56,
+    "files": 7,
+    "failed": 0
+  },
+  "typescript": {
+    "exitCode": 0
+  },
+  "build": {
+    "exitCode": 0,
+    "log": "build.log"
+  },
+  "baselineRegression": {
+    "previewPort": 5236,
+    "result": "failed as expected",
+    "shuffleDurationMs": 883,
+    "minimumAcceptanceMs": 1700,
+    "trace": "red-e2e/tarot-wash-refinement-the--06169-leaves-cards-before-picking-iphone-17-pro-max/trace.zip"
+  },
+  "productionWebKit": {
+    "startTime": "2026-09-12T05:08:43.418Z",
+    "duration": 217382.253,
+    "expected": 26,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "visualReview": [
+    "Pro Max 440x956, bright setting, normal motion",
+    "SE 375x667, dark setting, normal motion"
+  ],
+  "nativeDevice": "Not verified"
+}

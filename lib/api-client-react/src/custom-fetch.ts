@@ -7,6 +7,7 @@ export type ErrorType<T = unknown> = ApiError<T>;
 export type BodyType<T> = T;
 
 export type AuthTokenGetter = () => Promise<string | null> | string | null;
+export type RequestIdentityContext = { signal: AbortSignal; assertCurrent: () => void };
 
 const NO_BODY_STATUS = new Set([204, 205, 304]);
 const DEFAULT_JSON_ACCEPT = "application/json, application/problem+json";
@@ -17,6 +18,29 @@ const DEFAULT_JSON_ACCEPT = "application/json, application/problem+json";
 
 let _baseUrl: string | null = null;
 let _authTokenGetter: AuthTokenGetter | null = null;
+let _authFailureHandler: ((token: string) => void) | null = null;
+let _requestIdentityGetter: (() => RequestIdentityContext) | null = null;
+
+export function setRequestIdentityGetter(getter: (() => RequestIdentityContext) | null): void {
+  _requestIdentityGetter = getter;
+}
+
+/** AbortSignal.any is not available in every supported WebView. */
+export function combineRequestSignals(...sources: Array<AbortSignal | null | undefined>) {
+  const signals = sources.filter((source): source is AbortSignal => Boolean(source));
+  if (signals.length < 2) return { signal: signals[0], dispose: () => undefined };
+  const controller = new AbortController();
+  const listeners = signals.map(signal => {
+    const abort = () => controller.abort(signal.reason);
+    if (signal.aborted) abort(); else signal.addEventListener("abort", abort, { once: true });
+    return () => signal.removeEventListener("abort", abort);
+  });
+  return { signal: controller.signal, dispose: () => { for (const remove of listeners) remove(); } };
+}
+
+export function setAuthFailureHandler(handler: ((token: string) => void) | null): void {
+  _authFailureHandler = handler;
+}
 
 /**
  * Set a base URL that is prepended to every relative request URL
@@ -76,6 +100,17 @@ function resolveUrl(input: RequestInfo | URL): string {
   if (typeof input === "string") return input;
   if (isUrl(input)) return input.toString();
   return input.url;
+}
+
+function assertAuthDestination(input: RequestInfo | URL): void {
+  const location = typeof window === "undefined" ? "http://localhost/" : window.location.href;
+  const base = new URL(_baseUrl || "/", location);
+  const target = new URL(resolveUrl(input), location);
+  const prefix = `${base.pathname.replace(/\/$/, "")}/api/`;
+  if (target.origin !== base.origin || target.protocol !== base.protocol || target.host !== base.host ||
+      target.username || target.password || !target.pathname.startsWith(prefix)) {
+    throw new TypeError("Invalid authenticated API destination");
+  }
 }
 
 function mergeHeaders(...sources: Array<HeadersInit | undefined>): Headers {
@@ -328,44 +363,66 @@ export async function customFetch<T = unknown>(
 ): Promise<T> {
   input = applyBaseUrl(input);
   const { responseType = "auto", headers: headersInit, ...init } = options;
+  const callerSignal = init.signal ?? (isRequest(input) ? input.signal : undefined);
+  if (callerSignal?.aborted) throw callerSignal.reason ?? new DOMException("Request cancelled", "AbortError");
+  if (_authTokenGetter) assertAuthDestination(input);
+  const identity = _requestIdentityGetter?.();
+  const { signal, dispose } = combineRequestSignals(callerSignal, identity?.signal);
+  const checkCancelled = () => {
+    if (signal?.aborted) throw signal.reason ?? new DOMException("Request cancelled", "AbortError");
+    identity?.assertCurrent();
+  };
+  try {
+    checkCancelled();
 
-  const method = resolveMethod(input, init.method);
+    const method = resolveMethod(input, init.method);
 
-  if (init.body != null && (method === "GET" || method === "HEAD")) {
-    throw new TypeError(`customFetch: ${method} requests cannot have a body.`);
-  }
-
-  const headers = mergeHeaders(isRequest(input) ? input.headers : undefined, headersInit);
-
-  if (
-    typeof init.body === "string" &&
-    !headers.has("content-type") &&
-    looksLikeJson(init.body)
-  ) {
-    headers.set("content-type", "application/json");
-  }
-
-  if (responseType === "json" && !headers.has("accept")) {
-    headers.set("accept", DEFAULT_JSON_ACCEPT);
-  }
-
-  // Attach bearer token when an auth getter is configured and no
-  // Authorization header has been explicitly provided.
-  if (_authTokenGetter && !headers.has("authorization")) {
-    const token = await _authTokenGetter();
-    if (token) {
-      headers.set("authorization", `Bearer ${token}`);
+    if (init.body != null && (method === "GET" || method === "HEAD")) {
+      throw new TypeError(`customFetch: ${method} requests cannot have a body.`);
     }
-  }
 
-  const requestInfo = { method, url: resolveUrl(input) };
+    const headers = mergeHeaders(isRequest(input) ? input.headers : undefined, headersInit);
 
-  const response = await fetch(input, { ...init, method, headers });
+    if (
+      typeof init.body === "string" &&
+      !headers.has("content-type") &&
+      looksLikeJson(init.body)
+    ) {
+      headers.set("content-type", "application/json");
+    }
 
-  if (!response.ok) {
-    const errorData = await parseErrorBody(response, method);
-    throw new ApiError(response, errorData, requestInfo);
-  }
+    if (responseType === "json" && !headers.has("accept")) {
+      headers.set("accept", DEFAULT_JSON_ACCEPT);
+    }
 
-  return (await parseSuccessBody(response, responseType, requestInfo)) as T;
+    // The session getter is the sole credential authority for this client.
+    if (_authTokenGetter) {
+      headers.delete("authorization");
+      const token = await _authTokenGetter();
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+    }
+
+    const requestInfo = { method, url: resolveUrl(input) };
+
+    checkCancelled();
+    const response = await fetch(input, { ...init, signal, method, headers, redirect: "error", credentials: "omit" });
+    checkCancelled();
+
+    if (response.status === 401) {
+      const bearer = headers.get("authorization");
+      if (bearer?.startsWith("Bearer ")) _authFailureHandler?.(bearer.slice(7));
+    }
+
+    if (!response.ok) {
+      const errorData = await parseErrorBody(response, method);
+      checkCancelled();
+      throw new ApiError(response, errorData, requestInfo);
+    }
+
+    const result = await parseSuccessBody(response, responseType, requestInfo);
+    checkCancelled();
+    return result as T;
+  } finally { dispose(); }
 }

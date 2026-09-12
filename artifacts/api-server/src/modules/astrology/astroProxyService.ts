@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import { compareChartPositions, SYNASTRY_POLICY } from "./synastryGeometry.js";
 import { getOpenAIClient, openaiApiKey, openaiModel } from "../../lib/openaiConfig.js";
 import { calculateBirthChart, getAstrologyStatus, type BirthProfileInput, type NormalizedBirthChart } from "./astrologyApiClient.js";
 
@@ -115,7 +116,7 @@ function parsedTime(value?: string) {
 }
 
 function readNumber(value: unknown): number | undefined {
-  const numeric = typeof value === "number" ? value : typeof value === "string" ? Number(value) : NaN;
+  const numeric = typeof value === "number" ? value : typeof value === "string" && value.trim() ? Number(value) : NaN;
   return Number.isFinite(numeric) ? numeric : undefined;
 }
 
@@ -252,7 +253,7 @@ function dominantCount<T extends string>(counts: Record<T, number>) {
 
 function normalizeNatalResponse(chart: NormalizedBirthChart, profile: AstroProfile, mode: "live" | "fallback" | "partial", cached: boolean) {
   const profileHash = hash(profile);
-  const source = mode === "partial" || chart.source === "api" ? "astrologyapi" : "fallback";
+  const source = chart.source === "api" ? "astrologyapi" : "fallback";
   const partial = mode === "partial";
   const elementCounts = { fire: 0, earth: 0, air: 0, water: 0 };
   const modalityCounts = { cardinal: 0, fixed: 0, mutable: 0 };
@@ -267,6 +268,7 @@ function normalizeNatalResponse(chart: NormalizedBirthChart, profile: AstroProfi
     cached,
     fetchedAt: chart.calculatedAt,
     profileHash,
+    calculation: chart.source === "api" ? chart.calculation : undefined,
     validation: {
       partial,
       missing: [] as string[],
@@ -351,68 +353,8 @@ export async function getNatalProxy(profile: AstroProfile) {
   const input = toProviderInput(profile);
   const chart = await calculateBirthChart(input, { force: false });
   const response = normalizeNatalResponse(chart, profile, chart.source === "api" ? "live" : "fallback", false);
-  cacheSet(natalCache, key, response, 30 * DAY);
+  if (response.mode === "live") cacheSet(natalCache, key, response, 30 * DAY);
   return response;
-}
-
-function sampleTransit(date: string) {
-  return {
-    id: `sample-transit-${date}`,
-    title: "Venus square Saturn",
-    transitPlanet: "Venus",
-    natalPlanet: "Saturn",
-    aspect: "square",
-    orb: 1.2,
-    area: ["Love", "Self-worth"],
-    theme: ["boundaries", "distance", "commitment"],
-    startDate: date,
-    peakDate: date,
-    endDate: date,
-    action: "Tell the truth without asking for a reward.",
-    why: "Venus themes touch Saturn pressure, so closeness may feel serious today.",
-    evidence: ["Transit Venus square natal Saturn", "Orb: 1.2", `Peak: ${date}`],
-    strength: 96,
-  };
-}
-
-function sampleTransits(date: string) {
-  return [
-    sampleTransit(date),
-    {
-      id: `sample-moon-trine-venus-${date}`,
-      title: "Moon trine Venus",
-      transitPlanet: "Moon",
-      natalPlanet: "Venus",
-      aspect: "trine",
-      orb: 2.4,
-      area: ["Love", "Mood"],
-      theme: ["ease", "softness"],
-      startDate: date,
-      peakDate: date,
-      endDate: date,
-      action: "Let the simple kind thing count.",
-      why: "Moon and Venus support emotional warmth without forcing a big story.",
-      evidence: ["Transit Moon trine natal Venus", "Orb: 2.4", `Peak: ${date}`],
-      strength: 78,
-    },
-    {
-      id: `sample-mercury-sextile-mars-${date}`,
-      title: "Mercury sextile Mars",
-      transitPlanet: "Mercury",
-      natalPlanet: "Mars",
-      aspect: "sextile",
-      orb: 3.1,
-      area: ["Work", "Energy"],
-      theme: ["clarity", "directness"],
-      startDate: date,
-      peakDate: date,
-      endDate: date,
-      action: "Say the next step plainly.",
-      why: "Mercury helps Mars turn pressure into a usable action.",
-      evidence: ["Transit Mercury sextile natal Mars", "Orb: 3.1", `Peak: ${date}`],
-      strength: 72,
-    },
-  ];
 }
 
 function rankTransit(row: Record<string, unknown>) {
@@ -439,28 +381,28 @@ function normalizeTransitRows(payload: unknown, date: string) {
       const natalPlanet = String(row.natalPlanet ?? row.natal_planet ?? row.natal ?? "Natal point");
       const aspect = normalizedAspect(row.aspect ?? row.type ?? row.aspect_type ?? "aspect");
       const orb = readNumber(row.orb);
-      const peakDate = String(row.peakDate ?? row.peak_date ?? row.exact_time ?? row.date ?? root.transit_date ?? date);
+      const peakDate = readString(row.peakDate ?? row.peak_date ?? row.exact_time);
       return {
         id: String(row.id ?? row.transit_id ?? hash(row)),
         title: String(row.title ?? row.name ?? `${transitPlanet} ${aspect.replace(/_/g, " ")} ${natalPlanet}`).trim(),
         transitPlanet,
         natalPlanet,
         aspect,
-        orb: orb ?? 0,
+        orb,
         area: ["Self", "Energy"],
         theme: ["timing", "attention"],
-        startDate: String(row.startDate ?? row.start_date ?? row.start_time ?? row.date ?? date),
+        startDate: readString(row.startDate ?? row.start_date ?? row.start_time),
         peakDate,
-        endDate: String(row.endDate ?? row.end_date ?? row.end_time ?? row.date ?? date),
+        endDate: readString(row.endDate ?? row.end_date ?? row.end_time),
         action: "Name the pattern before you act on it.",
         why: "This transit is ranked from aspect type, timing, and personal planet involvement.",
-        evidence: [orb !== undefined ? `Orb: ${orb}` : `Exact: ${peakDate}`, `Peak: ${peakDate}`],
+        evidence: [...(orb !== undefined ? [`Orb: ${orb}`] : []), ...(peakDate ? [`Exact: ${peakDate}`] : [])],
         strength: rankTransit(row),
       };
     })
     .sort((a, b) => b.strength - a.strength);
 
-  return normalized.length ? normalized.slice(0, 6) : sampleTransits(date);
+  return normalized.slice(0, 6);
 }
 
 async function astrologyProviderPost(endpoint: string, payload: Record<string, unknown>) {
@@ -610,61 +552,44 @@ function astrologyPayload(profile: AstroProfile) {
   };
 }
 
-function synastryPayload(userProfile: AstroProfile, partnerProfile: AstroProfile) {
-  const userBirthday = parsedDate(userProfile.birthDate);
-  const partnerBirthday = parsedDate(partnerProfile.birthDate);
-  if (!userBirthday || !partnerBirthday) return null;
-  if (
-    userProfile.latitude === undefined ||
-    userProfile.longitude === undefined ||
-    userProfile.timezoneOffset === undefined ||
-    partnerProfile.latitude === undefined ||
-    partnerProfile.longitude === undefined ||
-    partnerProfile.timezoneOffset === undefined
-  ) {
-    return null;
-  }
-  const userTime = parsedTime(userProfile.birthTime);
-  const partnerTime = parsedTime(partnerProfile.birthTime);
-  return {
-    p_day: userBirthday.day,
-    p_month: userBirthday.month,
-    p_year: userBirthday.year,
-    p_hour: userTime.hour,
-    p_min: userTime.min,
-    p_lat: userProfile.latitude,
-    p_lon: userProfile.longitude,
-    p_tzone: userProfile.timezoneOffset,
-    s_day: partnerBirthday.day,
-    s_month: partnerBirthday.month,
-    s_year: partnerBirthday.year,
-    s_hour: partnerTime.hour,
-    s_min: partnerTime.min,
-    s_lat: partnerProfile.latitude,
-    s_lon: partnerProfile.longitude,
-    s_tzone: partnerProfile.timezoneOffset,
-  };
-}
+type TransitProxyResponse = {
+  source: string;
+  mode: "live" | "fallback";
+  cached: boolean;
+  fetchedAt: string;
+  date: string;
+  strongestTransit: ReturnType<typeof normalizeTransitRows>[number] | undefined;
+  transits: ReturnType<typeof normalizeTransitRows>;
+  validation: { partial: boolean; missing: string[]; message: string | null };
+};
 
-export async function getTransitsProxy(profile: AstroProfile, date: string, range: "daily" | "weekly") {
+export async function getTransitsProxy(profile: AstroProfile, date: string, range: "daily" | "weekly"): Promise<TransitProxyResponse> {
   const key = hash({ kind: "transits", profile, date, range });
-  const cached = cacheGet<Record<string, unknown>>(transitCache, key);
+  const cached = cacheGet<TransitProxyResponse>(transitCache, key);
   if (cached) return { ...cached, cached: true };
 
   const missing = fullChartValidation(profile);
   const payload = astrologyPayload(profile);
-  let transits = sampleTransits(date);
+  let transits: ReturnType<typeof normalizeTransitRows> = [];
+  let calculationDate = date;
   let mode: "live" | "fallback" = "fallback";
   let source = "fallback";
 
   if (!missing.length && providerConfigured() && payload) {
     try {
       const endpoint = range === "weekly" ? "natal_transits/weekly" : "natal_transits/daily";
-      transits = normalizeTransitRows(await astrologyProviderPost(endpoint, payload), date);
+      const result = await astrologyProviderPost(endpoint, payload);
+      const root = result && typeof result === "object" ? result as Record<string, unknown> : {};
+      const returnedDate = readString(root.transit_date ?? root.date);
+      // This provider endpoint calculates its current day, not an arbitrary requested date.
+      // Keep its actual date and timing; never relabel it with the user's selected date.
+      if (!returnedDate) throw new Error("Missing transit date");
+      calculationDate = returnedDate;
+      transits = normalizeTransitRows(result, date);
       mode = "live";
       source = "astrologyapi";
     } catch {
-      transits = sampleTransits(date);
+      transits = [];
     }
   }
 
@@ -673,142 +598,62 @@ export async function getTransitsProxy(profile: AstroProfile, date: string, rang
     mode,
     cached: false,
     fetchedAt: new Date().toISOString(),
-    date,
+    date: calculationDate,
     strongestTransit: transits[0],
     transits,
     validation: missing.length
       ? { partial: true, missing, message: PARTIAL_CHART_MESSAGE }
       : { partial: false, missing: [], message: null },
   };
-  cacheSet(transitCache, key, response, 12 * 60 * 60 * 1000);
+  if (mode === "live") cacheSet(transitCache, key, response, 12 * 60 * 60 * 1000);
   return response;
 }
 
-function tier(index: number) {
-  return ["Soft", "Magnetic", "Grounding", "Challenging", "Intense", "Unclear"][index % 6]!;
-}
+type SynastryProxyResponse = {
+  schemaVersion: 2;
+  source: "astrologyapi" | "fallback";
+  mode: "live" | "fallback";
+  cached: boolean;
+  fetchedAt: string;
+  aspects: ReturnType<typeof compareChartPositions>;
+  summary: Record<"comfort" | "tension" | "communication" | "attraction" | "growth", string>;
+  plainEnglish: Record<"main" | "comfort" | "tension" | "advice", string>;
+  calculation?: { method: string; aspectSource: "hint-geometry"; zodiacSystem: "tropical"; orbs: typeof SYNASTRY_POLICY.orbs };
+  natal?: { user: Awaited<ReturnType<typeof getNatalProxy>>; partner: Awaited<ReturnType<typeof getNatalProxy>> };
+};
 
-function readSynastryRows(payload: unknown) {
-  const root = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : {};
-  const synastry = root.synastry && typeof root.synastry === "object" ? (root.synastry as Record<string, unknown>) : null;
-  const data = root.data && typeof root.data === "object" ? (root.data as Record<string, unknown>) : null;
-  const response = root.response && typeof root.response === "object" ? (root.response as Record<string, unknown>) : null;
-  const candidates = [
-    root.aspects,
-    root.synastry_aspects,
-    synastry?.aspects,
-    data?.aspects,
-    response?.aspects,
-    Array.isArray(root.synastry) ? root.synastry : undefined,
-    Array.isArray(root.data) ? root.data : undefined,
-    Array.isArray(root.response) ? root.response : undefined,
-    Array.isArray(payload) ? payload : undefined,
-  ];
-  return candidates.find(Array.isArray) ?? [];
-}
-
-function normalizeSynastryAspects(payload: unknown, seed: number) {
-  const aspects = readSynastryRows(payload)
-    .filter((row): row is Record<string, unknown> => Boolean(row && typeof row === "object"))
-    .map((row, index) => {
-      const from = readString(row.from ?? row.first ?? row.p_planet ?? row.planet1 ?? row.aspecting_planet ?? row.primary_planet) ?? "Planet";
-      const to = readString(row.to ?? row.second ?? row.s_planet ?? row.planet2 ?? row.aspected_planet ?? row.secondary_planet) ?? "Point";
-      const type = normalizedAspect(row.type ?? row.aspect ?? row.aspect_name ?? row.aspect_type).replace(/_/g, " ") || "aspect";
-      const orb = readNumber(row.orb ?? row.orb_value ?? row.diff);
-      const majorAspect = /conjunction|opposition|square|trine|sextile/i.test(type) ? 10 : 0;
-      const personalPlanet = /sun|moon|venus|mars|mercury|ascendant/i.test(`${from} ${to}`) ? 8 : 0;
-      const strength = Math.max(42, Math.min(98, 88 + majorAspect + personalPlanet - (orb ?? index + 2) * 7));
-      return {
-        from,
-        to,
-        type,
-        tier: tier(seed + index),
-        meaning: `${from} ${type} ${to}${orb !== undefined ? ` within ${orb} degrees` : ""}.`,
-        strength,
-      };
-    })
-    .sort((a, b) => b.strength - a.strength)
-    .slice(0, 6);
-
-  return aspects.length
-    ? aspects
-    : [
-        { from: "Moon", to: "Venus", type: "trine", tier: tier(seed + 1), meaning: "Comfort grows when affection has room to stay simple.", strength: 88 },
-        { from: "Mars", to: "Saturn", type: "square", tier: tier(seed + 4), meaning: "Pressure becomes useful when expectations are named early.", strength: 78 },
-        { from: "Mercury", to: "Moon", type: "sextile", tier: tier(seed + 2), meaning: "Conversation helps feelings become less abstract.", strength: 72 },
-      ];
-}
-
-export async function getSynastryProxy(userProfile: AstroProfile, partnerProfile: AstroProfile) {
-  const key = hash({ kind: "synastry", userProfile, partnerProfile });
-  const cached = cacheGet<Record<string, unknown>>(synastryCache, key);
-  if (cached) return { ...cached, cached: true };
-  const seed = Number.parseInt(hash({ userProfile, partnerProfile }).slice(0, 8), 16);
-  let mode: "live" | "fallback" = "fallback";
-  let source = "fallback";
-
-  if (providerConfigured() && !fullChartValidation(userProfile).length && !fullChartValidation(partnerProfile).length) {
-    try {
-      const payload = synastryPayload(userProfile, partnerProfile);
-      if (payload) {
-        const providerPayload = await astrologyProviderPost("synastry_horoscope", payload);
-        const aspects = normalizeSynastryAspects(providerPayload, seed);
-        const response = {
-          source: "astrologyapi",
-          mode: "live",
-          cached: false,
-          fetchedAt: new Date().toISOString(),
-          summary: {
-            comfort: tier(seed),
-            tension: tier(seed + 4),
-            communication: tier(seed + 2),
-            attraction: tier(seed + 1),
-            growth: tier(seed + 3),
-          },
-          aspects,
-          plainEnglish: {
-            main: "This relationship map is built from both birth profiles and the provider synastry call.",
-            comfort: "The easiest part is where both people feel safe being specific.",
-            tension: "The tension asks for pacing and consent before interpretation.",
-            advice: "Ask one clean question before turning the chart into a story.",
-          },
-        };
-        cacheSet(synastryCache, key, response, 30 * DAY);
-        return response;
-      }
-    } catch {
-      mode = "fallback";
-    }
-  }
-
-  const response = {
-    source,
-    mode,
-    cached: false,
-    fetchedAt: new Date().toISOString(),
-    summary: {
-      comfort: tier(seed),
-      tension: tier(seed + 4),
-      communication: tier(seed + 2),
-      attraction: tier(seed + 1),
-      growth: tier(seed + 3),
-    },
-    aspects: normalizeSynastryAspects(null, seed),
-    plainEnglish: {
-      main: "This relationship map is a conversation prompt, not a verdict.",
-      comfort: "The easiest part is where both people feel safe being specific.",
-      tension: "The tension asks for pacing and consent before interpretation.",
-      advice: "Ask one clean question before turning the chart into a story.",
-    },
-  };
-  cacheSet(synastryCache, key, response, 30 * DAY);
-  return response;
+export async function getSynastryProxy(userProfile: AstroProfile, partnerProfile: AstroProfile): Promise<SynastryProxyResponse> {
+  const key = hash({ kind: "synastry-v2", userProfile, partnerProfile, policy: SYNASTRY_POLICY, houseSystem: envValue("HOUSE_SYSTEM") || "placidus" });
+  const cached = cacheGet<SynastryProxyResponse>(synastryCache, key);
+  if (cached?.source === "astrologyapi" && cached.mode === "live") return { ...cached, cached: true };
+  const unavailable = (): SynastryProxyResponse => ({ schemaVersion: 2, source: "fallback" as const, mode: "fallback" as const, cached: false,
+    fetchedAt: new Date().toISOString(), aspects: [], summary: { comfort: "Unclear", tension: "Unclear", communication: "Unclear", attraction: "Unclear", growth: "Unclear" },
+    plainEnglish: { main: "Both calculated birth charts are needed.", comfort: "", tension: "", advice: "" } });
+  if (fullChartValidation(userProfile).length || fullChartValidation(partnerProfile).length) return unavailable();
+  // Composite chart aspects are not cross-person aspects. Use actual natal positions.
+  try {
+    const [user, partner] = await Promise.all([getNatalProxy(userProfile), getNatalProxy(partnerProfile)]);
+    if (user.source !== "astrologyapi" || partner.source !== "astrologyapi" || user.mode !== "live" || partner.mode !== "live") return unavailable();
+    const usable = (chart: typeof user.chart) => chart.placements.some(p => p.sign && typeof p.degree === "number" && p.degree >= 0 && p.degree < 30);
+    if (!usable(user.chart) || !usable(partner.chart)) return unavailable();
+    const aspects = compareChartPositions(user.chart.placements, partner.chart.placements);
+    const response: SynastryProxyResponse = { schemaVersion: 2, source: "astrologyapi" as const, mode: "live" as const, cached: false,
+      fetchedAt: new Date().toISOString(), calculation: { method: SYNASTRY_POLICY.version, aspectSource: "hint-geometry", zodiacSystem: "tropical", orbs: SYNASTRY_POLICY.orbs },
+      natal: { user, partner }, aspects,
+      summary: { comfort: aspects.some(a => a.tier === "Soft") ? "Soft" : "Unclear", tension: aspects.some(a => a.tier === "Challenging") ? "Challenging" : "Unclear",
+        communication: aspects.find(a => a.from === "mercury" || a.to === "mercury")?.tier ?? "Unclear",
+        attraction: aspects.find(a => ["venus", "mars"].includes(a.from) || ["venus", "mars"].includes(a.to))?.tier ?? "Unclear",
+        growth: aspects.find(a => ["jupiter", "saturn"].includes(a.from) || ["jupiter", "saturn"].includes(a.to))?.tier ?? "Unclear" },
+      plainEnglish: { main: "Two calculated natal charts, compared with the Hint angular policy v1.", comfort: "", tension: "", advice: "" } };
+    cacheSet(synastryCache, key, response, 30 * DAY);
+    return response;
+  } catch { return unavailable(); }
 }
 
 async function fetchNasaApod(apiKey: string, date?: string) {
     const params = new URLSearchParams({ api_key: apiKey, thumbs: "true" });
     if (date) params.set("date", date);
-    const response = await fetch(`https://api.nasa.gov/planetary/apod?${params.toString()}`);
+    const response = await fetch(`https://api.nasa.gov/planetary/apod?${params.toString()}`, { signal: AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error(`NASA_${response.status}`);
     const data = (await response.json()) as Record<string, unknown>;
     const mediaType = String(data.media_type ?? "image");

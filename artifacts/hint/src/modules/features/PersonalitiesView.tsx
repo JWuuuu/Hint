@@ -1,12 +1,22 @@
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { personalityCopy } from "./personalityCopy";
+import { wrapReceiptText } from "../tarot/logic/receiptLayout";
+import { LocalizedText, translateText } from "../../lib/LocalizedText";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../components/ui/dialog";
+import { useLanguage, type HintLanguage } from "../../lib/i18n";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { getAnonId } from "../../lib/identity";
+import { publicAppUrl } from "../../lib/publicUrls";
+import { historyClearVersion } from "../../lib/clearHistory";
+import { readPersonalityProgress, readPersonalityResults, writePersonalityProgress, emptyPersonalityProgress, type PersonalityProgress, type QuizAxis } from "./personalityProgress";
+import { markRoomVisitStarted, roomVisitWasClosed } from "../../components/app/roomVisits";
+import { useRoomVisit } from "../../components/app/RoomVisitBoundary";
+import { roomResumeText } from "../../components/app/roomResumeCopy";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { AppScreen, GlassPanel, ScreenHeader, SectionLabel } from "../../components/app/AppChrome";
 import { InnerTypeSigil } from "../home/data/sigils";
 import { readBirthProfile } from "../../lib/astro/userBirthProfile";
 import type { BirthProfile } from "../../types/astrology";
 
-type QuizAxis = "avoid" | "delulu" | "control" | "mess" | "please" | "think" | "escape" | "vision";
 
 type ResultName =
   | "The Professional Avoider"
@@ -58,15 +68,6 @@ type ResultCopy = {
   traits: string[];
 };
 
-const STORAGE_KEY = "hint.personalities.result.v2";
-const ANSWERS_STORAGE_KEY = "hint.personalities.answers.v2";
-const MOTION_EASE = [0.2, 0.78, 0.2, 1] as const;
-const PANEL_MOTION = {
-  initial: { opacity: 0, y: 10, scale: 0.992 },
-  animate: { opacity: 1, y: 0, scale: 1 },
-  exit: { opacity: 0, y: -6, scale: 0.996 },
-  transition: { duration: 0.32, ease: MOTION_EASE },
-} as const;
 
 const AXES: QuizAxis[] = ["avoid", "delulu", "control", "mess", "please", "think", "escape", "vision"];
 
@@ -316,21 +317,6 @@ function getSunSign(birthDate?: string): ZodiacSign | null {
   return "Pisces";
 }
 
-function readStoredResult(): ResultName | null {
-  if (typeof window === "undefined") return null;
-  const saved = window.localStorage.getItem(STORAGE_KEY);
-  return saved && saved in RESULT_COPY ? (saved as ResultName) : null;
-}
-
-function readStoredAnswers(): QuizAxis[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(ANSWERS_STORAGE_KEY) || "[]");
-    return Array.isArray(parsed) ? parsed.filter((value): value is QuizAxis => AXES.includes(value)) : [];
-  } catch {
-    return [];
-  }
-}
 
 function tallyAnswers(answers: QuizAxis[]) {
   return answers.reduce((acc, axis) => {
@@ -410,20 +396,7 @@ function astrologyExplanation(profile: BirthProfile | null) {
 }
 
 function wrapCanvasText(context: CanvasRenderingContext2D, text: string, maxWidth: number) {
-  const words = text.split(" ");
-  const lines: string[] = [];
-  let line = "";
-  words.forEach((word) => {
-    const next = line ? `${line} ${word}` : word;
-    if (context.measureText(next).width <= maxWidth) {
-      line = next;
-      return;
-    }
-    if (line) lines.push(line);
-    line = word;
-  });
-  if (line) lines.push(line);
-  return lines;
+  return wrapReceiptText(text, maxWidth, value => context.measureText(value).width);
 }
 
 function drawWrappedText(
@@ -503,33 +476,7 @@ async function createQrCanvas(text: string, size: number) {
       },
     });
   } catch {
-    qrCanvas.width = size;
-    qrCanvas.height = size;
-    const context = qrCanvas.getContext("2d");
-    if (!context) return qrCanvas;
-    context.fillStyle = "#ffffff";
-    context.fillRect(0, 0, size, size);
-    context.fillStyle = "#221c2f";
-    const cell = Math.floor(size / 25);
-    const margin = cell * 2;
-    const drawFinder = (x: number, y: number) => {
-      context.fillRect(x, y, cell * 7, cell * 7);
-      context.fillStyle = "#ffffff";
-      context.fillRect(x + cell, y + cell, cell * 5, cell * 5);
-      context.fillStyle = "#221c2f";
-      context.fillRect(x + cell * 2, y + cell * 2, cell * 3, cell * 3);
-    };
-    drawFinder(margin, margin);
-    drawFinder(size - margin - cell * 7, margin);
-    drawFinder(margin, size - margin - cell * 7);
-    for (let y = margin; y < size - margin; y += cell * 2) {
-      for (let x = margin; x < size - margin; x += cell * 2) {
-        const index = Math.floor((x + y + text.charCodeAt((x + y) % text.length)) / cell);
-        if (index % 3 === 0 && x > margin + cell * 8 && y > margin + cell * 8) {
-          context.fillRect(x, y, cell, cell);
-        }
-      }
-    }
+    throw new Error("QR generation failed");
   }
   return qrCanvas;
 }
@@ -564,11 +511,12 @@ async function drawPersonalityIcon(
   context.restore();
 }
 
-async function createShareCardBlob(resultName: ResultName, result: ResultCopy, profile: BirthProfile | null) {
+async function createShareCardBlob(resultName: ResultName, result: ResultCopy, language: HintLanguage) {
+  const tx = (text: string) => translateText(text, language);
   const canvas = document.createElement("canvas");
   const scale = 2;
   const width = 900;
-  const height = 980;
+  const height = 1180;
   canvas.width = width * scale;
   canvas.height = height * scale;
   canvas.style.width = `${width}px`;
@@ -594,20 +542,20 @@ async function createShareCardBlob(resultName: ResultName, result: ResultCopy, p
   context.fillStyle = "#8d72d7";
   context.font = "700 28px Arial";
   const cardCenter = width / 2;
-  const eyebrow = "HINT PERSONALITY";
+  const eyebrow = tx("HINT PERSONALITY");
   context.fillText(eyebrow, cardCenter - context.measureText(eyebrow).width / 2, 165);
 
   await drawPersonalityIcon(context, resultName, 320, 205, 260);
 
   context.fillStyle = "#221c2f";
   context.font = "62px Georgia";
-  const titleBottom = drawCenteredWrappedText(context, resultName, cardCenter, 545, 650, 66);
+  const titleBottom = drawCenteredWrappedText(context, personalityCopy(resultName, result, language).name, cardCenter, 545, 650, 66);
 
   context.fillStyle = "#6f6478";
   context.font = "italic 32px Georgia";
   drawCenteredWrappedText(context, result.subtitle, cardCenter, titleBottom + 30, 660, 42);
 
-  const appUrl = `${window.location.origin}/app`;
+  const appUrl = publicAppUrl("/app");
   const qrSize = 170;
   const qrCanvas = await createQrCanvas(appUrl, qrSize);
   const footerY = height - 260;
@@ -621,11 +569,11 @@ async function createShareCardBlob(resultName: ResultName, result: ResultCopy, p
 
   context.fillStyle = "#5eaeb3";
   context.font = "700 24px Arial";
-  context.fillText("SCAN TO TRY HINT", 155, footerY + 72);
+  drawWrappedText(context, tx("SCAN TO TRY HINT"), 155, footerY + 55, 340, 28);
 
   context.fillStyle = "rgba(79,70,90,0.78)";
   context.font = "25px Arial";
-  context.fillText("Find your personality result", 155, footerY + 112);
+  drawWrappedText(context, tx("Find your personality result"), 155, footerY + 112, 340, 28);
   context.font = "20px Arial";
   context.fillText(appUrl.replace(/^https?:\/\//, ""), 155, footerY + 148);
 
@@ -638,14 +586,62 @@ async function createShareCardBlob(resultName: ResultName, result: ResultCopy, p
 }
 
 export function PersonalitiesView() {
-  const [profile] = useState<BirthProfile | null>(() => readBirthProfile());
-  const [answers, setAnswers] = useState<QuizAxis[]>(() => readStoredAnswers());
-  const [savedResult, setSavedResult] = useState<ResultName | null>(() => readStoredResult());
+  const owner = getAnonId();
+  const { t, language } = useLanguage();
+  const tx = (text: string) => translateText(text, language);
+  const [entry] = useState(() => {
+    const saved = readPersonalityProgress(owner);
+    const progress = saved.result && !(saved.result in RESULT_COPY) ? { ...saved, result: null, questionIndex: Math.min(saved.answers.length, saved.questionIndex) } : saved;
+    return { fresh: roomVisitWasClosed("personalities"), progress };
+  });
+  const [quizProgress, setQuizProgress] = useState(() => entry.fresh ? emptyPersonalityProgress() : entry.progress);
+  const [recoverableProgress, setRecoverableProgress] = useState<PersonalityProgress | null>(() => entry.fresh ? entry.progress : null);
+  const [previousResults, setPreviousResults] = useState(() => readPersonalityResults(owner));
+  const progressRef = useRef(quizProgress);
+  const { questionIndex, answers } = quizProgress;
+  const savedResult = quizProgress.result && quizProgress.result in RESULT_COPY ? quizProgress.result as ResultName : null;
+  const [progressSaved, setProgressSaved] = useState(true);
+  function keepProgress(next: PersonalityProgress) {
+    markRoomVisitStarted("personalities");
+    setRecoverableProgress(null);
+    progressRef.current = next;
+    setQuizProgress(next);
+    setProgressSaved(writePersonalityProgress(owner, next));
+    setPreviousResults(readPersonalityResults(owner));
+  }
+  function restoreProgress() {
+    const saved = readPersonalityProgress(owner);
+    keepProgress(saved);
+  }
+  function goToQuestion(index: number) { keepProgress({ ...progressRef.current, questionIndex: index }); }
+  useEffect(() => {
+    let version = historyClearVersion(owner);
+    const changed = () => {
+      const current = historyClearVersion(owner);
+      if (version === current) return;
+      version = current;
+      const empty = emptyPersonalityProgress(); progressRef.current = empty; setQuizProgress(empty); setProgressSaved(true);
+      setRecoverableProgress(null); setPreviousResults([]);
+    };
+    window.addEventListener("storage", changed); return () => window.removeEventListener("storage", changed);
+  }, [owner]);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [sharing, setSharing] = useState(false);
+  const shareGeneration = useRef(0);
+  useRoomVisit({ room: "personalities", hasProgress: answers.length > 0 || Boolean(savedResult), onLeave: () => { shareGeneration.current++; } });
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
+  const [profile, setProfile] = useState<BirthProfile | null>(() => readBirthProfile());
+  useEffect(() => { shareGeneration.current++; setPreviewUrl(null); setSharing(false); return () => { shareGeneration.current++; }; }, [language, questionIndex, profile?.updatedAt]);
+  useEffect(() => {
+    const sync = () => setProfile(readBirthProfile());
+    window.addEventListener("hint.birthProfile.updated", sync);
+    return () => window.removeEventListener("hint.birthProfile.updated", sync);
+  }, []);
   const [shareStatus, setShareStatus] = useState("");
   const usableAnswers = answers.slice(0, QUESTIONS.length);
-  const currentQuestion = QUESTIONS[usableAnswers.length];
+  const currentQuestion = QUESTIONS[questionIndex];
   const resultName = usableAnswers.length === QUESTIONS.length ? scoreResult(usableAnswers, profile) : savedResult;
-  const result = resultName ? RESULT_COPY[resultName] : null;
+  const result = resultName && questionIndex >= QUESTIONS.length ? personalityCopy(resultName, RESULT_COPY[resultName], language) : null;
   const progress = result ? 100 : Math.round((usableAnswers.length / QUESTIONS.length) * 100);
 
   const answerCounts = useMemo(() => tallyAnswers(usableAnswers), [usableAnswers]);
@@ -681,124 +677,142 @@ export function PersonalitiesView() {
   const sign = getSunSign(profile?.birthDate);
 
   function chooseAnswer(axis: QuizAxis) {
-    if (result) return;
-    const nextAnswers = [...usableAnswers, axis];
-    setAnswers(nextAnswers);
-    window.localStorage.setItem(ANSWERS_STORAGE_KEY, JSON.stringify(nextAnswers));
-    if (nextAnswers.length === QUESTIONS.length) {
-      const nextResult = scoreResult(nextAnswers, profile);
-      setSavedResult(nextResult);
-      window.localStorage.setItem(STORAGE_KEY, nextResult);
-    }
+    if (result || questionIndex !== progressRef.current.questionIndex) return;
+    const nextAnswers = [...usableAnswers];
+    nextAnswers[questionIndex] = axis;
+    keepProgress({ answers: nextAnswers, questionIndex: questionIndex + 1,
+      result: nextAnswers.length === QUESTIONS.length ? scoreResult(nextAnswers, profile) : null });
   }
 
   function restart() {
-    setAnswers([]);
-    setSavedResult(null);
+    keepProgress(emptyPersonalityProgress());
     setShareStatus("");
-    window.localStorage.removeItem(STORAGE_KEY);
-    window.localStorage.removeItem(ANSWERS_STORAGE_KEY);
   }
 
   async function shareResult() {
-    if (!resultName || !result) return;
-    setShareStatus("Preparing share card...");
+    if (!resultName || !result || sharing) return;
+    setSharing(true);
+    const generation = ++shareGeneration.current;
+    setShareStatus("");
     try {
-      const blob = await createShareCardBlob(resultName, result, profile);
-      if (!blob) throw new Error("Could not create share image.");
-
-      const fileName = `hint-${resultName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.png`;
-      const url = URL.createObjectURL(blob);
-      try {
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setShareStatus("Saved as image");
-      } catch {
-        window.open(url, "_blank", "noopener,noreferrer");
-        setShareStatus("Share card opened");
-      } finally {
-        window.setTimeout(() => URL.revokeObjectURL(url), 30000);
-      }
-    } catch (error) {
-      console.error("Could not create share card", error);
-      setShareStatus("Could not create share card");
-    }
+      // Public archetype copy only. No name, birth details or individual answers enter the image.
+      const blob = await createShareCardBlob(resultName, result, language);
+      if (!blob) throw new Error("Image unavailable");
+      if (generation !== shareGeneration.current) return;
+      setPreviewUrl(URL.createObjectURL(blob));
+    } catch { if (generation === shareGeneration.current) setShareStatus(t("quality.shareFailed")); }
+    finally { if (generation === shareGeneration.current) setSharing(false); }
+  }
+  function downloadPreview() {
+    if (!previewUrl) return;
+    try {
+      const link = document.createElement("a"); link.href = previewUrl; link.download = "hint-personality.png";
+      document.body.appendChild(link); link.click(); link.remove();
+      setShareStatus(t("quality.downloadStarted"));
+    } catch { setShareStatus(t("quality.shareFailed")); }
   }
 
   return (
     <AppScreen>
+      <Dialog open={Boolean(previewUrl)} onOpenChange={open => { if (!open) setPreviewUrl(null); }}>
+        <DialogContent className="max-h-[90dvh] overflow-y-auto">
+          <DialogTitle className="pr-8">{t("quality.sharePreview")}</DialogTitle>
+          <DialogDescription>{t("quality.sharePrivacy")}</DialogDescription>
+          {previewUrl && <img src={previewUrl} alt={t("quality.sharePreview")} className="h-auto w-full" />}
+          <button type="button" className="min-h-11" data-testid="personality-download" onClick={downloadPreview}>{t("quality.download")}</button>
+          <button type="button" className="min-h-11" onClick={() => setPreviewUrl(null)}>{t("common.cancel")}</button>
+          {shareStatus && <p role="status">{shareStatus}</p>}
+        </DialogContent>
+      </Dialog>
       <ScreenHeader
         eyebrow="Personalities"
         title="Find Your Type"
-        subtitle="Take the quiz, then Hint blends your answers with your saved astrology profile to assign your personality."
+        subtitle={tx("This quiz uses your answers. With a birthday, zodiac themes add a small symbolic influence; no personal chart is calculated.")}
         sigil={InnerTypeSigil}
         backHref="/app"
         backLabel="Home"
       />
+      {(recoverableProgress && (recoverableProgress.answers.length > 0 || recoverableProgress.result)) && (
+        <GlassPanel className="mb-4">
+          <p className="text-sm leading-relaxed">{roomResumeText(language, "quizReady")}</p>
+          <button type="button" className="min-h-11 py-2 text-left underline" onClick={restoreProgress}>
+            {roomResumeText(language, "restoreQuiz")}
+          </button>
+        </GlassPanel>
+      )}
+      {previousResults.length > 0 && (
+        <details className="mb-4 rounded-2xl border px-4" style={{ borderColor: GLASS.border }}>
+          <summary className="flex min-h-11 cursor-pointer items-center py-2 text-sm underline">{roomResumeText(language, "previousResult")}</summary>
+          <div className="grid gap-1 pb-3">
+            {previousResults.map((previous, index) => previous.result && previous.result in RESULT_COPY ? (
+              <button key={index} type="button" className="min-h-11 py-2 text-left text-sm" onClick={() => keepProgress(previous)}>
+                {personalityCopy(previous.result as ResultName, RESULT_COPY[previous.result as ResultName], language).name}
+              </button>
+            ) : null)}
+          </div>
+        </details>
+      )}
+      {!progressSaved && <p role="alert" className="mb-3 text-sm">{t("quality.draftFailed")} <button type="button" className="min-h-11 underline" onClick={() => keepProgress(progressRef.current)}>{t("quality.retry")}</button></p>}
 
       <GlassPanel hero className="mb-5">
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="font-sans text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: ACCENT.lavender }}>
-            {result ? "Astrology result ready" : `Question ${usableAnswers.length + 1} of ${QUESTIONS.length}`}
+            {result ? tx(profile ? "Quiz result with zodiac themes" : "Answer-based quiz result") : `${questionIndex + 1} / ${QUESTIONS.length}`}
           </p>
           <span className="font-sans text-[11px] font-bold" style={{ color: GLASS.muted }}>
             {progress}%
           </span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full" style={{ background: "var(--hint-control-bg)" }}>
+        <div className="h-2 overflow-hidden rounded-full" style={{ background: "color-mix(in srgb, var(--hint-border) 56%, transparent)" }}>
           <div
-            className="h-full origin-left rounded-full transition-transform duration-500 ease-out will-change-transform"
+            className="h-full rounded-full transition-all duration-500"
             style={{
-              transform: `scaleX(${progress / 100})`,
-              background: "var(--hint-special-action-bg)",
+              width: `${progress}%`,
+              background: "linear-gradient(90deg, rgba(206,178,110,0.95), rgba(178,152,216,0.9), rgba(94,174,179,0.9))",
             }}
           />
         </div>
         {resultName ? (
-          <div className="hint-subtle-card mt-4 rounded-[18px] px-3 py-2">
-            <p className="font-sans text-[9px] font-black uppercase tracking-[0.2em]" style={{ color: ACCENT.lavender }}>
-              Result
-            </p>
-              <p className="mt-1 font-sans text-[18px] font-black leading-tight" style={{ color: "var(--hint-text)" }}>
-              {resultName}
+          <div
+            className="mt-4 rounded-[14px] border px-3 py-2"
+            style={{
+              borderColor: "rgba(178,152,216,0.28)",
+                  background: "color-mix(in srgb, var(--hint-lavender) 9%, var(--hint-surface-soft))",
+            }}
+          >
+            <p className="font-sans text-[9px] font-black uppercase tracking-[0.2em]" style={{ color: ACCENT.lavender }}><LocalizedText text={" Result "} /></p>
+            <p className="mt-1 font-serif text-[20px] leading-tight" style={{ color: "var(--hint-text)" }}>
+              {personalityCopy(resultName, RESULT_COPY[resultName], language).name}
             </p>
           </div>
         ) : null}
         <p className="mt-3 font-sans text-[12px] leading-relaxed" style={{ color: GLASS.muted }}>
-          {profile ? astrologyLine(profile) : "Add your birth details in Astrology for a more personalized result."}
+          {tx("This quiz uses your answers. With a birthday, zodiac themes add a small symbolic influence; no personal chart is calculated.")}
         </p>
       </GlassPanel>
 
-      <AnimatePresence mode="wait">
-        {result && resultName ? (
-        <motion.div key="result" {...PANEL_MOTION} className="transform-gpu">
-          <GlassPanel hero className="mb-5">
+      {result && resultName ? (
+        <GlassPanel hero className="mb-5">
           <div className="relative rounded-[22px] p-1">
             <div
-              aria-label={`${resultName} character`}
+              aria-label={t("quality.character").replace("{name}", personalityCopy(resultName, RESULT_COPY[resultName], language).name)}
               className="absolute right-0 top-0 h-24 w-24 rounded-[22px] border sm:h-28 sm:w-28"
               style={{
                 backgroundImage: "url('/personalities/personality-icons-simple.png')",
                 backgroundPosition: personalityIconPosition(resultName),
                 backgroundSize: "600% 300%",
                 backgroundRepeat: "no-repeat",
-                backgroundColor: "var(--hint-control-bg-strong)",
-                borderColor: "var(--hint-control-border)",
-                boxShadow: "var(--hint-field-shadow)",
+                  backgroundColor: "rgba(255,252,247,0.74)",
+                borderColor: "rgba(178,152,216,0.28)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.42), 0 18px 42px rgba(78,64,101,0.12)",
               }}
             />
             <div className="mb-4 min-h-28 pr-28 sm:min-h-32 sm:pr-36">
-              <p className="mb-2 font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}>
-                Your assigned personality
-              </p>
-              <h2 className="font-sans text-[25px] font-black leading-none sm:text-[28px]" style={{ color: "var(--hint-text)" }}>
-                {resultName}
+              <p className="mb-2 font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Your assigned personality "} /></p>
+              <h2 className="font-serif text-[29px] leading-none sm:text-[34px]" style={{ color: "var(--hint-text)" }}>
+                {personalityCopy(resultName, RESULT_COPY[resultName], language).name}
               </h2>
-              <p className="mt-2 font-sans text-[13px] font-bold leading-snug" style={{ color: GLASS.text }}>
+              <p className="mt-2 font-serif text-[15px] italic leading-snug" style={{ color: GLASS.text }}>
                 {result.subtitle}
               </p>
             </div>
@@ -806,14 +820,19 @@ export function PersonalitiesView() {
             {result.body}
           </p>
           <p className="mt-3 font-sans text-[13px] leading-relaxed" style={{ color: GLASS.muted }}>
-            {astrologyExplanation(profile)}
+            {tx(profile ? "Quiz result with zodiac themes" : "Answer-based quiz result")}
           </p>
 
           <div className="mt-4 flex flex-wrap gap-2">
             {result.traits.map((trait) => (
               <span
                 key={trait}
-                className="hint-segment rounded-full px-3 py-1.5 font-sans text-[10px] font-black uppercase tracking-[0.14em]"
+                className="rounded-full border px-3 py-1.5 font-sans text-[10px] font-black uppercase tracking-[0.14em]"
+                style={{
+                  borderColor: "var(--hint-border)",
+                  background: "color-mix(in srgb, var(--hint-surface-soft) 84%, transparent)",
+                  color: ACCENT.lavender,
+                }}
               >
                 {trait}
               </span>
@@ -822,11 +841,15 @@ export function PersonalitiesView() {
           </div>
           <button
             type="button"
-            onClick={() => void shareResult()}
-            className="hint-soft-button hint-pressable mt-5 h-11 w-full rounded-full font-sans text-[11px] font-black uppercase tracking-[0.18em]"
-          >
-            Share result
-          </button>
+            disabled={sharing}
+            data-testid="personality-share" onClick={() => void shareResult()}
+            className="mt-5 h-11 w-full rounded-full border font-sans text-[11px] font-black uppercase tracking-[0.18em]"
+            style={{
+              borderColor: "color-mix(in srgb, var(--hint-aqua) 34%, var(--hint-border))",
+              background: "color-mix(in srgb, var(--hint-aqua) 10%, var(--hint-surface-soft))",
+              color: ACCENT.aqua,
+            }}
+          ><LocalizedText text={" Share result "} /></button>
           {shareStatus ? (
             <p className="mt-2 text-center font-sans text-[11px] font-bold" style={{ color: GLASS.muted }}>
               {shareStatus}
@@ -835,73 +858,71 @@ export function PersonalitiesView() {
           <button
             type="button"
             onClick={restart}
-            className="hint-ghost-button hint-pressable mt-5 h-11 w-full rounded-full font-sans text-[11px] font-black uppercase tracking-[0.18em]"
-          >
-            Retake quiz
-          </button>
-          </GlassPanel>
-        </motion.div>
+            className="mt-5 h-11 w-full rounded-full border font-sans text-[11px] font-black uppercase tracking-[0.18em]"
+            style={{
+              borderColor: "color-mix(in srgb, var(--hint-lavender) 34%, var(--hint-border))",
+              background: "color-mix(in srgb, var(--hint-lavender) 10%, var(--hint-surface-soft))",
+              color: ACCENT.lavender,
+            }}
+          ><LocalizedText text={" Retake quiz "} /></button>
+          <button type="button" data-testid="personality-edit" onClick={() => goToQuestion(0)} className="mt-3 min-h-11 w-full">{t("quality.editAnswers")}</button>
+        </GlassPanel>
       ) : (
-        <motion.div key={`question-${usableAnswers.length}`} {...PANEL_MOTION} className="transform-gpu">
-          <GlassPanel hero className="mb-5">
-          <SectionLabel>Choose what feels most like you</SectionLabel>
-          <h2 className="mb-4 font-sans text-[24px] font-black leading-tight" style={{ color: "var(--hint-text)" }}>
-            {currentQuestion.prompt}
+        <GlassPanel hero className="mb-5">
+          {questionIndex > 0 && <button type="button" className="mb-3 min-h-11" onClick={() => goToQuestion(questionIndex - 1)}>{t("common.previous")}</button>}
+          <SectionLabel><LocalizedText text={"Choose what feels most like you"} /></SectionLabel>
+          <h2 className="mb-4 font-serif text-[23px] leading-tight" style={{ color: "var(--hint-text)" }}>
+            {tx(currentQuestion.prompt)}
           </h2>
           <div className="flex flex-col gap-2.5">
-            {currentQuestion.options.map((option, index) => (
-              <motion.button
+            {currentQuestion.options.map((option) => (
+              <button
                 key={option.label}
+                data-testid="personality-option"
                 type="button"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.22, delay: index * 0.035, ease: MOTION_EASE }}
-                whileTap={{ scale: 0.985 }}
                 onClick={() => chooseAnswer(option.axis)}
-                className="hint-subtle-card min-h-12 transform-gpu rounded-[16px] px-4 py-3 text-left font-sans text-[13px] font-bold leading-snug transition-[background,border-color,transform] duration-200 ease-out hover:-translate-y-0.5"
+                className="min-h-14 rounded-[12px] border px-4 py-3 text-left font-sans text-[13px] font-bold leading-snug transition active:scale-[0.99]"
+                style={{
+                  borderColor: "var(--hint-border)",
+                  background: "color-mix(in srgb, var(--hint-surface-soft) 84%, transparent)",
+                  color: "var(--hint-text)",
+                }}
               >
-                {option.label}
-              </motion.button>
+                {tx(option.label)}
+              </button>
             ))}
           </div>
-          </GlassPanel>
-        </motion.div>
+        </GlassPanel>
       )}
-      </AnimatePresence>
 
       <GlassPanel className="mb-4">
-        <p className="mb-3 font-sans text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: ACCENT.aqua }}>
-          Quiz pattern
-        </p>
+        <p className="mb-3 font-sans text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: ACCENT.aqua }}><LocalizedText text={" Quiz pattern "} /></p>
         <div className="flex flex-col gap-2.5">
-          {patternEntries.map(({ axis, percent }, index) => {
+          {patternEntries.map(({ axis, percent }) => {
             return (
-              <motion.div
+              <div
                 key={axis}
-                initial={{ opacity: 0, y: 6 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
-                transition={{ duration: 0.24, delay: index * 0.025, ease: MOTION_EASE }}
-                className="hint-subtle-card transform-gpu rounded-[18px] px-3 py-2.5"
+                className="rounded-[12px] border px-3 py-2.5"
+                style={{ borderColor: GLASS.border, background: "color-mix(in srgb, var(--hint-surface-soft) 82%, transparent)" }}
               >
                 <div className="mb-2 flex items-center justify-between gap-3">
                   <p className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: ACCENT.lavender }}>
-                    {AXIS_LABELS[axis]}
+                {tx(AXIS_LABELS[axis])}
                   </p>
-                  <p className="font-sans text-[16px] font-black leading-none" style={{ color: "var(--hint-text)" }}>
+                  <p className="font-serif text-[18px] leading-none" style={{ color: "var(--hint-text)" }}>
                     {percent}%
                   </p>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full" style={{ background: "var(--hint-control-bg)" }}>
+                <div className="h-2 overflow-hidden rounded-full" style={{ background: "color-mix(in srgb, var(--hint-border) 50%, transparent)" }}>
                   <div
-                    className="h-full origin-left rounded-full transition-transform duration-500 ease-out will-change-transform"
+                    className="h-full rounded-full transition-all duration-500"
                     style={{
-                      transform: `scaleX(${percent / 100})`,
-                      background: "linear-gradient(90deg, var(--hint-lavender), var(--hint-aqua))",
+                      width: `${percent}%`,
+                      background: "linear-gradient(90deg, rgba(178,152,216,0.94), rgba(94,174,179,0.88))",
                     }}
                   />
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

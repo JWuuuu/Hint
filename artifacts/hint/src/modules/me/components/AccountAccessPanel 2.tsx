@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 import {
   CheckCircle2,
@@ -80,7 +81,7 @@ function Field({
         style={{ color: GLASS.muted }}
       >
         {label}
-        {optional && <span className="normal-case tracking-normal" style={{ color: GLASS.faint }}>optional</span>}
+        {optional && <span className="normal-case tracking-normal" style={{ color: GLASS.faint }}><LocalizedText text={"optional"} /></span>}
       </span>
       {children}
     </label>
@@ -210,7 +211,7 @@ export function AccountAccessPanel({ onEditProfile }: { onEditProfile: () => voi
 
   return (
     <section>
-      <SectionLabel>Account</SectionLabel>
+      <SectionLabel><LocalizedText text={"Account"} /></SectionLabel>
       <GlassPanel className="mt-3">
         {account ? (
           <div className="flex flex-col gap-4">
@@ -228,9 +229,7 @@ export function AccountAccessPanel({ onEditProfile }: { onEditProfile: () => voi
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h2 className="font-serif text-[24px] leading-none" style={{ color: GLASS.text }}>
-                    Signed in
-                  </h2>
+                  <h2 className="font-serif text-[24px] leading-none" style={{ color: GLASS.text }}><LocalizedText text={" Signed in "} /></h2>
                   <ShieldCheck size={17} color={ACCENT.aqua} />
                 </div>
                 <p className="mt-2 break-words font-sans text-[13px]" style={{ color: GLASS.muted }}>
@@ -251,9 +250,7 @@ export function AccountAccessPanel({ onEditProfile }: { onEditProfile: () => voi
                   color: "var(--hint-special-action-text)",
                 }}
               >
-                <UserRound size={15} />
-                Profile
-              </button>
+                <UserRound size={15} /><LocalizedText text={" Profile "} /></button>
               <button
                 type="button"
                 onClick={handleSignOut}
@@ -262,9 +259,7 @@ export function AccountAccessPanel({ onEditProfile }: { onEditProfile: () => voi
                   color: GLASS.muted,
                 }}
               >
-                <LogOut size={15} />
-                Sign out
-              </button>
+                <LogOut size={15} /><LocalizedText text={" Sign out "} /></button>
             </div>
             {notice && <p className="font-sans text-[12px]" style={{ color: GLASS.muted }}>{notice}</p>}
           </div>
@@ -405,9 +400,7 @@ export function AccountAccessPanel({ onEditProfile }: { onEditProfile: () => voi
                     onClick={() => resetVerification()}
                     className="hint-ghost-button h-12 rounded-full px-3 font-sans text-[11px] font-black uppercase tracking-[0.1em]"
                     style={{ borderColor: GLASS.border, color: GLASS.muted }}
-                  >
-                    Reset
-                  </button>
+                  ><LocalizedText text={" Reset "} /></button>
                 </div>
               </Field>
             )}
@@ -436,9 +429,7 @@ export function AccountAccessPanel({ onEditProfile }: { onEditProfile: () => voi
               {pending ? "Verify code" : "Request code"}
             </button>
 
-            <p className="font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}>
-              This account is stored for this browser while provider login is being wired.
-            </p>
+            <p className="font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}><LocalizedText text={" This account is stored for this browser while provider login is being wired. "} /></p>
           </form>
         )}
       </GlassPanel>

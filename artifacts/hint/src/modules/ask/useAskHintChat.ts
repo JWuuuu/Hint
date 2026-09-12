@@ -1,19 +1,35 @@
-﻿/**
+/**
  * Standalone ambient-chat hook — no tarot reading attached.
  * Mirrors useTarotChat in shape but talks to /hint/chat.
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useSendAmbientChatMessage } from "@workspace/api-client-react";
+import { sendAmbientChatMessage } from "@workspace/api-client-react";
 import type { ChatMessage } from "../hold/chat/types";
 import { newMessageId } from "../hold/chat/types";
 import { useLanguage } from "../../lib/i18n";
 
+import { getAnonId } from "../../lib/identity";
+import { readTextDraft, writeTextDraft, clearTextDraft, textDraftKey, type TextDraft } from "../../lib/textDraft";
+import { readActiveAskConversation, saveAskConversation, type AskConversation } from "./askHistory";
+import { historyClearVersion } from "../../lib/clearHistory";
+import { markRoomVisitStarted, roomVisitWasClosed } from "../../components/app/roomVisits";
+import { useRoomVisit } from "../../components/app/RoomVisitBoundary";
+
 export interface UseAskHintChatResult {
+  draft: string;
+  setDraft: (value: string) => void;
+  draftError: boolean;
+  canRestoreDraft: boolean;
+  restoreDraft: () => void;
   messages: ChatMessage[];
   isThinking: boolean;
   isLimited: boolean;
   error: string | null;
+  historySaved: boolean | null;
+  retrySaveHistory: () => void;
+  newConversation: () => void;
+  openConversation: (id: string) => void;
   sendMessage: (text: string) => Promise<void>;
 }
 
@@ -37,15 +53,66 @@ function readRetryAfter(error: unknown): number {
 
 export function useAskHintChat(): UseAskHintChatResult {
   const { t } = useLanguage();
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const owner = getAnonId();
+  const [entry] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const selected = params.get("conversation");
+    // A saved History link is an explicit restore. Our own in-visit URL only
+    // supports refresh; returning to it with Back must still start fresh.
+    const explicitHistory = Boolean(selected) && !params.has("askVisit");
+    const fresh = roomVisitWasClosed("ask") && !explicitHistory;
+    return { fresh, conversation: fresh ? null : readActiveAskConversation(owner, selected), draft: readTextDraft(textDraftKey("ask", owner)) };
+  });
+  const started = useRef(!entry.fresh);
+  const conversation = useRef<AskConversation | null>(entry.conversation);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => conversation.current?.messages ?? []);
+  const [historySaved, setHistorySaved] = useState<boolean | null>(conversation.current ? true : null);
   const [error, setError] = useState<string | null>(null);
   const [limitedUntil, setLimitedUntil] = useState(0);
   const inFlightRef = useRef(false);
-  const mutation = useSendAmbientChatMessage({
-    mutation: {
-      retry: false,
-    },
-  });
+  const [isThinking, setIsThinking] = useState(false);
+  const draftKey = textDraftKey("ask", getAnonId());
+  const draftRef = useRef<TextDraft | null>(entry.fresh ? null : entry.draft);
+  const [draft, setDraftText] = useState(draftRef.current?.text ?? "");
+  const [recoverableDraft, setRecoverableDraft] = useState(entry.fresh ? entry.draft : null);
+  const [draftError, setDraftError] = useState(false);
+  const controller = useRef<AbortController | null>(null);
+  const generation = useRef(0);
+  function setConversationLocation(id: string, explicitHistory = false) {
+    const url = new URL(window.location.href); url.searchParams.set("conversation", id);
+    if (explicitHistory) url.searchParams.delete("askVisit"); else url.searchParams.set("askVisit", "1");
+    window.history.replaceState(window.history.state, "", url);
+  }
+  function beginVisit() {
+    if (!started.current) setConversationLocation("");
+    started.current = true;
+    markRoomVisitStarted("ask");
+  }
+  useRoomVisit({ room: "ask", hasProgress: Boolean(draft.trim() || messages.length || isThinking), onLeave: () => {
+    generation.current++; controller.current?.abort(); inFlightRef.current = false;
+  } });
+  useEffect(() => {
+    let version = historyClearVersion(owner);
+    const changed = () => {
+      const current = historyClearVersion(owner);
+      if (current === version) return;
+      version = current; generation.current++; controller.current?.abort();
+      inFlightRef.current = false; setIsThinking(false); setMessages([]); conversation.current = null; setHistorySaved(null); setError(null);
+      draftRef.current = readTextDraft(draftKey); setDraftText(draftRef.current?.text ?? "");
+      setRecoverableDraft(null);
+    };
+    window.addEventListener("storage", changed);
+    return () => window.removeEventListener("storage", changed);
+  }, [owner, draftKey]);
+  const setDraft = useCallback((value: string) => {
+    beginVisit();
+    setRecoverableDraft(null);
+    const result = writeTextDraft(draftKey, value);
+    draftRef.current = result.draft;
+    setDraftText(value);
+    setDraftError(!result.saved);
+  }, [draftKey]);
+  useEffect(() => () => { generation.current++; controller.current?.abort(); }, []);
 
   useEffect(() => {
     if (limitedUntil <= Date.now()) return;
@@ -62,14 +129,20 @@ export function useAskHintChat(): UseAskHintChatResult {
     async (text: string) => {
       const trimmed = text.trim();
       if (!trimmed) return;
-      if (inFlightRef.current || mutation.isPending) return;
+      if (inFlightRef.current) return;
 
       if (limitedUntil > Date.now()) {
         setError(t("ask.error.limit"));
         return;
       }
 
+      beginVisit();
+
       inFlightRef.current = true;
+      setIsThinking(true);
+      const requestGeneration = ++generation.current;
+      controller.current = new AbortController();
+      const submitted = draftRef.current?.text.trim() === trimmed ? draftRef.current : writeTextDraft(draftKey, trimmed).draft;
       setError(null);
 
       const userMessage: ChatMessage = {
@@ -82,15 +155,16 @@ export function useAskHintChat(): UseAskHintChatResult {
       setMessages(withUser);
 
       try {
-        const reply = await mutation.mutateAsync({
-          data: {
-            messages: messages.map((m) => ({
-              role: m.role,
-              content: m.content,
-            })),
-            followUp: trimmed,
-          },
-        });
+        const reply = await sendAmbientChatMessage({
+          messages: messages.map((m) => ({ role: m.role, content: m.content })),
+          followUp: trimmed,
+        }, { signal: controller.current.signal });
+        if (requestGeneration !== generation.current) return;
+        setDraftError(!clearTextDraft(draftKey, submitted));
+        if (draftRef.current?.revision === submitted.revision) {
+          draftRef.current = null;
+          setDraftText("");
+        }
 
         const assistantMessage: ChatMessage = {
           id: newMessageId(),
@@ -98,8 +172,14 @@ export function useAskHintChat(): UseAskHintChatResult {
           content: reply.message,
           createdAt: reply.createdAt,
         };
-        setMessages([...withUser, assistantMessage]);
+        const confirmed = [...withUser, assistantMessage];
+        setMessages(confirmed);
+        conversation.current = { id: conversation.current?.id ?? crypto.randomUUID(), anonId: owner,
+          createdAt: conversation.current?.createdAt ?? userMessage.createdAt, updatedAt: assistantMessage.createdAt, messages: confirmed };
+        setHistorySaved(saveAskConversation(conversation.current));
+        setConversationLocation(conversation.current.id);
       } catch (e) {
+        if (requestGeneration !== generation.current) return;
         const status = readStatus(e);
         const msg = e instanceof Error ? e.message : String(e ?? "");
         if (status === 429) {
@@ -115,15 +195,42 @@ export function useAskHintChat(): UseAskHintChatResult {
         // Roll the user message back out so the user can retry without a stranded turn
         setMessages(messages);
       } finally {
-        inFlightRef.current = false;
+        if (requestGeneration === generation.current) {
+          inFlightRef.current = false;
+          setIsThinking(false);
+        }
       }
     },
-    [limitedUntil, messages, mutation, t]
+    [limitedUntil, messages, draftKey, t, owner]
   );
 
   return {
     messages,
-    isThinking: mutation.isPending,
+    draft, setDraft, draftError,
+    canRestoreDraft: Boolean(recoverableDraft?.text),
+    restoreDraft: () => {
+      if (!recoverableDraft || inFlightRef.current) return;
+      const latest = readTextDraft(draftKey);
+      beginVisit(); draftRef.current = latest;
+      setDraftText(latest?.text ?? ""); setRecoverableDraft(null); setDraftError(false);
+    },
+    historySaved,
+    retrySaveHistory: () => { if (conversation.current) setHistorySaved(saveAskConversation(conversation.current)); },
+    openConversation: (id: string) => {
+      if (inFlightRef.current || historySaved === false) return;
+      const selected = readActiveAskConversation(owner, id);
+      if (!selected) return;
+      started.current = true; markRoomVisitStarted("ask");
+      conversation.current = selected; setMessages(selected.messages); setHistorySaved(true); setError(null);
+      setConversationLocation(id, true);
+    },
+    newConversation: () => {
+      if (inFlightRef.current) return;
+      started.current = true; markRoomVisitStarted("ask");
+      conversation.current = null; setMessages([]); setHistorySaved(null); setError(null);
+      setConversationLocation("");
+    },
+    isThinking,
     isLimited: limitedUntil > Date.now(),
     error,
     sendMessage,

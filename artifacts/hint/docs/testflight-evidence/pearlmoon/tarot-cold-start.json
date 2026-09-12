@@ -1,0 +1,44 @@
+[
+  {
+    "round": 1,
+    "device": "pro-max",
+    "passed": true,
+    "logs": [],
+    "errors": []
+  },
+  {
+    "round": 1,
+    "device": "se",
+    "passed": true,
+    "logs": [],
+    "errors": []
+  },
+  {
+    "round": 2,
+    "device": "pro-max",
+    "passed": true,
+    "logs": [],
+    "errors": []
+  },
+  {
+    "round": 2,
+    "device": "se",
+    "passed": true,
+    "logs": [],
+    "errors": []
+  },
+  {
+    "round": 3,
+    "device": "pro-max",
+    "passed": true,
+    "logs": [],
+    "errors": []
+  },
+  {
+    "round": 3,
+    "device": "se",
+    "passed": true,
+    "logs": [],
+    "errors": []
+  }
+]

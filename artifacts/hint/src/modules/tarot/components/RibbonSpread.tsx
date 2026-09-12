@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import {
   useEffect,
   useRef,
@@ -41,6 +42,7 @@ type WheelGeometry = {
   centerX: number;
   centerY: number;
   radius: number;
+  numberRadius: number;
   startAngle: number;
 };
 
@@ -69,12 +71,14 @@ function getWheelGeometry(zoomed: boolean, size: StageSize): WheelGeometry {
         centerX,
         centerY,
         radius: size.width * 0.70,
+        numberRadius: size.width * 0.70 + CARD_H_ZOOM / 2 + 20,
         startAngle: -Math.PI * 0.51,
       }
     : {
         centerX,
         centerY,
         radius: size.width * 0.64,
+        numberRadius: 0,
         startAngle: -Math.PI * 0.51,
       };
 }
@@ -97,6 +101,27 @@ function getWheelFanLayout(
     opacity: 1,
     zIndex: Math.round(y),
     angle,
+  };
+}
+
+function getWheelNumberLayout(
+  index: number,
+  rotation: number,
+  total: number,
+  geometry: WheelGeometry,
+  size: StageSize,
+) {
+  const angle = geometry.startAngle + rotation + index * wheelFanStep(total);
+  const x = geometry.centerX + Math.cos(angle) * geometry.numberRadius;
+  const y = geometry.centerY + Math.sin(angle) * geometry.numberRadius;
+  const hidden = x < -48 || x > size.width + 64 || y < -52 || y > size.height + 18;
+
+  return {
+    x,
+    y,
+    rotate: angle + Math.PI / 2,
+    opacity: hidden ? 0 : 1,
+    zIndex: Math.round(y) + 200,
   };
 }
 
@@ -506,15 +531,13 @@ export function RibbonSpread({
           className="absolute inset-0 z-20"
         >
           <div className="pointer-events-none absolute inset-x-5 top-[calc(var(--hint-safe-top)+5.15rem)] z-30">
-            <p className="mx-auto w-fit rounded-full border border-[#f1b8c9]/22 bg-white/[0.07] px-3 py-1 font-sans text-[9px] font-black uppercase tracking-[0.24em] text-[#f1b8c9]/86 shadow-[0_12px_32px_rgba(31,20,64,0.18)] backdrop-blur-md">
-              Signal path
-            </p>
+            <p className="mx-auto w-fit rounded-full border border-[#f1b8c9]/22 bg-white/[0.07] px-3 py-1 font-sans text-[9px] font-black uppercase tracking-[0.24em] text-[#f1b8c9]/86 shadow-[0_12px_32px_rgba(31,20,64,0.18)] backdrop-blur-md"><LocalizedText text={" Signal path "} /></p>
             <p className="mt-3 font-serif text-[24px] leading-tight text-[#fff2df] drop-shadow-[0_12px_28px_rgba(22,12,32,0.38)] md:text-[34px]">
               {allSelected ? "The field is sealed" : `Open the ${ordinalWord(nextCardNumber)} lens`}
             </p>
             <div className="mx-auto mt-2 flex max-w-[22rem] flex-wrap items-center justify-center gap-1.5 font-sans text-[11px] font-black uppercase tracking-[0.12em] text-[#f7ddaf]/88">
               {allSelected ? (
-                <span>Reveal is opening</span>
+                <span><LocalizedText text={"Reveal is opening"} /></span>
               ) : (
                 <>
                   <span>{spread.label}</span>
@@ -523,7 +546,7 @@ export function RibbonSpread({
                     {nextPositionLabel}
                   </span>
                   <span className="h-1 w-1 rounded-full bg-[#f1b8c9]/70" />
-                  <span>{nextCardNumber} of {maxCards}</span>
+                  <span>{nextCardNumber}<LocalizedText text={" of "} />{maxCards}</span>
                 </>
               )}
             </div>
@@ -540,7 +563,7 @@ export function RibbonSpread({
                 maxCards === 1 ? "top-[8%]" : "top-1/2 -translate-y-1/2"
               }`}
             >
-              <p className="font-sans text-[8px] font-black uppercase tracking-[0.22em] text-[#f1b8c9]/66">Question field</p>
+              <p className="font-sans text-[8px] font-black uppercase tracking-[0.22em] text-[#f1b8c9]/66"><LocalizedText text={"Question field"} /></p>
               <p className="mt-1 line-clamp-2 font-serif text-[13px] leading-snug text-[#fff2df]/70 sm:text-[15px]">
                 {questionSnippet}
               </p>
@@ -714,9 +737,7 @@ export function RibbonSpread({
                           className={spreadSlotClass}
                           ariaLabel={`${label}, chosen face-down card`}
                         />
-                        <span className="pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 rounded-full border border-[#f7ddaf]/22 bg-[#080615]/76 px-2 py-0.5 font-sans text-[7px] font-black uppercase tracking-[0.18em] text-[#f7ddaf]/72 backdrop-blur-sm">
-                          Sealed
-                        </span>
+                        <span className="pointer-events-none absolute -bottom-5 left-1/2 -translate-x-1/2 rounded-full border border-[#f7ddaf]/22 bg-[#080615]/76 px-2 py-0.5 font-sans text-[7px] font-black uppercase tracking-[0.18em] text-[#f7ddaf]/72 backdrop-blur-sm"><LocalizedText text={" Sealed "} /></span>
                       </motion.div>
                     )}
                   </div>
@@ -762,8 +783,7 @@ export function RibbonSpread({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32, ease: "easeOut" }}
               className="font-serif text-[24px] leading-tight text-[#332d45] md:text-[34px]"
-            >
-              Lens {nextCardNumber}
+            ><LocalizedText text={" Lens "} />{nextCardNumber}
             </motion.p>
             <p className="mx-auto mt-2 max-w-[20rem] font-sans text-[12px] font-black uppercase tracking-[0.12em] text-[#6b5c86]/72">
               {nextPositionLabel}
@@ -799,7 +819,7 @@ export function RibbonSpread({
                   aria-label={`Choose face-down card ${index + 1}`}
                   disabled={selected || Boolean(poppingVisualId)}
                   onClick={selected ? undefined : () => chooseCard(card)}
-                  className="absolute block overflow-visible rounded-[10px] border outline-none transition-[box-shadow,filter] duration-150"
+                  className="absolute block overflow-hidden rounded-[10px] border outline-none transition-[box-shadow,filter] duration-150"
                   style={{
                     left: layout.x,
                     top: layout.y,
@@ -823,36 +843,40 @@ export function RibbonSpread({
                     transform: `translate(${-cardWidth / 2}px, ${-cardHeight / 2}px) rotate(${layout.rotate}rad) translateY(${popping ? "-24px" : "0px"}) scale(${popping ? 1.28 : layout.scale})`,
                   }}
                 >
-                  {zoomed && !selected && !popping ? (
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute left-1/2 top-[-2rem] z-20 font-serif text-[17px] font-black leading-none text-[#4a3422]"
-                      style={{
-                        transform: `translateX(-50%) rotate(${-layout.rotate}rad)`,
-                        textShadow:
-                          "0 1px 0 rgba(255,250,230,0.94), 0 7px 16px rgba(80,52,34,0.18)",
-                      }}
-                    >
-                      {index + 1}
-                    </span>
-                  ) : null}
-                  <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-[10px]">
-                    <span className="absolute inset-[8px] rounded-[8px] border border-white/12" />
-                    <span className="absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.12),transparent_28%),linear-gradient(140deg,rgba(255,255,255,0.08),transparent_42%)]" />
-                  </span>
+                  <span className="pointer-events-none absolute inset-[8px] rounded-[8px] border border-white/12" />
+                  <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.12),transparent_28%),linear-gradient(140deg,rgba(255,255,255,0.08),transparent_42%)]" />
                 </button>
+              );
+            })}
+
+            {zoomed && finalDeckOrder.map((card, index) => {
+              const selected = selectedIds.has(card.visualId);
+              const popping = poppingVisualId === card.visualId;
+              const numberLayout = getWheelNumberLayout(index, fanRotation, finalDeckOrder.length, geometry, stageSize);
+              return (
+                <span
+                  key={`number-${card.visualId}`}
+                  aria-hidden
+                  className="pointer-events-none absolute h-[14px] w-[26px] text-center font-sans text-[13px] font-bold text-[#a59db8]"
+                  style={{
+                    left: numberLayout.x,
+                    top: numberLayout.y,
+                    zIndex: numberLayout.zIndex,
+                    opacity: selected || popping ? 0 : numberLayout.opacity,
+                    transform: `translate(-13px, -7px) rotate(${numberLayout.rotate}rad)`,
+                  }}
+                >
+                  {index + 1}
+                </span>
               );
             })}
           </div>
 
           {!zoomed && (
             <div className="pointer-events-none absolute inset-x-4 bottom-[calc(var(--hint-safe-bottom)+1.25rem)] z-50 mx-auto flex max-w-[430px] flex-col gap-2">
-              <div className="rounded-[18px] border border-[#d7d0eb]/70 bg-white/70 px-4 py-3 text-left font-sans text-[11px] font-bold leading-snug text-[#5d5476]/84 shadow-[0_18px_42px_rgba(70,54,142,0.16)] backdrop-blur-md">
-                Open {nextPositionLabel}. Swipe the wheel to browse. Pinch open or scroll up to zoom; numbers appear above the cards.
-              </div>
+              <div className="rounded-[18px] border border-[#d7d0eb]/70 bg-white/70 px-4 py-3 text-left font-sans text-[11px] font-bold leading-snug text-[#5d5476]/84 shadow-[0_18px_42px_rgba(70,54,142,0.16)] backdrop-blur-md"><LocalizedText text={" Open "} />{nextPositionLabel}<LocalizedText text={". Swipe the wheel to browse. Pinch open or scroll up to zoom; numbers appear above the cards. "} /></div>
               <div className="rounded-full border border-[#d7d0eb]/70 bg-white/60 px-5 py-3 font-sans text-[13px] font-black text-[#5d5476]/66 shadow-[0_18px_42px_rgba(40,28,125,0.12)] backdrop-blur-md">
-                {nextPositionLabel} · {selectedCards.length} / {maxCards} sealed
-              </div>
+                {nextPositionLabel} · {selectedCards.length} / {maxCards}<LocalizedText text={" sealed "} /></div>
             </div>
           )}
         </motion.div>

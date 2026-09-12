@@ -1,0 +1,38 @@
+{
+  "environment": "isolated production build",
+  "paidProvidersEnabled": false,
+  "checks": [
+    {
+      "path": "/healthz",
+      "status": 200
+    },
+    {
+      "path": "/readyz",
+      "status": 200
+    },
+    {
+      "check": "Private profile requires a device session",
+      "pass": true
+    },
+    {
+      "check": "Forged owner fields cannot cross device identities",
+      "pass": true
+    },
+    {
+      "check": "Public invitation omits birth details",
+      "pass": true
+    },
+    {
+      "check": "Unavailable provider cannot become a completed comparison",
+      "pass": true
+    },
+    {
+      "check": "Transactional history clear revokes invitation and keeps profile",
+      "pass": true
+    },
+    {
+      "check": "Revocation denies former credentials",
+      "pass": true
+    }
+  ]
+}

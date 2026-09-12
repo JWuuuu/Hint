@@ -1,4 +1,5 @@
 import {
+  boolean,
   pgTable,
   uuid,
   text,
@@ -18,6 +19,7 @@ export const dailyReceiptsTable = pgTable(
     orientation: text("orientation"),
     assignedAt: timestamp("assigned_at", { withTimezone: true }).defaultNow().notNull(),
     expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    historyExcluded: boolean("history_excluded").notNull().default(false),
     openedAt: timestamp("opened_at", { withTimezone: true }),
     lastSeenAt: timestamp("last_seen_at", { withTimezone: true }),
   },

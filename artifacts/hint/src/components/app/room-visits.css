@@ -1,0 +1,21 @@
+.hint-room-exit-overlay { z-index: 190; background: rgb(32 24 37 / .38); backdrop-filter: blur(5px); }
+.hint-room-exit-panel {
+  --hint-surface: #fbf6f2; --hint-text: #443547; --hint-muted: #786977; --hint-border: #ded0d8;
+  position: fixed; z-index: 200; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(390px, calc(100vw - 36px)); max-height: calc(100dvh - var(--hint-safe-top, 0px) - var(--hint-safe-bottom, 0px) - 36px);
+  overflow-y: auto; overscroll-behavior: contain; border: 1px solid var(--hint-border, #ded0d8); border-radius: 28px;
+  padding: 26px; background: var(--hint-surface, #fbf6f2); color: var(--hint-text, #443547);
+  box-shadow: 0 24px 80px rgb(36 24 42 / .2); animation: hint-room-exit-in 200ms ease-out;
+}
+.hint-room-exit-seal { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 18px; border: 1px solid #b99ba54d; border-radius: 50%; color: #a18193; font-size: 21px; }
+.hint-room-exit-title { margin: 0 0 14px; font-family: var(--font-serif, Georgia, serif); font-size: 29px; font-weight: 400; line-height: 1.12; overflow-wrap: anywhere; }
+.hint-room-exit-description { margin: 0; color: var(--hint-muted, #786977); font-size: 15px; line-height: 1.65; overflow-wrap: anywhere; }
+.hint-room-exit-kept { margin: 18px 0 22px; padding-top: 16px; border-top: 1px solid #aa91a32b; font-size: 13px; line-height: 1.6; color: var(--hint-muted, #786977); }
+.hint-room-exit-actions { display: grid; gap: 10px; }
+.hint-room-exit-actions button { min-height: 48px; padding: 13px 18px; border: 1px solid #b49aad66; border-radius: 22px; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; transition: background 120ms, transform 120ms; }
+.hint-room-exit-actions button[data-primary] { background: #75557f; border-color: #75557f; color: #fff9fc; }
+.hint-room-exit-actions button:active { transform: scale(.985); }
+.hint-room-exit-actions button:focus-visible { outline: 2px solid #a183ae; outline-offset: 3px; }
+.hint-room-exit-panel[data-reduced="true"], .hint-room-exit-overlay[data-reduced="true"] { animation: none; }
+[data-hint-theme="dark"] .hint-room-exit-panel { --hint-surface: #2b2230; --hint-text: #f4eaf2; --hint-muted: #c8bacb; --hint-border: #695767; }
+@keyframes hint-room-exit-in { from { opacity: 0; transform: translate(-50%, calc(-50% + 6px)); } to { opacity: 1; transform: translate(-50%, -50%); } }

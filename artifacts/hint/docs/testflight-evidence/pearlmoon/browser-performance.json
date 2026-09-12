@@ -1,0 +1,988 @@
+[
+  {
+    "test": "Astrology host frame samples during chart, detail and scrolling",
+    "project": "iphone-17-pro-max",
+    "name": "astrology-host-frames",
+    "data": {
+      "browserOnly": true,
+      "physicalIphoneVerified": false,
+      "idle": {
+        "samples": 73,
+        "p95": 19,
+        "max": 21,
+        "consecutive100ms": 0
+      },
+      "interaction": {
+        "samples": 73,
+        "p95": 24,
+        "max": 32,
+        "consecutive100ms": 0
+      }
+    }
+  },
+  {
+    "test": "Astrology host frame samples during chart, detail and scrolling",
+    "project": "iphone-se",
+    "name": "astrology-host-frames",
+    "data": {
+      "browserOnly": true,
+      "physicalIphoneVerified": false,
+      "idle": {
+        "samples": 72,
+        "p95": 21,
+        "max": 23,
+        "consecutive100ms": 0
+      },
+      "interaction": {
+        "samples": 75,
+        "p95": 22,
+        "max": 32,
+        "consecutive100ms": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 78,
+        "p50": 20,
+        "p95": 34,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 16,
+        "p95": 21,
+        "max": 22,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 78,
+        "p50": 20,
+        "p95": 34,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 94,
+        "p50": 16,
+        "p95": 28,
+        "max": 53,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 78,
+        "p50": 20,
+        "p95": 34,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 99,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 78,
+        "p50": 20,
+        "p95": 34,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 473,
+        "p50": 17,
+        "p95": 18,
+        "max": 53,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 78,
+        "p50": 20,
+        "p95": 34,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 77,
+        "p50": 17,
+        "p95": 31,
+        "max": 41,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 20,
+        "max": 21,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 77,
+        "p50": 17,
+        "p95": 31,
+        "max": 41,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 26,
+        "max": 52,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 77,
+        "p50": 17,
+        "p95": 31,
+        "max": 41,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 101,
+        "p50": 17,
+        "p95": 24,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 77,
+        "p50": 17,
+        "p95": 31,
+        "max": 41,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 474,
+        "p50": 17,
+        "p95": 21,
+        "max": 48,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 77,
+        "p50": 17,
+        "p95": 31,
+        "max": 41,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 26,
+        "max": 34,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 25,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 26,
+        "max": 34,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 27,
+        "max": 53,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 26,
+        "max": 34,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 98,
+        "p50": 17,
+        "p95": 24,
+        "max": 31,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 26,
+        "max": 34,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 94,
+        "p50": 17,
+        "p95": 29,
+        "max": 72,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 26,
+        "max": 34,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 23,
+        "max": 45,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 23,
+        "max": 45,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 21,
+        "max": 56,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 23,
+        "max": 45,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 25,
+        "max": 55,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 23,
+        "max": 45,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 94,
+        "p50": 17,
+        "p95": 26,
+        "max": 69,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 23,
+        "max": 45,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 26,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 25,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 26,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 92,
+        "p50": 16,
+        "p95": 26,
+        "max": 52,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 26,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 94,
+        "p50": 17,
+        "p95": 26,
+        "max": 31,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 26,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 90,
+        "p50": 17,
+        "p95": 25,
+        "max": 93,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 26,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 25,
+        "max": 50,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 19,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 25,
+        "max": 50,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 23,
+        "max": 63,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 25,
+        "max": 50,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 18,
+        "max": 23,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 25,
+        "max": 50,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 22,
+        "max": 80,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 25,
+        "max": 50,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 24,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 22,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 24,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 91,
+        "p50": 16,
+        "p95": 26,
+        "max": 63,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 24,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 25,
+        "max": 29,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 24,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-17-pro-max",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 28,
+        "max": 90,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 24,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-idle-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 23,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-scroll-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 18,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 23,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "home-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 22,
+        "max": 48,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 23,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "animal-reveal-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 98,
+        "p50": 17,
+        "p95": 18,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 23,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  },
+  {
+    "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+    "project": "iphone-se",
+    "name": "tarot-auto-wash-web-frame-samples",
+    "data": {
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 26,
+        "max": 80,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 23,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  }
+]

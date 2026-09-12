@@ -1,0 +1,107 @@
+[
+  {
+    "file": "screens/me-se-top.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-se-top.png",
+    "sha256": "23d7f1262c32490dabad7e7c2a8c565daa13d21062e40d52d8ae6fd0d5262ff0"
+  },
+  {
+    "file": "screens/me-se-middle.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-se-middle.png",
+    "sha256": "f20ea0f2a52934040787cd1b858fb6a6865ad9305c4f337aace81ac1fcdecb16"
+  },
+  {
+    "file": "screens/me-se-bottom.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-se-bottom.png",
+    "sha256": "a28f608d6797620cb216dd7ebc50c1b5bc64ce8eec1d615206a18d4e44bc1108"
+  },
+  {
+    "file": "screens/me-se-dark-top.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-se-dark-top.png",
+    "sha256": "e5c8651bb5b6bd5e0def02f48efc8e1581f88a858119a74bbd3c51d5b3d03bff"
+  },
+  {
+    "file": "screens/me-se-dark-middle.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-se-dark-middle.png",
+    "sha256": "561bda86f24947b52e4fca75f50a0f0c66068343e213d4fc5f43e061f44776ee"
+  },
+  {
+    "file": "screens/me-se-dark-bottom.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-se-dark-bottom.png",
+    "sha256": "86c998b0f9b4e0d5af69ed2b5f06905b81543bbf9625ead300c58e57288b7146"
+  },
+  {
+    "file": "screens/me-max-top.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-max-top.png",
+    "sha256": "3ba3adc4b10ee4e3e73ba7d48a91950698f8f97315d35078d6da6e42c273f02a"
+  },
+  {
+    "file": "screens/me-max-middle.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-max-middle.png",
+    "sha256": "84086bfdb24873e9f2de33091e2dd63d5446a5e840f65b30f4c570104093b22c"
+  },
+  {
+    "file": "screens/me-max-bottom.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/me-max-bottom.png",
+    "sha256": "345d49318d93f9d600ae4ef7032a56f6014a8f8795b2da9bb2923bc0628c06c4"
+  },
+  {
+    "file": "screens/tarot-entrance.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/tarot-entrance.png",
+    "sha256": "2ff20acd9b145fa1ec9f23c880d96e43b3dc7846cb99d686a3bc722d374ea8bf"
+  },
+  {
+    "file": "screens/astrology-entrance.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/astrology-entrance.png",
+    "sha256": "83526672a3de7dfbb7332f708038e6c62e3bc4c670ccc435033663434bceae72"
+  },
+  {
+    "file": "screens/collection-entrance.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/collection-entrance.png",
+    "sha256": "fc3575b78d60d3b2ab2c8bd51577a774b89b47f3376944e85687a108c67e0bf0"
+  },
+  {
+    "file": "screens/personalities-entrance.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/personalities-entrance.png",
+    "sha256": "ae006f47f83418fbe74039e7eab26bbb3e36aa0f45d4980e384562dce0d62219"
+  },
+  {
+    "file": "screens/me-se-dark-languages.png",
+    "source": "/tmp/hint-me-entrances-20260910/final-results/me-redesign-Me-redesign-en-dc7d5-preferences-and-disclosures-iphone-se/me-en-dark-languages.png",
+    "sha256": "1016b3e6b50ba6e61846ccfc7972ddf44b0e7474c78bfcab23f7b73856c4d2b3"
+  },
+  {
+    "file": "screens/me-se-es-languages.png",
+    "source": "/tmp/hint-me-entrances-20260910/final-results/me-redesign-Me-redesign-es-2466d-preferences-and-disclosures-iphone-se/me-es-bright-languages.png",
+    "sha256": "bf9974fddbe5cd128c5ef28ba16989e65da867b4a370af260c5ede538047b023"
+  },
+  {
+    "file": "screens/me-se-es-200text-top.png",
+    "source": "/tmp/hint-me-entrances-20260910/final-results/me-redesign-Me-Spanish-SE--e7f8e-places-and-expanded-details-iphone-se/me-es-200text-top.png",
+    "sha256": "5d85f6cef6f2c15be390965a93e5696f01a48843aafa9ecf2c58bd2a34852faf"
+  },
+  {
+    "file": "screens/me-se-es-200text-expanded-bottom.png",
+    "source": "/tmp/hint-me-entrances-20260910/final-results/me-redesign-Me-Spanish-SE--e7f8e-places-and-expanded-details-iphone-se/me-es-200text-expanded-bottom.png",
+    "sha256": "f41f08477371da324c437f3c8426fcc762274748482be50ef400e50035e183fe"
+  },
+  {
+    "file": "screens/me-se-storage-failure.png",
+    "source": "/tmp/hint-me-entrances-20260910/final-results/me-redesign-Me-editor-reta-a2c28-and-returns-focus-on-cancel-iphone-se/me-edit-storage-failure.png",
+    "sha256": "bbf422d1fb83f16f599f4b3ab32292ec8333326eb1eb3cf33296222533d43c5f"
+  },
+  {
+    "file": "screens/tarot-destination.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-final/tarot-destination.png",
+    "sha256": "02487a53c61e362f6a11faa79f34a301d1e5f8a89c2ad8527dd4e160811cbd50"
+  },
+  {
+    "file": "screens/tarot-dark-entrance.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-dark/tarot-entrance.png",
+    "sha256": "2791bec8dde4ee83b71b01f014d73d761115a1ab04f2556f2a7012e0fdd4fe38"
+  },
+  {
+    "file": "screens/tarot-dark-destination.png",
+    "source": "/tmp/hint-me-entrances-20260910/visual-dark/tarot-destination.png",
+    "sha256": "02487a53c61e362f6a11faa79f34a301d1e5f8a89c2ad8527dd4e160811cbd50"
+  }
+]

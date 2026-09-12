@@ -1,0 +1,2 @@
+"NSMicrophoneUsageDescription" = "マイクで質問を入力します。文字で入力することもできます。";
+"NSSpeechRecognitionUsageDescription" = "話した質問を文字に変換し、送信前に確認できるようにします。";

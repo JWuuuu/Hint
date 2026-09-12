@@ -1,0 +1,13 @@
+{
+  "browserOnly": true,
+  "device": "iphone-se",
+  "metrics": {
+    "samples": 84,
+    "p50": 17,
+    "p95": 29,
+    "max": 33,
+    "over100": 0,
+    "longestStallRun": 0
+  },
+  "idleBaseline": null
+}

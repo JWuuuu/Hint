@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "kind": "Application logical JSON backup plus exact versioned schema replay",
+  "isolation": "Two disposable databases on isolated local PostgreSQL 18; only fictional rows",
+  "scope": "Every public application table and migration ledger; cluster roles and operator pg_dump tooling are outside this rehearsal",
+  "tables": {
+    "compatibility_invites": 1,
+    "daily_pulls": 0,
+    "daily_receipts": 0,
+    "device_sessions": 0,
+    "hint_schema_migrations": 6,
+    "history_clears": 0,
+    "journal_entries": 1,
+    "profiles": 1,
+    "provider_leases": 0,
+    "readings": 0,
+    "request_budgets": 0
+  },
+  "sourceSHA256": "ee9730977431d4cb5478c7df82063ee6f3adeb7043aa70eac3b9e92e23e3e41c",
+  "restoredSHA256": "ee9730977431d4cb5478c7df82063ee6f3adeb7043aa70eac3b9e92e23e3e41c",
+  "migrationLedgerCount": 6,
+  "initial": "Applied 20260909_00_baseline.sql\nApplied 20260909_01_history_locks.sql\nApplied 20260909_02_birth_details.sql\nApplied 20260909_03_compatibility_invites.sql\nApplied 20260909_04_history_watermark.sql\nApplied 20260909_05_device_access.sql\nMigrations complete.\n",
+  "repeat": "Migrations complete.\n",
+  "replay": "Applied 20260909_00_baseline.sql\nApplied 20260909_01_history_locks.sql\nApplied 20260909_02_birth_details.sql\nApplied 20260909_03_compatibility_invites.sql\nApplied 20260909_04_history_watermark.sql\nApplied 20260909_05_device_access.sql\nMigrations complete.\n",
+  "readiness": "Migration ledger is current.\n",
+  "cleanup": "Both rehearsal databases dropped in finally"
+}

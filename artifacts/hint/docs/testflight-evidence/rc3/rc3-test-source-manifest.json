@@ -1,0 +1,393 @@
+{
+  "recorded": "2026-09-10T20:00:14.034487+00:00",
+  "scope": "Frozen unit/component/API tests, complete E2E fixtures and helpers, browser/test configs and release-script tests; byte comparison with workspace",
+  "algorithm": "SHA256 of sorted path NUL file-sha256 newline records",
+  "sha256": "0cbc4e88364c89c1585136a3a248f8fb4c06cb9dcb27bce9cd257e695b2f7ccc",
+  "files": [
+    {
+      "path": "artifacts/api-server/src/lib/requestContext.test.ts",
+      "sha256": "62035068657c6e11ca35ac42663ad63cd14131262911bb85b92ecf07ec26997c"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "sha256": "60d5fb385b6bd286719ec2663881b1e9b7a3f173317dc309992d67207fa0bd49"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/astrology/birthPayload.test.ts",
+      "sha256": "89ff56bd8da0120ea95178525fdec08498d05d4065e03235b7b4b14586b87437"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "sha256": "2b0f60d85d936eeb142e1190ed6f2c4c7523455a2971b95e1064da728631c127"
+    },
+    {
+      "path": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "sha256": "3b7f43afa0b73f4d25bca63ff50563c6603e71e5466b043c728d9bf2027826ac"
+    },
+    {
+      "path": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "sha256": "2b89c0c72f06fc8203f07e250e7fb949236c6d77043a7ff0f7456b3af1852d75"
+    },
+    {
+      "path": "artifacts/api-server/src/quality/migrations.integration.test.ts",
+      "sha256": "37385efed255603122452ea9a3acc5c26f046de53addfaab4a8d9d90a6fbccb2"
+    },
+    {
+      "path": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "sha256": "d767cc7d092fa94f6ba341e9117fa2a6abd631c5b7d93660d0dac5ba1ac7d2b9"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/pick-dawn.png",
+      "sha256": "d89871228ea5ead4bd56ee202e9e12e45a1b23af1f6a98d919f42c1d22b3d69f"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/pick-sea.png",
+      "sha256": "692f08df2e177478323742a14b61f42cf05b0f6881b37983c00ccba1716dfee0"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/pick-stars.png",
+      "sha256": "768790e76c7049dbb60022f5f13fd214e5b2e154e96b57737c994d6620422f8f"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/reading-1-stars.png",
+      "sha256": "951fc019ab6e6c4f0e91c9737c73a765b6cbac49e5241d5f61cdb56ad9e4c81f"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/reading-3-dawn.png",
+      "sha256": "4e0fc87c9c7aa411f3ed8cfb2d4ac70f70237b28709bcbfa9ef5a346d386338c"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/reading-5-sea.png",
+      "sha256": "d691b483d86a4f333c02eb3213d1dabde5a06fdc1f769003a7a5503b99b117ae"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/reading-7-stars.png",
+      "sha256": "a285e15e193713dae64fc5030ec6dc1460c8f09d1e9187bcfaf0de3fcf66e811"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/reading-9-dawn.png",
+      "sha256": "914eb245550ac1bd7421f250dbb4ba71191ad1d1355450886e45979e0f89dec7"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-17-pro-max/voice-ready.png",
+      "sha256": "1ea3ac5420341ec8c5aa54ec4bbd097da4cefa33b0375992d4622689b5d92955"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/pick-dawn.png",
+      "sha256": "ae3620167d3fa96a8352896557147cb5b68fa0bf5812d47626e43a4d1a393b3d"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/pick-sea.png",
+      "sha256": "1973014c3516cb94a964444d544bd49896a8454046bc22b3589be444bc8f1648"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/pick-stars.png",
+      "sha256": "f21fbe98a4b272df1234ccdf1bc0cc10c0ae1c738060a2234a3bc456269ea4c7"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/reading-1-stars.png",
+      "sha256": "d1b0f11a4dc9c1ef6c02f9dff479d569839be2b0910f15d738ea496b21c7f076"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/reading-3-dawn.png",
+      "sha256": "dbbb2f529834ca607ef574dd238ff2d03b6aef9c91df3adee26f6f1d1780ca57"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/reading-5-sea.png",
+      "sha256": "03e40e4d07f93436f9ce71e87cd14fec67611436ba58a9928bec8df090c20b56"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/reading-7-stars.png",
+      "sha256": "a0654c38090b3a57db2200d722eaa50bd87cccb733fc8d0d7a0aad37376531f4"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/reading-9-dawn.png",
+      "sha256": "6af7681a8453cb72caeaad22deafac6504179eb710c3cff53365617661da3e7e"
+    },
+    {
+      "path": "artifacts/hint/e2e/__screenshots__/iphone-se/voice-ready.png",
+      "sha256": "e24d8e122dfc4fb26c458870a941e94206f88513011afd644b1a37f1d868d892"
+    },
+    {
+      "path": "artifacts/hint/e2e/app-audit.spec.ts",
+      "sha256": "00a90b4a1f6eb4d16323962cd03b35fb5a9a448590834f4ec83fff22cc8087ca"
+    },
+    {
+      "path": "artifacts/hint/e2e/astrology.spec.ts",
+      "sha256": "6b5a592ef3140d59dd4ed41fdabd4dfa0f1831646ad6804ad37563aab182aa9c"
+    },
+    {
+      "path": "artifacts/hint/e2e/daily-history-periods.spec.ts",
+      "sha256": "3f9b60e32e50eb8bb1f849a588eb3842cbdb468df1eac3572350883d2ca54d32"
+    },
+    {
+      "path": "artifacts/hint/e2e/daily-text-layout.spec.ts",
+      "sha256": "e0fffb2cc04d81e8261e7934fb6110efbe2156883c8de4b32fb67e5cb2dc8e1c"
+    },
+    {
+      "path": "artifacts/hint/e2e/fixtures.ts",
+      "sha256": "af2c0ba69f6aa27e4ac8dd7beb02a8354ca9421d4f92a117130fcb8443af941a"
+    },
+    {
+      "path": "artifacts/hint/e2e/home-motion.spec.ts",
+      "sha256": "0f19d2ba6c6373052d6cd367b0ff52453b65731e68c3bce2858dc131f52d284b"
+    },
+    {
+      "path": "artifacts/hint/e2e/journal.spec.ts",
+      "sha256": "e9cf0052cef6aea731738969d06a8278723ebd966b05961b30a4087fd8700926"
+    },
+    {
+      "path": "artifacts/hint/e2e/locale-surface-audit.spec.ts",
+      "sha256": "d00844e22aa3e164249c7892c51c187866d096f5462f1c340c9e84c5e54604c8"
+    },
+    {
+      "path": "artifacts/hint/e2e/motion-performance.spec.ts",
+      "sha256": "9da8e124e124b41e6f3a8bf9fc0441b57591f19199f1955a994410cfe86fca82"
+    },
+    {
+      "path": "artifacts/hint/e2e/navigation-text-layout.spec.ts",
+      "sha256": "ee2ad70bb2347f2cd00478323ce1b786dc6aa5ea8188eb6e939c58f1f3b5c2e1"
+    },
+    {
+      "path": "artifacts/hint/e2e/personality-sharing.spec.ts",
+      "sha256": "399f37659633ee27b01d07db7f9c2acf17f5dae115830de5203ba1bc11dce1e1"
+    },
+    {
+      "path": "artifacts/hint/e2e/quality-locales.spec.ts",
+      "sha256": "99a9c2bec9b04ad6b11b32023eaff3fcfb437a3c2647ba2c28c9efcaec1875cb"
+    },
+    {
+      "path": "artifacts/hint/e2e/quality-recovery.spec.ts",
+      "sha256": "27ca5ff80951b4b9d5fd1e2b24d805839e48918da961dd6e1d1932d9e573029a"
+    },
+    {
+      "path": "artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+      "sha256": "0f770297edbcbcd7c04c5bdfdeeb6b728851fbd61583f6413149861f425ce939"
+    },
+    {
+      "path": "artifacts/hint/e2e/tarot-room.spec.ts",
+      "sha256": "1d6a0be0a651f1f068c73461c60e785912cd71ba0258b84dfc38abeb70ecc746"
+    },
+    {
+      "path": "artifacts/hint/e2e/touch-targets.spec.ts",
+      "sha256": "6e36486027e18b33b7eeefe7e9a7dabb082ccf4d33407054df611979ddd067a1"
+    },
+    {
+      "path": "artifacts/hint/playwright.config.ts",
+      "sha256": "ebd8acbe4ab92d2da8a2ef72af74a4c0aad9faaa4d47f957df75a221e861661f"
+    },
+    {
+      "path": "artifacts/hint/playwright.production.config.ts",
+      "sha256": "0c20e73b5d73c3ba79ba18bef6774771d2a9dd074de9bbe1532f047350fe2aa8"
+    },
+    {
+      "path": "artifacts/hint/scripts/check-native-assets.test.mjs",
+      "sha256": "a0d1dbcee920ce85a5ebc9b6addcf3244948f165ca46e89dda0a7c46df8b8d79"
+    },
+    {
+      "path": "artifacts/hint/scripts/release-config.test.mjs",
+      "sha256": "536b0286ac8d8664f85954af3b0488b71dbcac3e35572c496a0c82c65aaecb99"
+    },
+    {
+      "path": "artifacts/hint/src/components/app/accountFlows.test.tsx",
+      "sha256": "eb887e731505e0a49be37cd69c1ede2686a687fe08c9a5d49e3bb68960e5b2e2"
+    },
+    {
+      "path": "artifacts/hint/src/lib/api.test.ts",
+      "sha256": "09093ee11023ba2d7cecfded185014aadf7686fe1461f9480c71ab4111b258e5"
+    },
+    {
+      "path": "artifacts/hint/src/lib/auth.test.ts",
+      "sha256": "cbb0fa7d65bac6902d44ddac57eedfffc6e93a609e0c0c383ce3e4f6cfb75d6d"
+    },
+    {
+      "path": "artifacts/hint/src/lib/birthDetails.test.ts",
+      "sha256": "c11c6f96d52902eee1e17ef7992a852a1b061f9b8e6c3bafe02e5bc267bdfc9f"
+    },
+    {
+      "path": "artifacts/hint/src/lib/clearHistory.test.ts",
+      "sha256": "7ab249e02aa515797e55b4e10c0a54cab5cdd1ab8346cdd287a9a8c08c61b0d3"
+    },
+    {
+      "path": "artifacts/hint/src/lib/dailyReceipts.test.ts",
+      "sha256": "55a40999242f3d192f10c3c96d47f9ad1f1f80a7b2d8d2f38b95de82ce8227c9"
+    },
+    {
+      "path": "artifacts/hint/src/lib/deviceSessionCore.test.ts",
+      "sha256": "c1bdd0e4d63eb848d07ce1f5549622cc56fe936f058d203c975b16d6711d975c"
+    },
+    {
+      "path": "artifacts/hint/src/lib/feedback.test.ts",
+      "sha256": "08d6ac9beafa7e89fbcfc6fe8f8d2adeb3443a8b005481b54f802a55b75f93c4"
+    },
+    {
+      "path": "artifacts/hint/src/lib/generatedTransport.test.ts",
+      "sha256": "ed52b043152ef839e7aea988c4e1d11b971988097888d3265ab29b606e9d56a7"
+    },
+    {
+      "path": "artifacts/hint/src/lib/i18n.test.ts",
+      "sha256": "8a33d0474347d1093b84a2eecd57afe6fd4b4a27c2cedc862d065b8c9812c4d8"
+    },
+    {
+      "path": "artifacts/hint/src/lib/identity.test.ts",
+      "sha256": "557a193a34f3e704f6a9d4d255fdabb6979be5883872c872cdb5956e2f44ce8c"
+    },
+    {
+      "path": "artifacts/hint/src/lib/localProfileDestination.test.ts",
+      "sha256": "5bff47f093c1e5d1d2833f1e1c04ef251a50e24542ce165af42900b5cd8fc7a4"
+    },
+    {
+      "path": "artifacts/hint/src/lib/mobile/abortCompatibility.test.ts",
+      "sha256": "e2befe581a63655900c8964fd809e0b25841245667e04a1ec5807e66cd3bc025"
+    },
+    {
+      "path": "artifacts/hint/src/lib/mobile/appLifecycle.test.ts",
+      "sha256": "40aba6960daa698d9c55168ccab95023cd19b1a48a8ba9b3421332e68ab8fc75"
+    },
+    {
+      "path": "artifacts/hint/src/lib/mobile/deepLinks.test.ts",
+      "sha256": "3c145abf573beaa9f9c3068956f59a749df01b177e55887813d3ed29a931cf6a"
+    },
+    {
+      "path": "artifacts/hint/src/lib/motionPolicy.test.tsx",
+      "sha256": "77b44f25e9a7611442521e57a7b496f1a2ae7e3759c21a19de00ab67cc6a921c"
+    },
+    {
+      "path": "artifacts/hint/src/lib/publicUrls.test.ts",
+      "sha256": "0063742de73dfbd5915079991604238a05509652c74cf8d28dd69e5ed2badc18"
+    },
+    {
+      "path": "artifacts/hint/src/lib/readingDays.test.ts",
+      "sha256": "f618c1069d2f22ee7d27e99e926861edac97553f049c1fd9f2fda3a6badf1070"
+    },
+    {
+      "path": "artifacts/hint/src/lib/speechRecognition.test.ts",
+      "sha256": "6fbe91e1775ec4bda5cb9d855079f54b3f33582eb1970e5f93c59e5bcc4fbcd3"
+    },
+    {
+      "path": "artifacts/hint/src/lib/textDraft.test.ts",
+      "sha256": "19f304b50cc4cae01074a7f851dfd55beaa87a918def0e708c3b47bcc07208d2"
+    },
+    {
+      "path": "artifacts/hint/src/modules/ask/useAskHintChat.test.tsx",
+      "sha256": "f03f8855a46133947b1bb79bc03405c2276c5b690fc9fb0cb593a23b4e14b1dd"
+    },
+    {
+      "path": "artifacts/hint/src/modules/collection/CardCollectionView.test.tsx",
+      "sha256": "d0ebc53c0b343ae67d96e7522b48d838c6501766871d441e6fa81e7617a15609"
+    },
+    {
+      "path": "artifacts/hint/src/modules/collection/RareCardUnlock.test.tsx",
+      "sha256": "2d57820dd2cf96a8ce2ff6d73f24fa275aeb0f28130284ca4c8ba405e079c845"
+    },
+    {
+      "path": "artifacts/hint/src/modules/features/compatibilityRecovery.test.tsx",
+      "sha256": "9659caa70d4f1e01fa9e7b435be4680038996f1ff27157276be4f9c7c9d3e8cb"
+    },
+    {
+      "path": "artifacts/hint/src/modules/features/journalDraft.test.ts",
+      "sha256": "4da5b430803f7341c7a60b94c31a3b316d85f8612399f67bb75d39cf015c087b"
+    },
+    {
+      "path": "artifacts/hint/src/modules/features/personalityCopy.test.ts",
+      "sha256": "e7e7e879deef3818c4a3e49dd14eb127d1d980684d86014db9e5d7987d04d7c4"
+    },
+    {
+      "path": "artifacts/hint/src/modules/features/personalityProgress.test.ts",
+      "sha256": "a6aa4bc60268b289b2d49b570213da0bce39670a95b0a441117ad936a8aa2f95"
+    },
+    {
+      "path": "artifacts/hint/src/modules/hold/chat/components/SpeechButton.test.tsx",
+      "sha256": "d229a2135d28368853e56c0983595f47f72aad364ce1f591cb2edce31ae8800e"
+    },
+    {
+      "path": "artifacts/hint/src/modules/home/data/dailyCardCopy.test.ts",
+      "sha256": "fe94ec1684d7325979b91e86054d0e4049b55db3225241ccddfbdee3e700e1c5"
+    },
+    {
+      "path": "artifacts/hint/src/modules/home/data/dailyCardSync.test.ts",
+      "sha256": "05f55413f4b117d6697456bad5df80bed9f8ab0247b09168d44b116a4df9ced4"
+    },
+    {
+      "path": "artifacts/hint/src/modules/home/data/dailyLuckyCopy.test.tsx",
+      "sha256": "6f1b2f4027ac21ff4e8f4e75e137c40511795facb5b5e3eb12fa83c1395d9baa"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/components/DetailedTarotReading.component.test.tsx",
+      "sha256": "0b411bcd418787e8950cfd419394bc6838a2c9955ab5b050e6ec36afa18d652b"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/components/TarotRoomFlow.component.test.tsx",
+      "sha256": "f321a1e5730c08065768b5579f3a16d4e5e89e6e5b9622073bc4acc172a4b30a"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/activeTarotSession.test.ts",
+      "sha256": "43aa698ef84f38d28c838315ceeeb4b7765f6315ec4d7d4bc7a2bb47891aec9c"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/buildTarotChatContext.test.ts",
+      "sha256": "362696bfaaeaa4063c9f9a546755e2481776465697e38fbfae4dd6d5367ae932"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/pickWheelGeometry.test.ts",
+      "sha256": "5e81285a94d97909733beaadbf085876e816a9ae79c3191fcbed55013d466abe"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/readingPersistence.test.ts",
+      "sha256": "35c188c89c54202174ec3ee745c876a46182194760789833d5410028bee02904"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/receiptLayout.test.ts",
+      "sha256": "3ff1dc97350d286c31f48b80d2d8ccbe5778164e227487d10b089926d455e1ad"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/receiptPrivacy.test.ts",
+      "sha256": "28d5a97aa2f7a7c0983eac69e0cd989ea4b4e31f05926e3cc16df4f6f261d83f"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/requestDetailedTarotReading.test.ts",
+      "sha256": "ee3c63d670faece3e4149a74a0d0a392c2fdc0d316d3c530db9e949325777f27"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/requestTarotFollowUp.test.ts",
+      "sha256": "44d89c5bb8106417a5784d9749baf2850b8ca0a28a69bbe19535eb89e77554f9"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/ritualDeckOrder.test.ts",
+      "sha256": "b5c2dba486eaad8d915bcf13cc37449d56e300cc67e0742f53db6227e88e56ac"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/ritualFlowMachine.test.ts",
+      "sha256": "2fe264d7fb6ed1ccc9f1193fe1767232306d6736ad8c272d14c0ad5c72567a13"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/selectCards.test.ts",
+      "sha256": "88f0ef9278c54ab339567b340107ad73b08c355a6ba47068a421c3d66082c964"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/shareReceipt.test.ts",
+      "sha256": "13eda34b222f323c0204fa9594303a9063584fb2ef4a2f12ddd50de58f173097"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/useTarotReducedMotion.test.ts",
+      "sha256": "7ec1ba43cdeecaf2a5f050958d8f045b1167745f3c4a5f5c324bf425e6c7e8e1"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/washPhysics.test.ts",
+      "sha256": "679956a2e4f08a8ce98c61ecc9fcf93b6ae12c04b288f51b922fe9187565c82f"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/washRitualMachine.test.ts",
+      "sha256": "99e07b303dca5fb91e1af520463bf21b28f96edba1a292ce42d7966220afd0b1"
+    },
+    {
+      "path": "artifacts/hint/src/shared/tarot/cardCollection.test.ts",
+      "sha256": "afb629f61c11654ceed145a34d0ec15e060d9d15f065fb3df93cf1f30887e530"
+    },
+    {
+      "path": "artifacts/hint/vitest.config.ts",
+      "sha256": "a0d34d556019402c188767daf79a6ec01bf67a4a40e9972343af5c1f8e0c66d4"
+    }
+  ],
+  "workspaceMismatches": []
+}

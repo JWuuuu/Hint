@@ -4,6 +4,12 @@ import { ACCENT, GLASS } from "../hold/atmosphere";
 import { AppScreen, GlassPanel, ScreenHeader, SectionLabel } from "../../components/app/AppChrome";
 import { CONTACT_EMAIL } from "../../components/LegalNotice";
 import { useLanguage } from "../../lib/i18n";
+import { RELEASE_COPY } from "../../lib/releaseCopy";
+
+function useLegalLanguage() {
+  const { t, language } = useLanguage();
+  return { t: (key: string) => RELEASE_COPY[language][key] ?? t(key) };
+}
 
 function LegalText({ children }: { children: string }) {
   return (
@@ -27,7 +33,7 @@ function LegalList({ items }: { items: string[] }) {
 }
 
 function LegalLinks() {
-  const { t } = useLanguage();
+  const { t } = useLegalLanguage();
   return (
     <div className="mt-6 flex flex-wrap gap-2">
       {[
@@ -40,7 +46,7 @@ function LegalLinks() {
         <Link
           key={item.href}
           href={item.href}
-          className="inline-flex h-9 items-center justify-center rounded-[8px] px-3 font-sans text-[12px] transition-opacity hover:opacity-80"
+          className="inline-flex min-h-11 items-center justify-center rounded-[8px] px-3 font-sans text-[12px] transition-opacity hover:opacity-80"
           style={{
             background: "rgba(255,255,255,0.045)",
             border: `1px solid ${GLASS.border}`,
@@ -55,7 +61,7 @@ function LegalLinks() {
 }
 
 function DisclaimerPanel() {
-  const { t } = useLanguage();
+  const { t } = useLegalLanguage();
   return (
     <GlassPanel hero className="mb-6">
       <p className="font-serif text-[16px] leading-snug" style={{ color: GLASS.text }}>
@@ -66,7 +72,7 @@ function DisclaimerPanel() {
 }
 
 export function PrivacyPolicyView() {
-  const { t } = useLanguage();
+  const { t } = useLegalLanguage();
   return (
     <AppScreen>
       <ScreenHeader
@@ -74,7 +80,7 @@ export function PrivacyPolicyView() {
         title={t("me.privacyPolicy")}
         subtitle={t("legal.privacySubtitle")}
         sigil={ShieldCheck}
-        backHref="/profile"
+        backHref="/app/profile"
         backLabel={t("nav.me")}
       />
       <DisclaimerPanel />
@@ -99,7 +105,7 @@ export function PrivacyPolicyView() {
 }
 
 export function AboutView() {
-  const { t } = useLanguage();
+  const { t } = useLegalLanguage();
   return (
     <AppScreen>
       <ScreenHeader
@@ -107,7 +113,7 @@ export function AboutView() {
         title={t("legal.aboutTitle")}
         subtitle={t("legal.aboutSubtitle")}
         sigil={Info}
-        backHref="/profile"
+        backHref="/app/profile"
         backLabel={t("nav.me")}
       />
       <DisclaimerPanel />
@@ -132,7 +138,7 @@ export function AboutView() {
 }
 
 export function TermsView() {
-  const { t } = useLanguage();
+  const { t } = useLegalLanguage();
   return (
     <AppScreen>
       <ScreenHeader
@@ -140,7 +146,7 @@ export function TermsView() {
         title={t("me.terms")}
         subtitle={t("legal.termsSubtitle")}
         sigil={ScrollText}
-        backHref="/profile"
+        backHref="/app/profile"
         backLabel={t("nav.me")}
       />
       <DisclaimerPanel />
@@ -165,7 +171,7 @@ export function TermsView() {
 }
 
 export function DisclaimerView() {
-  const { t } = useLanguage();
+  const { t } = useLegalLanguage();
   return (
     <AppScreen>
       <ScreenHeader
@@ -173,7 +179,7 @@ export function DisclaimerView() {
         title={t("legal.disclaimerTitle")}
         subtitle={t("legal.disclaimerSubtitle")}
         sigil={ShieldCheck}
-        backHref="/profile"
+        backHref="/app/profile"
         backLabel={t("nav.me")}
       />
       <DisclaimerPanel />
@@ -198,7 +204,7 @@ export function DisclaimerView() {
 }
 
 export function ContactView() {
-  const { t } = useLanguage();
+  const { t } = useLegalLanguage();
   return (
     <AppScreen>
       <ScreenHeader
@@ -206,7 +212,7 @@ export function ContactView() {
         title={t("me.contact")}
         subtitle={t("legal.contactSubtitle")}
         sigil={Mail}
-        backHref="/profile"
+        backHref="/app/profile"
         backLabel={t("nav.me")}
       />
       <DisclaimerPanel />

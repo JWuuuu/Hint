@@ -11,8 +11,9 @@ services:
     name: mydailyhint-api
     runtime: node
     buildCommand: corepack enable && corepack prepare pnpm@11.5.0 --activate && pnpm install --frozen-lockfile && pnpm run build:api
-    preDeployCommand: pnpm run db:push
+    preDeployCommand: pnpm --filter @workspace/db run migrate
     startCommand: pnpm run start:api
+    healthCheckPath: /api/readyz
     envVars:
       - key: NODE_ENV
         value: production

@@ -1,0 +1,2477 @@
+[
+  {
+    "file": "404.html",
+    "sha256": "b9c3fa58da6e2fe94198c1f76afcdc982ae00bd6d123eab26e4a456ff3468934",
+    "bytes": 1892
+  },
+  {
+    "file": "assets/AstrologyView-B8F6INz1.js",
+    "sha256": "80ee8378d65117cebf700da5149ce0def4ccaa4f87529be586ebc1cde5518d43",
+    "bytes": 36598
+  },
+  {
+    "file": "assets/CardSigil-DJjSxPic.js",
+    "sha256": "b924aa23b626bb8c4b65931b6b0976cf9c0cfbbd9a0b550827e2198784bf380d",
+    "bytes": 98017
+  },
+  {
+    "file": "assets/CompatibilityView-BGUld58h.js",
+    "sha256": "f28b92bdcb0905914cf4a88f887a5594dd522224ecefcfd2549a225b34c8614c",
+    "bytes": 21391
+  },
+  {
+    "file": "assets/CompatibilityView-e9Xy6kEZ.css",
+    "sha256": "3732a95f4b38135235e666a2657141bdfd16bff2f36bc25cec87000c52420952",
+    "bytes": 351
+  },
+  {
+    "file": "assets/DailyPullView-BxvZs4E6.js",
+    "sha256": "ff5098a28587811f0d709ea2c7f0ce450bcb654f1fef79ee4cfdeea5d77f37ce",
+    "bytes": 63952
+  },
+  {
+    "file": "assets/DreamView-DYD7C5GE.js",
+    "sha256": "d7b3ffd8ea04fd12e4a9566f69a60e3a066bf7828527886d1f530233ee50cfd6",
+    "bytes": 3423
+  },
+  {
+    "file": "assets/HomeDashboard-CJdy0401.js",
+    "sha256": "4eaac21c55355e819fcddc7bc214d140d2a38cce41b01fbfb9eda57296d0f1b1",
+    "bytes": 92975
+  },
+  {
+    "file": "assets/JournalView-D-kDQIKp.css",
+    "sha256": "680f11d590a9199a879a819d74b7f75e05925dcdfe0d281d62680631d991613b",
+    "bytes": 2313
+  },
+  {
+    "file": "assets/JournalView-DJL_d0nl.js",
+    "sha256": "f0879beb375143f8f26ebf39adcb12da79a4e3478c6632e41b4d47110da319a4",
+    "bytes": 8131
+  },
+  {
+    "file": "assets/PersonalitiesView-CMrQilzO.js",
+    "sha256": "7cb207d1e3499c880b7e6fa0714920a58f9cc0067fda22449680c3e928c823a9",
+    "bytes": 53214
+  },
+  {
+    "file": "assets/ReadingsView-D-OUgL3b.js",
+    "sha256": "a9cfdb1312a05db36ed8ba057d995c9ef86744697dce22d061b29117763792b9",
+    "bytes": 22248
+  },
+  {
+    "file": "assets/SafeImage-BGoNXuBF.js",
+    "sha256": "ade9c3a18ecb99fe3fedb2c09bf8bfa1b192f3fd4b6ec5be9fb7cd349b0d4927",
+    "bytes": 5530
+  },
+  {
+    "file": "assets/askHistory-DKpxe5QV.js",
+    "sha256": "407be3714fb244b05ef6f59a43f84ccd3c3b6fc8e6641496b0031e304b98dbd2",
+    "bytes": 1022
+  },
+  {
+    "file": "assets/bookmark-t-E87Y4P.js",
+    "sha256": "58ca31206c2bb89828c3ff6405ac964effb2e450d2c4c3132928c1b72f778337",
+    "bytes": 164
+  },
+  {
+    "file": "assets/browser-BQfiNOCZ.js",
+    "sha256": "fbfb32ad7bed484e558240d0ca2a9e658ca9aac26db4b28adaf616ef3fa8c8a1",
+    "bytes": 25777
+  },
+  {
+    "file": "assets/cardCollection-ML2h4Fic.js",
+    "sha256": "bbc7c764ca1c9908c7a1690646ab2c74fb6e0656f6b9ab89ab14e932ce32d0ad",
+    "bytes": 3683
+  },
+  {
+    "file": "assets/chevron-left-C0QIJLIA.js",
+    "sha256": "a041fd135f9dbf49c79d7923166a615ded6a60f5e566ffc873ab4915ac0ec1af",
+    "bytes": 131
+  },
+  {
+    "file": "assets/chevron-right-CrUebMCd.js",
+    "sha256": "4e4e062a76194bd73093bc559066ada3074594485f5100cde7b15d45382f844a",
+    "bytes": 131
+  },
+  {
+    "file": "assets/clearHistory-DjsqSLex.js",
+    "sha256": "228d5c3971935c5b97c99a6f079f5a7243f55c1697c15fea7060cf4f26f541bb",
+    "bytes": 2278
+  },
+  {
+    "file": "assets/createHiddenDeck-DUkOmOWN.js",
+    "sha256": "c3dc4dc2a02124b3ba23059a01567a0607b47570c2ae2b5f3921e28f4e424019",
+    "bytes": 2918
+  },
+  {
+    "file": "assets/index-B4-GK9aE.js",
+    "sha256": "6ed254bbd05ebabf3ca20c425da4041c435f6169ef6efb63dbed516ec93b0652",
+    "bytes": 354
+  },
+  {
+    "file": "assets/index-BE1o5Szv.js",
+    "sha256": "d4a36d674d77c4c71eabc5d59194d683c4157fc799c32f5f69197a1fb28f9352",
+    "bytes": 13638
+  },
+  {
+    "file": "assets/index-BcjhVT2C.js",
+    "sha256": "6b54f2a78e3adeffbb47759eea67acbbe87cc4818e81a52c8a78ad6e6a65e5c6",
+    "bytes": 16587
+  },
+  {
+    "file": "assets/index-BqTqKqu2.js",
+    "sha256": "3ec933de16fd3fa9cf82e6a61762bbfcadfdab096dd2737614ab4a18871783d3",
+    "bytes": 15699
+  },
+  {
+    "file": "assets/index-BuDgHwm3.css",
+    "sha256": "224eb4cf334b6a4951e34f3f2049554c04e5971340c1991da9c2f08662c5ffd2",
+    "bytes": 8290
+  },
+  {
+    "file": "assets/index-BzMoxd1T.css",
+    "sha256": "4de15444309e44884cda512e2f0edf18d7e90e3036e00411d5673adee306b339",
+    "bytes": 299310
+  },
+  {
+    "file": "assets/index-C1Rv_WPd.js",
+    "sha256": "aaa80cdaf3a765e324103888de53272b196e75a4b75344d40aa14a6950b26c98",
+    "bytes": 628
+  },
+  {
+    "file": "assets/index-CWNE9Dd5.css",
+    "sha256": "151b8c3f821c5b68b7f7c091292efc35fec06e91da8017121590e6395507753b",
+    "bytes": 14505
+  },
+  {
+    "file": "assets/index-CiIarSlK.css",
+    "sha256": "d68fe475c1c356b4cf5aa7deb9bcf1b904d7a31cca056bedb9a6fa45e3cb501b",
+    "bytes": 12284
+  },
+  {
+    "file": "assets/index-CsGna9AZ.js",
+    "sha256": "a695dae626540d6ddce0ea61d4a10ea24dcfdd02fb2860db6801a19fda638ed5",
+    "bytes": 67784
+  },
+  {
+    "file": "assets/index-Cx2fceDV.css",
+    "sha256": "355d1c8f3fc4523a9201315dfb8ce400c32dcda5b4c645e45db05d8b9a815de0",
+    "bytes": 7269
+  },
+  {
+    "file": "assets/index-DDrozjwY.js",
+    "sha256": "7dcfdb09172f8ae4a4b558814df8b244fde1eaa22e4153b5f39642e6fbb9bad8",
+    "bytes": 8259
+  },
+  {
+    "file": "assets/index-DLUQ-FVp.js",
+    "sha256": "8d4d1fc4053c90f26fc4b87dbcdde30ea5996bbb75e383742ee9674b42b8692b",
+    "bytes": 205596
+  },
+  {
+    "file": "assets/index-DXGGezzr.js",
+    "sha256": "0b2541bee476d502f3854773219e95e8d4e43848a8acb599164d193142c5bba2",
+    "bytes": 988585
+  },
+  {
+    "file": "assets/index-D__bQnnt.js",
+    "sha256": "a7437a6f24e5c42125905e03807e1143c94dc27720c7243e631ff5f2ca8a7aee",
+    "bytes": 8323
+  },
+  {
+    "file": "assets/index-Dj8mb3nm.js",
+    "sha256": "c5292b0cf9da3a5475da0029fb899cf1d2d91e9c2e75ac786c65714195928323",
+    "bytes": 348
+  },
+  {
+    "file": "assets/index-FE7S7lEA.js",
+    "sha256": "c767760f92365b542a57efce85fe337d8d46da1161139e6d5729844d2676fb37",
+    "bytes": 15015
+  },
+  {
+    "file": "assets/index-Uh2upgAX.js",
+    "sha256": "f415dbc8d67246d739d88529515e56bc85567f7bafca6e25bfe92cb8ea6f98e2",
+    "bytes": 1483
+  },
+  {
+    "file": "assets/localDailyReadings-Bu5AfsOw.js",
+    "sha256": "30e4f358dc7f4e8304691b1dc33bd54f55fc590f89160e2ab0b0c5b09da80fc6",
+    "bytes": 1390
+  },
+  {
+    "file": "assets/localRitualProgress-SOLcV4u-.js",
+    "sha256": "90cbb4ef09b5782917335a4e8dcb41d3739e106ea4352c05c57f3429e1bf05ff",
+    "bytes": 2035
+  },
+  {
+    "file": "assets/localTarotReadings-Bl31Z5HP.js",
+    "sha256": "9f99677d545f210fdd1c7a03e76ae2fd93d3687700b692788ad7c9cd47a76cac",
+    "bytes": 156790
+  },
+  {
+    "file": "assets/lock-CEp_daH3.js",
+    "sha256": "e6bb72ad6b27d023cfdc3caf3843f9158c77752ba643c995580ff8f61674bf10",
+    "bytes": 202
+  },
+  {
+    "file": "assets/message-circle-CPKZJJBi.js",
+    "sha256": "cdff3ca727203427c8552f89900b1349e93114f44e14a3827ed931ddd5d45191",
+    "bytes": 242
+  },
+  {
+    "file": "assets/moon-Ba8Lzfgo.js",
+    "sha256": "2749f66119ba98326f695513f189b94b031d793e49fd7c2ebff8294103bfa288",
+    "bytes": 218
+  },
+  {
+    "file": "assets/receiptLayout-DuXRXx4k.js",
+    "sha256": "2333e9d209548568c11d51f827625ffb8fdd29c4d78fa1a2e0257da0b7eabfde",
+    "bytes": 1343
+  },
+  {
+    "file": "assets/relationshipContext-BTXxCJ3e.css",
+    "sha256": "2d1359ed52fcee812b7b202758753872da2a2e6e04f9dd9d9582987bfa22dbf7",
+    "bytes": 14975
+  },
+  {
+    "file": "assets/relationshipContext-_AQvDyHI.js",
+    "sha256": "74f08ae210455d3db9d2ffbedc22ebed6b1ae8aa7222239db05c918b4cb3ce99",
+    "bytes": 112431
+  },
+  {
+    "file": "assets/roomResumeCopy-B1bDJCUN.js",
+    "sha256": "e289e51269cdeb740a53e1b3c4d5a99a4d2df0611a6285d451ccf1fc895ff92f",
+    "bytes": 1523
+  },
+  {
+    "file": "assets/roomVisuals-ASwVwKUV.js",
+    "sha256": "4cb562d89dbf13e070cd827f6716e8562ab5510dadd1c039106cbe5de1390b43",
+    "bytes": 2440
+  },
+  {
+    "file": "assets/search-Do9mZi2b.js",
+    "sha256": "fb4bb9bca8baf8df7f69e6485179674454fdf54505f30026e4cfa2e9143a754d",
+    "bytes": 170
+  },
+  {
+    "file": "assets/send-horizontal-7S_IBysk.js",
+    "sha256": "3312b1662b863df82ac64ce942f2864442a5e40c0bb377d583af2faf90d77a0a",
+    "bytes": 382
+  },
+  {
+    "file": "assets/shareReceipt-aHo8HG-H.js",
+    "sha256": "58dc91de2407627a9f5b8e1ab5e530031fd84eb8e2c6d3d1ef9ccd8df4db158b",
+    "bytes": 7102
+  },
+  {
+    "file": "assets/sigils-CU-E9MQe.js",
+    "sha256": "4704b14b19166a8f60a90f9f57c1fdbccb407f731dccb0d65923a5b18e92ec83",
+    "bytes": 5873
+  },
+  {
+    "file": "assets/textDraft-DE4Rvya_.js",
+    "sha256": "24984c11dd3deceb15c36f55df27b60c048f96e19b6f349222dee35a4bc9aee6",
+    "bytes": 574
+  },
+  {
+    "file": "assets/utils-BFPDwh2M.js",
+    "sha256": "99cd873bfd7d2eb090bd631a4e49ba5f537e2efda71135413b8601906ba9c45b",
+    "bytes": 2113
+  },
+  {
+    "file": "assets/web-C7gghSWf.js",
+    "sha256": "d5e4628de5e3f36a66031340edfd9c999ee7a3b7f0a6076b0a1f341fc018892b",
+    "bytes": 990
+  },
+  {
+    "file": "assets/web-COVpsDkM.js",
+    "sha256": "5ea471a7bfe89b74296b13be23b04db5aa01bee546ccc50f2504ad07f3e9bf6d",
+    "bytes": 8768
+  },
+  {
+    "file": "assets/web-CgP_sRbs.js",
+    "sha256": "92223795c29cd10ae90e562b0f07ce0bf082ff4d62a2dc9e8875251f6e10d6f4",
+    "bytes": 369
+  },
+  {
+    "file": "assets/web-DPQI_b7i.js",
+    "sha256": "295cca26894dc6a4a53affdf831051acef9cdae8865f34efec33761a06e48d88",
+    "bytes": 850
+  },
+  {
+    "file": "assets/wind-Bw3TVclJ.js",
+    "sha256": "4f43625f2a884c101230b2ec9be32e86a4529aeba0e0dbc86618ffa6ea3c63ce",
+    "bytes": 247
+  },
+  {
+    "file": "brand/hint-card-logo.png",
+    "sha256": "1d979200597648d73ad750ba37baa9e4a4409443fce5eb7e1d8b0135d8911e54",
+    "bytes": 893784
+  },
+  {
+    "file": "brand/hint-cardmark-logo.png",
+    "sha256": "3325c8bdb0064c179cae7625c57dd6c52e0320637f4ccc600d761e0afe599c22",
+    "bytes": 241170
+  },
+  {
+    "file": "brand/hint-icon-180.png",
+    "sha256": "dc64f4dd4f95fc49caae363111dd6f576c72f4c1423ae495962bacde69c64bd6",
+    "bytes": 24504
+  },
+  {
+    "file": "brand/hint-icon-64.png",
+    "sha256": "7c0c9d3000d33354b10e1cfebef31ea6ffbd70a07a17e8a302c400ce02db37df",
+    "bytes": 4065
+  },
+  {
+    "file": "brand/hint-logo.png",
+    "sha256": "3325c8bdb0064c179cae7625c57dd6c52e0320637f4ccc600d761e0afe599c22",
+    "bytes": 241170
+  },
+  {
+    "file": "brand/tarot/card-backs/00_Hint_Sky_Deck/01_Sky_Deck_Celestial_Navy_Gold.png",
+    "sha256": "c23577ec1f9eac21e110b2bee4922eb1755c9bb49335b8490a05675bc7c6b39b",
+    "bytes": 2409661
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/01_Star_Orbit_Realm_Navy_Gold.png",
+    "sha256": "eb6531d17dbce4bf09fd49fc645edb7dc4b5906776cc2e7496be16166c60abc1",
+    "bytes": 2334978
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/02_Moon_Tide_Lavender_Gold.png",
+    "sha256": "664daa786f71f66416b9fc3ddd38c15c3efe6771d0c7b2289ebc98906b71cdf8",
+    "bytes": 2088545
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/03_Flame_Heart_Burgundy_Gold.png",
+    "sha256": "e13d9da9f5b7dd1d46e4be8479252fb0d7895eb9bbd8a8417fd8062509513402",
+    "bytes": 2128312
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/04_Earth_Breath_Sage_Gold.png",
+    "sha256": "62f93a5e9a2fe0696a60a8f14a5044325d2727f84609af7f20bb9b84a3ad1fa4",
+    "bytes": 2532231
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/05_Dawn_Gate_Ivory_Gold.png",
+    "sha256": "396a972341b0aeaff70e0b78670b3043ffa74b4bb87c5e742e44e8f36f35e4bd",
+    "bytes": 1998650
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/06_Fate_Wheel_Dark_Plum_Rose_Gold.png",
+    "sha256": "88e0a649d45cdd84014620331a024e53f0311be7c59245ea3774802b223cc5ee",
+    "bytes": 1690208
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/07_Guiding_Star_Mist_Blue_Gold.png",
+    "sha256": "bf6bba6a340d59a242b71b122a11391cf4c9c4268435631ddbe22bdccbc3143b",
+    "bytes": 1991131
+  },
+  {
+    "file": "brand/tarot/card-backs/01_Final_Eight_Set/08_Infinite_Realm_Black_Gold.png",
+    "sha256": "0737608b595efa057b98e98c6ec7c8bf2a70ee20d3cf36ccfaa84bb374519f7c",
+    "bytes": 1888708
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/01_Star_Orbit_Realm_Rich_Navy_Gold.png",
+    "sha256": "0c124b1f6e5f6b9306f0c0b770d05ae5dd0387ecb8c838ccf7d42abdc18208ac",
+    "bytes": 2464463
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/02_Infinite_Realm_Rich_Black_Gold.png",
+    "sha256": "93b0438b803495d2c5c20fac50162d6c39f3beeecd4d57f321f2468b49784eb3",
+    "bytes": 2520027
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/03_Earth_Relic_Rich_Sage_Gold.png",
+    "sha256": "9770e39dcf3bc87c3202537ec4ec0be3f7804b057deb825edb38e1a663e30382",
+    "bytes": 3303894
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/04_Flame_Heart_Rich_Burgundy_Gold.png",
+    "sha256": "cc309651dd3da106969a6ff79ff5ff001cdb228cb0f4394f3cc7107ffcd9cffa",
+    "bytes": 2670892
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/05_Guiding_Star_Rich_Sky_Blue_Gold.png",
+    "sha256": "5f09dd2ed893f1114612a8a5320c43b952b5c38eb84240c22f59b29da1ce69f8",
+    "bytes": 3161212
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/06_Dawn_Gate_Rich_Ivory_Gold.png",
+    "sha256": "4d0459c784b05d7604b4382b113c62548b606cbe3a4cf5e547077d01fa80c7d6",
+    "bytes": 3015724
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/07_Fate_Wheel_Rich_Purple_Rose_Gold.png",
+    "sha256": "c0f106bf43f63a8138e3028927f26d5de329845723d4380c79bd3c9c39b92f87",
+    "bytes": 2951532
+  },
+  {
+    "file": "brand/tarot/card-backs/02_Premium_Refined/08_Moon_Tide_Rich_Purple_Gold.png",
+    "sha256": "2c23a3d5c3646ebb6fab00f69095e0e95bc4faefd7eb5f03b04883db8d39bdfd",
+    "bytes": 2911149
+  },
+  {
+    "file": "brand/tarot/card-backs/03_Minimal_Balanced/01_Minimal_Ivory_Gold.png",
+    "sha256": "84f187c436e40e9a8923f39fef30eec67272dea636230a95d9b2f67a6efe782d",
+    "bytes": 2090376
+  },
+  {
+    "file": "brand/tarot/card-backs/03_Minimal_Balanced/02_Minimal_Moon_Lavender_Gold.png",
+    "sha256": "d9a324087fd48fc82399f7aef062fe8b79fbbc861a0728fa30739ef0f213ab12",
+    "bytes": 2438563
+  },
+  {
+    "file": "brand/tarot/card-backs/03_Minimal_Balanced/03_Minimal_Earth_Sage_Gold.png",
+    "sha256": "3b6e819328854f60731176ba7d38d6b656d9d1d8cabc7c90c9b65adccda4eee4",
+    "bytes": 2973754
+  },
+  {
+    "file": "brand/tarot/card-backs/03_Minimal_Balanced/04_Minimal_Sky_Periwinkle_Gold.png",
+    "sha256": "4d31da17531b37c5734c76cc6265004a8889fc3698b9c65c8d1fe52e8b64c55b",
+    "bytes": 1781440
+  },
+  {
+    "file": "brand/tarot/card-backs/04_Elemental_Series/01_Water_Element_Teal_Gold.png",
+    "sha256": "3ae3d05d607794eddd824636d7e2eab8ed200fd3771c93fadc38074aadefd1ec",
+    "bytes": 3219737
+  },
+  {
+    "file": "brand/tarot/card-backs/04_Elemental_Series/02_Fire_Element_Burgundy_Gold.png",
+    "sha256": "0e651c4da0745787799dd871a0c56df862b1de1ebf9640cb1bb9295ca333abae",
+    "bytes": 3084590
+  },
+  {
+    "file": "brand/tarot/card-backs/04_Elemental_Series/03_Earth_Element_Sage_Gold.png",
+    "sha256": "7fcc45dab1dc13b89bbbd2b87228f121788cde0f0c4d2e2bb929c3da4d50cbd0",
+    "bytes": 3271042
+  },
+  {
+    "file": "brand/tarot/card-backs/04_Elemental_Series/04_Air_Element_Mist_Blue_Gold.png",
+    "sha256": "29b0ea0b9c08a6fa38fcdb048a5b24cc14b0e7902b097ef1f05a754193d73193",
+    "bytes": 2948659
+  },
+  {
+    "file": "brand/tarot/card-backs/05_Luxury_Concepts/01_Celestial_Compass_Light_Blue_Gold.png",
+    "sha256": "96af1e36fafc77fca542b70ec01413552c1119da1f7a2e653987f00cecfac64c",
+    "bytes": 3469306
+  },
+  {
+    "file": "brand/tarot/card-backs/05_Luxury_Concepts/02_Radiant_Portal_Ivory_Gold.png",
+    "sha256": "cd98caf21205980ecb8a9fb0efe171d9b9ccc1f52b3c4dbd002c2dad9c17786c",
+    "bytes": 2713399
+  },
+  {
+    "file": "brand/tarot/card-backs/05_Luxury_Concepts/03_Earth_Crystal_Mountain_Green_Gold.png",
+    "sha256": "d8b109157de52add64751390b4a4146cd1a97427ae8b07f509a588ee99ca7706",
+    "bytes": 3193979
+  },
+  {
+    "file": "brand/tarot/card-backs/05_Luxury_Concepts/04_Flame_Sigil_Burgundy_Gold.png",
+    "sha256": "b1f3022e0ec62e78d936bb45c8d02081340026f730c3a5dc7e6daf7c78e66f56",
+    "bytes": 2479417
+  },
+  {
+    "file": "brand/tarot/card-backs/05_Luxury_Concepts/05_Moonlit_Water_Purple_Gold.png",
+    "sha256": "27c2d24e334476fc262d3bef05e48e2c26c2799cbdbc2a7e0e6c6af6f2ce003c",
+    "bytes": 2766077
+  },
+  {
+    "file": "brand/tarot/card-backs/05_Luxury_Concepts/06_Deep_Space_Orbit_Black_Gold.png",
+    "sha256": "da39b6d681124eb8f53768769d1dad4253ff1d31c540349687d1237c3b43870c",
+    "bytes": 2488008
+  },
+  {
+    "file": "brand/tarot/card-backs/06_Early_Zodiac_And_Specials/01_Sagittarius_Early_Purple_Gold.png",
+    "sha256": "93b43d41abc4a57642375b4ec255113b957ec3c49a087cf80dcbd29a6ee7ced0",
+    "bytes": 2636961
+  },
+  {
+    "file": "brand/tarot/card-backs/06_Early_Zodiac_And_Specials/02_Virgo_Early_Sage_Gold.png",
+    "sha256": "0afece82a269afcc0ead951863d6fb29343dcf7a833cf35438d9a408bdcabdae",
+    "bytes": 2788616
+  },
+  {
+    "file": "brand/tarot/card-backs/06_Early_Zodiac_And_Specials/03_Aquarius_Early_Blue_Gold.png",
+    "sha256": "0d089874112c0c69ebfb0ab96d791506e0cc463afbfd1d8708cef4e3861e5667",
+    "bytes": 2557316
+  },
+  {
+    "file": "brand/tarot/card-backs/06_Early_Zodiac_And_Specials/04_Dark_Lilac_Floral_Minimal.png",
+    "sha256": "2524e4ee5eba272ba4e59adb2ff69b900aa5b569e41eaabdc3b615b212fa527b",
+    "bytes": 2485744
+  },
+  {
+    "file": "brand/tarot/card-backs/06_Early_Zodiac_And_Specials/05_Ivory_Botanical_Minimal.png",
+    "sha256": "35f26a7780b143d01c5638d69a98df2b20b4663570352db1d6e3314119f050c9",
+    "bytes": 2354566
+  },
+  {
+    "file": "brand/tarot/card-backs/06_Early_Zodiac_And_Specials/06_Dusty_Rose_Floral_Minimal.png",
+    "sha256": "1252bfa76cf27dc49b76a32e004aa757fbd61672a3b652f69e9cf803697febc1",
+    "bytes": 2387912
+  },
+  {
+    "file": "brand/tarot/card-backs/06_Early_Zodiac_And_Specials/07_Ornate_Pink_Floral_Star.png",
+    "sha256": "2682bad0777c69ec0f2a5dbbff27b758bb0e576083ba06a555b24cb6e296030d",
+    "bytes": 3719340
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/01_Aries_Ram_Fire_Swirls.png",
+    "sha256": "54bb692015e83016e9dbef988b690c005e69db74aaa3eac08ca5c903740af614",
+    "bytes": 3042915
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/02_Taurus_Horns_Botanical_Green_Gold.png",
+    "sha256": "800e8a28be8ff4428dad6e05955a5ffe0dda9ec8f851210039b09ce712b72faf",
+    "bytes": 3103481
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/03_Gemini_Twin_Air_Navy_Gold.png",
+    "sha256": "67f67b360979175a2d23d59e0c85ef5ec2036e591cf408f49b69c40c731ccf29",
+    "bytes": 3121586
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/04_Cancer_Shell_Water_Teal_Gold.png",
+    "sha256": "b8a2607c9f79a4a05735cf12d437e3d7381f0237463bc07612dcd42c058c592b",
+    "bytes": 3022546
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/05_Leo_Solar_Lion_Bronze_Gold.png",
+    "sha256": "705b0874e0580fa97c7377eff8c4d4f74e6d30dea407e95c7fa3c117d7d56f37",
+    "bytes": 3035855
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/06_Virgo_Wheat_Sage_Gold.png",
+    "sha256": "b3a616aba9a1fd09481cd15de05046f078e1dea50fdf21c2bea5082ceae75575",
+    "bytes": 3312294
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/07_Libra_Scales_Plumberry_Gold.png",
+    "sha256": "509a753f29bdb19bf34604595a9841cc28e8d8d1822f8f5812bd6f42caab342d",
+    "bytes": 3127490
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/08_Scorpio_Claws_Shadow_Plum_Gold.png",
+    "sha256": "7969f9d2f327187afe04b491f61cf3b0958d5feddebfa97d94f5c17370b533c5",
+    "bytes": 3087415
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/09_Sagittarius_Bow_Arrow_Burgundy_Gold.png",
+    "sha256": "2486be9bdef4bce1b1353342f8bd737d479ba09922a4921d8bbdf09efcbc0e72",
+    "bytes": 2908398
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/10_Capricorn_Sea_Goat_Mountain_Gold.png",
+    "sha256": "d83fe2897afecf80fc8440a2d062e494fcf2fae743483b6a7674431e659e594c",
+    "bytes": 3151504
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/11_Aquarius_Waterbearer_Teal_Gold.png",
+    "sha256": "56b229b5f834eb9d4f84e47e15b34d2faba3867d9b65d62925349f533d5cd96d",
+    "bytes": 3006099
+  },
+  {
+    "file": "brand/tarot/card-backs/07_Zodiac_Set_A_Detailed/12_Pisces_Twin_Fish_Navy_Gold.png",
+    "sha256": "70be02cf3d2cb3a0825e01bbbc178a5fd05aa5614f99f1b0c4ace166cb9f7e45",
+    "bytes": 3117929
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/01_Aries_Ram_Fire_Minimal.png",
+    "sha256": "6d7b65e3b1b2e8eff85897ca3ca9fecf2f86f6dca38867cb8109a1aba364b38e",
+    "bytes": 2956654
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/02_Taurus_Horns_Sage_Minimal.png",
+    "sha256": "6ff4d32cbfd3fff97c6ed68da0b1efeb87e7dad7ff25195c2821a1be6134c3cf",
+    "bytes": 3255788
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/03_Gemini_Twin_Veil_Minimal.png",
+    "sha256": "79176d25fae6d3098234b270622f69b4130efebad775c6b5e394cb79aa287820",
+    "bytes": 3256183
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/04_Cancer_Shell_Tide_Minimal.png",
+    "sha256": "ac826c7f3af503a1c3e36978aa97c0dff512850b289f81da4d20108c32d2979b",
+    "bytes": 3106657
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/05_Leo_Sunburst_Minimal.png",
+    "sha256": "9fc1c98995a6ce7ba8f5b5e8979e9384a0d7a9a8e9ab583fa88b44320a6fd983",
+    "bytes": 3148436
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/06_Virgo_Wheat_Minimal.png",
+    "sha256": "258baa80673c851b76d5c70f86718cbc7a872aa8769909d89b566c3fcb5cbd11",
+    "bytes": 3527265
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/07_Libra_Violet_Balance_Minimal.png",
+    "sha256": "da0b5870ac16e313425d19db21b9ee9817e6fe75896dfb41950132a07d8d0430",
+    "bytes": 3424179
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/08_Scorpio_Claws_Dark_Minimal.png",
+    "sha256": "6adec4c6c9c641df16f9c1229c4d98883024fb7170c1010d0b84284239e4999d",
+    "bytes": 3229981
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/09_Sagittarius_Pink_Archer_Minimal.png",
+    "sha256": "f967dbd855a32c587a224f05aea919e499041bbbe6580e3c7bda0b1fb18fe9af",
+    "bytes": 3246750
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/10_Capricorn_Goat_Horns_Minimal.png",
+    "sha256": "2a5c0397c6f5dcb8d4ca36b82d1bcfc49bc759bda29427cbde26f72b49101323",
+    "bytes": 3113445
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/11_Aquarius_Waterbearer_Minimal.png",
+    "sha256": "619da0b2eff3431b9f9055ae6bced1020e2b4cb92ac3302777492e47ae83b174",
+    "bytes": 3421567
+  },
+  {
+    "file": "brand/tarot/card-backs/08_Zodiac_Set_B_Minimal/12_Pisces_Fish_Waves_Minimal.png",
+    "sha256": "7d698d00e25b60503998d2baf622540456c4dc07e176cec714bdaef38a77d77d",
+    "bytes": 3147023
+  },
+  {
+    "file": "brand/tarot/cards/00-TheFool.jpg",
+    "sha256": "cbdf6ee2c97623af54a5aaec9120c424d655f1f7aa4c0a347ff0eb2d3cb1b3ea",
+    "bytes": 52370
+  },
+  {
+    "file": "brand/tarot/cards/01-TheMagician.jpg",
+    "sha256": "1395e2b12868d3ac71c4e3451d53954d7fd8b7e96c182ab10f5351deceb0f32b",
+    "bytes": 44454
+  },
+  {
+    "file": "brand/tarot/cards/02-TheHighPriestess.jpg",
+    "sha256": "cf9736e88bc72d360a171067fe50ebccb9c92f4c1eab7d64976828efee03acb1",
+    "bytes": 56939
+  },
+  {
+    "file": "brand/tarot/cards/03-TheEmpress.jpg",
+    "sha256": "9cab6c6f6d6b08bcd2a2e59b8657f58d557cabaf99209b50604933372c82892c",
+    "bytes": 55694
+  },
+  {
+    "file": "brand/tarot/cards/04-TheEmperor.jpg",
+    "sha256": "7eca5682c38a99a5d390cc9fd5507dfba06e7b73067264efe03fe068d872a15e",
+    "bytes": 52281
+  },
+  {
+    "file": "brand/tarot/cards/05-TheHierophant.jpg",
+    "sha256": "740d966f62620aa722bbfdb04cbc0d53529e3227e35ca34b1b5b2c4bb7913ff5",
+    "bytes": 49551
+  },
+  {
+    "file": "brand/tarot/cards/06-TheLovers.jpg",
+    "sha256": "9552d6bbc37e456267c4abae498d37c45689eb803e155d712261231ccee42e43",
+    "bytes": 54431
+  },
+  {
+    "file": "brand/tarot/cards/07-TheChariot.jpg",
+    "sha256": "f302f10f9913458c25979c7dddf2f441cfbdb5abfddb66ae1b8d9bf25834a0b5",
+    "bytes": 50772
+  },
+  {
+    "file": "brand/tarot/cards/08-Strength.jpg",
+    "sha256": "ffbeff58eb617319ac2d6e87e34b8a7ee7425f0017a6b308dd41261e1a6b1c2d",
+    "bytes": 38854
+  },
+  {
+    "file": "brand/tarot/cards/09-TheHermit.jpg",
+    "sha256": "0a9f7cd117621e6ca8fc0b5c82e3c2f41d964c0e880e0d285bc3da640df2dcda",
+    "bytes": 34819
+  },
+  {
+    "file": "brand/tarot/cards/10-WheelOfFortune.jpg",
+    "sha256": "cf141ce97ddf0171f2a49e42967700e1367d4fb6576cc345e902ea164e9198c8",
+    "bytes": 44946
+  },
+  {
+    "file": "brand/tarot/cards/11-Justice.jpg",
+    "sha256": "5203aeea061f300530ab38be1326d1bbdd963f7a172a6d848d97dc81b0f5f422",
+    "bytes": 46875
+  },
+  {
+    "file": "brand/tarot/cards/12-TheHangedMan.jpg",
+    "sha256": "d81e4feaf49fa28168e6b4c6a3c0bb2813d99809736a761564987a9b259c0f4a",
+    "bytes": 36663
+  },
+  {
+    "file": "brand/tarot/cards/13-Death.jpg",
+    "sha256": "84976bc6a1ba302c998b5ccade069b0a46582abe9d5432ad91cd4d4dbe3e9980",
+    "bytes": 53813
+  },
+  {
+    "file": "brand/tarot/cards/14-Temperance.jpg",
+    "sha256": "a317aceb5ed41a7ab5806f8898f98e588304abea8f225de0b6b35424804da32a",
+    "bytes": 51159
+  },
+  {
+    "file": "brand/tarot/cards/15-TheDevil.jpg",
+    "sha256": "9b684383c6453688d5dbd46d995721c665520ca4647f8ef58d87dbb2509141ec",
+    "bytes": 45248
+  },
+  {
+    "file": "brand/tarot/cards/16-TheTower.jpg",
+    "sha256": "8dfe53f35b048b713f5ce7d2f56c0fdcf8aa9aa09acbd619a67828d13f99290d",
+    "bytes": 43136
+  },
+  {
+    "file": "brand/tarot/cards/17-TheStar.jpg",
+    "sha256": "00e17c4419486a4b87df50e46698125e7c52b7e66088753a4ed7754a130cea2f",
+    "bytes": 46763
+  },
+  {
+    "file": "brand/tarot/cards/18-TheMoon.jpg",
+    "sha256": "83f0e7a6fcd4d74387c2a8681fe51ebd53838e100d0d4ec7539f4fd343c353ab",
+    "bytes": 46112
+  },
+  {
+    "file": "brand/tarot/cards/19-TheSun.jpg",
+    "sha256": "82d98a25f906fa88e090e2c39ddee66c435fed4f307dccccad1eedd79f8023e6",
+    "bytes": 59616
+  },
+  {
+    "file": "brand/tarot/cards/20-Judgement.jpg",
+    "sha256": "d28bb5c6757700d6c16539fbba94ce6dc82706dbb1e71bffd641cd150e28223c",
+    "bytes": 55682
+  },
+  {
+    "file": "brand/tarot/cards/21-TheWorld.jpg",
+    "sha256": "971677f16883ed8d9e89b70c60f4f678003b97b93558f11c1396db775b9773a5",
+    "bytes": 52330
+  },
+  {
+    "file": "brand/tarot/cards/CardBacks.jpg",
+    "sha256": "3e8bfca1010f6298c1c0ab4fc22630454341dc6a522a0efa216a3f6d0fabe64f",
+    "bytes": 42577
+  },
+  {
+    "file": "brand/tarot/cards/Cups01.jpg",
+    "sha256": "403ce9f0c4f0f95289bb15a75af6d92ab7fb565fe835acb8497602647dad4f28",
+    "bytes": 41691
+  },
+  {
+    "file": "brand/tarot/cards/Cups02.jpg",
+    "sha256": "0ac0de1ef21811d9ac427eb704652bff9b8ba25d7932c223b2b061e9c7176297",
+    "bytes": 41037
+  },
+  {
+    "file": "brand/tarot/cards/Cups03.jpg",
+    "sha256": "64db2bcf88ec70f4682208a5f77a925f39480ed9066152cce407ce26379d8509",
+    "bytes": 43925
+  },
+  {
+    "file": "brand/tarot/cards/Cups04.jpg",
+    "sha256": "beeafc5a7e580943ffd204fb5fe88173773eb5a9e3a51c31256c56305c909129",
+    "bytes": 38830
+  },
+  {
+    "file": "brand/tarot/cards/Cups05.jpg",
+    "sha256": "b9dd975ed5781449099421b8a98489a570bbfd9d3021462f0d752a52520176f3",
+    "bytes": 28678
+  },
+  {
+    "file": "brand/tarot/cards/Cups06.jpg",
+    "sha256": "a468ce4c2245d0befc7b99878a52494845a32bcf69255e4a04ee29fab2cc5998",
+    "bytes": 53719
+  },
+  {
+    "file": "brand/tarot/cards/Cups07.jpg",
+    "sha256": "75e53ea22a62ed084587d7d1ec252403aaa63e24233b5838b7c537397186676c",
+    "bytes": 48437
+  },
+  {
+    "file": "brand/tarot/cards/Cups08.jpg",
+    "sha256": "fc5c83e5538fc305050818cc0078184b76697c1b50a265972d6e6106c99f01d5",
+    "bytes": 34163
+  },
+  {
+    "file": "brand/tarot/cards/Cups09.jpg",
+    "sha256": "f802dfeb0e123a91ee98e91551614955aa59f73b1f8db5be15464736b70ec620",
+    "bytes": 45636
+  },
+  {
+    "file": "brand/tarot/cards/Cups10.jpg",
+    "sha256": "37b8df482cf0e60ad742249874f13823bd9be7a2dd01b5bf31cd9bd79ea7ede0",
+    "bytes": 41200
+  },
+  {
+    "file": "brand/tarot/cards/Cups11.jpg",
+    "sha256": "111374acb71150efcafc0332c86eb943814a55e12dc7d75da3a88399057f967f",
+    "bytes": 36256
+  },
+  {
+    "file": "brand/tarot/cards/Cups12.jpg",
+    "sha256": "3841c8458bf4470c7f3540689ae2e499970f826ce0d82314912e803f3ec3fb22",
+    "bytes": 41935
+  },
+  {
+    "file": "brand/tarot/cards/Cups13.jpg",
+    "sha256": "7a7d294f1a1f0b153f2dc7ec66ef4368fa478c50f4d059e89357ad80bb14402d",
+    "bytes": 44518
+  },
+  {
+    "file": "brand/tarot/cards/Cups14.jpg",
+    "sha256": "380c00eab0f195a54a0a03082f0e24a292f92c50dfbec328f581d51e519fe4f1",
+    "bytes": 43698
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles01.jpg",
+    "sha256": "bec07e0ebc56b647baed184f394f35972de8bfaf6d1d2641def6411bced81a59",
+    "bytes": 36894
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles02.jpg",
+    "sha256": "0497efac5da7ad43f3089d8031bd72c447a4cbd56e3b996724959aa3fce99f54",
+    "bytes": 39816
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles03.jpg",
+    "sha256": "042c975c99942f77bdf05a1ff6266cfd168d21e5e81b54c44a506a930db042b3",
+    "bytes": 49419
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles04.jpg",
+    "sha256": "e114e2a1e3a80b340b693970f7c87be24cecc6c67cdb8822a12639b2cb88c54c",
+    "bytes": 29443
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles05.jpg",
+    "sha256": "5b43ce2c44bb244c0dec6f68f50392c98a544767cab1b34eb6eccaeb9510984c",
+    "bytes": 58392
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles06.jpg",
+    "sha256": "16fdad0d81a395a36c04c485ad944787be269489c5da06571a91bb0367801fe9",
+    "bytes": 40116
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles07.jpg",
+    "sha256": "fe3c31bd8493fe94f374a9eb11251cf57b8b214685e886187f7f161a78b2fc97",
+    "bytes": 41304
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles08.jpg",
+    "sha256": "9aff15b6a600347dfdc05728f90f88cdda87cf321a3f340004994a6e2057232d",
+    "bytes": 37321
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles09.jpg",
+    "sha256": "c4c2bda13a93968400dde02b2edce0319ee4f3b0c2cf67bf0a4821f6f06d1f4b",
+    "bytes": 46386
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles10.jpg",
+    "sha256": "46ca839be6905774e5b3c0fd1273a3a17f59293e53f4426841a1f7e4ae8b6a9a",
+    "bytes": 55894
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles11.jpg",
+    "sha256": "804544f0d482e92c3cdec9c06dc0c1cb7d35abdc36171d24deb00678ee969015",
+    "bytes": 34179
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles12.jpg",
+    "sha256": "5776356bc9250df31d2d724681df10998b2a7854c7624ba59888021a6654845a",
+    "bytes": 37631
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles13.jpg",
+    "sha256": "2dac0a3afcb7be4c046d9605ca8f033ac133ae10ecfc2ce6c7aac5a171dbfdf8",
+    "bytes": 51831
+  },
+  {
+    "file": "brand/tarot/cards/Pentacles14.jpg",
+    "sha256": "00c9fb61726e84b13cd9664ab1b1e6cba00b1bc368aa9a1efd0f9181634fa218",
+    "bytes": 48761
+  },
+  {
+    "file": "brand/tarot/cards/Swords01.jpg",
+    "sha256": "08003f0e9c8f6d005bcb569f1669a848efaf3692439e2f8ef295378aa3cca277",
+    "bytes": 34556
+  },
+  {
+    "file": "brand/tarot/cards/Swords02.jpg",
+    "sha256": "7e5ddf353b89533ebedc8d6e7bf77fc2861907ea7111cdfe8acef8115820859b",
+    "bytes": 33092
+  },
+  {
+    "file": "brand/tarot/cards/Swords03.jpg",
+    "sha256": "fb3a8ab563cc65464ea8e71133d3b74255031717531039cf8feea267c5bdfb31",
+    "bytes": 33506
+  },
+  {
+    "file": "brand/tarot/cards/Swords04.jpg",
+    "sha256": "6ee38f674263b24518cf9309e5a71eb0514dacacc4fb6ba65b16da5ba8b674ca",
+    "bytes": 39360
+  },
+  {
+    "file": "brand/tarot/cards/Swords05.jpg",
+    "sha256": "a0f87a500eb215c3a324962073d6a34a767da00bbcac4dbd90326aae1dc20d5d",
+    "bytes": 41155
+  },
+  {
+    "file": "brand/tarot/cards/Swords06.jpg",
+    "sha256": "60bdb11881df3a30f102acee2afb4e8033ce8d2dcbee349985c50de1cf1c997d",
+    "bytes": 41139
+  },
+  {
+    "file": "brand/tarot/cards/Swords07.jpg",
+    "sha256": "9acf62a03058ab6fbd91e1465e0a926e0f1881fb8cd5d426bee230fca1def9fa",
+    "bytes": 38917
+  },
+  {
+    "file": "brand/tarot/cards/Swords08.jpg",
+    "sha256": "9c0c066cf4ab23ae46360eb9aa45e0bc3254ed70ba6fcb8e8f2fe39f096a4d39",
+    "bytes": 47195
+  },
+  {
+    "file": "brand/tarot/cards/Swords09.jpg",
+    "sha256": "38ce44de6ff691116d448c6f1ce2c8600b687726b1e3adc4f908fd4296e4a8c6",
+    "bytes": 40428
+  },
+  {
+    "file": "brand/tarot/cards/Swords10.jpg",
+    "sha256": "8e1848c5048f8405515dbe31593ddae9b8439978cfc2356f8503add25a2f835a",
+    "bytes": 40332
+  },
+  {
+    "file": "brand/tarot/cards/Swords11.jpg",
+    "sha256": "9bc23411bafb7a2200371f51010bf929be5e7d53199a444b23e81495e31418b7",
+    "bytes": 39100
+  },
+  {
+    "file": "brand/tarot/cards/Swords12.jpg",
+    "sha256": "275596aecae5af459806b0e0c1d758115c75ebedf3afb0a9f5f4a240f765601f",
+    "bytes": 43819
+  },
+  {
+    "file": "brand/tarot/cards/Swords13.jpg",
+    "sha256": "7f74862da81813eb2dd62464984a7c5d3ca42f926574b04048cdd6795e83e5c7",
+    "bytes": 41564
+  },
+  {
+    "file": "brand/tarot/cards/Swords14.jpg",
+    "sha256": "5e2f2ba6c71ee4060fd5a051311f4930a5e12cdd6621ae7b4900c81b481ef148",
+    "bytes": 43389
+  },
+  {
+    "file": "brand/tarot/cards/Wands01.jpg",
+    "sha256": "1def6591aedfa7e7e91ec9eb714d265a51c5473ecff032d43c43a88e52885cc5",
+    "bytes": 36387
+  },
+  {
+    "file": "brand/tarot/cards/Wands02.jpg",
+    "sha256": "f46526768c41425b9074d21e04ddc039cdc1a59079fa32d919ddd4ab59001e22",
+    "bytes": 40288
+  },
+  {
+    "file": "brand/tarot/cards/Wands03.jpg",
+    "sha256": "433dd28709a7f9d6da379ec1cdc68b1995f9c1f4d82f5482bbd8f06017ab80f2",
+    "bytes": 39232
+  },
+  {
+    "file": "brand/tarot/cards/Wands04.jpg",
+    "sha256": "b8c6a02e570bd6ca6424bfe45dc3eb5f99f852e3fd95d4e6a52a8172adf7f086",
+    "bytes": 41457
+  },
+  {
+    "file": "brand/tarot/cards/Wands05.jpg",
+    "sha256": "7a279ded2c52cdbfc6ab68eaf59c3d108e90612b8f39e4f17ad0faf321f05dae",
+    "bytes": 41551
+  },
+  {
+    "file": "brand/tarot/cards/Wands06.jpg",
+    "sha256": "39f0d0f4836f10919c70ff9838e7bcea8e79394e1d2a32115ce84e5bb0ff19c7",
+    "bytes": 45428
+  },
+  {
+    "file": "brand/tarot/cards/Wands07.jpg",
+    "sha256": "c6fcaa436f940309b896a446cbf2d21b17ea1840f09f500d47babab11396b4fd",
+    "bytes": 26332
+  },
+  {
+    "file": "brand/tarot/cards/Wands08.jpg",
+    "sha256": "92ec7a8618057ad0dff53e6398070761702c1d69e383a32d7fe06643a03b4e8e",
+    "bytes": 36633
+  },
+  {
+    "file": "brand/tarot/cards/Wands09.jpg",
+    "sha256": "4a1ca2738e92112231e4d0c02c10dc7f6399a1b0f6acc5d69d6f24aba169c0b5",
+    "bytes": 44639
+  },
+  {
+    "file": "brand/tarot/cards/Wands10.jpg",
+    "sha256": "c7010d8de3a101e5c15ff1f6a14b74fc87c80522a25c2cf4d1161616ec0682f9",
+    "bytes": 41500
+  },
+  {
+    "file": "brand/tarot/cards/Wands11.jpg",
+    "sha256": "788cf5638762b4407eb3b5bd556a2324af8cabaa6e1ce42821e3a70473473c8f",
+    "bytes": 39590
+  },
+  {
+    "file": "brand/tarot/cards/Wands12.jpg",
+    "sha256": "4b812b4d99be4d787cf29d31545b1d81e1e62b30e888dcf89456fd293ef1f0aa",
+    "bytes": 46606
+  },
+  {
+    "file": "brand/tarot/cards/Wands13.jpg",
+    "sha256": "63f972a4bfc393f9ec993f1312007fdd4e2a378bfab032bd1146a64c0f9c4723",
+    "bytes": 49263
+  },
+  {
+    "file": "brand/tarot/cards/Wands14.jpg",
+    "sha256": "140a7494719222e89bf1072367c3b5d0f33805473c8057c95ac378e8a3ad59bb",
+    "bytes": 48958
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/00-TheFool.jpg",
+    "sha256": "2817948851275e5480ef1c55a9c7ec0c8c6f889cee755865eaf2ec0654c38e21",
+    "bytes": 354949
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/01-TheMagician.jpg",
+    "sha256": "240bbe2fcc2cf64d4e4ece7918e39717c38bdf1f0cc694592d1de67d23984555",
+    "bytes": 321110
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/02-TheHighPriestess.jpg",
+    "sha256": "ccd433fdaa970a6b834223a6546bc7df13c8e9ee416e83fc1e0c103496b25a00",
+    "bytes": 484671
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/03-TheEmpress.jpg",
+    "sha256": "4297981d315af5c0a0245808c1dc06fb03f89c913cb103307ca452ba92e468d9",
+    "bytes": 437182
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/04-TheEmperor.jpg",
+    "sha256": "ce2013e79aa7f6733619974ac1e8960f7af1aa62160e83f05f54c539c84b35c6",
+    "bytes": 430834
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/05-TheHierophant.jpg",
+    "sha256": "86647eccd8de0f1b2e54a4ee59eacac84fc23e376a71e4b2eefa6d31e0453373",
+    "bytes": 420198
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/06-TheLovers.jpg",
+    "sha256": "d2ba32e69b0216d52174a0d5e4eee8d9bccb5b1e80d1ea8c851805f5b727a0da",
+    "bytes": 439159
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/07-TheChariot.jpg",
+    "sha256": "2d9c11dc06948f62950bfc1c6f031ae4603cfbac0d180fcfaf8cab8b16c840b3",
+    "bytes": 444454
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/08-Strength.jpg",
+    "sha256": "67280ccd703285c7ea23711aaed2de4a84866ef7806c5760db76766c9624ef7f",
+    "bytes": 373823
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/09-TheHermit.jpg",
+    "sha256": "2d0ca0e01007271e015d73963d1450f2691259876719a11e4582acf4cbf5ef1d",
+    "bytes": 338722
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/10-WheelOfFortune.jpg",
+    "sha256": "a1f135e3f976fcd2acd22d705fa7999efc89c5223be980a8a8f337f20bcf9262",
+    "bytes": 428352
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/11-Justice.jpg",
+    "sha256": "a8c7260f6bb3c13244cdac85af0f701c0d6dabc0613f6ce25a43d02ee3b5cb07",
+    "bytes": 445595
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/12-TheHangedMan.jpg",
+    "sha256": "5f3adec7f8e96b6a41b6d2eca6ad830dd8b2c99b9d15db7e76ff4688d63ea44b",
+    "bytes": 414298
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/13-Death.jpg",
+    "sha256": "7b0f4890f70428450a26f0e654341ce4265690cff99f97eb63bbc57f0dac0fc8",
+    "bytes": 464287
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/14-Temperance.jpg",
+    "sha256": "3795573d1aa4034b9e2d6a9396bfc6edfad0624a01216d150dda2d1d51aead53",
+    "bytes": 449994
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/15-TheDevil.jpg",
+    "sha256": "e2b90fb6e2c6d41cb98525a9f1720072e5af3abf7c93f7adb12a062cb4fc95dc",
+    "bytes": 454353
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/16-TheTower.jpg",
+    "sha256": "26e584bead289098c7c136a40dfd0ceef2647a9797c64751eb595f804b78f9f1",
+    "bytes": 471329
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/17-TheStar.jpg",
+    "sha256": "9f1bdbb6de0d7df2abcc3e808d79ca407cafa74b81c47beef92a2e64bfa50979",
+    "bytes": 429493
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/18-TheMoon.jpg",
+    "sha256": "b36c25d1dd3f90d95bae21b4ca409b1aa02dd82e8c9c4b824fd164d42ac5c613",
+    "bytes": 475197
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/19-TheSun.jpg",
+    "sha256": "f2362e298ed2a9aa8c565f55d7a693ccc4f610c9bff7ed21a90d37a43f96e4e4",
+    "bytes": 488225
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/20-Judgement.jpg",
+    "sha256": "256ecf99c4848735c8715bce36d6111947b5a71af245eef1ef9cf7fc08336bec",
+    "bytes": 517549
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/21-TheWorld.jpg",
+    "sha256": "54955584f7b2d7aaac52ceed538bcac765840b0f19f4ca7c69a46dfccb0d2486",
+    "bytes": 437371
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups01.jpg",
+    "sha256": "bc10ebfd37de9448bdeb029c589be3193e4476fe85b3e4d5ae62da6d66a69e15",
+    "bytes": 345944
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups02.jpg",
+    "sha256": "1e45a5a2eb435e2630b31763ace78edfd4a4358b6ee0e6d4a2ab74febd4f3957",
+    "bytes": 400275
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups03.jpg",
+    "sha256": "2ac3c041844f4141d9102ffe1e200816633bb75c5ff73f75ed702e48ff3438c8",
+    "bytes": 449226
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups04.jpg",
+    "sha256": "bfd6596ed0e5c73992d8467dba84c15add02626005ea45ce6574258bac1ca83e",
+    "bytes": 384205
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups05.jpg",
+    "sha256": "1cf4f4ccba928b1c42bd9af6ed00550ceb6b6f66a969cc93e110d654c35d07d4",
+    "bytes": 382892
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups06.jpg",
+    "sha256": "9b67649a0464b1705716ea20765efd3a75565055a000c8bc31c2f88ee4acdd49",
+    "bytes": 380873
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups07.jpg",
+    "sha256": "3fa730c19f54a02264938c35e261321e54611aa770f606a64bdc356de01a92f8",
+    "bytes": 462001
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups08.jpg",
+    "sha256": "eb809d8cb61bee9ba7b4bec60ec0dab64d242ab5ad80bbfe85d5216dd8e95486",
+    "bytes": 427911
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups09.jpg",
+    "sha256": "9e111ba66383a547ccd1f57eb2a4328d5f00f7ee5c21bb42010054fdbc3e7bc4",
+    "bytes": 452168
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups10.jpg",
+    "sha256": "4b71efb5cb4f349e0eacfe7c300be83369eb41377ae97d9cd30e71fb26f97f99",
+    "bytes": 423637
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups11.jpg",
+    "sha256": "5f56c5e5c4f20a74b7129b7e05908a8d984576071c302632f2f1f5553e2f71a3",
+    "bytes": 375584
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups12.jpg",
+    "sha256": "f2231f0695dfd686ad2e5e4190eacce4802ca95a2887e4d1a626e7e3143696a5",
+    "bytes": 420703
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups13.jpg",
+    "sha256": "8ea2faef5e98adf26dab76e7a08a842a5793f86e649ec88a855e7206fde5c29c",
+    "bytes": 402694
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Cups14.jpg",
+    "sha256": "6c309265aafbdc8c3e4c0b6889ec4fa0645fcb39ee4e0795f79ed7f3a441749d",
+    "bytes": 423108
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles01.jpg",
+    "sha256": "2bc9383e2bcf7988fe8aa84c5ddcc8d251bfc7765db94a54bbf3d8bcecbbd113",
+    "bytes": 462844
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles02.jpg",
+    "sha256": "236b5c7bc8f969ee550d1aa8932204b39a8ef84f0186b3d0598f128f7d3e179f",
+    "bytes": 415151
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles03.jpg",
+    "sha256": "0b0d2505249446238c21c0757e209789199403d131f833b63bc89a17b0744f49",
+    "bytes": 446782
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles04.jpg",
+    "sha256": "5d7b70f439ab27eb07f21a8cf330c77fe277915b7993fa67d9774854b45961c0",
+    "bytes": 399117
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles05.jpg",
+    "sha256": "d42df3545fd09432175ea3d9380f57833a12d598423d411091074415303fa39c",
+    "bytes": 488918
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles06.jpg",
+    "sha256": "2a41e0a435077a6bbd975730537cd9d5445ab1f35a56d8b2e354b615f7960153",
+    "bytes": 439858
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles07.jpg",
+    "sha256": "753a518204c854bbd4fc88b2c4a490cab615de5b4b88467dd94a389acb7f2e44",
+    "bytes": 441019
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles08.jpg",
+    "sha256": "3cb35156bf4d3e8f55c02abdeb93cc99ade292a56fcfbf5a9f3e6fb744b25953",
+    "bytes": 437939
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles09.jpg",
+    "sha256": "e90c4675b2ff2d16363f8b7c2bc5f6e578c9814140555c89b12aeb19f8b525ed",
+    "bytes": 480288
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles10.jpg",
+    "sha256": "cad5d739c03cef765b079b281cfd80baf05610ef147702db3d472fb2bf58538f",
+    "bytes": 460319
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles11.jpg",
+    "sha256": "b40ae1d581ff918c9c177f15a2fd00e6a36a0ebcb05588d62917fad26ba7555e",
+    "bytes": 434964
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles12.jpg",
+    "sha256": "2cdc2b808c0012b66e83ab3d6d4175f9a6f54c45517806460f9bbdb506ae9978",
+    "bytes": 424926
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles13.jpg",
+    "sha256": "1ef32346134d60d786579ec63630069182dde919c40c0b9a78f9130302acf312",
+    "bytes": 493303
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Pentacles14.jpg",
+    "sha256": "2501fc801d6872aabd422a7bfd6e25750280e45b249f42dd6e6396ae17906dd7",
+    "bytes": 492729
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords01.jpg",
+    "sha256": "3deef3089f7ee70668e86054064c226d82a8bbe2c7c3c500ac53a0bc6fe8bd42",
+    "bytes": 395537
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords02.jpg",
+    "sha256": "a5978f053aa9d596f5caa54efcf4a78005cf3575897407b6c32ecf05368f3e90",
+    "bytes": 388025
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords03.jpg",
+    "sha256": "4139e7b48df457ddc432ab6d7683b1aa58fc382e82db7e753ba2c05bab631282",
+    "bytes": 420130
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords04.jpg",
+    "sha256": "f789c8779af8efa572c69b02f3b3d7e587f2dfa8656e43be9487d445be475a92",
+    "bytes": 429491
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords05.jpg",
+    "sha256": "806885d6ce61afa599d6ccd2e5b90e3e044f85bb9031db2b850d0f8ff09da65b",
+    "bytes": 425114
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords06.jpg",
+    "sha256": "522de59227a1cf970bae634b95a0ea987523b990bebf43d1e9708258b9c5aab1",
+    "bytes": 407497
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords07.jpg",
+    "sha256": "f1710ed7851899a54cd13677bebd3be93d3a7c4d2f3f88e6ae32296c9d09ddce",
+    "bytes": 450558
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords08.jpg",
+    "sha256": "f004d306ad2b5f452f5d1718825a53ac2ebec17d1e2b2cf142068e68ade38e0b",
+    "bytes": 431041
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords09.jpg",
+    "sha256": "22ac4871ef89b3f08fb3e18f47a55a062fb8d0675f7e393219af1df13c3ae2f4",
+    "bytes": 415327
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords10.jpg",
+    "sha256": "c0de29489ef94931ad8df4112bc1757584f5f598c3b6e58f222c93484d7f9cc8",
+    "bytes": 391917
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords11.jpg",
+    "sha256": "6229f37cfb1082920e6f1dd200f35c10b7b919eb8883e1416de59ecd87707ee8",
+    "bytes": 386119
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords12.jpg",
+    "sha256": "05b25304e0e1316ef67c21473fff5921e808b1e0ff8bb49b93af83297689db72",
+    "bytes": 419576
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords13.jpg",
+    "sha256": "7a1bde053684ddc9b28c6dfc164d86301b0c17da64cb568cd0b9b8f355b4737c",
+    "bytes": 417298
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Swords14.jpg",
+    "sha256": "9eec2ff6ee9fb51b9ab6a467ab6e5f40466340e280f0b44f465c7dcf7690b2d8",
+    "bytes": 425937
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands01.jpg",
+    "sha256": "c45a3f4527607ea1dede94c9879ebff1b9130995bfa2f0c418ae9a6587de7c9c",
+    "bytes": 424866
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands02.jpg",
+    "sha256": "3ea092ffe0878e15eb0792ef0afe93c75b721db34b666041500772adc2d1f882",
+    "bytes": 445998
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands03.jpg",
+    "sha256": "e9cfe48a7304e81f00f0aa8da57362ef7ea3a6db660bcdc65c070e355e4ac50e",
+    "bytes": 436574
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands04.jpg",
+    "sha256": "9ad2afd5a844e0e199677b512ad7e545b3fbd4b43b55e11bf9c9061fb0d6b14f",
+    "bytes": 451157
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands05.jpg",
+    "sha256": "44c17b337c7f4c3edc8acb28a1c71cb4b8def2539badfb3b79fcae05aa2e986e",
+    "bytes": 475258
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands06.jpg",
+    "sha256": "d0be9d6159bdd2d3c65be1cbc9f68029d2132431cc58fb6be33097522e3baf76",
+    "bytes": 461320
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands07.jpg",
+    "sha256": "dcb1d8905dfeeb25262ea48adb2109df9c20919851cbb58ede8d258b83fb42b1",
+    "bytes": 460996
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands08.jpg",
+    "sha256": "fb2659f4bcb70444fc4b9a9d371acb9811734625ca7e68e9ef55fc4380ac553c",
+    "bytes": 448983
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands09.jpg",
+    "sha256": "03b0e7779890caacc05a02a8578510a95128d335a2b9db9e1874c298c099408e",
+    "bytes": 464759
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands10.jpg",
+    "sha256": "7a446ba440138d3f4ac9e85d1160f7edc3a12b4c02880ff1240238371e5bef85",
+    "bytes": 427434
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands11.jpg",
+    "sha256": "806069086e5c067837325172c23c4d17698bcb6f8d226d76ef2dc38acf7d90d8",
+    "bytes": 426791
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands12.jpg",
+    "sha256": "e6f8905130811a9e4878afa666474f8686dac6756d3d08f9d938201b6175c965",
+    "bytes": 451578
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands13.jpg",
+    "sha256": "49ead05486faf3b6b1226a3e70e6ebb717e7ee9a33914508047da23ac826a88b",
+    "bytes": 500630
+  },
+  {
+    "file": "brand/tarot/decks/hint-card-2/cards/Wands14.jpg",
+    "sha256": "c21bb4de77753f3dcb78ccf6dc141d79a60d6e11599e72a0aaf3fcc95e6c4064",
+    "bytes": 468287
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/00-TheFool.jpg",
+    "sha256": "2817948851275e5480ef1c55a9c7ec0c8c6f889cee755865eaf2ec0654c38e21",
+    "bytes": 354949
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/01-TheMagician.jpg",
+    "sha256": "240bbe2fcc2cf64d4e4ece7918e39717c38bdf1f0cc694592d1de67d23984555",
+    "bytes": 321110
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/02-TheHighPriestess.jpg",
+    "sha256": "ccd433fdaa970a6b834223a6546bc7df13c8e9ee416e83fc1e0c103496b25a00",
+    "bytes": 484671
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/03-TheEmpress.jpg",
+    "sha256": "4297981d315af5c0a0245808c1dc06fb03f89c913cb103307ca452ba92e468d9",
+    "bytes": 437182
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/04-TheEmperor.jpg",
+    "sha256": "ce2013e79aa7f6733619974ac1e8960f7af1aa62160e83f05f54c539c84b35c6",
+    "bytes": 430834
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/05-TheHierophant.jpg",
+    "sha256": "86647eccd8de0f1b2e54a4ee59eacac84fc23e376a71e4b2eefa6d31e0453373",
+    "bytes": 420198
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/06-TheLovers.jpg",
+    "sha256": "d2ba32e69b0216d52174a0d5e4eee8d9bccb5b1e80d1ea8c851805f5b727a0da",
+    "bytes": 439159
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/07-TheChariot.jpg",
+    "sha256": "2d9c11dc06948f62950bfc1c6f031ae4603cfbac0d180fcfaf8cab8b16c840b3",
+    "bytes": 444454
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/08-Strength.jpg",
+    "sha256": "67280ccd703285c7ea23711aaed2de4a84866ef7806c5760db76766c9624ef7f",
+    "bytes": 373823
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/09-TheHermit.jpg",
+    "sha256": "2d0ca0e01007271e015d73963d1450f2691259876719a11e4582acf4cbf5ef1d",
+    "bytes": 338722
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/10-WheelOfFortune.jpg",
+    "sha256": "a1f135e3f976fcd2acd22d705fa7999efc89c5223be980a8a8f337f20bcf9262",
+    "bytes": 428352
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/11-Justice.jpg",
+    "sha256": "a8c7260f6bb3c13244cdac85af0f701c0d6dabc0613f6ce25a43d02ee3b5cb07",
+    "bytes": 445595
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/12-TheHangedMan.jpg",
+    "sha256": "5f3adec7f8e96b6a41b6d2eca6ad830dd8b2c99b9d15db7e76ff4688d63ea44b",
+    "bytes": 414298
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/13-Death.jpg",
+    "sha256": "7b0f4890f70428450a26f0e654341ce4265690cff99f97eb63bbc57f0dac0fc8",
+    "bytes": 464287
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/14-Temperance.jpg",
+    "sha256": "3795573d1aa4034b9e2d6a9396bfc6edfad0624a01216d150dda2d1d51aead53",
+    "bytes": 449994
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/15-TheDevil.jpg",
+    "sha256": "e2b90fb6e2c6d41cb98525a9f1720072e5af3abf7c93f7adb12a062cb4fc95dc",
+    "bytes": 454353
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/16-TheTower.jpg",
+    "sha256": "26e584bead289098c7c136a40dfd0ceef2647a9797c64751eb595f804b78f9f1",
+    "bytes": 471329
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/17-TheStar.jpg",
+    "sha256": "9f1bdbb6de0d7df2abcc3e808d79ca407cafa74b81c47beef92a2e64bfa50979",
+    "bytes": 429493
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/18-TheMoon.jpg",
+    "sha256": "b36c25d1dd3f90d95bae21b4ca409b1aa02dd82e8c9c4b824fd164d42ac5c613",
+    "bytes": 475197
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/19-TheSun.jpg",
+    "sha256": "f2362e298ed2a9aa8c565f55d7a693ccc4f610c9bff7ed21a90d37a43f96e4e4",
+    "bytes": 488225
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/20-Judgement.jpg",
+    "sha256": "256ecf99c4848735c8715bce36d6111947b5a71af245eef1ef9cf7fc08336bec",
+    "bytes": 517549
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/21-TheWorld.jpg",
+    "sha256": "54955584f7b2d7aaac52ceed538bcac765840b0f19f4ca7c69a46dfccb0d2486",
+    "bytes": 437371
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups01.jpg",
+    "sha256": "bc10ebfd37de9448bdeb029c589be3193e4476fe85b3e4d5ae62da6d66a69e15",
+    "bytes": 345944
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups02.jpg",
+    "sha256": "1e45a5a2eb435e2630b31763ace78edfd4a4358b6ee0e6d4a2ab74febd4f3957",
+    "bytes": 400275
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups03.jpg",
+    "sha256": "2ac3c041844f4141d9102ffe1e200816633bb75c5ff73f75ed702e48ff3438c8",
+    "bytes": 449226
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups04.jpg",
+    "sha256": "bfd6596ed0e5c73992d8467dba84c15add02626005ea45ce6574258bac1ca83e",
+    "bytes": 384205
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups05.jpg",
+    "sha256": "1cf4f4ccba928b1c42bd9af6ed00550ceb6b6f66a969cc93e110d654c35d07d4",
+    "bytes": 382892
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups06.jpg",
+    "sha256": "9b67649a0464b1705716ea20765efd3a75565055a000c8bc31c2f88ee4acdd49",
+    "bytes": 380873
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups07.jpg",
+    "sha256": "3fa730c19f54a02264938c35e261321e54611aa770f606a64bdc356de01a92f8",
+    "bytes": 462001
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups08.jpg",
+    "sha256": "eb809d8cb61bee9ba7b4bec60ec0dab64d242ab5ad80bbfe85d5216dd8e95486",
+    "bytes": 427911
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups09.jpg",
+    "sha256": "9e111ba66383a547ccd1f57eb2a4328d5f00f7ee5c21bb42010054fdbc3e7bc4",
+    "bytes": 452168
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups10.jpg",
+    "sha256": "4b71efb5cb4f349e0eacfe7c300be83369eb41377ae97d9cd30e71fb26f97f99",
+    "bytes": 423637
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups11.jpg",
+    "sha256": "5f56c5e5c4f20a74b7129b7e05908a8d984576071c302632f2f1f5553e2f71a3",
+    "bytes": 375584
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups12.jpg",
+    "sha256": "f2231f0695dfd686ad2e5e4190eacce4802ca95a2887e4d1a626e7e3143696a5",
+    "bytes": 420703
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups13.jpg",
+    "sha256": "8ea2faef5e98adf26dab76e7a08a842a5793f86e649ec88a855e7206fde5c29c",
+    "bytes": 402694
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Cups14.jpg",
+    "sha256": "6c309265aafbdc8c3e4c0b6889ec4fa0645fcb39ee4e0795f79ed7f3a441749d",
+    "bytes": 423108
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles01.jpg",
+    "sha256": "2bc9383e2bcf7988fe8aa84c5ddcc8d251bfc7765db94a54bbf3d8bcecbbd113",
+    "bytes": 462844
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles02.jpg",
+    "sha256": "236b5c7bc8f969ee550d1aa8932204b39a8ef84f0186b3d0598f128f7d3e179f",
+    "bytes": 415151
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles03.jpg",
+    "sha256": "0b0d2505249446238c21c0757e209789199403d131f833b63bc89a17b0744f49",
+    "bytes": 446782
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles04.jpg",
+    "sha256": "5d7b70f439ab27eb07f21a8cf330c77fe277915b7993fa67d9774854b45961c0",
+    "bytes": 399117
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles05.jpg",
+    "sha256": "d42df3545fd09432175ea3d9380f57833a12d598423d411091074415303fa39c",
+    "bytes": 488918
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles06.jpg",
+    "sha256": "2a41e0a435077a6bbd975730537cd9d5445ab1f35a56d8b2e354b615f7960153",
+    "bytes": 439858
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles07.jpg",
+    "sha256": "753a518204c854bbd4fc88b2c4a490cab615de5b4b88467dd94a389acb7f2e44",
+    "bytes": 441019
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles08.jpg",
+    "sha256": "3cb35156bf4d3e8f55c02abdeb93cc99ade292a56fcfbf5a9f3e6fb744b25953",
+    "bytes": 437939
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles09.jpg",
+    "sha256": "e90c4675b2ff2d16363f8b7c2bc5f6e578c9814140555c89b12aeb19f8b525ed",
+    "bytes": 480288
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles10.jpg",
+    "sha256": "cad5d739c03cef765b079b281cfd80baf05610ef147702db3d472fb2bf58538f",
+    "bytes": 460319
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles11.jpg",
+    "sha256": "b40ae1d581ff918c9c177f15a2fd00e6a36a0ebcb05588d62917fad26ba7555e",
+    "bytes": 434964
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles12.jpg",
+    "sha256": "2cdc2b808c0012b66e83ab3d6d4175f9a6f54c45517806460f9bbdb506ae9978",
+    "bytes": 424926
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles13.jpg",
+    "sha256": "1ef32346134d60d786579ec63630069182dde919c40c0b9a78f9130302acf312",
+    "bytes": 493303
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Pentacles14.jpg",
+    "sha256": "2501fc801d6872aabd422a7bfd6e25750280e45b249f42dd6e6396ae17906dd7",
+    "bytes": 492729
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords01.jpg",
+    "sha256": "3deef3089f7ee70668e86054064c226d82a8bbe2c7c3c500ac53a0bc6fe8bd42",
+    "bytes": 395537
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords02.jpg",
+    "sha256": "a5978f053aa9d596f5caa54efcf4a78005cf3575897407b6c32ecf05368f3e90",
+    "bytes": 388025
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords03.jpg",
+    "sha256": "4139e7b48df457ddc432ab6d7683b1aa58fc382e82db7e753ba2c05bab631282",
+    "bytes": 420130
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords04.jpg",
+    "sha256": "f789c8779af8efa572c69b02f3b3d7e587f2dfa8656e43be9487d445be475a92",
+    "bytes": 429491
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords05.jpg",
+    "sha256": "806885d6ce61afa599d6ccd2e5b90e3e044f85bb9031db2b850d0f8ff09da65b",
+    "bytes": 425114
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords06.jpg",
+    "sha256": "522de59227a1cf970bae634b95a0ea987523b990bebf43d1e9708258b9c5aab1",
+    "bytes": 407497
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords07.jpg",
+    "sha256": "f1710ed7851899a54cd13677bebd3be93d3a7c4d2f3f88e6ae32296c9d09ddce",
+    "bytes": 450558
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords08.jpg",
+    "sha256": "f004d306ad2b5f452f5d1718825a53ac2ebec17d1e2b2cf142068e68ade38e0b",
+    "bytes": 431041
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords09.jpg",
+    "sha256": "22ac4871ef89b3f08fb3e18f47a55a062fb8d0675f7e393219af1df13c3ae2f4",
+    "bytes": 415327
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords10.jpg",
+    "sha256": "c0de29489ef94931ad8df4112bc1757584f5f598c3b6e58f222c93484d7f9cc8",
+    "bytes": 391917
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords11.jpg",
+    "sha256": "6229f37cfb1082920e6f1dd200f35c10b7b919eb8883e1416de59ecd87707ee8",
+    "bytes": 386119
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords12.jpg",
+    "sha256": "05b25304e0e1316ef67c21473fff5921e808b1e0ff8bb49b93af83297689db72",
+    "bytes": 419576
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords13.jpg",
+    "sha256": "7a1bde053684ddc9b28c6dfc164d86301b0c17da64cb568cd0b9b8f355b4737c",
+    "bytes": 417298
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Swords14.jpg",
+    "sha256": "9eec2ff6ee9fb51b9ab6a467ab6e5f40466340e280f0b44f465c7dcf7690b2d8",
+    "bytes": 425937
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands01.jpg",
+    "sha256": "c45a3f4527607ea1dede94c9879ebff1b9130995bfa2f0c418ae9a6587de7c9c",
+    "bytes": 424866
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands02.jpg",
+    "sha256": "3ea092ffe0878e15eb0792ef0afe93c75b721db34b666041500772adc2d1f882",
+    "bytes": 445998
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands03.jpg",
+    "sha256": "e9cfe48a7304e81f00f0aa8da57362ef7ea3a6db660bcdc65c070e355e4ac50e",
+    "bytes": 436574
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands04.jpg",
+    "sha256": "9ad2afd5a844e0e199677b512ad7e545b3fbd4b43b55e11bf9c9061fb0d6b14f",
+    "bytes": 451157
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands05.jpg",
+    "sha256": "44c17b337c7f4c3edc8acb28a1c71cb4b8def2539badfb3b79fcae05aa2e986e",
+    "bytes": 475258
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands06.jpg",
+    "sha256": "d0be9d6159bdd2d3c65be1cbc9f68029d2132431cc58fb6be33097522e3baf76",
+    "bytes": 461320
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands07.jpg",
+    "sha256": "dcb1d8905dfeeb25262ea48adb2109df9c20919851cbb58ede8d258b83fb42b1",
+    "bytes": 460996
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands08.jpg",
+    "sha256": "fb2659f4bcb70444fc4b9a9d371acb9811734625ca7e68e9ef55fc4380ac553c",
+    "bytes": 448983
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands09.jpg",
+    "sha256": "03b0e7779890caacc05a02a8578510a95128d335a2b9db9e1874c298c099408e",
+    "bytes": 464759
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands10.jpg",
+    "sha256": "7a446ba440138d3f4ac9e85d1160f7edc3a12b4c02880ff1240238371e5bef85",
+    "bytes": 427434
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands11.jpg",
+    "sha256": "806069086e5c067837325172c23c4d17698bcb6f8d226d76ef2dc38acf7d90d8",
+    "bytes": 426791
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands12.jpg",
+    "sha256": "e6f8905130811a9e4878afa666474f8686dac6756d3d08f9d938201b6175c965",
+    "bytes": 451578
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands13.jpg",
+    "sha256": "49ead05486faf3b6b1226a3e70e6ebb717e7ee9a33914508047da23ac826a88b",
+    "bytes": 500630
+  },
+  {
+    "file": "brand/tarot/decks/hint-classic/cards/Wands14.jpg",
+    "sha256": "c21bb4de77753f3dcb78ccf6dc141d79a60d6e11599e72a0aaf3fcc95e6c4064",
+    "bytes": 468287
+  },
+  {
+    "file": "brand/tarot/hint-back-ivory.svg",
+    "sha256": "7cb1a70286945b6aaf572970d149fe5fe8d8d59fc68d8caa58017e2e6d501b03",
+    "bytes": 1909
+  },
+  {
+    "file": "brand/tarot/hint-back-nocturne.svg",
+    "sha256": "8f6c561cd5350bc97948944248ee674fb5ef44481b080d005fc80025dcd43c06",
+    "bytes": 1911
+  },
+  {
+    "file": "brand/tarot/hint-back-rose.svg",
+    "sha256": "83828ae943d9dad83bc0a34c7e24ba84dae14f9294b62d7182a2a8cde4458e96",
+    "bytes": 1910
+  },
+  {
+    "file": "favicon.svg",
+    "sha256": "62769cbfe4788ffe9b7e3acd14a06e23ea1761ea6237ec78121ff8fd64f9b400",
+    "bytes": 1042
+  },
+  {
+    "file": "hint-logo.svg",
+    "sha256": "77034474731e2154a436be2a2a167a7bb05d26d18f6ba48804be5cf8d4ca2b14",
+    "bytes": 1666
+  },
+  {
+    "file": "index.html",
+    "sha256": "b9c3fa58da6e2fe94198c1f76afcdc982ae00bd6d123eab26e4a456ff3468934",
+    "bytes": 1892
+  },
+  {
+    "file": "lucky/carry/airpods-case.png",
+    "sha256": "ad8cb00508a93d16ff29f52bd11afeda310b08271321c3d8d065558d0d2aec6e",
+    "bytes": 13697
+  },
+  {
+    "file": "lucky/carry/bracelet.png",
+    "sha256": "7df9c06fa37047eec15844b41599e89abca3a2499e35d29369377966172857e2",
+    "bytes": 14446
+  },
+  {
+    "file": "lucky/carry/camera.png",
+    "sha256": "ad7cff1c7332a893fed875e6f8ce2a0f945e613d44e1bc56f2d9543d91452efa",
+    "bytes": 19272
+  },
+  {
+    "file": "lucky/carry/canvas-bag.png",
+    "sha256": "e4196b30d6cf4b5a6ce8cd6bfa858d6e96aad2fd77a2ebf353568f48a8b3a5d5",
+    "bytes": 13367
+  },
+  {
+    "file": "lucky/carry/charger.png",
+    "sha256": "834d9641887eb18ca7bb8510efb919428f6f1e68d2b09b7ef2b36f36526dd791",
+    "bytes": 15282
+  },
+  {
+    "file": "lucky/carry/claw-clip.png",
+    "sha256": "c681fe00ac4489ef3154583e3e6d8f425693192cd3ef18bbbaae0c069b54a0c1",
+    "bytes": 15371
+  },
+  {
+    "file": "lucky/carry/coin-purse.png",
+    "sha256": "921919705389604ccd95b34d01d7ec718c643adf5ccf7a07ad97acce78f8c34c",
+    "bytes": 15519
+  },
+  {
+    "file": "lucky/carry/crystal-charm.png",
+    "sha256": "5cadeec5273273afd7bd3b9128ebddd6ea8127b867f460c770eba4bf88ce09e8",
+    "bytes": 9303
+  },
+  {
+    "file": "lucky/carry/earbuds-case.png",
+    "sha256": "95678d2be7f4649a1797d44b449081d90b2f7499115c18f9e948acea3fa9610a",
+    "bytes": 21082
+  },
+  {
+    "file": "lucky/carry/glasses.png",
+    "sha256": "d2ce6938b418cefc227cc80cf2624567aa25f1e7773987a38490c2f62fee257d",
+    "bytes": 16719
+  },
+  {
+    "file": "lucky/carry/hair-ties.png",
+    "sha256": "1e2625baf016c246318ed28eba19f4fcbfaf7e0a6ab18648232b8a93d0b8da77",
+    "bytes": 18499
+  },
+  {
+    "file": "lucky/carry/hand-cream.png",
+    "sha256": "40e8dfc186bc8353f467c28891ace90d85e87f3b259d8a89132bc3a7025acb6c",
+    "bytes": 10672
+  },
+  {
+    "file": "lucky/carry/headphones.png",
+    "sha256": "3caec23bc960c27c6826003437a482923daaab150919c01ff5857c23a87519a4",
+    "bytes": 21290
+  },
+  {
+    "file": "lucky/carry/keychain.png",
+    "sha256": "13998bdf26d1e97009986bfdedeefb9a69dbe9f95e3127276775df70f2c9d8e9",
+    "bytes": 15883
+  },
+  {
+    "file": "lucky/carry/lip-balm.png",
+    "sha256": "46fa3734e90d9635c1efa2b11c18e443798646508e15f9227a4100c2b45b1551",
+    "bytes": 8085
+  },
+  {
+    "file": "lucky/carry/lipstick.png",
+    "sha256": "1684a62c1c77989028cc0a849cf3dafe1beaac990dd981a027600938ae52cf64",
+    "bytes": 12193
+  },
+  {
+    "file": "lucky/carry/makeup-bag.png",
+    "sha256": "91a42643d1d6c5627aae3d17f3bf56363c007a5c14de3bfa95e0d91a64772527",
+    "bytes": 20948
+  },
+  {
+    "file": "lucky/carry/mini-plush.png",
+    "sha256": "4c086a924951a3018e3105d2d0459e8e1329be8c18a9fa5fb3f4dfcff3a5aea7",
+    "bytes": 17810
+  },
+  {
+    "file": "lucky/carry/mirror.png",
+    "sha256": "b6eac8d244ddccda72fd51eff22efde6a342d960be735e078d822238db941fb6",
+    "bytes": 13229
+  },
+  {
+    "file": "lucky/carry/necklace.png",
+    "sha256": "b02f9fe74f7dc584aae342a62f2d6e6d2233e9fd23ac2edca5ceb6dd40124c4d",
+    "bytes": 11401
+  },
+  {
+    "file": "lucky/carry/notebook.png",
+    "sha256": "ce86c92a29951cb53761c8470f08245b8e53e5512288d469e48b1679062512b9",
+    "bytes": 16629
+  },
+  {
+    "file": "lucky/carry/pen.png",
+    "sha256": "760cd439a58b7757c7cd29e0f5f49cd6d6d395165ef294d1dd3d0d1320ed7363",
+    "bytes": 11248
+  },
+  {
+    "file": "lucky/carry/perfume.png",
+    "sha256": "0b19864290c0b5ea5ced7361d754dae7bdc068a16406bc7a7ef7268bf7eb9e4b",
+    "bytes": 13887
+  },
+  {
+    "file": "lucky/carry/phone.png",
+    "sha256": "f5cd00a10b08d1974b6d64f3c61644a4a0d6c5b19afc7a9d092c5c0326b4bfe0",
+    "bytes": 11378
+  },
+  {
+    "file": "lucky/carry/ring.png",
+    "sha256": "ab936762eac8059519cf7e695378107eb492598e1bc68ecadab4106bc846711d",
+    "bytes": 10446
+  },
+  {
+    "file": "lucky/carry/scrunchie.png",
+    "sha256": "5340938b4b1ba9e6c9b16138c12cde1c4e20279244be5e3b15e244f597a6d9a5",
+    "bytes": 19333
+  },
+  {
+    "file": "lucky/carry/sunglasses.png",
+    "sha256": "1ff2dc8c15254070fa329f39d3494009421ef78124b53413f2f21b8636d6d49e",
+    "bytes": 13337
+  },
+  {
+    "file": "lucky/carry/travel-mug.png",
+    "sha256": "3ccdb0407bd25a21a30f36b244546d0d20dac5a393985559a63ebf8f405b433e",
+    "bytes": 17708
+  },
+  {
+    "file": "lucky/carry/wallet.png",
+    "sha256": "e59c7ad2be52e0f3e9a2038171481e310f07bc1c77e6db140faeb77720c62ca5",
+    "bytes": 14629
+  },
+  {
+    "file": "lucky/carry/water-bottle.png",
+    "sha256": "74609b658cad2deda8d7605b573c96b10a16dfcb63297887f7c9aa2ba05d6261",
+    "bytes": 9908
+  },
+  {
+    "file": "lucky/flower/anemone.png",
+    "sha256": "a88a36e11455cbe6fe828243c686541fb15dcb673bbb24e878b0714cf4aac1a7",
+    "bytes": 22756
+  },
+  {
+    "file": "lucky/flower/babys-breath.png",
+    "sha256": "423d874fefd8a553882ee825af693e34dcd02d1f680f2e99573716280fdd5289",
+    "bytes": 16760
+  },
+  {
+    "file": "lucky/flower/camellia.png",
+    "sha256": "92427bcfefa0661c8e76791e208da71601cde6d74efd73291e3e03db1dc41349",
+    "bytes": 19474
+  },
+  {
+    "file": "lucky/flower/cherry-blossom.png",
+    "sha256": "53e14767f7b845b5c1ba283be687216f0f8659bd78e4776f8554a1c5131314dd",
+    "bytes": 22497
+  },
+  {
+    "file": "lucky/flower/cosmos.png",
+    "sha256": "fd71582e7c78ebae3b65c4dd4b5b14fe2d06eb61ca86fc4046b76a8d78871de0",
+    "bytes": 19082
+  },
+  {
+    "file": "lucky/flower/daisy.png",
+    "sha256": "6dd3a5afa87db6d6d20d60f7f97c5fdf53b414acf8471356bfce80c2825919b1",
+    "bytes": 15863
+  },
+  {
+    "file": "lucky/flower/dandelion.png",
+    "sha256": "a1c862cf92c92da113c78b1263c554fe6bc0323e442d011fa70fe20d9d25e50f",
+    "bytes": 11710
+  },
+  {
+    "file": "lucky/flower/forget-me-not.png",
+    "sha256": "04a264b6c3f5363d2965939afae52f2c764ba6eb93fb443d6ef57f1e8632fde5",
+    "bytes": 18964
+  },
+  {
+    "file": "lucky/flower/freesia.png",
+    "sha256": "8f0933baa8c6a10175ac06d74023c2b7b6fc4b8a1ad5d25ec37ed887626d0a90",
+    "bytes": 19674
+  },
+  {
+    "file": "lucky/flower/gardenia.png",
+    "sha256": "4fd55edeacbc2c77db6acbeca7fa94dd162f844cf3b1554c34a4818276699428",
+    "bytes": 21069
+  },
+  {
+    "file": "lucky/flower/hibiscus.png",
+    "sha256": "9007244dac9f62b4c19baf112489ab03c22e3fd4dc756a68be61223a177069fe",
+    "bytes": 23735
+  },
+  {
+    "file": "lucky/flower/hydrangea.png",
+    "sha256": "f257683b72056dd228d47c2f86d484ff24658c63f4b0f134f1463aa1371ce817",
+    "bytes": 28152
+  },
+  {
+    "file": "lucky/flower/iris.png",
+    "sha256": "0efdc9801f5dd36f484c2c830f946b6a2384f715c32e2b644b87869516b246c0",
+    "bytes": 20549
+  },
+  {
+    "file": "lucky/flower/jasmine.png",
+    "sha256": "a1f279fbdcadae0a815695aa08bc4f57ee499d3c1e3e319418af0529dbb6fd3b",
+    "bytes": 17766
+  },
+  {
+    "file": "lucky/flower/lavender.png",
+    "sha256": "79ff343c1364399ebbdbc683a37f69cbc52c7957a933808b42dd9d83decac6ff",
+    "bytes": 17712
+  },
+  {
+    "file": "lucky/flower/lily.png",
+    "sha256": "5a5922df69d17e849a9328c49fdc27ebe265c77fd976afe5d4f19469edea15a9",
+    "bytes": 20118
+  },
+  {
+    "file": "lucky/flower/lotus.png",
+    "sha256": "051b633407d3f74d25c4df7ffd66e7d801684b43fea1e16b3b553226cdd2fbfa",
+    "bytes": 18025
+  },
+  {
+    "file": "lucky/flower/magnolia.png",
+    "sha256": "75ef84c36c40eb266e8bfd2a6950cba74342e778edfb205eea73806b2304ffaf",
+    "bytes": 17576
+  },
+  {
+    "file": "lucky/flower/marigold.png",
+    "sha256": "4c0068f50ff2516a3c8feaf6c92732945c6e91aa1669d343d50b0128c9dee2ae",
+    "bytes": 23764
+  },
+  {
+    "file": "lucky/flower/morning-glory.png",
+    "sha256": "ed0fa0999564b34e04bca64b97673f6cdc022a490a2502b62f1e1b9fd243225b",
+    "bytes": 20076
+  },
+  {
+    "file": "lucky/flower/orchid.png",
+    "sha256": "9aad10e06768eeb9063ebee60851a437129de947cab09999eb47c5927da6d542",
+    "bytes": 23997
+  },
+  {
+    "file": "lucky/flower/peony.png",
+    "sha256": "3918a2b3190834f9531f38b95eebb3c699c9f66af1850b2a920981713a8d838d",
+    "bytes": 24371
+  },
+  {
+    "file": "lucky/flower/pink-camellia.png",
+    "sha256": "4e6e9a5438411899ee9b337e9ce4633116bc1acd57d73aea00f97da81fc503bd",
+    "bytes": 24592
+  },
+  {
+    "file": "lucky/flower/poppy-seed.png",
+    "sha256": "c04484097f38145da74a6a10322acaeb3122e966d8fa593111aabaa645786e59",
+    "bytes": 12295
+  },
+  {
+    "file": "lucky/flower/ranunculus.png",
+    "sha256": "995cf1dc7ff674d4094b89f75dece0b394d199359298e8de699812343d4173b6",
+    "bytes": 39143
+  },
+  {
+    "file": "lucky/flower/rose.png",
+    "sha256": "c40348dab591abfaba7fec0cfe16490b66a1b5a3bd1786398e1ef217b82c04bd",
+    "bytes": 20104
+  },
+  {
+    "file": "lucky/flower/snapdragon.png",
+    "sha256": "39cead1fc748f2cfa9b7631c47d003c3217cab2e0b8112d696281beb39555b39",
+    "bytes": 15762
+  },
+  {
+    "file": "lucky/flower/sunflower.png",
+    "sha256": "e31635e74e71508456c661dd5629dbabb5a99e2d61f908f9f1797610ea75488d",
+    "bytes": 25651
+  },
+  {
+    "file": "lucky/flower/sweet-pea.png",
+    "sha256": "a54350186648d622e58c3ff982d3451db659aa8437b3144bdae5b79d8341d32c",
+    "bytes": 20418
+  },
+  {
+    "file": "lucky/flower/tulip.png",
+    "sha256": "c7553dea1d14c96e552bf6eb947f7dfb4e5f8c98fc1b986eb746aff880e28fd0",
+    "bytes": 15970
+  },
+  {
+    "file": "lucky/food/acai-bowl.png",
+    "sha256": "95394cc8732ad21fc5a5a706c2b497329b377fd5fda55031a075cadf2d33608a",
+    "bytes": 29142
+  },
+  {
+    "file": "lucky/food/apple.png",
+    "sha256": "eabb607d19dd7e5ff86e37d8e2aeee47de73528995e35158d9094e4fc8c0f32d",
+    "bytes": 25265
+  },
+  {
+    "file": "lucky/food/avocado.png",
+    "sha256": "f8177173c2c841eb45c1ebe7f4f183443177840d93713eda56719ac00f0df754",
+    "bytes": 33445
+  },
+  {
+    "file": "lucky/food/blueberries.png",
+    "sha256": "ba546fccc7a22837b7a52f4ff014126f892298fb16af353b419c076ff6d990af",
+    "bytes": 17584
+  },
+  {
+    "file": "lucky/food/bubble-tea.png",
+    "sha256": "00d21577711e84162b85911786c8d6b0fde608c899f1372f0ee52009d0863b14",
+    "bytes": 21679
+  },
+  {
+    "file": "lucky/food/cheesecake.png",
+    "sha256": "3dfba826409165156290a6c34828947bec5d9a7a791b64c6000488acbc084143",
+    "bytes": 19630
+  },
+  {
+    "file": "lucky/food/chocolate.png",
+    "sha256": "160c1f4ddd18271bda2a561c1bb42414190142f96421e4667aa896774c003244",
+    "bytes": 20318
+  },
+  {
+    "file": "lucky/food/croissant.png",
+    "sha256": "857563499a871bc1c3ff64bb9c65dde58bcd5957219937732b41e8647fa4d0df",
+    "bytes": 24027
+  },
+  {
+    "file": "lucky/food/donut.png",
+    "sha256": "4dfe575fb4485e12f16e4a742b3a8dc47ec76a334a1c7f14d2688b8eeb46cd11",
+    "bytes": 25067
+  },
+  {
+    "file": "lucky/food/dumplings.png",
+    "sha256": "90fe6164b2e566a63171c74c22129eac0592aa0a3fb66a35066e096ee093ecaa",
+    "bytes": 26998
+  },
+  {
+    "file": "lucky/food/fried-rice.png",
+    "sha256": "df504d991f20a410b97c73baed49218de78d599b90b6383ac8028a879a7589f8",
+    "bytes": 26421
+  },
+  {
+    "file": "lucky/food/grapes.png",
+    "sha256": "d17236af75aa1aa15512e3a40326240170ad7e237205c460ea6488b240870880",
+    "bytes": 22886
+  },
+  {
+    "file": "lucky/food/honey-toast.png",
+    "sha256": "ca15edd5a7c3f862dbe5c7f5511275a3b155ddd0149b1b536036c127a31436f5",
+    "bytes": 26188
+  },
+  {
+    "file": "lucky/food/ice-cream.png",
+    "sha256": "1a744a19eb508f5cbdd9771e1da881e1380d3c12d86aa32d112a2bdb2796eaef",
+    "bytes": 26216
+  },
+  {
+    "file": "lucky/food/iced-coffee.png",
+    "sha256": "2025b416b042596c19a0fc7d9e7a361210a22a2162ac8a6825ff7445a65047bd",
+    "bytes": 21612
+  },
+  {
+    "file": "lucky/food/macarons.png",
+    "sha256": "2274784d82c485f518d8b198d1758a1bbbe6cd693f2eeacae82f2ea734a5f456",
+    "bytes": 24605
+  },
+  {
+    "file": "lucky/food/mango.png",
+    "sha256": "9a2f0af06f4e83560fc5d0d65668aa5b7ef4fbc8623f7646e4226da21a0e5861",
+    "bytes": 27853
+  },
+  {
+    "file": "lucky/food/matcha.png",
+    "sha256": "5779357e5dfe7aafc67fa855a711c81cfa73c5e8840c84cfb7347bcf71d6edb4",
+    "bytes": 28220
+  },
+  {
+    "file": "lucky/food/pancakes.png",
+    "sha256": "597752a98e96756595f87c1136850a42a7ecd057ac7e0895308e1ffb41f02b02",
+    "bytes": 31120
+  },
+  {
+    "file": "lucky/food/pasta.png",
+    "sha256": "704ffe1a488eefa5d79920bb68f3f7b69ceeda6a98d3ac652992bb17880d4b83",
+    "bytes": 29042
+  },
+  {
+    "file": "lucky/food/ramen.png",
+    "sha256": "511b60dafaa86234ccc702380ec8948101a148985926ba9ce1ded1d8881240ed",
+    "bytes": 29774
+  },
+  {
+    "file": "lucky/food/salad.png",
+    "sha256": "c94f1fff16b73954758b77b00327944f45c58f21b509133436f86dfa8bec029e",
+    "bytes": 32920
+  },
+  {
+    "file": "lucky/food/salmon.png",
+    "sha256": "b5c05a8610981347414973d47079051e81f295a887bc0ec51754c64368860e11",
+    "bytes": 23414
+  },
+  {
+    "file": "lucky/food/strawberry.png",
+    "sha256": "8243109ee3902a334a8636733adc93924280479fcdf250a4624c7a6f21bc99f7",
+    "bytes": 20330
+  },
+  {
+    "file": "lucky/food/sushi.png",
+    "sha256": "86d21c08e2b267253b5f477da765b62cb90488fe6d327c2d7078bc4c01e1ac22",
+    "bytes": 17890
+  },
+  {
+    "file": "lucky/food/tacos.png",
+    "sha256": "7f17f439ebc8882cd8622b74df3c79bbebf2759de274a3c9bd96965f755e8c75",
+    "bytes": 30273
+  },
+  {
+    "file": "lucky/food/waffles.png",
+    "sha256": "157ad6e8ef28e93931d56a0e90a40140797f0e1721c2a62ee8c53d4c379c82bd",
+    "bytes": 32116
+  },
+  {
+    "file": "lucky/food/yogurt.png",
+    "sha256": "59897185f83037a4f062b0c714f8f0d06f2f4fc4ad230e65aee402fea4a00c3d",
+    "bytes": 20524
+  },
+  {
+    "file": "lucky/jewelry/amethyst.png",
+    "sha256": "1d0a1e1048b07e4267cb93402d894c274e413d9730f4ea82e43816f0150dba61",
+    "bytes": 56624
+  },
+  {
+    "file": "lucky/jewelry/birthstone-ring.png",
+    "sha256": "d388dc959202fcaf4618dadb4096ca86cea16cef4dea00c024d3cf541a65d663",
+    "bytes": 29608
+  },
+  {
+    "file": "lucky/jewelry/butterfly-necklace.png",
+    "sha256": "9c9e964310d25cafe18a746753cfb3bf92fc26ad04c563ba4bfebea3871f6e65",
+    "bytes": 61756
+  },
+  {
+    "file": "lucky/jewelry/charm-bracelet.png",
+    "sha256": "8bc48adb413f7a2ec91e4ffaeaae397efba0e66e502009063d3df7c6e25ae53d",
+    "bytes": 105405
+  },
+  {
+    "file": "lucky/jewelry/clover-charm.png",
+    "sha256": "1acf68d3e54023f5a0c163cb72ff428dc334fb418d9e8db93c78ece8bfe956a5",
+    "bytes": 56730
+  },
+  {
+    "file": "lucky/jewelry/crystal-earrings.png",
+    "sha256": "4c087d319f4f15d71700a121d433e3846f525ae7b6b55d3e17840eb7e7581b8d",
+    "bytes": 96431
+  },
+  {
+    "file": "lucky/jewelry/diamond-studs.png",
+    "sha256": "a3d09a861ba9e7bd872cdade5a4a1748d4a04add7f4785863c603001401a4ad0",
+    "bytes": 60318
+  },
+  {
+    "file": "lucky/jewelry/emerald-pendant.png",
+    "sha256": "584332f90bd737dd9192f46cd7c99923ac004f770667899c2f492b8f794fde62",
+    "bytes": 74994
+  },
+  {
+    "file": "lucky/jewelry/gem-earrings.png",
+    "sha256": "ab0c9b1559b030fe4d5d067e7af1fbb55f854d04a2cd9a266f58389d0bbefac5",
+    "bytes": 92026
+  },
+  {
+    "file": "lucky/jewelry/gold-necklace.png",
+    "sha256": "54ef2e065d9f62aa87a11e94e74e50c14f164ab1daec7d80acc93fef4da37c2c",
+    "bytes": 53646
+  },
+  {
+    "file": "lucky/jewelry/gold-ring.png",
+    "sha256": "0a7da76b156913d87310ffe6ff0e87fdbf9ed1fc0b6ac52e8bd43194913e0b25",
+    "bytes": 22514
+  },
+  {
+    "file": "lucky/jewelry/heart-pendant.png",
+    "sha256": "26caed7909799bc53643eb2ab28a641065f54a4ac09c84d57d2e0aafb38f28c5",
+    "bytes": 38441
+  },
+  {
+    "file": "lucky/jewelry/hoop-earrings.png",
+    "sha256": "aa6d677c9653842f7ab0e591e001dad3563a7986aa6b539ab07c7c12e0b9ab1e",
+    "bytes": 121382
+  },
+  {
+    "file": "lucky/jewelry/infinity-bracelet.png",
+    "sha256": "f612f183b8270944f06b3d6dc245788f9c2cd0075c69162cc7477c99372190d4",
+    "bytes": 86491
+  },
+  {
+    "file": "lucky/jewelry/moon-pendant.png",
+    "sha256": "9f9aa10582192f102aa570267900cf24ba71793026e2798ebdfc45ce2b31cf94",
+    "bytes": 46860
+  },
+  {
+    "file": "lucky/jewelry/moonstone.png",
+    "sha256": "4a4b371eeed42ddce433ed3b5f4585d870379c0111c311803dc1f0576d71a7b7",
+    "bytes": 78993
+  },
+  {
+    "file": "lucky/jewelry/opal-ring.png",
+    "sha256": "a488dfb110bc598270ed7b02a91d39793d7b0d896acdb7d5aea708e3b519f63b",
+    "bytes": 36963
+  },
+  {
+    "file": "lucky/jewelry/pearl-bracelet.png",
+    "sha256": "23d3fdce1a32c10db1ada32891422a398a3f7b004b20e87309ce70f6f1aabe63",
+    "bytes": 124038
+  },
+  {
+    "file": "lucky/jewelry/pearl-earrings.png",
+    "sha256": "e0aa4c6c5e60763434e34a88d5cafe96e085191e774ef4acdd28d3e318781437",
+    "bytes": 63204
+  },
+  {
+    "file": "lucky/jewelry/quartz-bracelet.png",
+    "sha256": "43d2fddbf9048212721d49f9c6d57cb1f3229a28606517c1a626da8071a06421",
+    "bytes": 112851
+  },
+  {
+    "file": "lucky/jewelry/rose-gold-ring.png",
+    "sha256": "ed64f19ddce5f83e7a6cf8cc6d0957d24f0927dd2ba94f10fc58598f27c322c3",
+    "bytes": 21602
+  },
+  {
+    "file": "lucky/jewelry/rose-quartz.png",
+    "sha256": "9ec0f7d63a9c166fe09fa933e62eec3c6f6efac15da2108123b7a3050754ce2f",
+    "bytes": 74505
+  },
+  {
+    "file": "lucky/jewelry/sapphire-ring.png",
+    "sha256": "bd810eb1b1a154f639d06b8e6633a0c1f48b7171f73486fbc29a91d84613da84",
+    "bytes": 24629
+  },
+  {
+    "file": "lucky/jewelry/shell-necklace.png",
+    "sha256": "7a37eb275fbb43f868726232b4bc8f01e8bd90bcd6a4d4283afcbfa87f6ed3b0",
+    "bytes": 57941
+  },
+  {
+    "file": "lucky/jewelry/silver-bangle.png",
+    "sha256": "c5ba374a3add211b911d40023cd90e974e1186550100c91cc8257188a7f72d61",
+    "bytes": 83742
+  },
+  {
+    "file": "lucky/jewelry/silver-necklace.png",
+    "sha256": "85c17ff05c2c2e699b9608d3bc8bac663784287a31fa3025142ecadfa51f0fa6",
+    "bytes": 55543
+  },
+  {
+    "file": "lucky/jewelry/silver-ring.png",
+    "sha256": "b3bded48da78e8ebff0afa0f00987efd903306ab5986720c4cdc2a39576ee3b5",
+    "bytes": 6840
+  },
+  {
+    "file": "lucky/jewelry/star-necklace.png",
+    "sha256": "c48ec2821ef65a27bbed3030226f5d49ddcc34af1c7a301ebfa0bedaf9ea29df",
+    "bytes": 56055
+  },
+  {
+    "file": "lucky/jewelry/sun-pendant.png",
+    "sha256": "cc40cef2b959bcbb9b03fe89cc9b2fed635ab1e65b870e720168df46041e6ffa",
+    "bytes": 86731
+  },
+  {
+    "file": "lucky/jewelry/zodiac-necklace.png",
+    "sha256": "9e130f2db9445888aeec3c7b7a28e7a8c2389302920093135f963b6b6f54bb0d",
+    "bytes": 94751
+  },
+  {
+    "file": "manifest.webmanifest",
+    "sha256": "827a9750e840ddb7598f307182b0d6da87f7141d5bd48e3129b75b1d06046b9e",
+    "bytes": 663
+  },
+  {
+    "file": "opengraph.jpg",
+    "sha256": "e6766d83acbc49a607071978f6ed8c3baef736bb00125aeeaf0a5636bfe68838",
+    "bytes": 34523
+  },
+  {
+    "file": "personalities/personality-icons-simple 2.png",
+    "sha256": "40bd74253b072e3607e9b77e2766cb2f1a0742f1241cd5af6a55f350d93883c2",
+    "bytes": 1381918
+  },
+  {
+    "file": "personalities/personality-icons-simple.png",
+    "sha256": "40bd74253b072e3607e9b77e2766cb2f1a0742f1241cd5af6a55f350d93883c2",
+    "bytes": 1381918
+  },
+  {
+    "file": "personalities/personality-sprite 2.png",
+    "sha256": "501239f357a8fd4a09e8e2ab316381e0ea1295a98e037ade39285f344b9ea47f",
+    "bytes": 2391746
+  },
+  {
+    "file": "personalities/personality-sprite.png",
+    "sha256": "501239f357a8fd4a09e8e2ab316381e0ea1295a98e037ade39285f344b9ea47f",
+    "bytes": 2391746
+  },
+  {
+    "file": "reference-home/moon-scene.png",
+    "sha256": "50c146c9cac0376354ccc146c66b9eeec487b73050266521187095aa293dba22",
+    "bytes": 51408
+  },
+  {
+    "file": "robots.txt",
+    "sha256": "16ceb5ee3e0dc13aa9adf31a3ebbe45a1d965b8c2b9f72eaf84e5911e140ed95",
+    "bytes": 23
+  }
+]

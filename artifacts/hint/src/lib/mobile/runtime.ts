@@ -1,3 +1,5 @@
+import { configureAbortCompatibility } from "./abortCompatibility";
+
 type CapacitorGlobal = {
   getPlatform?: () => string;
   isNativePlatform?: () => boolean;
@@ -23,9 +25,17 @@ export function getMobilePlatform(): string {
 export function configureMobileRuntime() {
   if (typeof window === "undefined") return;
 
+  configureAbortCompatibility();
+
   const root = document.documentElement;
   const syncViewport = () => {
-    root.style.setProperty("--hint-vh", `${window.innerHeight * 0.01}px`);
+    const viewport = window.visualViewport;
+    const visibleHeight = viewport?.height ?? window.innerHeight;
+    const keyboardInset = viewport
+      ? Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop)
+      : 0;
+    root.style.setProperty("--hint-vh", `${visibleHeight * 0.01}px`);
+    root.style.setProperty("--hint-keyboard-inset", `${keyboardInset}px`);
   };
 
   root.dataset.hintPlatform = getMobilePlatform();
@@ -34,4 +44,5 @@ export function configureMobileRuntime() {
 
   window.addEventListener("resize", syncViewport, { passive: true });
   window.visualViewport?.addEventListener("resize", syncViewport, { passive: true });
+  window.visualViewport?.addEventListener("scroll", syncViewport, { passive: true });
 }

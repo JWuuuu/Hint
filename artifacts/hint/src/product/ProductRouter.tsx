@@ -1,23 +1,41 @@
+import { LocalizedText } from "../lib/LocalizedText";
+import { lazy, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { AppScreen, GlassPanel } from "../components/app/AppChrome";
-import { HomeDashboard } from "../modules/home";
-import { AskHint } from "../modules/ask";
-import { LoginView } from "../modules/auth";
-import { RoomsLibrary } from "../modules/rooms";
-import { ReadingDetailView, ReadingsView } from "../modules/readings";
-import { MeView } from "../modules/me";
-import { AnimalTarotView } from "../modules/animal-tarot";
-import { CardCollectionView } from "../modules/collection";
-import {
-  AstrologyView,
-  CompatibilityView,
-  DailyPullView,
-  DreamView,
-  JournalView,
-  PersonalitiesView,
-} from "../modules/features";
-import { TarotRoom } from "../modules/tarot";
+import { RouteLoader } from "./RouteLoader";
+import { loadTarotRoom, loadAstrologyRoom, getPreloadedTarotRoom, getPreloadedAstrologyRoom } from "./roomPreload";
 import { RedirectTo } from "../shared/navigation/RedirectTo";
+
+const HomeDashboard = lazy(() => import("../modules/home/components/HomeDashboard").then(module => ({ default: module.HomeDashboard })));
+const AskHint = lazy(() => import("../modules/ask").then(module => ({ default: module.AskHint })));
+const LoginView = lazy(() => import("../modules/auth").then(module => ({ default: module.LoginView })));
+const RoomsLibrary = lazy(() => import("../modules/rooms").then(module => ({ default: module.RoomsLibrary })));
+const ReadingDetailView = lazy(() => import("../modules/readings/ReadingsView").then(module => ({ default: module.ReadingDetailView })));
+const ReadingsView = lazy(() => import("../modules/readings/ReadingsView").then(module => ({ default: module.ReadingsView })));
+const MeView = lazy(() => import("../modules/me").then(module => ({ default: module.MeView })));
+const AnimalTarotView = lazy(() => import("../modules/animal-tarot").then(module => ({ default: module.AnimalTarotView })));
+const CardCollectionView = lazy(() => import("../modules/collection").then(module => ({ default: module.CardCollectionView })));
+const LazyAstrologyView = lazy(() => loadAstrologyRoom().then(module => ({ default: module.AstrologyView })));
+function AstrologyView() {
+  const [Room] = useState(() => getPreloadedAstrologyRoom()?.AstrologyView ?? LazyAstrologyView);
+  return <Room />;
+}
+const CompatibilityView = lazy(() => import("../modules/features/CompatibilityView").then(module => ({ default: module.CompatibilityView })));
+const DailyPullView = lazy(() => import("../modules/features/DailyPullView").then(module => ({ default: module.DailyPullView })));
+const DreamView = lazy(() => import("../modules/features/DreamView").then(module => ({ default: module.DreamView })));
+const JournalView = lazy(() => import("../modules/features/JournalView").then(module => ({ default: module.JournalView })));
+const PersonalitiesView = lazy(() => import("../modules/features/PersonalitiesView").then(module => ({ default: module.PersonalitiesView })));
+
+const LazyTarotRoom = lazy(() =>
+  loadTarotRoom().then((module) => ({ default: module.TarotRoom })),
+);
+function TarotRoom() {
+  // A resolved import must render synchronously: a fresh React.lazy promise
+  // still paints Suspense's loading state even when the network cache is warm.
+  // Keep this choice for the mounted visit; switching component types later
+  // would reset a cold-started reading when an unrelated parent rerenders.
+  const [Room] = useState(() => getPreloadedTarotRoom()?.TarotRoom ?? LazyTarotRoom);
+  return <Room />;
+}
 
 function currentProductPath(location: string) {
   const pathname = location.split(/[?#]/, 1)[0]?.replace(/\/+$/, "") || "/";
@@ -26,6 +44,11 @@ function currentProductPath(location: string) {
 }
 
 export function ProductRouter() {
+  const [location] = useLocation();
+  return <RouteLoader route={currentProductPath(location)}><ProductPage /></RouteLoader>;
+}
+
+function ProductPage() {
   const [location] = useLocation();
   const path = currentProductPath(location);
 
@@ -49,31 +72,10 @@ export function ProductRouter() {
   if (path === "/personalities") return <PersonalitiesView />;
 
   return (
-    <AppScreen>
-      <div className="flex min-h-[70vh] items-center">
-        <GlassPanel hero className="w-full text-center">
-          <p className="font-sans text-[10px] font-black uppercase tracking-[0.22em] text-[var(--hint-rose)]">
-            Room not found
-          </p>
-          <h1 className="mt-3 font-serif text-[30px] leading-tight text-[var(--hint-text)]">
-            This door is not open yet.
-          </h1>
-          <p className="mx-auto mt-3 max-w-[18rem] font-sans text-[13px] leading-relaxed text-[var(--hint-muted)]">
-            Return to Today and choose one of the available Hint spaces.
-          </p>
-          <Link
-            href="/app"
-            className="hint-tap-sparkle mt-5 inline-flex h-11 items-center justify-center rounded-full px-5 font-sans text-[13px] font-black"
-            style={{
-              color: "var(--hint-special-action-text)",
-              background: "var(--hint-special-action-bg)",
-              boxShadow: "0 14px 28px color-mix(in srgb, var(--hint-rose) 16%, transparent)",
-            }}
-          >
-            Back to Today
-          </Link>
-        </GlassPanel>
-      </div>
-    </AppScreen>
+    <div className="h-full overflow-y-auto px-6 pb-32 pt-[calc(2rem+var(--hint-safe-top))]" style={{ color: "var(--hint-text)" }}>
+      <h1 className="font-serif text-[30px]"><LocalizedText text={"Page not found"} /></h1>
+      <p className="mt-3 text-[14px]" style={{ color: "var(--hint-muted)" }}><LocalizedText text={"This page may have moved. Choose a room to continue."} /></p>
+      <Link href="/app" className="mt-5 inline-flex min-h-11 items-center rounded-full border px-5"><LocalizedText text={"Back to Today"} /></Link>
+    </div>
   );
 }

@@ -1,0 +1,17 @@
+{
+  "screenshots": 13,
+  "screenshotErrors": [],
+  "sourceFiles": 381,
+  "changedSources": [],
+  "manifestHash": "c616cccf8c763a72ff7f365f44a204712119f3b8d14da8a77e5519927786da30",
+  "missingReportLinks": [],
+  "pendingPlaceholders": false,
+  "uniqueFunctionalCases": 252,
+  "functionalCounts": {
+    "passed": 240,
+    "skipped": 12
+  },
+  "excludedCases": 28,
+  "combinedMissing": [],
+  "combinedUnexpected": []
+}
