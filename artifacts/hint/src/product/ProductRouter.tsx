@@ -7,6 +7,7 @@ import { ReadingDetailView, ReadingsView } from "../modules/readings";
 import { MeView } from "../modules/me";
 import { AnimalTarotView } from "../modules/animal-tarot";
 import { CardCollectionView } from "../modules/collection";
+import { ReceiptPrinterScreen } from "../modules/receipt-printer";
 import {
   AstrologyView,
   CompatibilityView,
@@ -30,6 +31,7 @@ export function ProductRouter() {
 
   if (path === "/") return <HomeDashboard />;
   if (path === "/daily") return <DailyPullView />;
+  if (path === "/receipt-printer") return <ReceiptPrinterScreen />;
   if (path === "/daily-pull" || path === "/sky-deck" || path.startsWith("/sky-deck/")) return <RedirectTo to="/app/daily" />;
   if (path === "/tarot" || path.startsWith("/tarot/")) return <TarotRoom />;
   if (path === "/animal-tarot" || path.startsWith("/animal-tarot/")) return <AnimalTarotView />;

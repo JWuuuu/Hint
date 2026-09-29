@@ -35,7 +35,7 @@ import { useLanguage } from "./lib/i18n";
 import { triggerFeedback } from "./lib/feedback";
 
 /** Full-screen flows own their navigation, so the global bottom nav is hidden there. */
-const NAV_HIDDEN_ROUTES = ["/tarot", "/ask", "/login", "/app/tarot", "/app/ask", "/app/login"];
+const NAV_HIDDEN_ROUTES = ["/tarot", "/ask", "/login", "/receipt-printer", "/app/tarot", "/app/ask", "/app/login", "/app/receipt-printer"];
 const HINT_LAUNCH_SEEN_STORAGE_KEY = "hint_launch_seen_v2";
 const HINT_ONBOARDING_COMPLETE_STORAGE_KEY = "hint_onboarding_complete_v3";
 const ENABLE_LAUNCH_INTRO = true;
@@ -99,6 +99,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const launchIntroVariant = getLaunchIntroVariant();
   const isProductRoute = !["/privacy", "/terms", "/disclaimer", "/contact", "/about"].includes(location);
   const referenceHomeRoute = location === "/app" || location === "/";
+  const receiptPrinterRoute = location === "/receipt-printer" || location === "/app/receipt-printer";
   const creamStyleRoute = !referenceHomeRoute && isCreamStyleRoute(location);
   const showNav = isProductRoute && !onboardingOwnsScreen() && !NAV_HIDDEN_ROUTES.some(
     (r) => location === r || location.startsWith(r + "/"),
@@ -215,7 +216,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <AppNavigationChrome location={location} theme={theme} creamStyleRoute={creamStyleRoute} />
         ) : null}
 
-        {ENABLE_LAUNCH_INTRO && isProductRoute && !referenceHomeRoute && !creamStyleRoute && showLaunchIntro ? (
+        {ENABLE_LAUNCH_INTRO && isProductRoute && !referenceHomeRoute && !creamStyleRoute && !receiptPrinterRoute && showLaunchIntro ? (
           <AppLaunchIntro
             theme={theme}
             leaving={launchIntroLeaving}

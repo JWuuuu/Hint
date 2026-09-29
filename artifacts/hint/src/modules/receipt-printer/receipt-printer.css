@@ -1,0 +1,618 @@
+.receipt-printer-screen {
+  position: relative;
+  height: calc(var(--hint-vh, 1vh) * 100);
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #fbf6f3;
+  color: #293d46;
+}
+
+.receipt-printer-screen__inner {
+  --receipt-scene-height: calc(min(340px, calc(100vw - 32px)) * 0.8 * 449 / 340);
+  box-sizing: border-box;
+  display: flex;
+  min-height: calc(var(--hint-vh, 1vh) * 100);
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+  width: min(100%, 430px);
+  margin: 0 auto;
+  padding: calc(var(--hint-safe-top, 0px) + 24px) 16px calc(var(--hint-safe-bottom, 0px) + 26px);
+  padding-top: calc(var(--hint-safe-top, 0px) + max(24px, (var(--hint-vh, 1vh) * 100 - var(--receipt-scene-height) - 50px) / 2 + 24px));
+}
+
+.receipt-printer-screen__controls {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.receipt-printer-screen__button {
+  min-height: 44px;
+  border: 1px solid #e4bac0;
+  border-radius: 6px;
+  padding: 10px 20px;
+  background: #f9e5e5;
+  color: #aa546d;
+  font-family: var(--app-font-sans);
+  font-size: 12px;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+.receipt-printer {
+  /* Every crop uses the same 340 x 449 reference coordinates. */
+  --receipt-asset-width: min(calc(min(340px, calc(100vw - 32px)) * 0.98), calc((100vw - 24px) / 1.1));
+  --receipt-feed-width: calc(var(--receipt-asset-width) * 1.1);
+  --receipt-feed-left: calc((var(--receipt-asset-width) - var(--receipt-feed-width)) * 173 / 340);
+  --receipt-source-unit-y: calc(min(340px, calc(100vw - 32px)) * 0.8 / 340);
+  --receipt-paper-slant: atan2(calc(var(--receipt-feed-width) * 0.06116262 / 340), var(--receipt-source-unit-y));
+  --receipt-image-height: calc(var(--receipt-source-unit-y) * 449);
+  --receipt-paper-y: calc(var(--receipt-source-unit-y) * 194);
+  --receipt-insert-depth: calc(var(--receipt-source-unit-y) * 10);
+  --receipt-intro-height: calc(var(--receipt-source-unit-y) * 228);
+  --receipt-tear-height: calc(var(--receipt-source-unit-y) * 27);
+  --receipt-teaser-height: calc(var(--receipt-intro-height) + var(--receipt-tear-height));
+  --receipt-result-height: 0px;
+  position: relative;
+  flex: none;
+  width: var(--receipt-asset-width);
+  height: var(--receipt-image-height);
+  margin: 0 auto;
+  isolation: isolate;
+  transition: height var(--receipt-print-duration) linear;
+}
+
+.receipt-printer[data-phase="printing"],
+.receipt-printer[data-phase="complete"] {
+  height: calc(var(--receipt-paper-y) - var(--receipt-insert-depth) + var(--receipt-result-height) + var(--receipt-tear-height));
+}
+
+.receipt-printer[data-phase="idle"] { transition-duration: 320ms; }
+
+.receipt-printer__interaction {
+  width: 100%;
+  height: var(--receipt-image-height);
+  transform-origin: 51% 43%;
+  transform: translate(var(--printer-lean-x, 0px), var(--printer-press-y, 0px)) rotate(var(--printer-lean-angle, 0deg));
+  transition: transform 180ms ease-out;
+}
+
+.receipt-printer[data-pressed="true"] .receipt-printer__interaction {
+  --printer-press-y: 2px;
+  transition-duration: 70ms;
+}
+
+.receipt-printer__reference-frame {
+  position: relative;
+  width: 100%;
+  height: var(--receipt-image-height);
+  transform-origin: 50% 43%;
+}
+
+.receipt-printer__reference-image {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: var(--receipt-image-height);
+  user-select: none;
+  pointer-events: none;
+}
+
+.receipt-printer__paper-window {
+  position: absolute;
+  z-index: 2;
+  top: var(--receipt-paper-y);
+  left: var(--receipt-feed-left);
+  width: var(--receipt-feed-width);
+  height: var(--receipt-teaser-height);
+  overflow: hidden;
+  overflow: clip;
+}
+
+.receipt-printer[data-phase="printing"] .receipt-printer__paper-window,
+.receipt-printer[data-phase="complete"] .receipt-printer__paper-window {
+  top: calc(var(--receipt-paper-y) - var(--receipt-insert-depth));
+  height: calc(var(--receipt-result-height) + var(--receipt-tear-height));
+}
+
+.receipt-printer__paper {
+  --receipt-edge-width: 55.294118%;
+  position: relative;
+  height: 100%;
+  color: #293d46;
+  font-family: Georgia, "Times New Roman", serif;
+  text-align: center;
+  transform-origin: 50.882353% 0;
+  filter: drop-shadow(0 2px 3.5px rgba(123, 77, 55, 0.075));
+}
+
+.receipt-printer[data-phase="intro-ready"] .receipt-printer__paper {
+  transform: translateY(-100%);
+}
+
+.receipt-printer[data-phase="intro-printing"] .receipt-printer__paper {
+  animation: receipt-paper-feed var(--receipt-intro-duration) steps(var(--receipt-intro-steps), end) both;
+}
+
+.receipt-printer[data-phase="printing"] .receipt-printer__paper {
+  animation: receipt-result-feed var(--receipt-print-duration) steps(var(--receipt-print-steps), end) both;
+}
+
+.receipt-printer:is([data-phase="printing"], [data-phase="complete"]) .receipt-printer__paper {
+  --receipt-edge-width: 46.447059%;
+}
+
+/* Move only the paper pixels. The machine and surrounding scene stay still. */
+.receipt-printer__teaser {
+  position: relative;
+  height: var(--receipt-intro-height);
+  background-image: url("/receipt-printer/hint-printer-reference.png");
+  background-position: 0 calc(-1 * var(--receipt-paper-y));
+  background-size: var(--receipt-feed-width) var(--receipt-image-height);
+  background-repeat: no-repeat;
+  /* Feather the reference's tapered sides without softening its printed text. */
+  mask-image:
+    linear-gradient(calc(90deg + var(--receipt-paper-slant)), transparent calc(26.55% - 0.35px), #000 calc(26.55% + 0.35px)),
+    linear-gradient(calc(90deg - var(--receipt-paper-slant)), #000 calc(75.14% - 0.35px), transparent calc(75.14% + 0.35px));
+  mask-composite: intersect;
+}
+
+.receipt-printer[data-phase="complete"] .receipt-printer__teaser {
+  display: none;
+}
+
+/* Erase only the baked-in CTA using the reference's blank paper texture. */
+.receipt-printer__teaser::after {
+  position: absolute;
+  top: 76.32%;
+  left: 31.18%;
+  width: 40%;
+  height: 23.68%;
+  border-image: url("/receipt-printer/hint-printer-reference.png") 421 98 27 106 fill / 0 / 0 stretch;
+  mask-image: linear-gradient(transparent, #000 3px, #000);
+  opacity: 0;
+  transition: opacity 220ms ease-out;
+  content: "";
+  pointer-events: none;
+}
+
+.receipt-printer:is([data-phase="warming"], [data-phase="printing"]) .receipt-printer__teaser::after {
+  opacity: 1;
+}
+
+/* Keep the old ink at the exposed end while the same sheet feeds forward. */
+.receipt-printer[data-phase="printing"] .receipt-printer__teaser {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: var(--receipt-tear-height);
+  left: 0;
+  mask-image:
+    linear-gradient(90deg, transparent 30%, #000 32%, #000 70%, transparent 72%),
+    linear-gradient(transparent calc(var(--receipt-source-unit-y) * 22), #000 calc(var(--receipt-source-unit-y) * 32));
+  animation: receipt-teaser-release 560ms ease-in both;
+  pointer-events: none;
+}
+
+.receipt-printer__paper-reveal {
+  position: absolute;
+  top: 76.32%;
+  left: 31.18%;
+  width: 40%;
+  height: 23.68%;
+  border: 0;
+  border-radius: 2px;
+  padding: 0;
+  background: transparent;
+  color: #e36786;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.receipt-printer__paper-reveal:hover:not(:disabled) {
+  background: rgba(244, 180, 181, 0.06);
+}
+
+.receipt-printer__paper-reveal:focus-visible {
+  outline: 2px solid #d78c9b;
+  outline-offset: 2px;
+}
+
+.receipt-printer__paper-reveal:disabled { cursor: default; }
+
+.receipt-printer__result-content {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: 55.294118%;
+  margin-left: 23.235294%;
+  padding: calc(18px + var(--receipt-insert-depth)) 22px 16px;
+  font-family: var(--app-font-sans);
+  font-weight: 400;
+  letter-spacing: 0;
+  visibility: hidden;
+}
+
+/* Reuse blank source paper and its edge shadows at the slot's paper width. */
+.receipt-printer__result-content::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--receipt-feed-width) * -9 / 340);
+  width: calc(var(--receipt-feed-width) * 208 / 340);
+  border-image: url("/receipt-printer/hint-printer-reference.png") 421 62 27 70 fill / 0 / 0 stretch;
+  filter: blur(0.3px);
+  transform-origin: 49.519231% 0;
+  transform: scaleX(0.84);
+  mask-image: linear-gradient(90deg, transparent calc(4.326923% - 0.5px), #000 calc(4.326923% + 0.5px), #000 calc(94.711538% - 0.5px), transparent calc(94.711538% + 0.5px));
+  content: "";
+  pointer-events: none;
+}
+
+.receipt-printer__slot-shadow {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 27.647059%;
+  width: 46.470588%;
+  height: 12px;
+  background: linear-gradient(rgba(63, 29, 23, 0.28), rgba(88, 50, 35, 0.06) 55%, transparent);
+  pointer-events: none;
+}
+
+/* Shade the continuous sheet at the slot, without a separate paper-image cap. */
+.receipt-printer:is([data-phase="printing"], [data-phase="complete"]) .receipt-printer__slot-shadow {
+  top: var(--receipt-insert-depth);
+  height: 16px;
+  background: linear-gradient(rgba(63, 29, 23, 0.48), rgba(88, 50, 35, 0.14) 28%, rgba(88, 50, 35, 0.025) 65%, transparent);
+}
+
+.receipt-printer[data-phase="printing"] .receipt-printer__result-content,
+.receipt-printer[data-phase="complete"] .receipt-printer__result-content {
+  visibility: visible;
+}
+
+.receipt-printer[data-phase="printing"] .receipt-printer__result-content > * {
+  animation: receipt-ink-appear 640ms 560ms ease-out both;
+}
+
+.receipt-printer__result-header {
+  display: grid;
+  gap: 3px;
+  color: #d5728b;
+  font-family: var(--app-font-sans);
+  letter-spacing: 0;
+}
+
+.receipt-printer__result-header span { font-size: 17px; font-weight: 700; }
+.receipt-printer__result-header small { font-size: 10px; }
+
+.receipt-printer__card-block {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.receipt-printer__card-image {
+  display: block;
+  width: 80px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  margin: 4px auto;
+  object-fit: contain;
+}
+
+.receipt-printer__label,
+.receipt-printer__luck-block span,
+.receipt-printer__lucky-pair span {
+  margin: 0;
+  color: #a77460;
+  font-family: var(--app-font-sans);
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.receipt-printer__card-block h2 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.receipt-printer__card-block p:last-child {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+.receipt-printer__luck-block { display: grid; gap: 3px; margin-top: 12px; }
+
+.receipt-printer__luck-block strong {
+  color: #d5728b;
+  font-size: 28px;
+  font-weight: 400;
+  font-variant-numeric: lining-nums tabular-nums;
+  line-height: 1.1;
+}
+
+.receipt-printer__mini-scores {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 8px;
+  margin-top: 10px;
+  color: #80685b;
+  font-family: var(--app-font-sans);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.receipt-printer__lucky-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.receipt-printer__lucky-pair div { display: grid; align-content: start; gap: 4px; }
+
+.receipt-printer__lucky-pair strong {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.receipt-printer__result-content footer {
+  margin-top: 14px;
+  color: #b87183;
+  font-size: 10px;
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+/* One original torn edge follows the current end of the roll. */
+.receipt-printer__tear-edge {
+  --receipt-edge-scale: 1;
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--receipt-tear-height);
+  background-image: url("/receipt-printer/hint-printer-reference.png");
+  background-position: 0 calc(var(--receipt-source-unit-y) * -422);
+  background-size: var(--receipt-feed-width) var(--receipt-image-height);
+  background-repeat: no-repeat;
+  mask-image:
+    linear-gradient(90deg, transparent calc(23.235294% - 0.35px), #000 calc(23.235294% + 0.35px), #000 calc(78.529412% - 0.35px), transparent calc(78.529412% + 0.35px)),
+    linear-gradient(#000 88%, transparent 99%);
+  mask-composite: intersect;
+  filter: blur(0.15px);
+  transform-origin: 50.882353% 0;
+  transform: scaleX(var(--receipt-edge-scale));
+  pointer-events: none;
+}
+
+.receipt-printer[data-phase="printing"] .receipt-printer__tear-edge,
+.receipt-printer[data-phase="complete"] .receipt-printer__tear-edge {
+  --receipt-edge-scale: 0.84;
+}
+
+.receipt-printer__paper::after {
+  position: absolute;
+  z-index: 4;
+  bottom: calc(var(--receipt-tear-height) - 3px);
+  left: 50.882353%;
+  width: var(--receipt-edge-width);
+  height: 30px;
+  transform: translateX(-50%);
+  background: linear-gradient(transparent, rgba(136, 97, 66, 0.035) 45%, rgba(255, 255, 255, 0.12) 78%, rgba(136, 97, 66, 0.025));
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  filter: blur(2px);
+  opacity: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.receipt-printer:is([data-phase="intro-printing"], [data-phase="printing"]) .receipt-printer__paper::after {
+  opacity: 1;
+}
+
+.receipt-printer[data-phase="complete"] .receipt-printer__paper::after {
+  animation: receipt-curl-settle 360ms ease-out both;
+}
+
+/* Widen just the existing mouth; keep both crops on the same source coordinates. */
+.receipt-printer__slot-frame,
+.receipt-printer__slot-occluder::after {
+  position: absolute;
+  top: calc(var(--receipt-source-unit-y) * 174);
+  left: var(--receipt-feed-left);
+  width: var(--receipt-feed-width);
+  background-size: var(--receipt-feed-width) var(--receipt-image-height);
+  background-position: 0 calc(var(--receipt-source-unit-y) * -174);
+  background-repeat: no-repeat;
+  mask-image:
+    linear-gradient(90deg, transparent 15.588235%, #000 16.176471%, #000 85.294118%, transparent 85.882353%),
+    linear-gradient(transparent, #000 2px);
+  mask-composite: intersect;
+  pointer-events: none;
+}
+
+.receipt-printer__slot-frame {
+  z-index: 1;
+  height: calc(var(--receipt-source-unit-y) * 52);
+  background-image: url("/receipt-printer/hint-printer-machine.png?v=3");
+}
+
+/* Original machine pixels end at the dark upper rim, before the paper. */
+.receipt-printer__slot-occluder {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  height: var(--receipt-paper-y);
+  background-image: url("/receipt-printer/hint-printer-reference.png");
+  background-size: var(--receipt-asset-width) var(--receipt-image-height);
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.receipt-printer__slot-occluder::after {
+  height: calc(var(--receipt-source-unit-y) * 20);
+  background-image: url("/receipt-printer/hint-printer-reference.png");
+  content: "";
+}
+
+.receipt-printer__machine-action {
+  position: absolute;
+  z-index: 5;
+  top: 2.2%;
+  left: 9.4%;
+  width: 83.5%;
+  height: 39.6%;
+  border: 0;
+  border-radius: 18px;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.receipt-printer__machine-action:disabled { cursor: progress; }
+
+.receipt-printer__machine-action:focus-visible {
+  outline: 2px solid #d78c9b;
+  outline-offset: 4px;
+}
+
+/* Animate the original pink button's pixels, aligned with the source image. */
+.receipt-printer__power-light {
+  position: absolute;
+  z-index: 4;
+  top: calc(var(--receipt-source-unit-y) * 134);
+  left: calc(var(--receipt-asset-width) * 253 / 340);
+  width: calc(var(--receipt-asset-width) * 24 / 340);
+  height: calc(var(--receipt-source-unit-y) * 24);
+  border-radius: 50%;
+  background-image: url("/receipt-printer/hint-printer-reference.png");
+  background-size: var(--receipt-asset-width) var(--receipt-image-height);
+  background-position: calc(var(--receipt-asset-width) * -253 / 340) calc(var(--receipt-source-unit-y) * -134);
+  background-repeat: no-repeat;
+  transition: transform 100ms ease-out;
+  pointer-events: none;
+}
+
+.receipt-printer[data-phase="idle"] .receipt-printer__power-light {
+  animation: receipt-light-ready 3600ms ease-in-out infinite;
+}
+
+.receipt-printer[data-phase="intro-printing"] .receipt-printer__power-light,
+.receipt-printer[data-phase="warming"] .receipt-printer__power-light,
+.receipt-printer[data-phase="printing"] .receipt-printer__power-light {
+  animation: receipt-light-printing 700ms ease-in-out infinite;
+}
+
+.receipt-printer[data-phase="complete"] .receipt-printer__power-light {
+  animation: receipt-light-ready 900ms ease-in-out 2;
+}
+
+.receipt-printer[data-pressed="true"] .receipt-printer__power-light {
+  transform: translateY(1px) scale(0.94);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .receipt-printer:is([data-phase="idle"], [data-phase="complete"]):has(.receipt-printer__machine-action:hover) .receipt-printer__interaction {
+    --printer-press-y: -1px;
+  }
+
+  .receipt-printer[data-pressed="true"]:has(.receipt-printer__machine-action:hover) .receipt-printer__interaction {
+    --printer-press-y: 2px;
+  }
+}
+
+.receipt-printer__state-label,
+.receipt-printer__accessible-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.receipt-printer[data-phase="warming"] .receipt-printer__reference-frame {
+  animation: receipt-printer-press 280ms ease-in-out both;
+}
+
+.receipt-printer[data-phase="intro-printing"] .receipt-printer__reference-frame,
+.receipt-printer[data-phase="printing"] .receipt-printer__reference-frame {
+  animation: receipt-printer-hum 520ms ease-in-out infinite;
+}
+
+@keyframes receipt-printer-press { 50% { transform: translateY(1px); } }
+@keyframes receipt-printer-hum { 50% { transform: translateY(0.4px); } }
+
+/* Constant-speed roller travel through the fixed slot, without easing or zoom. */
+@keyframes receipt-paper-feed {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* Keep the exposed end in place, then feed only the remaining length. */
+@keyframes receipt-result-feed {
+  from { transform: translateY(min(0px, calc(-100% + var(--receipt-teaser-height) + var(--receipt-insert-depth)))); }
+  to { transform: translateY(0); }
+}
+
+@keyframes receipt-teaser-release {
+  0%, 20% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes receipt-ink-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes receipt-curl-settle { from { opacity: 1; } to { opacity: 0; } }
+
+@keyframes receipt-light-ready {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.16) drop-shadow(0 0 3px rgba(235, 134, 155, 0.45)); }
+}
+
+@keyframes receipt-light-printing {
+  0%, 100% { filter: brightness(1.12) drop-shadow(0 0 2px rgba(235, 134, 155, 0.35)); }
+  50% { filter: brightness(1.4) drop-shadow(0 0 5px rgba(235, 134, 155, 0.7)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .receipt-printer,
+  .receipt-printer__paper-window { transition-duration: 1ms !important; }
+  .receipt-printer__reference-frame,
+  .receipt-printer__power-light { animation: none !important; }
+  .receipt-printer__paper,
+  .receipt-printer__teaser,
+  .receipt-printer__teaser::after,
+  .receipt-printer__result-content > *,
+  .receipt-printer__tear-edge,
+  .receipt-printer__paper::after { animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+  .receipt-printer__interaction,
+  .receipt-printer__power-light { transform: none !important; transition: none !important; }
+}

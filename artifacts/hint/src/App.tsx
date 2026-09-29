@@ -5,6 +5,7 @@ import { OnboardingGate } from "./components/app/OnboardingGate";
 import { LanguageProvider } from "./lib/i18n";
 import { AboutView, ContactView, DisclaimerView, PrivacyPolicyView, TermsView } from "./modules/legal";
 import { ProductRouter } from "./product/ProductRouter";
+import { ReceiptPrinterScreen } from "./modules/receipt-printer";
 import { RedirectTo } from "./shared/navigation/RedirectTo";
 
 const queryClient = new QueryClient();
@@ -75,6 +76,7 @@ function App() {
               <Route path="/" component={RootRedirect} />
               <Route path="/app" component={ProductRouteBoundary} />
               <Route path="/app/:rest*" component={ProductRouteBoundary} />
+              <Route path="/receipt-printer" component={ReceiptPrinterScreen} />
               <Route path="/privacy" component={PrivacyPolicyView} />
               <Route path="/terms" component={TermsView} />
               <Route path="/disclaimer" component={DisclaimerView} />
