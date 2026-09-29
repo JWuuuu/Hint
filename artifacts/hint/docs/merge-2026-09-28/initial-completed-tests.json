@@ -1,0 +1,1842 @@
+[
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "Together invalidates an existing result and ignores a late response after partner edits",
+    "status": "passed",
+    "durationMs": 1500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-creation.spec.ts",
+    "title": "fresh Astrology journey verifies a birthplace, reviews details and restores a personal chart without email",
+    "status": "passed",
+    "durationMs": 2000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "report evidence keeps long titles and explanations reachable at 200 percent text",
+    "status": "passed",
+    "durationMs": 2100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en bright app=false OS=false",
+    "status": "passed",
+    "durationMs": 4100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "zodiac learning works without an account and sections survive back and refresh",
+    "status": "passed",
+    "durationMs": 3400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "unknown birth time never produces an invented personal chart",
+    "status": "passed",
+    "durationMs": 777,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-history-periods.spec.ts",
+    "title": "Daily day, week, month and year controls retain calendar-selected periods",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "fallback chart is never presented as personal and explicit retry recovers",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "transit failure and empty success never insert sample rows or fabricated dates",
+    "status": "passed",
+    "durationMs": 1000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en dark app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-history-periods.spec.ts",
+    "title": "Days read displays unique dates across local and server records within each period",
+    "status": "passed",
+    "durationMs": 2400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "a late chart response cannot overwrite changed birth details",
+    "status": "passed",
+    "durationMs": 1100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-history-periods.spec.ts",
+    "title": "unread earlier periods display zero Days read",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en bright app=true OS=false",
+    "status": "passed",
+    "durationMs": 2400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "bright astrology layouts and accessibility",
+    "status": "passed",
+    "durationMs": 2800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "natal letters save once, restore offline and retain exact snapshot evidence",
+    "status": "passed",
+    "durationMs": 10600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en dark app=true OS=false",
+    "status": "passed",
+    "durationMs": 2400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "storage failure keeps the report readable and retry persists it",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "dark astrology layouts and accessibility",
+    "status": "passed",
+    "durationMs": 2900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "history deletion hides reports immediately and cannot resurrect them on refresh",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en bright app=false OS=true",
+    "status": "passed",
+    "durationMs": 3100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "Rooms search and preview recovery have working destinations",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-history-periods.spec.ts",
+    "title": "History filters isolate fictional records and preserve daily, Tarot and question details",
+    "status": "passed",
+    "durationMs": 8000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily zh bright keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily zh dark keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily es bright keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "birth place edits clear old coordinates and ignore stale search matches",
+    "status": "passed",
+    "durationMs": 1100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily es dark keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily ja bright keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily ja dark keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en dark app=false OS=true",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily ko bright keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/daily-text-layout.spec.ts",
+    "title": "Daily ko dark keeps localized lucky artwork and full text at 200%",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "two-person charts expose every cross aspect, individual points and a saved relationship letter",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "Chinese sign learning does not trigger a personal calculation",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home respects app=false OS=false, reveals without sync, and restores modal focus",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "switching local identity cannot open another profile's saved report",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "dense chart and expanded details remain readable above bottom navigation",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en bright app=true OS=true",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home respects app=true OS=false, reveals without sync, and restores modal focus",
+    "status": "passed",
+    "durationMs": 1000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home respects app=false OS=true, reveals without sync, and restores modal focus",
+    "status": "passed",
+    "durationMs": 1000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology.spec.ts",
+    "title": "chart points and enlarged chart support keyboard, history and direct detail reload",
+    "status": "passed",
+    "durationMs": 2000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "clearing history commits before deleting stored letters and keeps birth details",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home respects app=true OS=true, reveals without sync, and restores modal focus",
+    "status": "passed",
+    "durationMs": 1000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality en dark app=true OS=true",
+    "status": "passed",
+    "durationMs": 2700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home save reports quota failure, retries once and keeps long result actions reachable",
+    "status": "passed",
+    "durationMs": 1500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "illustrated report en retains readable sections at large text",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign en bright: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "a failed room chunk can be reloaded without losing its destination",
+    "status": "passed",
+    "durationMs": 2000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "illustrated report zh retains readable sections at large text",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh bright app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home reveal action has localized copy and a reachable 44px target (en)",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "illustrated report es retains readable sections at large text",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign en dark: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home long card result at 200% text stays readable and scrollable (en)",
+    "status": "passed",
+    "durationMs": 2000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home reveal action has localized copy and a reachable 44px target (zh)",
+    "status": "passed",
+    "durationMs": 1100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh dark app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "illustrated report ja retains readable sections at large text",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign zh bright: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home long card result at 200% text stays readable and scrollable (zh)",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-reports.spec.ts",
+    "title": "illustrated report ko retains readable sections at large text",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh bright app=true OS=false",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home reveal action has localized copy and a reachable 44px target (es)",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt en bright app=false system=false text=100",
+    "status": "passed",
+    "durationMs": 1900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home long card result at 200% text stays readable and scrollable (es)",
+    "status": "passed",
+    "durationMs": 2000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign zh dark: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh dark app=true OS=false",
+    "status": "passed",
+    "durationMs": 2800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home reveal action has localized copy and a reachable 44px target (ja)",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt en dark app=true system=false text=100",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt en bright app=false system=true text=200",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home long card result at 200% text stays readable and scrollable (ja)",
+    "status": "passed",
+    "durationMs": 2000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh bright app=false OS=true",
+    "status": "passed",
+    "durationMs": 3200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign es bright: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home reveal action has localized copy and a reachable 44px target (ko)",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt en dark app=true system=true text=200",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/home-motion.spec.ts",
+    "title": "Home long card result at 200% text stays readable and scrollable (ko)",
+    "status": "passed",
+    "durationMs": 1900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh dark app=false OS=true",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt zh bright app=false system=false text=100",
+    "status": "passed",
+    "durationMs": 2200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/navigation-text-layout.spec.ts",
+    "title": "Navigation en keeps complete labels and reachable targets at 200% text",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign es dark: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt zh dark app=true system=false text=100",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/navigation-text-layout.spec.ts",
+    "title": "Navigation zh keeps complete labels and reachable targets at 200% text",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh bright app=true OS=true",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/navigation-text-layout.spec.ts",
+    "title": "Navigation es keeps complete labels and reachable targets at 200% text",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt zh bright app=false system=true text=200",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/navigation-text-layout.spec.ts",
+    "title": "Navigation ja keeps complete labels and reachable targets at 200% text",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign ja bright: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt zh dark app=true system=true text=200",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality zh dark app=true OS=true",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/navigation-text-layout.spec.ts",
+    "title": "Navigation ko keeps complete labels and reachable targets at 200% text",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-gap-regressions.spec.ts",
+    "title": "Spanish Profile keeps the complete save action and optional fields at 200% text",
+    "status": "passed",
+    "durationMs": 1100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt es bright app=false system=false text=100",
+    "status": "passed",
+    "durationMs": 2100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign ja dark: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-gap-regressions.spec.ts",
+    "title": "History en preserves long questions, contextual counters and 44px reading actions",
+    "status": "passed",
+    "durationMs": 1500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt es dark app=true system=false text=100",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es bright app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-gap-regressions.spec.ts",
+    "title": "History zh preserves long questions, contextual counters and 44px reading actions",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt es bright app=false system=true text=200",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign ko bright: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-gap-regressions.spec.ts",
+    "title": "History es preserves long questions, contextual counters and 44px reading actions",
+    "status": "passed",
+    "durationMs": 2200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt es dark app=true system=true text=200",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es dark app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-gap-regressions.spec.ts",
+    "title": "History ja preserves long questions, contextual counters and 44px reading actions",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ja bright app=false system=false text=100",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-gap-regressions.spec.ts",
+    "title": "History ko preserves long questions, contextual counters and 44px reading actions",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me redesign ko dark: layout, preferences and disclosures",
+    "status": "passed",
+    "durationMs": 3600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ja dark app=true system=false text=100",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es bright app=true OS=false",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-gap-regressions.spec.ts",
+    "title": "a fresh device can learn Astrology and enter birth details without onboarding or email",
+    "status": "passed",
+    "durationMs": 784,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me editor retains failed local saves, retries, and returns focus on cancel",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ja bright app=false system=true text=200",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "Daily failed notes survive date changes and reload, then retry saves",
+    "status": "passed",
+    "durationMs": 2000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es dark app=true OS=false",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me editor identifies an offline save as local and keeps it after reload",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me Spanish SE 200% text retains long names, places and expanded details",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "Ask failed question is still editable after reload",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ja dark app=true system=true text=200",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me delayed save preserves newer input in the current editor and its focus",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es bright app=false OS=true",
+    "status": "passed",
+    "durationMs": 2700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ko bright app=false system=false text=100",
+    "status": "passed",
+    "durationMs": 1900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/me-redesign.spec.ts",
+    "title": "Me delayed save preserves a reopened editor and its focus",
+    "status": "passed",
+    "durationMs": 1500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "the offline daily card stays identical through Daily, Home and Collection",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ko dark app=true system=false text=100",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es dark app=false OS=true",
+    "status": "passed",
+    "durationMs": 2700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "direct and legacy invitation links show 404 without returning Home",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+    "status": "passed",
+    "durationMs": 2700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ko bright app=false system=true text=200",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "direct and legacy invitation links show 410 without returning Home",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "merged receipt ko dark app=true system=true text=200",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "a new local beta profile returns to the invitation after onboarding",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es bright app=true OS=true",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "Home tarot entrance reaches its working room and cleans up",
+    "status": "passed",
+    "durationMs": 3100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "language options escape the settings card and support dismissal",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "Home, Daily and receipt keep the locked card after refresh and export an actual PNG",
+    "status": "passed",
+    "durationMs": 2700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality es dark app=true OS=true",
+    "status": "passed",
+    "durationMs": 2800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "Home astrology entrance reaches its working room and cleans up",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "a saved historical Daily card wins over an unopened allocation and shares without invented scores",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "Animal Tarot quota failures retain the result and permit collection retry",
+    "status": "passed",
+    "durationMs": 2700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "an unopened server allocation is not presented as a saved historical Daily card",
+    "status": "passed",
+    "durationMs": 1200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "leaving during Animal Tarot reveal retains the already visible animal",
+    "status": "passed",
+    "durationMs": 1500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "Home collection entrance reaches its working room and cleans up",
+    "status": "passed",
+    "durationMs": 3000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja bright app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/merge-receipt.spec.ts",
+    "title": "selectable iPhone frame keeps Home, Daily and receipt controls inside safe areas",
+    "status": "passed",
+    "durationMs": 2900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "Home personalities entrance reaches its working room and cleans up",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "room entrance respects app=false OS=false without blocking Tarot input",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja dark app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-fresh-entry.spec.ts",
+    "title": "Ask reentry starts blank, manually restores draft, and keeps prior saved conversation readable",
+    "status": "passed",
+    "durationMs": 2800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "room entrance respects app=true OS=false without blocking Tarot input",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja bright app=true OS=false",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "room entrance respects app=false OS=true without blocking Tarot input",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-fresh-entry.spec.ts",
+    "title": "Journal reentry is blank while its saved draft is recoverable and refreshed within the visit",
+    "status": "passed",
+    "durationMs": 2800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "history errors retain local records and provide retry",
+    "status": "passed",
+    "durationMs": 8400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "room entrance respects app=true OS=true without blocking Tarot input",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "history deletion failure preserves data and successful retry keeps preferences",
+    "status": "passed",
+    "durationMs": 866,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-fresh-entry.spec.ts",
+    "title": "Quiz starts again after leaving and preserves a completed result when new answers begin",
+    "status": "passed",
+    "durationMs": 1900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "Daily late save responses cannot clear a newer draft",
+    "status": "passed",
+    "durationMs": 890,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja dark app=true OS=false",
+    "status": "passed",
+    "durationMs": 2700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/quality-recovery.spec.ts",
+    "title": "calendar rollover › midnight starts a new dated receipt while preserving the previous revealed card",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-fresh-entry.spec.ts",
+    "title": "Animal reentry reveals the same daily identity and refresh keeps the new visit open",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "rapid repeated Home taps create one navigation and Back does not replay an entrance",
+    "status": "passed",
+    "durationMs": 4200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja bright app=false OS=true",
+    "status": "passed",
+    "durationMs": 3100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "Tarot progress asks before leaving and Stay or Escape preserves the exact step, question and focus",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "backgrounding a live entrance dismisses it and foregrounding does not replay it",
+    "status": "passed",
+    "durationMs": 1500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "confirmed Tarot departure starts a fresh normal visit and preserves the saved archive",
+    "status": "passed",
+    "durationMs": 2400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja dark app=false OS=true",
+    "status": "passed",
+    "durationMs": 2900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "query-only navigation keeps the live room and unsent input without a new entrance",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/space-navigation.spec.ts",
+    "title": "Every space has a visible direct Home exit: group 1",
+    "status": "passed",
+    "durationMs": 4700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "refresh inside an open Tarot visit restores its exact question and selected spread",
+    "status": "passed",
+    "durationMs": 2300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja bright app=true OS=true",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Rooms animal-tarot entry opens the intended feature",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "browser Back explains the completed departure and Forward begins fresh without another history entry",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/space-navigation.spec.ts",
+    "title": "Every space has a visible direct Home exit: group 2",
+    "status": "passed",
+    "durationMs": 4300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ja dark app=true OS=true",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "repeated exit taps and rapid approval commit only one departure",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Rooms journal entry opens the intended feature",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/space-navigation.spec.ts",
+    "title": "Every space has a visible direct Home exit: group 3",
+    "status": "passed",
+    "durationMs": 3500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "explicit History restore remains available after leaving a reading and does not recreate saved records",
+    "status": "passed",
+    "durationMs": 3500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko bright app=false OS=false",
+    "status": "passed",
+    "durationMs": 3900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Rooms compatibility entry opens the intended feature",
+    "status": "passed",
+    "durationMs": 3400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko dark app=false OS=false",
+    "status": "passed",
+    "durationMs": 3800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "a delayed approved departure from a saved Tarot reading keeps the destination entrance",
+    "status": "passed",
+    "durationMs": 4000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/space-navigation.spec.ts",
+    "title": "Every space has a visible direct Home exit: group 4",
+    "status": "passed",
+    "durationMs": 4900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Rooms dream entry opens the intended feature",
+    "status": "passed",
+    "durationMs": 3500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "an empty Tarot visit returns Home directly without an unnecessary reset dialog",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "Spanish 200% exit dialog bright keeps its full text and actions reachable on SE",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-visits.spec.ts",
+    "title": "Spanish 200% exit dialog dark keeps its full text and actions reachable on SE",
+    "status": "skipped",
+    "durationMs": 0,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko bright app=true OS=false",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Me chart entry preserves its destination",
+    "status": "passed",
+    "durationMs": 3000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko dark app=true OS=false",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/space-navigation.spec.ts",
+    "title": "Every space has a visible direct Home exit: group 5",
+    "status": "passed",
+    "durationMs": 4800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Me history entry preserves its destination",
+    "status": "passed",
+    "durationMs": 2900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko bright app=false OS=true",
+    "status": "passed",
+    "durationMs": 2400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Me collection entry preserves its destination",
+    "status": "passed",
+    "durationMs": 3000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko dark app=false OS=true",
+    "status": "passed",
+    "durationMs": 2600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/space-navigation.spec.ts",
+    "title": "Nested spaces keep a named parent alongside Home after refresh",
+    "status": "passed",
+    "durationMs": 6700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko bright app=true OS=true",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Home dock ask entry stays directly usable",
+    "status": "passed",
+    "durationMs": 2900,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/space-navigation.spec.ts",
+    "title": "Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "phone preview switches between full iPhone hardware frames",
+    "status": "passed",
+    "durationMs": 984,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology quality ko dark app=true OS=true",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Home dock daily entry stays directly usable",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "Tarot entry has accessible semantics and touch targets",
+    "status": "passed",
+    "durationMs": 1300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/astrology-quality.spec.ts",
+    "title": "Astrology unknown saved selection remains recoverable and does not invent a chart point",
+    "status": "passed",
+    "durationMs": 861,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "Tarot recommendation has accessible semantics and touch targets",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-spread-navigation.spec.ts",
+    "title": "spread arrows have generous lateral targets beside the cards",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "supplemental Home dock profile entry stays directly usable",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-spread-navigation.spec.ts",
+    "title": "a vertical gesture cannot turn into an accidental spread change",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "cross-room collection to tarot keeps the entrance and direct navigation",
+    "status": "passed",
+    "durationMs": 3400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "phone preview presents Personal Spread inside the selected phone",
+    "status": "passed",
+    "durationMs": 4400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-all-spreads.spec.ts",
+    "title": "complete single: select 1 cards, read, save and restore exact positions",
+    "status": "passed",
+    "durationMs": 20300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-spread-navigation.spec.ts",
+    "title": "spread-to-spread motion carries the diagrams through one continuous track",
+    "status": "passed",
+    "durationMs": 3000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-spread-navigation.spec.ts",
+    "title": "reduced-motion spread changes settle without a sliding track",
+    "status": "passed",
+    "durationMs": 1600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "cross-room animal-tarot to collection keeps the entrance and direct navigation",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "cross-room compatibility to astrology keeps the entrance and direct navigation",
+    "status": "passed",
+    "durationMs": 3200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "cross-room dream to journal keeps the entrance and direct navigation",
+    "status": "passed",
+    "durationMs": 3300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-spread-navigation.spec.ts",
+    "title": "all nine spread templates keep cards and labels inside their preview",
+    "status": "passed",
+    "durationMs": 8200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "the arriving Tarot question accepts pointer input within its first 300ms",
+    "status": "passed",
+    "durationMs": 2100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "spread recommendations keep every layout and full explanation in normal flow",
+    "status": "passed",
+    "durationMs": 12000,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+    "status": "passed",
+    "durationMs": 2100,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "Tarot room setup has accessible semantics and touch targets",
+    "status": "passed",
+    "durationMs": 1400,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "a slow room chunk shows its real loading state and never waits behind a cover",
+    "status": "passed",
+    "durationMs": 4300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "rapid room changes settle only the current room and keep navigation fixed",
+    "status": "passed",
+    "durationMs": 3200,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-spread-navigation.spec.ts",
+    "title": "spread labels remain readable at 200 percent text size",
+    "status": "passed",
+    "durationMs": 8800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "Tarot wash has accessible semantics and touch targets",
+    "status": "passed",
+    "durationMs": 4500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/room-entrances.spec.ts",
+    "title": "switching system reduction on during arrival settles immediately and does not replay",
+    "status": "passed",
+    "durationMs": 1700,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-all-spreads.spec.ts",
+    "title": "complete three: select 3 cards, read, save and restore exact positions",
+    "status": "passed",
+    "durationMs": 21300,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "Tarot arc has accessible semantics and touch targets",
+    "status": "passed",
+    "durationMs": 1800,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-room.spec.ts",
+    "title": "Tarot reading has accessible semantics and touch targets",
+    "status": "passed",
+    "durationMs": 2500,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-wash-refinement.spec.ts",
+    "title": "manual wash uses the full table and keeps its geometry while gathering",
+    "status": "passed",
+    "durationMs": 7600,
+    "evidence": "completed stdout line before interruption"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "e2e/tarot-wash-refinement.spec.ts",
+    "title": "release reaches cutting promptly even if the WebView drops transition events",
+    "status": "passed",
+    "durationMs": 6700,
+    "evidence": "completed stdout line before interruption"
+  }
+]
