@@ -23,7 +23,7 @@ const SCORE_BASE: Array<Omit<DailyScore, "score" | "label"> & { offset: number }
   { key: "people", tone: "#b48abf", offset: 79 },
 ];
 
-const SCORE_LABELS: Record<HintLanguage, Record<DailyScoreKey, string>> = {
+export const SCORE_LABELS: Record<HintLanguage, Record<DailyScoreKey, string>> = {
   en: { love: "Love", wealth: "Wealth", career: "Career", study: "Study", people: "People" },
   zh: { love: "爱情", wealth: "财富", career: "事业", study: "学习", people: "人际" },
   es: { love: "Amor", wealth: "Dinero", career: "Carrera", study: "Estudio", people: "Vínculos" },
@@ -610,7 +610,7 @@ const DAILY_BY_LANGUAGE = {
   tasks: readonly DailyTask[];
 }>;
 
-const LUCKY_LABELS: Record<HintLanguage, { color: string; jewelry: string; number: string; food: string; carry: string; flower: string; numberHint: string }> = {
+export const LUCKY_LABELS: Record<HintLanguage, { color: string; jewelry: string; number: string; food: string; carry: string; flower: string; numberHint: string }> = {
   en: { color: "Lucky color", jewelry: "Lucky jewelry", number: "Lucky number", food: "Lucky food", carry: "Lucky carry", flower: "Lucky flower", numberHint: "Use it as a small rhythm" },
   zh: { color: "幸运色", jewelry: "幸运首饰", number: "幸运数字", food: "幸运食物", carry: "随身物", flower: "幸运花", numberHint: "把它当作今天的小节奏" },
   es: { color: "Color de suerte", jewelry: "Joya", number: "Número", food: "Comida", carry: "Objeto", flower: "Flor", numberHint: "Úsalo como un pequeño ritmo" },

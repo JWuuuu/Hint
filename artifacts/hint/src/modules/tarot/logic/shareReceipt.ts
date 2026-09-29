@@ -2,7 +2,7 @@ import type { LocalTarotReading } from "../../readings/localTarotReadings";
 import { getTarotCardImage } from "./cardImageMap";
 import { getTarotReceiptInsight } from "./receiptPrivacy";
 import { balanceReceiptTitle, getTarotReceiptCardLayout, wrapReceiptText } from "./receiptLayout";
-import { hintDownloadUrl } from "@/lib/publicUrls";
+import { hintDownloadUrl, validatePublicUrl } from "@/lib/publicUrls";
 import { translateText } from "../../../lib/LocalizedText";
 import type { HintLanguage } from "../../../lib/i18n";
 import { receiptCardName, receiptPosition, receiptSpreadLabel, receiptOriginalTextLabel } from "./receiptCopy";
@@ -10,6 +10,7 @@ import { receiptCardName, receiptPosition, receiptSpreadLabel, receiptOriginalTe
 export { getTarotReceiptCardLayout } from "./receiptLayout";
 
 export type TarotReceiptModel = {
+  language?: HintLanguage;
   title: string;
   date: string;
   insight: string;
@@ -20,12 +21,14 @@ export type TarotReceiptModel = {
     orientation: "upright" | "reversed";
     image?: string;
   }>;
-  downloadUrl: string;
+  downloadUrl?: string;
+  details?: Array<{ label: string; value: string }>;
   labels: { brand: string; reading: string; footer: string; originalText?: string };
 };
 
 export function getHintDownloadUrl() {
-  return hintDownloadUrl();
+  try { return validatePublicUrl(hintDownloadUrl()).href; }
+  catch { return undefined; }
 }
 
 export function buildTarotReceiptModel(
@@ -35,6 +38,7 @@ export function buildTarotReceiptModel(
   language: HintLanguage = "en",
 ): TarotReceiptModel {
   return {
+    language,
     title: receiptSpreadLabel(reading.spreadType, language),
     date: new Date(reading.createdAt).toLocaleDateString(language, {
       month: "long",
@@ -55,7 +59,7 @@ export function buildTarotReceiptModel(
     downloadUrl,
     labels: {
       brand: translateText("HINT TAROT", language), reading: translateText("YOUR READING", language),
-      footer: translateText("Open your own reading in Hint", language),
+      footer: translateText(downloadUrl ? "Open your own reading in Hint" : "A little letter from the universe.", language),
       originalText: receiptOriginalTextLabel(includeQuestion && Boolean(reading.shortAnswer.trim()), language),
     },
   };
@@ -175,6 +179,9 @@ export async function createTarotReceiptBlob(model: TarotReceiptModel, { signal 
   cursor = addText(model.labels.reading, "700 19px Arial", "#9c7891", cursor + 18, 26) + 20;
   if (model.labels.originalText) cursor = addText(model.labels.originalText, "500 18px Arial", "#827381", cursor, 26) + 12;
   cursor = addText(model.insight, "500 31px Georgia", "#3c3146", cursor, 42);
+  for (const detail of model.details ?? []) {
+    cursor = addText(`${detail.label}: ${detail.value}`, "500 23px Arial", "#6f6070", cursor + 16, 32);
+  }
   const height = Math.max(1400, Math.ceil(cursor + 344));
   if (height > 4096) throw new Error("This reading is too long for a single receipt image.");
   canvas.width = width * scale;
@@ -233,9 +240,11 @@ export async function createTarotReceiptBlob(model: TarotReceiptModel, { signal 
     block.lines.forEach((line, index) => context.fillText(line, block.x, block.y + index * block.lineHeight));
   }
 
-  const qr = await createQrCanvas(model.downloadUrl, 150);
-  requireActive(signal);
-  context.drawImage(qr, width / 2 - 75, height - 292, 150, 150);
+  if (model.downloadUrl) {
+    const qr = await createQrCanvas(model.downloadUrl, 150);
+    requireActive(signal);
+    context.drawImage(qr, width / 2 - 75, height - 292, 150, 150);
+  }
   context.fillStyle = "#7f7680";
   context.font = "600 18px Arial";
   wrapReceiptText(model.labels.footer, 700, value => context.measureText(value).width)

@@ -549,3 +549,20 @@ Checking...|正在查看…|Consultando…|確認中…|확인 중…
 Receiving...|正在接收…|Recibiendo…|受け取り中…|받는 중…
 Reveal Today's Hint|揭示今日 Hint|Revelar el Hint de hoy|今日のHintをめくる|오늘의 Hint 공개
 `);
+
+add(`
+See details|查看详情|Ver detalles|詳細を見る|자세히 보기
+Saved daily card|已保存的每日牌|Carta diaria guardada|保存された今日のカード|저장된 오늘의 카드
+Only the saved card is available. Scores and lucky details were not saved for this date.|此日期仅保存了牌卡，没有保存分数和幸运信息。|Solo está disponible la carta guardada. No se guardaron puntuaciones ni detalles de suerte para esta fecha.|この日付にはカードのみ保存されています。スコアやラッキー情報は保存されていません。|이 날짜에는 카드만 저장되었어요. 점수와 행운 정보는 저장되지 않았어요.
+No saved card for this date.|此日期没有已保存的牌卡。|No hay carta guardada para esta fecha.|この日付のカードは保存されていません。|이 날짜에 저장된 카드가 없어요.
+A little letter from the universe.|来自宇宙的一封小信。|Una pequeña carta del universo.|宇宙からの小さな手紙。|우주에서 온 작은 편지.
+`);
+
+add(`Choose a date|选择日期|Elige una fecha|日付を選択|날짜 선택`);
+
+add(`
+Questions & spreads|问题与牌阵|Preguntas y tiradas|質問とスプレッド|질문과 스프레드
+Your chart & transits|星盘与行运|Tu carta y tránsitos|星盤とトランジット|차트와 트랜짓
+Saved cards & readings|已保存的牌卡与阅读|Cartas y lecturas guardadas|保存したカードとリーディング|저장한 카드와 리딩
+Types & patterns|性格类型与模式|Tipos y patrones|タイプとパターン|유형과 패턴
+`);
