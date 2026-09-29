@@ -271,15 +271,15 @@ function AppNavigationChrome({
     };
   }, []);
   const referenceHome = location === "/app" || location === "/";
-  const darkPersonalSpace = isDark && location.split(/[?#]/, 1)[0] === "/app/profile";
-  const lightChrome = referenceHome || (creamStyleRoute && !darkPersonalSpace);
-  const chromeSurface = referenceHome
+  const lightReferenceHome = referenceHome && !isDark;
+  const lightChrome = !isDark && (referenceHome || creamStyleRoute);
+  const chromeSurface = lightReferenceHome
     ? "linear-gradient(180deg, rgba(255,254,251,0.74), rgba(250,245,239,0.62))"
     : "var(--hint-dock-bg, var(--hint-nav-bg, var(--hint-liquid-panel)))";
-  const chromeBorder = referenceHome
+  const chromeBorder = lightReferenceHome
     ? "rgba(218,199,187,0.170)"
     : "var(--hint-dock-border, var(--hint-liquid-border, var(--hint-border)))";
-  const chromeShadow = referenceHome
+  const chromeShadow = lightReferenceHome
     ? "0 16px 36px rgba(102, 79, 67, 0.044), 0 5px 14px rgba(177,137,190,0.018), inset 0 1px 0 rgba(255,255,255,0.56), inset 0 -12px 22px rgba(129,91,111,0.012)"
     : "var(--hint-dock-shadow, var(--hint-nav-shadow, var(--hint-liquid-shadow)))";
   const appTabs: AppTabItem[] = [

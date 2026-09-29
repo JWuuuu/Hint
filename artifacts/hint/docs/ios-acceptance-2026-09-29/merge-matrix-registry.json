@@ -1,0 +1,1942 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:09:14.220Z",
+    "source": {
+      "commit": "26becb1986db10822149827b837b26060273d286",
+      "fingerprint": "81350fcfecd18ee82b43d27351f5efa756857572b0cd2f250621e02229e1a6cd"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-reflow-20260929",
+      "fingerprint": "6fda3456e37edd55bbc4d7a6396ba8800509409aef9799c32a26eb35ae121542"
+    },
+    "selected": 160
+  },
+  "end": {
+    "kind": "end",
+    "at": "2026-09-29T21:17:29.337Z",
+    "status": "passed"
+  },
+  "tests": [
+    {
+      "title": "merge matrix en bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3415,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2958,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2805,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2869,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2794,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2873,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2744,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2852,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3175,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3372,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2819,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2970,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2750,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2942,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2826,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2933,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4098,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3389,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2728,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2954,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2811,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3016,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2848,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2915,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3852,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3494,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2881,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2985,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2826,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2995,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2806,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2965,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4067,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3079,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2755,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2863,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2785,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2858,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2802,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2810,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3350,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4370,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2797,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2956,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2796,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2961,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2808,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2940,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4617,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3298,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2744,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2886,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2761,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2974,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2784,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2940,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4607,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3715,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2889,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2989,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2847,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2994,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2988,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2977,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3820,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4193,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2860,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2963,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2774,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2847,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2794,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2970,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4650,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4165,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2881,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=false text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2994,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2857,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2948,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=true text=100",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2799,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2961,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3661,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 4128,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2639,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2799,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2696,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2602,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2564,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en bright app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2804,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3587,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3721,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2626,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2745,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2683,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2816,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2688,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix en dark app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2802,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3303,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2910,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2730,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2874,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2737,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2863,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2667,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh bright app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2811,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 4560,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3246,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2725,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2803,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2681,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2757,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2737,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix zh dark app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2892,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3704,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3612,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2626,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2958,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2648,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2715,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2710,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es bright app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2717,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 4515,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 5004,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2762,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2782,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2748,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2780,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2746,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix es dark app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2769,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3658,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3758,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2727,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2804,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2755,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2840,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2690,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja bright app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2827,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 4561,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 4116,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2754,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2888,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2705,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2810,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2796,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ja dark app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2920,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2787,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 5117,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2678,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2903,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2674,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2837,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2664,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko bright app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2783,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 4576,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 5094,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=false text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2706,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=false text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2885,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2757,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=false system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2824,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=true text=100",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2697,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "merge matrix ko dark app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 2883,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 70,
+        "column": 3
+      },
+      "errors": []
+    }
+  ]
+}

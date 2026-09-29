@@ -174,7 +174,7 @@ function MiniDailyCard({ card, interactive = true }: { card: DailyPull; interact
         <h3 className="mt-0.5 font-serif text-[16px] leading-tight sm:text-[18px]" style={{ color: "var(--hint-text)" }}>
           {card.cardName}
         </h3>
-        <p className="mt-0.5 line-clamp-2 font-sans text-[10px] leading-snug sm:text-[11px]" style={{ color: "var(--hint-muted)" }}>
+        <p className={`mt-0.5 ${interactive ? "line-clamp-2" : ""} font-sans text-[10px] leading-snug sm:text-[11px]`} style={{ color: "var(--hint-muted)" }}>
           {card.whisper}
         </p>
       </div>

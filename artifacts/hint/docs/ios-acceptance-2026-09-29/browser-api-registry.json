@@ -1,0 +1,70 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:25:30.528Z",
+    "source": {
+      "commit": "26becb1986db10822149827b837b26060273d286",
+      "fingerprint": "45d190b412dd0f49153ad894641492e2d885afa48b8a2e87bd79e24ac5dd1033"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-reflow-20260929",
+      "fingerprint": "6fda3456e37edd55bbc4d7a6396ba8800509409aef9799c32a26eb35ae121542"
+    },
+    "selected": 4
+  },
+  "end": {
+    "kind": "end",
+    "at": "2026-09-29T21:25:44.700Z",
+    "status": "passed"
+  },
+  "tests": [
+    {
+      "title": "real API: profile, same daily card, note reload, failed clear rollback and successful clear fence",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 4698,
+      "location": {
+        "file": "app-api.integration.ts",
+        "line": 40,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "real API: another device cannot read or overwrite a profile using its old anonymous ID",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1457,
+      "location": {
+        "file": "app-api.integration.ts",
+        "line": 100,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "real API: profile, same daily card, note reload, failed clear rollback and successful clear fence",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 5144,
+      "location": {
+        "file": "app-api.integration.ts",
+        "line": 40,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "real API: another device cannot read or overwrite a profile using its old anonymous ID",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1740,
+      "location": {
+        "file": "app-api.integration.ts",
+        "line": 100,
+        "column": 1
+      },
+      "errors": []
+    }
+  ]
+}

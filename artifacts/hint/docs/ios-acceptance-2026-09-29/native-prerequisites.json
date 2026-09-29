@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-09-29T21:30:03.214209+00:00",
+  "nativeAcceptance": "unverified",
+  "testFlightUploaded": false,
+  "checks": [
+    {
+      "check": "iOS source membership",
+      "exitCode": 0,
+      "output": "iOS release source preflight passed."
+    },
+    {
+      "check": "mobile release environment",
+      "exitCode": 1,
+      "output": "Mobile build blocked: VITE_API_BASE_URL is required"
+    },
+    {
+      "check": "Xcode selection",
+      "exitCode": 0,
+      "output": "/Library/Developer/CommandLineTools"
+    },
+    {
+      "check": "Simulator availability",
+      "exitCode": 72,
+      "output": "xcrun: error: unable to find utility \"simctl\", not a developer tool or in PATH"
+    },
+    {
+      "check": "USB iPhone inventory",
+      "exitCode": 0,
+      "deviceNames": [],
+      "note": "USB visibility alone would not prove trusted pairing, installation or acceptance."
+    }
+  ]
+}

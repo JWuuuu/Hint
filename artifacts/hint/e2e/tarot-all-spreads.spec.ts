@@ -37,7 +37,6 @@ async function chooseCard(page: Page) {
 
 for (const [spreadIndex, spread] of spreads.entries()) {
   test(`complete ${spread.id}: select ${spread.positions.length} cards, read, save and restore exact positions`, async ({ page }, info) => {
-    test.skip(info.project.name !== "iphone-17-pro-max", "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.");
     test.setTimeout(90_000);
     const errors: string[] = [];
     page.on("pageerror", error => errors.push(error.message));

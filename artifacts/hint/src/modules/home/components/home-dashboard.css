@@ -125,14 +125,15 @@
 
 .hint-home-energy { min-width: 0; }
 .hint-home-energy-summary { display: grid; grid-template-columns: 36% minmax(0, 1fr); gap: var(--hint-home-section-gap); }
-.hint-home-energy-value { display: flex; align-items: baseline; margin-top: 7px; }
+.hint-home-energy-value { display: flex; flex-wrap: wrap; align-items: baseline; margin-top: 7px; }
 .hint-home-energy-value > .font-serif { font-size: 60px; line-height: 1; font-variant-numeric: proportional-nums lining-nums; font-weight: 400; }
 .hint-home-energy-total { margin-left: 4px; color: #655c6e; font-size: 14px; }
 .hint-home-theme-title { margin-top: 8px; font-size: 30px; font-weight: 500; line-height: 1; }
 .hint-home-theme-copy { margin-top: 7px; color: #605666; font-size: 15px; line-height: 1.25; }
 .hint-home-scores {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 3em), 1fr));
+  gap: 8px;
   width: 100%;
   margin-top: 10px;
   padding: 4px 0;
@@ -233,3 +234,29 @@
 .hint-home-score-label { flex-wrap: wrap; overflow-wrap: anywhere; }
 .hint-home-details-link { min-height: 44px; }
 .hint-home-space-copy { overflow-wrap: anywhere; }
+
+/* The donor paper composition also uses the app's existing night palette. */
+[data-hint-theme="dark"] .hint-home-page {
+  color: var(--hint-text);
+  background: var(--hint-page-bg) !important;
+}
+[data-hint-theme="dark"] .hint-home-page :is(
+  .hint-home-eyebrow, .hint-home-card-copy, .hint-home-energy-total,
+  .hint-home-theme-copy, .hint-home-score-label, .hint-home-details-link,
+  .hint-home-detail-content, .hint-home-evidence-signal,
+  .hint-home-space-description, .hint-home-space-chevron
+) { color: var(--hint-muted); }
+[data-hint-theme="dark"] .hint-home-page :is(
+  .hint-home-tarot-label, .hint-home-keyword, .hint-home-sky-toggle,
+  .hint-home-card-title em, .hint-home-signal-symbol,
+  .hint-home-evidence-signal[data-selected="true"]
+) { color: var(--hint-lavender); }
+[data-hint-theme="dark"] .hint-home-energy-details > p { color: var(--hint-text); }
+[data-hint-theme="dark"] .hint-home-reveal {
+  color: var(--hint-special-action-text);
+  background: var(--hint-special-action-bg);
+}
+[data-hint-theme="dark"] .hint-home-space {
+  background: var(--hint-card-inner);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+}
