@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-29",
+  "timezone": "America/Chicago",
+  "source": "Local pmset system power log and Playwright trace",
+  "events": [
+    {
+      "at": "16:31:58 -0500",
+      "event": "Display is turned off"
+    },
+    {
+      "at": "16:33:55 -0500",
+      "event": "Clamshell Sleep",
+      "seconds": 30
+    },
+    {
+      "at": "16:34:31 -0500",
+      "event": "Thermal Emergency Sleep",
+      "seconds": 442
+    },
+    {
+      "at": "16:41:53 -0500",
+      "event": "Display is turned on; Wake from Deep Idle"
+    }
+  ],
+  "matchingTest": {
+    "title": "Astrology quality en dark app=false OS=true",
+    "operation": "Screenshot: transit-timing.png",
+    "durationMs": 440776.32,
+    "subsequentStatus": "timedOut"
+  },
+  "recheck": "Same scenario passed three isolated repeats in about 2.3 seconds each; full acceptance remains outstanding.",
+  "decision": "Stop extended Mac runs; preserve progress and transfer long tests to Windows when available. Do not override thermal protection or idle-sleep settings.",
+  "limits": "This evidence explains this interruption, not every earlier reported reset; browser results do not establish native readiness."
+}

@@ -1,0 +1,62 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:51:05.990Z",
+    "source": {
+      "commit": "7eab19e5e4396d508cfb5b07f9b7e28f567c5760",
+      "fingerprint": "092a37b05f85b12b5884f8d83929a4ff6b5935f103bb8c8c7f4e5ac753c9b32e"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-dock-20260929",
+      "fingerprint": "cd5d14ee0baacb51c4dd619e2bfc8d402a4cb973559fd351d53e04e64ece197c"
+    },
+    "selected": 3
+  },
+  "end": {
+    "kind": "end",
+    "at": "2026-09-29T21:51:14.113Z",
+    "status": "passed"
+  },
+  "counts": {
+    "passed": 3
+  },
+  "notRun": 0,
+  "tests": [
+    {
+      "title": "Astrology quality en dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2304,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2277,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2263,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    }
+  ]
+}

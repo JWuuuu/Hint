@@ -1,0 +1,38 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:50:08.088Z",
+    "source": {
+      "commit": "7eab19e5e4396d508cfb5b07f9b7e28f567c5760",
+      "fingerprint": "092a37b05f85b12b5884f8d83929a4ff6b5935f103bb8c8c7f4e5ac753c9b32e"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-dock-20260929",
+      "fingerprint": "cd5d14ee0baacb51c4dd619e2bfc8d402a4cb973559fd351d53e04e64ece197c"
+    },
+    "selected": 1
+  },
+  "end": {
+    "kind": "end",
+    "at": "2026-09-29T21:50:12.197Z",
+    "status": "passed"
+  },
+  "counts": {
+    "passed": 1
+  },
+  "notRun": 0,
+  "tests": [
+    {
+      "title": "merge matrix es dark app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 3187,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 90,
+        "column": 3
+      },
+      "errors": []
+    }
+  ]
+}

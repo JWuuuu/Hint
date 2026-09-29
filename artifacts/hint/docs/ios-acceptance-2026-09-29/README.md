@@ -12,6 +12,14 @@ The user's approved iPhone plan supersedes the earlier browser-only stopping poi
 
 Missing native evidence prevents completion. Windows and browser results are not iPhone proof.
 
+## Latest stop: Mac thermal sleep, long tests deferred
+
+The current runtime has one additional dark-dock label fix after the `e23754b` unit/API/matrix checkpoint: Ask uses the night foreground instead of dark action-button ink. Its explicit regression failed before and passed after; see [before](./dock-ink-before-registry.json), [after](./dock-ink-after-registry.json) and the [corrected SE screenshot](./samples/se-es-dark-dock-after.png). The latest production asset fingerprint is **`cd5d14ee0baacb51c4dd619e2bfc8d402a4cb973559fd351d53e04e64ece197c`**, in `/tmp/hint-ios-production-dock-20260929`, served on the isolated 5255 preview. Earlier `6fda3456…` results are prior-checkpoint evidence, not a final full pass of this new fingerprint.
+
+A 922-case consolidated browser run was interrupted for this review. It recorded 110 passes, eight scope skips, one timeout, one interrupted case and 802 not run ([registry](./interrupted-app-registry.json)). The timeout coincides with an actual **Thermal Emergency Sleep**: the Mac slept for 442 seconds while a screenshot awaited completion for 440.8 seconds. The same Astrology case then passed three isolated repeats ([recheck](./astro-timeout-recheck-registry.json)). [System/trace correlation](./mac-interruption.json) is preserved; it does not establish that all earlier reported resets had the same cause.
+
+Long Mac test runs are stopped pending a suitable host. No thermal or power protection was overridden. Continue the full suite and standalone performance on Windows when available, with the current source/assets; **do not resume this older run by omitting its passed selectors after source changed**. No claim of whole-app, physical-iPhone or TestFlight acceptance is made.
+
 ## Current evidence and prerequisites
 
 - Baseline omitted Journal suite: **10/10 passed** on both phone sizes against the unchanged merge production build. Fictional fixtures; `/tmp/hint-ios-qa-journal-20260929/results.json` and durable per-test log retain details until copied into the final evidence package.
@@ -38,8 +46,9 @@ Missing native evidence prevents completion. Windows and browser results are not
 | Dark mode was overridden by cream-route CSS; unstyled status text could be pale on cream | Select dark Home/Daily; use selected-theme tokens for the original composition and inherit matching page ink | Failing palette assertions before repair; [SE Spanish dark Daily at 200%](./samples/se-es-dark-200-daily-top.png) |
 | Detailed Daily card explanation was clamped to two lines with no expansion | Open Daily with enlarged text; only interactive previews retain clamping, detail shows its full explanation | Initial full-matrix failures, then all 160 combinations pass |
 | Enlarged Home score denominator overlapped the adjacent theme | SE 200%: `/100` extended to x196 while adjacent theme began at x153 | Added geometric separation assertion; [reflowed score and categories](./samples/se-es-dark-200-home-middle.png) |
+| Ask label used dark button ink against the dark translucent dock | Open dark Home/Daily/Me; the orb label was much darker than the other tabs | Theme foreground repaired; focused before-fail/after-pass and screenshots retained |
 
-Manual review distinguished the transparent dock's background text from an actual Ask-label overflow. A dedicated label/button/orb-boundary check passed; no navigation behavior was altered for that observation. Screenshots are evidence to inspect, not proof that every element was covered by a geometry assertion.
+Manual review distinguished the transparent dock's background text from an actual Ask-label overflow. A dedicated label/button/orb-boundary check passed; a separate genuine ink-color defect was then repaired. Navigation behavior remains unchanged. Screenshots are evidence to inspect, not proof that every element was covered by a geometry assertion.
 
 The real-API harness is `scripts/run-app-api-qa.mjs`, with a dedicated Playwright configuration. It requires the exact disposable DB URL and already-built assets, rejects occupied ports, whitelists its child environment, blocks external providers, and binds API/preview to loopback. It deliberately bypasses the API startup module that reads personal `.env` files. Initial harness expectations were corrected for the existing truthful “saved locally” label after reload and the retained-card reopen control; these were not product fixes.
 

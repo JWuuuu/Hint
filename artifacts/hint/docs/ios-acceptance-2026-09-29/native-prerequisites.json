@@ -28,6 +28,13 @@
       "exitCode": 0,
       "deviceNames": [],
       "note": "USB visibility alone would not prove trusted pairing, installation or acceptance."
+    },
+    {
+      "check": "Bundled iOS assets versus reviewed web build",
+      "exitCode": 1,
+      "output": "Native assets differ from verified web output: 78 changed/missing, 11 stale.",
+      "webFingerprint": "6fda3456e37edd55bbc4d7a6396ba8800509409aef9799c32a26eb35ae121542",
+      "note": "Do not sync a browser-only build into a release candidate. Configure the real HTTPS service, build mobile, verify it, then sync."
     }
   ]
 }

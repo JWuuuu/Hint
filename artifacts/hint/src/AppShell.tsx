@@ -390,7 +390,7 @@ function AppTab({
       ].join(" ")}
       style={{
         color: featured
-          ? "var(--hint-special-action-text)"
+          ? isDark ? "var(--hint-text)" : "var(--hint-special-action-text)"
           : active
             ? isDark ? "#f8f1e8" : "#3f3a44"
             : isDark ? "rgba(248,241,232,0.62)" : "#807982",

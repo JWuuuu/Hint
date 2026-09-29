@@ -68,8 +68,10 @@ async function inspectDock(page: Page) {
     const text = node.getBoundingClientRect();
     const button = node.closest("a")!.getBoundingClientRect();
     const orb = node.closest("a")!.querySelector(".hint-app-tab-orb")?.getBoundingClientRect();
+    const ink = getComputedStyle(node).color.match(/[\d.]+/g)!.slice(0, 3).map(Number).reduce((sum, value) => sum + value, 0) / 3;
     return { label: node.textContent, top: text.top, bottom: text.bottom, left: text.left, right: text.right,
-      button: { top: button.top, bottom: button.bottom, left: button.left, right: button.right }, orbBottom: orb?.bottom };
+      button: { top: button.top, bottom: button.bottom, left: button.left, right: button.right }, orbBottom: orb?.bottom,
+      dark: document.documentElement.dataset.hintTheme === "dark", ink };
   }));
   for (const item of labels) {
     expect.soft(item.top, `${item.label}: label stays inside its button`).toBeGreaterThanOrEqual(item.button.top - 1);
@@ -77,6 +79,7 @@ async function inspectDock(page: Page) {
     expect.soft(item.left).toBeGreaterThanOrEqual(item.button.left - 1);
     expect.soft(item.right).toBeLessThanOrEqual(item.button.right + 1);
     if (item.orbBottom !== undefined) expect.soft(item.top, `${item.label}: label clears the Ask orb`).toBeGreaterThanOrEqual(item.orbBottom + 1);
+    if (item.dark) expect.soft(item.ink, `${item.label}: dark dock uses the night text palette`).toBeGreaterThan(150);
   }
 }
 
