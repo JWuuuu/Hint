@@ -6,6 +6,7 @@ import { hintDownloadUrl, validatePublicUrl } from "@/lib/publicUrls";
 import { translateText } from "../../../lib/LocalizedText";
 import type { HintLanguage } from "../../../lib/i18n";
 import { receiptCardName, receiptPosition, receiptSpreadLabel, receiptOriginalTextLabel } from "./receiptCopy";
+import { createReceiptPng } from "./receiptPng";
 
 export { getTarotReceiptCardLayout } from "./receiptLayout";
 
@@ -250,21 +251,7 @@ export async function createTarotReceiptBlob(model: TarotReceiptModel, { signal 
   wrapReceiptText(model.labels.footer, 700, value => context.measureText(value).width)
     .forEach((line, index) => context.fillText(line, width / 2, height - 112 + index * 23));
 
-  return await new Promise<Blob>((resolve, reject) => {
-    const timer = window.setTimeout(
-      () => reject(new Error("Receipt export timed out")),
-      5_000,
-    );
-    canvas.toBlob(
-      (blob) => {
-        window.clearTimeout(timer);
-        if (blob) resolve(blob);
-        else reject(new Error("Receipt export failed"));
-      },
-      "image/png",
-      0.94,
-    );
-  });
+  return await createReceiptPng(canvas, signal);
 }
 
 function blobToBase64(blob: Blob) {

@@ -1,0 +1,409 @@
+{
+  "browserOnly": true,
+  "physicalIphoneVerified": false,
+  "profiles": [
+    {
+      "clickToFrameMs": 186,
+      "p95": 17,
+      "max": 168,
+      "samples": 338,
+      "stalls": [
+        {
+          "at": 1678,
+          "gap": 168,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 1515,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 1520,
+              "duration": 142
+            },
+            {
+              "stage": "png-total",
+              "start": 1520,
+              "duration": 144
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 5,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 142,
+        "png-total": 144,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 16,
+      "p95": 17,
+      "max": 172,
+      "samples": 338,
+      "stalls": [
+        {
+          "at": 7276,
+          "gap": 172,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 7106,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 7111,
+              "duration": 164
+            },
+            {
+              "stage": "png-total",
+              "start": 7111,
+              "duration": 165
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 1,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 164,
+        "png-total": 165,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 180,
+      "p95": 17,
+      "max": 181,
+      "samples": 338,
+      "stalls": [
+        {
+          "at": 12853,
+          "gap": 181,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 12685,
+              "duration": 5
+            },
+            {
+              "stage": "png-call",
+              "start": 12690,
+              "duration": 161
+            },
+            {
+              "stage": "png-total",
+              "start": 12690,
+              "duration": 163
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 5,
+        "fillText": 0,
+        "png-call": 161,
+        "png-total": 163,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 181,
+      "p95": 17,
+      "max": 172,
+      "samples": 338,
+      "stalls": [
+        {
+          "at": 18452,
+          "gap": 172,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 18285,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 18289,
+              "duration": 161
+            },
+            {
+              "stage": "png-total",
+              "start": 18289,
+              "duration": 162
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 1,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 161,
+        "png-total": 162,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 179,
+      "p95": 17,
+      "max": 182,
+      "samples": 338,
+      "stalls": [
+        {
+          "at": 24054,
+          "gap": 182,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 23887,
+              "duration": 5
+            },
+            {
+              "stage": "png-call",
+              "start": 23892,
+              "duration": 160
+            },
+            {
+              "stage": "png-total",
+              "start": 23892,
+              "duration": 161
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 5,
+        "fillText": 0,
+        "png-call": 160,
+        "png-total": 161,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 182,
+      "p95": 17,
+      "max": 182,
+      "samples": 337,
+      "stalls": [
+        {
+          "at": 29654,
+          "gap": 182,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 29486,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 29490,
+              "duration": 162
+            },
+            {
+              "stage": "png-total",
+              "start": 29490,
+              "duration": 163
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 1,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 162,
+        "png-total": 163,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 157,
+      "p95": 18,
+      "max": 148,
+      "samples": 338,
+      "stalls": [
+        {
+          "at": 35209,
+          "gap": 148,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 35065,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 35069,
+              "duration": 137
+            },
+            {
+              "stage": "png-total",
+              "start": 35069,
+              "duration": 139
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 137,
+        "png-total": 139,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 157,
+      "p95": 17,
+      "max": 149,
+      "samples": 337,
+      "stalls": [
+        {
+          "at": 40762,
+          "gap": 149,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 40616,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 40620,
+              "duration": 139
+            },
+            {
+              "stage": "png-total",
+              "start": 40620,
+              "duration": 140
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 139,
+        "png-total": 140,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 10,
+      "p95": 18,
+      "max": 144,
+      "samples": 338,
+      "stalls": [
+        {
+          "at": 46320,
+          "gap": 144,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 46178,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 46183,
+              "duration": 135
+            },
+            {
+              "stage": "png-total",
+              "start": 46183,
+              "duration": 136
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 135,
+        "png-total": 136,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 183,
+      "p95": 18,
+      "max": 174,
+      "samples": 336,
+      "stalls": [
+        {
+          "at": 51904,
+          "gap": 174,
+          "overlapping": [
+            {
+              "stage": "drawImage",
+              "start": 51734,
+              "duration": 4
+            },
+            {
+              "stage": "png-call",
+              "start": 51738,
+              "duration": 164
+            },
+            {
+              "stage": "png-total",
+              "start": 51738,
+              "duration": 166
+            }
+          ]
+        }
+      ],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "png-call": 164,
+        "png-total": 166,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    }
+  ],
+  "baselineRuntimeCommit": "387a15268ea3341e2d03d19dd8ee11b743a6e87c",
+  "environment": "Mac Playwright WebKit, 440x956, one worker, normal motion, fictional data",
+  "interpretation": "All ten exports have a >=100ms frame gap. Canvas.toBlob call takes 135-164ms synchronously, while image drawing takes 4-5ms. This is browser evidence, not physical iPhone evidence."
+}

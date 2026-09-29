@@ -190,12 +190,12 @@ test("Leaving Personality cancels a pending export without reopening a preview o
 });
 
 const receiptLocales = [
-  { code: "zh", orientation: "逆位", receive: "收下解读", share: "分享解读小票", card: "愚者", heading: "你的解读", original: "牌卡反思 · 英文原文" },
-  { code: "es", orientation: "invertida", receive: "Recibir", share: "Compartir recuerdo", card: "El Loco", heading: "TU LECTURA", original: "Reflexión de las cartas · original en inglés" },
-  { code: "ja", orientation: "逆位置", receive: "受け取る", share: "記念カードを共有", card: "愚者", heading: "あなたのリーディング", original: "カードの振り返り・英語の原文" },
-  { code: "ko", orientation: "역방향", receive: "받기", share: "리딩 카드 공유", card: "바보", heading: "나의 리딩", original: "카드 성찰 · 영어 원문" },
+  { code: "zh", orientation: "逆位", receive: "收下解读", share: "分享小票", card: "愚者", heading: "你的解读", original: "牌卡反思 · 英文原文" },
+  { code: "es", orientation: "Invertida", receive: "Recibir", share: "Compartir recibo", card: "El Loco", heading: "TU LECTURA", original: "Reflexión de las cartas · original en inglés" },
+  { code: "ja", orientation: "逆位置", receive: "受け取る", share: "レシートを共有", card: "愚者", heading: "あなたのリーディング", original: "カードの振り返り・英語の原文" },
+  { code: "ko", orientation: "역방향", receive: "받기", share: "영수증 공유", card: "바보", heading: "나의 리딩", original: "카드 성찰 · 영어 원문" },
 ];
-for (const locale of receiptLocales) test(`${locale.code} Tarot receipt preview exports a localized private PNG`, async ({ page }, info) => {
+for (const locale of receiptLocales) test(`${locale.code} Tarot printer exports a localized public PNG with the original reversed card`, async ({ page }, info) => {
   await seed(page, locale.code);
   // Same persisted reading-phase shape used by tarot-room.spec.ts; no ritual shortcuts in app code.
   await page.addInitScript(() => {
@@ -208,21 +208,30 @@ for (const locale of receiptLocales) test(`${locale.code} Tarot receipt preview 
   });
   await page.goto("/app/tarot?hintPreview=embedded");
   await expect(page.getByText("CONFIDENTIAL GENERATED ANSWER", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: locale.receive, exact: true }).click();
-  const receipt = page.getByRole("dialog");
-  await expect(receipt.getByRole("button", { name: locale.share, exact: true })).toBeEnabled();
-  await expect(receipt).toContainText(locale.card); await expect(receipt).toContainText(locale.original);
-  await expect(receipt).not.toContainText("CONFIDENTIAL");
-  await expect(receipt.getByRole("button", { name: new RegExp(`${locale.card}, ${locale.orientation}$`) })).toHaveCount(1);
-  await expect(receipt.getByRole("button", { name: /, (?:upright|reversed)$/ })).toHaveCount(0);
+  // The new printer prepares its PNG on opening, before the share action.
   await page.evaluate(() => {
     const text: string[] = []; Object.assign(window, { exportedReceiptText: text });
+    const rotations: number[] = []; Object.assign(window, { exportedReceiptRotations: rotations });
     const original = CanvasRenderingContext2D.prototype.fillText;
     CanvasRenderingContext2D.prototype.fillText = function(value, x, y, maxWidth) {
       if (this.canvas.width === 1800) text.push(value);
       if (maxWidth === undefined) original.call(this, value, x, y); else original.call(this, value, x, y, maxWidth);
     };
+    const rotate = CanvasRenderingContext2D.prototype.rotate;
+    CanvasRenderingContext2D.prototype.rotate = function(angle) {
+      if (this.canvas.width === 1800) rotations.push(angle);
+      rotate.call(this, angle);
+    };
   });
+  await page.getByRole("button", { name: locale.receive, exact: true }).click();
+  const receipt = page.getByRole("dialog");
+  await expect(receipt.getByRole("button", { name: locale.share, exact: true })).toBeEnabled();
+  await expect(receipt).toContainText(locale.card); await expect(receipt).toContainText(locale.original);
+  await expect(receipt).not.toContainText("CONFIDENTIAL");
+  await expect(receipt.getByRole("checkbox")).not.toBeChecked();
+  await expect(receipt.getByRole("img", { name: locale.card, exact: true })).toHaveCSS("transform", "matrix(-1, 0, 0, -1, 0, 0)");
+  await expect(receipt.getByText(locale.orientation, { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => (window as unknown as { exportedReceiptRotations: number[] }).exportedReceiptRotations)).toEqual([Math.PI]);
   const pending = page.waitForEvent("download");
   await receipt.getByRole("button", { name: locale.share, exact: true }).click();
   const image = await pending; expect(await image.failure()).toBeNull();

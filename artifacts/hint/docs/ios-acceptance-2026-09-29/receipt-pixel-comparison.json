@@ -1,0 +1,114 @@
+[
+  {
+    "case": "personality-sharing-es-Tar-708f9--the-original-reversed-card-iphone-se/tarot-es.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "2d9211c6457860e22832f4f816362b41fc94100be0983643f97494f544d8ac1b",
+    "afterSha256": "2d9211c6457860e22832f4f816362b41fc94100be0983643f97494f544d8ac1b"
+  },
+  {
+    "case": "personality-sharing-es-Tar-708f9--the-original-reversed-card-iphone-17-pro-max/tarot-es.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "2d9211c6457860e22832f4f816362b41fc94100be0983643f97494f544d8ac1b",
+    "afterSha256": "2d9211c6457860e22832f4f816362b41fc94100be0983643f97494f544d8ac1b"
+  },
+  {
+    "case": "personality-sharing-ja-Tar-fda5f--the-original-reversed-card-iphone-17-pro-max/tarot-ja.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "96efecb63f37cc367b72c89c9a2a97a79cdeb5b1d2847ec8f667d42137fdfcaa",
+    "afterSha256": "96efecb63f37cc367b72c89c9a2a97a79cdeb5b1d2847ec8f667d42137fdfcaa"
+  },
+  {
+    "case": "personality-sharing-zh-Tar-8f5b4--the-original-reversed-card-iphone-17-pro-max/tarot-zh.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "71ea7d856886ae75ad800e3e976bbd3380804fb14d2d6e6b24000a521e77896a",
+    "afterSha256": "71ea7d856886ae75ad800e3e976bbd3380804fb14d2d6e6b24000a521e77896a"
+  },
+  {
+    "case": "personality-sharing-ja-Tar-fda5f--the-original-reversed-card-iphone-se/tarot-ja.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "96efecb63f37cc367b72c89c9a2a97a79cdeb5b1d2847ec8f667d42137fdfcaa",
+    "afterSha256": "96efecb63f37cc367b72c89c9a2a97a79cdeb5b1d2847ec8f667d42137fdfcaa"
+  },
+  {
+    "case": "personality-sharing-ko-Tar-205f3--the-original-reversed-card-iphone-17-pro-max/tarot-ko.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "f88c7f11a4df3e48315ed295f92d40cb9283f9973c3f1d0ccea4eb9bc46b3e8a",
+    "afterSha256": "f88c7f11a4df3e48315ed295f92d40cb9283f9973c3f1d0ccea4eb9bc46b3e8a"
+  },
+  {
+    "case": "personality-sharing-ko-Tar-205f3--the-original-reversed-card-iphone-se/tarot-ko.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "f88c7f11a4df3e48315ed295f92d40cb9283f9973c3f1d0ccea4eb9bc46b3e8a",
+    "afterSha256": "f88c7f11a4df3e48315ed295f92d40cb9283f9973c3f1d0ccea4eb9bc46b3e8a"
+  },
+  {
+    "case": "personality-sharing-zh-Tar-8f5b4--the-original-reversed-card-iphone-se/tarot-zh.png",
+    "beforeSize": [
+      1800,
+      2800
+    ],
+    "afterSize": [
+      1800,
+      2800
+    ],
+    "pixelsIdentical": true,
+    "beforeSha256": "71ea7d856886ae75ad800e3e976bbd3380804fb14d2d6e6b24000a521e77896a",
+    "afterSha256": "71ea7d856886ae75ad800e3e976bbd3380804fb14d2d6e6b24000a521e77896a"
+  }
+]

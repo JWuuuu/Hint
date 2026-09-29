@@ -13,10 +13,10 @@ export default defineConfig({
   timeout: 90_000,
   expect: { timeout: 12_000 },
   fullyParallel: false,
-  workers: 2,
+  workers: 1,
   updateSnapshots: "none",
   snapshotPathTemplate: "{testDir}/__screenshots__/{projectName}/{arg}{ext}",
-  reporter: [["list"], ["json", { outputFile: path.join(output, "results.json") }]],
+  reporter: [["list"], ["json", { outputFile: path.join(output, "results.json") }], ["./scripts/qa-progress-reporter.cjs"]],
   outputDir: path.join(output, "tests"),
   use: {
     baseURL: process.env.HINT_E2E_BASE_URL ?? "http://127.0.0.1:5240",

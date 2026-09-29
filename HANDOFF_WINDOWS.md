@@ -2,6 +2,8 @@
 
 Continue the merged application, rather than importing either ZIP over it.
 
+**Active goal expanded on 2026-09-29:** the owner requires actual iPhone acceptance and a prepared TestFlight candidate, without uploading. Browser acceptance is only the first layer. Continue `artifacts/hint/docs/ios-acceptance-2026-09-29/README.md`; Simulator, physical-device evidence and a signed candidate are required before the goal can be complete. The merge evidence below is historical evidence for its exact revision, not an iPhone release approval.
+
 - Repository: https://github.com/JWuuuu/Hint-App.git
 - Integration branch: `codex/merge-home-daily-receipt`
 - Validated implementation commit: `2f6c1962aa0cee608ec536daa835148fc3a7d98a`
@@ -107,6 +109,6 @@ Windows can be the primary web/API development and browser-test machine. Xcode, 
 Continue Hint on codex/merge-home-daily-receipt, starting from validated implementation commit 2f6c1962aa0cee608ec536daa835148fc3a7d98a and its following evidence commit. Read HANDOFF_WINDOWS.md and artifacts/hint/docs/merge-2026-09-28/README.md plus validation.json/performance.json first.
 The three-way merge is implemented: my Tarot/Astrology/data functions, Xiaoyu's Home/Daily/navigation visuals, and Tiantian's printer as the real sharing dialog. Do not re-import the ZIPs or overwrite with main. Preserve all nine spreads, the 2.8-second two-packet shuffle, fixed daily-card identity, private-by-default immutable receipts, and complete Astrology charts/reports.
 Install fresh Windows dependencies, restore the selectable iPhone-frame preview, and run the isolated functional and sequential performance checks in the handoff. Review the three pre-existing SE golden mismatches using the recorded baseline comparison; do not hide them with snapshot updates. Continue from reproduced issues and retain source/data safeguards.
-Mac merge acceptance is complete, so do not re-merge the archives or treat interrupted earlier runs as current unfinished work. First verify the Windows checkout and a small phone-frame smoke test; keep initial checks to one worker. Follow up on the isolated receipt 183ms browser frame gap before making smoothness claims. Mac results are not Windows or physical-iPhone proof.
+The original three-way merge is complete; the owner then expanded the goal to full App quality plus Simulator, physical-iPhone acceptance and a prepared signed TestFlight candidate. Read artifacts/hint/docs/ios-acceptance-2026-09-29/README.md for the active work. Do not re-import archives. First verify the checkout and a small phone-frame smoke test; use one worker and durable progress logs. Finish omitted coverage and the isolated receipt frame-gap investigation, then retain separate Simulator/device/build evidence. Do not mark the expanded goal complete from browser checks or upload TestFlight.
 No deployment, TestFlight, paid provider calls, real-data changes, schema push, or copying credentials/browser databases. Keep native iPhone verification separate and show actual phone-frame evidence.
 ```

@@ -1,0 +1,221 @@
+{
+  "browserOnly": true,
+  "physicalIphoneVerified": false,
+  "profiles": [
+    {
+      "clickToFrameMs": 39,
+      "p95": 17,
+      "max": 34,
+      "samples": 338,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 4,
+        "fillRect": 1,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 5,
+        "png-total": 170,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 47,
+      "p95": 17,
+      "max": 37,
+      "samples": 338,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 1,
+        "drawImage": 3,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 26,
+        "png-total": 174,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 10,
+      "p95": 17,
+      "max": 18,
+      "samples": 335,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 2,
+        "png-total": 147,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 47,
+      "p95": 17,
+      "max": 49,
+      "samples": 335,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 1,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 27,
+        "png-total": 171,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 50,
+      "p95": 17,
+      "max": 41,
+      "samples": 336,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 25,
+        "png-total": 170,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 11,
+      "p95": 17,
+      "max": 34,
+      "samples": 338,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 25,
+        "png-total": 171,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 19,
+      "p95": 17,
+      "max": 20,
+      "samples": 337,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 1,
+        "png-total": 155,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 45,
+      "p95": 17,
+      "max": 36,
+      "samples": 335,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 26,
+        "png-total": 173,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 20,
+      "p95": 17,
+      "max": 22,
+      "samples": 336,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 1,
+        "png-total": 153,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    },
+    {
+      "clickToFrameMs": 11,
+      "p95": 17,
+      "max": 19,
+      "samples": 335,
+      "stalls": [],
+      "stageTotals": {
+        "fonts-ready": 0,
+        "measureText": 0,
+        "fillRect": 0,
+        "drawImage": 4,
+        "fillText": 0,
+        "bitmap-call": 0,
+        "bitmap-total": 0,
+        "png-call": 2,
+        "png-total": 151,
+        "print-printing": 0,
+        "print-complete": 0
+      }
+    }
+  ],
+  "environment": "Mac Playwright WebKit, 440x956, one worker, normal motion, fictional data",
+  "interpretation": "Ten exports: frame-gap p95 17ms each, maximum 49ms; click-to-frame maximum 50ms, no >=100ms gaps. PNG encoding remains full resolution in a short-lived worker. Physical iPhone not verified.",
+  "identity": {
+    "kind": "begin",
+    "at": "2026-09-29T20:49:31.678Z",
+    "source": {
+      "commit": "387a15268ea3341e2d03d19dd8ee11b743a6e87c",
+      "fingerprint": "d6516786f32688a1ea85c43627adee0dec1266ef7e5068dc3fe62bb0ebf80723"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-20260929",
+      "fingerprint": "acbd415f3cbaf39b4261f622eda694309e23192de4f4fcd6747638098f211784"
+    },
+    "selected": 1
+  }
+}
