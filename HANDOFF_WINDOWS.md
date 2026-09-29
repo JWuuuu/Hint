@@ -6,8 +6,8 @@ Continue the merged application, rather than importing either ZIP over it.
 
 - Repository: https://github.com/JWuuuu/Hint-App.git
 - Integration branch: `codex/merge-home-daily-receipt`
-- Validated implementation commit: `2f6c1962aa0cee608ec536daa835148fc3a7d98a`
-- The following documentation commit adds acceptance evidence only. Use `git log -1` for the exact branch tip.
+- Current implementation checkpoint: **`3280bcfb5e6975194e2bd1f29479306b3d8425c6`**. Its following documentation commit records this stop; use the latest integration-branch tip.
+- Historical merge implementation: `2f6c1962aa0cee608ec536daa835148fc3a7d98a`; expanded iPhone acceptance is still incomplete.
 - Original handoff remains untouched: `codex/windows-handoff-2026-09-12` at `b9594adf2f4d3114cf8bc33d6cd319d123477a13`.
 - `main` is not the working baseline; do not replace this branch with it. The `old-hint` remote has a disabled push URL.
 
@@ -25,17 +25,31 @@ Historical Daily cards use saved IDs; an unopened assignment cannot become a his
 
 New CSS is scoped. Tarot deck order, physics, state machine, reading persistence, identity and clear-history core files are byte-identical to the original handoff. There are no API/schema/migration changes in this merge.
 
-## Evidence and stopping point
+## Current continuation point
+
+**Owner asked to save progress on 2026-09-29: Windows is not ready yet. Do not start another extended Mac run.** System power logs show a 442-second Thermal Emergency Sleep matching a 440.8-second Playwright screenshot stall. No power or thermal protection was overridden. Read `artifacts/hint/docs/ios-acceptance-2026-09-29/mac-interruption.json`.
+
+Read the acceptance README first. The receipt PNG encoder now runs in a cancellable worker; ten browser samples have no >=100ms gap and eight before/after exports have identical decoded pixels. Home/Daily night-theme inheritance, complete detailed card copy, and enlarged score reflow are repaired. At `e23754b`, the 160-case merge matrix, 703 frontend tests, 66 API/database tests and four actual browser→API→temporary-DB journeys passed, along with frontend/API types and builds.
+
+The current runtime adds a confirmed dark Ask-label ink repair, with an explicit before-fail/after-pass regression. Its built web fingerprint is **`cd5d14ee0baacb51c4dd619e2bfc8d402a4cb973559fd351d53e04e64ece197c`**. Mac's isolated preview is `http://127.0.0.1:5255/app?hintPreview=frame`, serving `/tmp/hint-ios-production-dock-20260929`; the older 5254 preview is not this latest checkpoint. Temporary builds/logs are not transferred by Git; durable registries and selected screenshots are in the acceptance folder.
+
+Nine protected functional-core files remain unchanged. Three stale SE pick references were individually reviewed and the six normal comparisons passed; old/actual/diff images and geometry evidence are retained. The interrupted 922-case whole-app run recorded 110 passes, eight skips, one timeout correlated with the thermal sleep, one interrupted case and 802 not run. The affected Astrology case passed three isolated rechecks. This is not a complete run. Expanded SE nine-spread testing is enabled, but its full journeys were not reached in that interrupted run.
+
+Next, when Windows is ready: install dependencies; verify the phone frame; run the complete current functional suite and standalone performance sequentially; review every failure/skip. Re-run full units, API/temporary-DB and types/builds at that final source. Do not omit the earlier run's passed cases using `qa-resume`: the implementation and test assertions changed, so its fingerprint no longer qualifies. Mac Simulator/device checks remain separate.
+
+Native source membership passes, but mobile release build fails because `VITE_API_BASE_URL` is unset. Only Command Line Tools are selected, `simctl` is unavailable, and no USB iPhone is currently visible. Production HTTPS URLs, Apple Team/signing, Simulator, physical-device acceptance and an archive are outstanding. Do not substitute a localhost URL or count the browser matrix as native acceptance.
+
+## Historical merge evidence (before the expanded goal)
 
 Read `artifacts/hint/docs/merge-2026-09-28/README.md`, then `validation.json`, `performance.json`, `protected-core.json`, `runtime-manifest.json` and the phone screenshots. These supersede the incomplete 2026-09-12 acceptance status; the old Astrology documentation is retained for architectural context.
 
 The runtime source/asset manifest SHA-256 is `c9a736697b7cc2c5dfa480d3bfcd4a78d9e1e40ab32fbe0a4b9502a6ce42c6ac` (928 files, excluding tests/docs/build output).
 
-Acceptance is complete for this merge scope: 695 frontend unit/component tests and 66 API/disposable-database tests passed; types and frontend/API builds passed. The 612 functional browser cases recorded 586 passes, 23 planned skips, and the three pre-existing SE golden failures described below. Sequential performance passed 5/5 baseline cases and 9/9 merged cases, including five Tarot rituals (16.2–16.5 seconds each, no progressive slowdown). Completed results survived interruptions; only unfinished cases were resumed against the same build.
+That historical merge run passed 695 frontend unit/component tests and 66 API/disposable-database tests; types and frontend/API builds passed. The 612 functional browser cases recorded 586 passes, 23 planned skips, and the three pre-existing SE golden failures described below. Sequential performance passed 5/5 baseline cases and 9/9 merged cases, including five Tarot rituals (16.2–16.5 seconds each, no progressive slowdown). These historical results are not the expanded goal's completion gate.
 
-The merged common-flow frame-gap p95 values were 22–28ms in these browser samples. Receipt preparation/printing/replay had p95 18ms and a 23ms click-to-next-frame observation, but also one isolated 183ms frame gap. Keep that spike as a Windows/physical-iPhone follow-up; the exact phase has not been isolated and this is not a no-stutter guarantee. Heavy test runs are finished on this Mac. To resume after another app interruption, inspect the recorded evidence before scheduling anything again; use one worker for initial desktop checks and all performance runs.
+The old merged common-flow frame-gap p95 values were 22–28ms. Receipt preparation also had an isolated 183ms frame gap; the newer acceptance report locates and repairs that bottleneck. To resume after an interruption, inspect the exact live process, source/assets and durable progress log before scheduling another run. Mac uses one worker, with builds, functional tests and performance separate.
 
-Known validation distinction: three SE pick-screen repository goldens predate the original functional checkpoint. Both the separately built original commit and this merge fail those three old goldens; their actual pixels match each other exactly. `legacy-golden-comparison.json` records this. The old golden files were not overwritten. Keep the recorded failures separate from passed functional tests, and do not claim the entire snapshot suite is green.
+Historical distinction: three SE pick-screen goldens predated the original functional checkpoint. The separately built original and merged actual pixels matched exactly (`legacy-golden-comparison.json`). Their later individual review is documented in the current acceptance report; retain both sets of evidence.
 
 Mac browser evidence does not establish physical-iPhone or Windows results. Native sharing, keyboard/IME, haptics, voice, lifecycle, signing, production HTTPS URLs and Apple Team ID remain release gates. No deployment, TestFlight upload, paid provider calls or real account/database changes were made.
 
@@ -66,6 +80,7 @@ $env:HINT_TAROT_E2E = '1'
 $env:API_PROXY_TARGET = 'http://127.0.0.1:1'
 $env:HINT_E2E_BASE_URL = 'http://127.0.0.1:5254'
 $env:HINT_HANDOFF_OUTPUT = Join-Path $env:TEMP 'hint-merge-windows'
+$env:HINT_QA_BUILD_DIR = Join-Path (Get-Location) 'artifacts\hint\dist\public'
 pnpm.cmd run build:web
 pnpm.cmd --filter @workspace/hint exec vite preview --host 127.0.0.1 --port 5254 --strictPort
 ```
@@ -75,13 +90,11 @@ Leave that terminal running. Open `http://127.0.0.1:5254/app?hintPreview=frame`;
 From another terminal, set the same `HINT_E2E_BASE_URL` and a new `HINT_HANDOFF_OUTPUT`, then run:
 
 ```powershell
-$specs = @('merge-receipt','daily-text-layout','daily-history-periods','home-motion',
-  'tarot-all-spreads','tarot-room','tarot-spread-navigation','tarot-wash-refinement',
-  'astrology-reports','astrology','astrology-creation','astrology-quality',
-  'quality-recovery','quality-gap-regressions','room-fresh-entry','room-visits',
-  'room-entrances','space-navigation','me-redesign','navigation-text-layout','touch-targets') |
-  ForEach-Object { "e2e/$_.spec.ts" }
-pnpm.cmd --filter @workspace/hint exec playwright test @specs --config playwright.handoff.config.ts --workers=2 --grep-invert 'native packaging|sustained animation stalls|five consecutive rituals|host frame samples|host RAF sample|printer frame sample'
+$env:HINT_HANDOFF_OUTPUT = Join-Path $env:TEMP ('hint-full-functional-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+$specs = Get-ChildItem 'artifacts/hint/e2e/*.spec.ts' |
+  Where-Object { $_.Name -notin @('motion-performance.spec.ts','receipt-performance.spec.ts') } |
+  ForEach-Object { "e2e/$($_.Name)" }
+pnpm.cmd --filter @workspace/hint exec playwright test @specs --config playwright.handoff.config.ts --workers=1 --max-failures=5 --grep-invert 'native packaging|sustained animation stalls|five consecutive rituals|host frame samples|host RAF sample|printer frame sample|web frame regression'
 ```
 
 Run performance separately after functional tests, with no other heavy browser tests:
@@ -89,11 +102,15 @@ Run performance separately after functional tests, with no other heavy browser t
 ```powershell
 $env:HINT_HANDOFF_OUTPUT = Join-Path $env:TEMP 'hint-merge-windows-performance'
 pnpm.cmd --filter @workspace/hint exec playwright test e2e/motion-performance.spec.ts e2e/room-entrances.spec.ts e2e/tarot-room.spec.ts e2e/merge-receipt.spec.ts e2e/astrology-quality.spec.ts --config playwright.handoff.config.ts --workers=1 --project iphone-17-pro-max --grep 'web frame regression|host RAF sample|sustained animation stalls|five consecutive rituals|printer frame sample|host frame samples'
+$env:HINT_HANDOFF_OUTPUT = Join-Path $env:TEMP ('hint-receipt-profile-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+pnpm.cmd --filter @workspace/hint exec playwright test e2e/receipt-performance.spec.ts --config playwright.handoff.config.ts --workers=1 --project iphone-17-pro-max
 ```
 
 The native watcher test is excluded because it writes temporary native packaging files. Font rasterization and browser performance differ on Windows; inspect geometry and content before treating pixel differences as app defects. Do not update snapshots just to make failures disappear.
 
 For API/DB tests, create a **disposable PostgreSQL 18 database**. Set its `DATABASE_URL` and `HINT_ISOLATED_DB=1`, clear paid-provider keys, then run `pnpm.cmd --filter @workspace/db run migrate`, `migrate:check`, and `pnpm.cmd --filter @workspace/api-server exec vitest run --maxWorkers=1`. Do not use `db:push` or a real database. The existing API dev script contains POSIX `export`; on Windows use `$env:NODE_ENV='development'`, `pnpm.cmd run build:api`, then `pnpm.cmd run start:api` if a local API is needed.
+
+The actual browser/API bridge requires exactly `postgresql://hint_test:isolated-test-only@127.0.0.1:55439/hint_quality` on that disposable instance. With its migrations applied and no other functional/performance run active, set a fresh `HINT_HANDOFF_OUTPUT`, retain `HINT_QA_BUILD_DIR` and run `pnpm.cmd --filter @workspace/hint exec node scripts/run-app-api-qa.mjs`. It uses ports 5057/5256, real device sessions and guarded fictional records; it stops its own API/preview afterwards. Stop only your own disposable database when finished.
 
 ## Continuing safely
 
@@ -106,9 +123,9 @@ Windows can be the primary web/API development and browser-test machine. Xcode, 
 ## Paste into desktop Codex
 
 ```text
-Continue Hint on codex/merge-home-daily-receipt, starting from validated implementation commit 2f6c1962aa0cee608ec536daa835148fc3a7d98a and its following evidence commit. Read HANDOFF_WINDOWS.md and artifacts/hint/docs/merge-2026-09-28/README.md plus validation.json/performance.json first.
+Continue Hint on the latest codex/merge-home-daily-receipt branch, including runtime commit 3280bcfb5e6975194e2bd1f29479306b3d8425c6 and its following handoff commit. Read HANDOFF_WINDOWS.md and artifacts/hint/docs/ios-acceptance-2026-09-29/README.md first. The Mac had confirmed thermal-protection sleep, and I asked to save progress until Windows is ready. Do not start a long Mac run. Use the older merge report only as historical evidence.
 The three-way merge is implemented: my Tarot/Astrology/data functions, Xiaoyu's Home/Daily/navigation visuals, and Tiantian's printer as the real sharing dialog. Do not re-import the ZIPs or overwrite with main. Preserve all nine spreads, the 2.8-second two-packet shuffle, fixed daily-card identity, private-by-default immutable receipts, and complete Astrology charts/reports.
-Install fresh Windows dependencies, restore the selectable iPhone-frame preview, and run the isolated functional and sequential performance checks in the handoff. Review the three pre-existing SE golden mismatches using the recorded baseline comparison; do not hide them with snapshot updates. Continue from reproduced issues and retain source/data safeguards.
-The original three-way merge is complete; the owner then expanded the goal to full App quality plus Simulator, physical-iPhone acceptance and a prepared signed TestFlight candidate. Read artifacts/hint/docs/ios-acceptance-2026-09-29/README.md for the active work. Do not re-import archives. First verify the checkout and a small phone-frame smoke test; use one worker and durable progress logs. Finish omitted coverage and the isolated receipt frame-gap investigation, then retain separate Simulator/device/build evidence. Do not mark the expanded goal complete from browser checks or upload TestFlight.
+Install fresh Windows dependencies, restore the selectable iPhone-frame preview, and continue only unfinished functional/performance checks. The receipt long-frame repair, full-size PNG equivalence, dark/large-text fixes and real browser/API/DB bridge are recorded. Three SE references were reviewed individually; do not bulk-update other screenshots. Preserve source/data safeguards.
+The active goal includes Simulator, physical-iPhone acceptance and a prepared signed TestFlight candidate. Use one worker and durable progress logs; verify source/build fingerprints before resuming. Finish consolidated coverage and retain separate Simulator/device/build evidence. Missing Xcode, real HTTPS configuration, signing or device proof prevents completion. Do not mark the expanded goal complete from browser checks or upload TestFlight.
 No deployment, TestFlight, paid provider calls, real-data changes, schema push, or copying credentials/browser databases. Keep native iPhone verification separate and show actual phone-frame evidence.
 ```
