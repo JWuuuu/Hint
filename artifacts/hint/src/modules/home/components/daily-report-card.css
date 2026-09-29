@@ -1,0 +1,283 @@
+/* Page appearance exposes the screen background; controls and tarot art keep their own surfaces. */
+.hint-daily-report[data-appearance="page"],
+.hint-daily-report[data-appearance="page"] .hint-report-surface {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.hint-daily-report[data-appearance="page"] {
+  --hint-lucky-icon-bg: transparent;
+  --hint-lucky-icon-border: transparent;
+  --hint-lucky-icon-shadow: none;
+  overflow: visible;
+}
+
+.hint-daily-report[data-appearance="page"] :is(
+  .hint-report-content,
+  .hint-report-card-intro,
+  .hint-report-energy,
+  .hint-report-guidance,
+  .hint-report-guidance-item,
+  .hint-report-advice
+) {
+  padding: 0;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-card-intro {
+  gap: 14px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-score {
+  padding: 4px 0;
+}
+
+.hint-daily-report[data-appearance="page"] :is(.hint-report-scores-grid, .hint-report-advice-grid) {
+  column-gap: 20px;
+  row-gap: 16px;
+}
+
+.hint-daily-report[data-appearance="page"] :is(.hint-report-guidance, .hint-report-tasks) {
+  margin-top: 24px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tag {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tag:not(:last-child)::after {
+  content: "·";
+  margin-left: 8px;
+  opacity: .5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-lucky-grid {
+  margin-top: 24px;
+  column-gap: 12px;
+  row-gap: 20px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-lucky {
+  padding: 8px 2px;
+}
+
+/* Daily reading rhythm: larger body text, 24px between sections, tighter related text. */
+.hint-daily-report[data-appearance="page"] .hint-report-card-preview {
+  margin-bottom: 24px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-header {
+  margin-bottom: 16px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-birth-profile {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-overview {
+  gap: 24px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-advice-grid {
+  margin-top: 24px;
+}
+
+.hint-daily-report[data-appearance="page"] :is(
+  .hint-report-eyebrow,
+  .hint-report-signal-count,
+  .hint-report-card-intro p:first-child
+) {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-header h2 {
+  margin-top: 8px;
+  font-size: clamp(28px, 6vw, 34px);
+  line-height: 1.18;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-card-intro h3 {
+  margin-top: 4px;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-card-intro p:last-child {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-method {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.hint-daily-report[data-appearance="page"] :is(.hint-report-summary, .hint-report-guidance-item p:last-child) {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-energy-heading {
+  margin-bottom: 12px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-overall-score {
+  font-size: clamp(48px, 10vw, 64px);
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-score-unit {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-score > div:first-child {
+  margin-bottom: 6px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-score-label {
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-score-value {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.hint-report-score-columns {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hint-report-score-column {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  grid-template-rows: minmax(24px, auto) 72px auto;
+  row-gap: 8px;
+}
+
+.hint-report-column-value {
+  font-size: 20px;
+  line-height: 1.25;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.hint-report-column-track {
+  position: relative;
+  width: 10px;
+  height: 72px;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.hint-report-column-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-radius: inherit;
+}
+
+.hint-report-column-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.hint-daily-report[data-appearance="page"] :is(.hint-report-advice, .hint-report-guidance-item) p:first-child {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-advice p:last-child {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-guidance > div:first-child {
+  margin-bottom: 20px;
+  row-gap: 8px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-guidance > div:last-child {
+  gap: 24px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tag {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-lucky p:first-of-type {
+  margin-top: 12px;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-lucky p:nth-of-type(2) {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-lucky p:last-child {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tasks > div:first-child {
+  margin-bottom: 16px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tasks h3 {
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tasks > div:last-child {
+  gap: 12px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tasks button > span:last-child > span:first-child {
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-tasks button > span:last-child > span:last-child {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-disclaimer {
+  margin-top: 24px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.hint-daily-report :is(p, h2, h3, span) { min-width: 0; overflow-wrap: anywhere; }
+.hint-report-column-label { min-width: 0; max-width: 100%; }
+.hint-report-energy-heading { flex-wrap: wrap; }

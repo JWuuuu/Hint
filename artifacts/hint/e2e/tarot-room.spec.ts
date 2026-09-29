@@ -841,8 +841,8 @@ test("deeper demo reading is explicit, durable, and leaves the original reading 
   await expect(page.getByText(followUpReply, { exact: true })).toBeVisible();
   expect(chatRequests).toBe(1);
   await page.getByRole("button", { name: "Receive", exact: true }).tap();
-  await expect(page.getByRole("dialog", { name: "Receive your reading" })).not.toContainText(detailSummary);
-  await expect(page.getByRole("dialog", { name: "Receive your reading" })).not.toContainText(followUpReply);
+  await expect(page.getByRole("dialog", { name: "A letter to keep" })).not.toContainText(detailSummary);
+  await expect(page.getByRole("dialog", { name: "A letter to keep" })).not.toContainText(followUpReply);
 });
 
 test("deeper demo reading failure is retryable without a silent upgrade", async ({ page }) => {
@@ -1024,9 +1024,9 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await page.getByRole("button", { name: "Send follow-up" }).click();
   await expect(page.getByText(followUpReply, { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Receive", exact: true }).click();
-  const receipt = page.getByRole("dialog", { name: "Receive your reading" });
+  const receipt = page.getByRole("dialog", { name: "A letter to keep" });
   await expect(receipt).toBeVisible();
-  await expect(receipt.getByText("Your reading is ready.", { exact: true })).toBeVisible();
+  await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
   await expect(receipt.getByRole("checkbox")).not.toBeChecked();
   const [receiptDownload] = await Promise.all([
     page.waitForEvent("download"),
@@ -1411,7 +1411,7 @@ test("cancelling receipt sharing stays quiet and allows sharing again", async ({
     });
   });
   await page.getByRole("button", { name: "Receive", exact: true }).click();
-  const receipt = page.getByRole("dialog", { name: "Receive your reading" });
+  const receipt = page.getByRole("dialog", { name: "A letter to keep" });
   const share = receipt.getByRole("button", { name: "Share receipt", exact: true });
   await share.click();
   await expect(share).toBeEnabled();
@@ -1442,9 +1442,6 @@ test("receipt preview and exported PNG keep the question and chat private by def
   await page.getByPlaceholder("Ask what you want to understand next...").fill(privateChat);
   await page.getByRole("button", { name: "Send follow-up" }).tap();
   await expect(page.getByText("Choose the smallest honest action, then leave enough space to notice what changes.", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Receive", exact: true }).tap();
-  const receipt = page.getByRole("dialog", { name: "Receive your reading" });
-  await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
   await page.evaluate(() => {
     const state = window as Window & { receiptDrawnText: string[] };
     state.receiptDrawnText = [];
@@ -1455,15 +1452,20 @@ test("receipt preview and exported PNG keep the question and chat private by def
       else original.call(this, text, x, y, maxWidth);
     };
   });
+  await page.getByRole("button", { name: "Receive", exact: true }).tap();
+  const receipt = page.getByRole("dialog", { name: "A letter to keep" });
+  await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
   for (const includeQuestion of [false, true, false]) {
-    await receipt.getByRole("checkbox").setChecked(includeQuestion);
+    if ((await receipt.getByRole("checkbox").isChecked()) !== includeQuestion) {
+      await page.evaluate(() => { (window as Window & { receiptDrawnText: string[] }).receiptDrawnText = []; });
+      await receipt.getByRole("checkbox").setChecked(includeQuestion);
+    }
     await expect(receipt).not.toContainText(privateChat);
     if (includeQuestion) await expect(receipt.getByTestId("receipt-insight")).toHaveText(privateAnswer);
     else {
       await expect(receipt).not.toContainText(question);
       await expect(receipt).not.toContainText("Northstar");
     }
-    await page.evaluate(() => { (window as Window & { receiptDrawnText: string[] }).receiptDrawnText = []; });
     const download = page.waitForEvent("download");
     await receipt.getByRole("button", { name: "Share receipt", exact: true }).tap();
     const image = await download;
@@ -1524,9 +1526,8 @@ for (const receiptCase of [
     await page.goto(`/app/tarot?reading=${data.id}&hintPreview=embedded`);
     await expect(page.getByText(data.insight, { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Receive", exact: true }).tap();
-    const receipt = page.getByRole("dialog", { name: "Receive your reading" });
+    const receipt = page.getByRole("dialog", { name: "A letter to keep" });
     await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
-    await receipt.getByRole("checkbox").check();
     await page.evaluate(() => {
       type Bounds = { left: number; right: number; top: number; bottom: number };
       const captured = { text: [] as Array<Bounds & { text: string }>, cards: [] as Bounds[] };
@@ -1552,6 +1553,7 @@ for (const receiptCase of [
         drawImage.apply(this, args);
       };
     });
+    await receipt.getByRole("checkbox").check();
     const pending = page.waitForEvent("download");
     await receipt.getByRole("button", { name: "Share receipt", exact: true }).tap();
     const download = await pending;

@@ -1,3 +1,4 @@
+import { ReceiptShareDialog } from "../../receipt-printer/ReceiptShareDialog";
 import { LocalizedText } from "../../../lib/LocalizedText";
 import { useManagedRoomVisit } from "../../../components/app/RoomVisitBoundary";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
@@ -12,7 +13,6 @@ import {
   Printer,
   RotateCcw,
   SendHorizontal,
-  Share2,
   X,
 } from "lucide-react";
 import { useLocation } from "wouter";
@@ -21,8 +21,7 @@ import { apiFetch, apiUrl } from "../../../lib/api";
 import type { SpreadChoice } from "../../hold/useHoldFlow";
 import type { RitualCard } from "../logic/createHiddenDeck";
 import { getCardSuit, getReadableCardMeaning } from "../logic/cardMeanings";
-import { getTarotReceiptInsight } from "../logic/receiptPrivacy";
-import { receiptCardName, receiptPosition, receiptSpreadLabel, receiptOriginalTextLabel } from "../logic/receiptCopy";
+import { receiptCardName, receiptPosition } from "../logic/receiptCopy";
 import type { TarotCardArtId } from "../logic/cardImageMap";
 import type { TarotCardBackId, TarotCardBackStyle } from "../logic/cardBacks";
 import { TarotCardVisual } from "./TarotCardVisual";
@@ -623,251 +622,6 @@ function CardDetailPreview({
   );
 }
 
-type ReceiptPrinterProps = {
-  cards: RitualCard[];
-  reading: StructuredTarotReading;
-  spreadId: string;
-  question?: string;
-  backStyle: TarotCardBackStyle;
-  cardBackId?: TarotCardBackId;
-  cardArtId: TarotCardArtId;
-  includeQuestion: boolean;
-  reduceMotion: boolean;
-  shareStatus: "idle" | "preparing" | "sharing" | "shared" | "saved" | "error";
-  t: (key: string) => string;
-  onIncludeQuestionChange: (include: boolean) => void;
-  onClose: () => void;
-  onShare: () => void;
-};
-
-function ReceiptPrinter({
-  cards,
-  reading,
-  spreadId,
-  question,
-  backStyle,
-  cardBackId,
-  cardArtId,
-  includeQuestion,
-  reduceMotion,
-  shareStatus,
-  t,
-  onIncludeQuestionChange,
-  onClose,
-  onShare,
-}: ReceiptPrinterProps) {
-  const restoreFocus = useModalReturnFocus();
-  const { language } = useLanguage();
-  const totalSteps = cards.length + 2;
-  const [printedSteps, setPrintedSteps] = useState(reduceMotion ? totalSteps : 0);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setPrintedSteps(totalSteps);
-      return undefined;
-    }
-    setPrintedSteps(0);
-    const interval = window.setInterval(() => {
-      setPrintedSteps((current) => {
-        if (current >= totalSteps) {
-          window.clearInterval(interval);
-          return current;
-        }
-        return current + 1;
-      });
-    }, 300);
-    return () => window.clearInterval(interval);
-  }, [reduceMotion, totalSteps]);
-
-  const printedCardCount = Math.max(0, Math.min(cards.length, printedSteps - 1));
-  const receiptReady = printedSteps >= totalSteps;
-  const shareBusy = shareStatus === "preparing" || shareStatus === "sharing";
-  const receiptInsight = getTarotReceiptInsight(cards, reading.overall_summary, includeQuestion);
-  const originalTextLabel = receiptOriginalTextLabel(includeQuestion && Boolean(reading.overall_summary.trim()), language);
-
-  return (
-    <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-    <DialogSurface asChild aria-describedby={undefined} onCloseAutoFocus={restoreFocus}>
-    <motion.div
-      className="absolute inset-0 z-[80] flex items-end justify-center bg-[#2e2438]/34 px-3 pt-[calc(var(--hint-safe-top)+0.75rem)] backdrop-blur-[6px]"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: reduceMotion ? 0.01 : 0.2 }}
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      <motion.section
-        className="relative flex max-h-[calc(100%-0.5rem)] w-full max-w-[440px] flex-col overflow-hidden rounded-t-[24px] border border-white/70 bg-[#f8f0eb] shadow-[0_-24px_70px_rgba(54,39,65,0.28)]"
-        initial={{ y: reduceMotion ? 0 : 40, opacity: 0.82 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: reduceMotion ? 0 : 24, opacity: 0 }}
-        transition={{ duration: reduceMotion ? 0.01 : 0.36, ease: [0.22, 0.8, 0.22, 1] }}
-      >
-        <header className="flex items-start justify-between gap-4 border-b border-[#7b5b91]/10 px-5 pb-3 pt-4">
-          <div>
-            <p className="font-sans text-[9px] uppercase tracking-[0.28em] text-[#9c7891]"><LocalizedText text={"Hint Receive"} /></p>
-            <DialogTitle asChild><h2 className="mt-1 font-serif text-[26px] leading-tight text-[#342940]">
-              {t("tarot.flow.chat.receiveTitle")}
-            </h2></DialogTitle>
-            <p className="mt-1 max-w-[290px] font-sans text-[11px] leading-5 text-[#756777]">
-              {t("tarot.flow.chat.receiveSubtitle")}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#7b5b91]/12 bg-white/62 text-[#6d5d72]"
-            aria-label={t("tarot.flow.chat.closeReceipt")}
-          >
-            <X size={17} strokeWidth={1.8} />
-          </button>
-        </header>
-
-        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-          <div className="mx-auto w-full max-w-[326px]">
-            <div className="relative z-10 rounded-t-[18px] border border-[#8d7299]/28 bg-[linear-gradient(180deg,#826795,#624c72)] px-5 pb-4 pt-3 shadow-[0_12px_30px_rgba(70,51,82,0.24)]">
-              <div className="flex items-center justify-between text-[#fff9f4]">
-                <span className="font-sans text-[9px] font-semibold uppercase tracking-[0.24em]"><LocalizedText text={"Hint"} /></span>
-                <Printer size={15} strokeWidth={1.6} />
-              </div>
-              <div className="mt-3 h-2 rounded-full bg-[#2c2234]/80 shadow-[inset_0_2px_4px_rgba(0,0,0,0.38),0_1px_0_rgba(255,255,255,0.24)]" />
-            </div>
-
-            <motion.div
-              className="relative mx-3 min-h-[116px] overflow-hidden rounded-b-[6px] border-x border-b border-[#d8b96e]/34 bg-[#fffdf8] shadow-[0_18px_34px_rgba(91,65,100,0.13)]"
-              initial={{ height: 68 }}
-              animate={{ height: "auto" }}
-              transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: "easeOut" }}
-            >
-              <div className="pointer-events-none absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(123,91,145,0.035)_1px,transparent_1px)] [background-size:100%_5px]" />
-              <div className="relative px-4 pb-5 pt-4">
-                <AnimatePresence initial={false}>
-                  {printedSteps >= 1 ? (
-                    <motion.div
-                      key="receipt-heading"
-                      initial={{ opacity: 0, y: -16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.8, 0.22, 1] }}
-                      className="border-b border-dashed border-[#b997c9]/32 pb-3 text-center"
-                    >
-                      <p className="font-sans text-[8px] uppercase tracking-[0.26em] text-[#a17b93]"><LocalizedText text={"Private reading"} /></p>
-                      <p className="mt-1 font-serif text-[22px] leading-tight text-[#342940]">{receiptSpreadLabel(spreadId, language)}</p>
-                      {includeQuestion && question?.trim() ? (
-                        <p className="mt-2 font-serif text-[11px] italic leading-4 text-[#6f6070]">“{question.trim()}”</p>
-                      ) : null}
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-
-                <div className="divide-y divide-dashed divide-[#b997c9]/26">
-                  {cards.slice(0, printedCardCount).map((card, index) => {
-                    const position = receiptPosition(spreadId, index, language);
-                    const cardName = receiptCardName(card.cardId, index, language);
-                    return (
-                      <motion.div
-                        key={`printed-${card.visualId}`}
-                        initial={{ opacity: 0, y: -18 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: reduceMotion ? 0.01 : 0.24, ease: "easeOut" }}
-                        className="grid grid-cols-[42px_minmax(0,1fr)] gap-3 py-3"
-                      >
-                        <TarotCardVisual
-                          card={{ ...card, name: cardName }}
-                          ariaLabel={`${position}, ${cardName}, ${t(`tarot.flow.chat.${card.orientation}`)}`}
-                          faceDown={false}
-                          revealed
-                          instantReveal
-                          compact
-                          backStyle={backStyle}
-                          cardBackId={cardBackId}
-                          cardArtId={cardArtId}
-                          positionLabel={position}
-                          showFrontCaption={false}
-                          className="!h-[66px] !w-[42px]"
-                        />
-                        <div className="min-w-0 self-center">
-                          <p className="font-sans text-[8px] uppercase tracking-[0.18em] text-[#9a7557]">
-                            {position}
-                          </p>
-                          <p className="mt-0.5 font-serif text-[14px] leading-tight text-[#3b3045]">{cardName}</p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                <AnimatePresence initial={false}>
-                  {receiptReady ? (
-                    <motion.div
-                      key="receipt-insight"
-                      initial={{ opacity: 0, y: -16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.8, 0.22, 1] }}
-                      className="border-t border-dashed border-[#b997c9]/32 pt-3"
-                    >
-                      <p className="font-sans text-[8px] uppercase tracking-[0.22em] text-[#a17b93]">
-                        {t("tarot.flow.chat.receiptInsight")}
-                      </p>
-                      <p data-testid="receipt-insight" className="mt-1.5 font-serif text-[12px] leading-5 text-[#493d50]">{receiptInsight}</p>
-                      {originalTextLabel && <p className="mt-2 font-sans text-[10px] leading-4 text-[#817382]">{originalTextLabel}</p>}
-                      <div className="mx-auto mt-4 h-px w-12 bg-[#d8b96e]/58" />
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-
-            <p className="mt-3 text-center font-sans text-[10px] font-medium text-[#817382]" aria-live="polite">
-              {receiptReady ? t("tarot.flow.chat.receiptReady") : t("tarot.flow.chat.printing")}
-            </p>
-          </div>
-        </div>
-
-        <footer className="border-t border-[#7b5b91]/10 bg-[#fff9f4]/84 px-4 pb-[calc(var(--hint-safe-bottom)+0.75rem)] pt-3 backdrop-blur-xl">
-          {question?.trim() ? (
-            <label className="flex min-h-11 items-center gap-2 px-1 font-sans text-[11px] text-[#756777]">
-              <input
-                type="checkbox"
-                checked={includeQuestion}
-                disabled={shareBusy}
-                onChange={(event) => onIncludeQuestionChange(event.target.checked)}
-                className="h-4 w-4 accent-[#7b5b91]"
-              />
-              {t("tarot.flow.chat.shareQuestion")}
-            </label>
-          ) : null}
-          <button
-            type="button"
-            onClick={onShare}
-            disabled={!receiptReady || shareBusy}
-            className="mt-1 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#6f527f] font-sans text-[13px] font-semibold text-[#fff9f4] shadow-[0_10px_24px_rgba(91,65,100,0.22),inset_0_1px_0_rgba(255,255,255,0.24)] disabled:opacity-45"
-          >
-            {shareBusy ? <Printer size={15} className="animate-pulse" /> : <Share2 size={15} strokeWidth={1.7} />}
-            {shareStatus === "preparing"
-              ? t("tarot.flow.chat.sharePreparing")
-              : shareStatus === "sharing"
-                ? t("tarot.flow.chat.shareSharing")
-                : t("tarot.flow.chat.shareReceipt")}
-          </button>
-          {shareStatus === "shared" || shareStatus === "saved" ? (
-            <p className="mt-2 text-center font-sans text-[10px] font-semibold text-[#7b5b91]">
-              {shareStatus === "shared" ? t("tarot.flow.chat.shared") : t("tarot.flow.chat.imageSaved")}
-            </p>
-          ) : shareStatus === "error" ? (
-            <p className="mt-2 text-center font-sans text-[10px] font-semibold text-[#a45f78]">
-              {t("tarot.flow.chat.shareRetry")}
-            </p>
-          ) : null}
-        </footer>
-      </motion.section>
-    </motion.div>
-    </DialogSurface>
-    </Dialog>
-  );
-}
-
 export function TarotHintReadingChat({
   selectedCards,
   spread,
@@ -910,14 +664,10 @@ export function TarotHintReadingChat({
   const [detailedReading, setDetailedReading] = useState(archivedReading?.detailedReading);
   const [detailedContext, setDetailedContext] = useState(archivedReading?.detailedContext ?? "");
   const [detailedFeedback, setDetailedFeedback] = useState(archivedReading?.detailedFeedback);
-  const [includeQuestionInShare, setIncludeQuestionInShare] = useState(false);
   const [cardPreviewIndex, setCardPreviewIndex] = useState<number | null>(null);
   const [showCardPreviewHint, setShowCardPreviewHint] = useState(false);
   const acknowledgedCardHintRef = useRef<string | null>(null);
   const [receiptOpen, setReceiptOpen] = useState(false);
-  const [shareStatus, setShareStatus] = useState<
-    "idle" | "preparing" | "sharing" | "shared" | "saved" | "error"
-  >("idle");
   const [hasSavedReading, setHasSavedReading] = useState(Boolean(archivedReading));
   const [saveFailed, setSaveFailed] = useState(false);
   const [saveNotice, setSaveNotice] = useState(false);
@@ -929,8 +679,6 @@ export function TarotHintReadingChat({
   const leaveTimerRef = useRef<number | null>(null);
   const sendInFlightRef = useRef(false);
   const chatAbortRef = useRef<AbortController | null>(null);
-  const shareAbortRef = useRef<AbortController | null>(null);
-  useEffect(() => { shareAbortRef.current?.abort(); shareAbortRef.current = null; setShareStatus("idle"); }, [language]);
   const chatMutation = useSendTarotChatMessage({
     mutation: {
       retry: false,
@@ -1020,8 +768,6 @@ export function TarotHintReadingChat({
     return () => {
       chatAbortRef.current?.abort();
       chatAbortRef.current = null;
-      shareAbortRef.current?.abort();
-      shareAbortRef.current = null;
       if (leaveTimerRef.current !== null) {
         window.clearTimeout(leaveTimerRef.current);
       }
@@ -1326,55 +1072,12 @@ export function TarotHintReadingChat({
     }, reduceMotion ? 20 : 160);
   }
 
-  async function shareReceipt() {
-    const savedReading = savedReadingRef.current;
-    if (!savedReading || shareAbortRef.current) return;
-    const controller = new AbortController();
-    shareAbortRef.current = controller;
-    const isCurrent = () => shareAbortRef.current === controller && !controller.signal.aborted;
-    setShareStatus("preparing");
-    try {
-      const {
-        buildTarotReceiptModel,
-        createTarotReceiptBlob,
-        shareTarotReceipt,
-      } = await import("../logic/shareReceipt");
-      if (!isCurrent()) return;
-      const blob = await createTarotReceiptBlob(
-        buildTarotReceiptModel(savedReading, includeQuestionInShare, undefined, language),
-        { signal: controller.signal },
-      );
-      if (!isCurrent()) return;
-      const fileName = `hint-tarot-${savedReading.id}.png`;
-      setShareStatus("sharing");
-      const outcome = await shareTarotReceipt(blob, fileName, { signal: controller.signal, language });
-      if (!isCurrent()) return;
-      setShareStatus(outcome === "cancelled" ? "idle" : outcome);
-    } catch (shareError) {
-      if (!isCurrent()) return;
-      if (shareError instanceof DOMException && shareError.name === "AbortError") {
-        setShareStatus("idle");
-        return;
-      }
-      console.error("Could not share Tarot receipt", shareError);
-      setShareStatus("error");
-    } finally {
-      if (shareAbortRef.current === controller) shareAbortRef.current = null;
-    }
-  }
-
   function closeReceipt() {
-    shareAbortRef.current?.abort();
-    shareAbortRef.current = null;
-    setShareStatus("idle");
     setReceiptOpen(false);
   }
 
   function openReceipt() {
     if (!savedReadingRef.current) return;
-    if (shareStatus === "shared" || shareStatus === "saved" || shareStatus === "error") {
-      setShareStatus("idle");
-    }
     setCardPreviewIndex(null);
     setReceiptOpen(true);
   }
@@ -1671,7 +1374,7 @@ export function TarotHintReadingChat({
               <div className={`mt-3 grid gap-1.5 sm:gap-2 ${onNewReading ? "grid-cols-3" : "grid-cols-2"}`}>
                   <button
                     type="button"
-                    onClick={openReceipt}
+                    onClick={event => { event.currentTarget.focus({ preventScroll: true }); openReceipt(); }}
                     disabled={!savedReadingRef.current}
                     className="inline-flex h-11 min-w-0 items-center justify-center gap-1.5 rounded-full bg-[#6f527f] px-2 font-sans text-[10px] font-semibold text-[#fff9f4] shadow-[0_8px_20px_rgba(91,65,100,0.18),inset_0_1px_0_rgba(255,255,255,0.20)] disabled:opacity-45 sm:px-3 sm:text-[11px]"
                   >
@@ -1774,24 +1477,7 @@ export function TarotHintReadingChat({
 
       <AnimatePresence>
         {receiptOpen ? (
-          <ReceiptPrinter
-            cards={selectedCards}
-            reading={reading}
-            spreadId={archivedReading?.spreadType ?? spread.id}
-            question={question}
-            backStyle={backStyle}
-            cardBackId={cardBackId}
-            cardArtId={cardArtId}
-            includeQuestion={includeQuestionInShare}
-            reduceMotion={reduceMotion}
-            shareStatus={shareStatus}
-            t={t}
-            onIncludeQuestionChange={(include) => {
-              if (!shareAbortRef.current) setIncludeQuestionInShare(include);
-            }}
-            onClose={closeReceipt}
-            onShare={() => void shareReceipt()}
-          />
+          <ReceiptShareDialog source={{ kind: "tarot", reading: savedReadingRef.current! }} onClose={closeReceipt} />
         ) : null}
       </AnimatePresence>
     </section>

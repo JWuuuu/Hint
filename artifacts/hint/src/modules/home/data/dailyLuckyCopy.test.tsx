@@ -82,12 +82,12 @@ for (const [language, upright, major, minor] of [
 ] as const) {
   it(`${language} daily card metadata renders localized major and minor badges`, () => {
     state.language = language;
-    const view = render(<DailyReportCard detailed cardOverride={getDailyPullById("0-fool", "en")} dateOverride={new Date(2026, 8, 9, 12)} />);
+    const view = render(<DailyReportCard detailed cardOverride={getDailyPullById("0-fool", "en")} dateOverride={new Date()} />);
     expect(screen.getByText(upright)).toBeTruthy();
     expect(screen.getByText(major)).toBeTruthy();
     expect(screen.queryByText("Upright")).toBeNull();
     expect(screen.queryByText("Bigger message")).toBeNull();
-    view.rerender(<DailyReportCard detailed cardOverride={getDailyPullById("ace-cups", "en")} dateOverride={new Date(2026, 8, 9, 12)} />);
+    view.rerender(<DailyReportCard detailed cardOverride={getDailyPullById("ace-cups", "en")} dateOverride={new Date()} />);
     expect(screen.getByText(minor)).toBeTruthy();
     expect(screen.queryByText("Daily guidance")).toBeNull();
   });

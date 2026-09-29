@@ -2,6 +2,7 @@ import { LocalizedText } from "../../lib/LocalizedText";
 import type {
   ButtonHTMLAttributes,
   ComponentType,
+  CSSProperties,
   HTMLAttributes,
   ReactNode,
 } from "react";
@@ -16,13 +17,17 @@ import { useLanguage } from "../../lib/i18n";
  * the bottom tab bar, so this wrapper keeps top spacing compact.
  */
 
-export function AppScreen({ children }: { children: ReactNode }) {
+export function AppScreen({ children, allowHorizontalPan = false, contentStyle }: {
+  children: ReactNode;
+  allowHorizontalPan?: boolean;
+  contentStyle?: CSSProperties;
+}) {
   return (
     <div
       className="hint-app-scroll h-full w-full flex flex-col items-center pb-[calc(7.75rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))] scroll-pt-[calc(1.25rem+var(--hint-safe-top))]"
-      style={{ background: "transparent" }}
+      style={{ background: "transparent", touchAction: allowHorizontalPan ? "pan-x pan-y" : undefined }}
     >
-      <div className="w-full max-w-[var(--hint-app-width)] px-3.5 pt-[calc(1rem+var(--hint-safe-top))] sm:px-4">
+      <div className="w-full max-w-[var(--hint-app-width)] px-3.5 pt-[calc(1rem+var(--hint-safe-top))] sm:px-4" style={contentStyle}>
         {children}
       </div>
     </div>

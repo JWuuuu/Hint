@@ -791,7 +791,7 @@
   overflow: visible;
   background-clip: padding-box;
   height: auto;
-  min-height: 44px;
+  min-height: 50px;
   align-self: stretch;
 }
 
@@ -812,7 +812,7 @@
 .hint-app-dock .hint-app-tab[data-featured="true"] .hint-app-tab-label {
   position: absolute;
   inset-inline: 0;
-  bottom: 4px;
+  bottom: 5px;
   z-index: 1;
 }
 

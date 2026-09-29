@@ -304,7 +304,7 @@ function AppNavigationChrome({
       />
       <div
         ref={dockRef}
-        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid min-h-[52px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-1 overflow-visible rounded-[28px] border p-1.5"
+        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid min-h-[64px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-1 overflow-visible rounded-[28px] border p-1.5"
         data-reference-home={referenceHome ? "true" : "false"}
         style={{
           background: chromeSurface,
@@ -386,7 +386,7 @@ function AppTab({
       onPointerDown={() => triggerFeedback(featured ? "select" : "tap")}
       className={[
         "hint-app-tab hint-pressable hint-tap-sparkle relative flex min-w-0 flex-col items-center justify-center px-1 text-center transition hover:-translate-y-0.5 active:scale-[0.98]",
-        featured ? "min-h-11 overflow-visible rounded-[26px]" : "min-h-11 gap-0.5 rounded-[26px] py-1",
+        featured ? "min-h-[50px] overflow-visible rounded-[26px]" : "min-h-[50px] gap-[3px] rounded-[26px] py-1",
       ].join(" ")}
       style={{
         color: featured

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { MotionPolicyProvider } from "../../../lib/motionPolicy";
 import { LanguageProvider } from "../../../lib/i18n";
 import { HINT_PREFERENCES_STORAGE_KEY } from "../../../lib/preferences";
 import * as speech from "../../../lib/speechRecognition";
@@ -23,6 +24,7 @@ import { TarotHintReadingChat } from "./TarotHintReadingChat";
 import { TarotRoomFlow } from "./TarotRoomFlow";
 
 const nativeLifecycle = vi.hoisted(() => ({
+  listeners: new Set<(active: boolean) => void>(),
   listener: null as ((isActive: boolean) => void) | null,
   remove: vi.fn(async () => undefined),
 }));
@@ -30,8 +32,9 @@ const nativeLifecycle = vi.hoisted(() => ({
 vi.mock("../../../lib/mobile/appLifecycle", () => ({
   addNativeAppStateListener: vi.fn(
     async (listener: (isActive: boolean) => void) => {
-      nativeLifecycle.listener = listener;
-      return nativeLifecycle.remove;
+      nativeLifecycle.listeners.add(listener);
+      nativeLifecycle.listener = active => nativeLifecycle.listeners.forEach(callback => callback(active));
+      return async () => { nativeLifecycle.listeners.delete(listener); await nativeLifecycle.remove(); };
     },
   ),
 }));
@@ -67,7 +70,7 @@ function renderWithProviders(children: ReactNode) {
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <LanguageProvider>{children}</LanguageProvider>
+      <LanguageProvider><MotionPolicyProvider>{children}</MotionPolicyProvider></LanguageProvider>
     </QueryClientProvider>,
   );
 }
@@ -92,7 +95,11 @@ function interruptTarotStorage() {
 }
 
 beforeEach(() => {
+  vi.spyOn(receiptSharing, "createTarotReceiptBlob").mockResolvedValue(new Blob(["fixture receipt"], { type: "image/png" }));
+  Object.defineProperty(URL, "createObjectURL", { configurable: true, value: vi.fn(() => "blob:receipt-fixture") });
+  Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   nativeLifecycle.listener = null;
+  nativeLifecycle.listeners.clear();
   nativeLifecycle.remove.mockClear();
   localStorage.clear();
   sessionStorage.clear();
@@ -168,7 +175,7 @@ describe("Tarot Room components", () => {
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} question={saved.question} archivedReading={saved} archiveOnOpen={false} />);
     const opener = screen.getByRole("button", { name: kind === "receipt" ? "Receive" : /^Preview Signal,/ });
     await user.click(opener);
-    const dialog = screen.getByRole("dialog", { name: kind === "receipt" ? "Receive your reading" : card.name });
+    const dialog = screen.getByRole("dialog", { name: kind === "receipt" ? "A letter to keep" : card.name });
     await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true));
     // Keyboard navigation must not reach the hidden follow-up form or history actions.
     for (let step = 0; step < 8; step++) { await user.tab(); expect(dialog.contains(document.activeElement)).toBe(true); }
@@ -217,7 +224,7 @@ describe("Tarot Room components", () => {
     expect(restored.spreadLabel).toBe("Original spread");
   });
 
-  it.each(["close", "unmount"] as const)("cancels pending receipt preparation on %s and freezes consent while exporting", async (departure) => {
+  it.each(["close", "unmount"] as const)("cancels pending receipt preparation on %s and resets privacy on reopening", async (departure) => {
     const user = userEvent.setup();
     const card = createHiddenDeck()[0]!;
     const { reading: saved } = saveLocalTarotReading({
@@ -232,29 +239,29 @@ describe("Tarot Room components", () => {
     const share = vi.spyOn(receiptSharing, "shareTarotReceipt").mockResolvedValue("saved");
     const view = renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} question={saved.question} archivedReading={saved} archiveOnOpen={false} />);
     await user.click(screen.getByRole("button", { name: "Receive" }));
-    const dialog = within(screen.getByRole("dialog", { name: "Receive your reading" }));
-    await user.click(dialog.getByRole("checkbox"));
+    const dialog = within(screen.getByRole("dialog", { name: "A letter to keep" }));
     const action = dialog.getByRole("button", { name: "Share receipt" });
     fireEvent.click(action);
     fireEvent.click(action);
     await waitFor(() => expect(create).toHaveBeenCalledTimes(1));
-    expect(create.mock.calls[0]![0].question).toBe(saved.question);
-    expect((dialog.getByRole("checkbox") as HTMLInputElement).disabled).toBe(true);
-    await user.click(dialog.getByRole("checkbox"));
-    expect((dialog.getByRole("checkbox") as HTMLInputElement).checked).toBe(true);
+    expect(create.mock.calls[0]![0].question).toBeUndefined();
+    expect((action as HTMLButtonElement).disabled).toBe(true);
+    const signal = create.mock.calls[0]![1]!.signal!;
     if (departure === "unmount") view.unmount();
     else {
-      await user.click(dialog.getByRole("button", { name: "Close receipt" }));
+      await user.click(dialog.getByRole("button", { name: "Back to reading" }));
       await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     }
+    expect(signal.aborted).toBe(true);
     await act(async () => finish(new Blob(["receipt"], { type: "image/png" })));
     expect(share).not.toHaveBeenCalled();
 
     if (departure === "close") {
       create.mockResolvedValueOnce(new Blob(["new receipt"], { type: "image/png" }));
       await user.click(screen.getByRole("button", { name: "Receive" }));
-      const reopened = within(screen.getByRole("dialog", { name: "Receive your reading" }));
-      await user.click(reopened.getByRole("checkbox"));
+      const reopened = within(screen.getByRole("dialog", { name: "A letter to keep" }));
+      expect((reopened.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
+      await waitFor(() => expect((reopened.getByRole("button", { name: "Share receipt" }) as HTMLButtonElement).disabled).toBe(false));
       await user.click(reopened.getByRole("button", { name: "Share receipt" }));
       await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
       expect(create.mock.calls[1]![0].question).toBeUndefined();
@@ -381,13 +388,13 @@ describe("Tarot Room components", () => {
     vi.stubGlobal("fetch", vi.fn());
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} question={question} />);
     await user.click(screen.getByRole("button", { name: "Receive" }));
-    const receipt = within(screen.getByRole("dialog", { name: "Receive your reading" }));
+    const receipt = within(screen.getByRole("dialog", { name: "A letter to keep" }));
     const insight = receipt.getByTestId("receipt-insight");
     expect(insight.textContent).toBe(buildTarotReceiptModel(saved, false, "https://hint.example/download").insight);
     expect(receipt.queryByText(/Northstar/)).toBeNull();
     expect(receipt.queryByText(/salary/)).toBeNull();
     await user.click(receipt.getByRole("checkbox"));
-    expect(insight.textContent).toBe(answer);
+    expect(receipt.getByTestId("receipt-insight").textContent).toBe(answer);
     expect(receipt.queryByText(/salary/)).toBeNull();
     await user.click(receipt.getByRole("checkbox"));
     expect(receipt.queryByText(/Northstar/)).toBeNull();
@@ -492,8 +499,8 @@ describe("Tarot Room components", () => {
     expect(blockedReload.defaultPrevented).toBe(true);
 
     await user.click(screen.getByRole("button", { name: "Receive" }));
-    expect(screen.getByRole("dialog", { name: "Receive your reading" })).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Close receipt" }));
+    expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Back to reading" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     storage.failing = false;
     await user.click(screen.getByRole("button", { name: "Try saving again" }));
@@ -762,7 +769,7 @@ describe("Tarot Room components", () => {
     const completeCardMeaning = "The saved card meaning remains available in full, with enough detail to explain why this card appeared in its exact spread position and how the user can understand it without a clipped ending.";
     const { reading: saved } = saveLocalTarotReading({
       id: "component-reading",
-      anonId: "component-user",
+      anonId: getAnonId(),
       createdAt: "2026-09-02T00:00:00.000Z",
       spreadType: SINGLE_SPREAD.id,
       spreadLabel: SINGLE_SPREAD.label,
@@ -848,11 +855,11 @@ describe("Tarot Room components", () => {
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
     await user.click(screen.getByRole("button", { name: "Receive" }));
-    expect(screen.getByRole("dialog", { name: "Receive your reading" })).toBeTruthy();
+    expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
     expect((screen.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
     expect(screen.getByRole("button", { name: "Share receipt" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Close receipt" })).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Close receipt" }));
+    expect(screen.getByRole("button", { name: "Back to reading" })).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Back to reading" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
     const composer = screen.getByPlaceholderText(
