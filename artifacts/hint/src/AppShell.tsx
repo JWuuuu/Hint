@@ -262,7 +262,7 @@ function AppNavigationChrome({
     <nav
       aria-label="App"
       data-app-tabbar
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-[21px] pb-[calc(var(--hint-safe-bottom)+0.35rem)]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-3 pb-[calc(var(--hint-safe-bottom)+0.35rem)] min-[375px]:px-[21px]"
     >
       <div
         aria-hidden
@@ -272,7 +272,7 @@ function AppNavigationChrome({
         }}
       />
       <div
-        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid h-[52px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-1 overflow-visible rounded-[28px] border p-1.5"
+        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid h-[64px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-1 overflow-visible rounded-[28px] border p-1.5"
         data-reference-home={referenceHome ? "true" : "false"}
         style={{
           background: chromeSurface,
@@ -354,7 +354,7 @@ function AppTab({
       onPointerDown={() => triggerFeedback(featured ? "select" : "tap")}
       className={[
         "hint-app-tab hint-pressable hint-tap-sparkle relative flex min-w-0 flex-col items-center justify-center px-1 text-center transition hover:-translate-y-0.5 active:scale-[0.98]",
-        featured ? "h-[52px] overflow-visible rounded-[26px]" : "h-[52px] gap-0.5 rounded-[26px]",
+        featured ? "h-[50px] overflow-visible rounded-[26px]" : "h-[50px] gap-[3px] rounded-[26px]",
       ].join(" ")}
       style={{
         color: featured
@@ -383,15 +383,15 @@ function AppTab({
           <HintAiMark active={active} referenceHome={referenceHome} />
         </span>
       ) : (
-        <Icon className="size-[21px] shrink-0" strokeWidth={active ? 2.05 : 1.65} />
+        <Icon className="size-[22px] shrink-0" strokeWidth={active ? 2.05 : 1.65} />
       )}
       {featured && referenceHome ? (
         <span className="sr-only">{item.label}</span>
       ) : (
         <span
           className={[
-            "hint-app-tab-label max-w-full truncate font-sans font-medium leading-none",
-            featured ? "absolute inset-x-0 bottom-[4px] text-[10px]" : "text-[11px]",
+            "hint-app-tab-label max-w-full shrink-0 truncate font-sans text-[12px] font-medium leading-[14px]",
+            featured ? "absolute inset-x-0 bottom-[5px]" : "",
           ].join(" ")}
         >
           {item.label}

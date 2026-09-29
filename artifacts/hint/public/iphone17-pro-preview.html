@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hint · iPhone 17 Pro Preview</title>
+    <style>
+      * { box-sizing: border-box; }
+
+      :root {
+        color-scheme: dark;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+        background: #e9e5df;
+      }
+
+      body {
+        height: 100dvh;
+        margin: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 22% 18%, rgba(255,255,255,.9), transparent 34%),
+          radial-gradient(circle at 78% 82%, rgba(186,174,210,.34), transparent 36%),
+          linear-gradient(145deg, #f6f3ef, #d9d4cf);
+      }
+
+      .phone {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(var(--preview-scale, .75));
+        width: 434px;
+        height: 906px;
+        padding: 10px;
+        border-radius: 61px;
+        background: linear-gradient(140deg, #8b8987 0%, #dedbd6 18%, #777572 48%, #d7d3cd 78%, #716f6d 100%);
+        box-shadow:
+          0 48px 90px rgba(32, 27, 35, .28),
+          0 12px 30px rgba(32, 27, 35, .22),
+          inset 0 0 0 1px rgba(255,255,255,.72);
+      }
+
+      .phone::before,
+      .phone::after {
+        content: "";
+        position: absolute;
+        left: -4px;
+        width: 4px;
+        border-radius: 3px 0 0 3px;
+        background: linear-gradient(#787674, #aaa7a3, #747270);
+        box-shadow: inset 1px 0 rgba(255,255,255,.22);
+      }
+
+      .phone::before { top: 176px; height: 94px; }
+      .phone::after { top: 292px; height: 58px; }
+
+      .power {
+        position: absolute;
+        right: -4px;
+        top: 218px;
+        width: 4px;
+        height: 112px;
+        border-radius: 0 3px 3px 0;
+        background: linear-gradient(#747270, #aaa7a3, #747270);
+      }
+
+      .screen {
+        position: relative;
+        width: 414px;
+        height: 886px;
+        overflow: hidden;
+        border-radius: 51px;
+        background: #000;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+      }
+
+      iframe {
+        display: block;
+        width: 402px;
+        height: 874px;
+        margin: 6px;
+        border: 0;
+        border-radius: 45px;
+        background: #faf4ec;
+      }
+
+      .island {
+        position: absolute;
+        z-index: 5;
+        top: 18px;
+        left: 50%;
+        width: 126px;
+        height: 36px;
+        transform: translateX(-50%);
+        border-radius: 22px;
+        background: #050505;
+        box-shadow: 0 1px 2px rgba(255,255,255,.06), 0 2px 8px rgba(0,0,0,.5);
+        pointer-events: none;
+      }
+
+      .island::after {
+        content: "";
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 36% 34%, #263852, #080b12 58%, #000 70%);
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="phone" aria-label="iPhone 17 Pro frame">
+      <span class="power" aria-hidden="true"></span>
+      <div class="screen">
+        <iframe title="Hint app"></iframe>
+        <div class="island" aria-label="Dynamic Island"></div>
+      </div>
+    </div>
+    <script>
+      function fitPhoneToWindow() {
+        const scale = Math.max(.01, Math.min(
+          1,
+          (window.innerWidth - 48) / 442,
+          (window.innerHeight - 48) / 906,
+        ));
+        document.documentElement.style.setProperty("--preview-scale", String(scale));
+      }
+      fitPhoneToWindow();
+      window.addEventListener("resize", fitPhoneToWindow);
+
+      document.querySelector("iframe").src = "/app";
+    </script>
+  </body>
+</html>

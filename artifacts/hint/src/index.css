@@ -782,7 +782,7 @@
   isolation: isolate;
   overflow: hidden;
   background-clip: padding-box;
-  height: 52px;
+  height: 50px;
   align-self: center;
 }
 
@@ -803,7 +803,7 @@
 .hint-app-dock .hint-app-tab[data-featured="true"] .hint-app-tab-label {
   position: absolute;
   inset-inline: 0;
-  bottom: 4px;
+  bottom: 5px;
   z-index: 1;
 }
 
@@ -870,10 +870,6 @@
     inset 0 -14px 24px rgba(255,255,255,0.035),
     inset 0 0 0 1px rgba(255,255,255,0.14);
   opacity: 0.24;
-}
-
-.hint-app-dock[data-reference-home="true"] .hint-app-tab {
-  height: 40px;
 }
 
 .hint-app-dock[data-reference-home="true"] .hint-app-tab[data-active="true"]:not([data-featured="true"])::before,
