@@ -1,0 +1,53 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:31:24.064Z",
+    "source": {
+      "commit": "e23754bcfb63cb2e4bc270026a2029ed83860140",
+      "fingerprint": "ffd5ae6bc991398576d52aa2e11e905172b898cc7fb94d2d1b65d5ebf04baafa"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-reflow-20260929",
+      "fingerprint": "6fda3456e37edd55bbc4d7a6396ba8800509409aef9799c32a26eb35ae121542"
+    },
+    "selected": 6
+  },
+  "tests": [
+    {
+      "title": "pick arc stays ordered on stars",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1323
+    },
+    {
+      "title": "pick arc stays ordered on dawn",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1212
+    },
+    {
+      "title": "pick arc stays ordered on sea",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1178
+    },
+    {
+      "title": "pick arc stays ordered on stars",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1223
+    },
+    {
+      "title": "pick arc stays ordered on dawn",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1021
+    },
+    {
+      "title": "pick arc stays ordered on sea",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1074
+    }
+  ]
+}
