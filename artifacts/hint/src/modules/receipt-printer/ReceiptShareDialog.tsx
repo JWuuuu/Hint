@@ -130,8 +130,8 @@ export function ReceiptShareDialog({ source, onClose }: { source: ReceiptSource;
   </DialogPortal></Dialog>;
 }
 
-export function DailyReceiptButton({ report, disabled = false }: { report: DailyReport; disabled?: boolean }) {
+export function DailyReceiptButton({ report, disabled = false, compact = false }: { report: DailyReport; disabled?: boolean; compact?: boolean }) {
   const { language } = useLanguage();
   const [source, setSource] = useState<ReceiptSource | null>(null);
-  return <><button type="button" className="receipt-share-trigger" disabled={disabled} onClick={event => { event.currentTarget.focus({ preventScroll: true }); setSource({ kind: "daily", report: structuredClone(report) }); }}><Share2 size={16} />{receiptText(language, "share")}</button>{source && <ReceiptShareDialog source={source} onClose={() => setSource(null)} />}</>;
+  return <><button type="button" className={`receipt-share-trigger${compact ? " receipt-share-trigger--compact" : ""}`} aria-label={compact ? receiptText(language, "share") : undefined} title={compact ? receiptText(language, "share") : undefined} disabled={disabled} onClick={event => { event.currentTarget.focus({ preventScroll: true }); setSource({ kind: "daily", report: structuredClone(report) }); }}><Share2 size={16} aria-hidden="true" />{!compact && receiptText(language, "share")}</button>{source && <ReceiptShareDialog source={source} onClose={() => setSource(null)} />}</>;
 }

@@ -1,7 +1,7 @@
 import { DailyReceiptButton } from "../../receipt-printer/ReceiptShareDialog";
 import { getCachedDailyReceipt } from "../../../lib/dailyReceipts";
 import { LocalizedText } from "../../../lib/LocalizedText";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import "./daily-report-card.css";
 import { motion } from "../../../lib/quietMotion";
 import { useLocalDay } from "../../../lib/useLocalDay";
@@ -52,6 +52,7 @@ interface DailyReportCardProps {
   cardOverride?: DailyPull | null;
   dateOverride?: Date;
   dailyHistory?: DailyCardMemory[];
+  statusMessage?: string;
 }
 
 function ScoreBar({ score }: { score: DailyScore }) {
@@ -131,7 +132,7 @@ function ScoreColumn({ score }: { score: DailyScore }) {
   );
 }
 
-function MiniDailyCard({ card, interactive = true }: { card: DailyPull; interactive?: boolean }) {
+function MiniDailyCard({ card, interactive = true, action }: { card: DailyPull; interactive?: boolean; action?: ReactNode }) {
   const { t } = useLanguage();
   const cardImage =
     getTarotCardImage(card.cardId, "original") ??
@@ -166,18 +167,19 @@ function MiniDailyCard({ card, interactive = true }: { card: DailyPull; interact
       </div>
       <div className="min-w-0">
         <p
-          className="font-sans text-[8px] uppercase tracking-[0.16em] sm:text-[9px] sm:tracking-[0.18em]"
+          className={`${action ? "pr-12" : ""} font-sans text-[8px] uppercase tracking-[0.16em] sm:text-[9px] sm:tracking-[0.18em]`}
           style={{ color: ACCENT.gold }}
         >
           {t("daily.card")}
         </p>
-        <h3 className="mt-0.5 font-serif text-[16px] leading-tight sm:text-[18px]" style={{ color: "var(--hint-text)" }}>
+        <h3 className={`${action ? "pr-12" : ""} mt-0.5 font-serif text-[16px] leading-tight sm:text-[18px]`} style={{ color: "var(--hint-text)" }}>
           {card.cardName}
         </h3>
         <p className={`mt-0.5 ${interactive ? "line-clamp-2" : ""} font-sans text-[10px] leading-snug sm:text-[11px]`} style={{ color: "var(--hint-muted)" }}>
           {card.whisper}
         </p>
       </div>
+      {action && <div className="hint-report-share absolute right-0 top-0">{action}</div>}
       {interactive ? (
         <ArrowRight
           size={18}
@@ -284,6 +286,7 @@ export function DailyReportCard({
   cardOverride,
   dateOverride,
   dailyHistory,
+  statusMessage,
 }: DailyReportCardProps) {
   const { language, t } = useLanguage();
   const currentDay = useLocalDay();
@@ -364,7 +367,8 @@ export function DailyReportCard({
     return <section className={`hint-daily-report ${className}`} data-appearance={appearance}>
       <h2 className="font-serif text-2xl"><LocalizedText text="Saved daily card" /></h2>
       <p className="my-3 text-sm" style={{ color: "var(--hint-muted)" }}><LocalizedText text={cardOverride ? "Only the saved card is available. Scores and lucky details were not saved for this date." : "No saved card for this date."} /></p>
-      {cardOverride && <><MiniDailyCard card={card} interactive={false} /><DailyReceiptButton report={{ ...report, card }} /></>}
+      {cardOverride && <MiniDailyCard card={card} interactive={false} action={<DailyReceiptButton report={{ ...report, card }} compact />} />}
+      {statusMessage && <p className="hint-report-sync-status" role="status">{statusMessage}</p>}
     </section>;
   }
 
@@ -392,10 +396,10 @@ export function DailyReportCard({
       />}
       <div className="hint-report-content relative p-3 sm:p-4 lg:p-5">
         <div className="hint-report-card-preview mb-3 lg:hidden">
-          <MiniDailyCard card={card} interactive={!detailed} />
+          <MiniDailyCard card={card} interactive={!detailed} action={detailed ? <DailyReceiptButton report={{ ...report, card }} compact disabled={!getCachedDailyReceipt("daily-card", { dailyKey: report.date })?.openedAt && !getLocalDailyReadingForDateKey(report.date)} /> : undefined} />
         </div>
 
-        {detailed && <DailyReceiptButton report={{ ...report, card }} disabled={!getCachedDailyReceipt("daily-card", { dailyKey: report.date })?.openedAt && !getLocalDailyReadingForDateKey(report.date)} />}
+        {statusMessage && <p className="hint-report-sync-status" role="status">{statusMessage}</p>}
         <header className="hint-report-header mb-3 flex items-start justify-between gap-4 lg:mb-4">
           <div className="min-w-0">
             <p
@@ -533,7 +537,7 @@ export function DailyReportCard({
         </div>
 
         <div className="mt-4 hidden lg:block">
-          <MiniDailyCard card={card} interactive={!detailed} />
+          <MiniDailyCard card={card} interactive={!detailed} action={detailed ? <DailyReceiptButton report={{ ...report, card }} compact disabled={!getCachedDailyReceipt("daily-card", { dailyKey: report.date })?.openedAt && !getLocalDailyReadingForDateKey(report.date)} /> : undefined} />
         </div>
 
         {detailed && <CardGuidanceGrid card={card} why={cardWhy} />}

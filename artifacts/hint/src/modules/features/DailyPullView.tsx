@@ -1,4 +1,3 @@
-import { DailyPullSigil } from "../home/data/sigils";
 import { useQuery } from "@tanstack/react-query";
 import { apiFetch, apiUrl } from "../../lib/api";
 import { countReadingDays } from "../../lib/readingDays";
@@ -12,7 +11,7 @@ import { listLocalDailyReadings, saveLocalDailyReading } from "../readings/local
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
-import { AppScreen, ScreenHeader, SectionLabel } from "../../components/app/AppChrome";
+import { AppScreen, SectionLabel } from "../../components/app/AppChrome";
 import { DailyReportCard } from "../home/components/DailyReportCard";
 import { getSyncedDailyCard } from "../home/data/dailyCardSync";
 import { getDailyReport } from "../home/data/dailyReport";
@@ -780,7 +779,7 @@ export function DailyPullView() {
           offset,
           date,
           key: `${offset}:${getLocalDateString(date)}`,
-          label: offset === 0 ? t("readings.today") : date.toLocaleDateString(language, { weekday: "short" }),
+          label: formatDayLabel(date, offset, t),
           month: date.toLocaleDateString(language, { month: "short" }),
           detail: date.toLocaleDateString(document.documentElement.lang || "en", { month: "short", day: "numeric", year: "numeric" }),
           day: date.toLocaleDateString(document.documentElement.lang || "en", { day: "numeric" }),
@@ -932,9 +931,7 @@ export function DailyPullView() {
       contentStyle={{ paddingTop: "max(56px, calc(var(--hint-safe-top) + 16px))" }}
     >
       <div className="hint-daily-page grid min-w-0 grid-cols-1 gap-6">
-        <ScreenHeader eyebrow={t("dailyPull.eyebrow")} title={t("dailyPull.title")} sigil={DailyPullSigil} backHref="/app" />
-        {getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "conflict" && <p role="status">{t("quality.cardConflict")}</p>}
-        {getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "pending" && <p role="status">{t("quality.cardPending")}</p>}
+        <h1 className="sr-only">{t("dailyPull.title")}</h1>
 
         <section className="relative min-w-0">
           <div className="grid min-w-0 grid-cols-1 gap-3">
@@ -1094,6 +1091,13 @@ export function DailyPullView() {
             dateOverride={selectedDate}
             cardOverride={syncedDailyCard}
             dailyHistory={dailyHistory}
+            statusMessage={
+              getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "conflict"
+                ? t("quality.cardConflict")
+                : getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "pending"
+                  ? t("quality.cardPending")
+                  : undefined
+            }
           />
         )}
 

@@ -149,6 +149,9 @@ test("selectable iPhone frame keeps Home, Daily and receipt controls inside safe
   await phone.getByTestId("home-reveal-action").click();
   await expect(phone.getByTestId("home-daily-reveal")).toBeVisible();
   await page.keyboard.press("Escape");
+  const syncStatusTop = await phone.getByText("Saved on this device; waiting to sync.", { exact: true })
+    .evaluate(element => element.getBoundingClientRect().top);
+  expect(syncStatusTop, "the offline status remains below the iPhone status bar / island").toBeGreaterThanOrEqual(info.project.name === "iphone-se" ? 20 : 59);
   await phone.getByRole("button", { name: "Share receipt", exact: true }).click();
   const dialog = phone.getByTestId("receipt-share-dialog");
   await expect(dialog.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();

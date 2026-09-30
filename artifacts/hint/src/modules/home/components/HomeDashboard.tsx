@@ -3964,6 +3964,7 @@ function ReferenceHomePage({
   dailyCardRevealed,
   dailyCardRevealing,
   dailyReceiptReady,
+  receiptStatusMessage,
   dailyRevealOverlayOpen,
   onReveal,
   onCloseRevealOverlay,
@@ -3974,6 +3975,7 @@ function ReferenceHomePage({
   dailyCardRevealed: boolean;
   dailyCardRevealing: boolean;
   dailyReceiptReady: boolean;
+  receiptStatusMessage?: string;
   dailyRevealOverlayOpen: boolean;
   onReveal: () => void | Promise<void>;
   onCloseRevealOverlay: () => void;
@@ -4001,7 +4003,11 @@ function ReferenceHomePage({
       />
       <div className="hint-home-content relative z-10 mx-auto w-full">
         <header className="hint-home-header">
-          <div><p className="hint-home-eyebrow">{formatAppDate(report.date, report.language ?? "en")}</p><h1 className="sr-only"><LocalizedText text="Today" /></h1></div>
+          <h1 className="sr-only"><LocalizedText text="Today" /></h1>
+          {(dailyCardRevealed || receiptStatusMessage) && <div className="hint-home-share-status">
+            {dailyCardRevealed && <DailyReceiptButton report={report} compact />}
+            {receiptStatusMessage && <p className="hint-home-sync-status" role="status">{receiptStatusMessage}</p>}
+          </div>}
           <ReferenceHintLogo />
         </header>
 
@@ -4013,7 +4019,6 @@ function ReferenceHomePage({
             receiptReady={dailyReceiptReady}
             onReveal={onReveal}
           />
-          {dailyCardRevealed && <DailyReceiptButton report={report} />}
           <ReferenceEnergyPanel report={report} />
           <ReferenceEvidencePanel report={report} />
           <ReferenceSpaces cards={roomShortcuts} />
@@ -4236,7 +4241,6 @@ export function HomeDashboard() {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-    {dailyReceipt?.openedAt && dailyReceipt.syncStatus !== "synced" && <p role="status" className="shrink-0 px-5 py-2 text-xs" style={{ color: "var(--hint-text)", background: "var(--hint-surface)" }}>{t(dailyReceipt.persistence === "memory" ? "quality.cardMemory" : dailyReceipt.syncStatus === "conflict" ? "quality.cardConflict" : "quality.cardPending")}</p>}
     <div className="min-h-0 flex-1">
     <ReferenceHomePage
       report={report}
@@ -4244,6 +4248,9 @@ export function HomeDashboard() {
       dailyCardRevealed={dailyCardRevealed && dailyReceipt?.dailyKey === currentDay}
       dailyCardRevealing={dailyCardRevealing}
       dailyReceiptReady={dailyReceiptReady}
+      receiptStatusMessage={dailyReceipt?.openedAt && dailyReceipt.syncStatus !== "synced"
+        ? t(dailyReceipt.persistence === "memory" ? "quality.cardMemory" : dailyReceipt.syncStatus === "conflict" ? "quality.cardConflict" : "quality.cardPending")
+        : undefined}
       dailyRevealOverlayOpen={dailyRevealOverlayOpen}
       onReveal={revealDailyCard}
       onCloseRevealOverlay={closeDailyRevealOverlay}

@@ -29,6 +29,21 @@
   gap: 14px;
 }
 
+.hint-daily-report .receipt-share-trigger--compact {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+.hint-daily-report .hint-report-sync-status {
+  margin: 8px 0 16px;
+  color: var(--hint-muted);
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .hint-daily-report[data-appearance="page"] .hint-report-score {
   padding: 4px 0;
 }
@@ -69,6 +84,10 @@
 /* Daily reading rhythm: larger body text, 24px between sections, tighter related text. */
 .hint-daily-report[data-appearance="page"] .hint-report-card-preview {
   margin-bottom: 24px;
+}
+
+.hint-daily-report[data-appearance="page"] .hint-report-card-preview:has(+ .hint-report-sync-status) {
+  margin-bottom: 0;
 }
 
 .hint-daily-report[data-appearance="page"] .hint-report-header {
