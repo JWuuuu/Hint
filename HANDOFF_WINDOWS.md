@@ -6,9 +6,11 @@ Continue the merged application, rather than importing either ZIP over it.
 
 **Named checkpoint:** `codex/checkpoint-2026-09-30-merged-app`. Read [the checkpoint record](artifacts/hint/docs/checkpoints/2026-09-30-merged-app.md) for exact source/build fingerprints, preview state and outstanding work. This checkpoint adds documentation only; the application implementation remains `3280bcf`.
 
+**Subsequent owner-requested Home/Daily correction:** [ZIP fidelity review](artifacts/hint/docs/home-daily-ui-2026-09-30/README.md), implementation `69d32dc`. It restores the ZIP's date-first Daily and Home composition, keeps sharing compact, and fixes the Home offline status entering the iPhone island area. Tarot is unchanged. This narrow task does not resume the paused Goal; use the latest integration branch rather than the older named checkpoint for these corrections.
+
 - Repository: https://github.com/JWuuuu/Hint-App.git
 - Integration branch: `codex/merge-home-daily-receipt`
-- Current implementation checkpoint: **`3280bcfb5e6975194e2bd1f29479306b3d8425c6`**. Its following documentation commit records this stop; use the latest integration-branch tip.
+- Current implementation checkpoint: **`69d32dccfc4e9cb6acb1b05313ca17a6dae4ac80`**. Its following documentation commit records this focused correction; use the latest integration-branch tip.
 - Historical merge implementation: `2f6c1962aa0cee608ec536daa835148fc3a7d98a`; expanded iPhone acceptance is still incomplete.
 - Original handoff remains untouched: `codex/windows-handoff-2026-09-12` at `b9594adf2f4d3114cf8bc33d6cd319d123477a13`.
 - `main` is not the working baseline; do not replace this branch with it. The `old-hint` remote has a disabled push URL.
@@ -33,7 +35,7 @@ New CSS is scoped. Tarot deck order, physics, state machine, reading persistence
 
 Read the acceptance README first. The receipt PNG encoder now runs in a cancellable worker; ten browser samples have no >=100ms gap and eight before/after exports have identical decoded pixels. Home/Daily night-theme inheritance, complete detailed card copy, and enlarged score reflow are repaired. At `e23754b`, the 160-case merge matrix, 703 frontend tests, 66 API/database tests and four actual browser→API→temporary-DB journeys passed, along with frontend/API types and builds.
 
-The current runtime adds a confirmed dark Ask-label ink repair, with an explicit before-fail/after-pass regression. Its built web fingerprint is **`cd5d14ee0baacb51c4dd619e2bfc8d402a4cb973559fd351d53e04e64ece197c`**. Mac's isolated preview is `http://127.0.0.1:5255/app?hintPreview=frame`, serving `/tmp/hint-ios-production-dock-20260929`; the older 5254 preview is not this latest checkpoint. Temporary builds/logs are not transferred by Git; durable registries and selected screenshots are in the acceptance folder.
+Runtime `3280bcf` added a confirmed dark Ask-label ink repair, with an explicit before-fail/after-pass regression. The subsequent `69d32dc` Home/Daily correction passed 19 targeted unit/component cases, 34 targeted browser cases, frontend types and the production build on the same source. The new built web fingerprint is **`2230afa92a8c2e4fbabac13f91d20e3828a912d9da63b389fde3bd5b9f89c118`**. Mac's isolated preview is `http://127.0.0.1:5255/app?hintPreview=frame`, serving `/tmp/hint-home-daily-zip-ui-final-20260930`; older previews do not include this correction. Temporary builds/logs are not transferred by Git; durable registries and selected screenshots are in the focused ZIP fidelity review folder.
 
 Nine protected functional-core files remain unchanged. Three stale SE pick references were individually reviewed and the six normal comparisons passed; old/actual/diff images and geometry evidence are retained. The interrupted 922-case whole-app run recorded 110 passes, eight skips, one timeout correlated with the thermal sleep, one interrupted case and 802 not run. The affected Astrology case passed three isolated rechecks. This is not a complete run. Expanded SE nine-spread testing is enabled, but its full journeys were not reached in that interrupted run.
 
