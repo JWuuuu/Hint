@@ -1,4 +1,6 @@
-# Hint iPhone acceptance — active, not complete
+# Hint iPhone acceptance — paused, not complete
+
+The owner explicitly paused the Goal until Windows is ready. The 2026-09-30 checkpoint confirms that status; opening the local preview does not resume acceptance work. See [the named checkpoint](../checkpoints/2026-09-30-merged-app.md). Wait for explicit resumption before continuing long tests or implementation.
 
 The user's approved iPhone plan supersedes the earlier browser-only stopping point. The three-way merge starts at `387a15268ea3341e2d03d19dd8ee11b743a6e87c`; its browser evidence remains valid for that implementation, but does not prove Simulator or physical-iPhone acceptance.
 

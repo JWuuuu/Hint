@@ -1,8 +1,10 @@
-# Hint Windows handoff — three-way merge, 2026-09-29
+# Hint Windows handoff — three-way merge, 2026-09-30
 
 Continue the merged application, rather than importing either ZIP over it.
 
-**Active goal expanded on 2026-09-29:** the owner requires actual iPhone acceptance and a prepared TestFlight candidate, without uploading. Browser acceptance is only the first layer. Continue `artifacts/hint/docs/ios-acceptance-2026-09-29/README.md`; Simulator, physical-device evidence and a signed candidate are required before the goal can be complete. The merge evidence below is historical evidence for its exact revision, not an iPhone release approval.
+**Goal paused at the owner's request; confirmed on 2026-09-30.** Wait for an explicit request to resume. The acceptance scope expanded on 2026-09-29: the owner requires actual iPhone acceptance and a prepared TestFlight candidate, without uploading. Browser acceptance is only the first layer. Continue `artifacts/hint/docs/ios-acceptance-2026-09-29/README.md`; Simulator, physical-device evidence and a signed candidate are required before the goal can be complete. The merge evidence below is historical evidence for its exact revision, not an iPhone release approval.
+
+**Named checkpoint:** `codex/checkpoint-2026-09-30-merged-app`. Read [the checkpoint record](artifacts/hint/docs/checkpoints/2026-09-30-merged-app.md) for exact source/build fingerprints, preview state and outstanding work. This checkpoint adds documentation only; the application implementation remains `3280bcf`.
 
 - Repository: https://github.com/JWuuuu/Hint-App.git
 - Integration branch: `codex/merge-home-daily-receipt`
