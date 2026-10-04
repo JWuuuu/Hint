@@ -39,6 +39,8 @@ env
 /.sass-cache
 /connect.lock
 /coverage
+/artifacts/hint/playwright-report/
+/artifacts/hint/test-results/
 /logs
 *.log
 /libpeerconnection.log
@@ -65,3 +67,4 @@ artifacts/checkpoints/*.txt
 artifacts/checkpoints/*.zip
 .vercel
 .env*
+!artifacts/hint/.env.mobile.example

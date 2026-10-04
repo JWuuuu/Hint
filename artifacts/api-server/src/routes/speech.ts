@@ -20,7 +20,7 @@ router.post("/speech", async (req, res) => {
     return;
   }
 
-  if (!consumeAiBudget(req, res, { feature: "speech", dailyLimit: 10 })) {
+  if (!await consumeAiBudget(req, res, { feature: "speech", dailyLimit: 10 })) {
     return;
   }
 

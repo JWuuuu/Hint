@@ -1,3 +1,7 @@
+import { InviteError, createCompatibilityInvite, findCompatibilityInvite, publicCompatibilityInvite, completeCompatibilityInvite, readCompatibilityResult } from "../modules/astrology/compatibilityStore.js";
+import { birthDetailsError } from "@workspace/api-zod";
+import { authenticatedOwner } from "../lib/deviceSession";
+import { consumeAiBudget } from "../lib/aiCostGuards";
 import crypto from "node:crypto";
 import { Router } from "express";
 import * as z from "zod";
@@ -20,6 +24,11 @@ import {
 } from "../modules/astrology/astrologyApiClient.js";
 
 const router = Router();
+router.use(async (req, res, next) => {
+  const isProviderRoute = req.method === "POST" && ["/astro/geo-details", "/astro/timezone", "/astro/natal", "/astro/transits", "/astro/synastry", "/astrology/birth-chart", "/astrology/recalculate-chart", "/ai/astro-interpretation"].includes(req.path) || req.method === "GET" && req.path === "/visual/nasa/apod";
+  if (isProviderRoute && !await consumeAiBudget(req, res, { feature: "astrology", dailyLimit: 30, maxRequestsPerWindow: 15 })) return;
+  next();
+});
 
 const birthProfileSchema = z.object({
   userId: z.string().min(1).max(200).optional(),
@@ -30,8 +39,8 @@ const birthProfileSchema = z.object({
   birthCountry: z.string().max(120).optional(),
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional(),
-  timezone: z.union([z.string().max(80), z.number().min(-14).max(14)]).optional(),
-});
+  timezone: z.union([z.string().max(80), z.number().min(-12).max(14)]).optional(),
+}).refine(input => !birthDetailsError({ ...input, birthDate: input.birthday, timezone: typeof input.timezone === "string" ? input.timezone : undefined, timezoneOffset: typeof input.timezone === "number" ? input.timezone : undefined }), "Invalid birth details");
 
 const astroProfileSchema = z.object({
   id: z.string().min(1).max(200).optional(),
@@ -42,8 +51,8 @@ const astroProfileSchema = z.object({
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional(),
   timezone: z.string().max(80).optional(),
-  timezoneOffset: z.number().min(-14).max(14).optional(),
-});
+  timezoneOffset: z.number().min(-12).max(14).optional(),
+}).refine(input => !birthDetailsError(input), "Invalid birth details");
 
 const natalProxySchema = z.object({
   profile: astroProfileSchema,
@@ -88,45 +97,6 @@ const inviteCompletionSchema = z.object({
   friendBirthProfile: birthProfileSchema,
   consent: z.boolean(),
 });
-
-type CompatibilityInvite = {
-  id: string;
-  token: string;
-  createdByUserId: string;
-  createdAt: string;
-  expiresAt: string;
-  status: "pending" | "completed" | "expired";
-  relationshipType?: "crush" | "partner" | "ex" | "friend" | "unclear";
-  birthProfile: BirthProfileInput;
-  resultId?: string;
-};
-
-const invites = new Map<string, CompatibilityInvite>();
-const compatibilityResults = new Map<string, CompatibilityResult>();
-
-function safeInvite(invite: CompatibilityInvite) {
-  return {
-    id: invite.id,
-    token: invite.token,
-    createdByUserId: invite.createdByUserId,
-    createdAt: invite.createdAt,
-    expiresAt: invite.expiresAt,
-    status: invite.status,
-    relationshipType: invite.relationshipType,
-    creatorName: invite.birthProfile.name,
-    resultId: invite.resultId,
-  };
-}
-
-function isExpired(invite: CompatibilityInvite) {
-  return Date.parse(invite.expiresAt) <= Date.now();
-}
-
-function expiresInSevenDays() {
-  const date = new Date();
-  date.setDate(date.getDate() + 7);
-  return date.toISOString();
-}
 
 router.get("/astrology/status", (_req, res) => {
   res.json(getAstrologyStatus());
@@ -246,81 +216,37 @@ router.post("/astrology/recalculate-chart", async (req, res) => {
 
 router.post("/compatibility/invite", async (req, res) => {
   const parsed = inviteSchema.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Invalid compatibility invite." });
-    return;
-  }
-
-  const token = crypto.randomBytes(18).toString("base64url");
-  const invite: CompatibilityInvite = {
-    id: crypto.randomUUID(),
-    token,
-    createdByUserId: parsed.data.createdByUserId,
-    createdAt: new Date().toISOString(),
-    expiresAt: expiresInSevenDays(),
-    status: "pending",
-    relationshipType: parsed.data.relationshipType,
-    birthProfile: parsed.data.birthProfile,
-  };
-  invites.set(token, invite);
-  res.json(safeInvite(invite));
+  if (!parsed.success) { res.status(400).json({ error: "Invalid compatibility invite." }); return; }
+  const row = await createCompatibilityInvite(parsed.data.createdByUserId, parsed.data.birthProfile, parsed.data.relationshipType);
+  res.json(publicCompatibilityInvite(row, authenticatedOwner(req)));
 });
-
-router.get("/compatibility/invite/:token", (req, res) => {
-  const invite = invites.get(req.params.token);
-  if (!invite) {
-    res.status(404).json({ error: "Invite not found." });
-    return;
-  }
-  if (isExpired(invite)) invite.status = "expired";
-  res.json(safeInvite(invite));
+router.get("/compatibility/invite/:token", async (req, res) => {
+  try { res.json(publicCompatibilityInvite(await findCompatibilityInvite(req.params.token), authenticatedOwner(req))); }
+  catch (error) { res.status(error instanceof InviteError ? error.status : 503).json({ error: error instanceof InviteError ? error.message : "Invite service unavailable." }); }
 });
-
 router.post("/compatibility/invite/:token/complete", async (req, res) => {
-  const invite = invites.get(req.params.token);
-  if (!invite) {
-    res.status(404).json({ error: "Invite not found." });
-    return;
-  }
-  if (isExpired(invite)) {
-    invite.status = "expired";
-    res.status(410).json({ error: "Invite expired." });
-    return;
-  }
-
   const parsed = inviteCompletionSchema.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: "Invalid compatibility response." });
-    return;
-  }
-  if (!parsed.data.consent) {
-    res.status(400).json({ error: "Consent is required to create a shared chart." });
-    return;
-  }
-
+  if (!parsed.success) { res.status(400).json({ error: "Invalid compatibility response." }); return; }
   try {
-    const userChart = await calculateBirthChart(invite.birthProfile);
-    const friendChart = await calculateBirthChart({
-      ...parsed.data.friendBirthProfile,
-      name: parsed.data.friendName ?? parsed.data.friendBirthProfile.name,
-    });
-    const result = buildCompatibilityResult(userChart, friendChart);
-    compatibilityResults.set(result.id, result);
-    invite.status = "completed";
-    invite.resultId = result.id;
-    res.json({ resultId: result.id, result });
-  } catch {
-    res.status(503).json({ error: "Compatibility calculation is unavailable right now." });
-  }
+    const outcome = await completeCompatibilityInvite(req.params.token, { ...parsed.data.friendBirthProfile, name: parsed.data.friendName ?? parsed.data.friendBirthProfile.name }, parsed.data.consent,
+      async (creator, friend) => {
+        if (!await consumeAiBudget(req, res, { feature: "compatibility", dailyLimit: 5 })) throw new InviteError(429, "Calculation limit reached. Please retry later.");
+        const userChart = await calculateBirthChart(creator);
+        const friendChart = await calculateBirthChart(friend);
+        if (userChart.source !== "api" || friendChart.source !== "api" || userChart.approximate || friendChart.approximate) throw new Error("Uncalculated birth chart");
+        const toProfile = (input: BirthProfileInput) => ({ name: input.name, birthDate: input.birthday, birthTime: input.birthTime, birthPlace: input.birthCity ?? "", latitude: input.latitude, longitude: input.longitude, timezone: typeof input.timezone === "string" ? input.timezone : undefined, timezoneOffset: typeof input.timezone === "number" ? input.timezone : undefined });
+        const synastry = await getSynastryProxy(toProfile(creator), toProfile(friend));
+        if (!("source" in synastry) || !("mode" in synastry) || synastry.source !== "astrologyapi" || synastry.mode !== "live") throw new Error("Uncalculated synastry");
+        const result = buildCompatibilityResult(userChart, friendChart);
+        return { ...result, schemaVersion: 2, source: "api", inputSnapshot: { creator, friend }, synastry,
+          scoreMethod: "Symbolic comparison of calculated placements; scores are reflection prompts, not measured relationship outcomes." };
+      }, authenticatedOwner(req));
+    if (!res.headersSent) res.status(outcome.status).json(outcome);
+  } catch (error) { if (!res.headersSent) res.status(error instanceof InviteError ? error.status : 503).json({ error: error instanceof InviteError ? error.message : "Compatibility unavailable." }); }
 });
-
-router.get("/compatibility/:id", (req, res) => {
-  const result = compatibilityResults.get(req.params.id);
-  if (!result) {
-    res.status(404).json({ error: "Compatibility result not found." });
-    return;
-  }
-  res.json(result);
+router.get("/compatibility/:id", async (req, res) => {
+  if (!z.string().uuid().safeParse(req.params.id).success) { res.status(404).json({ error: "Compatibility result not found." }); return; }
+  try { res.json(await readCompatibilityResult(req.params.id, authenticatedOwner(req))); }
+  catch (error) { res.status(error instanceof InviteError ? error.status : 503).json({ error: error instanceof InviteError ? error.message : "Result service unavailable." }); }
 });
-
 export default router;

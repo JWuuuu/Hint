@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useHintPreferences } from "../../../lib/preferences";
 import type { RitualCard } from "../logic/createHiddenDeck";
 import type { TarotCardArtId } from "../logic/cardImageMap";
 import {
@@ -24,6 +25,8 @@ type TarotCardVisualProps = {
   ariaLabel?: string;
   className?: string;
   showFrontCaption?: boolean;
+  instantReveal?: boolean;
+  reduceMotion?: boolean;
   onClick?: () => void;
 };
 
@@ -83,9 +86,10 @@ function BackDesign({
       }}
     >
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-center bg-no-repeat"
         style={{
           backgroundImage: `url("${imageUrl}")`,
+          backgroundSize: "100% 100%",
           filter: style.filter,
           opacity: imageOpacity,
         }}
@@ -117,8 +121,12 @@ export function TarotCardVisual({
   ariaLabel,
   className = "",
   showFrontCaption = true,
+  instantReveal = false,
+  reduceMotion: motionPreference,
   onClick,
 }: TarotCardVisualProps) {
+  const { preferences } = useHintPreferences();
+  const reduceMotion = motionPreference ?? preferences.reduceMotion;
   const isFront = Boolean(card && (revealed || card.revealed) && !faceDown);
   const accessibleLabel = ariaLabel ?? (isFront && card
     ? `${card.name}, ${card.orientation === "reversed" ? "reversed" : "upright"}`
@@ -135,9 +143,12 @@ export function TarotCardVisual({
         y: selected ? -18 : 0,
         scale: selected ? 1.035 : 1,
       }}
-      whileHover={onClick ? { y: -12, scale: 1.04 } : undefined}
-      whileTap={onClick ? { y: -18, scale: 1.025 } : undefined}
-      transition={{ type: "spring", stiffness: 220, damping: 24 }}
+      whileTap={onClick ? { scale: 0.985 } : undefined}
+      transition={
+        reduceMotion
+          ? { duration: 0.01 }
+          : { type: "spring", stiffness: 220, damping: 24 }
+      }
       style={{
         boxShadow: active
           ? "0 0 0 1px rgba(232,195,118,0.42), 0 0 30px rgba(232,195,118,0.22), 0 18px 32px rgba(0,0,0,0.44)"
@@ -147,7 +158,10 @@ export function TarotCardVisual({
       <motion.div
         className="absolute inset-0 rounded-[10px]"
         animate={{ rotateY: isFront ? 180 : 0 }}
-        transition={{ duration: 0.92, ease: [0.2, 0.74, 0.18, 1] }}
+        transition={{
+          duration: reduceMotion || instantReveal ? 0.01 : 0.92,
+          ease: [0.2, 0.74, 0.18, 1],
+        }}
         style={{ transformStyle: "preserve-3d" }}
       >
         <div className="absolute inset-0 backface-hidden">

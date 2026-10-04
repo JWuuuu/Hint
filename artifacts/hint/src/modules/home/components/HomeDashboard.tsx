@@ -1,6 +1,14 @@
+import { DailyReceiptButton } from "../../receipt-printer/ReceiptShareDialog";
+import { LocalizedText, translateText } from "../../../lib/LocalizedText";
+import { useLocalDay } from "../../../lib/useLocalDay";
+import { withDailyCardIdentity } from "../data/dailyCardSync";
+import { getCachedDailyReceipt, subscribeToDailyReceiptFallbacks } from "../../../lib/dailyReceipts";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
+import { motion } from "../../../lib/quietMotion";
+import { useMotionPolicy } from "../../../lib/motionPolicy";
+import { Dialog, DialogPortal, DialogSurface, DialogTitle } from "../../../components/ui/dialog";
+import { getCardCollectionSummary, saveLocalCollectionUnlock, subscribeToLocalCollectionUnlocks } from "../../../shared/tarot/cardCollection";
+import "./home-dashboard.css";
 import { Link } from "wouter";
 import {
   ArrowLeft,
@@ -53,6 +61,7 @@ import {
   listLocalDailyReadings,
   listLocalDailyReadingMemory,
   saveLocalDailyReading,
+  subscribeToLocalDailyReadings,
 } from "../../readings/localDailyReadings";
 import { useProfile } from "../../../lib/useProfile";
 import { readBirthProfile } from "../../../lib/astro/userBirthProfile";
@@ -120,15 +129,6 @@ type RoomShortcutData = {
   tint: string;
 };
 
-const REFERENCE_HOME_ASSETS = {
-  moonScene: "/reference-home/moon-scene.png",
-} as const;
-
-const REFERENCE_CARD_BACKGROUND =
-  "linear-gradient(180deg, rgba(255,253,249,0.88), rgba(249,244,238,0.82))";
-const REFERENCE_CARD_BORDER = "rgba(190, 162, 143, 0.085)";
-const REFERENCE_CARD_SHADOW =
-  "0 15px 36px rgba(101, 80, 67, 0.022), inset 0 1px 0 rgba(255,255,255,0.58), inset 0 -12px 28px rgba(180,142,122,0.006)";
 const REFERENCE_TYPE = {
   ink: "#34313a",
   inkSoft: "#46414b",
@@ -138,7 +138,7 @@ const REFERENCE_TYPE = {
   faint: "#8d858d",
   purple: "#a97fac",
   purpleDeep: "#926a96",
-  score: "#b98eae",
+  score: "#9d85ad",
 } as const;
 
 const LOCALE_BY_LANGUAGE: Record<string, string> = {
@@ -155,10 +155,6 @@ function formatAppDate(date: string, language: string) {
     month: "short",
     day: "numeric",
   }).format(new Date(`${date}T12:00:00`));
-}
-
-function formatReferenceDate(date: string, language: string) {
-  return formatAppDate(date, language).toUpperCase();
 }
 
 function compactCardKeyword(keyword?: string) {
@@ -330,13 +326,9 @@ function CompactSignalPanel({
           <p
             className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] lg:text-[11px] lg:tracking-[0.2em]"
             style={{ color: ACCENT.gold }}
-          >
-            Today's signals
-          </p>
+          ><LocalizedText text={" Today's signals "} /></p>
           {!revealed && (
-            <p className="mt-1 font-sans text-[11px] leading-snug lg:text-[12px]" style={{ color: "var(--hint-muted)" }}>
-              Draw first. Scores are calculated from the card you reveal.
-            </p>
+            <p className="mt-1 font-sans text-[11px] leading-snug lg:text-[12px]" style={{ color: "var(--hint-muted)" }}><LocalizedText text={" Draw first. Scores are calculated from the card you reveal. "} /></p>
           )}
         </div>
         <motion.div
@@ -382,12 +374,8 @@ function CompactSignalPanel({
               <Sparkles className="size-4 lg:size-[18px]" />
             </motion.span>
             <div className="relative ml-12 lg:ml-16">
-              <p className="font-serif text-[21px] leading-tight lg:text-[26px]" style={{ color: "var(--hint-text)" }}>
-                Score hidden
-              </p>
-              <p className="mt-1.5 max-w-sm font-sans text-[11px] leading-snug lg:mt-2 lg:text-[13px] lg:leading-relaxed" style={{ color: "var(--hint-muted)" }}>
-                Hint scores energy, love, and career from today's sky, your birth details, and your ritual streak.
-              </p>
+              <p className="font-serif text-[21px] leading-tight lg:text-[26px]" style={{ color: "var(--hint-text)" }}><LocalizedText text={" Score hidden "} /></p>
+              <p className="mt-1.5 max-w-sm font-sans text-[11px] leading-snug lg:mt-2 lg:text-[13px] lg:leading-relaxed" style={{ color: "var(--hint-muted)" }}><LocalizedText text={" Hint scores energy, love, and career from today's sky, your birth details, and your ritual streak. "} /></p>
             </div>
             <div className="relative mt-3 grid grid-cols-3 gap-1.5 lg:mt-5 lg:gap-2">
               {["Sky", "Birth", "Streak"].map((step, index) => (
@@ -445,9 +433,7 @@ function CompactSignalPanel({
                 </motion.p>
               </div>
               <div className="relative min-w-0 flex-1">
-                <p className="truncate font-sans text-[8px] font-semibold uppercase tracking-[0.12em] lg:text-[9px] lg:tracking-[0.14em]" style={{ color: ACCENT.gold }}>
-                  Overall
-                </p>
+                <p className="truncate font-sans text-[8px] font-semibold uppercase tracking-[0.12em] lg:text-[9px] lg:tracking-[0.14em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Overall "} /></p>
                 <p className="mt-0.5 font-sans text-[9px] leading-none lg:text-[10px]" style={{ color: "var(--hint-muted)" }}>
                   {t("daily.score")}
                 </p>
@@ -544,9 +530,7 @@ function CompactSignalPanel({
             background: "color-mix(in srgb, var(--hint-surface-soft) 88%, transparent)",
             borderColor: "color-mix(in srgb, var(--hint-gold, #cba866) 34%, var(--hint-border))",
           }}
-        >
-          Add birth details for sharper daily scores
-        </Link>
+        ><LocalizedText text={" Add birth details for sharper daily scores "} /></Link>
       )}
     </motion.div>
   );
@@ -595,9 +579,7 @@ function OverallScoreBadge({
         <span
           className="text-[9px] font-semibold uppercase tracking-[0.16em]"
           style={{ color: ACCENT.gold }}
-        >
-          Daily
-        </span>
+        ><LocalizedText text={" Daily "} /></span>
         <span
           className="text-[11px] font-medium"
           style={{ color: "var(--hint-muted)" }}
@@ -929,9 +911,7 @@ function DailyScoreCapsule({ report, revealed, compact = false }: { report: Dail
         <div className="relative">
           <div className="flex items-center justify-between gap-2.5">
             <div className="min-w-0">
-              <p className="font-sans text-[9px] font-black uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}>
-                Aura
-              </p>
+              <p className="font-sans text-[9px] font-black uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}><LocalizedText text={" Aura "} /></p>
               <div className="mt-0.5 flex items-end gap-1.5">
                 <p
                   className={["font-serif leading-none tabular-nums", compact ? "text-[34px]" : "text-[54px]"].join(" ")}
@@ -939,9 +919,7 @@ function DailyScoreCapsule({ report, revealed, compact = false }: { report: Dail
                 >
                   {report.overallScore}
                 </p>
-                <p className="pb-1.5 font-sans text-[10px] font-semibold leading-none" style={{ color: "var(--hint-muted)" }}>
-                  overall
-                </p>
+                <p className="pb-1.5 font-sans text-[10px] font-semibold leading-none" style={{ color: "var(--hint-muted)" }}><LocalizedText text={" overall "} /></p>
               </div>
             </div>
             <motion.div
@@ -988,12 +966,8 @@ function DailyScoreCapsule({ report, revealed, compact = false }: { report: Dail
           >
             <Sparkles className="size-5" aria-hidden style={{ color: "var(--hint-rose, #cf4f92)" }} />
           </div>
-          <p className="mt-3 font-serif text-[23px] leading-tight" style={{ color: "var(--hint-text)" }}>
-            Aura score is sealed.
-          </p>
-          <p className="mx-auto mt-1.5 max-w-[15rem] font-sans text-[12px] leading-relaxed" style={{ color: "var(--hint-muted)" }}>
-            Draw once to reveal today’s card, overall score, and five life signals.
-          </p>
+          <p className="mt-3 font-serif text-[23px] leading-tight" style={{ color: "var(--hint-text)" }}><LocalizedText text={" Aura score is sealed. "} /></p>
+          <p className="mx-auto mt-1.5 max-w-[15rem] font-sans text-[12px] leading-relaxed" style={{ color: "var(--hint-muted)" }}><LocalizedText text={" Draw once to reveal today’s card, overall score, and five life signals. "} /></p>
         </div>
       )}
     </div>
@@ -1061,7 +1035,7 @@ function DailySignalIntro({
   }, []);
 
   return (
-    <div className="relative h-full w-full overflow-hidden pb-[calc(6.5rem+var(--hint-safe-bottom))]">
+    <div className="relative h-full w-full overflow-hidden pb-[calc(6.5rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))]">
       <TodayShineLayer wide />
       <div className="relative z-10 mx-auto flex min-h-full w-full max-w-[var(--hint-app-width)] flex-col px-5 pt-[calc(0.95rem+var(--hint-safe-top))]">
         <header className="grid grid-cols-[2rem_1fr_2rem] items-center">
@@ -1073,12 +1047,9 @@ function DailySignalIntro({
             </span>
           </span>
           <div className="text-center">
-            <p className="font-serif text-[22px] leading-none tracking-[0.12em]" style={{ color: "var(--hint-text)" }}>
-              HINT <span style={{ color: "var(--hint-rose)" }}>+</span>
+            <p className="font-serif text-[22px] leading-none tracking-[0.12em]" style={{ color: "var(--hint-text)" }}><LocalizedText text={" HINT "} /><span style={{ color: "var(--hint-rose)" }}>+</span>
             </p>
-            <p className="mt-2 font-serif text-[12px] leading-none" style={{ color: "var(--hint-muted)" }}>
-              Your daily signal from the universe.
-            </p>
+            <p className="mt-2 font-serif text-[12px] leading-none" style={{ color: "var(--hint-muted)" }}><LocalizedText text={" Your daily signal from the universe. "} /></p>
           </div>
           <span aria-hidden className="grid size-8 place-items-center rounded-full" style={{ color: "var(--hint-muted)" }}>
             <Sparkles size={15} strokeWidth={1.7} />
@@ -1146,10 +1117,10 @@ function DailySignalIntro({
               disabled={!receiptReady || introRevealed || introRevealing}
               aria-label={
                 !receiptReady
-                  ? "Checking today's signal"
+                  ? translateText("Checking today's signal", report.language)
                   : introRevealed
-                    ? `Daily tarot card: ${report.card.cardName}`
-                    : "Reveal today's Hint"
+                    ? `${translateText("Today's tarot card", report.language)}: ${report.card.cardName}`
+                    : translateText("Reveal today's Hint", report.language)
               }
               className="relative z-10 rounded-[24px] outline-none transition-transform duration-200 focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--hint-aqua)_78%,white)] disabled:cursor-default"
               whileTap={receiptReady && !introRevealed && !introRevealing ? { scale: 0.985 } : undefined}
@@ -1167,9 +1138,7 @@ function DailySignalIntro({
           >
             {introRevealed ? (
               <div className="grid justify-items-center">
-                <p className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: "var(--hint-rose)" }}>
-                  Today's tarot card
-                </p>
+                <p className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: "var(--hint-rose)" }}><LocalizedText text={" Today's tarot card "} /></p>
                 <h1 className="mt-2 font-serif text-[28px] leading-tight" style={{ color: "var(--hint-text)" }}>
                   {report.card.cardName}
                 </h1>
@@ -1188,13 +1157,13 @@ function DailySignalIntro({
                     className="absolute inset-0"
                     style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.24), transparent)" }}
                   />
-                  <span className="relative">OK, view today's signal</span>
+                  <span className="relative"><LocalizedText text={"OK, view today's signal"} /></span>
                 </button>
               </div>
             ) : (
               <div className="grid justify-items-center">
                 <p className="font-serif text-[14px] leading-none" style={{ color: "var(--hint-muted)" }}>
-                  {!receiptReady ? "Checking today's signal..." : introRevealing ? "Receiving your signal..." : "Your signal is waiting."}
+                  <LocalizedText text={!receiptReady ? "Checking today's signal..." : introRevealing ? "Receiving your signal..." : "Your signal is waiting."} />
                   <span style={{ color: "var(--hint-rose)" }}> +</span>
                 </p>
                 <button
@@ -1213,11 +1182,9 @@ function DailySignalIntro({
                     className="absolute inset-0"
                     style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.24), transparent)" }}
                   />
-                  <span className="relative">{!receiptReady ? "Checking..." : introRevealing ? "Receiving..." : "Reveal Today's Hint"}</span>
+                  <span className="relative"><LocalizedText text={!receiptReady ? "Checking..." : introRevealing ? "Receiving..." : "Reveal Today's Hint"} /></span>
                 </button>
-                <p className="mt-4 font-sans text-[10.5px] leading-none" style={{ color: "var(--hint-faint)" }}>
-                  Take a deep breath, and receive.
-                </p>
+                <p className="mt-4 font-sans text-[10.5px] leading-none" style={{ color: "var(--hint-faint)" }}><LocalizedText text={" Take a deep breath, and receive. "} /></p>
               </div>
             )}
           </motion.div>
@@ -1311,9 +1278,7 @@ function DailyHintSection({
       <div className="relative">
         <div className="mb-3 flex items-start justify-between gap-3">
           <div>
-            <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "var(--hint-rose)" }}>
-              Today's card signal
-            </p>
+            <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: "var(--hint-rose)" }}><LocalizedText text={" Today's card signal "} /></p>
             <h2 className="mt-1 font-serif text-[23px] leading-none sm:text-[27px]" style={{ color: "var(--hint-text)" }}>
               {revealed ? "Sky card" : "Draw your sky card"}
             </h2>
@@ -1356,7 +1321,7 @@ function DailyHintSection({
                 onPointerDown={revealDailyCard}
                 onClick={revealDailyCard}
                 disabled={revealing}
-                className="hint-pressable hint-tap-sparkle relative mt-3 inline-flex h-9 w-full max-w-[16rem] items-center justify-center overflow-hidden rounded-full border px-4 font-sans text-[10.5px] font-semibold uppercase tracking-[0.14em] sm:w-auto"
+                className="hint-pressable hint-tap-sparkle relative mt-3 inline-flex min-h-11 w-full max-w-[16rem] items-center justify-center rounded-full border px-4 py-2 font-sans text-[10.5px] font-semibold uppercase tracking-[0.14em] sm:w-auto"
                 style={{
                   color: "var(--hint-text)",
                   borderColor: "color-mix(in srgb, var(--hint-rose, #cf4f92) 34%, var(--hint-border-strong))",
@@ -1376,22 +1341,20 @@ function DailyHintSection({
                     }}
                   />
                 )}
-                <span className="relative">{revealing ? "Revealing" : "Tap to open"}</span>
+                <span className="relative"><LocalizedText text={revealing ? "Opening Today’s Hint" : "Reveal Today’s Hint"} /></span>
               </button>
             )}
             {!birthPersonalized && (
               <Link
                 href="/app/profile"
                 onPointerDown={() => triggerFeedback("select")}
-                className="hint-pressable mt-3 inline-flex w-full max-w-[16rem] items-center justify-center rounded-full border px-4 py-2.5 font-sans text-[12px] font-semibold"
+                className="hint-pressable mt-3 inline-flex min-h-11 w-full max-w-[16rem] items-center justify-center rounded-full border px-4 py-2.5 font-sans text-[12px] font-semibold"
                 style={{
                   color: "var(--hint-text)",
                   background: "color-mix(in srgb, var(--hint-surface-soft) 88%, transparent)",
                   borderColor: "color-mix(in srgb, var(--hint-rose, #cf4f92) 26%, var(--hint-border))",
                 }}
-              >
-                Add birth details
-              </Link>
+              ><LocalizedText text={" Add birth details "} /></Link>
             )}
           </div>
 
@@ -1425,9 +1388,7 @@ function DailyHintSection({
                   <Sparkles size={16} strokeWidth={1.8} />
                 </span>
                 <div className="min-w-0">
-                  <p className="font-sans text-[8.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}>
-                    Card revealed
-                  </p>
+                  <p className="font-sans text-[8.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}><LocalizedText text={" Card revealed "} /></p>
                   <p className="mt-0.5 whitespace-normal break-words font-serif text-[19px] leading-tight" style={{ color: "var(--hint-text)" }}>
                     {report.card.cardName}
                   </p>
@@ -1469,16 +1430,14 @@ function DailyHintSection({
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.14)",
             }}
           >
-            <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: ACCENT.gold }}>
-              Tarot interpretation
-            </p>
+            <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Tarot interpretation "} /></p>
             <h3 className="mt-1 font-serif text-[24px] leading-none" style={{ color: "var(--hint-text)" }}>
               {revealed ? "What it points to" : "Waiting for the reveal"}
             </h3>
             <p className="mt-2 font-sans text-[13px] leading-relaxed" style={{ color: "var(--hint-muted)" }}>
               {revealed
                 ? skyReading?.shortAnswer ?? `${report.card.whisper} ${report.astrologyNote}`
-                : "The card is chosen by today's transit against your birth details, then translated into a daily reflection."}
+                : <LocalizedText text="Reveal one daily card for a general reflection. Personal chart calculations are available in Astrology." />}
             </p>
             {revealed && skyReading && (
               <p className="mt-2 font-sans text-[12px] leading-relaxed" style={{ color: "var(--hint-muted)" }}>
@@ -1491,9 +1450,7 @@ function DailyHintSection({
               </p>
             )}
             {lockNotice && (
-              <p className="mt-3 rounded-full border px-3 py-2 font-sans text-[10px] font-semibold leading-tight" style={{ color: "var(--hint-muted)", background: "color-mix(in srgb, var(--hint-surface-soft) 72%, transparent)", borderColor: "var(--hint-border)" }}>
-                Offline daily lock active. This result will use local fallback until the API returns.
-              </p>
+              <p className="mt-3 rounded-full border px-3 py-2 font-sans text-[10px] font-semibold leading-tight" style={{ color: "var(--hint-muted)", background: "color-mix(in srgb, var(--hint-surface-soft) 72%, transparent)", borderColor: "var(--hint-border)" }}><LocalizedText text={" Offline daily lock active. This result will use local fallback until the API returns. "} /></p>
             )}
           </div>
         )}
@@ -1513,9 +1470,7 @@ function DailyHintSection({
                 borderColor: "var(--hint-border)",
               }}
             >
-              <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: ACCENT.gold }}>
-                For you today
-              </p>
+              <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: ACCENT.gold }}><LocalizedText text={" For you today "} /></p>
               <p className="mt-2 font-serif text-[23px] leading-tight sm:text-[28px]" style={{ color: "var(--hint-text)" }}>
                 {report.selfHint}
               </p>
@@ -1528,15 +1483,13 @@ function DailyHintSection({
               <Link
                 href="/app/ask"
                 onPointerDown={() => triggerFeedback("select")}
-                className="hint-pressable hint-tap-sparkle mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full font-sans text-[12px] font-semibold sm:w-auto sm:px-5"
+                className="hint-pressable hint-tap-sparkle mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full py-2 font-sans text-[12px] font-semibold sm:w-auto sm:px-5"
                 style={{
                   color: "#231d2a",
                   background: "linear-gradient(135deg, rgba(228,164,82,1), rgba(242,148,111,0.98))",
                   boxShadow: "0 18px 30px rgba(219, 142, 85, 0.22)",
                 }}
-              >
-                Ask AI for specifics
-                <ArrowRight size={15} />
+              ><LocalizedText text={" Ask AI for specifics "} /><ArrowRight size={15} />
               </Link>
             </div>
 
@@ -1552,7 +1505,7 @@ function DailyHintSection({
                   }}
                 >
                   <LuckyIllustration item={item} size={50} />
-                  <p className="mt-2 truncate font-serif text-[17px] leading-tight" style={{ color: "var(--hint-text)" }}>
+                  <p className="mt-2 w-full break-words font-serif text-[17px] leading-tight" style={{ color: "var(--hint-text)" }}>
                     {item.value}
                   </p>
                   <p className="mt-1 font-sans text-[10px] font-semibold leading-tight" style={{ color: "var(--hint-faint)" }}>
@@ -1634,12 +1587,8 @@ function RitualStreakPanel({
     >
       <div className="mb-2.5 flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}>
-            Ritual
-          </p>
-          <h2 className="mt-0.5 font-serif text-[21px] leading-none" style={{ color: "var(--hint-text)" }}>
-            Energy tasks
-          </h2>
+          <p className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}><LocalizedText text={" Ritual "} /></p>
+          <h2 className="mt-0.5 font-serif text-[21px] leading-none" style={{ color: "var(--hint-text)" }}><LocalizedText text={" Energy tasks "} /></h2>
           <p className="mt-1 truncate font-sans text-[12px] font-semibold" style={{ color: "var(--hint-muted)" }}>
             {ritualStatus}
           </p>
@@ -1648,9 +1597,7 @@ function RitualStreakPanel({
           href="/app/profile"
           onPointerDown={() => triggerFeedback("select")}
           className="hint-status-pill hint-pressable shrink-0 rounded-full px-2.5 py-1.5 font-sans text-[9px] font-black uppercase tracking-[0.1em]"
-        >
-          Rewards
-        </Link>
+        ><LocalizedText text={" Rewards "} /></Link>
       </div>
 
       <div className="grid gap-2.5">
@@ -2237,7 +2184,7 @@ function TodayAppHeader({
         href="/app/profile"
         aria-label="Open profile"
         onPointerDown={() => triggerFeedback("select")}
-        className="hint-liquid-panel hint-pressable hint-tap-sparkle grid size-10 shrink-0 place-items-center rounded-full font-serif text-[17px] leading-none active:scale-95"
+        className="hint-liquid-panel hint-pressable hint-tap-sparkle grid size-11 shrink-0 place-items-center rounded-full font-serif text-[17px] leading-none active:scale-95"
         style={{ color: "var(--hint-text)" }}
       >
         {profileInitial(profileName)}
@@ -2250,9 +2197,7 @@ function AppActionList({ cards }: { cards: RoomShortcutData[] }) {
   return (
     <section className="mb-4">
       <div className="mb-2 flex items-center justify-between px-1">
-        <p className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}>
-          Rooms
-        </p>
+        <p className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: "var(--hint-rose)" }}><LocalizedText text={" Rooms "} /></p>
       </div>
       <div className="grid grid-cols-2 gap-2">
         {cards.map((card, index) => {
@@ -2305,175 +2250,6 @@ const REFERENCE_SCORE_ICONS: Record<DailyScore["key"], LucideIcon> = {
   people: UsersRound,
 };
 
-function ReferenceOrbitBackdrop() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <span
-        className="absolute left-[-6rem] top-[9rem] h-[20rem] w-[20rem] rounded-full blur-3xl"
-        style={{ background: "rgba(231, 208, 205, 0.060)" }}
-      />
-      <span
-        className="absolute right-[-7rem] top-[-1rem] h-[22rem] w-[22rem] rounded-full blur-3xl"
-        style={{ background: "rgba(229, 207, 176, 0.072)" }}
-      />
-      <span
-        className="absolute inset-0"
-        style={{
-          background: "linear-gradient(118deg, transparent 0%, rgba(255,255,255,0.17) 45%, transparent 64%)",
-          opacity: 0.34,
-        }}
-      />
-      <svg
-        viewBox="0 0 472 230"
-        className="absolute left-1/2 top-0 h-[230px] w-full max-w-[472px] -translate-x-1/2"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <radialGradient id="reference-top-planet" cx="38%" cy="30%" r="62%">
-            <stop offset="0" stopColor="#e8cfc6" stopOpacity="0.92" />
-            <stop offset="0.48" stopColor="#c8a3af" stopOpacity="0.76" />
-            <stop offset="1" stopColor="#927aa7" stopOpacity="0.68" />
-          </radialGradient>
-          <linearGradient id="reference-top-gold-line" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stopColor="#d5a76d" stopOpacity="0.18" />
-            <stop offset="0.55" stopColor="#d9b98d" stopOpacity="0.34" />
-            <stop offset="1" stopColor="#d5a76d" stopOpacity="0.12" />
-          </linearGradient>
-        </defs>
-        <g fill="none" strokeLinecap="round">
-          <path
-            d="M316 -6 C282 21 255 36 226 68"
-            stroke="rgba(255,255,255,0.44)"
-            strokeWidth="0.72"
-          />
-          <path
-            d="M338 16 C381 -7 437 1 463 42 C489 84 470 135 428 157"
-            stroke="url(#reference-top-gold-line)"
-            strokeWidth="0.82"
-          />
-          <path
-            d="M374 38 C403 10 445 25 455 63 C465 104 435 137 394 132"
-            stroke="rgba(202,157,104,0.18)"
-            strokeWidth="0.72"
-          />
-          <path
-            d="M326 94 L359 118 L389 102 L420 135"
-            stroke="rgba(203,158,103,0.18)"
-            strokeWidth="0.72"
-          />
-          <path
-            d="M245 80 C279 58 335 60 382 84"
-            stroke="rgba(222,174,111,0.18)"
-            strokeWidth="0.82"
-          />
-          <ellipse
-            cx="305"
-            cy="84"
-            rx="72"
-            ry="15"
-            transform="rotate(11 305 84)"
-            stroke="rgba(218,168,105,0.22)"
-            strokeWidth="0.72"
-          />
-          <ellipse
-            cx="305"
-            cy="84"
-            rx="54"
-            ry="10"
-            transform="rotate(11 305 84)"
-            stroke="rgba(255,241,214,0.36)"
-            strokeWidth="0.58"
-          />
-          <path
-            d="M247 89 C284 105 343 101 383 80"
-            stroke="rgba(255,246,226,0.22)"
-            strokeWidth="0.62"
-          />
-        </g>
-        <circle cx="305" cy="84" r="9.2" fill="url(#reference-top-planet)" opacity="0.74" />
-        <g fill="rgba(190,139,83,0.38)">
-          <circle cx="350" cy="24" r="1.7" />
-          <circle cx="393" cy="33" r="1.1" />
-          <circle cx="459" cy="42" r="1.4" />
-          <circle cx="328" cy="97" r="1.75" />
-          <circle cx="359" cy="118" r="1.35" />
-          <circle cx="389" cy="102" r="1.25" />
-          <circle cx="420" cy="135" r="1.45" />
-          <circle cx="449" cy="177" r="1.1" />
-        </g>
-        <g fill="rgba(222,174,111,0.18)">
-          <circle cx="426" cy="20" r="0.9" />
-          <circle cx="452" cy="113" r="0.8" />
-          <circle cx="284" cy="83" r="0.75" />
-          <circle cx="236" cy="90" r="0.9" />
-        </g>
-        <g stroke="rgba(214,160,95,0.28)" strokeLinecap="round" strokeWidth="0.76">
-          <path d="M155 101 L155 112 M149 106.5 L160.5 106.5" />
-          <path d="M385 68 L385 75 M381.5 71.5 L388.5 71.5" />
-        </g>
-      </svg>
-      <svg viewBox="0 0 440 1120" className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
-        <g fill="none" stroke="rgba(190, 146, 102, 0.060)" strokeLinecap="round" strokeWidth="0.72">
-          <path d="M245 82 C309 24 374 77 425 18" />
-          <path d="M253 88 C304 111 365 112 417 75" />
-          <ellipse cx="376" cy="74" rx="62" ry="39" transform="rotate(-22 376 74)" opacity="0.78" />
-          <path d="M356 393 C419 345 468 349 504 399" opacity="0.55" />
-          <path d="M-44 804 C70 724 171 740 246 828" opacity="0.52" />
-          <path d="M-24 930 C86 846 190 864 274 962" opacity="0.35" />
-        </g>
-        <g fill="none" stroke="rgba(255, 255, 255, 0.36)" strokeLinecap="round" strokeWidth="0.66">
-          <path d="M430 -10 C379 22 314 43 254 88" />
-          <path d="M226 96 C267 72 306 75 343 105" opacity="0.52" />
-        </g>
-        <g fill="rgba(191, 143, 93, 0.13)">
-          <circle cx="268" cy="42" r="2" />
-          <circle cx="332" cy="32" r="1.15" />
-          <circle cx="392" cy="107" r="1.35" />
-          <circle cx="423" cy="25" r="1.05" />
-          <circle cx="348" cy="79" r="1.1" />
-        </g>
-        <g fill="rgba(218, 174, 116, 0.085)">
-          <circle cx="312" cy="302" r="1.05" />
-          <circle cx="382" cy="384" r="1.25" />
-          <circle cx="52" cy="676" r="1" />
-          <circle cx="399" cy="748" r="1.1" />
-        </g>
-        <g stroke="rgba(214, 160, 95, 0.10)" strokeLinecap="round" strokeWidth="0.76">
-          <path d="M350 58 L350 67 M345 62.5 L354.5 62.5" />
-          <path d="M390 88 L390 94 M387 91 L393 91" />
-          <path d="M205 846 L205 854 M201 850 L209 850" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-function ReferenceHintLogo() {
-  return (
-    <Link
-      href="/app/profile"
-      aria-label="Open profile"
-      onPointerDown={() => triggerFeedback("select")}
-      className="hint-pressable relative grid size-[62px] shrink-0 place-items-center overflow-hidden rounded-full border text-center active:scale-95"
-      style={{
-        color: REFERENCE_TYPE.ink,
-        background: "linear-gradient(145deg, rgba(255,254,250,0.70), rgba(248,239,230,0.40))",
-        borderColor: "rgba(191, 159, 132, 0.105)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.54), 0 10px 22px rgba(98,78,64,0.026)",
-      }}
-    >
-      <span
-        aria-hidden
-        className="absolute inset-x-2 top-1 h-px rounded-full"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.86), transparent)" }}
-      />
-      <span className="grid justify-items-center">
-        <Sparkles size={19} strokeWidth={1.5} />
-        <span className="font-serif text-[15px] leading-none">hint</span>
-      </span>
-    </Link>
-  );
-}
 
 function referenceDailyCardImage(cardId: string) {
   return (
@@ -2494,12 +2270,17 @@ function referenceDailyCardReading(report: DailyReport): SkyCardReading {
     });
   }
 
-  const keyword = report.card.keyword?.split("·")[0]?.trim() || "today's signal";
   return {
-    shortAnswer: `${report.card.cardName} points to ${keyword}. Name the clearest next step and keep it simple.`,
+    shortAnswer: report.card.whisper,
     cardMeaning: report.card.whisper,
     whatThisMeans: report.card.themeNote ?? report.summary,
-    followUpChips: ["What should I do next?", "What am I avoiding?", "What needs attention?"],
+    followUpChips: {
+      en: ["What should I do next?", "What am I avoiding?", "What needs attention?"],
+      zh: ["接下来可以做什么？", "我在回避什么？", "什么需要关注？"],
+      es: ["¿Qué hago ahora?", "¿Qué estoy evitando?", "¿Qué necesita atención?"],
+      ja: ["次に何をしよう？", "何を避けている？", "何に目を向けよう？"],
+      ko: ["다음에 무엇을 할까요?", "무엇을 피하고 있나요?", "무엇을 살펴볼까요?"],
+    }[report.language ?? "en"],
     whyThisCard: [report.card.themeNote ?? "This card is today's strongest tarot signal."],
   };
 }
@@ -2526,14 +2307,15 @@ function ReferenceFloatingHintCard({
       aria-busy={revealing ? "true" : "false"}
       aria-label={
         revealed
-          ? `View today's Hint for ${report.card.cardName}`
+          ? `${translateText("Today's tarot card", report.language)}: ${report.card.cardName}`
           : receiptReady
-            ? "Reveal today's Hint card"
-            : "Preparing today's Hint card"
+            ? translateText("Reveal today's Hint card", report.language)
+            : translateText("Preparing today's Hint card", report.language)
       }
       onClick={onActivate}
+      data-testid="home-reveal-trigger"
       className="hint-pressable pointer-events-auto absolute z-10 border-0 bg-transparent p-0 text-left outline-none focus-visible:ring-2 focus-visible:ring-[#fff1cf] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:cursor-wait disabled:opacity-85"
-      style={{ position: "absolute", overflow: "visible", right: 62, top: 28, height: 180, width: 94, perspective: 620 }}
+      style={{ position: "absolute", overflow: "visible", right: 16, top: 13, height: 190, width: 106, perspective: 620 }}
       whileTap={receiptReady && !revealing ? { scale: 0.985 } : undefined}
     >
       <span
@@ -2842,12 +2624,12 @@ function ReferenceHeroArt({
 }) {
   return (
     <div
-      className={["pointer-events-none grid place-items-center overflow-hidden rounded-[30px]", className].join(" ")}
+      className={["pointer-events-none grid place-items-center overflow-visible", className].join(" ")}
       style={{ position: "absolute", inset: 0 }}
     >
       <span
         aria-hidden
-        className="absolute inset-0"
+        className="hint-home-atmosphere absolute inset-0"
         style={{
           background:
             "linear-gradient(90deg, rgba(246,226,222,0.10) 0%, rgba(232,205,216,0.15) 34%, rgba(193,159,190,0.30) 66%, rgba(151,120,173,0.48) 100%)",
@@ -2855,7 +2637,7 @@ function ReferenceHeroArt({
       />
       <span
         aria-hidden
-        className="absolute inset-0 opacity-[0.78]"
+        className="hint-home-atmosphere absolute inset-0 opacity-[0.78]"
         style={{
           background:
             "radial-gradient(circle at 74% 62%, rgba(255,244,203,0.34), transparent 24%), radial-gradient(circle at 83% 24%, rgba(255,255,255,0.16), transparent 18%), radial-gradient(circle at 61% 42%, rgba(220,184,222,0.18), transparent 48%), linear-gradient(90deg, rgba(253,226,236,0) 0%, rgba(241,207,224,0.08) 32%, rgba(143,109,166,0.38) 100%)",
@@ -2863,7 +2645,7 @@ function ReferenceHeroArt({
       />
       <span
         aria-hidden
-        className="absolute inset-0 opacity-[0.32]"
+        className="hint-home-atmosphere absolute inset-0 opacity-[0.32]"
         style={{
           backgroundImage:
             "radial-gradient(circle at 12% 20%, rgba(90,61,49,0.05) 0 0.45px, transparent 0.8px), radial-gradient(circle at 66% 64%, rgba(255,245,226,0.18) 0 0.55px, transparent 1px), radial-gradient(circle at 88% 42%, rgba(80,55,94,0.08) 0 0.5px, transparent 0.9px)",
@@ -2911,7 +2693,7 @@ function ReferenceHeroArt({
       <motion.svg
         aria-hidden
         viewBox="0 0 210 188"
-        className="absolute right-[24px] top-[38px] z-[2] h-[182px] w-[230px]"
+        className="absolute right-[-16px] top-[38px] z-[2] h-[182px] w-[230px]"
         animate={{
           opacity: revealing ? [0.42, 0.72, 0.58] : [0.24, 0.40, 0.24],
           rotate: revealing ? [0, 10, 0] : [0, 2, 0],
@@ -2941,7 +2723,7 @@ function ReferenceHeroArt({
       <motion.svg
         aria-hidden
         viewBox="0 0 230 182"
-        className="absolute right-[5px] top-[48px] z-[18] h-[176px] w-[254px]"
+        className="absolute right-[-35px] top-[48px] z-[18] h-[176px] w-[254px]"
         animate={{ opacity: revealing ? [0.54, 0.82, 0.62] : [0.42, 0.58, 0.42] }}
         transition={{ duration: revealing ? 1 : 5.6, repeat: revealing ? 0 : Infinity, ease: "easeInOut" }}
         style={{ transform: "perspective(620px) rotateY(-20deg) rotateZ(-2deg)" }}
@@ -2970,7 +2752,7 @@ function ReferenceHeroArt({
       </motion.svg>
       <span
         aria-hidden
-        className="absolute bottom-[18px] right-[38px] h-[58px] w-[190px] rounded-full"
+        className="absolute bottom-[18px] right-[-2px] h-[58px] w-[190px] rounded-full"
         style={{
           background: "radial-gradient(ellipse, rgba(255,249,224,0.38), rgba(255,229,190,0.14) 52%, transparent 76%)",
           filter: "blur(1px)",
@@ -2978,12 +2760,12 @@ function ReferenceHeroArt({
       />
       <span
         aria-hidden
-        className="absolute bottom-[43px] right-[86px] h-3 w-[96px] rounded-full"
+        className="absolute bottom-[43px] right-[46px] h-3 w-[96px] rounded-full"
         style={{ background: "rgba(255,249,222,0.32)", filter: "blur(2px)" }}
       />
       <motion.svg
         viewBox="0 0 182 58"
-        className="absolute bottom-[16px] right-[32px] h-[62px] w-[202px]"
+        className="absolute bottom-[16px] right-[-8px] h-[62px] w-[202px]"
         animate={{ opacity: revealing ? [0.42, 0.74, 0.58] : [0.28, 0.44, 0.28], scale: revealing ? [0.94, 1.05, 1] : [1, 1.018, 1] }}
         transition={{ duration: revealing ? 1 : 4.8, repeat: revealing ? 0 : Infinity, ease: "easeInOut" }}
       >
@@ -2997,12 +2779,12 @@ function ReferenceHeroArt({
       </motion.svg>
       <span
         aria-hidden
-        className="absolute inset-y-0 left-0 w-[78%]"
+        className="hint-home-atmosphere absolute inset-y-0 left-0 w-[78%]"
         style={{ background: "linear-gradient(90deg, rgba(255,248,244,0.52), rgba(250,235,238,0.30) 42%, rgba(250,235,238,0.09) 70%, rgba(250,235,238,0))" }}
       />
       <span
         aria-hidden
-        className="absolute inset-0"
+        className="hint-home-atmosphere absolute inset-0"
         style={{
           background:
             "radial-gradient(circle at 74% 70%, rgba(255,240,210,0.20), transparent 30%), linear-gradient(180deg, rgba(255,255,255,0.06), transparent 52%, rgba(83,55,105,0.035))",
@@ -3012,7 +2794,7 @@ function ReferenceHeroArt({
   );
 }
 
-function ReferenceDailyRevealOverlay({
+export function ReferenceDailyRevealOverlay({
   open,
   revealing,
   report,
@@ -3025,12 +2807,34 @@ function ReferenceDailyRevealOverlay({
   onClose: () => void;
   onCardRevealed: () => void;
 }) {
+  const { t } = useLanguage();
+  const { reduced, pageVisible } = useMotionPolicy();
   const reading = useMemo(() => referenceDailyCardReading(report), [report]);
   const cardImage = referenceDailyCardImage(report.card.cardId);
   const keyword = report.card.keyword?.split("·")[0]?.trim() || report.card.cardName;
   const [flipped, setFlipped] = useState(false);
   const [detailsReady, setDetailsReady] = useState(false);
   const didAnnounceRevealRef = useRef(false);
+  const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const opener = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const refresh = () => setSaved(getCardCollectionSummary().cards.some(card => card.cardId === report.card.cardId && card.unlocked));
+    refresh();
+    setSaveError(false);
+    const unlocks = subscribeToLocalCollectionUnlocks(refresh);
+    const readings = subscribeToLocalDailyReadings(refresh);
+    return () => { unlocks(); readings(); };
+  }, [open, report.card.cardId]);
+
+  function saveCard() {
+    if (saved || revealing || !detailsReady) return;
+    const result = saveLocalCollectionUnlock(report.card.cardId, "daily");
+    setSaved(Boolean(result));
+    setSaveError(!result);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -3041,18 +2845,18 @@ function ReferenceDailyRevealOverlay({
 
   useEffect(() => {
     if (!open || !flipped) return;
-    const timer = window.setTimeout(() => setDetailsReady(true), 680);
+    const timer = window.setTimeout(() => setDetailsReady(true), reduced || !pageVisible ? 0 : 680);
     return () => window.clearTimeout(timer);
-  }, [flipped, open]);
+  }, [flipped, open, reduced, pageVisible]);
 
   useEffect(() => {
     if (!open || revealing || flipped) return;
     const timer = window.setTimeout(() => {
-      triggerFeedback("reveal");
+      if (pageVisible) triggerFeedback("reveal");
       setFlipped(true);
-    }, 620);
+    }, reduced || !pageVisible ? 0 : 620);
     return () => window.clearTimeout(timer);
-  }, [flipped, open, revealing]);
+  }, [flipped, open, revealing, reduced, pageVisible]);
 
   useEffect(() => {
     if (!detailsReady || didAnnounceRevealRef.current) return;
@@ -3068,22 +2872,31 @@ function ReferenceDailyRevealOverlay({
 
   if (!open || typeof document === "undefined") return null;
 
-  return createPortal(
+  return <Dialog open={open} onOpenChange={next => { if (!next) onClose(); }}>
+    <DialogPortal>
+    <DialogSurface asChild aria-describedby={undefined} onOpenAutoFocus={() => {
+      opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    }} onCloseAutoFocus={event => {
+      event.preventDefault();
+      const target = opener.current?.isConnected && opener.current !== document.body ? opener.current
+        : document.querySelector<HTMLElement>('[data-testid="home-reveal-trigger"]');
+      target?.focus();
+    }}>
     <motion.div
-      className="fixed inset-0 z-[200] overflow-hidden px-5 pb-[calc(1.1rem+var(--hint-safe-bottom))] pt-[calc(1.35rem+var(--hint-safe-top))]"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Today's tarot card: ${report.card.cardName}`}
+      className="fixed inset-0 z-[200] overflow-x-hidden overflow-y-auto px-5 pb-[calc(1.1rem+var(--hint-safe-bottom))] pt-[calc(1.35rem+var(--hint-safe-top))] outline-none"
+      data-testid="home-daily-reveal"
+      aria-label={`${translateText("Today's tarot card", report.language)}: ${report.card.cardName}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.28, ease: "easeOut" }}
     >
+      <DialogTitle className="sr-only">{report.card.cardName}</DialogTitle>
       <div
         aria-hidden
-        className="absolute inset-0"
+        className="fixed inset-0"
         style={{
           background:
-            "radial-gradient(circle at 50% 34%, rgba(255,223,162,0.15), transparent 34%), radial-gradient(circle at 52% 61%, rgba(181,133,190,0.10), transparent 42%), rgba(16, 14, 17, 0.70)",
+            "radial-gradient(circle at 50% 34%, rgba(255,223,162,0.15), transparent 34%), radial-gradient(circle at 52% 61%, rgba(181,133,190,0.10), transparent 42%), rgba(16, 14, 17, 0.96)",
           backdropFilter: "blur(13px) saturate(0.84)",
           WebkitBackdropFilter: "blur(13px) saturate(0.84)",
         }}
@@ -3098,7 +2911,7 @@ function ReferenceDailyRevealOverlay({
       />
       <span
         aria-hidden
-        className="absolute left-1/2 top-[20%] h-[36rem] w-[28rem] -translate-x-1/2 rounded-full opacity-70"
+        className="fixed left-1/2 top-[20%] h-[36rem] w-[min(28rem,100vw)] -translate-x-1/2 rounded-full opacity-70"
         style={{
           background: "radial-gradient(ellipse, rgba(255,222,153,0.16), rgba(118,82,133,0.08) 44%, transparent 72%)",
           filter: "blur(22px)",
@@ -3106,9 +2919,8 @@ function ReferenceDailyRevealOverlay({
       />
       <button
         type="button"
-        aria-label="Close today's tarot reveal"
-        disabled={revealing}
-        className="hint-pressable absolute z-20 grid h-10 w-10 place-items-center rounded-full border disabled:opacity-60"
+        aria-label={translateText("Close", report.language)}
+        className="hint-pressable absolute z-20 grid h-11 w-11 place-items-center rounded-full border"
         onClick={onClose}
         style={{
           position: "absolute",
@@ -3126,8 +2938,12 @@ function ReferenceDailyRevealOverlay({
       </button>
       <button
         type="button"
-        aria-label="Save today's tarot card"
-        className="hint-pressable absolute z-20 grid h-10 w-10 place-items-center rounded-full border"
+        aria-label={t(saved ? "quality.savedLocal" : saveError ? "quality.saveRetry" : "quality.saveCollection")}
+        aria-pressed={saved}
+        disabled={saved || revealing || !detailsReady}
+        onClick={saveCard}
+        data-testid="home-save-card"
+        className="hint-pressable absolute z-20 grid h-11 w-11 place-items-center rounded-full border disabled:opacity-60"
         style={{
           position: "absolute",
           right: "1.75rem",
@@ -3140,7 +2956,7 @@ function ReferenceDailyRevealOverlay({
           WebkitBackdropFilter: "blur(5px)",
         }}
       >
-        <Bookmark size={18} strokeWidth={1.7} />
+        {saved ? <Check size={18} strokeWidth={1.7} /> : <Bookmark size={18} strokeWidth={1.7} />}
       </button>
 
       <motion.div
@@ -3150,7 +2966,7 @@ function ReferenceDailyRevealOverlay({
         transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
       >
         <div
-          className="relative mt-[68px] h-[370px] w-[230px] min-[420px]:mt-[70px] min-[420px]:h-[390px] min-[420px]:w-[242px]"
+          className="relative mt-[52px] h-[clamp(228px,34svh,326px)] w-[clamp(142px,21.15svh,203px)] shrink-0 min-[420px]:mt-[54px]"
           style={{ perspective: "1300px" }}
         >
           <motion.span
@@ -3345,7 +3161,7 @@ function ReferenceDailyRevealOverlay({
           </button>
           <motion.svg
             viewBox="0 0 320 104"
-            className="pointer-events-none absolute -bottom-[60px] left-1/2 z-[3] h-[108px] w-[330px] -translate-x-1/2 min-[420px]:w-[366px]"
+            className="pointer-events-none absolute -bottom-[52px] left-1/2 z-[3] h-[96px] w-[300px] -translate-x-1/2 min-[420px]:w-[326px]"
             aria-hidden
             animate={{ opacity: flipped ? [0.76, 1, 0.82] : [0.30, 0.48, 0.34], scale: flipped ? [0.98, 1.035, 1] : [0.94, 1, 0.96] }}
             transition={{ duration: 2.35, repeat: Infinity, ease: "easeInOut" }}
@@ -3389,53 +3205,49 @@ function ReferenceDailyRevealOverlay({
             transition={{ duration: 0.36, ease: "easeOut" }}
           >
             <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: "rgba(224,187,237,0.86)" }}>
-              {revealing ? "Preparing today’s tarot" : "Choosing today’s tarot"}
+              <LocalizedText text={revealing ? "Preparing today’s tarot" : "Choosing today’s tarot"} />
             </p>
             <p className="mt-2 font-serif text-[24px] font-medium leading-tight text-white/90">
-              {revealing ? "Your card is arriving." : "The card is turning."}
+              <LocalizedText text={revealing ? "Your card is arriving." : "The card is turning."} />
             </p>
             <p className="mx-auto mt-3 max-w-[16rem] font-serif text-[14px] font-medium leading-snug text-white/58">
-              {revealing ? "One soft second while the daily pull settles." : "The back comes forward first, then opens into today’s message."}
+              <LocalizedText text={revealing ? "One soft second while the daily pull settles." : "The back comes forward first, then opens into today’s message."} />
             </p>
           </motion.div>
         ) : (
           <motion.div
-            className="mt-[50px] w-full"
+            className="mt-[34px] w-full min-[420px]:mt-[36px]"
             initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.46, ease: "easeOut" }}
           >
-            <p className="font-sans text-[9.5px] font-semibold uppercase tracking-[0.24em]" style={{ color: "rgba(224,187,237,0.90)" }}>
-              Today’s tarot
-            </p>
-            <h2 className="mt-2 font-serif text-[35px] font-medium leading-none text-white min-[420px]:text-[38px]">
+            {saveError && <p role="alert" className="mb-3 text-sm text-white">{t("quality.saveRetry")}</p>}
+            <p className="font-sans text-[9.5px] font-semibold uppercase tracking-[0.24em]" style={{ color: "rgba(224,187,237,0.90)" }}><LocalizedText text={" Today’s tarot "} /></p>
+            <h2 className="mt-2 font-serif text-[31px] font-medium leading-none text-white min-[420px]:text-[34px]">
               {report.card.cardName}
             </h2>
-            <p className="mx-auto mt-3 max-w-[17rem] font-sans text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: "rgba(219,181,232,0.88)" }}>
+            <p className="mx-auto mt-2.5 max-w-[17rem] font-sans text-[9.5px] font-semibold uppercase tracking-[0.22em]" style={{ color: "rgba(219,181,232,0.88)" }}>
               {keyword}
             </p>
-            <p className="mx-auto mt-4 max-w-[21.25rem] font-serif text-[15.5px] font-medium leading-[1.34] text-white/78 min-[420px]:text-[16px]">
+            <p className="mx-auto mt-3.5 line-clamp-5 max-w-[20rem] font-serif text-[14px] font-medium leading-[1.32] text-white/78 min-[420px]:text-[14.5px]">
               {reading.shortAnswer}
             </p>
 
-            <div className="mx-auto mt-4 grid w-full max-w-[286px] gap-2.5">
+            <div className="mx-auto mt-4 grid w-full max-w-[286px] gap-2">
               <Link
                 href="/app/daily"
-                className="hint-pressable inline-flex h-11 items-center justify-center gap-2 rounded-full font-sans text-[13px] font-semibold"
+                className="hint-pressable inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 py-3 font-sans text-[13px] font-semibold"
                 style={{
                   color: "rgba(86,62,96,0.90)",
                   background: "linear-gradient(145deg, rgba(244,211,247,0.96) 0%, rgba(214,174,224,0.96) 48%, rgba(192,151,207,0.94) 100%)",
                   boxShadow: "inset 0 1px 0 rgba(255,255,255,0.58), 0 18px 34px rgba(0,0,0,0.20), 0 0 24px rgba(226,181,232,0.25)",
                 }}
-              >
-                Read interpretation
-                <Sparkles size={15} strokeWidth={1.5} />
+              ><LocalizedText text={" Read interpretation "} /><Sparkles size={15} strokeWidth={1.5} />
               </Link>
               <button
                 type="button"
-                disabled={revealing}
                 onClick={onClose}
-                className="hint-pressable h-10 rounded-full border font-sans text-[13px] font-semibold disabled:opacity-60"
+                className="hint-pressable min-h-11 rounded-full border px-4 py-3 font-sans text-[13px] font-semibold disabled:opacity-60"
                 style={{
                   color: "rgba(235,198,139,0.86)",
                   background: "rgba(255,244,222,0.035)",
@@ -3444,16 +3256,15 @@ function ReferenceDailyRevealOverlay({
                   backdropFilter: "blur(5px)",
                   WebkitBackdropFilter: "blur(5px)",
                 }}
-              >
-                Return to Today
-              </button>
+              ><LocalizedText text={" Return to Today "} /></button>
             </div>
           </motion.div>
         )}
       </motion.div>
-    </motion.div>,
-    document.body,
-  );
+    </motion.div>
+    </DialogSurface>
+    </DialogPortal>
+  </Dialog>;
 }
 
 function ReferenceHero({
@@ -3479,427 +3290,130 @@ function ReferenceHero({
   }
 
   return (
-    <section
-      className="relative min-w-0 overflow-hidden rounded-[29px] border"
-      style={{
-        minHeight: 222,
-        background:
-          "radial-gradient(circle at 76% 74%, rgba(255,235,194,0.25), transparent 30%), radial-gradient(circle at 16% 8%, rgba(255,247,242,0.54), transparent 42%), linear-gradient(105deg, rgba(239,222,218,0.96) 0%, rgba(230,207,218,0.78) 42%, rgba(190,158,188,0.60) 72%, rgba(151,121,171,0.56) 100%)",
-        borderColor: "rgba(190, 126, 180, 0.145)",
-        boxShadow: "0 18px 42px rgba(116, 80, 120, 0.040), 0 1px 0 rgba(255,255,255,0.66) inset, inset 0 -18px 42px rgba(107,76,119,0.016)",
-      }}
-    >
-      <span
-        aria-hidden
-        className="absolute inset-x-8 top-0 h-px rounded-full"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.36), transparent)" }}
-      />
-      <span
-        aria-hidden
-        className="absolute bottom-[-4rem] right-[5.5rem] h-36 w-36 rounded-full blur-2xl"
-        style={{ background: "rgba(255,235,197,0.18)" }}
-      />
-      <span
-        aria-hidden
-        className="absolute inset-0 opacity-[0.22]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 18% 34%, rgba(84,54,46,0.050) 0 0.45px, transparent 0.85px), radial-gradient(circle at 76% 58%, rgba(255,255,255,0.16) 0 0.55px, transparent 0.95px)",
-          backgroundSize: "6px 6px, 8px 8px",
-          mixBlendMode: "overlay",
-        }}
-      />
-      {revealed ? (
-        <motion.div
-          className="relative z-10 grid min-h-[222px] grid-cols-[minmax(0,1fr)_96px] items-center gap-3 px-5 py-4 min-[420px]:grid-cols-[minmax(0,1fr)_106px] min-[420px]:gap-3.5 min-[420px]:px-5"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.42, ease: "easeOut" }}
+    <section data-daily-card-id={report.card.cardId} className="hint-home-hero" aria-labelledby="hint-home-card-title" data-revealed={revealed}>
+      <motion.div
+        key={revealed ? "revealed" : "waiting"}
+        className="hint-home-hero-copy"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.42, ease: "easeOut" }}
+      >
+        <p className="hint-home-eyebrow hint-home-tarot-label"><LocalizedText text="Today’s tarot" /></p>
+        <h2 id="hint-home-card-title" className="hint-home-card-title font-serif">
+          {revealed ? report.card.cardName : <><LocalizedText text="Your Hint" /><br /><LocalizedText text="is" /> <em><LocalizedText text="waiting." /></em></>}
+        </h2>
+        {revealed && <p className="hint-home-keyword">{keyword}</p>}
+        <p className="hint-home-card-copy font-serif">
+          {revealed ? reading.shortAnswer : translateText("The universe left you a little note.", report.language)}
+        </p>
+        <button
+          type="button"
+          disabled={!revealed && (!receiptReady || revealing)}
+          onClick={handleRevealClick}
+          aria-busy={!revealed && revealing ? "true" : "false"}
+          data-testid={revealed ? "home-reveal-trigger" : "home-reveal-action"} className="hint-pressable hint-home-reveal"
         >
-          <div className="min-w-0 pr-1">
-            <p className="font-sans text-[8.4px] font-medium uppercase tracking-[0.22em] min-[420px]:text-[9px]" style={{ color: REFERENCE_TYPE.purple }}>
-              Today’s tarot
-            </p>
-            <h2 className="mt-1 font-serif text-[25px] font-normal leading-none min-[420px]:text-[28px]" style={{ color: REFERENCE_TYPE.ink }}>
-              {report.card.cardName}
-            </h2>
-            <p className="mt-1.5 line-clamp-1 font-sans text-[8.6px] font-medium uppercase tracking-[0.16em]" style={{ color: REFERENCE_TYPE.faint }}>
-              {keyword}
-            </p>
-            <p className="mt-3 line-clamp-4 font-serif text-[13.4px] font-normal leading-[1.32] min-[420px]:text-[14.4px]" style={{ color: REFERENCE_TYPE.body }}>
-              {reading.shortAnswer}
-            </p>
-            <button
-              type="button"
-              onClick={handleRevealClick}
-              className="hint-pressable mt-4 inline-flex h-8 items-center rounded-full border px-3.5 font-sans text-[10.5px] font-medium"
-              style={{
-                color: REFERENCE_TYPE.purpleDeep,
-                background: "rgba(255,252,248,0.46)",
-                borderColor: "rgba(198,165,142,0.095)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.46), 0 8px 16px rgba(104,72,119,0.034)",
-              }}
-            >
-              View card again
-            </button>
-          </div>
-          <button
-            type="button"
-            onClick={handleRevealClick}
-            className="hint-pressable relative mx-auto h-[164px] w-[96px] overflow-visible rounded-[15px] border-0 bg-transparent p-0 active:scale-[0.98] min-[420px]:h-[178px] min-[420px]:w-[106px]"
-            aria-label={`Open today's tarot reveal for ${report.card.cardName}`}
-          >
-            <span
-              aria-hidden
-              className="absolute -bottom-5 left-1/2 h-10 w-[128px] -translate-x-1/2 rounded-full min-[420px]:w-[138px]"
-              style={{
-                background: "radial-gradient(ellipse, rgba(255,246,218,0.42), rgba(255,226,190,0.16) 48%, transparent 72%)",
-                filter: "blur(1px)",
-              }}
-            />
-            <span
-              className="relative block h-full w-full overflow-hidden rounded-[15px] border-2"
-              style={{
-                borderColor: "rgba(255,239,204,0.88)",
-                background: "var(--hint-deck-card-bg)",
-                boxShadow:
-                  "0 18px 30px rgba(75,50,88,0.14), 0 0 18px rgba(255,225,168,0.26), inset 0 1px 0 rgba(255,255,255,0.62)",
-              }}
-            >
-              {cardImage ? (
-                <SafeImage
-                  src={cardImage}
-                  alt={report.card.cardName}
-                  loading="eager"
-                  className="h-full w-full object-cover"
-                  fallbackClassName="h-full w-full rounded-[15px]"
-                  fallbackLabel={report.card.cardName}
-                />
-              ) : (
-                <CardSigil cardId={report.card.cardId} />
-              )}
-              <motion.span
-                aria-hidden
-                className="absolute inset-[-2px] rounded-[16px]"
-                style={{ boxShadow: "inset 0 0 0 2px rgba(255,242,214,0.78), 0 0 14px rgba(255,225,168,0.36)" }}
-                animate={{ opacity: [0.56, 0.92, 0.60] }}
-                transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
+          {translateText(revealed ? "View card again" : revealing ? "Opening Today’s Hint" : receiptReady ? "Reveal Today’s Hint" : "Preparing Today’s Hint", report.language)}
+          <ArrowRight size={16} strokeWidth={1.4} aria-hidden />
+        </button>
+      </motion.div>
+      {revealed ? (
+        <button
+          type="button"
+          onClick={handleRevealClick}
+          className="hint-pressable hint-home-revealed-card"
+          style={{ position: "absolute", overflow: "visible" }}
+          aria-label={`${translateText("View card again", report.language)}: ${report.card.cardName}`}
+        >
+          <span className="hint-home-card-face">
+            {cardImage ? (
+              <SafeImage
+                src={cardImage}
+                alt={report.card.cardName}
+                loading="eager"
+                className="h-full w-full object-cover"
+                fallbackClassName="h-full w-full rounded-[15px]"
+                fallbackLabel={report.card.cardName}
               />
-            </span>
-          </button>
-        </motion.div>
+            ) : <CardSigil cardId={report.card.cardId} />}
+            <motion.span
+              aria-hidden
+              className="absolute inset-[-2px] rounded-[16px]"
+              style={{ boxShadow: "inset 0 0 0 2px rgba(255,242,214,0.78), 0 0 14px rgba(255,225,168,0.36)" }}
+              animate={{ opacity: [0.56, 0.92, 0.60] }}
+              transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </span>
+        </button>
       ) : (
-        <div className="relative min-h-[222px]">
-          <div className="relative z-10 flex min-h-[222px] w-[55%] flex-col pl-6 pr-0 pt-[36px]">
-            <h2 className="font-serif text-[34px] font-normal leading-[1.02]" style={{ color: REFERENCE_TYPE.ink }}>
-              Your Hint<br />
-              is <span className="italic" style={{ color: REFERENCE_TYPE.purple }}>waiting.</span>
-            </h2>
-            <p
-              className="mt-3 max-w-[9.8rem] font-serif text-[14px] font-normal leading-[1.32]"
-              style={{ color: REFERENCE_TYPE.body }}
-            >
-              The universe left you a little note.
-            </p>
-            <button
-              type="button"
-              disabled={!receiptReady || revealing}
-              onClick={handleRevealClick}
-              aria-busy={revealing ? "true" : "false"}
-              className="hint-pressable mt-[17px] inline-flex h-[38px] w-full max-w-[170px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 font-serif text-[13.2px] active:scale-[0.98] disabled:opacity-75"
-              style={{
-                color: "#fff8f4",
-                background: "linear-gradient(145deg, #9d7daf 0%, #87689d 48%, #725584 100%)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -8px 16px rgba(67,42,80,0.09), 0 12px 20px rgba(104,72,119,0.10)",
-              }}
-            >
-              {revealing ? "Opening Today’s Hint" : receiptReady ? "Reveal Today’s Hint" : "Preparing Today’s Hint"}
-              <span aria-hidden className="shrink-0 text-[16px] leading-none">✦</span>
-            </button>
-          </div>
-          <ReferenceHeroArt
-            className="absolute inset-0"
-            revealed={false}
-            revealing={revealing}
-            receiptReady={receiptReady}
-            report={report}
-            onCardActivate={handleRevealClick}
-          />
-        </div>
+        <ReferenceHeroArt
+          className="hint-home-hero-art"
+          revealed={false}
+          revealing={revealing}
+          receiptReady={receiptReady}
+          report={report}
+          onCardActivate={handleRevealClick}
+        />
       )}
     </section>
   );
 }
 
-function ReferenceScoreItem({ score, isLast }: { score: DailyScore; isLast: boolean }) {
+function ReferenceScoreItem({ score }: { score: DailyScore }) {
   const Icon = REFERENCE_SCORE_ICONS[score.key];
-
   return (
-    <div className={["min-w-0 px-1 text-center", isLast ? "" : "border-r"].join(" ")} style={{ borderColor: "rgba(198, 165, 142, 0.050)" }}>
-      <div className="flex min-w-0 items-center justify-center gap-1">
-        <Icon className="shrink-0" size={14.5} strokeWidth={1.35} style={{ color: score.tone }} />
-        <p className="whitespace-nowrap font-sans text-[9.2px] font-normal leading-none min-[420px]:text-[9.8px]" style={{ color: REFERENCE_TYPE.body }}>
-          {score.label}
-        </p>
+    <div className="hint-home-score">
+      <div className="hint-home-score-label">
+        <Icon size={16} strokeWidth={1.35} style={{ color: score.tone }} aria-hidden />
+        <span>{score.label}</span>
       </div>
-      <p
-        className="mt-1.5 flex h-[20px] items-center justify-center text-center font-serif text-[17px] leading-none tabular-nums min-[420px]:text-[18px]"
-        style={{
-          color: REFERENCE_TYPE.ink,
-          fontVariantNumeric: "lining-nums tabular-nums",
-          fontFeatureSettings: '"lnum" 1, "tnum" 1',
-        }}
-      >
-        {score.score}
-      </p>
+      <span className="hint-home-score-number font-serif">{score.score}</span>
     </div>
   );
 }
 
 function ReferenceEnergyValue({ score }: { score: number }) {
   return (
-    <div className="relative ml-1.5 mt-2 h-[64px] w-[104px] min-[420px]:ml-2 min-[420px]:h-[70px] min-[420px]:w-[116px]">
-      <span
-        aria-hidden
-        className="absolute left-3 top-2 size-10 rounded-full min-[420px]:left-4 min-[420px]:size-11"
-        style={{
-          background: "radial-gradient(circle, rgba(255,247,223,0.58), rgba(255,232,205,0.14) 58%, transparent 72%)",
-          filter: "blur(1.2px)",
-        }}
-      />
-      <span
-        aria-hidden
-        className="absolute right-1 top-[19px] text-[17px] min-[420px]:right-2 min-[420px]:top-[21px] min-[420px]:text-[18px]"
-        style={{
-          color: "rgba(214,160,95,0.30)",
-          textShadow: "0 0 12px rgba(255,232,189,0.44)",
-        }}
-      >
-        ✦
-      </span>
-      <div className="absolute left-1.5 top-[8px] flex items-end">
-        <span
-          className="font-serif text-[50px] leading-[0.78] min-[420px]:text-[56px]"
-          style={{ color: REFERENCE_TYPE.score, fontVariantNumeric: "proportional-nums lining-nums" }}
-        >
-          {score}
-        </span>
-        <span className="mb-[6px] ml-1 font-sans text-[10.5px] font-normal leading-none min-[420px]:mb-[7px] min-[420px]:ml-1.5 min-[420px]:text-[11.5px]" style={{ color: REFERENCE_TYPE.muted }}>
-          /100
-        </span>
-      </div>
+    <div className="hint-home-energy-value">
+      <span className="font-serif" style={{ color: REFERENCE_TYPE.score }}>{score}</span>
+      <span className="hint-home-energy-total">/100</span>
     </div>
   );
 }
 
-function ReferenceMoonScene() {
-  return (
-    <div
-      aria-hidden
-      className="relative size-[72px] shrink-0 overflow-hidden rounded-full min-[420px]:size-[82px]"
-      style={{
-        background: "linear-gradient(145deg, rgba(60, 38, 80, 0.72), rgba(34, 28, 54, 0.92))",
-        boxShadow: "0 14px 24px rgba(72, 46, 84, 0.07), inset 0 1px 0 rgba(255,255,255,0.18)",
-      }}
-    >
-      <SafeImage
-        src={REFERENCE_HOME_ASSETS.moonScene}
-        alt=""
-        className="h-full w-full object-cover"
-        fallbackClassName="h-full w-full bg-[#3a274d]"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-full"
-        style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.18)" }}
-      />
-    </div>
-  );
-}
-
-function ReferenceEnergyPanel({
-  report,
-  revealed,
-}: {
-  report: DailyReport;
-  revealed: boolean;
-}) {
-  const [detailsOpen, setDetailsOpen] = useState(false);
+function ReferenceEnergyPanel({ report }: { report: DailyReport }) {
   const scores = report.scores;
-  const themeTitle = referenceThemeTitle(report);
-  const themeLine = referenceThemeLine(report);
 
   return (
-    <section
-      id="today-summary"
-      className="relative min-w-0 overflow-hidden rounded-[28px] border px-4 pb-1 pt-4"
-      style={{
-        background: REFERENCE_CARD_BACKGROUND,
-        borderColor: REFERENCE_CARD_BORDER,
-        boxShadow: REFERENCE_CARD_SHADOW,
-      }}
-    >
-      <span
-        aria-hidden
-        className="absolute inset-x-8 top-0 h-px rounded-full"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.52), transparent)" }}
-      />
-      <div className="relative grid grid-cols-[104px_minmax(0,1fr)_72px] items-start gap-3 min-[420px]:grid-cols-[116px_minmax(0,1fr)_82px] min-[420px]:gap-4">
-        <div className="relative min-w-0">
-          <p className="font-sans text-[9.2px] font-medium uppercase tracking-[0.22em]" style={{ color: REFERENCE_TYPE.label }}>
-            Today’s energy
-          </p>
+    <section id="today-summary" className="hint-home-energy" aria-label={translateText("Today’s energy", report.language)}>
+      <div className="hint-home-energy-summary">
+        <div>
+          <p className="hint-home-eyebrow"><LocalizedText text="Today’s energy" /></p>
           <ReferenceEnergyValue score={report.overallScore} />
         </div>
-        <div
-          className="min-w-0 border-l pl-3 min-[420px]:pl-4"
-          style={{ borderColor: "rgba(198, 158, 129, 0.060)" }}
-        >
-          <p className="font-sans text-[9.2px] font-medium uppercase tracking-[0.22em]" style={{ color: REFERENCE_TYPE.label }}>
-            Today’s theme
-          </p>
-          <p className="mt-1.5 font-serif text-[25px] font-normal leading-none min-[420px]:mt-2 min-[420px]:text-[27px]" style={{ color: REFERENCE_TYPE.ink }}>
-            {themeTitle}
-          </p>
-          <p className="mt-1.5 line-clamp-2 font-serif text-[12.8px] font-normal leading-[1.30] min-[420px]:mt-2 min-[420px]:text-[13.8px] min-[420px]:leading-[1.30]" style={{ color: REFERENCE_TYPE.muted }}>
-            {themeLine}
-          </p>
-        </div>
-        <div className="self-start">
-          <ReferenceMoonScene />
+        <div className="hint-home-theme">
+          <p className="hint-home-eyebrow"><LocalizedText text="Today’s theme" /></p>
+          <p className="hint-home-theme-title font-serif">{referenceThemeTitle(report)}</p>
+          <p className="hint-home-theme-copy font-serif">{referenceThemeLine(report)}</p>
         </div>
       </div>
-      <button
-        type="button"
-        onClick={() => {
-          triggerFeedback("select");
-          setDetailsOpen((open) => !open);
-        }}
-        aria-expanded={detailsOpen}
-        aria-label="Tap to see more details"
-        className="hint-pressable relative mt-2 flex w-full items-center gap-2 rounded-[22px] border px-3.5 py-1 text-left active:scale-[0.99]"
-        style={{
-          background: "rgba(255,253,249,0.62)",
-          borderColor: "rgba(199, 160, 128, 0.075)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.58), 0 9px 18px rgba(96, 75, 61, 0.012)",
-        }}
+      <Link
+        href="/app/daily"
+        onClick={() => triggerFeedback("select")}
+        aria-label={translateText("See details", report.language)}
+        className="hint-pressable hint-home-scores"
       >
-        <div className="grid min-w-0 flex-1 grid-cols-5 items-center">
-          {scores.map((score, index) => (
-            <ReferenceScoreItem key={score.key} score={score} isLast={index === scores.length - 1} />
-          ))}
-        </div>
-        <span
-          className="grid size-7 shrink-0 place-items-center rounded-full"
-          style={{
-            color: "#fff8fb",
-            background: "linear-gradient(145deg, rgba(200, 158, 198, 0.62), rgba(172, 123, 179, 0.68))",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.40), 0 7px 16px rgba(146,86,154,0.050)",
-          }}
-        >
-          <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.22, ease: "easeOut" }}>
-            <ChevronDown size={15} strokeWidth={2} />
-          </motion.span>
-        </span>
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          triggerFeedback("select");
-          setDetailsOpen((open) => !open);
-        }}
-        className="hint-pressable mx-auto mt-0.5 flex items-center justify-center gap-2 px-2 py-0 font-sans text-[9px] font-normal"
-        style={{ color: "#91878e" }}
+        {scores.map((score) => <ReferenceScoreItem key={score.key} score={score} />)}
+      </Link>
+      <Link
+        href="/app/daily"
+        onClick={() => triggerFeedback("select")}
+        className="hint-pressable hint-home-details-link font-serif"
       >
-        <span aria-hidden style={{ color: "rgba(214, 160, 95, 0.48)" }}>
-          ✦
-        </span>
-        Tap to see more details
-      </button>
-      {detailsOpen ? (
-        <div
-          className="relative mt-3 overflow-hidden rounded-[18px] border px-4 py-3"
-          style={{
-            background:
-              "radial-gradient(circle at 16% 8%, rgba(255,244,214,0.22), transparent 28%), radial-gradient(circle at 78% 18%, rgba(205,171,220,0.09), transparent 30%), linear-gradient(145deg, rgba(255,252,248,0.36), rgba(255,246,241,0.24))",
-            borderColor: "rgba(196, 163, 137, 0.052)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.30), 0 10px 22px rgba(116,90,74,0.010)",
-          }}
-        >
-          <span
-            aria-hidden
-            className="absolute -left-10 top-1/2 h-20 w-44 -translate-y-1/2 rounded-full blur-2xl"
-            style={{ background: "rgba(217, 174, 198, 0.18)" }}
-          />
-          <span
-            aria-hidden
-            className="absolute right-6 top-4 text-[18px]"
-            style={{ color: "rgba(209, 165, 111, 0.42)" }}
-          >
-            ✦
-          </span>
-          <p className="font-serif text-[16px] leading-snug" style={{ color: REFERENCE_TYPE.inkSoft }}>
-            {report.title}
-          </p>
-          <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5">
-            {scores.map((score) => (
-              <p key={score.key} className="flex items-center justify-between gap-3 font-sans text-[11px]" style={{ color: REFERENCE_TYPE.muted }}>
-                <span>{score.label}</span>
-                <span className="font-serif text-[15px] tabular-nums" style={{ color: REFERENCE_TYPE.ink }}>{score.score}</span>
-              </p>
-            ))}
-          </div>
-        </div>
-      ) : null}
+        <span><LocalizedText text="See details" /></span>
+        <ArrowRight size={15} strokeWidth={1.5} aria-hidden />
+      </Link>
     </section>
-  );
-}
-
-function ReferenceSkyEvidenceArt() {
-  return (
-    <div aria-hidden className="pointer-events-none relative h-[48px] w-[88px] overflow-visible">
-      <svg viewBox="0 0 118 72" className="absolute inset-0 h-full w-full overflow-visible" style={{ transform: "rotate(-8deg)" }}>
-        <defs>
-          <radialGradient id="sky-evidence-planet-fill" cx="32%" cy="22%" r="82%">
-            <stop offset="0" stopColor="#fff0df" />
-            <stop offset="0.34" stopColor="#edd8dc" />
-            <stop offset="0.68" stopColor="#d6b9d2" />
-            <stop offset="1" stopColor="#b58ebe" />
-          </radialGradient>
-        </defs>
-        <g fill="rgba(214, 160, 95, 0.38)">
-          <circle cx="18" cy="38" r="1" />
-          <circle cx="103" cy="23" r="0.9" />
-          <circle cx="35" cy="12" r="0.75" />
-          <circle cx="95" cy="52" r="0.85" />
-        </g>
-        <g stroke="rgba(226, 178, 124, 0.34)" strokeLinecap="round">
-          <path d="M22 49 L22 55 M19 52 L25 52" />
-          <path d="M109 39 L109 43 M107 41 L111 41" opacity="0.70" />
-        </g>
-        <path
-          d="M18 40 C45 28 84 28 110 37"
-          fill="none"
-          stroke="rgba(221, 170, 112, 0.26)"
-          strokeLinecap="round"
-          strokeWidth="0.78"
-        />
-        <circle
-          cx="64"
-          cy="35"
-          r="22"
-          fill="url(#sky-evidence-planet-fill)"
-          filter="drop-shadow(0 10px 16px rgba(125, 86, 132, 0.08))"
-        />
-        <path d="M48 21 C58 28 72 32 84 31" fill="none" stroke="rgba(255,255,255,0.20)" strokeLinecap="round" strokeWidth="0.68" />
-        <path d="M47 48 C58 43 74 44 83 50" fill="none" stroke="rgba(116,77,132,0.14)" strokeLinecap="round" strokeWidth="0.8" />
-        <circle cx="64" cy="35" r="22" fill="none" stroke="rgba(255,255,255,0.28)" strokeWidth="0.72" />
-        <g fill="none" strokeLinecap="round">
-          <path d="M14 41 C41 52 85 51 111 36" stroke="rgba(246, 212, 168, 0.62)" strokeWidth="0.92" />
-          <path d="M25 39 C50 32 82 31 104 36" stroke="rgba(210, 158, 118, 0.28)" strokeWidth="0.68" />
-        </g>
-      </svg>
-    </div>
   );
 }
 
@@ -3997,27 +3511,6 @@ function formatEvidenceList(values: string[], fallback: string) {
   return `${unique.slice(0, -1).join(", ")}, and ${unique[unique.length - 1]}`;
 }
 
-function evidenceFallbackSignals(): SkySignal[] {
-  return [
-    {
-      id: "reference-venus-saturn",
-      label: "Venus conjunct Saturn",
-      bodies: ["venus", "saturn"],
-      aspect: "conjunct",
-      strength: 78,
-      themes: ["relationshipTension", "selfWorth", "boundary", "waiting"],
-    },
-    {
-      id: "reference-moon-9th",
-      label: "Moon in the 9th house",
-      bodies: ["moon"],
-      house: 9,
-      strength: 74,
-      themes: ["emotionalFear", "healing", "growth", "truth"],
-    },
-  ];
-}
-
 function skySignalSymbol(signal: SkySignal, index: number) {
   const bodies = signal.bodies.map((body) => body.toLowerCase());
   if (bodies.includes("moon")) return "☽";
@@ -4089,7 +3582,7 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
         : null,
     [report.card.cardId, report.card.cardName, report.card.whisper, sky],
   );
-  const evidenceSignals = useMemo(() => (sky?.evidence?.length ? sky.evidence.slice(0, 2) : evidenceFallbackSignals()), [sky?.evidence]);
+  const evidenceSignals = useMemo(() => sky?.evidence?.slice(0, 2) ?? [], [sky?.evidence]);
   const activeEvidence = evidenceSignals.find((signal) => signal.id === activeEvidenceId) ?? null;
   const activeEvidenceExplanation = activeEvidence
     ? skySignalExplanation({
@@ -4098,7 +3591,7 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
         fallbackThemeLabels: sky?.themeLabels ?? [],
       })
     : null;
-  const detailLines = (reading?.whyThisCard ?? [report.astrologyNote, report.summary])
+  const detailLines = (reading?.whyThisCard ?? [report.card.themeNote ?? report.card.whisper, report.astrologyNote])
     .slice(0, 3)
     .map((line) => polishSkyLogicLine(line, sky?.selectedCardId ?? report.card.cardId, report.card.cardName));
 
@@ -4109,53 +3602,44 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
   }, [activeEvidenceId, evidenceSignals]);
 
   return (
-    <section
-      className="relative min-w-0 rounded-[24px] border px-4 py-2"
-      style={{
-        background: REFERENCE_CARD_BACKGROUND,
-        borderColor: REFERENCE_CARD_BORDER,
-        boxShadow: REFERENCE_CARD_SHADOW,
-      }}
-    >
-      <span
-        aria-hidden
-        className="absolute inset-x-10 top-0 h-px rounded-full"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.48), transparent)" }}
-      />
-      <div className="min-h-[48px] pr-[128px] min-[420px]:pr-[136px]">
-        <div className="min-w-0">
-          <h3 className="font-serif text-[18.5px] font-normal leading-none" style={{ color: REFERENCE_TYPE.ink }}>
-            Why this hint?
-          </h3>
-          <div className="mt-2 flex flex-nowrap gap-2.5">
-            {evidenceSignals.map((signal, index) => {
-              const selected = activeEvidenceId === signal.id;
-              return (
-                <button
-                  type="button"
-                  key={signal.id}
-                  aria-pressed={selected}
-                  onClick={() => {
-                    triggerFeedback("select");
-                    setActiveEvidenceId((current) => (current === signal.id ? null : signal.id));
-                  }}
-                  className="hint-pressable inline-flex min-h-[25px] max-w-full min-w-0 items-center gap-1 rounded-full border px-2 font-sans text-[8.4px] leading-none active:scale-[0.98] min-[420px]:gap-1.5 min-[420px]:px-2.5 min-[420px]:text-[9.4px]"
-                  style={{
-                    color: selected ? REFERENCE_TYPE.inkSoft : REFERENCE_TYPE.muted,
-                    background: selected ? "rgba(255, 253, 250, 0.70)" : "rgba(255, 250, 246, 0.38)",
-                    borderColor: selected ? "rgba(178, 127, 184, 0.13)" : "rgba(198, 165, 142, 0.055)",
-                    boxShadow: selected
-                      ? "inset 0 1px 0 rgba(255,255,255,0.48), 0 7px 16px rgba(145, 102, 143, 0.025)"
-                      : "inset 0 1px 0 rgba(255,255,255,0.34)",
-                  }}
-                >
-                  <span style={{ color: index === 0 ? "#d39b69" : "#a77caf" }}>{skySignalSymbol(signal, index)}</span>
-                  <span className="truncate whitespace-nowrap">{signal.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+    <section className="hint-home-evidence" aria-labelledby="hint-home-evidence-title">
+      <div className="hint-home-evidence-header">
+        <h3 id="hint-home-evidence-title" className="font-serif"><LocalizedText text="Why this hint?" /></h3>
+        <button
+          type="button"
+          onClick={() => {
+            triggerFeedback("select");
+            setExpanded((open) => !open);
+          }}
+          aria-expanded={expanded}
+          aria-controls="hint-home-sky-details"
+          className="hint-pressable hint-home-sky-toggle font-serif"
+        >
+          <LocalizedText text={sky ? "Sky Evidence ✦" : "Card reflection ✦"} />
+          <ChevronDown size={13} strokeWidth={1.5} aria-hidden
+            style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 180ms ease" }} />
+        </button>
+      </div>
+      <div className="hint-home-evidence-signals">
+        {evidenceSignals.map((signal, index) => {
+          const selected = activeEvidenceId === signal.id;
+          return (
+            <button
+              type="button"
+              key={signal.id}
+              aria-pressed={selected}
+              onClick={() => {
+                triggerFeedback("select");
+                setActiveEvidenceId((current) => current === signal.id ? null : signal.id);
+              }}
+              className="hint-pressable hint-home-evidence-signal"
+              data-selected={selected}
+            >
+              <span className="hint-home-signal-symbol" aria-hidden>{skySignalSymbol(signal, index)}</span>
+              <span>{signal.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {activeEvidence && activeEvidenceExplanation ? (
@@ -4163,24 +3647,24 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.18, ease: "easeOut" }}
-          className="relative mt-2 rounded-[17px] border px-3 py-2.5"
+          className="hint-home-detail-content"
           style={{
             background: "rgba(255,253,249,0.55)",
             borderColor: "rgba(198, 165, 142, 0.048)",
             boxShadow: "inset 0 1px 0 rgba(255,255,255,0.34)",
           }}
         >
-          <p className="font-sans text-[8.2px] font-medium uppercase tracking-[0.18em]" style={{ color: REFERENCE_TYPE.faint }}>
+          <p className="font-sans text-[10px] font-medium uppercase tracking-[0.18em]" style={{ color: REFERENCE_TYPE.faint }}>
             {activeEvidence.label}
           </p>
           <div className="mt-1.5 grid gap-1.5">
-            <p className="font-sans text-[9.8px] font-normal leading-snug" style={{ color: REFERENCE_TYPE.body }}>
+            <p className="font-sans text-[12px] font-normal leading-snug" style={{ color: REFERENCE_TYPE.body }}>
               <span className="mr-1 font-medium uppercase tracking-[0.14em]" style={{ color: REFERENCE_TYPE.purpleDeep }}>
                 Why
               </span>
               {activeEvidenceExplanation.why}
             </p>
-            <p className="font-sans text-[9.8px] font-normal leading-snug" style={{ color: REFERENCE_TYPE.muted }}>
+            <p className="font-sans text-[12px] font-normal leading-snug" style={{ color: REFERENCE_TYPE.muted }}>
               <span className="mr-1 font-medium uppercase tracking-[0.14em]" style={{ color: "#b58d71" }}>
                 Brings
               </span>
@@ -4190,35 +3674,13 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
         </motion.div>
       ) : null}
 
-      <button
-        type="button"
-        onClick={() => {
-          triggerFeedback("select");
-          setExpanded((open) => !open);
-        }}
-        aria-expanded={expanded}
-        className="hint-pressable absolute right-4 top-2.5 flex w-max min-w-[102px] flex-col items-end text-right active:scale-[0.98] min-[420px]:right-5 min-[420px]:min-w-[116px]"
-        style={{ position: "absolute", color: REFERENCE_TYPE.purpleDeep }}
-      >
-        <span className="inline-flex items-center gap-1 whitespace-nowrap font-serif text-[14px] font-normal" style={{ color: REFERENCE_TYPE.purpleDeep }}>
-          Sky Evidence ✦
-          <ChevronDown
-            size={12}
-            strokeWidth={2}
-            style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 180ms ease" }}
-          />
-        </span>
-        <span className="-mt-1.5">
-          <ReferenceSkyEvidenceArt />
-        </span>
-      </button>
-
       {expanded ? (
         <motion.div
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="mt-3 rounded-[18px] border px-3.5 py-2.5"
+          id="hint-home-sky-details"
+          className="hint-home-detail-content"
           style={{
             background: "linear-gradient(145deg, rgba(255,252,248,0.34), rgba(255,246,241,0.23))",
             borderColor: "rgba(198, 165, 142, 0.045)",
@@ -4227,7 +3689,7 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
         >
           <div className="grid gap-2">
             {detailLines.map((line, index) => (
-              <p key={`${line}-${index}`} className="font-sans text-[10.6px] leading-snug" style={{ color: REFERENCE_TYPE.body }}>
+              <p key={`${line}-${index}`} className="font-sans text-[12px] leading-snug" style={{ color: REFERENCE_TYPE.body }}>
                 <span className="mr-1.5 text-[9px] uppercase tracking-[0.14em]" style={{ color: "#b58d71" }}>
                   {index + 1}
                 </span>
@@ -4239,28 +3701,24 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
             <Link
               href="/app/astrology"
               onPointerDown={() => triggerFeedback("select")}
-              className="hint-pressable inline-flex h-8 items-center rounded-full border px-3 font-serif text-[12px] active:scale-[0.98]"
+              className="hint-pressable inline-flex min-h-11 items-center rounded-full border px-3 font-serif text-[12px] active:scale-[0.98]"
               style={{
                 color: "#836a7d",
                 background: "rgba(255, 251, 246, 0.52)",
                 borderColor: "rgba(198, 165, 142, 0.085)",
               }}
-            >
-              Open sky map
-            </Link>
+            ><LocalizedText text={" Open sky map "} /></Link>
             {sky ? (
               <Link
                 href="/app/ask"
                 onPointerDown={() => triggerFeedback("select")}
-                className="hint-pressable inline-flex h-8 items-center rounded-full px-3 font-serif text-[12px] active:scale-[0.98]"
+                className="hint-pressable inline-flex min-h-11 items-center rounded-full px-3 font-serif text-[12px] active:scale-[0.98]"
                 style={{
                   color: "#fff8f4",
                   background: "linear-gradient(145deg, #9775a8, #765985)",
                   boxShadow: "inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 18px rgba(104,72,119,0.12)",
                 }}
-              >
-                Ask about this hint
-              </Link>
+              ><LocalizedText text={" Ask about this hint "} /></Link>
             ) : null}
           </div>
         </motion.div>
@@ -4271,17 +3729,13 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
 
 function ReferenceSpaces({ cards }: { cards: RoomShortcutData[] }) {
   return (
-    <section className="min-w-0 pt-0.5">
-      <div className="mb-1.5 flex items-center gap-3 px-1">
-        <p className="shrink-0 font-sans text-[9.5px] font-medium uppercase tracking-[0.24em]" style={{ color: REFERENCE_TYPE.label }}>
-          Your spaces
-        </p>
-        <span className="h-px flex-1" style={{ background: "linear-gradient(90deg, rgba(181,150,128,0.22), rgba(181,150,128,0.06), transparent)" }} />
-        <span aria-hidden className="text-[15px] leading-none" style={{ color: "rgba(214, 160, 95, 0.46)" }}>
-          ✦
-        </span>
+    <section className="hint-home-spaces" aria-labelledby="hint-home-spaces-title">
+      <div className="hint-home-spaces-header">
+        <h3 id="hint-home-spaces-title" className="hint-home-eyebrow"><LocalizedText text="Your spaces" /></h3>
+        <span className="hint-home-rule" />
+        <span aria-hidden className="hint-home-space-star">✦</span>
       </div>
-      <div className="grid min-w-0 grid-cols-4 gap-2">
+      <div className="hint-home-spaces-grid">
         {cards.map((card, index) => {
           const Icon = card.icon;
           return (
@@ -4293,43 +3747,15 @@ function ReferenceSpaces({ cards }: { cards: RoomShortcutData[] }) {
               transition={{ delay: index * 0.05, duration: 0.38, ease: "easeOut" }}
               className="min-w-0"
             >
-              <Link href={card.href} onPointerDown={() => triggerFeedback("select")} className="block h-full">
-                <div
-                  className="hint-pressable relative isolate flex h-[110px] flex-col items-center overflow-hidden rounded-[18px] border px-2 py-2.5 text-center active:scale-[0.98] min-[420px]:h-[116px] min-[420px]:px-2.5"
-                  style={{
-                    background: REFERENCE_CARD_BACKGROUND,
-                    borderColor: REFERENCE_CARD_BORDER,
-                    boxShadow: "0 10px 24px rgba(100,77,60,0.016), inset 0 1px 0 rgba(255,255,255,0.42)",
-                  }}
-                >
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-4 top-0 h-px rounded-full"
-                    style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.46), transparent)" }}
-                  />
-                  <span
-                    className="relative mx-auto grid size-[40px] shrink-0 place-items-center overflow-hidden rounded-full border min-[420px]:size-[44px]"
-                    style={{
-                      color: card.color,
-                      background: `radial-gradient(circle at 33% 24%, rgba(255,255,255,0.78), transparent 34%), radial-gradient(circle at 68% 78%, color-mix(in srgb, ${card.color} 16%, transparent), transparent 52%), ${card.tint}`,
-                      borderColor: `color-mix(in srgb, ${card.color} 5%, rgba(188,156,132,0.055))`,
-                      boxShadow: `inset 0 1px 0 rgba(255,255,255,0.34), inset 0 -10px 18px rgba(98,72,92,0.024), 0 7px 14px color-mix(in srgb, ${card.color} 3%, transparent)`,
-                    }}
-                  >
-                    <span
-                      aria-hidden
-                      className="absolute inset-[6px] rounded-full border"
-                      style={{ borderColor: "rgba(255,255,255,0.30)" }}
-                    />
-                    <Icon size={18} strokeWidth={1.2} />
-                  </span>
-                  <h3 className="mt-2 w-full text-center font-serif text-[12px] font-normal leading-tight min-[420px]:text-[12.8px]" style={{ color: REFERENCE_TYPE.ink }}>
-                    {card.title}
-                  </h3>
-                  <p className="mx-auto mt-0.5 max-w-[70px] text-center font-sans text-[7.7px] font-normal leading-[1.22] min-[420px]:max-w-[78px] min-[420px]:text-[8.3px] min-[420px]:leading-[1.24]" style={{ color: REFERENCE_TYPE.muted }}>
-                    {card.body}
-                  </p>
-                </div>
+              <Link href={card.href} onPointerDown={() => triggerFeedback("select")} className="hint-pressable hint-home-space">
+                <span className="hint-home-space-icon" style={{ color: card.color, background: card.tint }}>
+                  <Icon size={23} strokeWidth={1.2} aria-hidden />
+                </span>
+                <span className="hint-home-space-copy">
+                  <span className="hint-home-space-title font-serif"><LocalizedText text={card.title} /></span>
+                  <span className="hint-home-space-description"><LocalizedText text={card.body} /></span>
+                </span>
+                <ChevronDown className="hint-home-space-chevron" size={12} strokeWidth={1.3} aria-hidden />
               </Link>
             </motion.div>
           );
@@ -4341,8 +3767,6 @@ function ReferenceSpaces({ cards }: { cards: RoomShortcutData[] }) {
 
 function ReferenceHomePage({
   report,
-  date,
-  language,
   roomShortcuts,
   dailyCardRevealed,
   dailyCardRevealing,
@@ -4353,8 +3777,6 @@ function ReferenceHomePage({
   onCardRevealed,
 }: {
   report: DailyReport;
-  date: string;
-  language: string;
   roomShortcuts: RoomShortcutData[];
   dailyCardRevealed: boolean;
   dailyCardRevealing: boolean;
@@ -4366,41 +3788,24 @@ function ReferenceHomePage({
 }) {
   return (
     <div
-      className="reference-home-crisp relative h-full w-full overflow-x-hidden overflow-y-auto overscroll-none pb-[calc(8.75rem+var(--hint-safe-bottom))]"
-      style={{
-        background:
-          "radial-gradient(520px 380px at 8% -4%, rgba(237,222,213,0.26), transparent 72%), radial-gradient(460px 340px at 94% 4%, rgba(230,203,167,0.15), transparent 74%), radial-gradient(560px 480px at 52% 55%, rgba(216,196,185,0.060), transparent 76%), linear-gradient(180deg, #fcf9f4 0%, #f8f3ed 52%, #f5eee7 100%)",
-      }}
+      className="reference-home-crisp hint-home-page relative h-full w-full overflow-x-hidden overflow-y-auto overscroll-none"
     >
-      <ReferenceOrbitBackdrop />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 30%, rgba(95, 72, 51, 0.030) 0 0.45px, transparent 0.7px), radial-gradient(circle at 70% 72%, rgba(126, 93, 68, 0.022) 0 0.55px, transparent 0.9px), linear-gradient(90deg, rgba(255,255,255,0.16), transparent 42%, rgba(120,86,60,0.018))",
-          backgroundSize: "7px 7px, 11px 11px, 100% 100%",
-          opacity: 0.50,
-          mixBlendMode: "multiply",
-        }}
-      />
-      <div className="relative z-10 mx-auto w-full max-w-[430px] px-[23px] pt-[calc(2.1rem+var(--hint-safe-top))]">
-        <header className="mb-2 flex items-start justify-between gap-5">
-          <div className="min-w-0 pl-[9px]">
-            <p className="font-sans text-[9.2px] font-medium uppercase tracking-[0.24em]" style={{ color: REFERENCE_TYPE.label }}>
-              {formatReferenceDate(date, language)}
-            </p>
-            <h1 className="mt-1.5 font-serif text-[37px] font-normal leading-[0.92]" style={{ color: REFERENCE_TYPE.ink }}>
-              Today
-            </h1>
-            <p className="mt-1.5 font-serif text-[14.2px] font-normal leading-none" style={{ color: REFERENCE_TYPE.muted }}>
-              A small signal from today’s sky.
-            </p>
-          </div>
-          <ReferenceHintLogo />
+      <div className="hint-home-content relative z-10 mx-auto w-full">
+        <h1 className="sr-only"><LocalizedText text="Today" /></h1>
+        <header className="hint-home-header">
+          <DailyReceiptButton report={report} compact disabled={!dailyCardRevealed} />
+          <span className="hint-home-header-space" aria-hidden />
+          <Link
+            href="/app/profile"
+            aria-label={translateText("Open profile", report.language)}
+            onPointerDown={() => triggerFeedback("select")}
+            className="hint-pressable hint-home-profile-circle font-serif"
+          >
+            <LocalizedText text="Me" />
+          </Link>
         </header>
 
-        <div className="grid min-w-0 gap-4">
+        <div className="hint-home-sections">
           <ReferenceHero
             report={report}
             revealed={dailyCardRevealed}
@@ -4408,7 +3813,7 @@ function ReferenceHomePage({
             receiptReady={dailyReceiptReady}
             onReveal={onReveal}
           />
-          <ReferenceEnergyPanel report={report} revealed={dailyCardRevealed} />
+          <ReferenceEnergyPanel report={report} />
           <ReferenceEvidencePanel report={report} />
           <ReferenceSpaces cards={roomShortcuts} />
         </div>
@@ -4425,7 +3830,8 @@ function ReferenceHomePage({
 }
 
 export function HomeDashboard() {
-  const { language, t } = useLanguage();
+  const currentDay = useLocalDay();
+  const { language } = useLanguage();
   const { profile } = useProfile();
   const initialDailySignalComplete = useMemo(
     () => hasCompletedDailySignalIntro(getAnonId(), getLocalDateString()),
@@ -4439,6 +3845,8 @@ export function HomeDashboard() {
   const [signalIntroComplete, setSignalIntroComplete] = useState(initialDailySignalComplete);
   const [dailyReceipt, setDailyReceipt] = useState<DailyReceipt | null>(null);
   const [dailyReceiptReady, setDailyReceiptReady] = useState(false);
+  const revealGeneration = useRef(0);
+  const revealInFlight = useRef(false);
   const activeBirthDetails = profile?.birthDate || birthProfile
     ? {
         birthDate: profile?.birthDate ?? birthProfile?.birthDate,
@@ -4457,19 +3865,16 @@ export function HomeDashboard() {
     () => {
       const baseReport = getDailyReport({
         anonId: getAnonId(),
-        date: dailyReceipt?.dailyKey ? parseServerDailyKey(dailyReceipt.dailyKey) : undefined,
+        date: parseServerDailyKey(currentDay),
         language,
         birthDetails: activeBirthDetails ?? undefined,
         dailyHistory,
         ritualStreak: ritual.currentStreak,
       });
-      if (!dailyReceipt?.assignedCardId) return baseReport;
+      if (!dailyReceipt?.assignedCardId || dailyReceipt.dailyKey !== currentDay) return baseReport;
       return {
         ...baseReport,
-        card: {
-          ...getDailyPullById(dailyReceipt.assignedCardId, language),
-          skyGuided: baseReport.card.skyGuided,
-        },
+        card: withDailyCardIdentity(baseReport.card, dailyReceipt.assignedCardId, language),
       };
     },
     [
@@ -4482,6 +3887,7 @@ export function HomeDashboard() {
       dailyHistory,
       dailyReceipt?.assignedCardId,
       dailyReceipt?.dailyKey,
+      currentDay,
       language,
       ritual.currentStreak,
     ],
@@ -4490,6 +3896,10 @@ export function HomeDashboard() {
   useEffect(() => {
     let mounted = true;
     setDailyReceiptReady(false);
+    setDailyCardRevealed(false);
+    setDailyCardRevealing(false);
+    setDailyRevealOverlayOpen(false);
+    revealInFlight.current = false;
     getOrCreateDailyReceipt("daily-card", {
       fallbackAssignedCardId: report.card.cardId,
     }).then((receipt) => {
@@ -4506,8 +3916,14 @@ export function HomeDashboard() {
     });
     return () => {
       mounted = false;
+      revealGeneration.current++;
     };
-  }, [report.card.cardId]);
+  }, [currentDay]);
+
+  useEffect(() => subscribeToDailyReceiptFallbacks(() => {
+    const cached = getCachedDailyReceipt("daily-card", { dailyKey: currentDay });
+    if (cached) setDailyReceipt(cached);
+  }), [currentDay]);
 
   useEffect(() => {
     return subscribeToRitualProgress(() => setRitual(getRitualProgress()));
@@ -4523,32 +3939,41 @@ export function HomeDashboard() {
     };
   }, []);
 
-  async function revealDailyCard() {
-    if (dailyCardRevealing) return;
+  function revealDailyCard() {
+    if (revealInFlight.current || !dailyReceiptReady) return;
     if (dailyCardRevealed) {
       setDailyRevealOverlayOpen(true);
       return;
     }
     setDailyCardRevealing(true);
     setDailyRevealOverlayOpen(true);
+    revealInFlight.current = true;
+    const generation = ++revealGeneration.current;
+    const day = currentDay;
     try {
-      const openedReceipt = await openDailyReceipt("daily-card", {
+      const sync = openDailyReceipt("daily-card", {
+        dailyKey: day,
         fallbackAssignedCardId: report.card.cardId,
       });
+      // The local receipt freezes identity synchronously; network latency never delays the reveal.
+      const openedReceipt = getCachedDailyReceipt("daily-card", { dailyKey: day });
+      if (!openedReceipt) return;
       markDailySignalIntroComplete(openedReceipt.anonId || getAnonId(), openedReceipt.dailyKey);
       setDailyReceipt(openedReceipt);
+      setDailyCardRevealed(true);
       const openedCard = openedReceipt.assignedCardId
-        ? {
-            ...getDailyPullById(openedReceipt.assignedCardId, language),
-            skyGuided: report.card.skyGuided,
-          }
+        ? withDailyCardIdentity(report.card, openedReceipt.assignedCardId, language)
         : report.card;
       saveLocalDailyReading(
         openedCard,
         openedReceipt.dailyKey ? parseServerDailyKey(openedReceipt.dailyKey) : new Date(),
       );
+      void sync.then(receipt => {
+        if (generation === revealGeneration.current) setDailyReceipt(receipt);
+      });
     } finally {
       setDailyCardRevealing(false);
+      revealInFlight.current = false;
     }
   }
 
@@ -4576,7 +4001,7 @@ export function HomeDashboard() {
   const roomShortcuts: RoomShortcutData[] = [
     {
       title: "Tarot Room",
-      body: "Ask a question, pull a spread",
+      body: "Questions & spreads",
       href: "/app/tarot",
       icon: Sparkles,
       color: "#9b82b7",
@@ -4584,7 +4009,7 @@ export function HomeDashboard() {
     },
     {
       title: "Astrology",
-      body: "Your chart and tonight's transits",
+      body: "Your chart & transits",
       href: "/app/astrology",
       icon: Moon,
       color: "#c99b82",
@@ -4592,7 +4017,7 @@ export function HomeDashboard() {
     },
     {
       title: "Collection",
-      body: "Cards and readings you've kept",
+      body: "Saved cards & readings",
       href: "/app/collection",
       icon: Library,
       color: "#bd985a",
@@ -4600,7 +4025,7 @@ export function HomeDashboard() {
     },
     {
       title: "Personalities",
-      body: "Your inner types and patterns",
+      body: "Types & patterns",
       href: "/app/personalities",
       icon: UsersRound,
       color: "#759c91",
@@ -4609,12 +4034,12 @@ export function HomeDashboard() {
   ];
 
   return (
+    <div className="flex h-full min-h-0 flex-col">
+    <div className="min-h-0 flex-1">
     <ReferenceHomePage
       report={report}
-      date={report.date}
-      language={language}
       roomShortcuts={roomShortcuts}
-      dailyCardRevealed={dailyCardRevealed}
+      dailyCardRevealed={dailyCardRevealed && dailyReceipt?.dailyKey === currentDay}
       dailyCardRevealing={dailyCardRevealing}
       dailyReceiptReady={dailyReceiptReady}
       dailyRevealOverlayOpen={dailyRevealOverlayOpen}
@@ -4622,5 +4047,7 @@ export function HomeDashboard() {
       onCloseRevealOverlay={closeDailyRevealOverlay}
       onCardRevealed={markDailyCardRevealed}
     />
+    </div>
+    </div>
   );
 }

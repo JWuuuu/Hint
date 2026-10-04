@@ -1,0 +1,76 @@
+{
+  "spread": "xRelationship",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "sea",
+  "readingId": "tarot-1789080312182-ph76d8",
+  "positions": [
+    "Root",
+    "Cause",
+    "You",
+    "Them",
+    "Obstacle",
+    "Help",
+    "Block",
+    "Action",
+    "Result"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-38-2bicyzj",
+      "cardId": "four-swords",
+      "name": "Four of Swords",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-41-0gvzeyn",
+      "cardId": "six-swords",
+      "name": "Six of Swords",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-18-fjh8d1p",
+      "cardId": "king-pentacles",
+      "name": "King of Pentacles",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-45-up301v7",
+      "cardId": "nine-pentacles",
+      "name": "Nine of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-48-yq7t7di",
+      "cardId": "queen-wands",
+      "name": "Queen of Wands",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-16-96819nq",
+      "cardId": "6-lovers",
+      "name": "The Lovers",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-27-9e0fojg",
+      "cardId": "knight-pentacles",
+      "name": "Knight of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-51-sgglbst",
+      "cardId": "ace-swords",
+      "name": "Ace of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-56-yujuybd",
+      "cardId": "six-pentacles",
+      "name": "Six of Pentacles",
+      "orientation": "upright"
+    }
+  ],
+  "readingRequests": 1
+}

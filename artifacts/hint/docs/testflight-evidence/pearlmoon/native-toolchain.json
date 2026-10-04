@@ -1,0 +1,31 @@
+[
+  {
+    "command": [
+      "xcode-select",
+      "-p"
+    ],
+    "exitCode": 0,
+    "stdout": "/Library/Developer/CommandLineTools",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "xcodebuild",
+      "-version"
+    ],
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "xcode-select: error: tool 'xcodebuild' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a command line tools instance"
+  },
+  {
+    "command": [
+      "xcrun",
+      "--sdk",
+      "iphonesimulator",
+      "--show-sdk-path"
+    ],
+    "exitCode": 1,
+    "stdout": "",
+    "stderr": "xcrun: error: SDK \"iphonesimulator\" cannot be located\nxcrun: error: SDK \"iphonesimulator\" cannot be located\nxcrun: error: unable to lookup item 'Path' in SDK 'iphonesimulator'"
+  }
+]

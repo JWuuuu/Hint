@@ -8,4 +8,8 @@
 
 export interface ApiError {
   error: string;
+  /** Stable machine-readable failure code */
+  code: string;
+  /** Correlation ID matching X-Request-Id and server logs */
+  requestId: string;
 }

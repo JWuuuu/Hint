@@ -1,0 +1,48 @@
+{
+  "spread": "trueHeart",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "stars",
+  "readingId": "tarot-1789080271280-qtl6a3",
+  "positions": [
+    "Outer signal",
+    "Inner feeling",
+    "Block",
+    "True view",
+    "Future"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-63-q9a9gtj",
+      "cardId": "knight-wands",
+      "name": "Knight of Wands",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-5-4qmp5qt",
+      "cardId": "ace-swords",
+      "name": "Ace of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-31-gwp6gwn",
+      "cardId": "nine-pentacles",
+      "name": "Nine of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-40-ypkqyx5",
+      "cardId": "9-hermit",
+      "name": "The Hermit",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-42-gm6qsdq",
+      "cardId": "ace-pentacles",
+      "name": "Ace of Pentacles",
+      "orientation": "reversed"
+    }
+  ],
+  "readingRequests": 1
+}

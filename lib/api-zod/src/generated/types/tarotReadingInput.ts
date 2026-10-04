@@ -21,7 +21,7 @@ export interface TarotReadingInput {
      */
   emotionalContext?: string | null;
   /**
-     * Optional anonymous user id; when present the reading is saved to history
+     * Deprecated compatibility field. Ignored; readings belong to the authenticated installation.
      * @nullable
      */
   anonId?: string | null;

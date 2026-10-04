@@ -89,13 +89,15 @@ export function zodiacSign(birthDate?: string | null, language: HintLanguage = "
 
 /** 1–2 letter initials for the avatar fallback. */
 export function initialsFrom(name?: string | null): string {
-  const base = (name ?? "").trim();
+  const base = (name ?? "").normalize("NFC").trim();
   if (!base) return "ME";
   return (
     base
       .split(/\s+/)
+      .map((word) => Array.from(word).find((character) => /[\p{L}\p{N}]/u.test(character)))
+      .filter((character): character is string => Boolean(character))
       .slice(0, 2)
-      .map((w) => w[0]?.toUpperCase() ?? "")
+      .map((character) => Array.from(character.toUpperCase())[0] ?? "")
       .join("") || "ME"
   );
 }

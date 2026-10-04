@@ -1,3 +1,4 @@
+import { wasDailyHistoryCleared } from "../../lib/clearHistory";
 import type { ReadingSummary } from "@workspace/api-client-react";
 import { getAnonId, getLocalDateString } from "../../lib/identity";
 import type { DailyPull } from "../home/types/home.types";
@@ -29,16 +30,17 @@ function readAll(): StoredDailyReading[] {
   }
 }
 
-function writeAll(readings: StoredDailyReading[]): void {
+function writeAll(readings: StoredDailyReading[]): boolean {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(readings));
     window.dispatchEvent(new Event(UPDATED_EVENT));
+    return true;
   } catch {
-    // Local archive is a convenience mirror; API-backed readings still work.
+    return false;
   }
 }
 
-export function saveLocalDailyReading(pull: DailyPull, createdAt = new Date()): ReadingSummary {
+export function saveLocalDailyReading(pull: DailyPull, createdAt = new Date()): ReadingSummary | null {
   const anonId = getAnonId();
   const today = getLocalDateString(createdAt);
   const reading: StoredDailyReading = {
@@ -58,11 +60,11 @@ export function saveLocalDailyReading(pull: DailyPull, createdAt = new Date()): 
   const withoutToday = readAll().filter(
     (item) => !(item.anonId === anonId && item.id === reading.id),
   );
-  writeAll([reading, ...withoutToday].slice(0, 100));
-  return reading;
+  if (wasDailyHistoryCleared(anonId, today)) return null;
+  return writeAll([reading, ...withoutToday].slice(0, 2000)) ? reading : null;
 }
 
-export function listLocalDailyReadings(anonId = getAnonId()): ReadingSummary[] {
+export function listLocalDailyReadings(anonId = getAnonId()): StoredDailyReading[] {
   return readAll()
     .filter((reading) => reading.anonId === anonId)
     .sort(

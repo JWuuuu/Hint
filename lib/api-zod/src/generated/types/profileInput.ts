@@ -15,4 +15,24 @@ export interface ProfileInput {
   birthDate: string;
   birthTime?: string;
   birthPlace?: string;
+  /**
+     * @minimum -90
+     * @maximum 90
+     * @nullable
+     */
+  latitude?: number | null;
+  /**
+     * @minimum -180
+     * @maximum 180
+     * @nullable
+     */
+  longitude?: number | null;
+  /** @nullable */
+  timezone?: string | null;
+  /**
+     * @minimum -12
+     * @maximum 14
+     * @nullable
+     */
+  timezoneOffset?: number | null;
 }

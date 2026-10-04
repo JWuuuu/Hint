@@ -1,0 +1,45 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:49:06.320Z",
+    "source": {
+      "commit": "7eab19e5e4396d508cfb5b07f9b7e28f567c5760",
+      "fingerprint": "16b9fd0f53d2d8de16e43b00073b62f10f8f1fa48353c49f9b641199a53e0c1e"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-reflow-20260929",
+      "fingerprint": "6fda3456e37edd55bbc4d7a6396ba8800509409aef9799c32a26eb35ae121542"
+    },
+    "selected": 1
+  },
+  "end": {
+    "kind": "end",
+    "at": "2026-09-29T21:49:10.459Z",
+    "status": "failed"
+  },
+  "counts": {
+    "failed": 1
+  },
+  "notRun": 0,
+  "tests": [
+    {
+      "title": "merge matrix es dark app=true system=true text=200",
+      "project": "iphone-se",
+      "status": "failed",
+      "durationMs": 3147,
+      "location": {
+        "file": "merge-visual-matrix.spec.ts",
+        "line": 90,
+        "column": 3
+      },
+      "errors": [
+        {
+          "message": "Error: Preguntar: dark dock uses the night text palette\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m150\u001b[39m\nReceived:   \u001b[31m32.666666666666664\u001b[39m"
+        },
+        {
+          "message": "Error: Preguntar: dark dock uses the night text palette\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m150\u001b[39m\nReceived:   \u001b[31m32.666666666666664\u001b[39m"
+        }
+      ]
+    }
+  ]
+}

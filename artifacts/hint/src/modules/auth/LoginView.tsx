@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { validBirthDate } from "../../lib/birthDetails";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   AlertCircle,
@@ -14,10 +15,10 @@ import {
 import { AppScreen, GlassPanel, ScreenHeader, SectionLabel } from "../../components/app/AppChrome";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { clearLocalAccount, saveLocalAccount, useLocalAccount, type LocalAccount } from "../../lib/auth";
-import { saveBirthProfile, saveBirthProfileFromAccountProfile } from "../../lib/astro/userBirthProfile";
 import { ASTROLOGY_TESTER_ACCOUNT } from "../../lib/testerAccount";
 import { useProfile } from "../../lib/useProfile";
 import { useLanguage } from "../../lib/i18n";
+import { LocalProfileSwitcher } from "../../components/app/LocalProfileSwitcher";
 
 type AuthMode = "login" | "signup";
 type AuthMethod = "email" | "phone";
@@ -27,12 +28,6 @@ type PendingVerification = {
   code: string;
   method: AuthMethod;
   target: string;
-};
-
-const SOCIAL_AUTH_URLS: Record<SocialProvider, string | undefined> = {
-  apple: import.meta.env.VITE_APPLE_AUTH_URL,
-  google: import.meta.env.VITE_GOOGLE_AUTH_URL,
-  facebook: import.meta.env.VITE_FACEBOOK_AUTH_URL,
 };
 
 const SOCIAL_PROVIDERS: Array<{ id: SocialProvider; label: string; mark: string }> = [
@@ -50,7 +45,7 @@ function phoneIsValid(value: string) {
 }
 
 function birthDateIsValid(value: string) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value.trim());
+  return validBirthDate(value.trim());
 }
 
 function formatBirthDateInput(value: string) {
@@ -109,6 +104,10 @@ export function LoginView() {
   const [pending, setPending] = useState<PendingVerification | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const busy = useRef(false);
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
 
   const target = methodTarget(method, email, phone);
   const canRequestCode =
@@ -116,6 +115,7 @@ export function LoginView() {
     (mode === "login" || (name.trim().length > 0 && birthDateIsValid(birthDate)));
 
   function resetVerification(nextMethod = method) {
+    if (busy.current) return;
     setPending(null);
     setVerificationCode("");
     setNotice(null);
@@ -149,6 +149,7 @@ export function LoginView() {
 
   async function handleVerify(event: React.FormEvent) {
     event.preventDefault();
+    if (busy.current) return;
     if (!pending) {
       setError(t("login.error.requestFirst"));
       return;
@@ -158,31 +159,43 @@ export function LoginView() {
       return;
     }
 
-    const verifiedAt = new Date().toISOString();
+    busy.current = true;
+    setSubmitting(true);
+    setError(null);
+    try {
+    if (mode === "signup") {
+      await saveProfile({ name: name.trim(), birthDate,
+        birthTime: birthTime.trim() || undefined, birthPlace: birthPlace.trim() || undefined });
+    }
+    if (!mounted.current) return;
     saveLocalAccount({
       provider: pending.method,
       identifier: pending.target,
       email: pending.method === "email" ? pending.target : undefined,
       phone: pending.method === "phone" ? pending.target : undefined,
       name: mode === "signup" ? name : account?.name,
-      verifiedAt,
+      verifiedAt: new Date().toISOString(),
     });
-    if (mode === "signup") {
-      const profileInput = {
-        name: name.trim(),
-        birthDate,
-        birthTime: birthTime.trim() || undefined,
-        birthPlace: birthPlace.trim() || undefined,
-      };
-      await saveProfile(profileInput);
-      saveBirthProfileFromAccountProfile({ anonId, ...profileInput }, anonId);
-    }
     setError(null);
     setNotice(null);
-    navigate("/app/profile");
+    const destination = new URLSearchParams(window.location.search).get("returnTo");
+    navigate(destination && /^\/app(?:\/|\?|$)/.test(destination) && !destination.includes("\\") ? destination : "/app/profile");
+    } catch {
+      if (mounted.current) setError(t("quality.accountSaveFailed"));
+    } finally {
+      busy.current = false;
+      if (mounted.current) setSubmitting(false);
+    }
   }
 
   async function handleUseTesterAccount() {
+    if (busy.current) return;
+    busy.current = true;
+    setSubmitting(true);
+    setError(null);
+    try {
+    await saveProfile({ ...ASTROLOGY_TESTER_ACCOUNT.profile });
+    if (!mounted.current) return;
     saveLocalAccount({
       provider: "email",
       identifier: ASTROLOGY_TESTER_ACCOUNT.email,
@@ -190,15 +203,21 @@ export function LoginView() {
       name: ASTROLOGY_TESTER_ACCOUNT.name,
       verifiedAt: new Date().toISOString(),
     });
-    await saveProfile({ ...ASTROLOGY_TESTER_ACCOUNT.profile });
-    saveBirthProfile({ ...ASTROLOGY_TESTER_ACCOUNT.birthProfile });
     setError(null);
     setNotice(t("login.notice.testerLoaded"));
     navigate("/app/astrology?tab=birth");
+    } catch {
+      if (mounted.current) setError(t("quality.accountSaveFailed"));
+    } finally {
+      busy.current = false;
+      if (mounted.current) setSubmitting(false);
+    }
   }
 
   function handleSignOut() {
-    clearLocalAccount();
+    if (busy.current) return;
+    try { clearLocalAccount(); }
+    catch { setError(t("quality.accountSaveFailed")); return; }
     setEmail("");
     setPhone("");
     setName("");
@@ -210,20 +229,10 @@ export function LoginView() {
   }
 
   function handleSocialProvider(provider: SocialProvider) {
-    const url = SOCIAL_AUTH_URLS[provider];
+    if (busy.current) return;
     const label = SOCIAL_PROVIDERS.find((item) => item.id === provider)?.label ?? provider;
-    if (!url) {
-      setError(null);
-      setNotice(
-        t("login.notice.oauthMissing")
-          .replace("{provider}", label)
-          .replace("{providerKey}", provider.toUpperCase()),
-      );
-      return;
-    }
-
-    const separator = url.includes("?") ? "&" : "?";
-    window.location.assign(`${url}${separator}mode=${mode}`);
+    setError(null);
+    setNotice(t("login.notice.oauthMissing").replace("{provider}", label));
   }
 
   return (
@@ -238,6 +247,7 @@ export function LoginView() {
       />
 
       <div className="flex flex-col gap-4">
+        <LocalProfileSwitcher />
         <GlassPanel hero>
           {account ? (
             <div className="mb-5 rounded-[18px] border p-4" style={{ background: "rgba(255,255,255,0.055)", borderColor: GLASS.border }}>
@@ -288,11 +298,13 @@ export function LoginView() {
               <button
                 key={item}
                 type="button"
+                disabled={submitting}
                 onClick={() => {
+                  if (busy.current) return;
                   setMode(item);
                   resetVerification(method);
                 }}
-                className="rounded-full border px-4 py-2 font-sans text-[12px] font-black uppercase tracking-[0.12em]"
+                className="min-h-11 rounded-full border px-4 py-2 font-sans text-[12px] font-black uppercase tracking-[0.12em]"
                 style={{
                   background: mode === item ? "rgba(203,168,102,0.18)" : "rgba(255,255,255,0.04)",
                   borderColor: mode === item ? "rgba(203,168,102,0.58)" : GLASS.border,
@@ -316,7 +328,7 @@ export function LoginView() {
                 key={item}
                 type="button"
                 onClick={() => resetVerification(item)}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-[8px] border font-sans text-[12px] font-black uppercase tracking-[0.1em]"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] border font-sans text-[12px] font-black uppercase tracking-[0.1em]"
                 style={{
                   background: method === item ? "rgba(100,156,158,0.16)" : "rgba(255,255,255,0.04)",
                   borderColor: method === item ? "rgba(100,156,158,0.38)" : GLASS.border,
@@ -329,7 +341,8 @@ export function LoginView() {
             ))}
           </div>
 
-          <form onSubmit={pending ? handleVerify : handleRequestCode} className="mt-4 grid gap-4">
+          <form onSubmit={pending ? handleVerify : handleRequestCode} className="mt-4">
+            <fieldset disabled={submitting} className="grid min-w-0 gap-4 border-0 p-0">
             {mode === "signup" ? (
               <label className="block">
                 <span className="font-serif text-[10px] uppercase tracking-[0.28em]" style={{ color: GLASS.muted }}>
@@ -478,7 +491,7 @@ export function LoginView() {
                 {notice}
               </p>
             ) : null}
-            {error ? <p className="font-sans text-[12px]" style={{ color: ACCENT.lavender }}>{error}</p> : null}
+            {error ? <p role="alert" className="font-sans text-[12px]" style={{ color: ACCENT.lavender }}>{error}</p> : null}
 
             <button
               type="submit"
@@ -488,17 +501,19 @@ export function LoginView() {
                 border: "1px solid rgba(206,178,110,0.34)",
                 color: ACCENT.gold,
               }}
-              disabled={!pending && !canRequestCode}
+              disabled={submitting || (!pending && !canRequestCode)}
             >
               {pending ? <KeyRound size={15} /> : mode === "signup" ? <UserPlus size={15} /> : <Mail size={15} />}
-              {pending ? t("login.verifyCode") : t("login.requestCode")}
+              {submitting ? t("profile.keeping") : pending ? t("login.verifyCode") : t("login.requestCode")}
             </button>
+            </fieldset>
           </form>
 
           <div className="mt-5 grid gap-4 border-t pt-5" style={{ borderColor: GLASS.border }}>
             <button
               type="button"
               onClick={() => void handleUseTesterAccount()}
+              disabled={submitting}
               className="flex h-11 w-full items-center justify-center gap-2 rounded-[8px] border font-serif text-[11px] uppercase tracking-[0.16em] transition-opacity hover:opacity-85"
               style={{
                 background: "rgba(100,156,158,0.12)",

@@ -13,4 +13,6 @@ export interface JournalInput {
   /** @minLength 1 */
   body: string;
   mood?: string;
+  /** Original submission time, retained while the request is in flight. A submission predating Clear History is rejected. Optional for legacy clients. */
+  editedAt?: Date;
 }

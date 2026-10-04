@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, doublePrecision } from "drizzle-orm/pg-core";
 
 export const profilesTable = pgTable("profiles", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -7,6 +7,10 @@ export const profilesTable = pgTable("profiles", {
   birthDate: text("birth_date").notNull(),
   birthTime: text("birth_time"),
   birthPlace: text("birth_place"),
+  latitude: doublePrecision("latitude"),
+  longitude: doublePrecision("longitude"),
+  timezone: text("timezone"),
+  timezoneOffset: doublePrecision("timezone_offset"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });

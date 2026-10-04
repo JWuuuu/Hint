@@ -1,0 +1,5756 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/Users/jwu/Documents/Hint-main/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/tmp/hint-letter-20260910/playwright.final.config.ts",
+      "--list",
+      "--reporter=json",
+      "tarot-room.spec.ts",
+      "tarot-all-spreads.spec.ts",
+      "letter-ritual-layout.spec.ts",
+      "tarot-spread-navigation.spec.ts",
+      "space-navigation.spec.ts",
+      "tarot-wash-refinement.spec.ts",
+      "room-entrances.spec.ts",
+      "me-redesign.spec.ts"
+    ],
+    "configFile": "/tmp/hint-letter-20260910/playwright.final.config.ts",
+    "rootDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-letter-20260910/final-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/tmp/hint-letter-20260910/final-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "letter-ritual-layout.spec.ts",
+      "file": "letter-ritual-layout.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "selected single layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-b378e1beb482a7a9ec9a",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected three layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-79b8acc206b216ec1043",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected relationship layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-b47d3e7fc41dce4f0cba",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected futureLover layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-7a869f71a89fdef0a148",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected peachBlossom layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-7fdbba48084fc2a587b9",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected reconciliation layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-214558857105dcd12341",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected trueHeart layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-aaaae02b006b94c92787",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected loveTree layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-8ac2558804b38b2dd1b6",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected xRelationship layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-f4de070cf62b2dac8799",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "production preview switches phones without losing the current room or question",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-3f75084f1c0343e55765",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "Me Tarot setup has a visible bounded entrance into the ready room",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-8aeff415f8ec40511375",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 70,
+          "column": 1
+        },
+        {
+          "title": "selected single layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-b26ae27693755345af5a",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected three layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-146f1a4f31195518ad9c",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected relationship layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-1d78efef93fd4675eb5f",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected futureLover layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-6e92cc8f9c350dd5a026",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected peachBlossom layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-e4fbae0eb2bb786d6e23",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected reconciliation layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-460ecc33b79ca4f14ca9",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected trueHeart layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-c84ec69e224c65bd3d03",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected loveTree layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-ca67a63b42bbf10cdf80",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "selected xRelationship layout has its own space above the complete card arc",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-9d51c556cedea55d0f4e",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "production preview switches phones without losing the current room or question",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-b381851ac5579ac25fd1",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "Me Tarot setup has a visible bounded entrance into the ready room",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "154bc6117a94958b4c49-5f6d02c28c78d5ea699c",
+          "file": "letter-ritual-layout.spec.ts",
+          "line": 70,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "me-redesign.spec.ts",
+      "file": "me-redesign.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Me redesign en bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-0277ed240978adaaf9de",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign en dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-86d9e628ec0be7f054f2",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign zh bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-6190bc813b953e143f50",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign zh dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-a98ac69b43d76e852330",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign es bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-ab82e562c2c0f988e734",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign es dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-bd8e76c5ce94429e22d7",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ja bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-6a886b031b2989b04611",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ja dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-04c4d4e13a784a0ef931",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ko bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-06f833713a51b0ad1bb6",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ko dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-bd895e7b393e9250a3dd",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me editor retains failed local saves, retries, and returns focus on cancel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-2dfc27d75722bf78697a",
+          "file": "me-redesign.spec.ts",
+          "line": 180,
+          "column": 1
+        },
+        {
+          "title": "Me editor identifies an offline save as local and keeps it after reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-324df5a3defffd21e2ca",
+          "file": "me-redesign.spec.ts",
+          "line": 233,
+          "column": 1
+        },
+        {
+          "title": "Me Spanish SE 200% text retains long names, places and expanded details",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-54260f506636337cf2e2",
+          "file": "me-redesign.spec.ts",
+          "line": 248,
+          "column": 1
+        },
+        {
+          "title": "Me delayed save preserves newer input in the current editor and its focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-6fe66876c9f83b4ab2cb",
+          "file": "me-redesign.spec.ts",
+          "line": 273,
+          "column": 3
+        },
+        {
+          "title": "Me delayed save preserves a reopened editor and its focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-c52d5b5662fa83175d38",
+          "file": "me-redesign.spec.ts",
+          "line": 273,
+          "column": 3
+        },
+        {
+          "title": "Me redesign en bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-8897977835dd35ecc39b",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign en dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-1a5e66944aae18b00249",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign zh bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-d753821e609ebc89ebe1",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign zh dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-0abf5d230160bee18e6a",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign es bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-8ec5a09d9c1a79b57552",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign es dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-8e61a4805d39a34a75d2",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ja bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-025e1c18db7c7a461d41",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ja dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-b266631d5e479d5864e2",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ko bright: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-21d4be9968c9c8cc9c40",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me redesign ko dark: layout, preferences and disclosures",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-53614af8c4a106c31c72",
+          "file": "me-redesign.spec.ts",
+          "line": 127,
+          "column": 3
+        },
+        {
+          "title": "Me editor retains failed local saves, retries, and returns focus on cancel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-68995fe9a0888b56bfa6",
+          "file": "me-redesign.spec.ts",
+          "line": 180,
+          "column": 1
+        },
+        {
+          "title": "Me editor identifies an offline save as local and keeps it after reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-86e570b249a9b7a9392f",
+          "file": "me-redesign.spec.ts",
+          "line": 233,
+          "column": 1
+        },
+        {
+          "title": "Me Spanish SE 200% text retains long names, places and expanded details",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-840bb508ba2621c3c751",
+          "file": "me-redesign.spec.ts",
+          "line": 248,
+          "column": 1
+        },
+        {
+          "title": "Me delayed save preserves newer input in the current editor and its focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-cebfd9bba5f0ec0ae6bd",
+          "file": "me-redesign.spec.ts",
+          "line": 273,
+          "column": 3
+        },
+        {
+          "title": "Me delayed save preserves a reopened editor and its focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f8445f6bb05975d306c6-33069accadd6debba774",
+          "file": "me-redesign.spec.ts",
+          "line": 273,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "room-entrances.spec.ts",
+      "file": "room-entrances.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-e9c39952211526cc9bfc",
+          "file": "room-entrances.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "Home tarot entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-175d02fac37e4038b9bc",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "Home astrology entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-a9372f873bbf505513e6",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "Home collection entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-78ad8131f8e8cff8594c",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "Home personalities entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-1fcd757a2ec5c654854d",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-7e1c28a6f31e6447d78d",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-fd38576dc6618d5a1f4b",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-bb561a36b10b166a1484",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-8ba8882fb4460bf28ad3",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "rapid repeated Home taps create one navigation and Back does not replay an entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-fafe0715ff6eab11ada9",
+          "file": "room-entrances.spec.ts",
+          "line": 156,
+          "column": 1
+        },
+        {
+          "title": "backgrounding a live entrance dismisses it and foregrounding does not replay it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-abc8fe61dd2d73416e64",
+          "file": "room-entrances.spec.ts",
+          "line": 178,
+          "column": 1
+        },
+        {
+          "title": "query-only navigation keeps the live room and unsent input without a new entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-a8d7571766b97f47d6f9",
+          "file": "room-entrances.spec.ts",
+          "line": 193,
+          "column": 1
+        },
+        {
+          "title": "supplemental Rooms animal-tarot entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-1d50f877d99f38b68fcf",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms journal entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-edf99c8232dd22577509",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms compatibility entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-9d96dccbab76f49226ee",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms dream entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-7565cf6840399af302be",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me chart entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-f4ab40484cd44674bc9d",
+          "file": "room-entrances.spec.ts",
+          "line": 248,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me history entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-cd64c68359f8acb25421",
+          "file": "room-entrances.spec.ts",
+          "line": 248,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me collection entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-553b9ee93d33c71cb954",
+          "file": "room-entrances.spec.ts",
+          "line": 248,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock ask entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-d901dc1558557f628617",
+          "file": "room-entrances.spec.ts",
+          "line": 274,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock daily entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-fe8a2ea99ea309f39c26",
+          "file": "room-entrances.spec.ts",
+          "line": 274,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock profile entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-5e2fe14563ac329f6c9c",
+          "file": "room-entrances.spec.ts",
+          "line": 274,
+          "column": 3
+        },
+        {
+          "title": "host RAF sample for repeated warm room entrances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-ba96074c6cdde51668da",
+          "file": "room-entrances.spec.ts",
+          "line": 289,
+          "column": 1
+        },
+        {
+          "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-5813bea14c5ada5a1bc8",
+          "file": "room-entrances.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "Home tarot entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-40a09ca009fec3930d12",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "Home astrology entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-c24ead7a99fdba6ba705",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "Home collection entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-d96d6740780f2e99c32c",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "Home personalities entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-764a50afafededb2c0b5",
+          "file": "room-entrances.spec.ts",
+          "line": 130,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-afd5cf27424d28dd421b",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-14224edda70aa8ce68fa",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-464301832c294a6d332a",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-cc7c8c24ededb04c5280",
+          "file": "room-entrances.spec.ts",
+          "line": 145,
+          "column": 3
+        },
+        {
+          "title": "rapid repeated Home taps create one navigation and Back does not replay an entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-ee9ed524b40a9fc651dd",
+          "file": "room-entrances.spec.ts",
+          "line": 156,
+          "column": 1
+        },
+        {
+          "title": "backgrounding a live entrance dismisses it and foregrounding does not replay it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-0fd36a81746d341fcb18",
+          "file": "room-entrances.spec.ts",
+          "line": 178,
+          "column": 1
+        },
+        {
+          "title": "query-only navigation keeps the live room and unsent input without a new entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-353d1c4791f2d16658a5",
+          "file": "room-entrances.spec.ts",
+          "line": 193,
+          "column": 1
+        },
+        {
+          "title": "supplemental Rooms animal-tarot entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-ff0e8f231006cc361757",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms journal entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-f5991f396bb51c9d311f",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms compatibility entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-31cae548ada5664e0a89",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms dream entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-de18128b36ab55195145",
+          "file": "room-entrances.spec.ts",
+          "line": 222,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me chart entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-1bfca516e8ec3280e7fa",
+          "file": "room-entrances.spec.ts",
+          "line": 248,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me history entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-c8d6482d309fa4ae984c",
+          "file": "room-entrances.spec.ts",
+          "line": 248,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me collection entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-e131c0726434190fc6ab",
+          "file": "room-entrances.spec.ts",
+          "line": 248,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock ask entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-627e0c0f72b061b9be8b",
+          "file": "room-entrances.spec.ts",
+          "line": 274,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock daily entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-bc03ceaf464d74760965",
+          "file": "room-entrances.spec.ts",
+          "line": 274,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock profile entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-84d1fe05ca075bef727b",
+          "file": "room-entrances.spec.ts",
+          "line": 274,
+          "column": 3
+        },
+        {
+          "title": "host RAF sample for repeated warm room entrances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-184e045252654008f675",
+          "file": "room-entrances.spec.ts",
+          "line": 289,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "space-navigation.spec.ts",
+      "file": "space-navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Every space has a visible direct Home exit: group 1",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-79781642ce5c5ea5547e",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 2",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-39abc18358f81e354455",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 3",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-19e2394b0f622e96ba7d",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 4",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-bb4bb0eaf63f7bcf10e2",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 5",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-44f566ba76d9718a8acd",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Nested spaces keep a named parent alongside Home after refresh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-cbbdeb8491a79586fbb3",
+          "file": "space-navigation.spec.ts",
+          "line": 48,
+          "column": 1
+        },
+        {
+          "title": "Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-f2e7eca081d3acc11c53",
+          "file": "space-navigation.spec.ts",
+          "line": 70,
+          "column": 1
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 1",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-8a90e7fca618ac4896f6",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 2",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-e25283e17ae9f0e94405",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 3",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-e7b836bf048ed2aec395",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 4",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-0d640726c26d61d83b9d",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Every space has a visible direct Home exit: group 5",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-2623c4c229641055d7b3",
+          "file": "space-navigation.spec.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "title": "Nested spaces keep a named parent alongside Home after refresh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-b50c9d3b77877f11c5dc",
+          "file": "space-navigation.spec.ts",
+          "line": 48,
+          "column": 1
+        },
+        {
+          "title": "Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "42a62a8749f1032a43c7-d58c0e2117ad6f199abd",
+          "file": "space-navigation.spec.ts",
+          "line": 70,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "tarot-all-spreads.spec.ts",
+      "file": "tarot-all-spreads.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "complete single: select 1 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-5bf1a3b0db00cde99f84",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete three: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-77edfc60f7e94a1333a9",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-a4c71a0d02d44b7b7015",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-36dc7a89d584a127f968",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-884e6cc34f6a8bd3e1f6",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-dc0034eded61b2e72aae",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-fc54aa52b6ed6e72d778",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-3ec5c0721c8d63dbf4da",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-2994d354395bfe2d9790",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete single: select 1 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-4ac5fec101b8f2e57eb5",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete three: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-5a1ed9f360118140e74e",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-bfca868cb24baad17c8d",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-974f1519eb41d88856e9",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-795fc3824d19f915f11f",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-0ad923ca0ea0515b9197",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-24992e1c1f927fab6af2",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-3ef49b6b420a22238f7b",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-65b96dd39031a534675e",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "tarot-room.spec.ts",
+      "file": "tarot-room.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "development preview switches between full iPhone hardware frames",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-bf2b4d6e5b562dd84567",
+          "file": "tarot-room.spec.ts",
+          "line": 411,
+          "column": 1
+        },
+        {
+          "title": "Tarot entry has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-42d51f48c8e04de05111",
+          "file": "tarot-room.spec.ts",
+          "line": 434,
+          "column": 1
+        },
+        {
+          "title": "native packaging files cannot reload an active Tarot screen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-25b639a5e473dfe21cac",
+          "file": "tarot-room.spec.ts",
+          "line": 441,
+          "column": 1
+        },
+        {
+          "title": "Tarot recommendation has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-064e8eaae57bd6c8266f",
+          "file": "tarot-room.spec.ts",
+          "line": 481,
+          "column": 1
+        },
+        {
+          "title": "development preview presents Personal Spread inside the selected phone",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5a477f9fb4b2bffa3cf8",
+          "file": "tarot-room.spec.ts",
+          "line": 490,
+          "column": 1
+        },
+        {
+          "title": "spread recommendations keep every layout and full explanation in normal flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-889545daf200de281bae",
+          "file": "tarot-room.spec.ts",
+          "line": 512,
+          "column": 1
+        },
+        {
+          "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c5c04deca5a100200f8c",
+          "file": "tarot-room.spec.ts",
+          "line": 615,
+          "column": 1
+        },
+        {
+          "title": "Tarot room setup has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1a81bf0fa118a8d206f8",
+          "file": "tarot-room.spec.ts",
+          "line": 648,
+          "column": 1
+        },
+        {
+          "title": "Tarot wash has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-45db298184ef507b6dce",
+          "file": "tarot-room.spec.ts",
+          "line": 655,
+          "column": 1
+        },
+        {
+          "title": "Tarot arc has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f94ac57443eaf758eaee",
+          "file": "tarot-room.spec.ts",
+          "line": 662,
+          "column": 1
+        },
+        {
+          "title": "Tarot reading has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1489ab5f24e2e202e6f0",
+          "file": "tarot-room.spec.ts",
+          "line": 670,
+          "column": 1
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-eaaba8bc4dbf3ce7f67c",
+          "file": "tarot-room.spec.ts",
+          "line": 679,
+          "column": 3
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-64ed38083d0efc8b5af9",
+          "file": "tarot-room.spec.ts",
+          "line": 679,
+          "column": 3
+        },
+        {
+          "title": "card detail stays gesture-first without visible zoom controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-dfa1dccb9048ec982fc3",
+          "file": "tarot-room.spec.ts",
+          "line": 712,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-64f83a845f9a04024df2",
+          "file": "tarot-room.spec.ts",
+          "line": 767,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading failure is retryable without a silent upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a83c4f5a48557ab67080",
+          "file": "tarot-room.spec.ts",
+          "line": 845,
+          "column": 1
+        },
+        {
+          "title": "deeper reading motion is reversible and respects normal motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0e09a9423bfd60629273",
+          "file": "tarot-room.spec.ts",
+          "line": 869,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects system motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-7d6bdc0a72c81591681a",
+          "file": "tarot-room.spec.ts",
+          "line": 869,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects hint motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d9bfe6862eb97ca7a1f1",
+          "file": "tarot-room.spec.ts",
+          "line": 869,
+          "column": 3
+        },
+        {
+          "title": "completes and restores the full Tarot Room journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3e7f6c115a77fef16424",
+          "file": "tarot-room.spec.ts",
+          "line": 922,
+          "column": 1
+        },
+        {
+          "title": "a tap without movement cannot finish a manual wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-94d318accc644ee6f3f0",
+          "file": "tarot-room.spec.ts",
+          "line": 1099,
+          "column": 1
+        },
+        {
+          "title": "the wash table stops repainting while idle or after a rejected gesture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-30dfddfa9926c6ad70a2",
+          "file": "tarot-room.spec.ts",
+          "line": 1122,
+          "column": 1
+        },
+        {
+          "title": "a real manual wash release completes the automatic ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ea6e83783657d87e7778",
+          "file": "tarot-room.spec.ts",
+          "line": 1161,
+          "column": 1
+        },
+        {
+          "title": "rapid Auto Wash requests advance through one ordered ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2ce6156789e01f55542d",
+          "file": "tarot-room.spec.ts",
+          "line": 1219,
+          "column": 1
+        },
+        {
+          "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-62f3da85b40e524ac0a6",
+          "file": "tarot-room.spec.ts",
+          "line": 1232,
+          "column": 1
+        },
+        {
+          "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6ca8f9ff50d693bec1e7",
+          "file": "tarot-room.spec.ts",
+          "line": 1243,
+          "column": 1
+        },
+        {
+          "title": "an active ritual survives a terminated and reopened webview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-75d6596f87d0f20b1f38",
+          "file": "tarot-room.spec.ts",
+          "line": 1267,
+          "column": 1
+        },
+        {
+          "title": "a cancelled wash gesture stays in the wash stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2aebb877f63ed6abeb14",
+          "file": "tarot-room.spec.ts",
+          "line": 1284,
+          "column": 1
+        },
+        {
+          "title": "voice unavailability keeps a clear typed fallback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e7f0fc8816ad6d8ad5da",
+          "file": "tarot-room.spec.ts",
+          "line": 1313,
+          "column": 1
+        },
+        {
+          "title": "voice completion keeps the transcript usable in the phone sheet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-52555138e3cc1dc3213f",
+          "file": "tarot-room.spec.ts",
+          "line": 1340,
+          "column": 1
+        },
+        {
+          "title": "cancelling receipt sharing stays quiet and allows sharing again",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e0f7cae9dbf1f49ded93",
+          "file": "tarot-room.spec.ts",
+          "line": 1382,
+          "column": 1
+        },
+        {
+          "title": "receipt preview and exported PNG keep the question and chat private by default",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8b141028c96a3de19d39",
+          "file": "tarot-room.spec.ts",
+          "line": 1408,
+          "column": 1
+        },
+        {
+          "title": "receipt exports complete 1-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b16e32374a1dc4097ada",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 3-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f4505d4a160d501f0885",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 5-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2dbd1217fe7d34e2aa49",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 7-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b28e0f1641cf056e83d2",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b2dca8e0b0c680c79192",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card zh text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5437c736284c7ded1430",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "system reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-be2cabb6fe12e556a402",
+          "file": "tarot-room.spec.ts",
+          "line": 1580,
+          "column": 3
+        },
+        {
+          "title": "hint reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-700ba5d343208e9c2b2d",
+          "file": "tarot-room.spec.ts",
+          "line": 1580,
+          "column": 3
+        },
+        {
+          "title": "Auto Wash avoids sustained animation stalls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-172b130ba36ecb884db4",
+          "file": "tarot-room.spec.ts",
+          "line": 1594,
+          "column": 1
+        },
+        {
+          "title": "an offline follow-up is saved and restored with its local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a739e22ce94587f9fbb5",
+          "file": "tarot-room.spec.ts",
+          "line": 1632,
+          "column": 1
+        },
+        {
+          "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3f773def4220034e163b",
+          "file": "tarot-room.spec.ts",
+          "line": 1669,
+          "column": 1
+        },
+        {
+          "title": "leaving a pending follow-up cancels its request before History resumes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1cf1733fa32559c48ed0",
+          "file": "tarot-room.spec.ts",
+          "line": 1707,
+          "column": 1
+        },
+        {
+          "title": "a late reading response cannot replace the settled local reading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b2ee35769b88cce85547",
+          "file": "tarot-room.spec.ts",
+          "line": 1750,
+          "column": 1
+        },
+        {
+          "title": "a pending interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6cb3bc28733254563a4f",
+          "file": "tarot-room.spec.ts",
+          "line": 1813,
+          "column": 3
+        },
+        {
+          "title": "a local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8ff04a1868fb71d9eae7",
+          "file": "tarot-room.spec.ts",
+          "line": 1813,
+          "column": 3
+        },
+        {
+          "title": "a server-local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6479aeef6c180ba1c5f6",
+          "file": "tarot-room.spec.ts",
+          "line": 1813,
+          "column": 3
+        },
+        {
+          "title": "refresh restores the newest fallback session after durable storage fills",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a742e9eb23d2cf2f0fdb",
+          "file": "tarot-room.spec.ts",
+          "line": 1873,
+          "column": 1
+        },
+        {
+          "title": "a failed save keeps the reading and chat until an explicit durable retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-9aee8ec68288b5c1a827",
+          "file": "tarot-room.spec.ts",
+          "line": 1902,
+          "column": 1
+        },
+        {
+          "title": "damaged saved interpretation and design recover without losing the selected cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3aa1a6901dcf79ba3ea7",
+          "file": "tarot-room.spec.ts",
+          "line": 1956,
+          "column": 1
+        },
+        {
+          "title": "the reading composer remains visible above a keyboard-sized viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-87d57da6d0b852da0098",
+          "file": "tarot-room.spec.ts",
+          "line": 1989,
+          "column": 1
+        },
+        {
+          "title": "five consecutive rituals do not degrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a8f5b7d47f3e7413ba1f",
+          "file": "tarot-room.spec.ts",
+          "line": 2002,
+          "column": 1
+        },
+        {
+          "title": "pick arc stays ordered on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5722728b4c384e65ffd0",
+          "file": "tarot-room.spec.ts",
+          "line": 2054,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d70fe931b1c291027294",
+          "file": "tarot-room.spec.ts",
+          "line": 2054,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1918c4cf7ae9856f28b8",
+          "file": "tarot-room.spec.ts",
+          "line": 2054,
+          "column": 3
+        },
+        {
+          "title": "spread single remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2f639fe614ff9e72a70c",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread three remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8ece823f765bc53e9ec7",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread peachBlossom remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-81b7d8719d94cab42553",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread futureLover remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5a2e74589ff37e85501d",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread xRelationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-7c495e431052fe9243ed",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread relationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c257cecac61137fdc22c",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread reconciliation remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8d3133a5ac776d6e4580",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread trueHeart remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-314ad2497a50a9a74d7a",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread loveTree remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a3bd70839b18c8b93692",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "reading layout 1 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-81594aa858e1d4ebb3ff",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 3 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1fda9c9d1e032b4a1e6f",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 5 cards on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b42c7cfc1f423d6d5ac1",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 7 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-589862a2fe59b46e6751",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 9 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f0042947133c32b5ceef",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "development preview switches between full iPhone hardware frames",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ec350894dd0ac289b0e9",
+          "file": "tarot-room.spec.ts",
+          "line": 411,
+          "column": 1
+        },
+        {
+          "title": "Tarot entry has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-cedd5c93d9d64ce4370d",
+          "file": "tarot-room.spec.ts",
+          "line": 434,
+          "column": 1
+        },
+        {
+          "title": "native packaging files cannot reload an active Tarot screen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5cb80c40d3195cbe7df3",
+          "file": "tarot-room.spec.ts",
+          "line": 441,
+          "column": 1
+        },
+        {
+          "title": "Tarot recommendation has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-67c73c2ff72e13310f08",
+          "file": "tarot-room.spec.ts",
+          "line": 481,
+          "column": 1
+        },
+        {
+          "title": "development preview presents Personal Spread inside the selected phone",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-09e8b0a109038efce521",
+          "file": "tarot-room.spec.ts",
+          "line": 490,
+          "column": 1
+        },
+        {
+          "title": "spread recommendations keep every layout and full explanation in normal flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f57f36cc875d8b6326f3",
+          "file": "tarot-room.spec.ts",
+          "line": 512,
+          "column": 1
+        },
+        {
+          "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-853b8ebca4bcb0de34fc",
+          "file": "tarot-room.spec.ts",
+          "line": 615,
+          "column": 1
+        },
+        {
+          "title": "Tarot room setup has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-31e5ca7f1406245281df",
+          "file": "tarot-room.spec.ts",
+          "line": 648,
+          "column": 1
+        },
+        {
+          "title": "Tarot wash has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2e510f3c8dea11d48b63",
+          "file": "tarot-room.spec.ts",
+          "line": 655,
+          "column": 1
+        },
+        {
+          "title": "Tarot arc has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-4e3a03fbe2f8afaf5abe",
+          "file": "tarot-room.spec.ts",
+          "line": 662,
+          "column": 1
+        },
+        {
+          "title": "Tarot reading has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6cafc3b32f053835410f",
+          "file": "tarot-room.spec.ts",
+          "line": 670,
+          "column": 1
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2a20c4d3b121ed620f9c",
+          "file": "tarot-room.spec.ts",
+          "line": 679,
+          "column": 3
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c740906308489e7002d3",
+          "file": "tarot-room.spec.ts",
+          "line": 679,
+          "column": 3
+        },
+        {
+          "title": "card detail stays gesture-first without visible zoom controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-009f89637b1a846b119c",
+          "file": "tarot-room.spec.ts",
+          "line": 712,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-9372f1b05350570d79b3",
+          "file": "tarot-room.spec.ts",
+          "line": 767,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading failure is retryable without a silent upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e7ae4fdc27ec4549f1ec",
+          "file": "tarot-room.spec.ts",
+          "line": 845,
+          "column": 1
+        },
+        {
+          "title": "deeper reading motion is reversible and respects normal motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3239ef57ddaa031ee24b",
+          "file": "tarot-room.spec.ts",
+          "line": 869,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects system motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0267e9d9bd929a9a6415",
+          "file": "tarot-room.spec.ts",
+          "line": 869,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects hint motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e4a5e3c3c47075bea75f",
+          "file": "tarot-room.spec.ts",
+          "line": 869,
+          "column": 3
+        },
+        {
+          "title": "completes and restores the full Tarot Room journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ab603ca8322fcc04b1f4",
+          "file": "tarot-room.spec.ts",
+          "line": 922,
+          "column": 1
+        },
+        {
+          "title": "a tap without movement cannot finish a manual wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0706802bddc02879bfb4",
+          "file": "tarot-room.spec.ts",
+          "line": 1099,
+          "column": 1
+        },
+        {
+          "title": "the wash table stops repainting while idle or after a rejected gesture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3b3eac7810c1003dbad2",
+          "file": "tarot-room.spec.ts",
+          "line": 1122,
+          "column": 1
+        },
+        {
+          "title": "a real manual wash release completes the automatic ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ddd7d57a5b20c0856372",
+          "file": "tarot-room.spec.ts",
+          "line": 1161,
+          "column": 1
+        },
+        {
+          "title": "rapid Auto Wash requests advance through one ordered ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e5aa8657014cf9c3cd04",
+          "file": "tarot-room.spec.ts",
+          "line": 1219,
+          "column": 1
+        },
+        {
+          "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-18cc98512248a0d1e7a0",
+          "file": "tarot-room.spec.ts",
+          "line": 1232,
+          "column": 1
+        },
+        {
+          "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8b9fb0a71c3405aca2a2",
+          "file": "tarot-room.spec.ts",
+          "line": 1243,
+          "column": 1
+        },
+        {
+          "title": "an active ritual survives a terminated and reopened webview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8e61163420d04ec0c924",
+          "file": "tarot-room.spec.ts",
+          "line": 1267,
+          "column": 1
+        },
+        {
+          "title": "a cancelled wash gesture stays in the wash stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-4cde87e951859d0d8cf9",
+          "file": "tarot-room.spec.ts",
+          "line": 1284,
+          "column": 1
+        },
+        {
+          "title": "voice unavailability keeps a clear typed fallback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-834fe7ffbc7d5d0e1ddd",
+          "file": "tarot-room.spec.ts",
+          "line": 1313,
+          "column": 1
+        },
+        {
+          "title": "voice completion keeps the transcript usable in the phone sheet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-802fd42aa56914b67c14",
+          "file": "tarot-room.spec.ts",
+          "line": 1340,
+          "column": 1
+        },
+        {
+          "title": "cancelling receipt sharing stays quiet and allows sharing again",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e030be3e7c7f60112d32",
+          "file": "tarot-room.spec.ts",
+          "line": 1382,
+          "column": 1
+        },
+        {
+          "title": "receipt preview and exported PNG keep the question and chat private by default",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-55760e02bf42cfdd68dd",
+          "file": "tarot-room.spec.ts",
+          "line": 1408,
+          "column": 1
+        },
+        {
+          "title": "receipt exports complete 1-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-909000cfb484decfe52d",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 3-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-48a418dffcf74595766f",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 5-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d1a26a68cad52e7d5403",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 7-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-45c4be8384dc124e1013",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-eda7cf1402018942046b",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card zh text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c86caccadc648f6ac0b6",
+          "file": "tarot-room.spec.ts",
+          "line": 1478,
+          "column": 3
+        },
+        {
+          "title": "system reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-04ef48342c09d6f3f9e4",
+          "file": "tarot-room.spec.ts",
+          "line": 1580,
+          "column": 3
+        },
+        {
+          "title": "hint reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-bc1cc4c2960b2a694225",
+          "file": "tarot-room.spec.ts",
+          "line": 1580,
+          "column": 3
+        },
+        {
+          "title": "Auto Wash avoids sustained animation stalls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-db18e46ab292366aa090",
+          "file": "tarot-room.spec.ts",
+          "line": 1594,
+          "column": 1
+        },
+        {
+          "title": "an offline follow-up is saved and restored with its local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-fa70a076775e614c75e8",
+          "file": "tarot-room.spec.ts",
+          "line": 1632,
+          "column": 1
+        },
+        {
+          "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a5d674ac8640ef49b81d",
+          "file": "tarot-room.spec.ts",
+          "line": 1669,
+          "column": 1
+        },
+        {
+          "title": "leaving a pending follow-up cancels its request before History resumes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c5cadb2b8c8b1159cdfe",
+          "file": "tarot-room.spec.ts",
+          "line": 1707,
+          "column": 1
+        },
+        {
+          "title": "a late reading response cannot replace the settled local reading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5e51f0701de526daa049",
+          "file": "tarot-room.spec.ts",
+          "line": 1750,
+          "column": 1
+        },
+        {
+          "title": "a pending interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3b501c96cf777dfba790",
+          "file": "tarot-room.spec.ts",
+          "line": 1813,
+          "column": 3
+        },
+        {
+          "title": "a local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-7a57aabb57f2e3041e74",
+          "file": "tarot-room.spec.ts",
+          "line": 1813,
+          "column": 3
+        },
+        {
+          "title": "a server-local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8caa03b53b6bb372f6b5",
+          "file": "tarot-room.spec.ts",
+          "line": 1813,
+          "column": 3
+        },
+        {
+          "title": "refresh restores the newest fallback session after durable storage fills",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0a68db696c4db68ae65d",
+          "file": "tarot-room.spec.ts",
+          "line": 1873,
+          "column": 1
+        },
+        {
+          "title": "a failed save keeps the reading and chat until an explicit durable retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b9cc0377027d07127c1c",
+          "file": "tarot-room.spec.ts",
+          "line": 1902,
+          "column": 1
+        },
+        {
+          "title": "damaged saved interpretation and design recover without losing the selected cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d02bb5b20344c9119ebb",
+          "file": "tarot-room.spec.ts",
+          "line": 1956,
+          "column": 1
+        },
+        {
+          "title": "the reading composer remains visible above a keyboard-sized viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f005352af512c025c3a8",
+          "file": "tarot-room.spec.ts",
+          "line": 1989,
+          "column": 1
+        },
+        {
+          "title": "five consecutive rituals do not degrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f27424732157a5ca6554",
+          "file": "tarot-room.spec.ts",
+          "line": 2002,
+          "column": 1
+        },
+        {
+          "title": "pick arc stays ordered on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-bd27ec57c57c99b61d5f",
+          "file": "tarot-room.spec.ts",
+          "line": 2054,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0fabcf1e66b290e57f30",
+          "file": "tarot-room.spec.ts",
+          "line": 2054,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-266070f2ad39f2f131aa",
+          "file": "tarot-room.spec.ts",
+          "line": 2054,
+          "column": 3
+        },
+        {
+          "title": "spread single remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c31c3064bcf854ede467",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread three remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b767d58d54304a75a4f9",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread peachBlossom remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b892a5cefc552ba608f8",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread futureLover remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-34ad05caec3fdbc7ba8a",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread xRelationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-9b199ba097a47a5ac314",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread relationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-945076e9f84ef8713d9f",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread reconciliation remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d414b061b2910c416794",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread trueHeart remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3d8c854996d26df096b0",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "spread loveTree remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ba26572381cc53b3a3f2",
+          "file": "tarot-room.spec.ts",
+          "line": 2076,
+          "column": 3
+        },
+        {
+          "title": "reading layout 1 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a1588717fa7755ff6024",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 3 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-007c82be8f319dcf64b1",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 5 cards on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c29a7e0f8a6d59d71a65",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 7 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5da13e068e7f9981c584",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        },
+        {
+          "title": "reading layout 9 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c6dce0042e6ffe86cf63",
+          "file": "tarot-room.spec.ts",
+          "line": 2115,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "tarot-spread-navigation.spec.ts",
+      "file": "tarot-spread-navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "spread arrows have generous lateral targets beside the cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6957fc795cc8a6a8e921-55321a93bc52c031d037",
+          "file": "tarot-spread-navigation.spec.ts",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "a vertical gesture cannot turn into an accidental spread change",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6957fc795cc8a6a8e921-3f5f1ce805b023ab3490",
+          "file": "tarot-spread-navigation.spec.ts",
+          "line": 40,
+          "column": 1
+        },
+        {
+          "title": "spread arrows have generous lateral targets beside the cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6957fc795cc8a6a8e921-0e29981da236f0a57035",
+          "file": "tarot-spread-navigation.spec.ts",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "a vertical gesture cannot turn into an accidental spread change",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6957fc795cc8a6a8e921-72a04bc8872aa2c7deba",
+          "file": "tarot-spread-navigation.spec.ts",
+          "line": 40,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "tarot-wash-refinement.spec.ts",
+      "file": "tarot-wash-refinement.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "manual wash uses the full table and keeps its geometry while gathering",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-d879bb4ff8741335fdcf",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "release reaches cutting promptly even if the WebView drops transition events",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-627f94efc003a6d5aba4",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 87,
+          "column": 1
+        },
+        {
+          "title": "reduced motion keeps Auto Wash functional without playing the decorative wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-af462d7ecad9a3420949",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 97,
+          "column": 1
+        },
+        {
+          "title": "manual wash uses the full table and keeps its geometry while gathering",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-3f8d7cbe9d9e0872bf25",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "release reaches cutting promptly even if the WebView drops transition events",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-ff6d4afab1d5be7d23a2",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 87,
+          "column": 1
+        },
+        {
+          "title": "reduced motion keeps Auto Wash functional without playing the decorative wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-aa45f957851ebbd24411",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 97,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-11T01:16:48.731Z",
+    "duration": 89.42000000000002,
+    "expected": 0,
+    "skipped": 280,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

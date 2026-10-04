@@ -1,0 +1,59 @@
+{
+  "baseCommit": "b9594adf2f4d3114cf8bc33d6cd319d123477a13",
+  "files": [
+    {
+      "path": "artifacts/hint/src/modules/tarot/components/TarotRoomFlow.tsx",
+      "unchanged": true,
+      "sha256": "1a25adf069be2d15905a58de10152e52f4756e25d85807e41e035d0ce8eb52ea",
+      "currentSha256": "1a25adf069be2d15905a58de10152e52f4756e25d85807e41e035d0ce8eb52ea"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/components/CardWashRitual.tsx",
+      "unchanged": true,
+      "sha256": "f3e0346229ac91d5d026342924492cca7d5c7b6e4fb7980cf9a344279c03dd5a",
+      "currentSha256": "f3e0346229ac91d5d026342924492cca7d5c7b6e4fb7980cf9a344279c03dd5a"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/washPhysics.ts",
+      "unchanged": true,
+      "sha256": "5e4767626fccad904d34761ec1d09c7654c02c830421d276924a535cf6543bc3",
+      "currentSha256": "5e4767626fccad904d34761ec1d09c7654c02c830421d276924a535cf6543bc3"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/ritualFlowMachine.ts",
+      "unchanged": true,
+      "sha256": "00ddd0b882300644c738117221ebb32d7b50773a4676388c70e1f6c06c1011ac",
+      "currentSha256": "00ddd0b882300644c738117221ebb32d7b50773a4676388c70e1f6c06c1011ac"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/ritualDeckOrder.ts",
+      "unchanged": true,
+      "sha256": "28c784f31c3e2283653088a80610ddfbedeac085db6351fded47d0f656c441c4",
+      "currentSha256": "28c784f31c3e2283653088a80610ddfbedeac085db6351fded47d0f656c441c4"
+    },
+    {
+      "path": "artifacts/hint/src/modules/tarot/logic/activeTarotSession.ts",
+      "unchanged": true,
+      "sha256": "1bc70a3148943e617bb762dbbee7ed58cc10efd1e9bf88f3236a83dab81ceb91",
+      "currentSha256": "1bc70a3148943e617bb762dbbee7ed58cc10efd1e9bf88f3236a83dab81ceb91"
+    },
+    {
+      "path": "artifacts/hint/src/modules/readings/localTarotReadings.ts",
+      "unchanged": true,
+      "sha256": "43e1f937740c30740fd79be83a626230cfe480592576b5c2b1743d009fc32acb",
+      "currentSha256": "43e1f937740c30740fd79be83a626230cfe480592576b5c2b1743d009fc32acb"
+    },
+    {
+      "path": "artifacts/hint/src/lib/identity.ts",
+      "unchanged": true,
+      "sha256": "b7568199d68447c82381f38d53d46523a28aae414fd2a81d0a84517575804f1a",
+      "currentSha256": "b7568199d68447c82381f38d53d46523a28aae414fd2a81d0a84517575804f1a"
+    },
+    {
+      "path": "artifacts/hint/src/lib/clearHistory.ts",
+      "unchanged": true,
+      "sha256": "4922f3a64d27c2a802f02b5f96cc1de3b48f5086ef25d07e6f46cbe34dd439b4",
+      "currentSha256": "4922f3a64d27c2a802f02b5f96cc1de3b48f5086ef25d07e6f46cbe34dd439b4"
+    }
+  ]
+}

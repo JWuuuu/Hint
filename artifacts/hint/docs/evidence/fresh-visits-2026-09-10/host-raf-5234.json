@@ -1,0 +1,187 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/Users/jwu/Documents/Hint-main/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "-c",
+      "/tmp/hint-room-visits-20260911/playwright.raf.config.ts",
+      "e2e/room-entrances.spec.ts",
+      "--grep",
+      "host RAF",
+      "--workers=1"
+    ],
+    "configFile": "/tmp/hint-room-visits-20260911/playwright.raf.config.ts",
+    "rootDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-room-visits-20260911/host-raf-5234-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/tmp/hint-room-visits-20260911/host-raf-5234-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/tmp/hint-room-visits-20260911/host-raf-5234.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "room-entrances.spec.ts",
+      "file": "room-entrances.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "host RAF sample for repeated warm room entrances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 20397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:51:22.674Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "warm-room-entrance-web-frames",
+                      "contentType": "application/json",
+                      "body": "ewogICJicm93c2VyT25seSI6IHRydWUsCiAgInBoeXNpY2FsRGV2aWNlRXZpZGVuY2UiOiBmYWxzZSwKICAiZGV2aWNlIjogImlwaG9uZS0xNy1wcm8tbWF4IiwKICAiaW50ZXJ2YWxNcyI6IDE1NTAsCiAgInNhbXBsZXMiOiBbCiAgICB7CiAgICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICAgInZpc2l0IjogMSwKICAgICAgIm1ldHJpY3MiOiB7CiAgICAgICAgInNhbXBsZXMiOiA5MCwKICAgICAgICAicDUwIjogMTcsCiAgICAgICAgInA5NSI6IDI1LAogICAgICAgICJtYXgiOiA3OCwKICAgICAgICAib3ZlcjEwMCI6IDAsCiAgICAgICAgImVsYXBzZWQiOiAxNTYxCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAgICJ2aXNpdCI6IDEsCiAgICAgICJtZXRyaWNzIjogewogICAgICAgICJzYW1wbGVzIjogOTMsCiAgICAgICAgInA1MCI6IDE3LAogICAgICAgICJwOTUiOiAyMiwKICAgICAgICAibWF4IjogMjQsCiAgICAgICAgIm92ZXIxMDAiOiAwLAogICAgICAgICJlbGFwc2VkIjogMTU1MwogICAgICB9CiAgICB9LAogICAgewogICAgICAiZmVhdHVyZSI6ICJ0YXJvdCIsCiAgICAgICJ2aXNpdCI6IDIsCiAgICAgICJtZXRyaWNzIjogewogICAgICAgICJzYW1wbGVzIjogODgsCiAgICAgICAgInA1MCI6IDE3LAogICAgICAgICJwOTUiOiAyNywKICAgICAgICAibWF4IjogODQsCiAgICAgICAgIm92ZXIxMDAiOiAwLAogICAgICAgICJlbGFwc2VkIjogMTU1MgogICAgICB9CiAgICB9LAogICAgewogICAgICAiZmVhdHVyZSI6ICJhc3Ryb2xvZ3kiLAogICAgICAidmlzaXQiOiAyLAogICAgICAibWV0cmljcyI6IHsKICAgICAgICAic2FtcGxlcyI6IDkzLAogICAgICAgICJwNTAiOiAxNywKICAgICAgICAicDk1IjogMjEsCiAgICAgICAgIm1heCI6IDI2LAogICAgICAgICJvdmVyMTAwIjogMCwKICAgICAgICAiZWxhcHNlZCI6IDE1NTQKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImZlYXR1cmUiOiAidGFyb3QiLAogICAgICAidmlzaXQiOiAzLAogICAgICAibWV0cmljcyI6IHsKICAgICAgICAic2FtcGxlcyI6IDkwLAogICAgICAgICJwNTAiOiAxNywKICAgICAgICAicDk1IjogMjYsCiAgICAgICAgIm1heCI6IDczLAogICAgICAgICJvdmVyMTAwIjogMCwKICAgICAgICAiZWxhcHNlZCI6IDE1NjQKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImZlYXR1cmUiOiAiYXN0cm9sb2d5IiwKICAgICAgInZpc2l0IjogMywKICAgICAgIm1ldHJpY3MiOiB7CiAgICAgICAgInNhbXBsZXMiOiA5MywKICAgICAgICAicDUwIjogMTcsCiAgICAgICAgInA5NSI6IDIyLAogICAgICAgICJtYXgiOiAyNCwKICAgICAgICAib3ZlcjEwMCI6IDAsCiAgICAgICAgImVsYXBzZWQiOiAxNTYxCiAgICAgIH0KICAgIH0KICBdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-ba96074c6cdde51668da",
+          "file": "room-entrances.spec.ts",
+          "line": 436,
+          "column": 1
+        },
+        {
+          "title": "host RAF sample for repeated warm room entrances",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 21564,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:51:43.535Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "warm-room-entrance-web-frames",
+                      "contentType": "application/json",
+                      "body": "ewogICJicm93c2VyT25seSI6IHRydWUsCiAgInBoeXNpY2FsRGV2aWNlRXZpZGVuY2UiOiBmYWxzZSwKICAiZGV2aWNlIjogImlwaG9uZS1zZSIsCiAgImludGVydmFsTXMiOiAxNTUwLAogICJzYW1wbGVzIjogWwogICAgewogICAgICAiZmVhdHVyZSI6ICJ0YXJvdCIsCiAgICAgICJ2aXNpdCI6IDEsCiAgICAgICJtZXRyaWNzIjogewogICAgICAgICJzYW1wbGVzIjogOTAsCiAgICAgICAgInA1MCI6IDE3LAogICAgICAgICJwOTUiOiAyNiwKICAgICAgICAibWF4IjogNzAsCiAgICAgICAgIm92ZXIxMDAiOiAwLAogICAgICAgICJlbGFwc2VkIjogMTU3MAogICAgICB9CiAgICB9LAogICAgewogICAgICAiZmVhdHVyZSI6ICJhc3Ryb2xvZ3kiLAogICAgICAidmlzaXQiOiAxLAogICAgICAibWV0cmljcyI6IHsKICAgICAgICAic2FtcGxlcyI6IDkzLAogICAgICAgICJwNTAiOiAxNywKICAgICAgICAicDk1IjogMjAsCiAgICAgICAgIm1heCI6IDIyLAogICAgICAgICJvdmVyMTAwIjogMCwKICAgICAgICAiZWxhcHNlZCI6IDE1NTgKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImZlYXR1cmUiOiAidGFyb3QiLAogICAgICAidmlzaXQiOiAyLAogICAgICAibWV0cmljcyI6IHsKICAgICAgICAic2FtcGxlcyI6IDg5LAogICAgICAgICJwNTAiOiAxNywKICAgICAgICAicDk1IjogMjYsCiAgICAgICAgIm1heCI6IDgyLAogICAgICAgICJvdmVyMTAwIjogMCwKICAgICAgICAiZWxhcHNlZCI6IDE1NjMKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImZlYXR1cmUiOiAiYXN0cm9sb2d5IiwKICAgICAgInZpc2l0IjogMiwKICAgICAgIm1ldHJpY3MiOiB7CiAgICAgICAgInNhbXBsZXMiOiA5MiwKICAgICAgICAicDUwIjogMTcsCiAgICAgICAgInA5NSI6IDIxLAogICAgICAgICJtYXgiOiAzMiwKICAgICAgICAib3ZlcjEwMCI6IDAsCiAgICAgICAgImVsYXBzZWQiOiAxNTU1CiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICAgInZpc2l0IjogMywKICAgICAgIm1ldHJpY3MiOiB7CiAgICAgICAgInNhbXBsZXMiOiA4NywKICAgICAgICAicDUwIjogMTcsCiAgICAgICAgInA5NSI6IDI4LAogICAgICAgICJtYXgiOiA5NSwKICAgICAgICAib3ZlcjEwMCI6IDAsCiAgICAgICAgImVsYXBzZWQiOiAxNTYzCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAgICJ2aXNpdCI6IDMsCiAgICAgICJtZXRyaWNzIjogewogICAgICAgICJzYW1wbGVzIjogOTIsCiAgICAgICAgInA1MCI6IDE3LAogICAgICAgICJwOTUiOiAyMCwKICAgICAgICAibWF4IjogMzMsCiAgICAgICAgIm92ZXIxMDAiOiAwLAogICAgICAgICJlbGFwc2VkIjogMTU1NgogICAgICB9CiAgICB9CiAgXQp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-184e045252654008f675",
+          "file": "room-entrances.spec.ts",
+          "line": 436,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-11T04:51:22.412Z",
+    "duration": 42926.333,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

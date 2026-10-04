@@ -1,0 +1,34 @@
+{
+  "spread": "relationship",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "sea",
+  "readingId": "tarot-1789080193134-fqx0az",
+  "positions": [
+    "You",
+    "Them",
+    "Between"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-44-rcy2kh9",
+      "cardId": "knight-pentacles",
+      "name": "Knight of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-56-kmnt3k4",
+      "cardId": "ten-swords",
+      "name": "Ten of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-4-3n4hcd5",
+      "cardId": "20-judgement",
+      "name": "Judgement",
+      "orientation": "upright"
+    }
+  ],
+  "readingRequests": 1
+}

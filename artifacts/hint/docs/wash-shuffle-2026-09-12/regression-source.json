@@ -1,0 +1,10 @@
+[
+  {
+    "file": "artifacts/hint/src/modules/tarot/logic/washContinuity.test.ts",
+    "sha256": "066564a3e1f3f1849c46c05ab39a8cbf0858575615c99e023896f09010335806"
+  },
+  {
+    "file": "artifacts/hint/e2e/tarot-wash-refinement.spec.ts",
+    "sha256": "7edf3aee0e9a727aed2f6895153d6060e72d3155a672da30ba5f6a25e10c9e44"
+  }
+]

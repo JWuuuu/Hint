@@ -1,0 +1,339 @@
+{
+  "suite": "api",
+  "success": true,
+  "passed": 66,
+  "failed": 0,
+  "pending": 0,
+  "tests": [
+    {
+      "file": "artifacts/api-server/src/lib/requestContext.test.ts",
+      "title": "privacy-safe request paths masks case variants, encoded invite paths and all query values",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "title": "isolated installation access boundary issues independent owners, persists only token hashes and never claims a legacy identifier",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "title": "isolated installation access boundary requires credentials before private data or provider routes and ignores spoofed owner fields",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "title": "isolated installation access boundary keeps invite snapshots/results private and binds one authenticated accepter",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "title": "isolated installation access boundary revokes and expires credentials without deleting or reassigning server records",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "title": "isolated installation access boundary does not trust spoofed forwarding headers, blocks session churn with global quotas and durable leases",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "title": "isolated installation access boundary redacts database error details while preserving readable data",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/deviceAccess.integration.test.ts",
+      "title": "isolated installation access boundary fails closed for disallowed origins, enrollment closure and missing migration readiness",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/migrations.integration.test.ts",
+      "title": "isolated migration rehearsal rolls back failed migration DDL, resumes under concurrent runners and preserves legacy snapshots",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/migrations.integration.test.ts",
+      "title": "isolated migration rehearsal rejects an altered applied migration digest without changing data",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence syncs an offline reveal once, rejects a conflicting reveal and keeps the original row",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence history deletion preserves the profile and reveal lock; re-entering cannot revive history",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence does not resurrect an in-flight journal entry after clearing history",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence rejects a delayed pre-clear journal submission but permits a deliberate new entry",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence persists invitations, consent and immutable results; concurrent completion does one computation",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence does not resurrect a receipt first uploaded after deletion",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence rolls back every history deletion when one database operation fails",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence rejects invalid card dates and preserves complete profile coordinates across legacy updates",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence requires consent, rejects expired/missing links and keeps failed/demo calculations retryable",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+      "title": "isolated PostgreSQL persistence recovers abandoned jobs and fences a calculation after its owner clears history",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "title": "Tarot HTTP response provenance marks a successful provider response as api",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "title": "Tarot HTTP response provenance marks a server fallback as local while keeping the selected cards",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "title": "Tarot HTTP response provenance requires the original cards for detail and reports provider failure without a fake upgrade",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "title": "Tarot HTTP response provenance keeps quota fallback chat distinguishable from a provider reply",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "title": "Tarot HTTP response provenance aborts the reading provider request when the phone disconnects",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/api.test.ts",
+      "title": "Tarot HTTP response provenance aborts the chat provider request when the phone disconnects",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data does not substitute angular separation for a missing natal orb",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data does not fill a partial provider response with invented planets, houses, or aspects",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data retains actual house cusps without assuming they supply an Ascendant",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data does not label a undefined house-one cusp as an explicitly calculated Ascendant",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data does not label a whole_sign house-one cusp as an explicitly calculated Ascendant",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data retains an explicit provider Ascendant independently of whole-sign house cusps",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data exposes provider-confirmed house metadata without treating the requested setting as confirmation",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data keeps an empty live transit result empty and uses its real calculation date",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data does not invent exact dates or zero-degree orbs when the provider omitted them",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data returns unavailable without sample guidance on provider failure and allows retry",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+      "title": "calculated astrology data retries a failed synastry calculation and caches only its successful real result",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/birthPayload.test.ts",
+      "title": "preserves actual zero offsets and midnight without guessing missing birth fields",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/birthPayload.test.ts",
+      "title": "uses the birth instant's zone offset and refuses nonexistent or ambiguous local times",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions crosses zero without moving either point",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions honors conjunction at 8 degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions honors conjunction at 8.01 degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions honors sextile at 64 degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions honors sextile at 64.01 degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions honors square at 96 degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions honors trine at 126 degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions honors opposition at 172 degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions keeps all 121 real cross-person links and stable ownership",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions never supplies missing or invalid degrees",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/astrology/synastryGeometry.test.ts",
+      "title": "actual two-person positions retains exact geometry when people are exchanged",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract preserves exact selected identities, positions, orientations and full copy",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects missing cards instead of attaching meanings to the wrong artwork",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects reordered cards instead of attaching meanings to the wrong artwork",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects reversed cards instead of attaching meanings to the wrong artwork",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects different cards instead of attaching meanings to the wrong artwork",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract bounds the request and budgets for every selected card without changing the model",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract expands the existing answer only for an explicitly requested detailed reading",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract does not pass a wordier basic reading off as detail without practical reasoning",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects new detail missing its cards_connection section",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects new detail missing its watch_for section",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects a length completion even if it looks like parseable JSON",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects a content_filter completion even if it looks like parseable JSON",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects a tool_calls completion even if it looks like parseable JSON",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects refusal and malformed JSON",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract never echoes the private question in its local fallback answer",
+      "status": "passed"
+    },
+    {
+      "file": "artifacts/api-server/src/modules/tarot/ai/structuredTarotReader.test.ts",
+      "title": "Tarot provider contract rejects an incomplete follow-up and uses a bounded, cancellable request",
+      "status": "passed"
+    }
+  ]
+}

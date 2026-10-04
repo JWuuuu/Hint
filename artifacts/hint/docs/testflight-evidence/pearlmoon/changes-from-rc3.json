@@ -1,0 +1,406 @@
+[
+  {
+    "file": "artifacts/api-server/src/modules/astrology/astroProxyService.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/api-server/src/modules/astrology/astrologyApiClient.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/api-server/src/modules/astrology/astrologyData.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/api-server/src/quality/persistence.integration.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/api-server/src/routes/history.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/e2e/astrology-creation.spec.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/e2e/astrology-quality.spec.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/e2e/astrology.spec.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/e2e/quality-gap-regressions.spec.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/e2e/quality-recovery.spec.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/e2e/tarot-room.spec.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/components/app/IdentityRecovery.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/components/app/LocalProfileSwitcher.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/components/app/OnboardingAstrology.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/components/app/OnboardingGate.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/components/app/ProfileForm.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/components/app/ProfileForm.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/components/astro/BirthProfileForm.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/api.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/api.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/astro/astroClient.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/astro/normalizeClientAstro.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/astro/userBirthProfile.identity.test.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/lib/astro/userBirthProfile.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/astro/verifiedBirthChart.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/lib/auth.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/auth.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/birthDetails.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/clearHistory.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/clearHistory.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/deviceSession.test.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/lib/deviceSession.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/deviceSessionCore.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/deviceSessionCore.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/generatedTransport.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/identity.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/identity.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/identityLock.test.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/lib/identityLock.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/lib/mobile/deepLinks.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/mobile/deepLinks.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/lib/useProfile.identity.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/lib/useProfile.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/main.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/astrologyCopy.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/astrologyLibrary.test.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/astrologyLibrary.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/chartState.test.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/chartState.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/components/AstrologyGuide.test.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/components/AstrologyGuide.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/components/NatalWheel.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/components/NatalWheel.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/components/TogetherReading.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/components/TogetherReading.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/components/astrology-guide.css",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/relationshipContext.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/togetherCopy.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/useBirthChart.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/astrology/useBirthChart.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/AstrologyView.component.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/AstrologyView.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/CompatibilityView.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/DailyPullView.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/JournalView.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/JournalView.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/compatibility.css",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/compatibilityRecovery.test.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/features/dailyNoteRecovery.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/readings/ReadingsView.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/readings/ReadingsView.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/readings/historyCopy.ts",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/components/CardWashRitual.motion.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/components/CardWashRitual.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/components/TarotHintReadingChat.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/components/TarotRoomFlow.component.test.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/components/TarotRoomFlow.motion.test.tsx",
+    "status": "new"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/components/TarotRoomFlow.tsx",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/logic/activeTarotSession.test.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/modules/tarot/logic/activeTarotSession.ts",
+    "status": "modified"
+  },
+  {
+    "file": "artifacts/hint/src/types/astrology.ts",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-client-react/src/custom-fetch.ts",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-client-react/src/generated/api.schemas.ts",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-client-react/src/generated/api.ts",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-client-react/src/index.ts",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-spec/openapi.yaml",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-zod/src/generated/api.ts",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroCalculationMetadata.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroCalculationMetadataReturned.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroCalculationMetadataZodiacSystem.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroNatalProfile.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroNatalRequest.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroNatalResult.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroNatalResultChart.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroNatalResultMode.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroNatalResultSource.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/astroNatalResultValidation.ts",
+    "status": "new"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/index.ts",
+    "status": "modified"
+  },
+  {
+    "file": "lib/api-zod/src/generated/types/journalInput.ts",
+    "status": "modified"
+  },
+  {
+    "file": "scripts/start_hint_website.py",
+    "status": "new"
+  }
+]

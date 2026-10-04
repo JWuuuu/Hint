@@ -1,0 +1,173 @@
+{
+  "environment": "Desktop WebKit, mobile viewport, no native device. Sequential old/new comparisons, same fictional inputs, 3 repetitions each. No video recording during measurement.",
+  "samples": [
+    {
+      "candidate": "before",
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 1,
+      "frames": 84,
+      "p50": 17,
+      "p95": 19,
+      "max": 20,
+      "over100": 0,
+      "releaseToCutMs": 1809
+    },
+    {
+      "candidate": "after",
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 1,
+      "frames": 86,
+      "p50": 17,
+      "p95": 19,
+      "max": 21,
+      "over100": 0,
+      "releaseToCutMs": 1303
+    },
+    {
+      "candidate": "before",
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 2,
+      "frames": 88,
+      "p50": 17,
+      "p95": 18,
+      "max": 19,
+      "over100": 0,
+      "releaseToCutMs": 1807
+    },
+    {
+      "candidate": "after",
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 2,
+      "frames": 81,
+      "p50": 17,
+      "p95": 18,
+      "max": 19,
+      "over100": 0,
+      "releaseToCutMs": 1300
+    },
+    {
+      "candidate": "before",
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 3,
+      "frames": 87,
+      "p50": 17,
+      "p95": 19,
+      "max": 21,
+      "over100": 0,
+      "releaseToCutMs": 1802
+    },
+    {
+      "candidate": "after",
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 3,
+      "frames": 80,
+      "p50": 17,
+      "p95": 19,
+      "max": 19,
+      "over100": 0,
+      "releaseToCutMs": 1304
+    },
+    {
+      "candidate": "before",
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 1,
+      "frames": 80,
+      "p50": 17,
+      "p95": 19,
+      "max": 19,
+      "over100": 0,
+      "releaseToCutMs": 1803
+    },
+    {
+      "candidate": "after",
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 1,
+      "frames": 80,
+      "p50": 17,
+      "p95": 18,
+      "max": 19,
+      "over100": 0,
+      "releaseToCutMs": 1307
+    },
+    {
+      "candidate": "before",
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 2,
+      "frames": 80,
+      "p50": 17,
+      "p95": 19,
+      "max": 19,
+      "over100": 0,
+      "releaseToCutMs": 1807
+    },
+    {
+      "candidate": "after",
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 2,
+      "frames": 88,
+      "p50": 17,
+      "p95": 19,
+      "max": 21,
+      "over100": 0,
+      "releaseToCutMs": 1299
+    },
+    {
+      "candidate": "before",
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 3,
+      "frames": 80,
+      "p50": 17,
+      "p95": 18,
+      "max": 19,
+      "over100": 0,
+      "releaseToCutMs": 1801
+    },
+    {
+      "candidate": "after",
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 3,
+      "frames": 85,
+      "p50": 17,
+      "p95": 19,
+      "max": 21,
+      "over100": 0,
+      "releaseToCutMs": 1314
+    }
+  ]
+}

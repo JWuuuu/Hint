@@ -1,0 +1,142 @@
+[
+  {
+    "lang": "en",
+    "phone": "iphone-17-pro-max",
+    "theme": "bright",
+    "app": false,
+    "system": false,
+    "geometry": {
+      "width": 440,
+      "scrollWidth": 440,
+      "table": {
+        "x": 0,
+        "y": 299.5,
+        "width": 440,
+        "height": 490
+      },
+      "button": {
+        "top": 857.203125,
+        "bottom": 909.203125,
+        "height": 52,
+        "width": 384
+      },
+      "headingBottom": 215.5,
+      "viewportHeight": 956
+    },
+    "errors": [],
+    "sawCut": true,
+    "clearance": 34.109375
+  },
+  {
+    "lang": "es",
+    "phone": "iphone-se",
+    "theme": "dark",
+    "app": false,
+    "system": false,
+    "geometry": {
+      "width": 375,
+      "scrollWidth": 375,
+      "table": {
+        "x": 0,
+        "y": 264.5,
+        "width": 375,
+        "height": 330.5
+      },
+      "button": {
+        "top": 602.203125,
+        "bottom": 654.203125,
+        "height": 52,
+        "width": 343
+      },
+      "headingBottom": 180,
+      "viewportHeight": 667
+    },
+    "errors": [],
+    "sawCut": true,
+    "clearance": 37.609375
+  },
+  {
+    "lang": "zh",
+    "phone": "iphone-se",
+    "theme": "bright",
+    "app": true,
+    "system": false,
+    "geometry": {
+      "width": 375,
+      "scrollWidth": 375,
+      "table": {
+        "x": 0,
+        "y": 264,
+        "width": 375,
+        "height": 331
+      },
+      "button": {
+        "top": 602.203125,
+        "bottom": 654.203125,
+        "height": 52,
+        "width": 343
+      },
+      "headingBottom": 180,
+      "viewportHeight": 667
+    },
+    "errors": [],
+    "sawCut": true,
+    "clearance": 37.609375
+  },
+  {
+    "lang": "ja",
+    "phone": "iphone-17-pro-max",
+    "theme": "dark",
+    "app": false,
+    "system": true,
+    "geometry": {
+      "width": 440,
+      "scrollWidth": 440,
+      "table": {
+        "x": 0,
+        "y": 299.5,
+        "width": 440,
+        "height": 490
+      },
+      "button": {
+        "top": 857.203125,
+        "bottom": 909.203125,
+        "height": 52,
+        "width": 384
+      },
+      "headingBottom": 215.5,
+      "viewportHeight": 956
+    },
+    "errors": [],
+    "sawCut": true,
+    "clearance": 34.109375
+  },
+  {
+    "lang": "ko",
+    "phone": "iphone-17-pro-max",
+    "theme": "bright",
+    "app": true,
+    "system": true,
+    "geometry": {
+      "width": 440,
+      "scrollWidth": 440,
+      "table": {
+        "x": 0,
+        "y": 299.5,
+        "width": 440,
+        "height": 490
+      },
+      "button": {
+        "top": 857.203125,
+        "bottom": 909.203125,
+        "height": 52,
+        "width": 384
+      },
+      "headingBottom": 215.5,
+      "viewportHeight": 956
+    },
+    "errors": [],
+    "sawCut": true,
+    "clearance": 34.109375
+  }
+]

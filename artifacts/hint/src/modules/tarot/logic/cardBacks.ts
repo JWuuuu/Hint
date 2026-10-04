@@ -77,8 +77,11 @@ export type TarotCardBackChoice = {
   image: string;
 };
 
+export const ORIGINAL_TAROT_CARD_BACK_ID: TarotCardBackId =
+  "07_Zodiac_Set_A_Detailed/11_Aquarius_Waterbearer_Teal_Gold.png";
+
 const DEFAULT_CARD_BACK_BY_STYLE: Record<TarotCardBackStyle, TarotCardBackId> = {
-  nocturne: "00_Hint_Sky_Deck/01_Sky_Deck_Celestial_Navy_Gold.png",
+  nocturne: ORIGINAL_TAROT_CARD_BACK_ID,
   ivory: "01_Final_Eight_Set/05_Dawn_Gate_Ivory_Gold.png",
   rose: "01_Final_Eight_Set/02_Moon_Tide_Lavender_Gold.png",
 };
@@ -96,6 +99,7 @@ function getCollection(relativePath: TarotCardBackId) {
 }
 
 function getLabel(relativePath: TarotCardBackId) {
+  if (relativePath === ORIGINAL_TAROT_CARD_BACK_ID) return "Original Sky";
   const parts = relativePath.split("/");
   return toTitle(parts[parts.length - 1] ?? relativePath);
 }

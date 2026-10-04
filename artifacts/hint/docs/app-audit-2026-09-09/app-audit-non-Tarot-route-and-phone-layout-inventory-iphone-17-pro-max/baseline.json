@@ -1,0 +1,298 @@
+[
+  {
+    "path": "/app",
+    "headings": [
+      "Today",
+      "Your Hintis waiting."
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [
+      "Move slowly where the facts are unclear.",
+      "Sky Evidence ✦"
+    ],
+    "tinyControls": 4,
+    "errors": []
+  },
+  {
+    "path": "/app/daily",
+    "headings": [
+      "Daily Sky Card",
+      "A clear enough day to move gently."
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [
+      "",
+      "Sun6Sep 6, 2026",
+      "Yesterday7Sep 7, 2026",
+      "Today8Sep 8, 2026",
+      "Tomorrow9Sep 9, 2026",
+      "Thu10Sep 10, 2026"
+    ],
+    "tinyControls": 6,
+    "errors": []
+  },
+  {
+    "path": "/app/astrology",
+    "headings": [
+      "Add birth data once",
+      "Save your sky profile"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 1,
+    "errors": []
+  },
+  {
+    "path": "/app/collection",
+    "headings": [
+      "Your deck memory"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Today",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/personalities",
+    "headings": [
+      "Find Your Type",
+      "When you are stressed, you usually:"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/ask",
+    "headings": [
+      "What is on your mind?"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 1,
+    "errors": []
+  },
+  {
+    "path": "/app/readings",
+    "headings": [
+      "Readings",
+      "Your Hint memory"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/readings/missing",
+    "headings": [
+      "Reading not found"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/profile",
+    "headings": [
+      "Profile",
+      "Night Guest"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [
+      ""
+    ],
+    "tinyControls": 2,
+    "errors": []
+  },
+  {
+    "path": "/app/rooms",
+    "headings": [
+      "Choose the kind of room you need.",
+      "Open now",
+      "Reflection",
+      "Tarot",
+      "Relationships",
+      "Astrology",
+      "Inner Self",
+      "Growth"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/journal",
+    "headings": [
+      "Emotional Journal"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/dream",
+    "headings": [
+      "Dream Decoder"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/compatibility",
+    "headings": [
+      "Shared chart room",
+      "Compare two charts without making it weird.",
+      "Save your birth details"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/app/login",
+    "headings": [
+      "Log in or sign up"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 2,
+    "errors": []
+  },
+  {
+    "path": "/about",
+    "headings": [
+      "About Hint"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/privacy",
+    "headings": [
+      "Privacy Policy"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/terms",
+    "headings": [
+      "Terms"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/disclaimer",
+    "headings": [
+      "Disclaimer"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  },
+  {
+    "path": "/contact",
+    "headings": [
+      "Contact"
+    ],
+    "horizontalOverflow": [],
+    "clippedText": [],
+    "tinyControls": 0,
+    "errors": []
+  }
+]

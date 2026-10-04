@@ -1,0 +1,198 @@
+.hint-preview-workspace {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  padding: 12px 16px 16px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(76, 68, 88, 0.16), transparent 38%),
+    #09090b;
+  color: #f7f2f6;
+  font-family: var(--app-font-sans, system-ui, sans-serif);
+}
+
+.hint-preview-toolbar {
+  z-index: 3;
+  display: flex;
+  min-height: 48px;
+  max-width: calc(100vw - 32px);
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 6px 8px;
+  background: rgba(28, 27, 31, 0.94);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.hint-preview-toolbar__icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #d8c6de;
+}
+
+.hint-preview-device-field {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.hint-preview-device-field select {
+  width: 188px;
+  max-width: 48vw;
+  height: 32px;
+  appearance: none;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 30px 0 10px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #f5eff4;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.hint-preview-device-field select:focus-visible {
+  box-shadow: 0 0 0 2px rgba(185, 151, 201, 0.72);
+}
+
+.hint-preview-device-field svg {
+  position: absolute;
+  right: 9px;
+  pointer-events: none;
+  color: rgba(247, 239, 246, 0.66);
+}
+
+.hint-preview-dimensions {
+  padding-right: 6px;
+  color: rgba(239, 231, 238, 0.52);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.hint-preview-scaled-frame {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.hint-preview-phone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transform-origin: top left;
+  border: 7px solid #09090b;
+  background: #09090b;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 30px 90px rgba(0, 0, 0, 0.58),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.055);
+}
+
+.hint-preview-screen {
+  display: block;
+  overflow: hidden;
+  border: 0;
+  background: #f7f0ea;
+}
+
+.hint-preview-hardware {
+  position: absolute;
+  inset: 7px;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.hint-preview-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  width: 126px;
+  height: 37px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #020203, #0d0d10);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.055);
+  transform: translateX(-50%);
+}
+
+.hint-preview-camera {
+  position: absolute;
+  top: 50%;
+  right: 11px;
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgba(96, 118, 168, 0.28);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 35%, rgba(94, 130, 198, 0.62), transparent 22%),
+    radial-gradient(circle, #17223c 0 28%, #070a12 54%, #020204 74%);
+  box-shadow: 0 0 6px rgba(67, 95, 151, 0.28);
+  transform: translateY(-50%);
+}
+
+.hint-preview-earpiece {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 62px;
+  height: 5px;
+  border-radius: 999px;
+  background: #202024;
+  transform: translateX(-50%);
+}
+
+.hint-preview-home-indicator {
+  position: absolute;
+  bottom: 9px;
+  left: 50%;
+  width: 122px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(16, 15, 18, 0.78);
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+  transform: translateX(-50%);
+}
+
+@media (max-width: 520px) {
+  .hint-preview-workspace {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .hint-preview-toolbar {
+    min-height: 44px;
+  }
+
+  .hint-preview-toolbar__icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hint-preview-dimensions {
+    display: none;
+  }
+
+  .hint-preview-device-field select {
+    max-width: 65vw;
+  }
+}

@@ -462,6 +462,7 @@ export function saveTarotRoomSetupPreference(setup: TarotRoomSetup) {
     cardBackId: setup.cardBackId,
     backgroundId: setup.backgroundId,
     cardColor: setup.cardColor,
+    spreadType: setup.spreadType,
   };
   try {
     window.localStorage.setItem(TAROT_ROOM_SETUP_STORAGE_KEY, JSON.stringify(preference));

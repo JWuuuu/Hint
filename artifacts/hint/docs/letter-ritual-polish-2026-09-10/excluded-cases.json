@@ -1,0 +1,142 @@
+[
+  {
+    "project": "iphone-17-pro-max",
+    "file": "room-entrances.spec.ts",
+    "title": "host RAF sample for repeated warm room entrances"
+  },
+  {
+    "project": "iphone-se",
+    "file": "room-entrances.spec.ts",
+    "title": "host RAF sample for repeated warm room entrances"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "development preview switches between full iPhone hardware frames"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "native packaging files cannot reload an active Tarot screen"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "development preview presents Personal Spread inside the selected phone"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "voice completion keeps the transcript usable in the phone sheet"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "Auto Wash avoids sustained animation stalls"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "pick arc stays ordered on stars"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "pick arc stays ordered on dawn"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "pick arc stays ordered on sea"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 1 cards on stars"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 3 cards on dawn"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 5 cards on sea"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 7 cards on stars"
+  },
+  {
+    "project": "iphone-17-pro-max",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 9 cards on dawn"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "development preview switches between full iPhone hardware frames"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "native packaging files cannot reload an active Tarot screen"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "development preview presents Personal Spread inside the selected phone"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "voice completion keeps the transcript usable in the phone sheet"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "Auto Wash avoids sustained animation stalls"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "pick arc stays ordered on stars"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "pick arc stays ordered on dawn"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "pick arc stays ordered on sea"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 1 cards on stars"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 3 cards on dawn"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 5 cards on sea"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 7 cards on stars"
+  },
+  {
+    "project": "iphone-se",
+    "file": "tarot-room.spec.ts",
+    "title": "reading layout 9 cards on dawn"
+  }
+]

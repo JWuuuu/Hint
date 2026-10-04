@@ -1,5 +1,5 @@
-import { and, eq } from "drizzle-orm";
-import { db, dailyReceiptsTable } from "@workspace/db";
+import { and, eq, sql } from "drizzle-orm";
+import { db, dailyReceiptsTable, dailyPullsTable, historyClearsTable } from "@workspace/db";
 import { dailyPullDeck, drawDailyPull, type DailyPullCard } from "./dailyPullDeck.js";
 
 export const DAILY_RECEIPT_FEATURES = [
@@ -92,6 +92,7 @@ export function serializeDailyReceipt(
     expiresAt: row.expiresAt.toISOString(),
     openedAt: row.openedAt?.toISOString() ?? null,
     lastSeenAt: row.lastSeenAt?.toISOString() ?? null,
+    historyExcluded: row.historyExcluded,
     serverTime: serverTime.toISOString(),
   };
 }
@@ -101,20 +102,26 @@ export async function getOrCreateDailyReceipt({
   featureType,
   userId = null,
   now = new Date(),
+  dailyKey,
 }: {
   anonymousDeviceId: string;
   featureType: DailyReceiptFeature;
   userId?: string | null;
   now?: Date;
+  dailyKey?: string;
 }) {
-  const { dailyKey, expiresAt } = getServerDailyWindow(now);
+  const dailyWindow = getServerDailyWindow(
+    dailyKey ? new Date(`${dailyKey}T12:00:00.000Z`) : now,
+  );
+  const activeDailyKey = dailyWindow.dailyKey;
+  const { expiresAt } = dailyWindow;
   const [existing] = await db
     .select()
     .from(dailyReceiptsTable)
     .where(
       and(
         eq(dailyReceiptsTable.anonymousDeviceId, anonymousDeviceId),
-        eq(dailyReceiptsTable.dailyKey, dailyKey),
+        eq(dailyReceiptsTable.dailyKey, activeDailyKey),
         eq(dailyReceiptsTable.featureType, featureType),
       ),
     )
@@ -134,7 +141,7 @@ export async function getOrCreateDailyReceipt({
     .values({
       anonymousDeviceId,
       userId,
-      dailyKey,
+      dailyKey: activeDailyKey,
       featureType,
       assignedCardId: assignCard(featureType),
       orientation: pickOrientation(featureType),
@@ -159,7 +166,7 @@ export async function getOrCreateDailyReceipt({
     .where(
       and(
         eq(dailyReceiptsTable.anonymousDeviceId, anonymousDeviceId),
-        eq(dailyReceiptsTable.dailyKey, dailyKey),
+        eq(dailyReceiptsTable.dailyKey, activeDailyKey),
         eq(dailyReceiptsTable.featureType, featureType),
       ),
     )
@@ -177,13 +184,21 @@ export async function openDailyReceipt({
   featureType,
   userId = null,
   now = new Date(),
+  dailyKey,
 }: {
   anonymousDeviceId: string;
   featureType: DailyReceiptFeature;
   userId?: string | null;
   now?: Date;
+  dailyKey?: string;
 }) {
-  const receipt = await getOrCreateDailyReceipt({ anonymousDeviceId, featureType, userId, now });
+  const receipt = await getOrCreateDailyReceipt({
+    anonymousDeviceId,
+    featureType,
+    userId,
+    now,
+    dailyKey,
+  });
   const [updated] = await db
     .update(dailyReceiptsTable)
     .set({
@@ -198,4 +213,40 @@ export async function openDailyReceipt({
 
 export function dailyPullCardById(cardId: string | null | undefined): DailyPullCard {
   return dailyPullDeck.find((card) => card.id === cardId) ?? dailyPullDeck[0]!;
+}
+
+export class DailyReceiptConflict extends Error {}
+export class DailyReceiptInputError extends Error {}
+export async function syncRevealedDailyReceipt(input: {
+  anonymousDeviceId: string; featureType: DailyReceiptFeature; dailyKey: string;
+  assignedCardId: string | null; orientation?: string | null; openedAt: string;
+}) {
+  const validCard = input.featureType === "energy-score" ? input.assignedCardId === null
+    : input.featureType === "animal-tarot" ? ANIMAL_TAROT_IDS.some(id => id === input.assignedCardId)
+    : dailyPullDeck.some(card => card.id === input.assignedCardId);
+  if (!validCard) throw new DailyReceiptInputError("Invalid card identity");
+  const assigned = await getOrCreateDailyReceipt(input);
+  return db.transaction(async tx => {
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${input.anonymousDeviceId}, 0))`);
+    const [cleared] = await tx.select().from(historyClearsTable).where(eq(historyClearsTable.ownerId, input.anonymousDeviceId));
+    const [receipt] = await tx.select().from(dailyReceiptsTable).where(eq(dailyReceiptsTable.id, assigned.id)).for("update");
+    if (!receipt) throw new Error("Receipt unavailable");
+    if (receipt.openedAt && (receipt.assignedCardId !== input.assignedCardId || (input.orientation && receipt.orientation && input.orientation !== receipt.orientation))) {
+      throw new DailyReceiptConflict("An already revealed card differs from this device");
+    }
+    const historyExcluded = receipt.historyExcluded || Boolean(cleared && (input.dailyKey <= cleared.throughDay || new Date(input.openedAt) <= cleared.clearedAt));
+    const [updated] = await tx.update(dailyReceiptsTable).set({
+      historyExcluded, assignedCardId: input.assignedCardId, orientation: receipt.openedAt ? receipt.orientation : input.orientation ?? receipt.orientation,
+      openedAt: receipt.openedAt ?? new Date(input.openedAt), lastSeenAt: new Date(),
+    }).where(eq(dailyReceiptsTable.id, receipt.id)).returning();
+    if (input.featureType === "daily-card" && !historyExcluded) {
+      const card = dailyPullCardById(input.assignedCardId);
+      await tx.insert(dailyPullsTable).values({ anonId: input.anonymousDeviceId, pullDate: input.dailyKey,
+        cardId: card.id, cardName: card.name, whisper: card.whisper, isFlipped: true })
+        .onConflictDoUpdate({ target: [dailyPullsTable.anonId, dailyPullsTable.pullDate], set: {
+          cardId: card.id, cardName: card.name, whisper: card.whisper, isFlipped: true,
+        } });
+    }
+    return updated!;
+  });
 }

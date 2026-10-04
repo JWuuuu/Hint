@@ -1,0 +1,33 @@
+{
+  "candidate": "RC3",
+  "rawTrace": "/tmp/hint-testflight-candidate-20260909-211052/rc3-main-results/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max/trace.zip",
+  "rawTraceSha256": "9f272ce05e57c54a0e780f752aa6f9d6cd1124f639549e69893ac6dbda2c0f45",
+  "departingRoute": "/app/readings?hintPreview=embedded",
+  "destination": "/app/profile?hintPreview=embedded",
+  "gotoStartMs": 180152.278,
+  "nativeDiagnosticMs": 180155.102,
+  "gotoEndMs": 180252.51,
+  "diagnosticAfterGotoStartMs": 2.824,
+  "event": {
+    "type": "event",
+    "time": 180155.102,
+    "class": "BrowserContext",
+    "method": "pageError",
+    "params": {
+      "error": {
+        "error": {
+          "message": "/127.0.0.1:5188/api/readings?anonId=ef4ba4f9-9d69-4f2c-a257-acc59128b631 due to access control checks.",
+          "stack": "Fetch API cannot load http://127.0.0.1:5188/api/readings?anonId=ef4ba4f9-9d69-4f2c-a257-acc59128b631 due to access control checks.\n    at Na (http://127.0.0.1:5188/assets/index-wggXop4-.js:864:23731)",
+          "name": "Fetch API cannot load http"
+        }
+      },
+      "location": {
+        "url": "http://127.0.0.1:5188/assets/index-wggXop4-.js",
+        "line": 863,
+        "column": 23730
+      }
+    },
+    "pageId": "page@6896e6e7c1280f3985140c09830e2415"
+  },
+  "interpretation": "The exact native diagnostic occurred 2.824 ms into the pending readings-to-profile goto. The harness classifies only this native shape on matching local read-only route transitions; true window errors/unhandled rejections remain failures."
+}

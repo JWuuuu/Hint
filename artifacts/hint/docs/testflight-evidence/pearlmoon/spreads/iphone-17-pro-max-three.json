@@ -1,0 +1,34 @@
+{
+  "spread": "three",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "dawn",
+  "readingId": "tarot-1789080175427-z368gh",
+  "positions": [
+    "Past",
+    "Present",
+    "Next"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-19-kf97c2x",
+      "cardId": "king-wands",
+      "name": "King of Wands",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-46-luq8h79",
+      "cardId": "19-sun",
+      "name": "The Sun",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-44-jys2mab",
+      "cardId": "9-hermit",
+      "name": "The Hermit",
+      "orientation": "reversed"
+    }
+  ],
+  "readingRequests": 1
+}

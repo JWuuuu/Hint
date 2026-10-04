@@ -1,5 +1,5 @@
 ﻿import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   CalendarDays,
@@ -9,18 +9,10 @@ import {
   UserRound,
   type LucideIcon,
 } from "lucide-react";
-import {
-  PointerProvider,
-  RoomLight,
-  Particles,
-  Vignette,
-  Grain,
-  Haze,
-  Moonlight,
-} from "./modules/hold/atmosphere";
+import { PointerProvider } from "./modules/hold/atmosphere";
 import { AppLaunchIntro } from "./components/app/AppLaunchIntro";
 import type { LaunchIntroVariant } from "./components/app/AppLaunchIntro";
-import { CelestialBackdrop } from "./components/app/CelestialBackdrop";
+import { ConstellationBackdrop } from "./components/app/ConstellationBackdrop";
 import { trackEvent } from "./lib/analytics";
 import {
   getInitialHintTheme,
@@ -28,11 +20,12 @@ import {
   type HintTheme,
 } from "./components/app/theme";
 import {
-  getHintPreferences,
   HINT_PREFERENCES_UPDATED_EVENT,
 } from "./lib/preferences";
 import { useLanguage } from "./lib/i18n";
 import { triggerFeedback } from "./lib/feedback";
+import { useMotionPolicy } from "./lib/motionPolicy";
+import { RoomTransitions } from "./components/app/RoomTransitions";
 
 /** Full-screen flows own their navigation, so the global bottom nav is hidden there. */
 const NAV_HIDDEN_ROUTES = ["/tarot", "/ask", "/login", "/app/tarot", "/app/ask", "/app/login"];
@@ -73,16 +66,15 @@ function onboardingOwnsScreen(): boolean {
 }
 
 /**
- * AppShell — the persistent room. Atmosphere is mounted once at the app
- * level so routes can crossfade without the particles/moonlight resetting.
+ * AppShell — the persistent room. The constellation backdrop is mounted once
+ * so routes can change without restarting the star light.
  * Children are placed above the atmosphere on z-20.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   const [location] = useLocation();
+  const routePath = location.split(/[?#]/, 1)[0]?.replace(/\/+$/, "") || "/";
   const [theme, setTheme] = useState<HintTheme>(getInitialHintTheme);
-  const [reduceMotion, setReduceMotion] = useState(
-    () => getHintPreferences().reduceMotion,
-  );
+  const { reduced: reduceMotion } = useMotionPolicy();
   const [isFirstLaunch, setIsFirstLaunch] = useState(() => {
     if (typeof window === "undefined") return false;
     if (hasLaunchIntroPreviewFlag()) return true;
@@ -95,13 +87,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [showLaunchIntro, setShowLaunchIntro] = useState(true);
   const [launchIntroLeaving, setLaunchIntroLeaving] = useState(false);
   const [launchIntroRunKey, setLaunchIntroRunKey] = useState(0);
+  const launchRoute = useRef(routePath);
   const isLaunchIntroPreview = hasLaunchIntroPreviewFlag();
   const launchIntroVariant = getLaunchIntroVariant();
-  const isProductRoute = !["/privacy", "/terms", "/disclaimer", "/contact", "/about"].includes(location);
-  const referenceHomeRoute = location === "/app" || location === "/";
-  const creamStyleRoute = !referenceHomeRoute && isCreamStyleRoute(location);
+  const isProductRoute = !["/privacy", "/terms", "/disclaimer", "/contact", "/about"].includes(routePath);
+  const referenceHomeRoute = routePath === "/app" || routePath === "/";
+  const creamStyleRoute = !referenceHomeRoute && isCreamStyleRoute(routePath);
   const showNav = isProductRoute && !onboardingOwnsScreen() && !NAV_HIDDEN_ROUTES.some(
-    (r) => location === r || location.startsWith(r + "/"),
+    (r) => routePath === r || routePath.startsWith(r + "/"),
   );
 
   useEffect(() => {
@@ -125,13 +118,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [theme]);
 
   useEffect(() => {
-    document.documentElement.dataset.hintReduceMotion = reduceMotion ? "true" : "false";
-  }, [reduceMotion]);
-
-  useEffect(() => {
     const syncPreferences = () => {
       setTheme(getInitialHintTheme());
-      setReduceMotion(getHintPreferences().reduceMotion);
     };
 
     window.addEventListener(HINT_PREFERENCES_UPDATED_EVENT, syncPreferences);
@@ -150,10 +138,17 @@ export function AppShell({ children }: { children: ReactNode }) {
     setLaunchIntroRunKey((key) => key + 1);
   }, [location]);
 
+  useLayoutEffect(() => {
+    // Launch belongs to the screen where this app session started. A quick
+    // first Home tap must not reveal a second launch ceremony over the room.
+    if (launchRoute.current !== routePath && !isLaunchIntroPreview) setShowLaunchIntro(false);
+    launchRoute.current = routePath;
+  }, [routePath, isLaunchIntroPreview]);
+
   useEffect(() => {
     if (!showLaunchIntro) return;
 
-    const shouldReduceLaunchMotion = reduceMotion && !isLaunchIntroPreview;
+    const shouldReduceLaunchMotion = reduceMotion;
     const leaveAfter = shouldReduceLaunchMotion ? 360 : isLaunchIntroPreview ? 4240 : isFirstLaunch ? 2580 : 1920;
     const hideAfter = shouldReduceLaunchMotion ? 520 : isLaunchIntroPreview ? 4680 : isFirstLaunch ? 2820 : 2140;
     const leaveTimer = window.setTimeout(() => setLaunchIntroLeaving(true), leaveAfter);
@@ -181,33 +176,23 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <PointerProvider>
-      <div
+      <RoomTransitions
+        location={location}
         data-hint-theme={theme}
         data-hint-cream-route={creamStyleRoute ? "true" : undefined}
         className={[
-          "hint-app-shell-root fixed inset-0 overflow-hidden",
+          "hint-app-shell-root hint-constellation-shell fixed inset-0 overflow-hidden",
           creamStyleRoute ? "hint-cream-route" : "",
         ].join(" ")}
       >
-        {!referenceHomeRoute && !creamStyleRoute ? (
-          <>
-            {/* Atmosphere stack — back to front */}
-            <CelestialBackdrop theme={theme} />
-            <Moonlight />
-            <Haze />
-            <Particles />
-            <RoomLight />
-            <Vignette />
-            <Grain />
-          </>
-        ) : null}
+        <ConstellationBackdrop />
 
         {/* Route content sits above the atmosphere.
             Pages own their own scroll model — AppShell does not impose
             one, so chat-style pages can pin an input to the bottom while
             scrollable pages (like the home dashboard) handle their own
             overflow. */}
-        <div className="absolute inset-0 z-20">
+        <div data-room-content className="absolute inset-0 z-20">
           {children}
         </div>
 
@@ -215,7 +200,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           <AppNavigationChrome location={location} theme={theme} creamStyleRoute={creamStyleRoute} />
         ) : null}
 
-        {ENABLE_LAUNCH_INTRO && isProductRoute && !referenceHomeRoute && !creamStyleRoute && showLaunchIntro ? (
+        {ENABLE_LAUNCH_INTRO &&
+        isProductRoute &&
+        !referenceHomeRoute &&
+        !creamStyleRoute &&
+        (isFirstLaunch || isLaunchIntroPreview) &&
+        showLaunchIntro ? (
           <AppLaunchIntro
             theme={theme}
             leaving={launchIntroLeaving}
@@ -224,7 +214,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             variant={launchIntroVariant}
           />
         ) : null}
-      </div>
+      </RoomTransitions>
     </PointerProvider>
   );
 }
@@ -240,23 +230,45 @@ function AppNavigationChrome({
 }) {
   const isDark = theme === "dark";
   const { t } = useLanguage();
+  const dockRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const dock = dockRef.current;
+    if (!dock) return;
+    const root = document.documentElement;
+    const updateClearance = () => {
+      // Existing screen padding already clears the original 52px dock and orb.
+      // Observe the dock, whose size does not depend on this extra clearance.
+      const clearance = `${Math.max(0, Math.ceil(dock.getBoundingClientRect().height) - 52)}px`;
+      if (root.style.getPropertyValue("--hint-nav-extra-height") !== clearance) {
+        root.style.setProperty("--hint-nav-extra-height", clearance);
+      }
+    };
+    updateClearance();
+    const observer = new ResizeObserver(updateClearance);
+    observer.observe(dock);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--hint-nav-extra-height");
+    };
+  }, []);
   const referenceHome = location === "/app" || location === "/";
-  const lightChrome = referenceHome || creamStyleRoute;
-  const chromeSurface = referenceHome
+  const lightReferenceHome = referenceHome && !isDark;
+  const lightChrome = !isDark && (referenceHome || creamStyleRoute);
+  const chromeSurface = lightReferenceHome
     ? "linear-gradient(180deg, rgba(255,254,251,0.74), rgba(250,245,239,0.62))"
     : "var(--hint-dock-bg, var(--hint-nav-bg, var(--hint-liquid-panel)))";
-  const chromeBorder = referenceHome
+  const chromeBorder = lightReferenceHome
     ? "rgba(218,199,187,0.170)"
     : "var(--hint-dock-border, var(--hint-liquid-border, var(--hint-border)))";
-  const chromeShadow = referenceHome
+  const chromeShadow = lightReferenceHome
     ? "0 16px 36px rgba(102, 79, 67, 0.044), 0 5px 14px rgba(177,137,190,0.018), inset 0 1px 0 rgba(255,255,255,0.56), inset 0 -12px 22px rgba(129,91,111,0.012)"
     : "var(--hint-dock-shadow, var(--hint-nav-shadow, var(--hint-liquid-shadow)))";
   const appTabs: AppTabItem[] = [
     { href: "/app", label: t("nav.today"), icon: Home, exact: true },
     { href: "/app/daily", label: t("nav.daily"), icon: CalendarDays },
-    { href: "/app/ask", label: "Ask", icon: Sparkles, featured: true },
+    { href: "/app/ask", label: t("nav.ask"), icon: Sparkles, featured: true },
     { href: "/app/readings", label: t("nav.history"), icon: History },
-    { href: "/app/profile", label: t("me.settings"), icon: UserRound },
+    { href: "/app/profile", label: t("nav.me"), icon: UserRound },
   ];
   return (
     <nav
@@ -266,13 +278,14 @@ function AppNavigationChrome({
     >
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 -z-10 h-[calc(5.25rem+var(--hint-safe-bottom))]"
+        className="absolute inset-x-0 bottom-0 -z-10 h-[calc(5.25rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))]"
         style={{
           background: "var(--hint-dock-veil)",
         }}
       />
       <div
-        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid h-[52px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-1 overflow-visible rounded-[28px] border p-1.5"
+        ref={dockRef}
+        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid min-h-[64px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-1 overflow-visible rounded-[28px] border p-1.5"
         data-reference-home={referenceHome ? "true" : "false"}
         style={{
           background: chromeSurface,
@@ -354,11 +367,11 @@ function AppTab({
       onPointerDown={() => triggerFeedback(featured ? "select" : "tap")}
       className={[
         "hint-app-tab hint-pressable hint-tap-sparkle relative flex min-w-0 flex-col items-center justify-center px-1 text-center transition hover:-translate-y-0.5 active:scale-[0.98]",
-        featured ? "h-[52px] overflow-visible rounded-[26px]" : "h-[52px] gap-0.5 rounded-[26px]",
+        featured ? "min-h-[50px] overflow-visible rounded-[26px]" : "min-h-[50px] gap-[3px] rounded-[26px] py-1",
       ].join(" ")}
       style={{
         color: featured
-          ? "var(--hint-special-action-text)"
+          ? isDark ? "var(--hint-text)" : "var(--hint-special-action-text)"
           : active
             ? isDark ? "#f8f1e8" : "#3f3a44"
             : isDark ? "rgba(248,241,232,0.62)" : "#807982",
@@ -390,7 +403,7 @@ function AppTab({
       ) : (
         <span
           className={[
-            "hint-app-tab-label max-w-full truncate font-sans font-medium leading-none",
+            "hint-app-tab-label max-w-full whitespace-normal [overflow-wrap:anywhere] font-sans font-medium leading-[1.15]",
             featured ? "absolute inset-x-0 bottom-[4px] text-[10px]" : "text-[11px]",
           ].join(" ")}
         >

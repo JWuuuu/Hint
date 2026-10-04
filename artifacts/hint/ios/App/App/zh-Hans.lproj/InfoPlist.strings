@@ -1,0 +1,2 @@
+"NSMicrophoneUsageDescription" = "使用麦克风说出你的问题。你也可以选择打字输入。";
+"NSSpeechRecognitionUsageDescription" = "将你说出的问题转换为文字，发送前可以检查和修改。";

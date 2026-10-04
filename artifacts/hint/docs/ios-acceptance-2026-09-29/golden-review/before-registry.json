@@ -1,0 +1,161 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:29:02.109Z",
+    "source": {
+      "commit": "26becb1986db10822149827b837b26060273d286",
+      "fingerprint": "45d190b412dd0f49153ad894641492e2d885afa48b8a2e87bd79e24ac5dd1033"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-reflow-20260929",
+      "fingerprint": "6fda3456e37edd55bbc4d7a6396ba8800509409aef9799c32a26eb35ae121542"
+    },
+    "selected": 24
+  },
+  "tests": [
+    {
+      "title": "selected single layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1973
+    },
+    {
+      "title": "selected three layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1835
+    },
+    {
+      "title": "selected relationship layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1820
+    },
+    {
+      "title": "selected futureLover layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1890
+    },
+    {
+      "title": "selected peachBlossom layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1848
+    },
+    {
+      "title": "selected reconciliation layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1837
+    },
+    {
+      "title": "selected trueHeart layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1852
+    },
+    {
+      "title": "selected loveTree layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1885
+    },
+    {
+      "title": "selected xRelationship layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1877
+    },
+    {
+      "title": "pick arc stays ordered on stars",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1135
+    },
+    {
+      "title": "pick arc stays ordered on dawn",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1156
+    },
+    {
+      "title": "pick arc stays ordered on sea",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1158
+    },
+    {
+      "title": "selected single layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1920
+    },
+    {
+      "title": "selected three layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1794
+    },
+    {
+      "title": "selected relationship layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1770
+    },
+    {
+      "title": "selected futureLover layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1821
+    },
+    {
+      "title": "selected peachBlossom layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1851
+    },
+    {
+      "title": "selected reconciliation layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1857
+    },
+    {
+      "title": "selected trueHeart layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1815
+    },
+    {
+      "title": "selected loveTree layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1785
+    },
+    {
+      "title": "selected xRelationship layout has its own space above the complete card arc",
+      "project": "iphone-se",
+      "status": "passed",
+      "durationMs": 1774
+    },
+    {
+      "title": "pick arc stays ordered on stars",
+      "project": "iphone-se",
+      "status": "failed",
+      "durationMs": 1646
+    },
+    {
+      "title": "pick arc stays ordered on dawn",
+      "project": "iphone-se",
+      "status": "failed",
+      "durationMs": 1749
+    },
+    {
+      "title": "pick arc stays ordered on sea",
+      "project": "iphone-se",
+      "status": "failed",
+      "durationMs": 1763
+    }
+  ]
+}

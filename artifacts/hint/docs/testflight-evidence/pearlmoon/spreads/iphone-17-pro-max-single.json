@@ -1,0 +1,20 @@
+{
+  "spread": "single",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "stars",
+  "readingId": "tarot-1789080157606-n8xafp",
+  "positions": [
+    "The Message"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-6-a28h2ck",
+      "cardId": "three-pentacles",
+      "name": "Three of Pentacles",
+      "orientation": "upright"
+    }
+  ],
+  "readingRequests": 1
+}

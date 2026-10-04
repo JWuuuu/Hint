@@ -1,0 +1,78 @@
+{
+  "before": {
+    "rows": [
+      {
+        "circle": 1,
+        "innerCards": 11,
+        "minRadius": 8.031802603491817,
+        "width": 64.31872557276735
+      },
+      {
+        "circle": 2,
+        "innerCards": 9,
+        "minRadius": 9.259468941039755,
+        "width": 58.80347347923567
+      },
+      {
+        "circle": 3,
+        "innerCards": 7,
+        "minRadius": 9.530871408514225,
+        "width": 64.0036767964507
+      }
+    ],
+    "inwardEnd": {
+      "visualId": "fictional-0",
+      "cardId": "card-0",
+      "name": "Fictional card",
+      "orientation": "upright",
+      "x": 72.25064014821481,
+      "y": 57.29120595804837,
+      "rotate": 3.2251804619676476,
+      "rotation": 3.2251804619676476,
+      "zIndex": 0,
+      "revealed": false,
+      "selected": false,
+      "velocityX": -0.05657642400198652,
+      "velocityY": 0.22184189113147543,
+      "velocityRotate": 0.1355532302741714
+    }
+  },
+  "after": {
+    "rows": [
+      {
+        "circle": 1,
+        "innerCards": 10,
+        "minRadius": 3.6481147032081243,
+        "width": 65.67665252364534
+      },
+      {
+        "circle": 2,
+        "innerCards": 7,
+        "minRadius": 4.827132910630942,
+        "width": 63.91222219135914
+      },
+      {
+        "circle": 3,
+        "innerCards": 10,
+        "minRadius": 2.5260660897551777,
+        "width": 64.42452994918695
+      }
+    ],
+    "inwardEnd": {
+      "visualId": "fictional-0",
+      "cardId": "card-0",
+      "name": "Fictional card",
+      "orientation": "upright",
+      "x": 69.20105332156855,
+      "y": 54.90269530847464,
+      "rotate": 3.3634990128018742,
+      "rotation": 3.3634990128018742,
+      "zIndex": 0,
+      "revealed": false,
+      "selected": false,
+      "velocityX": -0.18237288930191514,
+      "velocityY": 0.1346092835000897,
+      "velocityRotate": 0.15416560707736668
+    }
+  }
+}

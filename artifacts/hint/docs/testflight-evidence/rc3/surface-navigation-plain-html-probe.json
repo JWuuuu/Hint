@@ -1,0 +1,92 @@
+[
+  {
+    "mode": "pagehide-handled-fetch",
+    "events": [
+      {
+        "type": "pageerror",
+        "message": "/127.0.0.1:5196/api/reading-days?probe=fictional due to access control checks.",
+        "name": "Fetch API cannot load http"
+      },
+      {
+        "type": "pageerror",
+        "message": "/127.0.0.1:5196/api/reading-days?probe=fictional due to access control checks.",
+        "name": "Fetch API cannot load http"
+      },
+      {
+        "type": "pageerror",
+        "message": "/127.0.0.1:5196/api/reading-days?probe=fictional due to access control checks.",
+        "name": "Fetch API cannot load http"
+      },
+      {
+        "type": "pageerror",
+        "message": "/127.0.0.1:5196/api/reading-days?probe=fictional due to access control checks.",
+        "name": "Fetch API cannot load http"
+      },
+      {
+        "type": "pageerror",
+        "message": "/127.0.0.1:5196/api/reading-days?probe=fictional due to access control checks.",
+        "name": "Fetch API cannot load http"
+      }
+    ]
+  },
+  {
+    "mode": "beforeunload-handled-fetch",
+    "events": [
+      {
+        "type": "console",
+        "level": "log",
+        "message": "HANDLED_FETCH_REJECTION TypeError"
+      },
+      {
+        "type": "console",
+        "level": "log",
+        "message": "HANDLED_FETCH_REJECTION TypeError"
+      },
+      {
+        "type": "console",
+        "level": "log",
+        "message": "HANDLED_FETCH_REJECTION TypeError"
+      },
+      {
+        "type": "console",
+        "level": "log",
+        "message": "HANDLED_FETCH_REJECTION TypeError"
+      },
+      {
+        "type": "console",
+        "level": "log",
+        "message": "HANDLED_FETCH_REJECTION TypeError"
+      }
+    ]
+  },
+  {
+    "mode": "timer-navigation-race",
+    "events": [
+      {
+        "type": "console",
+        "level": "log",
+        "message": "HANDLED_FETCH_REJECTION TypeError"
+      },
+      {
+        "type": "console",
+        "level": "error",
+        "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      },
+      {
+        "type": "console",
+        "level": "error",
+        "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      },
+      {
+        "type": "console",
+        "level": "error",
+        "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      },
+      {
+        "type": "console",
+        "level": "error",
+        "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      }
+    ]
+  }
+]

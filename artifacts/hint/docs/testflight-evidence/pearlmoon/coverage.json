@@ -1,0 +1,4980 @@
+{
+  "stats": {
+    "startTime": "2026-09-10T22:36:48.096Z",
+    "duration": 1369600.109,
+    "expected": 492,
+    "skipped": 20,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "files": {
+    "app-audit.spec.ts": {
+      "passed": 2
+    },
+    "astrology-quality.spec.ts": {
+      "passed": 84
+    },
+    "astrology.spec.ts": {
+      "passed": 26
+    },
+    "daily-history-periods.spec.ts": {
+      "passed": 8
+    },
+    "daily-text-layout.spec.ts": {
+      "skipped": 8,
+      "passed": 8
+    },
+    "home-motion.spec.ts": {
+      "passed": 32
+    },
+    "journal.spec.ts": {
+      "passed": 10
+    },
+    "locale-surface-audit.spec.ts": {
+      "passed": 16
+    },
+    "navigation-text-layout.spec.ts": {
+      "passed": 10
+    },
+    "personality-sharing.spec.ts": {
+      "passed": 20
+    },
+    "quality-gap-regressions.spec.ts": {
+      "passed": 14
+    },
+    "quality-locales.spec.ts": {
+      "passed": 80
+    },
+    "quality-recovery.spec.ts": {
+      "passed": 26
+    },
+    "tarot-all-spreads.spec.ts": {
+      "passed": 9,
+      "skipped": 9
+    },
+    "tarot-room.spec.ts": {
+      "passed": 131,
+      "skipped": 3
+    },
+    "touch-targets.spec.ts": {
+      "passed": 6
+    },
+    "motion-performance.spec.ts": {
+      "passed": 8
+    },
+    "astrology-creation.spec.ts": {
+      "passed": 2
+    }
+  },
+  "cases": [
+    {
+      "file": "app-audit.spec.ts",
+      "title": "non-Tarot route and phone layout inventory",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 11991,
+      "annotations": []
+    },
+    {
+      "file": "app-audit.spec.ts",
+      "title": "non-Tarot route and phone layout inventory",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10674,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3945,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3410,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3636,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3532,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2160,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1892,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2077,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1951,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2069,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1899,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2166,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1878,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2085,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en bright app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1848,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2069,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality en dark app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1958,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3554,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3447,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3608,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3463,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2289,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1939,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2255,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1923,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2161,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1966,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2194,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1979,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2144,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh bright app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1940,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2317,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality zh dark app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1966,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3594,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3482,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3604,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3421,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2027,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1877,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2147,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1935,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2171,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1839,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2188,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1886,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2148,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es bright app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1905,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2127,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality es dark app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1968,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3576,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3481,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4246,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3494,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2103,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1853,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2234,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1792,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2125,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1866,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2155,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1930,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2343,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja bright app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1915,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2331,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ja dark app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1978,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3559,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3508,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3677,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=false OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3467,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2042,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1858,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2135,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=true OS=false",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1857,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2296,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1823,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2168,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=false OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1831,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2089,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko bright app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2030,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2136,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology quality ko dark app=true OS=true",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1982,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology unknown saved selection remains recoverable and does not invent a chart point",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 738,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology unknown saved selection remains recoverable and does not invent a chart point",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 787,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "Together invalidates an existing result and ignores a late response after partner edits",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 987,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "Together invalidates an existing result and ignores a late response after partner edits",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 959,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "zodiac learning works without an account and sections survive back and refresh",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3534,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "zodiac learning works without an account and sections survive back and refresh",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4747,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "unknown birth time never produces an invented personal chart",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 702,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "unknown birth time never produces an invented personal chart",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 659,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "fallback chart is never presented as personal and explicit retry recovers",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1117,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "fallback chart is never presented as personal and explicit retry recovers",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1096,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "transit failure and empty success never insert sample rows or fabricated dates",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 975,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "transit failure and empty success never insert sample rows or fabricated dates",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 892,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "a late chart response cannot overwrite changed birth details",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1055,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "a late chart response cannot overwrite changed birth details",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1089,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "bright astrology layouts and accessibility",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2378,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "bright astrology layouts and accessibility",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2244,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "dark astrology layouts and accessibility",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2351,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "dark astrology layouts and accessibility",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2292,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "Rooms search and preview recovery have working destinations",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2188,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "Rooms search and preview recovery have working destinations",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2146,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "birth place edits clear old coordinates and ignore stale search matches",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1098,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "birth place edits clear old coordinates and ignore stale search matches",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1013,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "Chinese sign learning does not trigger a personal calculation",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1297,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "Chinese sign learning does not trigger a personal calculation",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1236,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "dense chart and expanded details remain readable above bottom navigation",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1731,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "dense chart and expanded details remain readable above bottom navigation",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1650,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "chart points and enlarged chart support keyboard, history and direct detail reload",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1741,
+      "annotations": []
+    },
+    {
+      "file": "astrology.spec.ts",
+      "title": "chart points and enlarged chart support keyboard, history and direct detail reload",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1774,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "Daily day, week, month and year controls retain calendar-selected periods",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3334,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "Daily day, week, month and year controls retain calendar-selected periods",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3292,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "Days read displays unique dates across local and server records within each period",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2018,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "Days read displays unique dates across local and server records within each period",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2326,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "unread earlier periods display zero Days read",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1309,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "unread earlier periods display zero Days read",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1276,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "History filters isolate fictional records and preserve daily, Tarot and question details",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 7594,
+      "annotations": []
+    },
+    {
+      "file": "daily-history-periods.spec.ts",
+      "title": "History filters isolate fictional records and preserve daily, Tarot and question details",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6928,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily zh bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 124,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily zh bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1105,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily zh dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 118,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily zh dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1194,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily es bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 125,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily es bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1120,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily es dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 128,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily es dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1187,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ja bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 128,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ja bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1125,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ja dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 129,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ja dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1164,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ko bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 124,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ko bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1145,
+      "annotations": []
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ko dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 124,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Targeted SE text stress; normal layout already covers both phone sizes.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/daily-text-layout.spec.ts",
+            "line": 13,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "daily-text-layout.spec.ts",
+      "title": "Daily ko dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1229,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=false OS=false, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2283,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=false OS=false, reveals without sync, and restores modal focus",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2172,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=true OS=false, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 912,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=true OS=false, reveals without sync, and restores modal focus",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 924,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=false OS=true, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 928,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=false OS=true, reveals without sync, and restores modal focus",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 833,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=true OS=true, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 943,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home respects app=true OS=true, reveals without sync, and restores modal focus",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 913,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home save reports quota failure, retries once and keeps long result actions reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1410,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home save reports quota failure, retries once and keeps long result actions reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1157,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "a failed room chunk can be reloaded without losing its destination",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1912,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "a failed room chunk can be reloaded without losing its destination",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1854,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (en)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1128,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (en)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 960,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (en)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1917,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (en)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1674,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (zh)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1115,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (zh)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 964,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (zh)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1862,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (zh)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2235,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (es)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1432,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (es)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1027,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (es)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2303,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (es)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1691,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (ja)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1172,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (ja)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 956,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (ja)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1900,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (ja)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2123,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (ko)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1058,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home reveal action has localized copy and a reachable 44px target (ko)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 962,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (ko)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1934,
+      "annotations": []
+    },
+    {
+      "file": "home-motion.spec.ts",
+      "title": "Home long card result at 200% text stays readable and scrollable (ko)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2204,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "draft survives navigation and reload, then a failed save can be retried once",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3473,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "draft survives navigation and reload, then a failed save can be retried once",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3432,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "history errors are distinct from empty pages and retry recovers",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1044,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "history errors are distinct from empty pages and retry recovers",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 836,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "confirmed save stays visible when refreshing history fails",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1116,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "confirmed save stays visible when refreshing history fails",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 918,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "bright journal has readable controls, bounded inputs and no horizontal overflow",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1470,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "bright journal has readable controls, bounded inputs and no horizontal overflow",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1374,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "dark journal has readable controls, bounded inputs and no horizontal overflow",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1579,
+      "annotations": []
+    },
+    {
+      "file": "journal.spec.ts",
+      "title": "dark journal has readable controls, bounded inputs and no horizontal overflow",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1297,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "zh bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28682,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "zh bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 26465,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "zh dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28613,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "zh dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 26592,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "es bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28742,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "es bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 27102,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "es dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28640,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "es dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 26631,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ja bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28648,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ja bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 26457,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ja dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28517,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ja dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 26423,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ko bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28619,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ko bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 26464,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ko dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 28523,
+      "annotations": []
+    },
+    {
+      "file": "locale-surface-audit.spec.ts",
+      "title": "ko dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 26482,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation en keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1189,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation en keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1055,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation zh keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1142,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation zh keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1036,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation es keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1196,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation es keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1024,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation ja keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1033,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation ja keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1087,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation ko keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1148,
+      "annotations": []
+    },
+    {
+      "file": "navigation-text-layout.spec.ts",
+      "title": "Navigation ko keeps complete labels and reachable targets at 200% text",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1019,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality exports a real PNG and cancelling its preview revokes the old image",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1469,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality exports a real PNG and cancelling its preview revokes the old image",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1464,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality exports complete Japanese text in a real PNG",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1231,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality exports complete Japanese text in a real PNG",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1136,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality retries a real canvas export after a synthetic generation failure",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1190,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality retries a real canvas export after a synthetic generation failure",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1187,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality keeps the preview and retries when browser download initiation throws",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1132,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality keeps the preview and retries when browser download initiation throws",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1117,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality ignores a late English export after changing language and creating a new preview",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2277,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Personality ignores a late English export after changing language and creating a new preview",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2286,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Leaving Personality cancels a pending export without reopening a preview on return",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1206,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "Leaving Personality cancels a pending export without reopening a preview on return",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1120,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "zh Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2383,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "zh Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2324,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "es Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2401,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "es Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2263,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "ja Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2411,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "ja Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1997,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "ko Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2380,
+      "annotations": []
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "title": "ko Tarot receipt preview exports a localized private PNG",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1914,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "Spanish Profile keeps the complete save action and optional fields at 200% text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1098,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "Spanish Profile keeps the complete save action and optional fields at 200% text",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1077,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History en preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1760,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History en preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1910,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History zh preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1542,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History zh preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1476,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History es preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1476,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History es preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1802,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History ja preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1521,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History ja preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1479,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History ko preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1067,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "History ko preserves long questions, contextual counters and 44px reading actions",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1505,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "a fresh device can learn Astrology and enter birth details without onboarding or email",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 655,
+      "annotations": []
+    },
+    {
+      "file": "quality-gap-regressions.spec.ts",
+      "title": "a fresh device can learn Astrology and enter birth details without onboarding or email",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 679,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6806,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6679,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4342,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4148,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4395,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4505,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4372,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4315,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6978,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6859,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4398,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4338,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4437,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4287,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4459,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "en dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4405,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6612,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6364,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4400,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4268,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4364,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4284,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4499,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4292,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6621,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6123,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4424,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4357,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4368,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4365,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4396,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "zh dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4265,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6537,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 8053,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4351,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4240,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4351,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4256,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4325,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4240,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6551,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6791,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4428,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4247,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4412,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4386,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4369,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "es dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4245,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6879,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6349,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4366,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4185,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4435,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4490,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4484,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4497,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 7078,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6458,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4323,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4374,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4438,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4401,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4390,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ja dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4379,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6788,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 7829,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4309,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4319,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4298,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4402,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4377,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko bright appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4332,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6917,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=false systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 7910,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4585,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=false systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4578,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4409,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=true systemMotion=false: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4339,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4407,
+      "annotations": []
+    },
+    {
+      "file": "quality-locales.spec.ts",
+      "title": "ko dark appMotion=true systemMotion=true: quiz edit, preview and mobile layout",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4381,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Daily failed notes survive date changes and reload, then retry saves",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1994,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Daily failed notes survive date changes and reload, then retry saves",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1907,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Ask failed question is still editable after reload",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1158,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Ask failed question is still editable after reload",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1251,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "the offline daily card stays identical through Daily, Home and Collection",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2532,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "the offline daily card stays identical through Daily, Home and Collection",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2225,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "direct and legacy invitation links show 404 without returning Home",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1182,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "direct and legacy invitation links show 404 without returning Home",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1126,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "direct and legacy invitation links show 410 without returning Home",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1198,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "direct and legacy invitation links show 410 without returning Home",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1068,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "a new local beta profile returns to the invitation after onboarding",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1366,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "a new local beta profile returns to the invitation after onboarding",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1485,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "language options escape the settings card and support dismissal",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1418,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "language options escape the settings card and support dismissal",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1345,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Animal Tarot quota failures retain the result and permit collection retry",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2597,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Animal Tarot quota failures retain the result and permit collection retry",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2590,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "leaving during Animal Tarot reveal retains the already visible animal",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1328,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "leaving during Animal Tarot reveal retains the already visible animal",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1282,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "history errors retain local records and provide retry",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 8306,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "history errors retain local records and provide retry",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 8381,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "history deletion failure preserves data and successful retry keeps preferences",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 782,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "history deletion failure preserves data and successful retry keeps preferences",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 696,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Daily late save responses cannot clear a newer draft",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 790,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "Daily late save responses cannot clear a newer draft",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 762,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "midnight starts a new dated receipt while preserving the previous revealed card",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1665,
+      "annotations": []
+    },
+    {
+      "file": "quality-recovery.spec.ts",
+      "title": "midnight starts a new dated receipt while preserving the previous revealed card",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1292,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete single: select 1 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 16779,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete single: select 1 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 125,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete three: select 3 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 17790,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete three: select 3 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 133,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 17713,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 128,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19937,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 127,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19187,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 124,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19875,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 125,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19146,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 143,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19714,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 133,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 21261,
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 130,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot entry has accessible semantics and touch targets",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1230,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot entry has accessible semantics and touch targets",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1173,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot recommendation has accessible semantics and touch targets",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1454,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot recommendation has accessible semantics and touch targets",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1450,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread recommendations keep every layout and full explanation in normal flow",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 9505,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread recommendations keep every layout and full explanation in normal flow",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 9081,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1905,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1745,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot room setup has accessible semantics and touch targets",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1161,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot room setup has accessible semantics and touch targets",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1155,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot wash has accessible semantics and touch targets",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4371,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot wash has accessible semantics and touch targets",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4427,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot arc has accessible semantics and touch targets",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1381,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot arc has accessible semantics and touch targets",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1286,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot reading has accessible semantics and touch targets",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2318,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Tarot reading has accessible semantics and touch targets",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2273,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 14302,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 14336,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10912,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10752,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "card detail stays gesture-first without visible zoom controls",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3255,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "card detail stays gesture-first without visible zoom controls",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3232,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6819,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6203,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper demo reading failure is retryable without a silent upgrade",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2355,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper demo reading failure is retryable without a silent upgrade",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2395,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper reading motion is reversible and respects normal motion",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5120,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper reading motion is reversible and respects normal motion",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5689,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper reading motion is reversible and respects system motion",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2772,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper reading motion is reversible and respects system motion",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2275,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper reading motion is reversible and respects hint motion",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4412,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "deeper reading motion is reversible and respects hint motion",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4937,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "completes and restores the full Tarot Room journey",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 23553,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "completes and restores the full Tarot Room journey",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 23493,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a tap without movement cannot finish a manual wash",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4071,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a tap without movement cannot finish a manual wash",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3671,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "the wash table stops repainting while idle or after a rejected gesture",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5322,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "the wash table stops repainting while idle or after a rejected gesture",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5270,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a real manual wash release completes the automatic ritual",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 9751,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a real manual wash release completes the automatic ritual",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10262,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "rapid Auto Wash requests advance through one ordered ritual",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 11778,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "rapid Auto Wash requests advance through one ordered ritual",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 11544,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 9799,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 9976,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 9884,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 9631,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "an active ritual survives a terminated and reopened webview",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6156,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "an active ritual survives a terminated and reopened webview",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6135,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a cancelled wash gesture stays in the wash stage",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3920,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a cancelled wash gesture stays in the wash stage",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3846,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "voice unavailability keeps a clear typed fallback",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 979,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "voice unavailability keeps a clear typed fallback",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 838,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "voice completion keeps the transcript usable in the phone sheet",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1324,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "voice completion keeps the transcript usable in the phone sheet",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1060,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "cancelling receipt sharing stays quiet and allows sharing again",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3459,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "cancelling receipt sharing stays quiet and allows sharing again",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3262,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt preview and exported PNG keep the question and chat private by default",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6391,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt preview and exported PNG keep the question and chat private by default",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6233,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 1-card en text and readable artwork",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4071,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 1-card en text and readable artwork",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4109,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 3-card en text and readable artwork",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4627,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 3-card en text and readable artwork",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4649,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 5-card en text and readable artwork",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5199,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 5-card en text and readable artwork",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5218,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 7-card en text and readable artwork",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5721,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 7-card en text and readable artwork",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 5750,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 9-card en text and readable artwork",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6418,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 9-card en text and readable artwork",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6303,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 9-card zh text and readable artwork",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6412,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "receipt exports complete 9-card zh text and readable artwork",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 6419,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "system reduced motion completes the automatic ritual promptly",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2745,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "system reduced motion completes the automatic ritual promptly",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2717,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "hint reduced motion completes the automatic ritual promptly",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2745,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "hint reduced motion completes the automatic ritual promptly",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2699,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Auto Wash avoids sustained animation stalls",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 11870,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "Auto Wash avoids sustained animation stalls",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 125,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "One primary-device frame pacing gate",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-room.spec.ts",
+            "line": 1595,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "an offline follow-up is saved and restored with its local reply",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2338,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "an offline follow-up is saved and restored with its local reply",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2364,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 14762,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 14795,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "leaving a pending follow-up cancels its request before History resumes",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2994,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "leaving a pending follow-up cancels its request before History resumes",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3020,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a late reading response cannot replace the settled local reading",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 11022,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a late reading response cannot replace the settled local reading",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10933,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a pending interpretation survives refresh with an explicit retry",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2846,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a pending interpretation survives refresh with an explicit retry",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2837,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a local interpretation survives refresh with an explicit retry",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2801,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a local interpretation survives refresh with an explicit retry",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2705,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a server-local interpretation survives refresh with an explicit retry",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3328,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a server-local interpretation survives refresh with an explicit retry",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3409,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "refresh restores the newest fallback session after durable storage fills",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1854,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "refresh restores the newest fallback session after durable storage fills",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1857,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a failed save keeps the reading and chat until an explicit durable retry",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4241,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "a failed save keeps the reading and chat until an explicit durable retry",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 4258,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "damaged saved interpretation and design recover without losing the selected cards",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3540,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "damaged saved interpretation and design recover without losing the selected cards",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3651,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "the reading composer remains visible above a keyboard-sized viewport",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 129,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Short-screen keyboard regression",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-room.spec.ts",
+            "line": 1990,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "the reading composer remains visible above a keyboard-sized viewport",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1841,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "five consecutive rituals do not degrade",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 68811,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "five consecutive rituals do not degrade",
+      "project": "iphone-se",
+      "status": "skipped",
+      "expectedStatus": "skipped",
+      "durationMs": 126,
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "One primary-device soak run",
+          "location": {
+            "file": "/private/tmp/hint-pearlmoon-20260910/candidate/artifacts/hint/e2e/tarot-room.spec.ts",
+            "line": 2003,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on stars",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1314,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on stars",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1138,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on dawn",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1288,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on dawn",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1106,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on sea",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1361,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on sea",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1059,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread single remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2036,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread single remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1883,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread three remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1941,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread three remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1929,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread peachBlossom remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1984,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread peachBlossom remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1879,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread futureLover remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2020,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread futureLover remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1940,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread xRelationship remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1887,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread xRelationship remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2036,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread relationship remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1893,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread relationship remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1956,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread reconciliation remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1937,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread reconciliation remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1850,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread trueHeart remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1914,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread trueHeart remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1954,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread loveTree remains contained",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1920,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "spread loveTree remains contained",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1671,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 1 cards on stars",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2639,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 1 cards on stars",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2321,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 3 cards on dawn",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2632,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 3 cards on dawn",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2437,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 5 cards on sea",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2631,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 5 cards on sea",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2424,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 7 cards on stars",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2536,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 7 cards on stars",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2360,
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 9 cards on dawn",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2653,
+      "annotations": [
+        {
+          "type": "test_environment_repaired",
+          "description": "Original screenshot baselines restored; unchanged runtime passed the comparison."
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 9 cards on dawn",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 2419,
+      "annotations": []
+    },
+    {
+      "file": "touch-targets.spec.ts",
+      "title": "Login mode and method controls and Profile edit have reachable 44px targets",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 18011,
+      "annotations": []
+    },
+    {
+      "file": "touch-targets.spec.ts",
+      "title": "Login mode and method controls and Profile edit have reachable 44px targets",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 18104,
+      "annotations": []
+    },
+    {
+      "file": "touch-targets.spec.ts",
+      "title": "Ask text input and Send are at least 44px while long drafts can still grow",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 17528,
+      "annotations": []
+    },
+    {
+      "file": "touch-targets.spec.ts",
+      "title": "Ask text input and Send are at least 44px while long drafts can still grow",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 17526,
+      "annotations": []
+    },
+    {
+      "file": "touch-targets.spec.ts",
+      "title": "Rooms preview checkbox uses its complete 44px label hit area",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 17618,
+      "annotations": []
+    },
+    {
+      "file": "touch-targets.spec.ts",
+      "title": "Rooms preview checkbox uses its complete 44px label hit area",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 17664,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology host frame samples during chart, detail and scrolling",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3167,
+      "annotations": []
+    },
+    {
+      "file": "astrology-quality.spec.ts",
+      "title": "Astrology host frame samples during chart, detail and scrolling",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 3177,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19260,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 19181,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10453,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10339,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10462,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10639,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10375,
+      "annotations": []
+    },
+    {
+      "file": "motion-performance.spec.ts",
+      "title": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 10320,
+      "annotations": []
+    },
+    {
+      "file": "astrology-creation.spec.ts",
+      "title": "fresh Astrology journey verifies a birthplace, reviews details and restores a personal chart without email",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1701,
+      "annotations": []
+    },
+    {
+      "file": "astrology-creation.spec.ts",
+      "title": "fresh Astrology journey verifies a birthplace, reviews details and restores a personal chart without email",
+      "project": "iphone-se",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "durationMs": 1570,
+      "annotations": []
+    }
+  ],
+  "testEnvironmentRepairs": [
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "voice completion keeps the transcript usable in the phone sheet",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on stars",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on dawn",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "pick arc stays ordered on sea",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 1 cards on stars",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 3 cards on dawn",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 5 cards on sea",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 7 cards on stars",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "title": "reading layout 9 cards on dawn",
+      "project": "iphone-17-pro-max",
+      "reason": "Isolated copy omitted existing baselines; rerun compared against original repository snapshots, without adopting generated actual images."
+    }
+  ]
+}

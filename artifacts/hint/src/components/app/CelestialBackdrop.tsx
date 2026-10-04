@@ -27,7 +27,6 @@ function Spark({
     </g>
   );
 }
-
 function Orbit({
   x,
   y,
@@ -223,4 +222,3 @@ export function CelestialBackdrop({ theme }: Props) {
     </div>
   );
 }
-

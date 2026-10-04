@@ -1,3 +1,4 @@
+import { translateText } from "../../../lib/LocalizedText";
 import { getLocalDateString } from "../../../lib/identity";
 import type {
   DailyLuckyItem,
@@ -7,6 +8,7 @@ import type {
   DailyTask,
 } from "../types/home.types";
 import { getDailyPullById } from "./dailyPulls";
+import { localizeDailyLuckyItem } from "./dailyLuckyCopy";
 import type { HintLanguage } from "../../../lib/i18n";
 import {
   selectSkyGuidedTarot,
@@ -21,7 +23,7 @@ const SCORE_BASE: Array<Omit<DailyScore, "score" | "label"> & { offset: number }
   { key: "people", tone: "#b48abf", offset: 79 },
 ];
 
-const SCORE_LABELS: Record<HintLanguage, Record<DailyScoreKey, string>> = {
+export const SCORE_LABELS: Record<HintLanguage, Record<DailyScoreKey, string>> = {
   en: { love: "Love", wealth: "Wealth", career: "Career", study: "Study", people: "People" },
   zh: { love: "爱情", wealth: "财富", career: "事业", study: "学习", people: "人际" },
   es: { love: "Amor", wealth: "Dinero", career: "Carrera", study: "Estudio", people: "Vínculos" },
@@ -248,6 +250,8 @@ const FLOWERS: readonly TextPair[] = [
   ["Morning Glory", "Good for beginning again"],
   ["Freesia", "Good for bright honesty"],
 ] as const;
+
+export const DAILY_LUCKY_OPTIONS = { color: COLORS, jewelry: JEWELRY, food: FOODS, carry: CARRY_ITEMS, flower: FLOWERS } as const;
 
 const TASKS: DailyTask[] = [
   { text: "Drink a glass of water slowly.", reason: "Restore physical balance before you ask for more energy." },
@@ -606,7 +610,7 @@ const DAILY_BY_LANGUAGE = {
   tasks: readonly DailyTask[];
 }>;
 
-const LUCKY_LABELS: Record<HintLanguage, { color: string; jewelry: string; number: string; food: string; carry: string; flower: string; numberHint: string }> = {
+export const LUCKY_LABELS: Record<HintLanguage, { color: string; jewelry: string; number: string; food: string; carry: string; flower: string; numberHint: string }> = {
   en: { color: "Lucky color", jewelry: "Lucky jewelry", number: "Lucky number", food: "Lucky food", carry: "Lucky carry", flower: "Lucky flower", numberHint: "Use it as a small rhythm" },
   zh: { color: "幸运色", jewelry: "幸运首饰", number: "幸运数字", food: "幸运食物", carry: "随身物", flower: "幸运花", numberHint: "把它当作今天的小节奏" },
   es: { color: "Color de suerte", jewelry: "Joya", number: "Número", food: "Comida", carry: "Objeto", flower: "Flor", numberHint: "Úsalo como un pequeño ritmo" },
@@ -764,25 +768,14 @@ function aspectLabel(distance: number): string {
 }
 
 function astrologySummary(date: Date, birthDetails: BirthDetails | undefined, language: HintLanguage): string {
-  const todaySun = sunDegreeFor(date);
-  const birthDate = parseBirthDate(birthDetails?.birthDate);
-  const natalSun = birthDate ? sunDegreeFor(birthDate) : normalizeDegree(hash("guest:natal") % 360);
-  const distance = angularDistance(natalSun, todaySun);
-  const label = aspectLabel(distance);
-
-  if (language === "zh") {
-    if (label.includes("square")) return "太阳与本命太阳形成紧张角度，今天容易把小压力放大。事业和学习上先收窄目标，别急着证明自己。";
-    if (label.includes("trine")) return "太阳与本命太阳形成顺畅角度，今天比较适合推进重要事项，也适合让别人看见你的真实能力。";
-    if (label.includes("opposite")) return "太阳走到本命太阳的对面，今天会更敏感地看见关系里的回应与距离。别把没有被察觉等同于不被在乎。";
-    if (label.includes("sextile")) return "太阳与本命太阳形成支持角度，今天适合主动沟通、安排资源，也适合把想法落到一个小行动上。";
-    return "今天太阳没有强烈触发本命太阳，能量更适合稳定整理。把注意力放回身体、节奏和一个可完成的小目标。";
-  }
-
-  if (label.includes("square")) return "The Sun is pressing your natal Sun by square, so small pressure may feel louder. Narrow the goal before you push.";
-  if (label.includes("trine")) return "The Sun is supporting your natal Sun by trine, good for visible progress and cleaner confidence.";
-  if (label.includes("opposite")) return "The Sun is opposite your natal Sun, making relationship mirrors feel sharper. Ask for contact instead of guessing from silence.";
-  if (label.includes("sextile")) return "The Sun is supporting your natal Sun by sextile, good for a small message, a practical request, or one clean next step.";
-  return "The Sun is moving through a quieter natal angle today. Keep the rhythm steady and finish one small thing.";
+  const copy = {
+    en: "General reflection: give yourself a steady pace and one small, achievable goal. Open Astrology for your calculated birth chart.",
+    zh: "一般反思：保持稳定节奏，选择一个可以完成的小目标。个人星盘请查看占星页面的计算结果。",
+    es: "Reflexión general: mantén un ritmo tranquilo y elige una meta pequeña. Consulta Astrología para ver tu carta natal calculada.",
+    ja: "一般的な振り返り：落ち着いたペースで、小さな目標を一つ。計算された出生図は占星術で確認できます。",
+    ko: "일반적인 성찰: 차분한 속도로 작은 목표 하나를 정하세요. 계산된 출생 차트는 점성술에서 확인할 수 있습니다.",
+  };
+  return copy[language];
 }
 
 function selfHintFor(reportSeed: number, language: HintLanguage): string {
@@ -800,7 +793,7 @@ function selfHintFor(reportSeed: number, language: HintLanguage): string {
           "Your feelings are not a problem; they need a doorway. Care for the feeling before fixing the task.",
           "Respond a little slower today. You do not owe everyone a perfect answer immediately.",
         ];
-  return hints[reportSeed % hints.length]!;
+  return translateText(hints[reportSeed % hints.length]!, language);
 }
 
 function psychologyFor(reportSeed: number, language: HintLanguage): string {
@@ -816,7 +809,7 @@ function psychologyFor(reportSeed: number, language: HintLanguage): string {
           "Pressure may act like an inner alarm more than an external emergency. Smaller tasks bring steadiness back.",
           "You may want closeness and distance at the same time. Let yourself observe before you explain.",
         ];
-  return notes[reportSeed % notes.length]!;
+  return translateText(notes[reportSeed % notes.length]!, language);
 }
 
 function tarotCardForScores(scores: DailyScore[], date: Date, birthDetails: BirthDetails | undefined): string {
@@ -957,7 +950,7 @@ export function getDailyReport({
     scores.reduce((total, score) => total + score.score, 0) / scores.length,
   );
 
-  const [colorValue, colorHint] = pick(text.colors, copySeed, 3);
+  const [colorValue, colorHint] = pick(COLORS, copySeed, 3);
   const [jewelryValue, jewelryHint] = pick(JEWELRY, copySeed, 11);
   const [foodValue, foodHint] = pick(FOODS, copySeed, 17);
   const [carryValue, carryHint] = pick(CARRY_ITEMS, copySeed, 23);
@@ -988,12 +981,13 @@ export function getDailyReport({
 
   return {
     date: dateString,
+    language,
     overallScore,
     title: pick(text.titles, copySeed, 5),
     summary: pick(text.summaries, copySeed, 17),
     card,
     scores,
-    lucky,
+    lucky: lucky.map(item => localizeDailyLuckyItem(item, language)),
     suggestion: pick(text.suggestions, copySeed, 29),
     avoid: pick(text.avoids, copySeed, 41),
     selfHint: selfHintFor(copySeed, language),

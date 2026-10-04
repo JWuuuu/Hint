@@ -1,17 +1,25 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
+import { useRoomVisit } from "../../../components/app/RoomVisitBoundary";
+import { markRoomVisitStarted, roomVisitWasClosed } from "../../../components/app/roomVisits";
 import {
   useEffect,
+  useReducer,
   useRef,
   useState,
   type CSSProperties,
   type PointerEvent,
   type ReactNode,
+  type WheelEvent,
 } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion";
+import "./spread-recommendation.css";
 import {
   ArrowLeft,
+  ArrowRight,
   ChevronLeft,
   ChevronRight,
   Heart,
+  House,
   Hourglass,
   Lock,
   Mic,
@@ -22,58 +30,113 @@ import {
   Sparkles,
   WandSparkles,
 } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { triggerHaptic, type FeedbackIntent } from "../../../lib/feedback";
+import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
+import { useMotionPolicy } from "../../../lib/motionPolicy";
+import { useLanguage } from "../../../lib/i18n";
 import {
   BACKGROUND_STYLES,
   CARD_FACE_STYLES,
+  DEFAULT_TAROT_ROOM_SETUP,
   SPREAD_CHOICES,
+  loadSavedTarotRoomSetup,
+  saveTarotRoomSetupPreference,
   type CardFaceId,
   type DeckStyleId,
   type RoomBackgroundId,
   type SpreadChoice,
 } from "../../hold/useHoldFlow";
-import { apiUrl } from "../../../lib/api";
+import { apiFetch, apiUrl } from "../../../lib/api";
 import { getAnonId } from "../../../lib/identity";
 import {
   getDefaultTarotCardBackForStyle,
   getTarotCardBackImage,
+  ORIGINAL_TAROT_CARD_BACK_ID,
   TAROT_CARD_BACK_CHOICES,
   type TarotCardBackId,
   type TarotCardBackStyle,
 } from "../logic/cardBacks";
 import { getTarotCardImage } from "../logic/cardImageMap";
 import { createHiddenDeck } from "../logic/createHiddenDeck";
+import { selectCardByVisualId } from "../logic/selectCards";
 import {
+  PICK_WHEEL_CARD_H,
+  PICK_WHEEL_CARD_H_ZOOM,
+  PICK_WHEEL_CARD_W,
+  PICK_WHEEL_CARD_W_ZOOM,
+  PICK_WHEEL_DRAG_SENSITIVITY,
+  TAROT_PHONE_FRAME_MAX_WIDTH,
+  getPickWheelGeometry,
+  getPickWheelLayout,
+  getTarotPhoneStageSize,
+  pickWheelStep,
+  positiveModulo,
+  wheelDisplayNumber,
+  type PickWheelLayout,
+  type PickWheelStageSize,
+} from "../logic/pickWheelGeometry";
+import {
+  applyAutoWashWave,
   applyTableCurrent,
   applyWashForce,
-  cutDeckIntoPackets,
   gatherDeckToCenter,
   loosenDeckForWash,
-  mergeCutDeckAtCenter,
-  settleWashedDeck,
   squareDeckAtCenter,
-  transferCutPacket,
   type WashPointer,
 } from "../logic/washPhysics";
+import {
+  createAutomaticPileOrder,
+  createThreePiles,
+  shuffleHiddenDeck,
+  stackThreePiles,
+  type TarotPileId,
+} from "../logic/ritualDeckOrder";
+import {
+  createInitialWashRitualState,
+  createWashFrameClock,
+  getWashRitualTiming,
+  washRitualReducer,
+} from "../logic/washRitualMachine";
+import {
+  clearActiveTarotSession,
+  loadActiveTarotSession,
+  saveActiveTarotSession,
+  updateActiveTarotSessionArchive,
+} from "../logic/activeTarotSession";
+import {
+  createTarotFlowState,
+  getTarotStableRecoveryStep,
+  tarotFlowReducer,
+  type TarotFlowStep,
+} from "../logic/ritualFlowMachine";
 import type { RitualCard } from "../types/ritual.types";
-import { CardWashRitual, type WashRitualTheme } from "./CardWashRitual";
+import {
+  CardWashRitual,
+  RitualBackCard,
+  WASH_CARD_SIZE,
+  type CardWashRitualHandle,
+  type WashRitualTheme,
+} from "./CardWashRitual";
 import { ReadingReveal } from "./ReadingReveal";
 import { TarotHintReadingChat } from "./TarotHintReadingChat";
+import { SpreadPreviewCarousel } from "./SpreadPreviewCarousel";
 import { readBirthProfile } from "../../../lib/astro/userBirthProfile";
 import { useProfile } from "../../../lib/useProfile";
 import { zodiacSign } from "../../me/utils";
-
-type TarotStep =
-  | "question"
-  | "spreadRecommendation"
-  | "spreadSelector"
-  | "design"
-  | "prepare"
-  | "shuffle"
-  | "cut"
-  | "pick"
-  | "reveal"
-  | "reading";
+import {
+  startHintSpeechRecognition,
+  type HintSpeechSession,
+} from "../../../lib/speechRecognition";
+import { addNativeAppStateListener } from "../../../lib/mobile/appLifecycle";
+import {
+  getLocalTarotReading,
+  type LocalTarotReading,
+} from "../../readings/localTarotReadings";
+import {
+  getTarotRoomStarClassName,
+  getTarotRoomSurfaceBackground,
+} from "../logic/roomVisuals";
 
 type QuestionCard = {
   category: string;
@@ -105,6 +168,47 @@ type SpreadRecommendation = {
   confidence: "high" | "medium" | "low";
   source: "api" | "local";
 };
+
+type Translate = (key: string) => string;
+
+function formatCopy(
+  template: string,
+  values: Record<string, string | number>,
+) {
+  return Object.entries(values).reduce(
+    (copy, [key, value]) => copy.replaceAll(`{${key}}`, String(value)),
+    template,
+  );
+}
+
+function localizeSpreadChoice(spread: SpreadChoice, t: Translate): SpreadChoice {
+  const prefix = `tarot.spread.${spread.id}`;
+  return {
+    ...spread,
+    label: t(`${prefix}.label`),
+    description: t(`${prefix}.description`),
+    positions: t(`${prefix}.positions`),
+    bestFor: t(`${prefix}.bestFor`),
+    positionLabels: t(`${prefix}.positionLabels`).split("|"),
+  };
+}
+
+function isRoomSetupRequested() {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  return params.get("setup") === "1" || params.get("roomSetup") === "1";
+}
+
+function getArchivedReadingRequest() {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(window.location.search);
+  const readingId = params.get("reading")?.trim();
+  if (!readingId) return null;
+  return {
+    readingId,
+    returnToDetail: params.get("returnTo") === "detail",
+  };
+}
 
 const SPREAD_PREVIEW_TEXT_STYLE: CSSProperties = {
   fontFamily: "Inter, Arial, system-ui, sans-serif",
@@ -157,9 +261,6 @@ const QUESTION_CARDS: QuestionCard[] = [
 ];
 
 const FEATURED_SPREADS = [...SPREAD_CHOICES];
-const SPREAD_CAROUSEL_CARD_WIDTH = 300;
-const SPREAD_CAROUSEL_GAP = 44;
-const SPREAD_CAROUSEL_STEP = SPREAD_CAROUSEL_CARD_WIDTH + SPREAD_CAROUSEL_GAP;
 
 const ROOM_DESIGNS: RoomDesign[] = [
   {
@@ -201,15 +302,16 @@ const ROOM_DESIGNS: RoomDesign[] = [
 ];
 
 function hapticTick(duration = 8) {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-    navigator.vibrate(duration);
-  }
+  const intent: FeedbackIntent =
+    duration <= 4 ? "soft" : duration >= 12 ? "select" : "tap";
+  triggerHaptic(intent);
 }
 
 function hapticPulse(pattern: number | number[] = [6, 28, 10]) {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-    navigator.vibrate(pattern);
-  }
+  const longestPulse = Array.isArray(pattern)
+    ? Math.max(...pattern.filter((_, index) => index % 2 === 0))
+    : pattern;
+  triggerHaptic(longestPulse >= 24 ? "warning" : "select");
 }
 
 const CARD_FACE_PREVIEW_IDS = ["0-fool", "6-lovers", "19-sun"] as const;
@@ -225,51 +327,45 @@ type QuestionIntent =
 function getQuestionIntent(question: string): QuestionIntent {
   const lower = question.toLowerCase();
   if (
-    /job|career|work|interview|offer|business|money|boss|company|application|hire|hiring|school|exam/.test(
+    /job|career|work|interview|offer|business|money|boss|company|application|hire|hiring|school|exam|工作|事业|面试|录取|公司|老板|考试|学校|申请|薪资|金钱/.test(
       lower,
     )
   )
     return "career";
   if (
-    /love|relationship|partner|crush|ex|date|dating|them|him|her|connection|feel/.test(
+    /love|relationship|partner|crush|\bex\b|date|dating|them|him|her|connection|feel|感情|爱情|关系|对象|前任|喜欢|对方|连接|联系/.test(
       lower,
     )
   )
     return "love";
-  if (/when|timing|soon|time|wait|now|later/.test(lower)) return "timing";
-  if (/choice|choose|decision|path|option|which|should i/.test(lower))
+  if (/when|timing|soon|time|wait|now|later|什么时候|时机|时间|现在|以后|等待/.test(lower)) return "timing";
+  if (/choice|choose|decision|path|option|which|should i|选择|决定|哪条路|哪一条路|应该|方向/.test(lower))
     return "choice";
-  if (/myself|avoid|emotion|healing|fear|pattern|self/.test(lower))
+  if (/myself|avoid|emotion|healing|fear|pattern|self|自己|情绪|疗愈|害怕|模式|内心|逃避/.test(lower))
     return "self";
   return "general";
 }
 
-function questionPromptTitle(intent: QuestionIntent = "general") {
-  if (intent === "career") return "What part of work needs clarity?";
-  if (intent === "love")
-    return "What do you need to understand about this connection?";
-  if (intent === "timing") return "What timing are you trying to feel out?";
-  if (intent === "choice") return "Which choice needs a clearer signal?";
-  if (intent === "self") return "What part of you needs an honest mirror?";
-  return "What do you need help seeing clearly?";
+function questionPromptTitle(
+  t: Translate,
+  intent: QuestionIntent = "general",
+) {
+  return t(`tarot.flow.question.title.${intent}`);
 }
 
-function questionPromptBody(intent: QuestionIntent = "general") {
-  if (intent === "career")
-    return "Ask about the offer, interview, workplace tension, or next move.";
-  if (intent === "love")
-    return "Ask about feelings, signals, distance, or what this connection is asking from you.";
-  if (intent === "timing")
-    return "Ask what is opening now, what needs patience, or when to act.";
-  if (intent === "choice")
-    return "Name the decision and the room will choose a spread around the pressure point.";
-  if (intent === "self")
-    return "Ask for the pattern, the lesson, or the truth you keep circling.";
-  return "Ask in one sentence, or tap a suggested question.";
+function questionPromptBody(
+  t: Translate,
+  intent: QuestionIntent = "general",
+) {
+  return t(`tarot.flow.question.body.${intent}`);
+}
+
+function localizedFocusLabel(t: Translate, question: string) {
+  return t(`tarot.flow.focus.${getQuestionIntent(question)}`);
 }
 
 const DEFAULT_GUEST_CARD_BACK_ID: TarotCardBackId =
-  "00_Hint_Sky_Deck/01_Sky_Deck_Celestial_Navy_Gold.png";
+  ORIGINAL_TAROT_CARD_BACK_ID;
 
 const ZODIAC_SIGNS = [
   "Aries",
@@ -361,8 +457,12 @@ function isUnlockedCardBackForBirth(
   item: { id: TarotCardBackId },
   personalBacks: ReturnType<typeof getPersonalZodiacCardBacks>,
 ) {
-  if (personalBacks) return personalBacks.cardBackIds.includes(item.id);
-  return item.id === DEFAULT_GUEST_CARD_BACK_ID;
+  const includedRoomStyle =
+    item.id.startsWith("00_Hint_Sky_Deck/") ||
+    item.id.startsWith("01_Final_Eight_Set/") ||
+    item.id === ORIGINAL_TAROT_CARD_BACK_ID;
+  if (includedRoomStyle) return true;
+  return personalBacks?.cardBackIds.includes(item.id) ?? false;
 }
 
 function isLockedCardBackForBirth(
@@ -379,6 +479,14 @@ function getCardFace(cardArtId: CardFaceId) {
   );
 }
 
+function getCardBackStyle(cardBackId: TarotCardBackId): TarotCardBackStyle {
+  if (/Ivory|Dawn|Sage|Earth/i.test(cardBackId)) return "ivory";
+  if (/Rose|Pink|Lavender|Purple|Plum|Burgundy|Flame|Moon_Tide/i.test(cardBackId)) {
+    return "rose";
+  }
+  return "nocturne";
+}
+
 function getRoomBackground(backgroundId: RoomBackgroundId) {
   return (
     BACKGROUND_STYLES.find((item) => item.id === backgroundId) ??
@@ -392,14 +500,91 @@ function getBackgroundGlow(backgroundId: RoomBackgroundId) {
   return "rgba(171,151,255,0.42)";
 }
 
-function getRoomSurfaceBackground(backgroundId: RoomBackgroundId) {
-  if (backgroundId === "dawn") {
-    return "radial-gradient(circle at 50% 18%, rgba(255,226,177,0.80), transparent 26%), radial-gradient(circle at 82% 76%, rgba(204,232,220,0.58), transparent 34%), linear-gradient(180deg, #fff8ef 0%, #f5ece5 46%, #e9f3ec 100%)";
+function loadInitialRoomDesign(): RoomDesign {
+  const saved = loadSavedTarotRoomSetup();
+  if (!saved) {
+    return (
+      ROOM_DESIGNS.find((item) => item.cardBackId === ORIGINAL_TAROT_CARD_BACK_ID) ??
+      ROOM_DESIGNS[0]!
+    );
   }
-  if (backgroundId === "sea") {
-    return "radial-gradient(circle at 50% 16%, rgba(205,245,238,0.72), transparent 26%), radial-gradient(circle at 18% 72%, rgba(220,203,255,0.60), transparent 32%), linear-gradient(180deg, #f8fbf6 0%, #edf4f1 42%, #e9e1f8 100%)";
+  const base =
+    ROOM_DESIGNS.find((item) => item.backgroundId === saved.backgroundId) ??
+    ROOM_DESIGNS[0]!;
+  const backStyle = getCardBackStyle(saved.cardBackId);
+
+  return {
+    ...base,
+    deckStyleId: saved.deckStyleId,
+    backStyle,
+    cardBackId: saved.cardBackId,
+    cardArtId: saved.cardFaceId,
+    backgroundId: saved.backgroundId,
+    background: getTarotRoomSurfaceBackground(saved.backgroundId),
+    glow: getBackgroundGlow(saved.backgroundId),
+  };
+}
+
+function roomDesignFromReading(reading: LocalTarotReading): RoomDesign {
+  const saved = reading.roomDesign;
+  if (!saved) {
+    const fallback = loadInitialRoomDesign();
+    return {
+      ...fallback,
+      cardArtId: reading.cardArtId ?? fallback.cardArtId,
+    };
   }
-  return "radial-gradient(circle at 50% 18%, rgba(255,226,236,0.95), transparent 24%), radial-gradient(circle at 18% 72%, rgba(236,205,255,0.74), transparent 30%), linear-gradient(180deg,#fff8f1 0%,#f6e8ed 42%,#ece4ff 100%)";
+  const base =
+    ROOM_DESIGNS.find((item) => item.backgroundId === saved.backgroundId) ??
+    loadInitialRoomDesign();
+  return {
+    ...base,
+    backgroundId: saved.backgroundId as RoomBackgroundId,
+    background: getTarotRoomSurfaceBackground(saved.backgroundId as RoomBackgroundId),
+    glow: getBackgroundGlow(saved.backgroundId as RoomBackgroundId),
+    cardArtId: saved.cardArtId,
+    cardBackId: saved.cardBackId,
+    backStyle: saved.backStyle,
+  };
+}
+
+function ritualCardsFromReading(reading: LocalTarotReading): RitualCard[] {
+  return reading.cards.map((card, index) => ({
+    visualId: card.visualId ?? `${reading.id}-${index}-${card.cardId}`,
+    cardId: card.cardId,
+    name: card.name,
+    orientation: card.orientation,
+    x: 50,
+    y: 50,
+    rotation: 0,
+    rotate: 0,
+    zIndex: index,
+    selected: true,
+    revealed: true,
+  }));
+}
+
+function saveRoomDesignPreference(
+  design: RoomDesign,
+  spread: SpreadChoice,
+) {
+  const saved = loadSavedTarotRoomSetup();
+  saveTarotRoomSetupPreference({
+    ...DEFAULT_TAROT_ROOM_SETUP,
+    ...saved,
+    presetId:
+      design.backgroundId === "dawn"
+        ? "dawn"
+        : design.backgroundId === "sea"
+          ? "rose"
+          : "hint",
+    deckStyleId: design.deckStyleId,
+    cardFaceId: design.cardArtId,
+    cardBackId: design.cardBackId,
+    backgroundId: design.backgroundId,
+    cardColor: design.mood,
+    spreadType: spread.id,
+  });
 }
 
 function compactCardBackLabel(label: string) {
@@ -443,35 +628,25 @@ function compactCardBackLabel(label: string) {
 
 function getWashTheme(design: RoomDesign): WashRitualTheme {
   const background = design.backgroundId;
-  const starClassName =
-    background === "sea"
-      ? "opacity-34 [background-image:radial-gradient(circle_at_18%_24%,rgba(235,255,246,0.65)_0_1px,transparent_1px),radial-gradient(circle_at_78%_16%,rgba(244,196,214,0.70)_0_1px,transparent_1px),radial-gradient(circle_at_68%_76%,rgba(103,218,209,0.62)_0_1px,transparent_1px)] [background-size:132px_148px]"
-      : background === "dawn"
-        ? "opacity-28 [background-image:radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.84)_0_1px,transparent_1px),radial-gradient(circle_at_78%_16%,rgba(187,146,68,0.62)_0_1px,transparent_1px)] [background-size:142px_152px]"
-        : "opacity-44 [background-image:radial-gradient(circle_at_18%_24%,rgba(255,238,246,0.86)_0_1px,transparent_1px),radial-gradient(circle_at_78%_16%,rgba(248,214,152,0.82)_0_1px,transparent_1px),radial-gradient(circle_at_68%_76%,rgba(219,199,255,0.66)_0_1px,transparent_1px)] [background-size:132px_148px]";
 
   return {
-    chamberOverlay:
-      background === "sea"
-        ? "radial-gradient(circle at 48% 42%, rgba(229,154,190,0.14), transparent 24%), radial-gradient(circle at 50% 52%, rgba(12,55,65,0.92), rgba(5,14,24,0.98) 64%, #020409 100%)"
-        : background === "dawn"
-          ? "radial-gradient(circle at 50% 38%, rgba(234,205,143,0.34), transparent 27%), radial-gradient(circle at 50% 54%, rgba(222,241,236,0.92), rgba(88,117,128,0.48) 64%, rgba(12,20,34,0.88) 100%)"
-          : "linear-gradient(180deg, rgba(255,237,246,0.12), rgba(12,8,26,0.04) 28%, rgba(220,196,255,0.08) 62%, rgba(4,3,12,0.98) 100%), radial-gradient(ellipse at 50% 36%, rgba(246,187,207,0.24), transparent 30%), radial-gradient(circle at 50% 52%, rgba(26,19,50,0.94), rgba(7,6,18,0.98) 65%, #020106 100%)",
-    starClassName,
+    surface: "light",
+    chamberOverlay: getTarotRoomSurfaceBackground(background),
+    starClassName: getTarotRoomStarClassName(background),
     tableBackground:
       background === "sea"
-        ? "radial-gradient(circle at 50% 50%, rgba(21,67,72,0.80), rgba(8,21,35,0.95) 56%, rgba(4,5,14,0.99) 100%)"
+        ? "radial-gradient(circle at 50% 44%, rgba(255,255,255,0.70), rgba(183,218,215,0.34) 52%, rgba(185,164,216,0.20) 100%)"
         : background === "dawn"
-          ? "radial-gradient(circle at 50% 48%, rgba(255,248,232,0.72), rgba(136,178,178,0.58) 58%, rgba(18,35,50,0.84) 100%)"
-          : "radial-gradient(circle at 48% 42%, rgba(255,236,244,0.18), transparent 30%), radial-gradient(circle at 50% 54%, rgba(45,37,78,0.82), rgba(14,11,30,0.95) 58%, rgba(4,3,12,0.99) 100%)",
+          ? "radial-gradient(circle at 50% 44%, rgba(255,255,255,0.72), rgba(239,216,172,0.30) 54%, rgba(197,221,210,0.22) 100%)"
+          : "radial-gradient(circle at 48% 42%, rgba(255,255,255,0.74), rgba(230,195,213,0.28) 48%, rgba(190,164,217,0.22) 100%)",
     tableBorderColor:
       background === "dawn"
-        ? "rgba(174,132,56,0.26)"
-        : "rgba(238,188,205,0.28)",
+        ? "rgba(174,132,56,0.22)"
+        : "rgba(123,91,145,0.18)",
     tableShadow:
       background === "dawn"
-        ? "0 35px 100px rgba(49,61,64,0.38), inset 0 0 92px rgba(255,242,199,0.20)"
-        : "0 35px 110px rgba(0,0,0,0.68), 0 0 46px rgba(221,180,255,0.10), inset 0 0 92px rgba(246,187,207,0.13)",
+        ? "0 28px 80px rgba(95,82,72,0.14), inset 0 0 92px rgba(255,255,255,0.30)"
+        : "0 28px 84px rgba(88,62,98,0.16), inset 0 0 92px rgba(255,255,255,0.28)",
     tableRingColor:
       background === "sea"
         ? "rgba(229,154,190,0.18)"
@@ -485,68 +660,10 @@ function getWashTheme(design: RoomDesign): WashRitualTheme {
   };
 }
 
-type HiddenCardIdentity = Pick<RitualCard, "cardId" | "name" | "orientation">;
-
 type FlowDeckState = {
   hiddenDeckOrder: RitualCard[];
   ritualCards: RitualCard[];
 };
-
-function getHiddenIdentities(
-  deck: readonly RitualCard[],
-): HiddenCardIdentity[] {
-  return deck.map((card) => ({
-    cardId: card.cardId,
-    name: card.name,
-    orientation: card.orientation,
-  }));
-}
-
-function applyHiddenIdentitiesToFixedVisuals(
-  visualDeck: readonly RitualCard[],
-  identities: readonly HiddenCardIdentity[],
-): RitualCard[] {
-  return visualDeck.map((visualCard, index) => {
-    const identity = identities[index] ?? identities[0];
-    return {
-      ...visualCard,
-      cardId: identity?.cardId ?? visualCard.cardId,
-      name: identity?.name ?? visualCard.name,
-      orientation: identity?.orientation ?? visualCard.orientation,
-      selected: false,
-      revealed: false,
-    };
-  });
-}
-
-function washHiddenOrder(deck: readonly RitualCard[]): RitualCard[] {
-  const identities = getHiddenIdentities(deck);
-  const half = Math.ceil(identities.length / 2);
-  const left = identities.slice(0, half);
-  const right = identities.slice(half);
-  const mixed: HiddenCardIdentity[] = [];
-  const max = Math.max(left.length, right.length);
-
-  for (let index = 0; index < max; index += 1) {
-    if (right[index]) mixed.push(right[index]!);
-    if (left[index]) mixed.push(left[index]!);
-  }
-
-  return applyHiddenIdentitiesToFixedVisuals(deck, mixed);
-}
-
-function cutHiddenOrder(
-  deck: readonly RitualCard[],
-  ratio = 0.37,
-): RitualCard[] {
-  const identities = getHiddenIdentities(deck);
-  const cutIndex = Math.max(
-    1,
-    Math.min(identities.length - 1, Math.floor(identities.length * ratio)),
-  );
-  const cut = [...identities.slice(cutIndex), ...identities.slice(0, cutIndex)];
-  return applyHiddenIdentitiesToFixedVisuals(deck, cut);
-}
 
 function cleanQuestion(value: string) {
   return value.trim().replace(/\s+/g, " ");
@@ -555,7 +672,7 @@ function cleanQuestion(value: string) {
 function recommendSpread(question: string): SpreadChoice {
   const lower = question.toLowerCase();
   if (
-    /job|career|work|interview|offer|business|money|boss|company|application|hire|hiring|school|exam/i.test(
+    /job|career|work|interview|offer|business|money|boss|company|application|hire|hiring|school|exam|工作|事业|面试|录取|公司|老板|考试|学校|申请|薪资|金钱/i.test(
       lower,
     )
   ) {
@@ -565,20 +682,20 @@ function recommendSpread(question: string): SpreadChoice {
     );
   }
   if (
-    /they|them|him|her|love|relationship|ex|crush|partner|feel/i.test(lower)
+    /they|them|him|her|love|relationship|\bex\b|crush|partner|feel|感情|爱情|关系|对象|前任|喜欢|对方|连接|联系/i.test(lower)
   ) {
     return (
       SPREAD_CHOICES.find((spread) => spread.id === "trueHeart") ??
       FEATURED_SPREADS[0]!
     );
   }
-  if (/choice|choose|decision|path|should|career|move/i.test(lower)) {
+  if (/choice|choose|decision|path|should|career|move|选择|决定|哪条路|哪一条路|应该|方向/i.test(lower)) {
     return (
       SPREAD_CHOICES.find((spread) => spread.id === "three") ??
       FEATURED_SPREADS[0]!
     );
   }
-  if (/future|when|timing|time|soon/i.test(lower)) {
+  if (/future|when|timing|time|soon|未来|什么时候|时机|时间|现在|以后/i.test(lower)) {
     return (
       SPREAD_CHOICES.find((spread) => spread.id === "peachBlossom") ??
       FEATURED_SPREADS[0]!
@@ -659,10 +776,12 @@ function buildLocalSpreadRecommendation(
 
 async function requestSpreadRecommendation(
   question: string,
+  signal?: AbortSignal,
 ): Promise<SpreadRecommendation> {
-  const response = await fetch(apiUrl("/api/tarot/spread-recommendation"), {
+  const response = await apiFetch(apiUrl("/api/tarot/spread-recommendation"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    signal,
     body: JSON.stringify({
       question,
       anonId: getAnonId(),
@@ -826,15 +945,25 @@ function SpreadDiagram({
   active = false,
   showLabels = false,
   cardBackId,
+  quiet = false,
   className = "",
 }: {
   spread: SpreadChoice;
   active?: boolean;
   showLabels?: boolean;
   cardBackId?: TarotCardBackId;
+  quiet?: boolean;
   className?: string;
 }) {
-  const size = spreadCardSize(spread);
+  const baseSize = spreadCardSize(spread);
+  const size = quiet && spread.cardCount <= 3
+    ? {
+        ...baseSize,
+        width: spread.cardCount === 1 ? 102 : spread.id === "three" ? 84 : 50,
+        height: spread.cardCount === 1 ? 153 : spread.id === "three" ? 126 : 80,
+        radius: 8,
+      }
+    : baseSize;
   const previewLayout = getSpreadPreviewLayout(spread);
   const labelsInLegend = showLabels && spread.cardCount >= 5;
   const showInlineLabels = showLabels && !labelsInLegend;
@@ -849,28 +978,30 @@ function SpreadDiagram({
     cardBackId ?? getDefaultTarotCardBackForStyle("rose"),
   );
 
-  if (spread.id === "three") {
+  if (spread.id === "three" || (quiet && spread.id === "single")) {
     return (
       <div
         className={`relative w-full min-w-0 overflow-hidden ${diagramClassName}`}
       >
-        <div className="absolute inset-0 rounded-[26px] bg-[radial-gradient(circle_at_50%_52%,rgba(255,223,174,0.55),rgba(244,184,211,0.20)_42%,rgba(108,77,142,0.07)_68%,transparent_80%)]" />
+        {!quiet && <div className="absolute inset-0 rounded-[26px] bg-[radial-gradient(circle_at_50%_52%,rgba(255,223,174,0.55),rgba(244,184,211,0.20)_42%,rgba(108,77,142,0.07)_68%,transparent_80%)]" />}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex items-start justify-center gap-8">
+          <div className={quiet ? `tarot-spread-card-row${spread.cardCount === 1 ? " tarot-spread-card-row-single" : ""}` : "flex items-start justify-center gap-8"}>
             {spread.positionLabels.map((label, index) => (
               <div
                 key={`${spread.id}-row-${label}`}
-                className="flex w-[58px] flex-col items-center"
+                className={`flex flex-col items-center ${quiet ? "min-w-0" : "w-[58px]"}`}
               >
+                {quiet && <span className="tarot-spread-position-number">{String(index + 1).padStart(2, "0")}</span>}
                 <div
                   className={`relative overflow-hidden border ${
                     active
                       ? "border-[#f5d790]/90 bg-[#2f2544]"
                       : "border-white/38 bg-white/24"
-                  } shadow-[0_16px_32px_rgba(67,45,86,0.22)]`}
+                  } ${quiet ? "tarot-spread-card-art" : "shadow-[0_16px_32px_rgba(67,45,86,0.22)]"}`}
                   style={{
-                    width: size.width,
-                    height: size.height,
+                    width: quiet ? "100%" : size.width,
+                    height: quiet ? undefined : size.height,
+                    aspectRatio: `${size.width} / ${size.height}`,
                     borderRadius: size.radius,
                   }}
                 >
@@ -878,19 +1009,19 @@ function SpreadDiagram({
                     className="absolute inset-0 bg-cover bg-center"
                     style={{
                       backgroundImage: `url("${cardBackImageUrl}")`,
-                      filter: active
+                      filter: quiet ? undefined : active
                         ? "brightness(0.98) saturate(1.18) contrast(1.08)"
                         : "brightness(1.04) saturate(0.94)",
                     }}
                   />
-                  <span
+                  {!quiet && <span
                     className="absolute border border-[#ffe5a8]/52 bg-white/5"
                     style={{
                       inset: size.inner,
                       borderRadius: Math.max(4, size.radius - 4),
                     }}
-                  />
-                  <span
+                  />}
+                  {!quiet && <span
                     className="absolute left-1/2 top-1/2 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#f6dfaa]/70 bg-[#fff8ee]/92 text-[10px] font-black text-[#473250] shadow-[0_6px_14px_rgba(36,20,52,0.24)]"
                     style={{
                       width: size.number,
@@ -899,11 +1030,11 @@ function SpreadDiagram({
                     }}
                   >
                     {index + 1}
-                  </span>
+                  </span>}
                 </div>
                 {showLabels ? (
                   <span
-                    className="mt-3 block h-[11px] w-[58px] truncate whitespace-nowrap text-center text-[8px] font-black uppercase leading-none tracking-[0.075em] text-[#6e5968]/84"
+                    className={quiet ? "tarot-spread-position-label" : "mt-3 block h-[11px] w-[58px] truncate whitespace-nowrap text-center text-[8px] font-black uppercase leading-none tracking-[0.075em] text-[#6e5968]/84"}
                     style={SPREAD_PREVIEW_TEXT_STYLE}
                     title={label}
                   >
@@ -922,10 +1053,11 @@ function SpreadDiagram({
     <div
       className={`relative w-full min-w-0 overflow-hidden ${diagramClassName}`}
     >
-      <div className="absolute inset-0 rounded-[26px] bg-[radial-gradient(circle_at_50%_48%,rgba(255,232,185,0.62),rgba(244,184,211,0.22)_44%,rgba(108,77,142,0.08)_66%,transparent_78%)]" />
+      {!quiet && <div className="absolute inset-0 rounded-[26px] bg-[radial-gradient(circle_at_50%_48%,rgba(255,232,185,0.62),rgba(244,184,211,0.22)_44%,rgba(108,77,142,0.08)_66%,transparent_78%)]" />}
       <svg
         aria-hidden
         viewBox="0 0 100 100"
+        preserveAspectRatio={quiet ? "none" : undefined}
         className="absolute inset-0 h-full w-full"
       >
         <polyline
@@ -938,6 +1070,7 @@ function SpreadDiagram({
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="1"
+          vectorEffect={quiet ? "non-scaling-stroke" : undefined}
         />
       </svg>
       {displayLayout.map((point, index) => (
@@ -957,14 +1090,14 @@ function SpreadDiagram({
               active
                 ? "border-[#f5d790]/90 bg-[#2f2544]"
                 : "border-white/38 bg-white/24"
-            } shadow-[0_14px_30px_rgba(67,45,86,0.24)]`}
+            } ${quiet ? "tarot-spread-card-art" : "shadow-[0_14px_30px_rgba(67,45,86,0.24)]"}`}
             style={{ borderRadius: size.radius }}
           >
             <span
               className="absolute inset-0 bg-cover bg-center"
               style={{
                 backgroundImage: `url("${cardBackImageUrl}")`,
-                filter: active
+                filter: quiet ? undefined : active
                   ? "brightness(0.98) saturate(1.18) contrast(1.08)"
                   : "brightness(1.04) saturate(0.94)",
               }}
@@ -994,7 +1127,7 @@ function SpreadDiagram({
           {displayLayout.map((point, index) => (
             <span
               key={`${spread.id}-label-${index}`}
-              className="absolute z-20 flex h-[13px] w-[64px] items-center justify-center overflow-hidden truncate whitespace-nowrap rounded-full bg-white/58 px-1 text-center text-[7px] font-black uppercase leading-none tracking-[0.055em] text-[#6e5968]/88 shadow-[0_4px_12px_rgba(61,43,74,0.10)] backdrop-blur-md"
+              className={quiet ? "tarot-spread-inline-label" : "absolute z-20 flex h-[13px] w-[64px] items-center justify-center overflow-hidden truncate whitespace-nowrap rounded-full bg-white/58 px-1 text-center text-[7px] font-black uppercase leading-none tracking-[0.055em] text-[#6e5968]/88 shadow-[0_4px_12px_rgba(61,43,74,0.10)] backdrop-blur-md"}
               style={{
                 ...getSpreadPreviewLabelStyle(point, size.height),
                 ...SPREAD_PREVIEW_TEXT_STYLE,
@@ -1039,21 +1172,28 @@ function QuestionIcon({ icon }: { icon: QuestionCard["icon"] }) {
 function TarotBack({
   className = "",
   cardBackId,
+  flat = false,
 }: {
   className?: string;
   cardBackId?: TarotCardBackId;
+  flat?: boolean;
 }) {
   const imageUrl = cardBackId ? getTarotCardBackImage(cardBackId) : "";
   return (
     <div
-      className={`relative overflow-hidden rounded-[16px] border border-[#e7c77d]/70 bg-[linear-gradient(155deg,#29395f,#10162c_58%,#291a35)] shadow-[0_28px_70px_rgba(70,42,82,0.28),0_0_44px_rgba(246,194,213,0.28)] ${className}`}
+      className={`relative overflow-hidden rounded-[16px] border border-[#e7c77d]/70 bg-[linear-gradient(155deg,#29395f,#10162c_58%,#291a35)] [backface-visibility:hidden] ${
+        flat
+          ? "shadow-[0_5px_14px_rgba(46,31,60,0.2)]"
+          : "shadow-[0_28px_70px_rgba(70,42,82,0.28),0_0_44px_rgba(246,194,213,0.28)]"
+      } ${className}`}
     >
       {imageUrl ? (
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-center bg-no-repeat"
           style={{
             backgroundImage: `url("${imageUrl}")`,
-            filter: "brightness(0.96) saturate(1.22) contrast(1.16)",
+            backgroundSize: "100% 100%",
+            filter: "none",
           }}
         />
       ) : null}
@@ -1076,14 +1216,10 @@ function RoomBackground({
   design?: RoomDesign;
 }) {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-        className="absolute inset-0"
-        style={{ background: design.background }}
-      />
-      <div className="absolute inset-0 opacity-55 [background-image:radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.86)_0_1px,transparent_1px),radial-gradient(circle_at_78%_16%,rgba(205,158,82,0.44)_0_1px,transparent_1px),radial-gradient(circle_at_68%_76%,rgba(148,111,188,0.42)_0_1px,transparent_1px)] [background-size:118px_138px]" />
-      <div className="absolute inset-x-[-20%] bottom-[-16%] h-[48%] rounded-[50%] bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,255,255,0.72),rgba(239,215,224,0.32)_42%,transparent_70%)]" />
-    </div>
+    <div
+      data-room-background={design.backgroundId}
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    />
   );
 }
 
@@ -1103,6 +1239,11 @@ function PrimaryButton({
       type="button"
       disabled={disabled}
       onClick={onClick}
+      onKeyDown={(event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        if (!disabled) onClick();
+      }}
       className={`inline-flex min-h-12 items-center justify-center rounded-full bg-[#2f2544] px-6 py-3 text-[13px] font-black text-[#fff8ec] shadow-[0_16px_34px_rgba(84,61,92,0.24)] transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45 ${className}`}
     >
       {children}
@@ -1110,14 +1251,15 @@ function PrimaryButton({
   );
 }
 
-function StepShell({ children }: { children: ReactNode }) {
+function StepShell({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const reduceMotion = useTarotReducedMotion();
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 6 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -14 }}
-      transition={{ duration: 0.42, ease: [0.22, 0.74, 0.2, 1] }}
-      className="hint-app-scroll absolute inset-0 z-10 flex w-full flex-col px-5 pb-[calc(var(--hint-safe-bottom)+1.25rem)] pt-[calc(var(--hint-safe-top)+4rem)]"
+      exit={{ opacity: 0, y: reduceMotion ? 0 : -4, transition: { duration: reduceMotion ? 0.01 : 0.12, ease: "easeIn" } }}
+      transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.8, 0.22, 1] }}
+      className={`hint-app-scroll absolute inset-0 z-10 flex w-full transform-gpu flex-col px-5 pb-[calc(var(--hint-safe-bottom)+1.25rem)] pt-[calc(var(--hint-safe-top)+4rem)] will-change-[opacity,transform] ${className}`}
     >
       {children}
     </motion.section>
@@ -1151,7 +1293,7 @@ function Composer({
           type="button"
           onClick={onVoice}
           aria-label="Voice input"
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#f4e8f1] text-[#6e5871] transition active:scale-95"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#f4e8f1] text-[#6e5871] transition active:scale-95"
         >
           <Mic size={18} />
         </button>
@@ -1159,7 +1301,7 @@ function Composer({
           type="button"
           onClick={onSubmit}
           aria-label="Send question"
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#2f2544] text-[#fff8ec] shadow-[0_10px_24px_rgba(65,48,76,0.24)] transition active:scale-95"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#2f2544] text-[#fff8ec] shadow-[0_10px_24px_rgba(65,48,76,0.24)] transition active:scale-95"
         >
           <Send size={17} />
         </button>
@@ -1170,45 +1312,82 @@ function Composer({
 
 function VoicePanel({
   transcript,
+  notice,
+  listening,
+  starting,
   onUse,
   onCancel,
 }: {
   transcript: string;
+  notice?: string | null;
+  listening: boolean;
+  starting: boolean;
   onUse: () => void;
   onCancel: () => void;
 }) {
+  const { t } = useLanguage();
+  const reduceMotion = useTarotReducedMotion();
+  const animateWave = listening && !reduceMotion;
+  const title = notice
+    ? t("tarot.voice.stopped")
+    : starting
+      ? t("tarot.flow.question.voiceStarting")
+      : listening
+      ? t("tarot.flow.question.voiceListening")
+      : transcript
+        ? t("tarot.flow.question.voiceReady")
+        : t("tarot.voice.stopped");
+
   return (
     <motion.div
+      role="dialog"
+      aria-modal="true"
+      aria-label={t("tarot.flow.question.voiceInput")}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-[#271f33]/30 px-5 pb-[calc(var(--hint-safe-bottom)+1rem)] backdrop-blur-[2px]"
+      transition={{ duration: reduceMotion ? 0 : 0.18 }}
+      className="fixed inset-0 z-[90] bg-[#271f33]/30 px-5 pb-[calc(var(--hint-safe-bottom)+1rem)]"
     >
-      <div className="absolute inset-x-4 bottom-[calc(var(--hint-safe-bottom)+1rem)] mx-auto max-w-[440px] rounded-[32px] border border-white/50 bg-white/74 p-5 text-center shadow-[0_24px_70px_rgba(61,40,74,0.28)] backdrop-blur-2xl">
-        <p className="font-serif text-[28px] text-[#382f45]">
-          I'm listening...
-        </p>
-        <div className="relative mx-auto mt-5 h-20 max-w-[260px]">
-          {[0, 1, 2, 3, 4].map((line) => (
+      <div className="absolute inset-x-4 bottom-[calc(var(--hint-safe-bottom)+1rem)] mx-auto max-w-[440px] rounded-[32px] border border-white/70 bg-[#fff9f4]/98 p-5 text-center shadow-[0_24px_70px_rgba(61,40,74,0.28)]">
+        <p role="status" className="font-serif text-[28px] text-[#382f45]">{title}</p>
+        <div aria-hidden="true" className="relative mx-auto mt-5 h-20 max-w-[260px]">
+          {[0, 1, 2, 3, 4].map((line) => {
+            const width = 112 - line * 9;
+            return (
             <motion.span
               key={line}
-              className="absolute left-1/2 top-1/2 h-1.5 rounded-full bg-[linear-gradient(90deg,#f6b8d0,#cfb7ff,#f3d28c)]"
-              animate={{
-                width: [38, 124 - line * 12, 56],
-                y: [-18 + line * 9, -12 + line * 5, -18 + line * 9],
-                opacity: [0.28, 0.88, 0.36],
+              className="absolute left-1/2 top-1/2 h-1.5 rounded-full bg-[#b997c9]"
+              animate={animateWave
+                ? {
+                    scaleX: [0.42, 1, 0.56],
+                    y: [-18 + line * 9, -12 + line * 5, -18 + line * 9],
+                    opacity: [0.28, 0.88, 0.36],
+                  }
+                : {
+                    scaleX: 0.54,
+                    y: -18 + line * 9,
+                    opacity: 0.22,
+                  }}
+              transition={animateWave
+                ? {
+                    duration: 1.5 + line * 0.12,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }
+                : { duration: 0.22, ease: "easeOut" }}
+              style={{
+                width,
+                marginLeft: -width / 2,
+                transformOrigin: "center",
+                willChange: "transform, opacity",
               }}
-              transition={{
-                duration: 1.5 + line * 0.12,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              style={{ transform: "translateX(-50%)" }}
             />
-          ))}
+            );
+          })}
         </div>
         <p className="mx-auto min-h-12 max-w-[20rem] font-sans text-[14px] font-semibold leading-relaxed text-[#6b586d]">
-          {transcript || "Let the question come out in one sentence."}
+          {notice || transcript || t("tarot.flow.question.voiceHint")}
         </p>
         <div className="mt-5 flex gap-2">
           <button
@@ -1216,14 +1395,14 @@ function VoicePanel({
             onClick={onCancel}
             className="min-h-11 flex-1 rounded-full border border-[#d9c9d6] bg-white/48 text-[12px] font-black text-[#6f6072]"
           >
-            Cancel
+            {t("tarot.flow.question.cancel")}
           </button>
           <PrimaryButton
             onClick={onUse}
             disabled={!transcript}
             className="min-h-11 flex-1"
           >
-            Use this question
+            {t("tarot.flow.question.useVoice")}
           </PrimaryButton>
         </div>
       </div>
@@ -1248,45 +1427,135 @@ function QuestionStep({
   openVoice: () => void;
   closeVoice: () => void;
 }) {
+  const { language, t } = useLanguage();
   const [transcript, setTranscript] = useState("");
   const [pickedPrompt, setPickedPrompt] = useState<string | null>(null);
+  const [voiceNotice, setVoiceNotice] = useState<string | null>(null);
+  const [voiceListening, setVoiceListening] = useState(false);
+  const [voiceStarting, setVoiceStarting] = useState(false);
+  const speechSessionRef = useRef<HintSpeechSession | null>(null);
+  const speechStartRef = useRef<Promise<HintSpeechSession> | null>(null);
+  const speechAbortRef = useRef<AbortController | null>(null);
+  const voiceRequestRef = useRef(0);
   const intent = getQuestionIntent(question);
   const canContinue = Boolean(cleanQuestion(question));
 
-  function startVoice() {
+  async function stopVoice(cancel = false) {
+    voiceRequestRef.current += 1;
+    if (cancel) speechAbortRef.current?.abort();
+    speechAbortRef.current = null;
+    const session = speechSessionRef.current;
+    const pending = speechStartRef.current;
+    speechSessionRef.current = null;
+    const startedSession = session ?? await pending?.catch(() => null);
+    if (!startedSession) return;
+    await (cancel ? startedSession.cancel() : startedSession.stop()).catch(() => undefined);
+  }
+
+  useEffect(() => {
+    return () => {
+      void stopVoice(true);
+    };
+  }, []);
+
+  async function startVoice() {
     hapticTick(8);
+    const previousStop = stopVoice(true);
+    const requestId = ++voiceRequestRef.current;
+    await previousStop;
+    if (voiceRequestRef.current !== requestId) return;
+    const controller = new AbortController();
+    speechAbortRef.current = controller;
+    const isCurrent = () => voiceRequestRef.current === requestId && !controller.signal.aborted;
+    let sessionEnded = false;
     setTranscript("");
+    setVoiceNotice(null);
+    setVoiceListening(false);
+    setVoiceStarting(true);
     openVoice();
-    const script =
-      "What do I need to understand about this connection right now?";
-    script.split(" ").forEach((word, index) => {
-      window.setTimeout(
-        () => {
-          setTranscript((current) => `${current}${current ? " " : ""}${word}`);
+    const locale =
+      language === "zh"
+        ? "zh-CN"
+        : language === "es"
+          ? "es-ES"
+          : language === "ja"
+            ? "ja-JP"
+            : language === "ko"
+              ? "ko-KR"
+              : "en-US";
+    try {
+      const pending = startHintSpeechRecognition({
+        language: locale,
+        signal: controller.signal,
+        onStart: () => {
+          if (!isCurrent()) return;
+          setVoiceStarting(false);
+          setVoiceListening(true);
         },
-        170 * (index + 1),
-      );
-    });
+        onTranscript: (nextTranscript) => {
+          if (!isCurrent()) return;
+          setVoiceNotice(null);
+          setTranscript(nextTranscript);
+        },
+        onEnd: () => {
+          sessionEnded = true;
+          if (!isCurrent()) return;
+          speechSessionRef.current = null;
+          setVoiceStarting(false);
+          setVoiceListening(false);
+        },
+        onError: (reason) => {
+          if (!isCurrent()) return;
+          setVoiceStarting(false);
+          setVoiceListening(false);
+          const key =
+            reason === "permission"
+              ? "tarot.voice.permission"
+              : reason === "network"
+                ? "tarot.voice.network"
+                : reason === "no-speech"
+                  ? "tarot.voice.noSpeech"
+                  : reason === "unavailable"
+                    ? "tarot.voice.unavailable"
+                    : "tarot.voice.failed";
+          setVoiceNotice(t(key));
+        },
+      });
+      speechStartRef.current = pending;
+      const session = await pending;
+      if (!isCurrent()) {
+        await session.cancel();
+      } else if (!sessionEnded) {
+        speechSessionRef.current = session;
+      }
+    } catch {
+      if (!isCurrent()) return;
+      setVoiceStarting(false);
+      setVoiceListening(false);
+      // The adapter already exposes a localized, typed fallback in the sheet.
+    } finally {
+      if (voiceRequestRef.current === requestId) speechStartRef.current = null;
+    }
   }
 
   return (
     <>
       <StepShell>
         <div className="pb-[calc(var(--hint-safe-bottom)+7.5rem)]">
-          <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#9c7d92]">
-            Ask Hint
+          <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[color:var(--tarot-page-muted,#9c7d92)]">
+            {t("tarot.flow.question.eyebrow")}
           </p>
-          <h1 className="mt-2.5 font-serif text-[32px] leading-[0.98] text-[#332d45]">
-            {questionPromptTitle(intent)}
+          <h1 className="mt-2.5 font-serif text-[32px] leading-[0.98] text-[color:var(--tarot-page-ink,#332d45)]">
+            {questionPromptTitle(t, intent)}
           </h1>
-          <p className="mt-3 max-w-[24rem] text-[13px] font-semibold leading-relaxed text-[#746276]">
-            {questionPromptBody(intent)}
+          <p className="mt-3 max-w-[24rem] text-[13px] font-semibold leading-relaxed text-[color:var(--tarot-page-muted,#746276)]">
+            {questionPromptBody(t, intent)}
           </p>
 
           {question ? (
             <div className="mt-5 rounded-[24px] border border-white/66 bg-white/46 p-4 shadow-[0_16px_46px_rgba(102,72,105,0.10)] backdrop-blur-xl">
               <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#a28398]">
-                Current question
+                {t("tarot.flow.question.current")}
               </p>
               <p className="mt-2 text-[14px] font-bold leading-relaxed text-[#3d3348]">
                 {question}
@@ -1295,16 +1564,23 @@ function QuestionStep({
           ) : null}
 
           <div className="mt-5 flex items-center justify-between gap-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#9c7d92]">
-              Suggested questions
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--tarot-page-muted,#9c7d92)]">
+              {t("tarot.flow.question.suggested")}
             </p>
             <p className="rounded-full border border-white/56 bg-white/42 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-[#8a7888] shadow-[0_8px_22px_rgba(96,72,104,0.08)] backdrop-blur-xl">
-              Auto spread
+              {t("tarot.flow.question.autoSpread")}
             </p>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-2.5">
+          <div className="mt-3 grid grid-cols-2 gap-2">
             {QUESTION_CARDS.map((card) => {
+              const promptKey = card.icon;
+              const localizedCategory = t(
+                `tarot.flow.prompt.${promptKey}.category`,
+              );
+              const localizedQuestion = t(
+                `tarot.flow.prompt.${promptKey}.question`,
+              );
               const image =
                 getTarotCardImage(card.imageCardId, "hint-card-2") ??
                 getTarotCardImage(card.imageCardId, "hint-classic");
@@ -1315,19 +1591,17 @@ function QuestionStep({
                   onClick={() => {
                     hapticTick();
                     setPickedPrompt(card.category);
-                    setQuestion(card.question);
-                    onPromptSelect(card.question);
+                    setQuestion(localizedQuestion);
+                    onPromptSelect(localizedQuestion);
                   }}
-                  className={`relative h-[104px] overflow-hidden rounded-[18px] border bg-gradient-to-br ${card.gradient} p-3 text-left shadow-[0_14px_32px_rgba(104,82,111,0.12)] transition duration-200 active:scale-[0.98] ${
+                  className={`relative h-[96px] overflow-hidden rounded-[18px] border bg-white/48 p-3 text-left shadow-[0_12px_28px_rgba(104,82,111,0.08)] backdrop-blur-xl transition duration-200 active:scale-[0.98] ${
                     pickedPrompt === card.category
-                      ? "border-[#d7a85e] shadow-[0_20px_50px_rgba(215,168,94,0.26)]"
-                      : "border-white/72"
+                      ? "border-[#b997c9] bg-white/68 shadow-[0_16px_36px_rgba(123,91,145,0.16)]"
+                      : "border-white/68"
                   }`}
                 >
-                  <span className="pointer-events-none absolute -right-8 top-0 h-24 w-24 rounded-full bg-white/44 blur-2xl" />
-                  <span className="pointer-events-none absolute -bottom-10 left-8 h-24 w-32 rounded-full bg-[#f5c9df]/22 blur-2xl" />
                   {image ? (
-                    <span className="pointer-events-none absolute -right-1 bottom-1 h-[66px] w-[40px] rotate-[8deg] overflow-hidden rounded-[8px] border border-white/76 opacity-95 shadow-[0_12px_22px_rgba(79,58,91,0.18)]">
+                    <span className="pointer-events-none absolute -right-1 bottom-1 h-[62px] w-[38px] rotate-[6deg] overflow-hidden rounded-[8px] border border-white/76 opacity-90 shadow-[0_10px_20px_rgba(79,58,91,0.14)]">
                       <img
                         src={image}
                         alt=""
@@ -1338,15 +1612,22 @@ function QuestionStep({
                     </span>
                   ) : null}
                   <span className="relative z-10 flex items-center gap-2">
-                    <span className="grid h-7 w-7 place-items-center rounded-full bg-white/58 text-[#5e4c67] shadow-inner">
+                    <span className="grid h-7 w-7 place-items-center rounded-full border border-[#b997c9]/20 bg-[#fff9f4]/72 text-[#6f5878]">
                       <QuestionIcon icon={card.icon} />
                     </span>
                     <span className="min-w-0 truncate text-[9px] font-black uppercase tracking-[0.18em] text-[#9d7c84]">
-                      {card.category}
+                      {localizedCategory}
                     </span>
                   </span>
-                  <span className="relative z-10 mt-3 line-clamp-2 block max-w-[calc(100%-2rem)] text-[12.5px] font-black leading-snug text-[#3e3448]">
-                    {card.question}
+                  <span
+                    className="relative z-10 mt-2.5 block h-[2.6rem] max-w-[calc(100%-2rem)] overflow-hidden text-[11.5px] font-bold leading-[1.2] text-[#3e3448]"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 3,
+                    }}
+                  >
+                    {localizedQuestion}
                   </span>
                 </button>
               );
@@ -1361,13 +1642,13 @@ function QuestionStep({
             value={question}
             rows={1}
             onChange={(event) => setQuestion(event.target.value)}
-            placeholder="Type your question..."
+            placeholder={t("tarot.flow.question.placeholder")}
             className="max-h-24 min-h-11 flex-1 resize-none rounded-[22px] bg-transparent px-3 py-3 text-[14px] font-bold leading-snug text-[#382f45] outline-none placeholder:text-[#9b8c9e]"
           />
           <button
             type="button"
-            onClick={startVoice}
-            aria-label="Voice input"
+            onClick={() => void startVoice()}
+            aria-label={t("tarot.flow.question.voiceInput")}
             className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#f4e8f1] text-[#6e5871] transition active:scale-95"
           >
             <Mic size={18} />
@@ -1376,7 +1657,7 @@ function QuestionStep({
             type="button"
             onClick={onSubmit}
             disabled={!canContinue}
-            aria-label="Continue"
+            aria-label={t("common.next")}
             className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#2f2544] text-[#fff8ec] shadow-[0_10px_24px_rgba(65,48,76,0.24)] transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Send size={18} />
@@ -1387,9 +1668,16 @@ function QuestionStep({
         {voiceOpen && (
           <VoicePanel
             transcript={transcript}
-            onCancel={closeVoice}
+            notice={voiceNotice}
+            listening={voiceListening}
+            starting={voiceStarting}
+            onCancel={() => {
+              void stopVoice(true);
+              closeVoice();
+            }}
             onUse={() => {
               hapticTick(8);
+              void stopVoice();
               setQuestion(transcript);
               closeVoice();
             }}
@@ -1417,185 +1705,96 @@ function SpreadRecommendationStep({
   onSpreadChange: (spread: SpreadChoice) => void;
   onUse: () => void;
 }) {
-  const dragStartX = useRef<number | null>(null);
-  const dragHapticBucketRef = useRef(0);
-  const [dragOffset, setDragOffset] = useState(0);
+  const { language, t } = useLanguage();
   const currentIndex = Math.max(
     0,
     FEATURED_SPREADS.findIndex((item) => item.id === spread.id),
   );
-  const intent = getQuestionIntent(question);
+  const displaySpread = localizeSpreadChoice(spread, t);
   const recommendationMatches = recommendation?.spreadType === spread.id;
-  const reason = recommendationMatches
-    ? recommendation.reason
-    : spreadReason(spread, question);
+  const reason =
+    language === "zh"
+      ? displaySpread.bestFor
+      : recommendationMatches && recommendation.reason.trim()
+        ? recommendation.reason
+        : spreadReason(spread, question);
   const matchLabel = isLoading
-    ? "Choosing with API"
+    ? t("tarot.flow.recommendation.loading")
     : recommendationMatches && recommendation?.source === "api"
-      ? "AI matched"
+      ? t("tarot.flow.recommendation.api")
       : recommendationMatches
-        ? "Local match"
-        : "Manual choice";
-
-  function move(delta: number) {
-    const nextIndex = Math.max(
-      0,
-      Math.min(FEATURED_SPREADS.length - 1, currentIndex + delta),
-    );
-    if (nextIndex === currentIndex) return;
-    onSpreadChange(FEATURED_SPREADS[nextIndex]!);
-    hapticTick();
-  }
-
-  function finishSwipe(clientX: number) {
-    if (dragStartX.current === null) return;
-    const delta = clientX - dragStartX.current;
-    dragStartX.current = null;
-    setDragOffset(0);
-    if (Math.abs(delta) < 34) return;
-    move(delta > 0 ? -1 : 1);
-  }
+        ? t("tarot.flow.recommendation.local")
+        : t("tarot.flow.recommendation.manual");
 
   return (
-    <StepShell>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="h-[164px] shrink-0 overflow-hidden">
-          <p className="h-3 text-[10px] font-black uppercase leading-none tracking-[0.22em] text-[#9c7d92]">
-            Personal spread
+    <StepShell className="tarot-spread-scroll">
+      <div className="tarot-spread-recommendation" data-testid="spread-recommendation">
+        <header className="tarot-spread-story" data-testid="spread-story">
+          <p className="tarot-spread-eyebrow">
+            {t("tarot.flow.recommendation.eyebrow")}
           </p>
-          <h1 className="mt-2 line-clamp-2 min-h-[56px] font-serif text-[29px] leading-[0.96] text-[#332d45]">
-            The room chose {spread.label}.
-          </h1>
-          <p className="mt-2 line-clamp-2 min-h-[40px] max-w-[22rem] text-[12.5px] font-semibold leading-relaxed text-[#746276]">
-            {questionPromptBody(intent)} Swipe to compare another shape.
-          </p>
-          <div className="mt-3 flex h-7 flex-wrap items-center gap-2 overflow-hidden">
-            <span className="inline-flex h-7 items-center rounded-full border border-white/62 bg-white/58 px-3 text-[9px] font-black uppercase tracking-[0.13em] text-[#8a6f83] shadow-[0_8px_22px_rgba(96,72,104,0.10)] backdrop-blur-xl">
+          <h1 className="font-serif">{displaySpread.label}</h1>
+          {question.trim() && <p className="tarot-spread-question font-serif">{question}</p>}
+        </header>
+
+        <section className="tarot-spread-preview" aria-label={t("tarot.flow.recommendation.current")}>
+          <div className="tarot-spread-preview-heading">
+            <p role="status" className="tarot-spread-match">
+              <span aria-hidden="true" />
               {matchLabel}
-            </span>
-            {recommendationMatches ? (
-              <span className="inline-flex h-7 items-center rounded-full border border-[#e5c987]/50 bg-[#fff4cf]/64 px-3 text-[9px] font-black uppercase tracking-[0.13em] text-[#9a7442]">
-                {recommendation.confidence} confidence
-              </span>
-            ) : null}
+            </p>
+            <p className="tarot-spread-size">
+              {spread.cardCount === 1
+                ? t("tarot.flow.recommendation.singleCard")
+                : formatCopy(t("tarot.flow.recommendation.cardCount"), { count: spread.cardCount })}
+            </p>
           </div>
-        </div>
-
-        <div
-          className="relative mt-4 h-[430px] touch-pan-y select-none"
-          onPointerDown={(event) => {
-            if ((event.target as HTMLElement).closest("button")) return;
-            dragStartX.current = event.clientX;
-            dragHapticBucketRef.current = 0;
-            hapticTick(3);
-            event.currentTarget.setPointerCapture(event.pointerId);
-          }}
-          onPointerMove={(event) => {
-            if (dragStartX.current === null) return;
-            const delta = event.clientX - dragStartX.current;
-            setDragOffset(Math.max(-132, Math.min(132, delta)));
-            const bucket = Math.trunc(Math.abs(delta) / 54);
-            if (bucket > dragHapticBucketRef.current) {
-              dragHapticBucketRef.current = bucket;
-              hapticTick(3);
-            }
-          }}
-          onPointerUp={(event) => finishSwipe(event.clientX)}
-          onPointerCancel={() => {
-            dragStartX.current = null;
-            setDragOffset(0);
-          }}
-        >
-          <div className="absolute left-1/2 top-[43%] h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,230,185,0.78),rgba(246,181,213,0.42)_38%,rgba(101,70,135,0.20)_62%,transparent_76%)] blur-[2px]" />
-          <div className="absolute left-1/2 top-[43%] h-[276px] w-[276px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/50 bg-[#fff8f4]/20 shadow-[inset_0_0_90px_rgba(255,255,255,0.30),0_22px_54px_rgba(70,47,84,0.12)]" />
-
-          <motion.div
-            className="absolute top-3 flex items-center"
-            style={{
-              left: `calc(50% - ${SPREAD_CAROUSEL_CARD_WIDTH / 2}px)`,
-              gap: SPREAD_CAROUSEL_GAP,
-            }}
-            animate={{ x: -currentIndex * SPREAD_CAROUSEL_STEP + dragOffset }}
-            transition={{
-              duration: dragOffset ? 0 : 0.34,
-              ease: [0.2, 0.76, 0.2, 1],
+          <SpreadPreviewCarousel
+            index={currentIndex}
+            count={FEATURED_SPREADS.length}
+            spreadId={spread.id}
+            spreadLabel={displaySpread.label}
+            currentLabel={t("tarot.flow.recommendation.current")}
+            previousLabel={t("tarot.flow.recommendation.previous")}
+            nextLabel={t("tarot.flow.recommendation.next")}
+            onSelect={(index) => {
+              onSpreadChange(FEATURED_SPREADS[index]!);
+              hapticTick();
             }}
           >
-            {FEATURED_SPREADS.map((item, index) => {
-              const active = index === currentIndex;
-              const distance = Math.abs(index - currentIndex);
-              return (
-                <motion.div
-                  key={item.id}
-                  className={`h-[360px] shrink-0 overflow-hidden rounded-[28px] border p-4 text-center backdrop-blur-xl ${
-                    active
-                      ? "border-white/78 bg-white/72 shadow-[0_24px_66px_rgba(72,50,88,0.24)]"
-                      : "border-white/38 bg-white/28 blur-[1.1px]"
-                  }`}
-                  style={{ width: SPREAD_CAROUSEL_CARD_WIDTH }}
-                  animate={{
-                    scale: active ? 1 : 0.82,
-                    opacity: active ? 1 : distance > 1 ? 0.24 : 0.42,
-                  }}
-                  transition={{ duration: 0.3, ease: [0.2, 0.76, 0.2, 1] }}
-                >
-                  <div className="mx-auto mb-1.5 w-fit rounded-full border border-[#d9b883]/36 bg-white/56 px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-[#9c7d65]">
-                    {active ? "Current spread" : item.cardCount + " cards"}
-                  </div>
-                  <SpreadDiagram
-                    spread={item}
-                    active={active}
-                    showLabels={active}
-                    cardBackId={design.cardBackId}
-                    className="h-[190px]"
-                  />
-                  <p className="mt-2 font-serif text-[25px] leading-tight text-[#342e43]">
-                    {item.label}
-                  </p>
-                  <p className="mt-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[#a88359]">
-                    {item.cardCount} cards
-                  </p>
-                  <p className="mx-auto mt-2 line-clamp-2 max-w-[14rem] text-[12px] font-semibold leading-relaxed text-[#6f5d72]">
-                    {item.bestFor}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+            <SpreadDiagram
+              spread={displaySpread}
+              active
+              quiet
+              cardBackId={design.cardBackId}
+              className="tarot-spread-diagram-content"
+            />
+          </SpreadPreviewCarousel>
+            <ol className={`tarot-spread-position-legend${spread.cardCount === 1 ? " tarot-spread-position-legend-single" : ""}`}>
+              {displaySpread.positionLabels.slice(0, spread.cardCount).map((label, index) => (
+                <li key={`${spread.id}-${index}`}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  {label}
+                </li>
+              ))}
+            </ol>
+          <div className="tarot-spread-description" data-testid="spread-description">
+            <p>{displaySpread.bestFor}</p>
+          </div>
+        </section>
 
-          <button
-            type="button"
-            onPointerDown={(event) => event.stopPropagation()}
-            onClick={() => move(-1)}
-            disabled={currentIndex === 0}
-            aria-label="Previous spread"
-            className="absolute left-0 top-[46%] z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/60 bg-white/64 text-[#67556d] shadow-lg transition disabled:opacity-35"
-          >
-            <ChevronLeft />
-          </button>
-          <button
-            type="button"
-            onPointerDown={(event) => event.stopPropagation()}
-            onClick={() => move(1)}
-            disabled={currentIndex === FEATURED_SPREADS.length - 1}
-            aria-label="Next spread"
-            className="absolute right-0 top-[46%] z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/60 bg-white/64 text-[#67556d] shadow-lg transition disabled:opacity-35"
-          >
-            <ChevronRight />
-          </button>
-        </div>
-
-        <div className="rounded-[20px] border border-white/58 bg-white/62 p-3 shadow-[0_14px_36px_rgba(97,72,107,0.10)] backdrop-blur-xl">
-          <p className="text-[9px] font-black uppercase tracking-[0.18em] text-[#a28191]">
-            Why this spread
+        <div className="tarot-spread-reason" data-testid="spread-reason">
+          <p className="tarot-spread-eyebrow">
+            {t("tarot.flow.recommendation.why")}
           </p>
-          <p className="mt-1.5 line-clamp-2 text-[11.5px] font-semibold leading-relaxed text-[#655668]">
+          <p className="tarot-spread-reason-copy font-serif">
             {reason}
           </p>
         </div>
 
-        <PrimaryButton onClick={onUse} className="mt-3 w-full">
-          Use this spread
+        <PrimaryButton onClick={onUse} className="tarot-spread-use w-full">
+          {t("tarot.flow.recommendation.use")}
+          <ArrowRight size={18} strokeWidth={1.4} aria-hidden="true" />
         </PrimaryButton>
       </div>
     </StepShell>
@@ -1630,9 +1829,7 @@ function SpotlightSelectorStep({
   return (
     <StepShell>
       <div className="flex flex-1 flex-col justify-center overflow-hidden">
-        <h1 className="font-serif text-[34px] leading-none text-[#332d45]">
-          Choose the shape of the reading.
-        </h1>
+        <h1 className="font-serif text-[34px] leading-none text-[color:var(--tarot-page-ink,#332d45)]"><LocalizedText text={" Choose the shape of the reading. "} /></h1>
         <div className="relative mt-9 h-[420px]">
           <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,244,218,0.78),rgba(247,205,224,0.42)_38%,transparent_70%)]" />
           {[-1, 0, 1].map((offset) => {
@@ -1667,8 +1864,7 @@ function SpotlightSelectorStep({
                   {spread.label}
                 </p>
                 <p className="mt-2 text-[11px] font-black uppercase tracking-[0.14em] text-[#a88359]">
-                  {spread.cardCount} cards
-                </p>
+                  {spread.cardCount}<LocalizedText text={" cards "} /></p>
                 <p className="mt-3 line-clamp-2 text-[13px] font-semibold leading-relaxed text-[#6f5d72]">
                   {spread.description}. {spread.positions}
                 </p>
@@ -1697,10 +1893,8 @@ function SpotlightSelectorStep({
         <PrimaryButton
           onClick={onChoose}
           className="mx-auto w-full max-w-[300px]"
-        >
-          Choose this spread
-        </PrimaryButton>
-        <p className="mt-4 text-center text-[12px] font-semibold text-[#826f82]">
+        ><LocalizedText text={" Choose this spread "} /></PrimaryButton>
+        <p className="mt-4 text-center text-[12px] font-semibold text-[color:var(--tarot-page-muted,#826f82)]">
           {center.bestFor}
         </p>
       </div>
@@ -1713,14 +1907,17 @@ function RoomDesignStudioStep({
   onDesign,
   spread,
   onContinue,
+  settingsMode = false,
 }: {
   design: RoomDesign;
   onDesign: (design: RoomDesign) => void;
   spread: SpreadChoice;
   onContinue: () => void;
+  settingsMode?: boolean;
 }) {
+  const { t } = useLanguage();
   const [activePanel, setActivePanel] = useState<DesignPanel>("room");
-  const [customizeOpen, setCustomizeOpen] = useState(false);
+  const [customizeOpen, setCustomizeOpen] = useState(settingsMode);
   const [showTokenStyles, setShowTokenStyles] = useState(false);
   const { profile } = useProfile();
   const [storedBirthProfile, setStoredBirthProfile] = useState(() =>
@@ -1728,6 +1925,9 @@ function RoomDesignStudioStep({
   );
   const cardFace = getCardFace(design.cardArtId);
   const background = getRoomBackground(design.backgroundId);
+  const displaySpread = localizeSpreadChoice(spread, t);
+  const cardFaceLabel = t(`tarot.cardFace.${cardFace.id}.label`);
+  const backgroundLabel = t(`tarot.background.${background.id}.label`);
   const activeBirthDate =
     profile?.birthDate ?? storedBirthProfile?.birthDate ?? null;
   const personalBacks = getPersonalZodiacCardBacks(activeBirthDate);
@@ -1749,17 +1949,36 @@ function RoomDesignStudioStep({
     ? [...unlockedCardBackChoices, ...lockedCardBackChoices]
     : unlockedCardBackChoices;
   const cardBackHelpText = personalBacks
-    ? `Your ${personalBacks.sign} sign has two card backs. Other styles use token.`
-    : "Your astrology sign card backs appear after profile setup.";
+    ? formatCopy(t("tarot.flow.design.cardBackHelpPersonal"), {
+        sign: personalBacks.sign,
+      })
+    : t("tarot.flow.design.cardBackHelpGuest");
   const summaryItems = [
-    { label: "Spread", value: spread.label },
-    { label: "Front", value: cardFace.label },
-    { label: "Back", value: cardBackShortLabel },
+    {
+      label: settingsMode
+        ? t("tarot.flow.design.room")
+        : t("tarot.flow.design.spread"),
+      value: settingsMode ? backgroundLabel : displaySpread.label,
+    },
+    { label: t("tarot.flow.design.front"), value: cardFaceLabel },
+    { label: t("tarot.flow.design.back"), value: cardBackShortLabel },
   ];
   const panelTabs: Array<{ id: DesignPanel; label: string; value: string }> = [
-    { id: "room", label: "Room", value: background.label },
-    { id: "front", label: "Front", value: cardFace.label },
-    { id: "back", label: "Back", value: cardBackShortLabel },
+    {
+      id: "room",
+      label: t("tarot.flow.design.room"),
+      value: backgroundLabel,
+    },
+    {
+      id: "front",
+      label: t("tarot.flow.design.front"),
+      value: cardFaceLabel,
+    },
+    {
+      id: "back",
+      label: t("tarot.flow.design.back"),
+      value: cardBackShortLabel,
+    },
   ];
 
   useEffect(() => {
@@ -1780,51 +1999,74 @@ function RoomDesignStudioStep({
     const nextCardBackId =
       personalBacks?.cardBackIds[0] ?? DEFAULT_GUEST_CARD_BACK_ID;
     if (nextCardBackId === design.cardBackId) return;
-    onDesign({ ...design, cardBackId: nextCardBackId });
+    const nextBackStyle = getCardBackStyle(nextCardBackId);
+    onDesign({
+      ...design,
+      cardBackId: nextCardBackId,
+      backStyle: nextBackStyle,
+      deckStyleId: nextBackStyle,
+    });
   }, [activeBirthDate, design, onDesign, personalBacks]);
 
   return (
     <StepShell>
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.22em] text-[#9c7d92]">
+        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.22em] text-[color:var(--tarot-page-muted,#9c7d92)]">
           <Palette size={15} />
-          Reading setup
+          {settingsMode
+            ? t("tarot.flow.design.settingsEyebrow")
+            : t("tarot.flow.design.setupEyebrow")}
         </div>
-        <h1 className="mt-3 font-serif text-[34px] leading-none text-[#332d45]">
-          Your reading is ready.
+        <h1 className="mt-2.5 font-serif text-[32px] leading-[1.02] text-[color:var(--tarot-page-ink,#332d45)]">
+          {settingsMode
+            ? t("tarot.flow.design.settingsTitle")
+            : t("tarot.flow.design.setupTitle")}
         </h1>
-        <p className="mt-3 max-w-[22rem] text-[14px] font-semibold leading-relaxed text-[#746276]">
-          Hint has set the spread and your astrology-sign card back. Begin now,
-          or adjust the look first.
+        <p className="mt-2.5 max-w-[22rem] text-[13px] font-semibold leading-relaxed text-[color:var(--tarot-page-muted,#746276)]">
+          {settingsMode
+            ? t("tarot.flow.design.settingsBody")
+            : t("tarot.flow.design.setupBody")}
         </p>
 
-        <div className="mt-5 min-h-0 flex-1 overflow-y-auto pb-3 pr-1 [scrollbar-width:none]">
-          <div className="rounded-[28px] border border-white/64 bg-white/46 p-3 shadow-[0_22px_62px_rgba(96,72,104,0.14)] backdrop-blur-xl">
+        <div className="mt-4 pb-2 pr-1">
+          <div className="rounded-[26px] border border-white/64 bg-white/42 p-3 shadow-[0_18px_48px_rgba(96,72,104,0.11)] backdrop-blur-xl">
             <div
-              className="relative overflow-hidden rounded-[24px] p-4"
-              style={{ background: design.background }}
+              className="relative overflow-hidden rounded-[22px] border border-white/42 p-4"
+              style={{ background: getTarotRoomSurfaceBackground(design.backgroundId) }}
             >
               <div className="absolute inset-0 opacity-60 [background-image:radial-gradient(circle_at_20%_28%,rgba(255,255,255,0.88)_0_1px,transparent_1px),radial-gradient(circle_at_76%_18%,rgba(198,148,73,0.38)_0_1px,transparent_1px)] [background-size:72px_82px]" />
               <div className="relative z-10 flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="text-[9px] font-black uppercase tracking-[0.18em] text-[#9b7a8d]">
-                    Ready setup
+                    {settingsMode
+                      ? t("tarot.flow.design.livePreview")
+                      : t("tarot.flow.design.readySetup")}
                   </p>
-                  <p className="mt-1 truncate font-serif text-[29px] leading-tight text-[#342e43]">
-                    {spread.label}
+                  <p
+                    className={`mt-1 font-serif leading-tight text-[#342e43] ${
+                      settingsMode ? "text-[24px]" : "truncate text-[29px]"
+                    }`}
+                  >
+                    {settingsMode
+                      ? t("tarot.flow.design.yourRoom")
+                      : displaySpread.label}
                   </p>
                 </div>
                 <span className="shrink-0 rounded-full border border-white/58 bg-white/62 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.12em] text-[#8d6f82]">
-                  {spread.cardCount} cards
+                  {settingsMode
+                    ? t("tarot.flow.design.roomStyle")
+                    : formatCopy(t("tarot.flow.recommendation.cardCount"), {
+                        count: spread.cardCount,
+                      })}
                 </span>
               </div>
 
-              <div className="relative z-10 mt-4 grid grid-cols-[minmax(0,1fr)_154px] items-center gap-3">
-                <div className="min-w-0 space-y-2">
+              <div className="relative z-10 mt-3 grid grid-cols-[minmax(0,1fr)_132px] items-center gap-3">
+                <div className="min-w-0 divide-y divide-[#7b5b91]/10">
                   {summaryItems.map((item) => (
                     <div
                       key={item.label}
-                      className="flex min-h-10 items-center justify-between gap-3 rounded-[16px] border border-white/46 bg-white/44 px-3"
+                      className="flex min-h-11 items-center justify-between gap-3 px-1"
                     >
                       <span className="text-[8px] font-black uppercase tracking-[0.15em] text-[#9b7a8d]">
                         {item.label}
@@ -1835,7 +2077,7 @@ function RoomDesignStudioStep({
                     </div>
                   ))}
                 </div>
-                <div className="relative h-[150px] min-w-0 overflow-hidden rounded-[22px] border border-white/42 bg-white/22 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)]">
+                <div className="relative h-[136px] min-w-0 overflow-hidden rounded-[20px] border border-white/46 bg-white/24 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)]">
                   <div
                     className="absolute -inset-6 rounded-full blur-2xl"
                     style={{ backgroundColor: design.glow }}
@@ -1844,15 +2086,15 @@ function RoomDesignStudioStep({
                     <div className="flex min-w-0 flex-col items-center justify-center rounded-[17px] border border-white/46 bg-white/28 px-1 py-2">
                       <TarotBack
                         cardBackId={design.cardBackId}
-                        className="h-[94px] w-[60px] rounded-[12px]"
+                        className="h-[82px] w-[52px] rounded-[10px]"
                       />
                       <span className="mt-2 block text-[8px] font-black uppercase tracking-[0.12em] text-[#8f7185]">
-                        Back
+                        {t("tarot.flow.design.back")}
                       </span>
                     </div>
                     <div className="flex min-w-0 flex-col items-center justify-center rounded-[17px] border border-white/46 bg-white/28 px-1 py-2">
                       {frontPreviewImage ? (
-                        <span className="block h-[94px] w-[60px] overflow-hidden rounded-[12px] border border-white/82 shadow-[0_14px_28px_rgba(90,65,95,0.18)]">
+                        <span className="block h-[82px] w-[52px] overflow-hidden rounded-[10px] border border-white/82 shadow-[0_12px_24px_rgba(90,65,95,0.16)]">
                           <img
                             src={frontPreviewImage}
                             alt=""
@@ -1867,7 +2109,7 @@ function RoomDesignStudioStep({
                         </span>
                       )}
                       <span className="mt-2 block text-[8px] font-black uppercase tracking-[0.12em] text-[#8f7185]">
-                        Front
+                        {t("tarot.flow.design.front")}
                       </span>
                     </div>
                   </div>
@@ -1886,10 +2128,10 @@ function RoomDesignStudioStep({
             >
               <span>
                 <span className="block text-[10px] font-black uppercase tracking-[0.16em] text-[#9c7d92]">
-                  Customize
+                  {t("tarot.flow.design.customize")}
                 </span>
                 <span className="mt-0.5 block text-[12px] font-black">
-                  Room, card front, and card back
+                  {t("tarot.flow.design.customizeBody")}
                 </span>
               </span>
               <ChevronRight
@@ -1911,6 +2153,7 @@ function RoomDesignStudioStep({
                           hapticTick();
                           setActivePanel(panel.id);
                         }}
+                        aria-pressed={selected}
                         className={`min-w-0 rounded-[18px] px-2 py-2.5 text-left transition active:scale-[0.98] ${
                           selected
                             ? "bg-white/78 text-[#3d3349] shadow-[0_10px_24px_rgba(92,65,102,0.14)]"
@@ -1933,10 +2176,10 @@ function RoomDesignStudioStep({
                     <section>
                       <div className="mb-3">
                         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
-                          Room background
+                          {t("tarot.flow.design.roomBackground")}
                         </p>
                         <p className="mt-1 text-[12px] font-bold text-[#6b596c]">
-                          Choose the atmosphere for the reading.
+                          {t("tarot.flow.design.roomBackgroundBody")}
                         </p>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
@@ -1946,6 +2189,7 @@ function RoomDesignStudioStep({
                             <button
                               key={item.id}
                               type="button"
+                              data-testid={`tarot-room-background-${item.id}`}
                               onClick={() => {
                                 hapticTick();
                                 onDesign({
@@ -1954,12 +2198,13 @@ function RoomDesignStudioStep({
                                   label: item.label,
                                   mood: item.description,
                                   backgroundId: item.id,
-                                  background: getRoomSurfaceBackground(
+                                  background: getTarotRoomSurfaceBackground(
                                     item.id,
                                   ),
                                   glow: getBackgroundGlow(item.id),
                                 });
                               }}
+                              aria-pressed={selected}
                               className={`rounded-[18px] border p-2 text-left transition active:scale-[0.98] ${
                                 selected
                                   ? "border-[#d7a85e] bg-white/78 shadow-[0_12px_28px_rgba(121,82,93,0.14)]"
@@ -1971,7 +2216,7 @@ function RoomDesignStudioStep({
                                 style={{ background: item.preview }}
                               />
                               <span className="mt-2 block truncate text-[10px] font-black text-[#4a4050]">
-                                {item.label}
+                                {t(`tarot.background.${item.id}.label`)}
                               </span>
                             </button>
                           );
@@ -1984,10 +2229,10 @@ function RoomDesignStudioStep({
                     <section>
                       <div className="mb-3">
                         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
-                          Card front
+                          {t("tarot.flow.design.cardFront")}
                         </p>
                         <p className="mt-1 text-[12px] font-bold text-[#6b596c]">
-                          Pick the art style shown after reveal.
+                          {t("tarot.flow.design.cardFrontBody")}
                         </p>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
@@ -2004,10 +2249,12 @@ function RoomDesignStudioStep({
                             <button
                               key={item.id}
                               type="button"
+                              data-testid={`tarot-card-front-${item.id}`}
                               onClick={() => {
                                 hapticTick();
                                 onDesign({ ...design, cardArtId: item.id });
                               }}
+                              aria-pressed={selected}
                               className={`rounded-[18px] border p-2 text-left transition active:scale-[0.98] ${
                                 selected
                                   ? "border-[#d7a85e] bg-white/78 shadow-[0_12px_28px_rgba(121,82,93,0.14)]"
@@ -2035,7 +2282,7 @@ function RoomDesignStudioStep({
                                 ))}
                               </span>
                               <span className="mt-1 block truncate text-[10px] font-black text-[#4a4050]">
-                                {item.label}
+                                {t(`tarot.cardFace.${item.id}.label`)}
                               </span>
                             </button>
                           );
@@ -2048,7 +2295,7 @@ function RoomDesignStudioStep({
                     <section>
                       <div className="mb-3">
                         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
-                          Card back
+                          {t("tarot.flow.design.cardBack")}
                         </p>
                         <p className="mt-1 text-[12px] font-bold leading-snug text-[#6b596c]">
                           {cardBackHelpText}
@@ -2065,10 +2312,17 @@ function RoomDesignStudioStep({
                             <button
                               key={item.id}
                               type="button"
+                              data-testid={`tarot-card-back-${item.id.replace(/[^a-zA-Z0-9]+/g, "-")}`}
                               onClick={() => {
                                 hapticTick();
                                 if (locked) return;
-                                onDesign({ ...design, cardBackId: item.id });
+                                const backStyle = getCardBackStyle(item.id);
+                                onDesign({
+                                  ...design,
+                                  cardBackId: item.id,
+                                  backStyle,
+                                  deckStyleId: backStyle,
+                                });
                               }}
                               className={`relative min-w-0 overflow-hidden rounded-[18px] border p-3 text-center transition active:scale-[0.98] ${
                                 selected
@@ -2078,6 +2332,8 @@ function RoomDesignStudioStep({
                                     : "border-white/54 bg-white/30"
                               }`}
                               aria-disabled={locked}
+                              disabled={locked}
+                              aria-pressed={selected}
                             >
                               <img
                                 src={item.image}
@@ -2092,7 +2348,7 @@ function RoomDesignStudioStep({
                               {locked ? (
                                 <span className="absolute right-2 top-2 inline-flex h-7 items-center gap-1 rounded-full border border-white/60 bg-white/78 px-2 text-[8px] font-black uppercase tracking-[0.12em] text-[#7a6074] shadow-[0_8px_18px_rgba(72,52,82,0.14)]">
                                   <Lock size={10} />
-                                  Token
+                                  {t("tarot.flow.design.token")}
                                 </span>
                               ) : null}
                             </button>
@@ -2106,11 +2362,11 @@ function RoomDesignStudioStep({
                             hapticTick();
                             setShowTokenStyles((current) => !current);
                           }}
-                          className="mt-3 min-h-10 w-full rounded-full border border-white/58 bg-white/44 px-4 text-[11px] font-black text-[#67556d]"
+                          className="mt-3 min-h-11 w-full rounded-full border border-white/58 bg-white/44 px-4 text-[11px] font-black text-[#67556d]"
                         >
                           {showTokenStyles
-                            ? "Show my sign backs only"
-                            : "Show token styles"}
+                            ? t("tarot.flow.design.showMyBacks")
+                            : t("tarot.flow.design.showTokenStyles")}
                         </button>
                       ) : null}
                     </section>
@@ -2121,8 +2377,10 @@ function RoomDesignStudioStep({
           </div>
         </div>
 
-        <PrimaryButton onClick={onContinue} className="mt-4 w-full">
-          Begin the ritual
+        <PrimaryButton onClick={onContinue} className="mt-3 w-full">
+          {settingsMode
+            ? t("tarot.flow.design.save")
+            : t("tarot.flow.design.begin")}
         </PrimaryButton>
       </div>
     </StepShell>
@@ -2140,30 +2398,41 @@ function PrepareStep({
   design: RoomDesign;
   onDone: () => void;
 }) {
+  const { t } = useLanguage();
+  const reduceMotion = useTarotReducedMotion();
+  const displaySpread = localizeSpreadChoice(spread, t);
+
   useEffect(() => {
-    const timer = window.setTimeout(onDone, 1300);
+    const timer = window.setTimeout(onDone, reduceMotion ? 80 : 1300);
     return () => window.clearTimeout(timer);
-  }, [onDone]);
+  }, [onDone, reduceMotion]);
 
   return (
     <StepShell>
       <div className="flex flex-1 flex-col items-center justify-center text-center">
         <motion.div
           className="grid h-40 w-40 place-items-center rounded-full border border-[#f2d6e2]/72 bg-white/36 shadow-[0_0_70px_rgba(246,186,209,0.42)]"
-          animate={{ scale: [0.92, 1.08, 0.92], opacity: [0.72, 1, 0.72] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          animate={{
+            scale: reduceMotion ? 1 : [0.92, 1.08, 0.92],
+            opacity: reduceMotion ? 1 : [0.72, 1, 0.72],
+          }}
+          transition={{
+            duration: reduceMotion ? 0.01 : 2.2,
+            repeat: reduceMotion ? 0 : Infinity,
+            ease: "easeInOut",
+          }}
         >
           <TarotBack cardBackId={design.cardBackId} className="h-28 w-[72px]" />
         </motion.div>
-        <h1 className="mt-10 font-serif text-[34px] leading-none text-[#332d45]">
-          Hold your question in your mind.
+        <h1 className="mt-10 font-serif text-[34px] leading-none text-[color:var(--tarot-page-ink,#332d45)]">
+          {t("tarot.flow.prepare.title")}
         </h1>
-        <p className="mt-4 max-w-[20rem] text-[15px] font-semibold leading-relaxed text-[#746276]">
-          Move the cards in one slow circle. Release when it feels enough.
+        <p className="mt-4 max-w-[20rem] text-[15px] font-semibold leading-relaxed text-[color:var(--tarot-page-muted,#746276)]">
+          {t("tarot.flow.prepare.body")}
         </p>
         <div className="mt-8 w-full max-w-[340px] rounded-[24px] border border-white/62 bg-white/38 p-4 text-left backdrop-blur-xl">
           <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#a28191]">
-            {spread.label}
+            {displaySpread.label}
           </p>
           <p className="mt-2 text-[14px] font-semibold leading-relaxed text-[#4a4050]">
             {question}
@@ -2172,13 +2441,6 @@ function PrepareStep({
       </div>
     </StepShell>
   );
-}
-
-function createFlowDeckState(deck: RitualCard[]): FlowDeckState {
-  return {
-    hiddenDeckOrder: deck,
-    ritualCards: deck,
-  };
 }
 
 function RitualShuffleStep({
@@ -2190,34 +2452,68 @@ function RitualShuffleStep({
   deck: RitualCard[];
   onComplete: (deck: RitualCard[]) => void;
 }) {
+  const reduceMotion = useTarotReducedMotion();
+  const { pageVisible } = useMotionPolicy();
+  const washProxyCount = Math.min(deck.length, 48);
   const [deckState, setDeckState] = useState<FlowDeckState>(() =>
-    createFlowDeckState(deck),
+    ({
+      hiddenDeckOrder: deck,
+      ritualCards: loosenDeckForWash(deck.slice(0, washProxyCount)),
+    }),
   );
-  const [stage, setStage] = useState<
-    "placed" | "washing" | "gathering" | "cutReady" | "cutting"
-  >("placed");
-  const [washScore, setWashScore] = useState(0);
-  const [washDirection, setWashDirection] = useState<1 | -1>(1);
+  const [washState, dispatchWash] = useReducer(
+    washRitualReducer,
+    undefined,
+    createInitialWashRitualState,
+  );
+  const { stage, mode: washMode, autoWashing } = washState;
   const deckStateRef = useRef(deckState);
+  const stageRef = useRef(stage);
+  const washScoreRef = useRef(0);
+  const autoWashingRef = useRef(false);
+  const autoWashFrameRef = useRef<number | null>(null);
+  const washFrameRef = useRef<number | null>(null);
+  const washRitualRef = useRef<CardWashRitualHandle | null>(null);
+  const pendingWashPointerRef = useRef<WashPointer | null>(null);
   const timers = useRef<number[]>([]);
   const lastWashHapticAtRef = useRef(0);
   const lastStrongWashHapticAtRef = useRef(0);
-  const washCompleteScore = 104;
-  const washProgress = Math.min(1, washScore / washCompleteScore);
+  const squareStartedRef = useRef(false);
+  const gatherStartedAtRef = useRef(0);
+  const squareStartedAtRef = useRef(0);
+  const ritualDoneRef = useRef(false);
+  const washCompleteScore = 96;
+  const washTiming = getWashRitualTiming(reduceMotion);
   const theme = getWashTheme(design);
   const displayRitualCards = deckState.ritualCards;
+  stageRef.current = stage;
 
   function clearTimers() {
     timers.current.forEach((timer) => window.clearTimeout(timer));
     timers.current = [];
+    if (autoWashFrameRef.current !== null) {
+      window.cancelAnimationFrame(autoWashFrameRef.current);
+      autoWashFrameRef.current = null;
+    }
+    if (washFrameRef.current !== null) {
+      window.cancelAnimationFrame(washFrameRef.current);
+      washFrameRef.current = null;
+    }
+    pendingWashPointerRef.current = null;
   }
 
-  function updateDeckState(updater: (current: FlowDeckState) => FlowDeckState) {
-    setDeckState((current) => {
-      const next = updater(current);
-      deckStateRef.current = next;
-      return next;
-    });
+  function updateDeckState(
+    updater: (current: FlowDeckState) => FlowDeckState,
+    commit = true,
+  ) {
+    const next = updater(deckStateRef.current);
+    deckStateRef.current = next;
+    if (commit) {
+      setDeckState(next);
+    } else {
+      washRitualRef.current?.paintCards(next.ritualCards);
+    }
+    return next;
   }
 
   useEffect(() => {
@@ -2229,42 +2525,46 @@ function RitualShuffleStep({
   }, []);
 
   useEffect(() => {
-    if (stage !== "placed" && stage !== "washing") return undefined;
+    if (!pageVisible || reduceMotion || stage !== "washing" || autoWashing || washMode !== "manual") return undefined;
     let frame = 0;
-    let last = performance.now();
+    const nextFrame = createWashFrameClock(performance.now());
     const tick = (now: number) => {
-      if (now - last > 32) {
-        last = now;
-        updateDeckState((current) => ({
-          ...current,
-          ritualCards: applyTableCurrent(
-            settleWashedDeck(current.ritualCards),
-            now,
-            stage === "placed" ? 0.22 : 0.9,
-            washDirection,
-          ),
-        }));
+      const steps = nextFrame(now);
+      const pointer = pendingWashPointerRef.current;
+      if (pointer) {
+        pendingWashPointerRef.current = null;
+        applyWashPointer(pointer);
+      } else if (steps > 0) {
+        updateDeckState((current) => {
+          let ritualCards = current.ritualCards;
+          for (let step = 0; step < steps; step += 1) {
+            ritualCards = applyTableCurrent(ritualCards, now);
+          }
+          return { ...current, ritualCards };
+        }, false);
       }
       frame = window.requestAnimationFrame(tick);
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
-  }, [stage, washDirection]);
+  }, [autoWashing, pageVisible, reduceMotion, stage, washMode]);
 
   function beginWash() {
-    if (stage !== "placed" && stage !== "washing") return;
-    hapticPulse([6, 22, 8]);
-    setStage("washing");
-    updateDeckState((current) => ({
-      ...current,
-      ritualCards: loosenDeckForWash(current.ritualCards),
-    }));
-    setWashScore((score) => Math.max(score, 4));
+    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    if (washMode === null) {
+      hapticPulse([6, 22, 8]);
+      dispatchWash({ type: "MANUAL_START" });
+    }
+    washScoreRef.current = Math.max(washScoreRef.current, 4);
+    dispatchWash({
+      type: "PROGRESS",
+      progress: washScoreRef.current / washCompleteScore,
+    });
   }
 
-  function wash(pointer: WashPointer) {
-    if (stage !== "washing") return;
-    setWashDirection(pointer.spinDirection);
+  function applyWashPointer(pointer: WashPointer) {
+    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    if (washMode === null) dispatchWash({ type: "MANUAL_START" });
     const now = Date.now();
     if (now - lastWashHapticAtRef.current > 88) {
       lastWashHapticAtRef.current = now;
@@ -2279,479 +2579,377 @@ function RitualShuffleStep({
         lastStrongWashHapticAtRef.current = now;
         hapticPulse([4, 18, 5]);
       }
-      setWashScore((score) =>
-        Math.min(washCompleteScore, score + result.movementScore * 0.18 + 0.12),
+      washScoreRef.current = Math.min(
+        washCompleteScore,
+        washScoreRef.current + result.movementScore * 0.16 + 0.1,
       );
       return {
         ...current,
         ritualCards: result.cards,
       };
-    });
+    }, false);
   }
 
-  function startCutDeck() {
-    const secondCutDirection: 1 | -1 = washDirection === 1 ? -1 : 1;
-    setStage("cutting");
-    hapticPulse([10, 42, 12]);
-    updateDeckState((current) => ({
-      ...current,
-      hiddenDeckOrder: cutHiddenOrder(current.hiddenDeckOrder, 0.42),
-      ritualCards: cutDeckIntoPackets(current.ritualCards, washDirection, 0),
-    }));
-    clearTimers();
-    timers.current = [
-      window.setTimeout(() => {
-        hapticTick(8);
-        updateDeckState((current) => ({
-          ...current,
-          ritualCards: transferCutPacket(current.ritualCards, washDirection, 0),
-        }));
-      }, 460),
-      window.setTimeout(() => {
-        hapticTick(6);
-        updateDeckState((current) => ({
-          ...current,
-          hiddenDeckOrder: cutHiddenOrder(current.hiddenDeckOrder, 0.58),
-          ritualCards: cutDeckIntoPackets(
-            current.ritualCards,
-            secondCutDirection,
-            1,
-          ),
-        }));
-      }, 920),
-      window.setTimeout(() => {
-        hapticTick(8);
-        updateDeckState((current) => ({
-          ...current,
-          ritualCards: transferCutPacket(
-            current.ritualCards,
-            secondCutDirection,
-            1,
-          ),
-        }));
-      }, 1380),
-      window.setTimeout(() => {
-        hapticPulse([7, 34, 9]);
-        updateDeckState((current) => ({
-          ...current,
-          ritualCards: mergeCutDeckAtCenter(current.ritualCards),
-        }));
-      }, 1840),
-      window.setTimeout(() => {
-        onComplete(deckStateRef.current.hiddenDeckOrder);
-      }, 2320),
-    ];
+  function flushPendingWash() {
+    if (washFrameRef.current !== null) {
+      window.cancelAnimationFrame(washFrameRef.current);
+      washFrameRef.current = null;
+    }
+    const pointer = pendingWashPointerRef.current;
+    pendingWashPointerRef.current = null;
+    if (pointer) applyWashPointer(pointer);
+  }
+
+  function wash(pointer: WashPointer) {
+    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    const pending = pendingWashPointerRef.current;
+    pendingWashPointerRef.current = pending
+      ? {
+          ...pointer,
+          movementX: pending.movementX + pointer.movementX,
+          movementY: pending.movementY + pointer.movementY,
+        }
+      : pointer;
+    if (reduceMotion && washFrameRef.current === null) {
+      washFrameRef.current = window.requestAnimationFrame(flushPendingWash);
+    }
   }
 
   function finishWash() {
-    if (stage !== "washing") return;
+    if (stageRef.current !== "washing") return;
+    flushPendingWash();
+    stageRef.current = "gathering";
+    autoWashingRef.current = false;
     hapticPulse([8, 34, 10]);
-    setWashScore(washCompleteScore);
-    setStage("gathering");
+    dispatchWash({ type: "WASH_COMPLETE" });
+    squareStartedRef.current = false;
+    gatherStartedAtRef.current = performance.now();
     updateDeckState((current) => ({
       ...current,
-      hiddenDeckOrder: washHiddenOrder(current.hiddenDeckOrder),
+      hiddenDeckOrder: shuffleHiddenDeck(current.hiddenDeckOrder),
       ritualCards: gatherDeckToCenter(current.ritualCards),
     }));
     clearTimers();
+    // CSS events can disappear after a visibility change or a no-op transform.
+    // These bounds run alongside the visual settle rather than adding seconds
+    // of dead time when an event never arrives.
     timers.current = [
-      window.setTimeout(() => {
-        updateDeckState((current) => ({
-          ...current,
-          ritualCards: squareDeckAtCenter(current.ritualCards),
-        }));
-      }, 360),
-      window.setTimeout(() => {
-        setStage("cutReady");
-      }, 620),
-      window.setTimeout(startCutDeck, 780),
+      window.setTimeout(squareGatheredDeck, washTiming.squareMs),
+      window.setTimeout(completeGather, washTiming.readyMs),
     ];
+  }
+
+  function cancelWash() {
+    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    flushPendingWash();
+    setDeckState(deckStateRef.current);
+    dispatchWash({ type: "MANUAL_CANCEL" });
+  }
+
+  function squareGatheredDeck() {
+    if (ritualDoneRef.current || stageRef.current !== "gathering" || squareStartedRef.current) return;
+    squareStartedRef.current = true;
+    squareStartedAtRef.current = performance.now();
+    hapticTick(5);
+    updateDeckState((current) => ({
+      ...current,
+      ritualCards: squareDeckAtCenter(current.ritualCards),
+    }));
+    // Anchor recovery to the actual squaring start as well: a throttled timer
+    // must not leave the ritual waiting for a transitionend that never arrives.
+    timers.current.push(window.setTimeout(completeGather, washTiming.readyMs - washTiming.squareMs));
+  }
+
+  function completeGather() {
+    if (ritualDoneRef.current || stageRef.current !== "gathering") return;
+    if (!squareStartedRef.current) {
+      if (performance.now() - gatherStartedAtRef.current >= washTiming.squareMs) squareGatheredDeck();
+      return;
+    }
+    // A late transitionend from the gathering phase must not finish squaring.
+    if (performance.now() - squareStartedAtRef.current < (reduceMotion ? 10 : 520)) return;
+
+    ritualDoneRef.current = true;
+    stageRef.current = "cutReady";
+    dispatchWash({ type: "GATHER_COMPLETE" });
+    hapticPulse([5, 24, 5]);
+    clearTimers();
+    onComplete(deckStateRef.current.hiddenDeckOrder);
+  }
+
+  function startAutoWash() {
+    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    autoWashingRef.current = true;
+    dispatchWash({ type: "AUTO_START" });
+    hapticPulse([7, 26, 8]);
+    // Continue from the cards already on the table; starting auto must not
+    // teleport a partially washed deck back into its initial layout.
+    clearTimers();
+    const startedAt = performance.now();
+    const nextFrame = createWashFrameClock(startedAt);
+    const duration = washTiming.autoWashMs;
+    const tick = (now: number) => {
+      if (!autoWashingRef.current || stageRef.current !== "washing") return;
+      const elapsed = now - startedAt;
+      const steps = nextFrame(now);
+      if (steps > 0 && !reduceMotion) {
+        updateDeckState((current) => {
+          let ritualCards = current.ritualCards;
+          for (let step = 0; step < steps; step += 1) {
+            ritualCards = applyAutoWashWave(ritualCards, elapsed, 1);
+          }
+          return { ...current, ritualCards };
+        }, false);
+      }
+      washScoreRef.current = Math.min(
+        washCompleteScore,
+        (elapsed / duration) * washCompleteScore,
+      );
+      if (elapsed >= duration) {
+        autoWashFrameRef.current = null;
+        finishWash();
+        return;
+      }
+      autoWashFrameRef.current = window.requestAnimationFrame(tick);
+    };
+    autoWashFrameRef.current = window.requestAnimationFrame(tick);
   }
 
   return (
     <CardWashRitual
+      ref={washRitualRef}
       stage={stage}
       ritualCards={displayRitualCards}
-      washProgress={washProgress}
+      deckCount={deck.length}
       theme={theme}
       onBeginWash={beginWash}
       onWash={wash}
       onWashRelease={finishWash}
-      onCutDeck={startCutDeck}
-      showControls
+      onWashCancel={cancelWash}
+      autoWashing={autoWashing}
+      onAutoWash={startAutoWash}
+      onCardsSettled={() => completeGather()}
     />
   );
 }
 
-function ShuffleStep({
-  design,
-  onDone,
+
+const POST_CUT_SHUFFLE_SECONDS = 2.8;
+
+function RitualDeckInterleave({
+  cardBackId,
+  settled,
+  reduceMotion,
+  onComplete,
 }: {
-  design: RoomDesign;
-  onDone: () => void;
+  cardBackId: TarotCardBackId;
+  settled: boolean;
+  reduceMotion: boolean;
+  onComplete: () => void;
 }) {
-  const [dragging, setDragging] = useState(false);
-  const [auto, setAuto] = useState(false);
-  const [motionSeed, setMotionSeed] = useState(0);
-  const [pointer, setPointer] = useState({ x: 0, y: 0 });
-  const [direction, setDirection] = useState<1 | -1>(1);
-  const lastPoint = useRef<{ x: number; y: number } | null>(null);
-  const lastShuffleHapticAtRef = useRef(0);
-
-  useEffect(() => {
-    if (!auto && !dragging) return undefined;
-    const timer = window.setInterval(() => {
-      setMotionSeed((current) => current + (auto ? 9 : 2.8));
-    }, 72);
-    return () => window.clearInterval(timer);
-  }, [auto, dragging]);
-
-  function finish() {
-    setDragging(false);
-    lastPoint.current = null;
-    hapticTick(12);
-    window.setTimeout(onDone, 720);
-  }
-
-  function autoShuffle() {
-    setAuto(true);
-    setDirection((current) => (current === 1 ? -1 : 1));
-    hapticTick();
-    window.setTimeout(() => {
-      setAuto(false);
-      finish();
-    }, 4200);
-  }
-
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -14 }}
-      transition={{ duration: 0.42, ease: [0.22, 0.74, 0.2, 1] }}
-      className="relative z-10 min-h-full overflow-hidden px-5 pb-[calc(var(--hint-safe-bottom)+1.25rem)] pt-[calc(var(--hint-safe-top)+4rem)] text-center"
-      onPointerDown={(event: PointerEvent<HTMLElement>) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const x = event.clientX - rect.left - rect.width / 2;
-        const y = event.clientY - rect.top - rect.height / 2;
-        setDragging(true);
-        hapticTick(6);
-        setPointer({ x, y });
-        lastPoint.current = { x, y };
-        event.currentTarget.setPointerCapture(event.pointerId);
-      }}
-      onPointerMove={(event) => {
-        if (!dragging) return;
-        const rect = event.currentTarget.getBoundingClientRect();
-        const x = event.clientX - rect.left - rect.width / 2;
-        const y = event.clientY - rect.top - rect.height / 2;
-        const previous = lastPoint.current ?? { x, y };
-        const turn = previous.x * y - previous.y * x;
-        if (Math.abs(turn) > 220) setDirection(turn > 0 ? 1 : -1);
-        const now = Date.now();
-        if (
-          now - lastShuffleHapticAtRef.current > 150 &&
-          Math.hypot(x - previous.x, y - previous.y) > 14
-        ) {
-          lastShuffleHapticAtRef.current = now;
-          hapticTick(3);
-        }
-        setPointer({ x, y });
-        setMotionSeed(
-          (current) =>
-            current + Math.hypot(x - previous.x, y - previous.y) * 0.35,
-        );
-        lastPoint.current = { x, y };
-      }}
-      onPointerUp={finish}
-      onPointerCancel={finish}
-    >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(255,245,224,0.62),transparent_34%),radial-gradient(circle_at_50%_65%,rgba(223,196,255,0.24),transparent_55%)]" />
-      <div className="relative z-30 mx-auto max-w-[24rem]">
-        <h1 className="font-serif text-[34px] leading-none text-[#332d45]">
-          Wash the deck.
-        </h1>
-        <p className="mt-3 text-[14px] font-semibold leading-relaxed text-[#746276]">
-          Wash clockwise or counterclockwise. Keep one direction, then release
-          when it feels enough.
-        </p>
-      </div>
-
-      <div className="pointer-events-none absolute inset-0 z-10">
-        {Array.from({ length: 42 }, (_, index) => {
-          const active = dragging || auto;
-          const angle = index * 2.399 + motionSeed * 0.038 * direction;
-          const lane = index % 7;
-          const radius = active
-            ? 82 + lane * 24 + Math.sin(index * 1.7 + motionSeed * 0.04) * 24
-            : 6 + index * 0.16;
-          const currentX = active
-            ? pointer.x * 0.38 +
-              Math.cos(angle) * radius +
-              Math.sin(index * 2.1 + motionSeed * 0.045) * 38
-            : ((index % 8) - 4) * 1.2;
-          const currentY = active
-            ? pointer.y * 0.28 +
-              Math.sin(angle) * radius * 0.82 +
-              Math.cos(index * 1.8 + motionSeed * 0.05) * 34
-            : -index * 0.22;
-          return (
-            <motion.div
-              key={index}
-              className="absolute left-1/2 top-1/2 h-[92px] w-[58px] -translate-x-1/2 -translate-y-1/2"
-              animate={{
-                x: currentX,
-                y: currentY,
-                rotate: active
-                  ? (angle * 180) / Math.PI + direction * motionSeed + index * 9
-                  : index * 0.35,
-                scale: active ? 0.86 + (index % 5) * 0.035 : 0.78,
-                opacity: active ? 0.92 : 0.96,
+  // These face-down proxies only describe the motion. CutStep owns the hidden
+  // 78-card order and advances once the last card has joined the deck.
+  const count = reduceMotion ? 1 : 12;
+  return Array.from({ length: count }, (_, index) => {
+    const side = index % 2 === 0 ? -1 : 1;
+    const depth = Math.floor((count - 1 - index) / 2) * 1.1;
+    const releaseAt = 0.48 + index * 0.023;
+    const landAt = 0.61 + index * 0.026;
+    return (
+      <div key={index} aria-hidden="true"
+        className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2"
+        style={{ zIndex: index }}>
+        <motion.div
+          data-shuffle-card={index}
+          className={`relative ${WASH_CARD_SIZE} transform-gpu will-change-transform`}
+          initial={{ x: 0, y: 1.2 + depth * 0.2, rotate: 0 }}
+          animate={settled || reduceMotion
+            ? { x: 0, y: 1.2 + depth * 0.2, rotate: 0 }
+            : {
+                x: [0, side * 62, side * 62, side * 18, side * 18, 0, 0],
+                y: [1.2 + depth * 0.2, -14 + depth, -14 + depth, -5 + depth, -5 + depth, 1.2 + depth * 0.2, 1.2 + depth * 0.2],
+                rotate: [0, side * 11, side * 11, side * 7, side * 7, side * 0.4, 0],
               }}
-              transition={{ duration: active ? 0.12 : 0.8, ease: "easeOut" }}
-              style={{ zIndex: index }}
-            >
-              <TarotBack
-                cardBackId={design.cardBackId}
-                className="h-full w-full rounded-[10px]"
-              />
-            </motion.div>
-          );
-        })}
+          transition={settled || reduceMotion
+            ? { duration: reduceMotion ? 0.05 : 0.12 }
+            : {
+                duration: POST_CUT_SHUFFLE_SECONDS,
+                times: [0, 0.18, 0.28, 0.43, releaseAt, landAt, 1],
+                ease: [0.4, 0, 0.2, 1],
+              }}
+          onAnimationComplete={() => {
+            if (!settled && index === count - 1) onComplete();
+          }}>
+          <RitualBackCard cardBackId={cardBackId} className="h-full w-full" />
+        </motion.div>
       </div>
-
-      <div className="absolute inset-x-5 bottom-[calc(var(--hint-safe-bottom)+1.25rem)] z-40">
-        <button
-          type="button"
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={autoShuffle}
-          className="min-h-12 w-full rounded-full border border-[#d8c8d8] bg-white/60 px-6 text-[13px] font-black text-[#67556d] shadow-[0_18px_44px_rgba(97,72,107,0.14)] backdrop-blur-xl"
-        >
-          Auto Shuffle
-        </button>
-      </div>
-    </motion.section>
-  );
+    );
+  });
 }
 
 function CutStep({
   design,
+  deck,
   onDone,
 }: {
   design: RoomDesign;
-  onDone: () => void;
+  deck: RitualCard[];
+  onDone: (deck: RitualCard[]) => void;
 }) {
-  const [cut, setCut] = useState(48);
-  const [animating, setAnimating] = useState(false);
-  const lastCutHapticRef = useRef({ band: Math.round(48 / 8), at: 0 });
+  const { t } = useLanguage();
+  const reduceMotion = useTarotReducedMotion();
+  const [{ pileOrder, finalDeck }] = useState(() => {
+    const nextPiles = createThreePiles(deck);
+    const nextOrder = createAutomaticPileOrder();
+    const cutDeck = stackThreePiles(nextPiles, nextOrder);
+    return {
+      pileOrder: nextOrder,
+      finalDeck: shuffleHiddenDeck(cutDeck),
+    };
+  });
+  const [phase, setPhase] = useState<
+    "splitting" | "stacking" | "squared" | "shuffling" | "settled"
+  >("splitting");
+  const onDoneRef = useRef(onDone);
+  const completedRef = useRef(false);
+  const phaseRef = useRef(phase);
+  const pilePositions: Record<TarotPileId, { x: number; y: number; rotate: number }> = {
+    A: { x: -90, y: 14, rotate: -4 },
+    B: { x: 0, y: -18, rotate: 1 },
+    C: { x: 90, y: 14, rotate: 4 },
+  };
 
-  function finishCut() {
-    if (animating) return;
-    setAnimating(true);
-    hapticTick(14);
-    window.setTimeout(onDone, 1300);
+  useEffect(() => {
+    onDoneRef.current = onDone;
+  }, [onDone]);
+
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
+
+  function moveToPhase(
+    expected: typeof phase,
+    next: typeof phase,
+    haptic: number | number[],
+  ) {
+    if (phaseRef.current !== expected) return;
+    phaseRef.current = next;
+    setPhase(next);
+    hapticPulse(haptic);
   }
 
+  function finishCut() {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    onDoneRef.current(finalDeck);
+  }
+
+  useEffect(() => {
+    hapticPulse([8, 28, 9]);
+    const watchdog = window.setTimeout(finishCut, reduceMotion ? 900 : 7_000);
+    return () => window.clearTimeout(watchdog);
+  }, [finalDeck, reduceMotion]);
+
+  useEffect(() => {
+    const phaseRecoveryMs = reduceMotion
+      ? 70
+      : {
+          splitting: 900,
+          stacking: 820,
+          squared: 620,
+          shuffling: POST_CUT_SHUFFLE_SECONDS * 1000 + 240,
+          settled: 760,
+        }[phase];
+    const recovery = window.setTimeout(() => {
+      if (phase === "splitting") {
+        moveToPhase("splitting", "stacking", [5, 20, 5]);
+      } else if (phase === "stacking") {
+        moveToPhase("stacking", "squared", [6, 20, 5, 34, 8]);
+      } else if (phase === "squared") {
+        moveToPhase("squared", "shuffling", [5, 18, 4, 18, 5]);
+      } else if (phase === "shuffling") {
+        moveToPhase("shuffling", "settled", [7, 26, 9]);
+      } else {
+        finishCut();
+      }
+    }, phaseRecoveryMs);
+    return () => window.clearTimeout(recovery);
+  }, [phase, reduceMotion]);
+
+  const instruction =
+    phase === "splitting"
+      ? t("tarot.flow.cut.cutting")
+      : phase === "stacking"
+        ? t("tarot.flow.cut.stack")
+        : phase === "squared"
+          ? t("tarot.flow.cut.squared")
+          : phase === "shuffling"
+            ? t("tarot.flow.cut.shuffle")
+            : t("tarot.flow.cut.ready");
+  const heading =
+    phase === "shuffling"
+      ? t("tarot.flow.cut.shuffleTitle")
+      : phase === "settled"
+        ? t("tarot.flow.cut.readyTitle")
+        : t("tarot.flow.cut.title");
   return (
-    <StepShell>
-      <div className="flex flex-1 flex-col items-center justify-center text-center">
-        <h1 className="font-serif text-[34px] leading-none text-[#332d45]">
-          Cut where it feels right.
-        </h1>
-        <p className="mt-3 max-w-[20rem] text-[14px] font-semibold leading-relaxed text-[#746276]">
-          Drag the crescent, then release. The upper packet moves under; the
-          lower packet rises.
-        </p>
-        <div className="relative mt-8 h-[370px] w-full max-w-[360px]">
-          <motion.div
-            className="absolute left-1/2 top-1/2 h-44 w-28 -translate-x-1/2 -translate-y-1/2"
-            animate={
-              animating
-                ? {
-                    x: [0, 48, 18, 0],
-                    y: [0, 48, 94, 0],
-                    rotate: [0, 12, 3, 0],
-                  }
-                : { x: 0, y: 0, rotate: 0 }
-            }
-            transition={{
-              duration: 1.15,
-              times: [0, 0.42, 0.72, 1],
-              ease: "easeInOut",
-            }}
-          >
-            {Array.from({ length: 8 }, (_, index) => (
-              <div
-                key={`top-${index}`}
-                className="absolute h-44 w-28"
-                style={{
-                  transform: `translate(${index * 0.42}px, ${index * -0.72}px) rotate(${index * 0.18}deg)`,
-                }}
-              >
-                <TarotBack
-                  cardBackId={design.cardBackId}
-                  className="h-full w-full"
-                />
-              </div>
-            ))}
-          </motion.div>
-          <motion.div
-            className="absolute left-1/2 top-1/2 h-44 w-28 -translate-x-1/2 -translate-y-1/2"
-            animate={
-              animating
-                ? {
-                    x: [4, -34, -14, 0],
-                    y: [-12, -58, -98, 0],
-                    rotate: [2, -10, -3, 0],
-                  }
-                : { x: 4, y: -12, rotate: 2 }
-            }
-            transition={{
-              duration: 1.15,
-              times: [0, 0.42, 0.72, 1],
-              ease: "easeInOut",
-            }}
-          >
-            {Array.from({ length: 8 }, (_, index) => (
-              <div
-                key={`bottom-${index}`}
-                className="absolute h-44 w-28"
-                style={{
-                  transform: `translate(${index * 0.36}px, ${index * -0.66}px) rotate(${index * -0.16}deg)`,
-                }}
-              >
-                <TarotBack
-                  cardBackId={design.cardBackId}
-                  className="h-full w-full"
-                />
-              </div>
-            ))}
-          </motion.div>
-          {animating ? (
-            <motion.div
-              className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#fff0bf]/50 blur-xl"
-              initial={{ opacity: 0, scale: 0.4 }}
-              animate={{ opacity: [0, 0.9, 0], scale: [0.4, 1.35, 1.9] }}
-              transition={{ duration: 0.92, delay: 0.72, ease: "easeOut" }}
-            />
-          ) : null}
-          <div
-            className="absolute left-[calc(50%+64px)] top-1/2 h-56 w-14 -translate-y-1/2 touch-none"
-            onPointerDown={(event) =>
-              event.currentTarget.setPointerCapture(event.pointerId)
-            }
-            onPointerMove={(event) => {
-              const rect = event.currentTarget.getBoundingClientRect();
-              const next = ((event.clientY - rect.top) / rect.height) * 100;
-              const clamped = Math.max(8, Math.min(92, next));
-              const band = Math.round(clamped / 8);
-              const now = Date.now();
-              if (
-                band !== lastCutHapticRef.current.band &&
-                now - lastCutHapticRef.current.at > 90
-              ) {
-                lastCutHapticRef.current = { band, at: now };
-                hapticTick(4);
-              }
-              setCut(clamped);
-            }}
-            onPointerUp={finishCut}
-          >
-            <div className="absolute inset-y-0 left-1/2 w-10 -translate-x-1/2 rounded-r-full border-r-2 border-[#f4d78f] shadow-[0_0_24px_rgba(244,215,143,0.72)]" />
-            <motion.span
-              className="absolute left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-[#fff2bf] shadow-[0_0_24px_rgba(244,215,143,0.9)]"
-              style={{ top: `${cut}%` }}
-            />
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={finishCut}
-          className="min-h-12 rounded-full border border-[#d8c8d8] bg-white/42 px-6 text-[13px] font-black text-[#67556d] shadow-lg"
-        >
-          Finish Cut
-        </button>
+    <CardWashRitual
+      stage="cutting"
+      ritualCards={[]}
+      deckCount={deck.length}
+      theme={getWashTheme(design)}
+      heading={heading}
+      helper={instruction}
+      onBeginWash={() => {}}
+      onWash={() => {}}
+      onWashRelease={() => {}}
+    >
+      <div data-testid="tarot-cut-table" data-cut-phase={phase} className="pointer-events-none absolute inset-0"
+        aria-label={phase === "shuffling" ? t("tarot.flow.cut.shuffleAria") : undefined}>
+        {phase === "shuffling" || phase === "settled" ? (
+          <RitualDeckInterleave
+            cardBackId={design.cardBackId}
+            settled={phase === "settled"}
+            reduceMotion={reduceMotion}
+            onComplete={() => moveToPhase("shuffling", "settled", [7, 26, 9])}
+          />
+        ) : (["A", "B", "C"] as const).map((pileId, pileIndex) => {
+          const selectedIndex = pileOrder.indexOf(pileId);
+          const target = pilePositions[pileId];
+          const pose = phase === "splitting"
+            ? { x: target.x, y: target.y, rotate: target.rotate }
+            : { x: 0, y: phase === "stacking" ? selectedIndex * 2 : selectedIndex * 0.6, rotate: 0 };
+          const duration = reduceMotion ? 0.05 : phase === "splitting" ? 0.6
+            : phase === "stacking" ? 0.54 : 0.4;
+          return (
+            <div key={pileId} aria-hidden="true"
+              className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2"
+              style={{ zIndex: phase === "splitting" ? pileIndex : selectedIndex }}>
+              <motion.div
+                data-cut-packet={pileId}
+                className={`relative ${WASH_CARD_SIZE} transform-gpu will-change-transform`}
+                initial={{ x: 0, y: 0, rotate: 0 }}
+                animate={pose}
+                transition={{ duration, ease: [0.22, 0.72, 0.18, 1],
+                  delay: reduceMotion ? 0 : phase === "splitting" ? pileIndex * 0.07 : phase === "stacking" ? selectedIndex * 0.07 : 0 }}
+                onAnimationComplete={() => {
+                  if (phase === "splitting" && pileIndex === 2) moveToPhase("splitting", "stacking", [5, 20, 5]);
+                  if (selectedIndex !== 2) return;
+                  if (phase === "stacking") moveToPhase("stacking", "squared", [6, 20, 5]);
+                  else if (phase === "squared") moveToPhase("squared", "shuffling", [5, 18, 5]);
+                }}>
+                {Array.from({ length: 5 }, (_, edge) => (
+                  <span key={edge} className="absolute inset-0 rounded-[10px] border border-[#d7bd7c]/55 bg-[#182139]"
+                    style={{ transform: `translate3d(${(4 - edge) * 0.24}px, ${(4 - edge) * 0.38}px, 0)` }} />
+                ))}
+                <RitualBackCard cardBackId={design.cardBackId} className="h-full w-full" />
+              </motion.div>
+            </div>
+          );
+        })}
       </div>
-    </StepShell>
+    </CardWashRitual>
   );
-}
-
-type StageSize = {
-  width: number;
-  height: number;
-};
-
-const TAROT_PHONE_FRAME_MAX_WIDTH = 440;
-const PICK_WHEEL_CARD_W = 84;
-const PICK_WHEEL_CARD_H = 134;
-const PICK_WHEEL_CARD_W_ZOOM = 102;
-const PICK_WHEEL_CARD_H_ZOOM = 162;
-const PICK_WHEEL_DRAG_SENSITIVITY = 0.0048;
-const PICK_WHEEL_STEP_SCALE = 0.74;
-
-type PickWheelGeometry = {
-  centerX: number;
-  centerY: number;
-  radius: number;
-  startAngle: number;
-};
-
-type PickWheelLayout = {
-  x: number;
-  y: number;
-  rotate: number;
-  zIndex: number;
-  angle: number;
-};
-
-function pickWheelStep(total: number) {
-  return ((Math.PI * 2) / Math.max(total, 1)) * PICK_WHEEL_STEP_SCALE;
-}
-
-function positiveModulo(value: number, total: number) {
-  return ((value % total) + total) % total;
-}
-
-function wheelDisplayNumber(index: number, total: number) {
-  return positiveModulo(index, total) + 1;
-}
-
-function getTarotPhoneStageSize(): StageSize {
-  if (typeof window === "undefined") return { width: 390, height: 844 };
-  return {
-    width: Math.min(window.innerWidth, TAROT_PHONE_FRAME_MAX_WIDTH),
-    height: window.innerHeight,
-  };
-}
-
-function getPickWheelGeometry(size: StageSize, zoomed = false): PickWheelGeometry {
-  const shorter = Math.min(size.width, size.height);
-  const baseRadius = shorter * 0.95;
-  return {
-    centerX: size.width,
-    centerY: size.height + baseRadius * 0.43,
-    radius: baseRadius * (zoomed ? 1.08 : 1),
-    startAngle: -Math.PI * 0.86,
-  };
-}
-
-function getPickWheelLayout(
-  index: number,
-  rotation: number,
-  total: number,
-  geometry: PickWheelGeometry,
-): PickWheelLayout {
-  const angle = geometry.startAngle + rotation + index * pickWheelStep(total);
-  const x = geometry.centerX + Math.cos(angle) * geometry.radius;
-  const y = geometry.centerY + Math.sin(angle) * geometry.radius;
-  const fanRotation = angle + Math.PI / 2;
-  return {
-    x,
-    y,
-    rotate: fanRotation,
-    zIndex: Math.round(y),
-    angle,
-  };
 }
 
 function isPointInsidePickWheelCard(
@@ -2795,39 +2993,53 @@ function PickStep({
   setSelectedCards: (cards: RitualCard[]) => void;
   onDone: () => void;
 }) {
+  const { t } = useLanguage();
   const [fanRotation, setFanRotation] = useState(0);
   const [zoomed, setZoomed] = useState(false);
-  const [stageSize, setStageSize] = useState<StageSize>(() =>
+  const [stageSize, setStageSize] = useState<PickWheelStageSize>(() =>
     getTarotPhoneStageSize(),
   );
   const pickStageRef = useRef<HTMLDivElement | null>(null);
+  const pickTrayRef = useRef<HTMLDivElement | null>(null);
+  const [trayBottom, setTrayBottom] = useState(0);
   const [placingId, setPlacingId] = useState<string | null>(null);
   const [armedCardId, setArmedCardId] = useState<string | null>(null);
+  const armedCardIdRef = useRef<string | null>(null);
   const wheelDragRef = useRef<{
     pointerId: number;
     startX: number;
     startY: number;
     startRotation: number;
+    startVisualId: string | null;
     moved: boolean;
   } | null>(null);
   const wheelRotationFrameRef = useRef<number | null>(null);
   const pendingWheelRotationRef = useRef<number | null>(null);
+  const activeWheelPointersRef = useRef<Map<number, { x: number; y: number }>>(
+    new Map(),
+  );
+  const pinchStartDistanceRef = useRef<number | null>(null);
+  const pinchStartZoomedRef = useRef(false);
   const suppressNextClickRef = useRef(false);
+  const selectedCardsRef = useRef(selectedCards);
   const lastWheelHapticNumberRef = useRef<number | null>(null);
   const lastWheelHapticAtRef = useRef(0);
   const lastWheelScrollHapticAtRef = useRef(0);
   const selectedIds = new Set(selectedCards.map((card) => card.visualId));
+  const remainingDeck = deck.filter((card) => !selectedIds.has(card.visualId));
+  const displaySpread = localizeSpreadChoice(spread, t);
   const done = selectedCards.length >= spread.cardCount;
-  const wheelGeometry = getPickWheelGeometry(stageSize, zoomed);
+  const wheelGeometry = getPickWheelGeometry(stageSize, zoomed, zoomed ? 0 : trayBottom + 24);
   const wheelCardWidth = zoomed ? PICK_WHEEL_CARD_W_ZOOM : PICK_WHEEL_CARD_W;
   const wheelCardHeight = zoomed ? PICK_WHEEL_CARD_H_ZOOM : PICK_WHEEL_CARD_H;
-  const armedLift = zoomed ? 30 : 22;
+  const armedLift = zoomed ? 12 : 14;
+  const armedScale = zoomed ? 1.035 : 1.055;
   const cardBackImageUrl = getTarotCardBackImage(design.cardBackId);
   const pickTarget = {
     x: stageSize.width * 0.52,
     y: stageSize.height * 0.73,
   };
-  const wheelStep = pickWheelStep(deck.length);
+  const wheelStep = pickWheelStep(remainingDeck.length);
   const targetAngle = Math.atan2(
     pickTarget.y - wheelGeometry.centerY,
     pickTarget.x - wheelGeometry.centerX,
@@ -2835,18 +3047,20 @@ function PickStep({
   const virtualCenterIndex = Math.round(
     (targetAngle - wheelGeometry.startAngle - fanRotation) / wheelStep,
   );
-  const candidateWheelCards = deck.map((card, index) => {
+  const candidateWheelCards = remainingDeck.map((card, index) => {
     const virtualIndex =
-      index + Math.round((virtualCenterIndex - index) / deck.length) * deck.length;
+      index +
+      Math.round((virtualCenterIndex - index) / remainingDeck.length) *
+        remainingDeck.length;
     return {
       card,
       index,
       virtualIndex,
-      displayNumber: wheelDisplayNumber(virtualIndex, deck.length),
+      displayNumber: wheelDisplayNumber(virtualIndex, remainingDeck.length),
       layout: getPickWheelLayout(
         virtualIndex,
         fanRotation,
-        deck.length,
+        remainingDeck.length,
         wheelGeometry,
       ),
     };
@@ -2869,10 +3083,21 @@ function PickStep({
 
   const fallbackVirtualIndex =
     activeWheelCard?.virtualIndex ?? virtualCenterIndex;
-  const activeIndex = positiveModulo(fallbackVirtualIndex, deck.length);
-  const activeCard = activeWheelCard?.card ?? deck[activeIndex];
-  const activeNumber = wheelDisplayNumber(fallbackVirtualIndex, deck.length);
-  const activeVisualId = activeCard?.visualId ?? null;
+  const activeIndex = positiveModulo(fallbackVirtualIndex, remainingDeck.length);
+  const activeCard = activeWheelCard?.card ?? remainingDeck[activeIndex];
+  const activeNumber = wheelDisplayNumber(
+    fallbackVirtualIndex,
+    remainingDeck.length,
+  );
+
+  function armCard(visualId: string | null) {
+    armedCardIdRef.current = visualId;
+    setArmedCardId(visualId);
+  }
+
+  useEffect(() => {
+    selectedCardsRef.current = selectedCards;
+  }, [selectedCards]);
 
   useEffect(() => {
     if (lastWheelHapticNumberRef.current === null) {
@@ -2897,13 +3122,15 @@ function PickStep({
   useEffect(() => {
     if (!armedCardId) return;
     if (selectedCards.some((card) => card.visualId === armedCardId)) {
-      setArmedCardId(null);
+      armCard(null);
     }
   }, [armedCardId, selectedCards]);
 
   useEffect(() => {
     const updateSize = () => {
       const rect = pickStageRef.current?.getBoundingClientRect();
+      const trayRect = pickTrayRef.current?.getBoundingClientRect();
+      if (rect && trayRect) setTrayBottom(trayRect.bottom - rect.top);
       if (rect && rect.width > 0 && rect.height > 0) {
         setStageSize({
           width: Math.min(rect.width, TAROT_PHONE_FRAME_MAX_WIDTH),
@@ -2921,6 +3148,7 @@ function PickStep({
         : null;
     if (resizeObserver && pickStageRef.current) {
       resizeObserver.observe(pickStageRef.current);
+      if (pickTrayRef.current) resizeObserver.observe(pickTrayRef.current);
     }
     return () => {
       window.removeEventListener("resize", updateSize);
@@ -2933,6 +3161,7 @@ function PickStep({
       if (wheelRotationFrameRef.current !== null) {
         window.cancelAnimationFrame(wheelRotationFrameRef.current);
       }
+      activeWheelPointersRef.current.clear();
     };
   }, []);
 
@@ -2958,28 +3187,42 @@ function PickStep({
     setFanRotation(pendingRotation);
   }
 
+  function getPointerDistance() {
+    const points = Array.from(activeWheelPointersRef.current.values());
+    if (points.length < 2) return 0;
+    const [first, second] = points;
+    return Math.hypot(second.x - first.x, second.y - first.y);
+  }
+
   function choose(card = activeCard, force = false) {
     if (!force && suppressNextClickRef.current) {
       suppressNextClickRef.current = false;
       return;
     }
-    if (done) return;
+    const currentSelectedCards = selectedCardsRef.current;
+    if (currentSelectedCards.length >= spread.cardCount) return;
     if (!card) return;
-    if (selectedCards.some((item) => item.visualId === card.visualId)) {
+    if (currentSelectedCards.some((item) => item.visualId === card.visualId)) {
       hapticTick(4);
-      setFanRotation((current) => current + pickWheelStep(deck.length) * 2);
       return;
     }
-    if (armedCardId !== card.visualId) {
+    if (armedCardIdRef.current !== card.visualId) {
       hapticPulse([4, 20, 5]);
-      setArmedCardId(card.visualId);
+      armCard(card.visualId);
       return;
     }
     hapticPulse([8, 24, 10]);
     setPlacingId(card.visualId);
-    setArmedCardId(null);
-    setSelectedCards([...selectedCards, card]);
-    setFanRotation((current) => current + pickWheelStep(deck.length) * 2.6);
+    armCard(null);
+    const nextSelectedCards = selectCardByVisualId(
+      deck,
+      currentSelectedCards,
+      card.visualId,
+      spread.cardCount,
+    );
+    if (nextSelectedCards.length === currentSelectedCards.length) return;
+    selectedCardsRef.current = nextSelectedCards;
+    setSelectedCards(nextSelectedCards);
   }
 
   function findTopCardAtPoint(localX: number, localY: number) {
@@ -3026,25 +3269,75 @@ function PickStep({
 
   function handleWheelPointerDown(event: PointerEvent<HTMLDivElement>) {
     if (done) return;
+    event.preventDefault();
+    const targetElement =
+      event.target instanceof HTMLElement ? event.target : null;
+    const targetButton = targetElement?.closest<HTMLButtonElement>(
+      "button[data-visual-id]",
+    );
+    activeWheelPointersRef.current.set(event.pointerId, {
+      x: event.clientX,
+      y: event.clientY,
+    });
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      // Some embedded WebViews expose Pointer Events without pointer capture.
+    }
+
+    if (activeWheelPointersRef.current.size >= 2) {
+      pinchStartDistanceRef.current = getPointerDistance();
+      pinchStartZoomedRef.current = zoomed;
+      wheelDragRef.current = null;
+      if (armedCardIdRef.current) armCard(null);
+      hapticTick(3);
+      return;
+    }
+
     hapticTick(3);
     wheelDragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
       startRotation: fanRotation,
+      startVisualId: targetButton?.dataset.visualId ?? null,
       moved: false,
     };
-    event.currentTarget.setPointerCapture(event.pointerId);
   }
 
   function handleWheelPointerMove(event: PointerEvent<HTMLDivElement>) {
+    if (activeWheelPointersRef.current.has(event.pointerId)) {
+      activeWheelPointersRef.current.set(event.pointerId, {
+        x: event.clientX,
+        y: event.clientY,
+      });
+    }
+
+    if (activeWheelPointersRef.current.size >= 2) {
+      const startDistance = pinchStartDistanceRef.current || getPointerDistance();
+      pinchStartDistanceRef.current = startDistance;
+      const currentDistance = getPointerDistance();
+      const ratio = startDistance > 0 ? currentDistance / startDistance : 1;
+      if (ratio > 1.08 && !pinchStartZoomedRef.current) {
+        hapticPulse([4, 18, 5]);
+        armCard(null);
+        setZoomed(true);
+      }
+      if (ratio < 0.92 && pinchStartZoomedRef.current) {
+        hapticPulse([4, 18, 5]);
+        armCard(null);
+        setZoomed(false);
+      }
+      return;
+    }
+
     const drag = wheelDragRef.current;
     if (!drag || drag.pointerId !== event.pointerId) return;
     const deltaX = event.clientX - drag.startX;
     const deltaY = event.clientY - drag.startY;
     if (Math.hypot(deltaX, deltaY) > 10) {
       drag.moved = true;
-      if (armedCardId) setArmedCardId(null);
+      if (armedCardIdRef.current) armCard(null);
     }
     if (drag.moved) {
       scheduleFanRotation(
@@ -3055,12 +3348,28 @@ function PickStep({
   }
 
   function handleWheelPointerUp(event: PointerEvent<HTMLDivElement>) {
-    const drag = wheelDragRef.current;
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    flushScheduledFanRotation();
+    const wasPinching =
+      activeWheelPointersRef.current.size >= 2 ||
+      pinchStartDistanceRef.current !== null;
+    activeWheelPointersRef.current.delete(event.pointerId);
+    if (activeWheelPointersRef.current.size < 2) {
+      pinchStartDistanceRef.current = null;
+    }
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
+    if (wasPinching) {
+      suppressNextClickRef.current = true;
+      window.setTimeout(() => {
+        suppressNextClickRef.current = false;
+      }, 0);
+      wheelDragRef.current = null;
+      return;
+    }
+
+    const drag = wheelDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    flushScheduledFanRotation();
     if (drag.moved) {
       suppressNextClickRef.current = true;
       window.setTimeout(() => {
@@ -3070,12 +3379,18 @@ function PickStep({
       const rect = event.currentTarget.getBoundingClientRect();
       const localX = event.clientX - rect.left;
       const localY = event.clientY - rect.top;
-      const targetElement = event.target instanceof HTMLElement ? event.target : null;
-      const targetButton = targetElement?.closest<HTMLButtonElement>("button[data-visual-id]");
-      const targetVisualId = targetButton?.dataset.visualId;
+      const targetElement =
+        event.target instanceof HTMLElement ? event.target : null;
+      const targetButton = targetElement?.closest<HTMLButtonElement>(
+        "button[data-visual-id]",
+      );
+      const targetVisualId =
+        drag.startVisualId ?? targetButton?.dataset.visualId ?? null;
       const directCard = targetVisualId
         ? deck.find((card) => card.visualId === targetVisualId)
         : undefined;
+      const directAvailable =
+        directCard && !selectedIds.has(directCard.visualId) ? directCard : undefined;
       const armedItem = armedCardId
         ? candidateWheelCards.find((item) => item.card.visualId === armedCardId)
         : undefined;
@@ -3093,11 +3408,11 @@ function PickStep({
         )
           ? armedItem.card
           : undefined;
-      const card = armedCard ??
+      const card =
+        armedCard ??
+        directAvailable ??
         findTopCardAtPoint(localX, localY) ??
-        (directCard && !selectedIds.has(directCard.visualId)
-          ? directCard
-          : findNearestCard(localX, localY));
+        findNearestCard(localX, localY);
       if (card) {
         suppressNextClickRef.current = true;
         window.setTimeout(() => {
@@ -3109,8 +3424,23 @@ function PickStep({
     wheelDragRef.current = null;
   }
 
+  function handleWheelPointerCancel(event: PointerEvent<HTMLDivElement>) {
+    activeWheelPointersRef.current.delete(event.pointerId);
+    if (activeWheelPointersRef.current.size < 2) {
+      pinchStartDistanceRef.current = null;
+    }
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    wheelDragRef.current = null;
+    suppressNextClickRef.current = true;
+    window.setTimeout(() => {
+      suppressNextClickRef.current = false;
+    }, 0);
+  }
+
   function handleWheelScroll(deltaY: number) {
-    if (armedCardId) setArmedCardId(null);
+    if (armedCardIdRef.current) armCard(null);
     const now = Date.now();
     if (now - lastWheelScrollHapticAtRef.current > 58) {
       lastWheelScrollHapticAtRef.current = now;
@@ -3119,41 +3449,41 @@ function PickStep({
     setFanRotation((current) => current - deltaY * 0.0012);
   }
 
-  const visibleWheelCards = candidateWheelCards.filter(({ card, layout }) => {
-    if (selectedIds.has(card.visualId)) return false;
-    const topLimit = stageSize.height * (zoomed ? 0.30 : 0.36);
-    return (
-      layout.x > -310 &&
-      layout.x < stageSize.width + 310 &&
-      layout.y > topLimit &&
-      layout.y < stageSize.height + 320
-    );
-  });
-  const visibleWheelNumberBadges = zoomed
-    ? visibleWheelCards.flatMap(({ card, virtualIndex, displayNumber, layout }) => {
-        const isActiveTarget = card.visualId === activeVisualId;
-        const isArmed = armedCardId === card.visualId;
-        if (!isActiveTarget && !isArmed) return [];
-        const offset = isArmed ? armedLift : 0;
-        return [{
-          visualId: card.visualId,
-          virtualIndex,
-          displayNumber,
-          isActiveTarget,
-          isArmed,
-          x: layout.x + Math.cos(layout.angle) * offset,
-          y: layout.y + Math.sin(layout.angle) * offset,
-          rotate: layout.rotate,
-          zIndex: layout.zIndex + 220,
-        }];
-      })
-    : [];
+  function toggleFanZoom() {
+    hapticPulse([4, 18, 5]);
+    armCard(null);
+    setZoomed((current) => !current);
+  }
+
+  function handleWheelGesture(event: WheelEvent<HTMLDivElement>) {
+    if (event.cancelable) event.preventDefault();
+    if (event.ctrlKey || event.metaKey) {
+      hapticPulse([4, 18, 5]);
+      armCard(null);
+      setZoomed(event.deltaY < 0);
+      return;
+    }
+    handleWheelScroll(event.deltaY);
+  }
+
+  const visibleWheelCards = candidateWheelCards
+    .filter(({ card, layout }) => {
+      if (selectedIds.has(card.visualId)) return false;
+      const topLimit = stageSize.height * (zoomed ? 0.30 : 0.36);
+      return (
+        layout.x > -310 &&
+        layout.x < stageSize.width + 310 &&
+        layout.y > topLimit &&
+        layout.y < stageSize.height + 320
+      );
+    });
   const spreadPreviewPoints = spread.layout.slice(0, spread.cardCount);
 
   return (
     <StepShell>
       <div
         ref={pickStageRef}
+        data-testid="tarot-pick-stage"
         className="relative -mx-5 -mb-[calc(var(--hint-safe-bottom)+1.25rem)] flex min-h-0 flex-1 flex-col overflow-clip px-5"
       >
         <div
@@ -3161,22 +3491,29 @@ function PickStep({
             zoomed ? "-translate-y-4 opacity-0" : "translate-y-0 opacity-100"
           }`}
         >
-          <h1 className="font-serif text-[32px] leading-none text-[#332d45]">
-            Pick Cards
+          <h1 className="font-serif text-[32px] leading-none text-[color:var(--tarot-page-ink,#332d45)]">
+            {t("tarot.flow.pick.title")}
           </h1>
-          <p className="mt-2 text-[13px] font-bold text-[#746276]">
-            {spread.label} - {selectedCards.length} of {spread.cardCount} chosen
+          <p className="mt-2 text-[13px] font-bold text-[color:var(--tarot-page-muted,#746276)]">
+            {formatCopy(t("tarot.flow.pick.chosen"), {
+              spread: displaySpread.label,
+              chosen: selectedCards.length,
+              total: spread.cardCount,
+            })}
           </p>
         </div>
         <div
-          className={`pointer-events-none relative z-50 mt-7 h-[300px] rounded-[34px] border border-white/70 bg-white/34 shadow-[inset_0_0_80px_rgba(255,255,255,0.20),0_18px_54px_rgba(91,65,100,0.08)] backdrop-blur-sm transition duration-300 ${
+          ref={pickTrayRef}
+          data-testid="tarot-pick-tray"
+          style={{ height: spread.cardCount >= 7 ? 224 : Math.min(224, Math.max(176, stageSize.height * 0.27)) }}
+          className={`pointer-events-none relative z-[30] mt-4 shrink-0 rounded-[24px] border border-white/50 bg-[linear-gradient(150deg,rgba(255,252,249,0.68),rgba(255,252,249,0.18))] transition duration-200 ${
             zoomed ? "scale-[0.98] opacity-0" : "scale-100 opacity-100"
           }`}
         >
           {spreadPreviewPoints.map((point, index) => (
             <motion.div
               key={index}
-              className="absolute h-[76px] w-[48px] -translate-x-1/2 -translate-y-1/2 rounded-[10px]"
+              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-[8px] ${spread.cardCount >= 7 ? "h-[48px] w-[30px]" : "h-[64px] w-[40px]"}`}
               style={{ left: `${point.x}%`, top: `${point.y}%` }}
               initial={false}
               animate={
@@ -3220,25 +3557,24 @@ function PickStep({
                 </div>
               )}
               <span className="absolute left-1/2 top-[calc(100%+0.35rem)] max-w-[5.5rem] -translate-x-1/2 truncate text-[8px] font-black uppercase tracking-[0.12em] text-[#654f63]">
-                {spread.positionLabels[index] ?? `Card ${index + 1}`}
+                {displaySpread.positionLabels[index] ??
+                  formatCopy(t("tarot.flow.pick.card"), { number: index + 1 })}
               </span>
             </motion.div>
           ))}
         </div>
         <div
           className="absolute inset-0 z-40 cursor-grab touch-none select-none overflow-clip active:cursor-grabbing"
+          data-deck-size={remainingDeck.length}
           onPointerDown={handleWheelPointerDown}
           onPointerMove={handleWheelPointerMove}
           onPointerUp={handleWheelPointerUp}
-          onPointerCancel={handleWheelPointerUp}
-          onWheel={(event) => {
-            if (event.cancelable) event.preventDefault();
-            handleWheelScroll(event.deltaY);
-          }}
-          aria-label="Rotating tarot deck wheel"
+          onPointerCancel={handleWheelPointerCancel}
+          onWheel={handleWheelGesture}
+          aria-label={t("tarot.flow.pick.wheelAria")}
         >
           <div
-            className="pointer-events-none absolute rounded-full border border-[#f1d390]/46 bg-white/14 shadow-[0_28px_84px_rgba(78,56,92,0.16),inset_0_0_110px_rgba(255,255,255,0.22)] backdrop-blur-lg"
+            className="pointer-events-none absolute rounded-full bg-[radial-gradient(circle,rgba(235,220,227,0.10),rgba(255,251,246,0.18)_70%,transparent)]"
             style={{
               left: wheelGeometry.centerX - wheelGeometry.radius,
               top: wheelGeometry.centerY - wheelGeometry.radius,
@@ -3247,10 +3583,10 @@ function PickStep({
             }}
           />
           {visibleWheelCards.map(
-            ({ card, index, virtualIndex, displayNumber, layout }) => {
+            ({ card, virtualIndex, displayNumber, layout }) => {
               const selectedInWheel = selectedIds.has(card.visualId);
               const isArmed = armedCardId === card.visualId;
-              const isActiveTarget = zoomed && card.visualId === activeVisualId;
+              const emphasized = isArmed;
               const cardWidth = wheelCardWidth;
               const cardHeight = wheelCardHeight;
               const cardOpacity = selectedInWheel ? 0.68 : 1;
@@ -3259,7 +3595,7 @@ function PickStep({
               const cardY = layout.y + Math.sin(layout.angle) * armedOffset;
               return (
                 <motion.button
-                  key={`${card.visualId}-${virtualIndex}`}
+                  key={card.visualId}
                   layoutId={
                     selectedInWheel ? undefined : `pick-card-${card.visualId}`
                   }
@@ -3269,51 +3605,74 @@ function PickStep({
                   onClick={(event) => {
                     event.preventDefault();
                   }}
+                  onKeyDown={(event) => {
+                    if (event.key !== "Enter" && event.key !== " ") return;
+                    event.preventDefault();
+                    choose(card, true);
+                  }}
+                  aria-pressed={isArmed}
                   aria-label={
                     isArmed
-                      ? `Confirm card ${displayNumber}`
-                      : `Lift card ${displayNumber}`
+                      ? formatCopy(t("tarot.flow.pick.confirmCard"), {
+                          number: displayNumber,
+                        })
+                      : formatCopy(t("tarot.flow.pick.liftCard"), {
+                          number: displayNumber,
+                        })
                   }
-                  className="absolute block overflow-visible rounded-[16px] border outline-none transition-[box-shadow,filter,opacity] duration-150 will-change-transform"
+                  className="absolute block transform-gpu overflow-visible rounded-[16px] border outline-none transition-[box-shadow,filter,opacity] duration-150 will-change-transform [backface-visibility:hidden] [contain:layout_style]"
                   style={{
                     left: cardX,
                     top: cardY,
                     width: cardWidth,
                     height: cardHeight,
-                    zIndex: layout.zIndex + (isActiveTarget || isArmed ? 80 : 0),
+                    zIndex: layout.zIndex,
                     opacity: cardOpacity,
                     backgroundColor: "#251d35",
                     backgroundImage: `url("${cardBackImageUrl}")`,
                     backgroundPosition: "center",
-                    backgroundSize: "cover",
-                    borderColor: isActiveTarget || isArmed
+                    backgroundSize: "100% 100%",
+                    borderColor: emphasized
                       ? "rgba(241,211,144,0.86)"
                       : "rgba(241,211,144,0.42)",
-                    boxShadow: isActiveTarget || isArmed
-                      ? "0 14px 30px rgba(78,56,92,0.20), 0 0 0 2px rgba(255,244,216,0.62), 0 0 34px rgba(241,211,144,0.26)"
+                    boxShadow: emphasized
+                      ? "0 24px 52px rgba(78,56,92,0.28), 0 0 0 2px rgba(255,244,216,0.72), 0 0 42px rgba(241,211,144,0.34)"
                       : "0 9px 18px rgba(78,56,92,0.13)",
-                    filter: isActiveTarget || isArmed
-                      ? "brightness(1.04) saturate(1.34) contrast(1.16)"
-                      : "brightness(0.96) saturate(1.22) contrast(1.14)",
+                    filter: emphasized ? "brightness(1.04)" : undefined,
                     transformOrigin: "50% 100%",
                   }}
                   animate={{
                     x: "-50%",
                     y: "-100%",
                     rotate: `${layout.rotate}rad`,
-                    scale: 1,
+                    scale: isArmed ? armedScale : 1,
                   }}
                   transition={{
                     type: "spring",
-                    stiffness: 420,
-                    damping: 34,
-                    mass: 0.78,
+                    stiffness: 430,
+                    damping: 38,
+                    mass: 0.62,
                   }}
                 >
+                  <span
+                    aria-hidden
+                    className={`pointer-events-none absolute left-1/2 z-30 font-serif font-black leading-none ${
+                      zoomed ? "top-[-1.85rem] text-[16px]" : "top-[-1.45rem] text-[14px]"
+                    } ${emphasized ? "text-[#6a461d]" : "text-[#4a3422]"}`}
+                    style={{
+                      opacity: emphasized ? 0.78 : 0.64,
+                      transform: `translateX(-50%) rotate(${-layout.rotate}rad)`,
+                      textShadow: emphasized
+                        ? "0 1px 0 rgba(255,250,230,0.82), 0 6px 14px rgba(108,70,29,0.16)"
+                        : "0 1px 0 rgba(255,250,230,0.72), 0 5px 12px rgba(80,52,34,0.12)",
+                    }}
+                  >
+                    {displayNumber}
+                  </span>
                   <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-[16px]">
                     <span className="absolute inset-[8px] rounded-[11px] border border-white/18" />
                     <span className="absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.05),transparent_28%),linear-gradient(140deg,rgba(255,255,255,0.04),transparent_42%)]" />
-                    {isActiveTarget || isArmed ? (
+                    {emphasized ? (
                       <span className="absolute inset-0 rounded-[16px] bg-[radial-gradient(circle_at_50%_12%,rgba(255,246,215,0.20),transparent_35%)]" />
                     ) : null}
                   </span>
@@ -3321,47 +3680,28 @@ function PickStep({
               );
             },
           )}
-          {visibleWheelNumberBadges.map((badge) => (
-            <div
-              key={`wheel-number-${badge.visualId}-${badge.virtualIndex}`}
-              className="pointer-events-none absolute"
-              style={{
-                left: badge.x,
-                top: badge.y,
-                width: wheelCardWidth,
-                height: wheelCardHeight,
-                zIndex: badge.zIndex,
-                transform: `translate(-50%, -100%) rotate(${badge.rotate}rad)`,
-                transformOrigin: "50% 100%",
-              }}
-            >
-              <span
-                className={`absolute left-1/2 top-[-2.35rem] grid h-8 min-w-8 place-items-center rounded-full border px-2 font-serif text-[14px] font-black leading-none shadow-[0_12px_24px_rgba(80,60,90,0.18)] backdrop-blur-xl ${
-                  badge.isArmed
-                    ? "border-[#e2b45f]/80 bg-[#fff4d4]/96 text-[#6a461d]"
-                    : "border-[#e8c27a]/84 bg-[#fff8e6]/96 text-[#4a3422]"
-                }`}
-                style={{
-                  transform: `translateX(-50%) rotate(${-badge.rotate}rad)`,
-                }}
-              >
-                {badge.displayNumber}
-              </span>
-            </div>
-          ))}
         </div>
         <div className="absolute bottom-[5.25rem] left-5 z-50 flex items-center gap-2">
           <button
             type="button"
-            aria-label={zoomed ? "Close expanded deck" : "Expand deck"}
+            aria-label={
+              zoomed
+                ? t("tarot.flow.pick.closeAria")
+                : t("tarot.flow.pick.expandAria")
+            }
             className="h-11 rounded-full border border-white/75 bg-white/84 px-5 text-[11px] font-black uppercase tracking-[0.14em] text-[#654f6d] shadow-[0_14px_32px_rgba(78,56,92,0.14)] backdrop-blur-xl transition active:scale-95"
-            onClick={() => {
-              hapticPulse([4, 18, 5]);
-              setArmedCardId(null);
-              setZoomed((current) => !current);
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
+            onClick={toggleFanZoom}
+            onKeyDown={(event) => {
+              if (event.key !== "Enter" && event.key !== " ") return;
+              event.preventDefault();
+              toggleFanZoom();
             }}
           >
-            {zoomed ? "Close" : "Expand"}
+            {zoomed
+              ? t("tarot.flow.pick.close")
+              : t("tarot.flow.pick.expand")}
           </button>
         </div>
         <div className="pointer-events-none absolute inset-x-5 bottom-4 z-50">
@@ -3370,7 +3710,7 @@ function PickStep({
               onClick={onDone}
               className="pointer-events-auto w-full"
             >
-              Reveal Reading
+              {t("tarot.flow.pick.reveal")}
             </PrimaryButton>
           ) : null}
         </div>
@@ -3383,7 +3723,7 @@ function TarotPhoneFrame({ children }: { children: ReactNode }) {
   return (
     <div
       data-testid="tarot-phone-frame-shell"
-      className="absolute inset-0 flex justify-center overflow-hidden bg-[#f8edf4]"
+      className="absolute inset-0 flex justify-center overflow-hidden"
     >
       <div
         data-testid="tarot-phone-frame"
@@ -3396,27 +3736,225 @@ function TarotPhoneFrame({ children }: { children: ReactNode }) {
 }
 
 export function TarotRoomFlow() {
-  const [step, setStep] = useState<TarotStep>("question");
-  const [question, setQuestion] = useState("");
+  const [, navigate] = useLocation();
+  const { language, t } = useLanguage();
+  const reduceMotion = useTarotReducedMotion();
+  const setupRequested = isRoomSetupRequested();
+  const [archivedRequest] = useState(getArchivedReadingRequest);
+  const [freshVisit] = useState(() => roomVisitWasClosed("tarot"));
+  const visitOpen = useRef(true);
+  const [restoredSession] = useState(() =>
+    setupRequested || archivedRequest || freshVisit ? null : loadActiveTarotSession(),
+  );
+  const [archivedReading, setArchivedReading] = useState(() => {
+    if (archivedRequest) {
+      return getLocalTarotReading(archivedRequest.readingId);
+    }
+    if (restoredSession?.phase === "reading" && restoredSession.readingId) {
+      return getLocalTarotReading(restoredSession.readingId);
+    }
+    return null;
+  });
+  const [{ step, settingsMode, settingsReturnStep }, dispatchFlow] = useReducer(
+    tarotFlowReducer,
+    createTarotFlowState(
+      setupRequested
+        ? "design"
+        : archivedReading
+          ? "reading"
+          : restoredSession?.phase ?? "question",
+      setupRequested,
+    ),
+  );
+  function setStep(nextStep: TarotFlowStep) {
+    dispatchFlow({ type: "NAVIGATE", step: nextStep });
+  }
+  const [question, setQuestion] = useState(
+    archivedReading?.question ?? restoredSession?.question ?? "",
+  );
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [spread, setSpread] = useState<SpreadChoice>(
-    () =>
-      SPREAD_CHOICES.find((item) => item.id === "three") ?? SPREAD_CHOICES[0]!,
+    () => {
+      const savedSpreadType = archivedReading?.spreadType ??
+        restoredSession?.spreadId ?? loadSavedTarotRoomSetup()?.spreadType;
+      return (
+        SPREAD_CHOICES.find((item) => item.id === savedSpreadType) ??
+        SPREAD_CHOICES.find((item) => item.id === "three") ??
+        SPREAD_CHOICES[0]!
+      );
+    },
   );
   const [spreadRecommendation, setSpreadRecommendation] =
-    useState<SpreadRecommendation | null>(null);
+    useState<SpreadRecommendation | null>(() =>
+      archivedReading
+        ? {
+            spreadType: archivedReading.spreadType as SpreadChoice["id"],
+            reason: "",
+            focusLabel: archivedReading.focusLabel ?? archivedReading.spreadLabel,
+            confidence: "high",
+            source: "local",
+          }
+        : restoredSession
+        ? {
+            spreadType: restoredSession.spreadId as SpreadChoice["id"],
+            reason: "",
+            focusLabel: restoredSession.focusLabel,
+            confidence: "high",
+            source: "local",
+          }
+        : null,
+    );
   const [spreadRecommendationPending, setSpreadRecommendationPending] =
     useState(false);
-  const [design, setDesign] = useState<RoomDesign>(ROOM_DESIGNS[0]!);
-  const [selectedCards, setSelectedCards] = useState<RitualCard[]>([]);
-  const [revealedIds, setRevealedIds] = useState<string[]>([]);
-  const [deck, setDeck] = useState<RitualCard[]>(() => createHiddenDeck());
+  const [design, setDesign] = useState<RoomDesign>(() =>
+    archivedReading
+      ? roomDesignFromReading(archivedReading)
+      : restoredSession
+      ? (restoredSession.design as RoomDesign)
+      : loadInitialRoomDesign(),
+  );
+  const [selectedCards, setSelectedCards] = useState<RitualCard[]>(
+    archivedReading
+      ? ritualCardsFromReading(archivedReading)
+      : restoredSession?.selectedCards ?? [],
+  );
+  const [revealedIds, setRevealedIds] = useState<string[]>(
+    archivedReading
+      ? ritualCardsFromReading(archivedReading).map((card) => card.visualId)
+      : restoredSession?.revealedIds ?? [],
+  );
+  const [deck, setDeck] = useState<RitualCard[]>(() =>
+    restoredSession?.deck?.length ? restoredSession.deck : createHiddenDeck(),
+  );
+  const [ritualRecoveryVersion, setRitualRecoveryVersion] = useState(0);
+  const spreadRecommendationControllerRef = useRef<AbortController | null>(null);
+  const stepRef = useRef(step);
+  const backgroundedRitualRef = useRef(false);
+  const readingArchiveRef = useRef(
+    archivedReading
+      ? {
+          id: archivedReading.id,
+          createdAt: archivedReading.createdAt,
+        }
+      : restoredSession?.readingId && restoredSession.readingCreatedAt
+      ? {
+          id: restoredSession.readingId,
+          createdAt: restoredSession.readingCreatedAt,
+        }
+      : null,
+  );
+  stepRef.current = step;
+
+  useRoomVisit({
+    room: "tarot",
+    hasProgress: Boolean(question.trim()) || selectedCards.length > 0 || (!settingsMode && step !== "question"),
+    onLeave: () => {
+      // Close this mounted visit before navigation, so a late recommendation,
+      // autosave or archive callback cannot reopen it. Other tabs keep their work.
+      visitOpen.current = false;
+      spreadRecommendationControllerRef.current?.abort();
+      spreadRecommendationControllerRef.current = null;
+    },
+  });
+
+  useEffect(() => {
+    return () => {
+      spreadRecommendationControllerRef.current?.abort();
+      spreadRecommendationControllerRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    let disposed = false;
+    let removeNativeListener: (() => Promise<void>) | null = null;
+    const markBackgroundedRitual = () => {
+      backgroundedRitualRef.current =
+        stepRef.current === "prepare" ||
+        getTarotStableRecoveryStep(stepRef.current) !== stepRef.current;
+    };
+    const recoverInterruptedRitual = (allowHiddenDocument = false) => {
+      if (!allowHiddenDocument && document.visibilityState === "hidden") return;
+      const currentStep = stepRef.current;
+      const interrupted =
+        backgroundedRitualRef.current ||
+        getTarotStableRecoveryStep(currentStep) !== currentStep;
+      backgroundedRitualRef.current = false;
+      if (!interrupted) return;
+      stepRef.current = "prepare";
+      setRitualRecoveryVersion((version) => version + 1);
+      dispatchFlow({ type: "NAVIGATE", step: "prepare" });
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        markBackgroundedRitual();
+      } else {
+        recoverInterruptedRitual();
+      }
+    };
+    const handlePageShow = () => recoverInterruptedRitual();
+
+    void addNativeAppStateListener((isActive) => {
+      if (isActive) recoverInterruptedRitual(true);
+      else markBackgroundedRitual();
+    })
+      .then((remove) => {
+        if (disposed) void remove();
+        else removeNativeListener = remove;
+      })
+      .catch(() => {
+        // Browser lifecycle events remain the recovery fallback.
+      });
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", markBackgroundedRitual);
+    window.addEventListener("pageshow", handlePageShow);
+    return () => {
+      disposed = true;
+      void removeNativeListener?.();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", markBackgroundedRitual);
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (archivedRequest && !archivedReading) {
+      navigate("/app/readings", { replace: true });
+    }
+  }, [archivedReading, archivedRequest, navigate]);
+
+  useEffect(() => {
+    if (!visitOpen.current || archivedReading || (settingsMode && !settingsReturnStep)) return;
+    // A new empty entrance must not replace another tab's durable recovery copy.
+    if (freshVisit && step === "question" && !question) return;
+    const stablePhase = getTarotStableRecoveryStep(step);
+    saveActiveTarotSession({
+      phase: stablePhase,
+      question,
+      spreadId: spread.id,
+      focusLabel: spreadRecommendation?.focusLabel ?? t("tarot.room"),
+      design,
+      selectedCards,
+      revealedIds,
+      deck: stablePhase === "pick" || stablePhase === "reveal" || stablePhase === "reading"
+        ? deck
+        : undefined,
+      readingId: readingArchiveRef.current?.id,
+      readingCreatedAt: readingArchiveRef.current?.createdAt,
+    });
+    if (question || step !== "question") markRoomVisitStarted("tarot");
+  }, [archivedReading, deck, design, freshVisit, question, revealedIds, selectedCards, settingsMode, settingsReturnStep, spread.id, spreadRecommendation?.focusLabel, step, t]);
 
   async function submitQuestionValue(value: string) {
     const cleaned = cleanQuestion(value);
     if (!cleaned) return;
+    clearActiveTarotSession();
+    readingArchiveRef.current = null;
     hapticPulse([8, 26, 8]);
     const localRecommendation = buildLocalSpreadRecommendation(cleaned);
+    if (language === "zh") {
+      localRecommendation.focusLabel = localizedFocusLabel(t, cleaned);
+    }
     const localSpread =
       findSpreadChoice(localRecommendation.spreadType) ??
       recommendSpread(cleaned);
@@ -3429,17 +3967,32 @@ export function TarotRoomFlow() {
     setDeck(createHiddenDeck());
     setStep("spreadRecommendation");
 
+    spreadRecommendationControllerRef.current?.abort();
+    const controller = new AbortController();
+    spreadRecommendationControllerRef.current = controller;
+
     try {
-      const apiRecommendation = await requestSpreadRecommendation(cleaned);
+      const apiRecommendation = await requestSpreadRecommendation(
+        cleaned,
+        controller.signal,
+      );
+      if (language === "zh") {
+        apiRecommendation.focusLabel = localizedFocusLabel(t, cleaned);
+      }
+      if (spreadRecommendationControllerRef.current !== controller) return;
       const apiSpread =
         findSpreadChoice(apiRecommendation.spreadType) ?? localSpread;
       setSpread(apiSpread);
       setSpreadRecommendation(apiRecommendation);
     } catch {
+      if (spreadRecommendationControllerRef.current !== controller) return;
       setSpread(localSpread);
       setSpreadRecommendation(localRecommendation);
     } finally {
-      setSpreadRecommendationPending(false);
+      if (spreadRecommendationControllerRef.current === controller) {
+        spreadRecommendationControllerRef.current = null;
+        setSpreadRecommendationPending(false);
+      }
     }
   }
 
@@ -3447,10 +4000,88 @@ export function TarotRoomFlow() {
     void submitQuestionValue(question);
   }
 
+  function stopSpreadRecommendationRequest() {
+    spreadRecommendationControllerRef.current?.abort();
+    spreadRecommendationControllerRef.current = null;
+    setSpreadRecommendationPending(false);
+  }
+
+  function chooseSpread(nextSpread: SpreadChoice) {
+    stopSpreadRecommendationRequest();
+    setSpread(nextSpread);
+  }
+
+  const canStepBack =
+    settingsMode || step !== "question";
+
+  function restoreStepAfterRoomSettings() {
+    if (!settingsReturnStep) return false;
+    dispatchFlow({ type: "CLOSE_SETTINGS" });
+    return true;
+  }
+
+  function handleBack() {
+    hapticTick(8);
+    if (settingsMode) {
+      if (!restoreStepAfterRoomSettings()) navigate("/app/profile");
+      return;
+    }
+
+    if (step === "spreadRecommendation") {
+      spreadRecommendationControllerRef.current?.abort();
+      spreadRecommendationControllerRef.current = null;
+      setSpreadRecommendationPending(false);
+      setStep("question");
+      return;
+    }
+
+    if (step === "spreadSelector") {
+      setStep(question ? "spreadRecommendation" : "question");
+      return;
+    }
+
+    if (step === "design") {
+      setStep(question ? "spreadRecommendation" : "question");
+      return;
+    }
+
+    if (step === "prepare") {
+      setStep("design");
+      return;
+    }
+
+    if (step === "shuffle" || step === "cut") {
+      setStep("prepare");
+      return;
+    }
+
+    if (step === "pick") {
+      setSelectedCards([]);
+      setRevealedIds([]);
+      setStep("prepare");
+      return;
+    }
+
+    if (step === "reveal") {
+      setStep("pick");
+    }
+  }
+
+  function openRoomSettings() {
+    hapticTick(8);
+    if (settingsMode && step === "design") return;
+    dispatchFlow({ type: "OPEN_SETTINGS" });
+  }
+
   if (step === "reading") {
     return (
       <TarotPhoneFrame>
-        <div className="absolute inset-0">
+        <motion.div
+          className="absolute inset-0 transform-gpu will-change-[opacity,transform]"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0.01 : 0.2, ease: [0.22, 0.8, 0.22, 1] }}
+        >
           <TarotHintReadingChat
             selectedCards={selectedCards}
             spread={spread}
@@ -3458,30 +4089,86 @@ export function TarotRoomFlow() {
             cardBackId={design.cardBackId}
             cardArtId={design.cardArtId}
             question={question}
-            focusLabel={spreadRecommendation?.focusLabel ?? "Tarot Room"}
+            story={archivedReading?.story}
+            focusLabel={spreadRecommendation?.focusLabel ?? t("tarot.room")}
+            roomDesign={{
+              backgroundId: design.backgroundId,
+              cardArtId: design.cardArtId,
+              cardBackId: design.cardBackId,
+              backStyle: design.backStyle,
+            }}
+            theme={getWashTheme(design)}
+            archiveOnOpen={!archivedReading}
+            archivedReading={archivedReading ?? undefined}
+            existingReadingId={readingArchiveRef.current?.id}
+            existingReadingCreatedAt={readingArchiveRef.current?.createdAt}
+            onBack={
+              archivedReading
+                ? () => navigate(`/app/readings/${encodeURIComponent(archivedReading.id)}`)
+                : () => setStep("reveal")
+            }
+            onArchived={(reading) => {
+              if (!visitOpen.current) return;
+              readingArchiveRef.current = {
+                id: reading.id,
+                createdAt: reading.createdAt,
+              };
+              updateActiveTarotSessionArchive(reading.id, reading.createdAt);
+            }}
+            onNewReading={() => {
+              clearActiveTarotSession();
+              setArchivedReading(null);
+              readingArchiveRef.current = null;
+              setQuestion("");
+              setSelectedCards([]);
+              setRevealedIds([]);
+              setDeck(createHiddenDeck());
+              setSpreadRecommendation(null);
+              setSpreadRecommendationPending(false);
+              dispatchFlow({ type: "RESET" });
+              navigate("/app/tarot", { replace: true });
+            }}
           />
-        </div>
+        </motion.div>
       </TarotPhoneFrame>
     );
   }
 
   return (
     <TarotPhoneFrame>
-      <div className="absolute inset-0 overflow-hidden text-[#332d45]">
+      <div className="absolute inset-0 overflow-hidden text-[color:var(--tarot-page-ink,#332d45)]">
         <RoomBackground design={design} />
-        <Link
-          href="/app"
-          aria-label="Close Tarot Room"
-          className="absolute left-4 top-[calc(var(--hint-safe-top)+0.75rem)] z-[80] grid h-10 w-10 place-items-center rounded-full border border-white/60 bg-white/48 text-[#5e5063] shadow-[0_10px_28px_rgba(92,72,105,0.14)] backdrop-blur-xl transition active:scale-95"
-        >
-          <ArrowLeft size={18} />
-        </Link>
-        <div className="pointer-events-none absolute right-5 top-[calc(var(--hint-safe-top)+0.9rem)] z-20 flex items-center gap-2 rounded-full border border-white/54 bg-white/38 px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#9b7c8d] backdrop-blur-xl">
-          <WandSparkles size={13} />
-          Tarot Room
+        <div className="absolute left-4 top-[calc(var(--hint-safe-top)+0.75rem)] z-[80] flex items-center gap-2">
+          {canStepBack ? (
+            <button
+              type="button"
+              onClick={handleBack}
+              aria-label={t("common.back")}
+              className="grid h-11 w-11 place-items-center rounded-full border border-white/64 bg-white/54 text-[#5e5063] shadow-[0_10px_28px_rgba(92,72,105,0.14)] backdrop-blur-xl transition active:scale-95"
+            >
+              <ArrowLeft size={18} strokeWidth={1.8} />
+            </button>
+          ) : null}
+          <Link
+            href="/app"
+            aria-label={t("common.home")}
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/64 bg-white/54 text-[#5e5063] shadow-[0_10px_28px_rgba(92,72,105,0.14)] backdrop-blur-xl transition active:scale-95"
+          >
+            <House size={17} strokeWidth={1.8} />
+          </Link>
         </div>
+        <button
+          type="button"
+          onClick={openRoomSettings}
+          aria-label={t("me.settings.tarotTitle")}
+          aria-pressed={settingsMode && step === "design"}
+          className="absolute right-5 top-[calc(var(--hint-safe-top)+0.9rem)] z-[80] flex min-h-11 items-center gap-2 rounded-full border border-white/58 bg-white/46 px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8e7082] shadow-[0_9px_24px_rgba(92,72,105,0.1)] backdrop-blur-xl transition active:scale-[0.97] aria-pressed:border-[#d4b5c7]/70 aria-pressed:bg-white/64"
+        >
+          <WandSparkles size={13} />
+          {t("tarot.room")}
+        </button>
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false} mode="wait">
           {step === "question" && (
             <QuestionStep
               key="question"
@@ -3502,8 +4189,9 @@ export function TarotRoomFlow() {
               recommendation={spreadRecommendation}
               isLoading={spreadRecommendationPending}
               design={design}
-              onSpreadChange={setSpread}
+              onSpreadChange={chooseSpread}
               onUse={() => {
+                stopSpreadRecommendationRequest();
                 hapticTick(12);
                 setStep("design");
               }}
@@ -3514,7 +4202,7 @@ export function TarotRoomFlow() {
               key="spread-selector"
               selected={spread}
               cardBackId={design.cardBackId}
-              onSelect={setSpread}
+              onSelect={chooseSpread}
               onChoose={() => {
                 hapticTick(12);
                 setStep("design");
@@ -3523,19 +4211,25 @@ export function TarotRoomFlow() {
           )}
           {step === "design" && (
             <RoomDesignStudioStep
-              key="design"
+              key={`design-${settingsMode ? "settings" : "ritual"}`}
               design={design}
               onDesign={setDesign}
               spread={spread}
+              settingsMode={settingsMode}
               onContinue={() => {
                 hapticPulse([8, 28, 10]);
+                saveRoomDesignPreference(design, spread);
+                if (settingsMode) {
+                  if (!restoreStepAfterRoomSettings()) navigate("/app/profile");
+                  return;
+                }
                 setStep("prepare");
               }}
             />
           )}
           {step === "prepare" && (
             <PrepareStep
-              key="prepare"
+              key={`prepare-${ritualRecoveryVersion}`}
               question={question}
               spread={spread}
               design={design}
@@ -3553,12 +4247,20 @@ export function TarotRoomFlow() {
               onComplete={(nextDeck) => {
                 hapticPulse([8, 34, 12]);
                 setDeck(nextDeck);
-                setStep("pick");
+                setStep("cut");
               }}
             />
           )}
           {step === "cut" && (
-            <CutStep key="cut" design={design} onDone={() => setStep("pick")} />
+            <CutStep
+              key="cut"
+              design={design}
+              deck={deck}
+              onDone={(nextDeck) => {
+                setDeck(nextDeck);
+                setStep("pick");
+              }}
+            />
           )}
           {step === "pick" && (
             <PickStep
@@ -3579,10 +4281,13 @@ export function TarotRoomFlow() {
             <motion.div
               key="reveal"
               className="absolute inset-0 z-30"
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.36, ease: "easeOut" }}
+              exit={{ opacity: 0, y: reduceMotion ? 0 : -12 }}
+              transition={{
+                duration: reduceMotion ? 0.01 : 0.36,
+                ease: "easeOut",
+              }}
             >
               <ReadingReveal
                 selectedCards={selectedCards}
@@ -3607,6 +4312,8 @@ export function TarotRoomFlow() {
                 }}
                 onRestart={() => {
                   hapticTick(10);
+                  clearActiveTarotSession();
+                  readingArchiveRef.current = null;
                   setSelectedCards([]);
                   setRevealedIds([]);
                   setDeck(createHiddenDeck());

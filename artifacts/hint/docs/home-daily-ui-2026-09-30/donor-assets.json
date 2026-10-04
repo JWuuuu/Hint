@@ -1,0 +1,9 @@
+{
+  "zip": "Hint-App-codex-latest-hint-20260928.zip",
+  "sha256": "ffef50e609c0f5265cb881e7979fcb85c26092f33e69041493673b6c71c4c31f",
+  "identicalPublicAssets": 433,
+  "differentPublicAssets": [],
+  "missingPublicAssets": [
+    "artifacts/hint/public/iphone17-pro-preview.html"
+  ]
+}

@@ -1,0 +1,37 @@
+import { astroText, type AstroCopy } from "./astrologyCopy";
+import type { HintLanguage } from "@/lib/i18n";
+
+export const TOGETHER_COPY = {
+  invite: ["Invite them into the conversation", "邀请对方一起探索", "Invita a esa persona", "相手を招待する", "상대를 초대해요"],
+  inviteNote: ["They enter their own birth details and consent. The full result is private to the two participating devices; invitations expire after seven days.", "对方填写自己的出生资料并同意后，完整结果仅向双方参与设备开放。邀请七天后失效。", "La otra persona añade sus datos y acepta. Solo los dos dispositivos participantes acceden al resultado completo; la invitación caduca a los siete días.", "相手が出生データを入力し同意します。結果全体は参加する2台の端末のみ閲覧でき、招待は7日で期限切れになります。", "상대가 출생 정보를 입력하고 동의해요. 전체 결과는 참여한 두 기기에서만 볼 수 있으며 초대는 7일 뒤 만료돼요."],
+  create: ["Create invite link", "建立邀请链接", "Crear invitación", "招待リンクを作成", "초대 링크 만들기"],
+  creating: ["Creating…", "建立中…", "Creando…", "作成中…", "만드는 중…"],
+  inviteError: ["The invitation could not be created. Your details are still here; please retry.", "无法建立邀请。资料仍在，请重试。", "No se pudo crear la invitación. Tus datos siguen aquí; reintenta.", "招待を作成できませんでした。データは残っています。再試行してください。", "초대를 만들지 못했어요. 정보는 남아 있으니 다시 시도해요."],
+  expires: ["Expires", "有效期限", "Caduca", "有効期限", "만료일"],
+  copy: ["Copy link", "复制链接", "Copiar enlace", "リンクをコピー", "링크 복사"],
+  copied: ["Link copied", "链接已复制", "Enlace copiado", "コピーしました", "링크를 복사했어요"],
+  share: ["Share invite link", "分享邀请链接", "Compartir invitación", "招待リンクを共有", "초대 링크 공유"],
+  shareError: ["The share sheet could not open. You can copy the link instead.", "无法打开分享面板，可以复制链接。", "No se pudo abrir el panel para compartir. Puedes copiar el enlace.", "共有画面を開けませんでした。リンクをコピーできます。", "공유 창을 열지 못했어요. 링크를 복사할 수 있어요."],
+  copyError: ["The link could not be copied. You can select and copy the link shown here.", "复制失败，可以选取此处链接手动复制。", "No se pudo copiar. Puedes seleccionar y copiar el enlace que aparece aquí.", "コピーできませんでした。表示されているリンクを選択してコピーできます。", "복사하지 못했어요. 표시된 링크를 직접 선택해 복사할 수 있어요."],
+  compare: ["Compare on this device", "在此设备比较", "Comparar en este dispositivo", "この端末で比較", "이 기기에서 비교"],
+  consent: ["I have permission to use these birth details for this comparison.", "我已获准将这些出生资料用于此次比较。", "Tengo permiso para usar estos datos de nacimiento en esta comparación.", "この比較に出生データを使用する許可を得ています。", "이 비교에 출생 정보를 사용할 허락을 받았어요."],
+  partner: ["Their birth details", "对方的出生资料", "Sus datos de nacimiento", "相手の出生データ", "상대의 출생 정보"],
+  comparisonNote: ["These entries are used for this comparison. They are not added to your personal birth profile.", "以下资料用于此次比较，不会加入你的个人出生档案。", "Estos datos se usan para esta comparación y no se añaden a tu perfil de nacimiento.", "このデータは今回の比較に使い、あなたの出生プロフィールには追加しません。", "이 정보는 이번 비교에 사용되며 내 출생 프로필에 추가되지 않아요."],
+  calculating: ["Calculating the connection…", "正在计算联系…", "Calculando la conexión…", "つながりを計算中…", "연결을 계산하는 중…"],
+  calculate: ["Explore the connection", "探索配置联系", "Explorar la conexión", "つながりを調べる", "연결 살펴보기"],
+  calculationError: ["A calculated comparison is unavailable. Your entries are still here; please retry.", "暂时无法取得计算结果，填写内容仍在，请重试。", "La comparación calculada no está disponible. Tus datos siguen aquí; reintenta.", "比較結果を取得できませんでした。入力内容は残っています。再試行してください。", "계산된 비교를 가져오지 못했어요. 입력한 정보는 남아 있으니 다시 시도해요."],
+  connections: ["Connections between your charts", "两张星盘之间的联系", "Conexiones entre sus cartas", "ふたつのチャートのつながり", "두 차트 사이의 연결"],
+  evidenceNote: ["These pairs come from the calculation. The explanation is an educational reflection, not a relationship rating.", "以下配置关系来自计算。文字是知识解读，不是关系评分。", "Estos pares proceden del cálculo. La explicación es educativa, no una valoración de la relación.", "これらの組み合わせは計算結果です。解説は学習と振り返りのためで、関係の評価ではありません。", "이 조합은 계산 결과예요. 설명은 학습과 성찰을 위한 것이며 관계 점수가 아니에요."],
+  noAspects: ["Detailed connections between these charts are not available for this result.", "此结果暂未提供两张星盘之间的详细配置联系。", "Este resultado no incluye conexiones detalladas entre las dos cartas.", "この結果では、ふたつのチャートの詳しいつながりを確認できません。", "이 결과에는 두 차트 사이의 자세한 연결 정보가 제공되지 않았어요."],
+  original: ["Original calculation notes", "计算原始文字", "Notas originales del cálculo", "計算結果の原文", "계산 결과 원문"],
+  originalNote: ["These notes retain the language returned by the service.", "以下保留服务返回文字的原始语言。", "Estas notas conservan el idioma devuelto por el servicio.", "以下の文章はサービスが返した元の言語を保持しています。", "다음 내용은 서비스가 반환한 원래 언어를 유지해요."],
+  snapshot: ["Based on the saved inputs shown below. Editing either person requires a new comparison.", "依据下方已保存的输入快照。修改任何一人的资料后需要重新比较。", "Basado en los datos guardados que se muestran abajo. Modificar a cualquiera requiere una nueva comparación.", "下に示す保存済みデータに基づきます。どちらかを変更した場合、新しい比較が必要です。", "아래 저장된 입력 정보를 기준으로 해요. 어느 한쪽을 수정해도 새 비교가 필요해요."],
+  placements: ["The two natal charts", "双方的出生配置", "Las dos cartas natales", "ふたりの出生図", "두 사람의 출생 차트"],
+  private: ["Private to participating devices", "仅参与设备可查看", "Privado para los dispositivos participantes", "参加端末のみ閲覧可能", "참여 기기만 볼 수 있어요"],
+  contextChanged: ["Your saved readings changed. Reopen this link or retry to continue.", "已保存的阅读有变更。请重新打开链接或重试。", "Tus lecturas guardadas han cambiado. Abre el enlace de nuevo o reintenta.", "保存されたリーディングが変わりました。リンクを開き直すか、再試行してください。", "저장된 리딩이 변경되었어요. 링크를 다시 열거나 재시도해요."],
+  strongestLink: ["A connection to explore", "值得探索的联系", "Una conexión para explorar", "探ってみたいつながり", "살펴볼 연결"],
+  easyPart: ["Where things may flow", "可能较顺畅的地方", "Dónde puede haber fluidez", "自然に流れるところ", "자연스럽게 흐르는 부분"],
+  frictionPoint: ["A place for understanding", "需要理解的地方", "Un espacio para comprender", "理解を深めるところ", "이해가 필요한 부분"],
+  advice: ["An invitation to reflect", "留给彼此的反思", "Una invitación a reflexionar", "ふたりへの問いかけ", "함께 생각해 볼 질문"],
+} satisfies Record<string, AstroCopy>;
+export const togetherText = (language: HintLanguage, key: keyof typeof TOGETHER_COPY) => astroText(language, TOGETHER_COPY[key]);

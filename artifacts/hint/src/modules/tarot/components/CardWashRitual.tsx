@@ -1,5 +1,22 @@
-import { useEffect, useRef, useState, type PointerEvent } from "react";
-import { motion } from "framer-motion";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { ritualCopy } from "../logic/ritualCopy";
+import {
+  forwardRef,
+  memo,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type KeyboardEvent,
+  type PointerEvent,
+} from "react";
+import { motion } from "../../../lib/quietMotion";
+import { RotateCw } from "lucide-react";
+import { triggerHaptic } from "../../../lib/feedback";
+import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
+import { useLanguage } from "../../../lib/i18n";
 import type { RitualCard } from "../logic/createHiddenDeck";
 import type { WashPointer } from "../logic/washPhysics";
 import {
@@ -10,6 +27,7 @@ import {
 } from "../logic/cardBacks";
 
 export type WashRitualTheme = {
+  surface?: "light" | "dark";
   chamberOverlay: string;
   starClassName: string;
   tableBackground: string;
@@ -24,14 +42,28 @@ export type WashRitualTheme = {
 type CardWashRitualProps = {
   stage: "placed" | "washing" | "gathering" | "cutReady" | "cutting";
   ritualCards: RitualCard[];
+  deckCount?: number;
   washProgress?: number;
   theme?: WashRitualTheme;
   onBeginWash: () => void;
   onWash: (pointer: WashPointer) => void;
   onWashRelease: () => void;
-  onCutDeck: () => void;
+  onWashCancel?: () => void;
+  autoWashing?: boolean;
+  washDirection?: 1 | -1;
+  onAutoWash?: () => void;
+  onWashAgain?: () => void;
+  onCutDeck?: () => void;
   onContinue?: () => void;
+  onCardsSettled?: () => void;
   showControls?: boolean;
+  heading?: string;
+  helper?: string;
+  children?: ReactNode;
+};
+
+export type CardWashRitualHandle = {
+  paintCards: (cards: readonly RitualCard[]) => void;
 };
 
 type IntroStep = "stack" | "spread" | "closing" | "gather";
@@ -52,7 +84,9 @@ const DEFAULT_THEME: WashRitualTheme = {
   cardBackId: getDefaultTarotCardBackForStyle("nocturne"),
 };
 
-function RitualBackCard({
+export const WASH_CARD_SIZE = "h-[86px] w-[54px] min-[430px]:h-[92px] min-[430px]:w-[58px]";
+
+export const RitualBackCard = memo(function RitualBackCard({
   cardBackId,
   className = "",
 }: {
@@ -61,31 +95,24 @@ function RitualBackCard({
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-[10px] border border-[#d7bd7c]/62 bg-[#182139] shadow-[0_8px_18px_rgba(0,0,0,0.22)] ${className}`}
+      className={`relative overflow-hidden rounded-[10px] border border-[#d7bd7c]/62 bg-[#182139] shadow-[0_2px_6px_rgba(0,0,0,0.2)] [backface-visibility:hidden] ${className}`}
       style={{
         backgroundImage: `url("${getTarotCardBackImage(cardBackId)}")`,
         backgroundPosition: "center",
-        backgroundSize: "cover",
+        backgroundSize: "100% 100%",
       }}
     >
       <span className="pointer-events-none absolute inset-[5px] rounded-[7px] border border-white/12" />
     </div>
   );
-}
+});
 
 function ritualHaptic(pattern: number | number[] = 6) {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-    navigator.vibrate(pattern);
-  }
+  const longestPulse = Array.isArray(pattern)
+    ? Math.max(...pattern.filter((_, index) => index % 2 === 0))
+    : pattern;
+  triggerHaptic(longestPulse >= 18 ? "select" : longestPulse <= 5 ? "soft" : "tap");
 }
-
-const STAGE_INDEX: Record<CardWashRitualProps["stage"], number> = {
-  placed: 0,
-  washing: 1,
-  gathering: 2,
-  cutReady: 2,
-  cutting: 2,
-};
 
 function getFullDeckTransform(index: number, total: number) {
   const midpoint = Math.max(1, (total - 1) / 2);
@@ -110,8 +137,12 @@ function getIntroCircleTransform(index: number, total: number, step: IntroStep) 
     y: 50,
     rotate: 0,
     zIndex: (step === "stack" ? 1800 : 1000) + index,
-    outerTransform: `translate3d(50%, 50%, 0) rotate(${clockDegrees}deg) translate3d(0, -34%, 0)`,
+    outerTransform: `${getFieldTransform(50, 50)} rotate(${clockDegrees}deg) translate3d(0, calc(var(--wash-field-height) * -0.31), 0)`,
   };
+}
+
+function getFieldTransform(x: number, y: number) {
+  return `translate3d(calc(var(--wash-field-width) * ${x / 100}), calc(var(--wash-field-height) * ${y / 100}), 0)`;
 }
 
 function getIntroDeckTransform(index: number, total: number, step: IntroStep) {
@@ -126,70 +157,156 @@ function getIntroDeckTransform(index: number, total: number, step: IntroStep) {
 
 function getIntroTransition(index: number, total: number, step: IntroStep) {
   if (step === "spread") {
-    return `transform 820ms cubic-bezier(0.18, 0.86, 0.2, 1) ${index * 0.0025}s`;
+    return `transform 560ms cubic-bezier(0.18, 0.86, 0.2, 1) ${index * 0.0018}s`;
   }
 
   if (step === "closing") {
-    return `transform 720ms cubic-bezier(0.2, 0.82, 0.2, 1) ${index * 0.0022}s`;
+    return `transform 480ms cubic-bezier(0.2, 0.82, 0.2, 1) ${index * 0.0016}s`;
   }
 
   if (step === "gather") {
-    return `transform 580ms cubic-bezier(0.24, 0.76, 0.18, 1) ${(total - index) * 0.001}s`;
+    return `transform 400ms cubic-bezier(0.24, 0.76, 0.18, 1) ${(total - index) * 0.0007}s`;
   }
 
-  return `transform 520ms cubic-bezier(0.2, 0.78, 0.2, 1) ${index * 0.0008}s`;
+  return `transform 360ms cubic-bezier(0.2, 0.78, 0.2, 1) ${index * 0.0006}s`;
 }
 
-export function CardWashRitual({
+export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualProps>(function CardWashRitual({
   stage,
   ritualCards,
-  washProgress = 0,
+  deckCount = ritualCards.length,
   theme = DEFAULT_THEME,
   onBeginWash,
   onWash,
   onWashRelease,
-}: CardWashRitualProps) {
+  onWashCancel,
+  autoWashing = false,
+
+  onAutoWash,
+  onWashAgain,
+  onCutDeck,
+  onCardsSettled,
+  heading,
+  helper,
+  children,
+}: CardWashRitualProps, ref) {
+  const { t, language } = useLanguage();
+  const [showDeckNote, setShowDeckNote] = useState(false);
+  const deckNoteButton = useRef<HTMLButtonElement>(null);
+  const deckCopy = ritualCopy(language);
+  const reduceMotion = useTarotReducedMotion();
+  const lightSurface = theme.surface === "light";
   const tableRef = useRef<HTMLDivElement | null>(null);
   const lastPoint = useRef<{ x: number; y: number } | null>(null);
-  const spinDirection = useRef<1 | -1>(1);
+  const activePointer = useRef<number | null>(null);
   const washing = useRef(false);
   const washDistance = useRef(0);
-  const lastWashPush = useRef(0);
-  const releaseTriggered = useRef(false);
+  const keyboardWashStep = useRef(0);
   const beginWashCallback = useRef(onBeginWash);
   const washReleaseCallback = useRef(onWashRelease);
+  const washCardNodes = useRef<
+    Array<{ wrapper: HTMLElement; face: HTMLElement | null }>
+  >([]);
   const [introStep, setIntroStep] = useState<IntroStep>("stack");
-  const [washIntroSettled, setWashIntroSettled] = useState(false);
+  const [washIntroSettled, setWashIntroSettled] = useState(
+    () => stage === "washing",
+  );
 
-  const progress = Math.max(0, Math.min(1, washProgress));
+  useLayoutEffect(() => {
+    const table = tableRef.current;
+    if (!table) return;
+    const measure = () => {
+      const { width, height } = table.getBoundingClientRect();
+      table.style.setProperty("--wash-field-width", `${width}px`);
+      table.style.setProperty("--wash-field-height", `${height}px`);
+    };
+    measure();
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(measure);
+      observer.observe(table);
+      return () => observer.disconnect();
+    }
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    paintCards(cards) {
+      const table = tableRef.current;
+      if (!table || stage !== "washing") return;
+      let nodes = washCardNodes.current;
+      if (
+        nodes.length !== cards.length ||
+        nodes.some(({ wrapper }) => !wrapper.isConnected)
+      ) {
+        nodes = Array.from(
+          table.querySelectorAll<HTMLElement>("[data-wash-card]"),
+          (wrapper) => ({
+            wrapper,
+            face: wrapper.querySelector<HTMLElement>("[data-wash-card-face]"),
+          }),
+        );
+        washCardNodes.current = nodes;
+      }
+      nodes.forEach(({ wrapper, face }, index) => {
+        const card = cards[index];
+        if (!card) return;
+        const position = getFieldTransform(card.x, card.y);
+        if (wrapper.style.transform !== position) wrapper.style.transform = position;
+        if (face) {
+          const angle = `translate3d(-50%, -50%, 0) rotate(${card.rotate}deg)`;
+          if (face.style.transform !== angle) face.style.transform = angle;
+        }
+      });
+    },
+  }), [stage]);
+
   const introReady = stage !== "placed";
-  const deckCountLabel = `${ritualCards.length} cards`;
-  const title =
+  const deckCountLabel = t("tarot.flow.wash.cards").replace(
+    "{count}",
+    String(deckCount),
+  );
+  const title = heading ?? (
     stage === "placed"
-      ? "Full deck"
+      ? t("tarot.flow.wash.fullDeck")
       : stage === "gathering"
-        ? "Gathering"
-        : stage === "cutReady" || stage === "cutting"
-          ? "Cut the deck"
-          : progress > 0.82
-            ? "Ready to cut"
-            : "Wash deck";
-  const helperCopy =
+        ? t("tarot.flow.wash.gathering")
+        : stage === "cutReady"
+          ? t("tarot.flow.wash.deckSquared")
+          : stage === "cutting"
+            ? t("tarot.flow.wash.cutDeck")
+          : t("tarot.flow.wash.title"));
+  const helperCopy = helper ?? (
     stage === "placed"
-      ? "Watch all 78 cards open, close, then wash by touch."
+      ? t("tarot.flow.wash.placedBody")
       : stage === "washing"
-        ? "Wash all 78 cards in slow circles. Fill the ring, then release to cut."
+        ? t("tarot.flow.wash.body")
+        : stage === "cutReady"
+          ? t("tarot.flow.wash.cutReadyBody")
         : stage === "cutting"
-          ? "The deck is being cut and squared for your question."
-        : "";
+          ? t("tarot.flow.wash.cuttingBody")
+        : "");
   const isDeckStackStage = stage === "gathering" || stage === "cutReady" || stage === "cutting";
   const isFullDeckStage = stage === "placed";
-  const cardTransitionMs = stage === "gathering" ? 640 : stage === "cutting" ? 680 : 116;
+  const cardTransitionMs = reduceMotion
+    ? 20
+    : stage === "gathering"
+      ? 440
+      : stage === "cutting"
+        ? 680
+        : 116;
   const cardTransitionEase = stage === "gathering"
     ? "cubic-bezier(0.2, 0.82, 0.16, 1)"
     : stage === "cutting"
       ? "cubic-bezier(0.22, 0.78, 0.14, 1)"
       : "cubic-bezier(0.18, 0.72, 0.2, 1)";
+  const settleCardIndex = ritualCards.reduce(
+    (selectedIndex, card, index, cards) =>
+      (card.gatherDelay ?? 0) >= (cards[selectedIndex]?.gatherDelay ?? 0)
+        ? index
+        : selectedIndex,
+    0,
+  );
 
   useEffect(() => {
     beginWashCallback.current = onBeginWash;
@@ -201,25 +318,31 @@ export function CardWashRitual({
 
   useEffect(() => {
     if (stage !== "placed") return undefined;
-    releaseTriggered.current = false;
     washDistance.current = 0;
     setIntroStep("stack");
+    if (reduceMotion) {
+      setIntroStep("gather");
+      const washTimer = window.setTimeout(() => {
+        beginWashCallback.current();
+      }, 100);
+      return () => window.clearTimeout(washTimer);
+    }
     const spreadTimer = window.setTimeout(() => {
       ritualHaptic(4);
       setIntroStep("spread");
-    }, 120);
+    }, 80);
     const closingTimer = window.setTimeout(() => {
       ritualHaptic(5);
       setIntroStep("closing");
-    }, 1120);
+    }, 700);
     const gatherTimer = window.setTimeout(() => {
       ritualHaptic([4, 22, 5]);
       setIntroStep("gather");
-    }, 1760);
+    }, 1120);
     const washTimer = window.setTimeout(() => {
       ritualHaptic([6, 24, 8]);
       beginWashCallback.current();
-    }, 2350);
+    }, 1520);
 
     return () => {
       window.clearTimeout(spreadTimer);
@@ -227,7 +350,7 @@ export function CardWashRitual({
       window.clearTimeout(gatherTimer);
       window.clearTimeout(washTimer);
     };
-  }, [stage]);
+  }, [reduceMotion, stage]);
 
   useEffect(() => {
     if (stage !== "washing") {
@@ -236,37 +359,21 @@ export function CardWashRitual({
     }
 
     setWashIntroSettled(false);
-    const settleTimer = window.setTimeout(() => setWashIntroSettled(true), 760);
+    const settleTimer = window.setTimeout(
+      () => setWashIntroSettled(true),
+      reduceMotion ? 20 : 260,
+    );
     return () => window.clearTimeout(settleTimer);
-  }, [stage]);
-
-  function triggerWashRelease() {
-    if (releaseTriggered.current) return;
-    releaseTriggered.current = true;
-    washReleaseCallback.current();
-  }
+  }, [reduceMotion, stage]);
 
   function move(event: PointerEvent<HTMLDivElement>) {
-    if (!washing.current || !tableRef.current) return;
+    if (!washing.current || activePointer.current !== event.pointerId || !tableRef.current) return;
     const rect = tableRef.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const previous = lastPoint.current ?? { x, y };
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const previousVectorX = previous.x - centerX;
-    const previousVectorY = previous.y - centerY;
-    const currentVectorX = x - centerX;
-    const currentVectorY = y - centerY;
-    const turn = previousVectorX * currentVectorY - previousVectorY * currentVectorX;
     washDistance.current += Math.hypot(x - previous.x, y - previous.y);
-    if (Math.abs(turn) > 18) {
-      spinDirection.current = turn >= 0 ? 1 : -1;
-    }
     lastPoint.current = { x, y };
-    const now = performance.now();
-    if (now - lastWashPush.current < 24) return;
-    lastWashPush.current = now;
     onWash({
       x,
       y,
@@ -274,119 +381,184 @@ export function CardWashRitual({
       movementY: y - previous.y,
       width: rect.width,
       height: rect.height,
-      spinDirection: spinDirection.current,
+      spinDirection: 1,
     });
   }
 
   function finishPointerWash(event: PointerEvent<HTMLDivElement>) {
-    if (!washing.current) return;
-    const movedEnoughToCut = washDistance.current >= 840 || (washDistance.current >= 620 && progress >= 0.56);
+    if (!washing.current || activePointer.current !== event.pointerId) return;
     washing.current = false;
+    activePointer.current = null;
     lastPoint.current = null;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
-    if (movedEnoughToCut) {
-      ritualHaptic([7, 30, 9]);
-      triggerWashRelease();
+    if (washDistance.current < 24) {
+      washDistance.current = 0;
+      onWashCancel?.();
+      ritualHaptic(4);
+      return;
     }
+    ritualHaptic([7, 30, 9]);
+    washReleaseCallback.current();
+  }
+
+  function cancelPointerWash(event: PointerEvent<HTMLDivElement>) {
+    if (!washing.current || activePointer.current !== event.pointerId) return;
+    washing.current = false;
+    activePointer.current = null;
+    lastPoint.current = null;
+    washDistance.current = 0;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    onWashCancel?.();
+  }
+
+  function handleKeyboardWash(event: KeyboardEvent<HTMLDivElement>) {
+    if (stage !== "washing" || autoWashing || activePointer.current !== null || !tableRef.current) return;
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (!washing.current && washDistance.current <= 0) return;
+      washing.current = false;
+      lastPoint.current = null;
+      ritualHaptic([7, 30, 9]);
+      washReleaseCallback.current();
+      return;
+    }
+
+    if (!["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"].includes(event.key)) return;
+    event.preventDefault();
+    washing.current = true;
+    keyboardWashStep.current += 1;
+    const rect = tableRef.current.getBoundingClientRect();
+    const angle = keyboardWashStep.current * (Math.PI / 5);
+    const radiusX = Math.min(rect.width * 0.28, 132);
+    const radiusY = Math.min(rect.height * 0.24, 118);
+    const x = rect.width / 2 + Math.cos(angle) * radiusX;
+    const y = rect.height / 2 + Math.sin(angle) * radiusY;
+    const previous = lastPoint.current ?? { x: rect.width / 2 + radiusX, y: rect.height / 2 };
+    const movementX = x - previous.x;
+    const movementY = y - previous.y;
+    washDistance.current += Math.hypot(movementX, movementY);
+    lastPoint.current = { x, y };
+    onBeginWash();
+    onWash({
+      x,
+      y,
+      movementX,
+      movementY,
+      width: rect.width,
+      height: rect.height,
+      spinDirection: 1,
+    });
   }
 
   return (
     <section
       data-ritual-stage={stage}
       data-intro-step={isFullDeckStage ? introStep : ""}
-      data-wash-progress={progress.toFixed(2)}
-      className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden px-4 pb-[calc(var(--hint-safe-bottom)+5.25rem)] pt-[calc(var(--hint-safe-top)+1rem)]"
+      className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden px-4 pb-[calc(var(--hint-safe-bottom)+4.5rem)] pt-[calc(var(--hint-safe-top)+1rem)] [@media(max-height:740px)]:pt-[calc(var(--hint-safe-top)+5rem)] text-[color:var(--tarot-page-ink,#332d45)]"
     >
-      <div className="pointer-events-none absolute inset-0" style={{ background: theme.chamberOverlay }} />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70"
-        animate={{ opacity: [0.52, 0.74, 0.58] }}
-        transition={{ duration: 6.5, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+      <div
+        className="pointer-events-none absolute left-1/2 top-[50%] h-[min(112vw,560px)] w-[min(112vw,560px)] -translate-x-1/2 -translate-y-1/2 rounded-full border"
         style={{
-          background:
-            "linear-gradient(135deg, rgba(255,220,233,0.10), transparent 30%, rgba(222,203,255,0.08) 58%, rgba(255,228,170,0.08))",
+          borderColor: lightSurface ? "rgba(123,91,145,0.12)" : "rgba(246,187,207,0.14)",
+          boxShadow: lightSurface
+            ? "inset 0 0 74px rgba(255,255,255,0.28), 0 0 64px rgba(185,151,201,0.10)"
+            : "inset 0 0 74px rgba(246,187,207,0.10), 0 0 64px rgba(221,180,255,0.08)",
         }}
       />
-      <div className={`pointer-events-none absolute inset-0 ${theme.starClassName}`} />
-      <div className="pointer-events-none absolute left-1/2 top-[50%] h-[min(112vw,560px)] w-[min(112vw,560px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#f6bbcf]/14 shadow-[inset_0_0_74px_rgba(246,187,207,0.10),0_0_64px_rgba(221,180,255,0.08)]" />
 
-      <div className="relative z-20 mt-2 flex w-full max-w-[18rem] items-center justify-center gap-2">
-        {[0, 1, 2, 3].map((step) => (
-          <span
-            key={step}
-            className="h-1.5 flex-1 rounded-full"
-            style={{
-              background: step <= STAGE_INDEX[stage]
-                ? "linear-gradient(90deg, #f1b8c9, #d9b8ff 52%, #ffe3a6)"
-                : "rgba(255,244,250,0.11)",
-              boxShadow: step <= STAGE_INDEX[stage] ? "0 0 20px rgba(241,184,201,0.26), 0 0 28px rgba(217,184,255,0.18)" : "none",
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 mt-8 text-center">
-        <div className="mx-auto mb-2 w-fit rounded-full border border-[#f1d390]/28 bg-white/10 px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-[#f6e0ce]/78 shadow-[0_10px_28px_rgba(0,0,0,0.16)] backdrop-blur-md">
+      <div className="relative z-10 mt-4 min-h-[136px] shrink-0 text-center">
+        <div data-testid="tarot-deck-count" className={`mx-auto mb-2 w-fit rounded-full border px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] backdrop-blur-md ${lightSurface ? "border-[#d8b96e]/38 bg-white/52 text-[#876c79] shadow-[0_8px_24px_rgba(96,72,104,0.08)]" : "border-[#f1d390]/28 bg-white/10 text-[#f6e0ce]/78 shadow-[0_10px_28px_rgba(0,0,0,0.16)]"}`}>
           {deckCountLabel}
         </div>
-        <motion.p
+        <motion.h1
           key={title}
-          initial={{ opacity: 0, y: 4 }}
+          initial={stage === "cutting" || reduceMotion ? false : { opacity: 0, y: 3 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.46, ease: [0.2, 0.76, 0.2, 1] }}
-          className="font-serif text-[24px] leading-tight text-[#fff0df] drop-shadow-[0_10px_24px_rgba(25,12,25,0.34)] md:text-[34px]"
+          transition={{ duration: reduceMotion ? 0.01 : 0.22, ease: [0.2, 0.76, 0.2, 1] }}
+          className="font-serif text-[26px] leading-tight text-[color:var(--tarot-page-ink,#332d45)] md:text-[34px]"
         >
           {title}
-        </motion.p>
+        </motion.h1>
         {helperCopy ? (
           <motion.p
             key={helperCopy}
-            initial={{ opacity: 0, y: 4 }}
+            initial={stage === "cutting" || reduceMotion ? false : { opacity: 0, y: 3 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.44, ease: [0.2, 0.76, 0.2, 1] }}
-            className="mx-auto mt-2 max-w-[22rem] px-3 font-sans text-[12px] font-semibold leading-snug text-[#ead7dc]/82"
+            transition={{ duration: reduceMotion ? 0.01 : 0.22, ease: [0.2, 0.76, 0.2, 1] }}
+            className="mx-auto mt-2 max-w-[22rem] px-3 font-sans text-[12px] font-semibold leading-snug text-[color:var(--tarot-page-muted,#756777)]"
           >
             {helperCopy}
           </motion.p>
+        ) : null}
+        {stage === "washing" ? (
+          <motion.div
+            aria-live="polite"
+            className={`mx-auto mt-2 flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] ${
+              lightSurface
+                ? "border-[#d8b96e]/30 bg-white/48 text-[#806879]"
+                : "border-[#f1d390]/24 bg-white/8 text-[#f0dce3]/76"
+            }`}
+            initial={{ opacity: 0, y: 2 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0.01 : 0.2 }}
+          >
+            <RotateCw size={13} strokeWidth={1.8} aria-hidden="true" />
+            {t("tarot.flow.wash.clockwise")}
+          </motion.div>
         ) : null}
       </div>
 
       <div
         ref={tableRef}
-        className={`relative z-10 mt-3 touch-none overflow-hidden ${
-          isDeckStackStage
-            ? "h-[min(44vh,460px)] w-[min(118vw,560px)]"
-            : isFullDeckStage
-              ? "h-[min(90vw,500px)] w-[min(90vw,500px)]"
-              : "h-[min(72vh,700px)] w-[min(156vw,760px)]"
+        data-testid="tarot-wash-table"
+        role="application"
+        aria-label={t("tarot.flow.wash.aria")}
+        tabIndex={stage === "washing" ? 0 : -1}
+        className={`relative z-10 mt-3 touch-none overflow-hidden rounded-[32px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#7b5b91]/55 ${
+          isFullDeckStage
+              ? "h-[min(86vw,430px)] w-[min(86vw,430px)]"
+              : "h-[min(58vh,490px)] w-[calc(100%+2rem)] max-w-[460px]"
         }`}
         style={{
-          filter: isFullDeckStage ? "drop-shadow(0 24px 36px rgba(0,0,0,0.38))" : undefined,
+          filter: isFullDeckStage
+            ? lightSurface
+              ? "drop-shadow(0 22px 34px rgba(74,52,83,0.18))"
+              : "drop-shadow(0 24px 36px rgba(0,0,0,0.38))"
+            : undefined,
         }}
         onPointerDown={(event) => {
+          if (autoWashing || activePointer.current !== null || event.button > 0) return;
           if (stage === "gathering" || stage === "cutReady" || stage === "cutting") return;
           if (stage === "placed" && !introReady) return;
+          activePointer.current = event.pointerId;
           washing.current = true;
           washDistance.current = 0;
           lastPoint.current = null;
           ritualHaptic(5);
-          event.currentTarget.setPointerCapture(event.pointerId);
+          try {
+            event.currentTarget.setPointerCapture(event.pointerId);
+          } catch {
+            // Pointer capture is not available in every embedded WebView.
+          }
           onBeginWash();
           move(event);
         }}
         onPointerMove={move}
         onPointerUp={finishPointerWash}
-        onPointerCancel={finishPointerWash}
+        onPointerCancel={cancelPointerWash}
+        onKeyDown={handleKeyboardWash}
         onLostPointerCapture={(event) => {
-          if (stage === "washing") finishPointerWash(event);
+          if (stage === "washing") cancelPointerWash(event);
         }}
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-[14%] top-[18%] h-[72%] rounded-full opacity-45"
+          className="pointer-events-none absolute inset-x-[2%] top-[7%] h-[90%] rounded-full opacity-35"
           style={{
             background:
               isFullDeckStage
@@ -396,8 +568,7 @@ export function CardWashRitual({
         />
         {(isFullDeckStage || !isDeckStackStage) && (
           <>
-            <div className="pointer-events-none absolute inset-[9%] rounded-full border opacity-45" style={{ borderColor: theme.tableRingColor, boxShadow: "inset 0 0 42px rgba(255,225,236,0.05)" }} />
-            <div className="pointer-events-none absolute inset-[27%] rounded-full border opacity-32" style={{ borderColor: theme.secondaryRingColor }} />
+            <div className="pointer-events-none absolute inset-[4%] rounded-full border opacity-25" style={{ borderColor: theme.tableRingColor }} />
           </>
         )}
         <div className="pointer-events-none absolute inset-0">
@@ -410,23 +581,20 @@ export function CardWashRitual({
           const zIndex = isFullDeckStage ? fullDeck.zIndex : card.zIndex;
           const outerTransform = isFullDeckStage && "outerTransform" in fullDeck && typeof fullDeck.outerTransform === "string"
             ? fullDeck.outerTransform
-            : `translate3d(${x}%, ${y}%, 0)`;
+            : getFieldTransform(x, y);
           const cardClassName = isFullDeckStage
             ? `${
               introCardsAreSmall
                 ? "h-[92px] w-[58px] min-[430px]:h-[104px] min-[430px]:w-[66px] sm:h-[118px] sm:w-[74px]"
                 : "h-[180px] w-[114px] min-[430px]:h-[208px] min-[430px]:w-[132px] sm:h-[236px] sm:w-[150px]"
             } transition-[height,width] duration-700 ease-out`
-            : stage === "cutReady" || stage === "cutting"
-              ? "h-[148px] w-[94px] sm:h-[166px] sm:w-[106px] md:h-[184px] md:w-[118px]"
-            : isDeckStackStage
-              ? "h-[86px] w-[56px] sm:h-[106px] sm:w-[70px] md:h-[124px] md:w-[82px]"
-              : "h-[88px] w-[58px] min-[430px]:h-[96px] min-[430px]:w-[62px] sm:h-[108px] sm:w-[70px]";
+            : WASH_CARD_SIZE;
           return (
           <div
             key={card.visualId}
             data-intro-card-index={index}
-            className="absolute inset-0 will-change-transform"
+            data-wash-card
+            className="absolute left-0 top-0 h-0 w-0 transform-gpu will-change-transform [backface-visibility:hidden]"
             style={{
               zIndex,
               transform: outerTransform,
@@ -435,27 +603,38 @@ export function CardWashRitual({
                 isFullDeckStage
                   ? getIntroTransition(index, ritualCards.length, introStep)
                   : isDeckStackStage
-                    ? `transform ${cardTransitionMs}ms ${cardTransitionEase} ${Math.min(card.gatherDelay ?? 0, 0.08)}s`
+                    ? `transform ${cardTransitionMs}ms ${cardTransitionEase} ${reduceMotion ? 0 : Math.min(card.gatherDelay ?? 0, 0.08)}s`
                     : stage === "washing" && !washIntroSettled
-                      ? `transform 760ms cubic-bezier(0.22, 0.78, 0.18, 1) ${Math.min(index, 22) * 0.004}s`
+                      ? "transform 240ms cubic-bezier(0.22, 0.78, 0.18, 1)"
                       : stage === "washing"
-                        ? "transform 118ms cubic-bezier(0.18, 0.72, 0.2, 1)"
+                        ? "none"
                         : "transform 90ms cubic-bezier(0.18, 0.72, 0.2, 1)",
+            }}
+            onTransitionEnd={(event) => {
+              if (
+                stage === "gathering" &&
+                index === settleCardIndex &&
+                event.propertyName === "transform" &&
+                event.currentTarget === event.target
+              ) {
+                onCardsSettled?.();
+              }
             }}
           >
             <div
-              className="absolute left-0 top-0 will-change-transform"
+              data-wash-card-face
+              className="absolute left-0 top-0 transform-gpu [backface-visibility:hidden]"
               style={{
                 transform: `translate3d(-50%, -50%, 0) rotate(${rotate}deg)`,
                 transition:
                   isFullDeckStage
                     ? getIntroTransition(index, ritualCards.length, introStep)
                     : isDeckStackStage
-                      ? `transform ${cardTransitionMs}ms ${cardTransitionEase} ${Math.min(card.gatherDelay ?? 0, 0.08)}s`
+                      ? `transform ${cardTransitionMs}ms ${cardTransitionEase} ${reduceMotion ? 0 : Math.min(card.gatherDelay ?? 0, 0.08)}s`
                       : stage === "washing" && !washIntroSettled
-                        ? `transform 760ms cubic-bezier(0.22, 0.78, 0.18, 1) ${Math.min(index, 22) * 0.004}s`
+                        ? "transform 240ms cubic-bezier(0.22, 0.78, 0.18, 1)"
                         : stage === "washing"
-                          ? "transform 118ms cubic-bezier(0.18, 0.72, 0.2, 1)"
+                          ? "none"
                           : `transform ${cardTransitionMs}ms ${cardTransitionEase}`,
               }}
             >
@@ -465,7 +644,45 @@ export function CardWashRitual({
         );
         })}
         </div>
+        {children}
       </div>
-    </section>
+
+      <Dialog open={showDeckNote} onOpenChange={setShowDeckNote}><DialogContent onCloseAutoFocus={event=>{event.preventDefault();deckNoteButton.current?.focus({preventScroll:true});}} className="max-h-[80dvh] overflow-y-auto"><DialogTitle>{deckCopy.title}</DialogTitle><DialogDescription>{deckCopy.body}</DialogDescription>{reduceMotion&&<p className="text-sm leading-relaxed">{deckCopy.reduced}</p>}</DialogContent></Dialog>
+      <div className="absolute inset-x-4 bottom-[calc(var(--hint-safe-bottom)+0.8rem)] z-30 mx-auto max-w-[24rem]">
+        {stage === "washing" && <button type="button" data-testid="tarot-deck-choice-note" ref={deckNoteButton} className={`mx-auto mb-1 flex min-h-11 w-full items-center justify-center rounded-xl px-3 text-center text-[11px] leading-relaxed underline underline-offset-4 ${lightSurface?"bg-[#fbf7f1]/85 text-[#67516c]":"bg-[#281d35]/90 text-[#f4e5ef]"}`} onClick={()=>setShowDeckNote(true)}>{deckCopy.short}</button>}
+        {stage === "washing" && onAutoWash ? (
+          <button
+            type="button"
+            onClick={onAutoWash}
+            disabled={autoWashing}
+            className="min-h-13 w-full rounded-full border border-white/38 bg-[#705780] px-6 text-[12px] font-black text-[#fff9f4] shadow-[0_14px_34px_rgba(70,50,84,0.22),inset_0_1px_0_rgba(255,255,255,0.28)] transition active:scale-[0.985] disabled:cursor-wait disabled:bg-[#8c7897] disabled:text-white/76"
+          >
+            {autoWashing
+              ? t("tarot.flow.wash.washing")
+              : t("tarot.flow.wash.auto")}
+          </button>
+        ) : null}
+        {stage === "cutReady" && onCutDeck ? (
+          <div className="rounded-[24px] border border-white/66 bg-white/72 p-2 shadow-[0_18px_46px_rgba(90,67,100,0.16)] backdrop-blur-xl">
+            <button
+              type="button"
+              onClick={onCutDeck}
+              className="min-h-12 w-full rounded-full bg-[#2f2544] px-6 text-[13px] font-black text-[#fff8ec] shadow-[0_12px_28px_rgba(70,50,84,0.22)] transition active:scale-[0.98]"
+            >
+              {t("tarot.flow.wash.cutDeck")}
+            </button>
+            {onWashAgain ? (
+              <button
+                type="button"
+                onClick={onWashAgain}
+                className="mt-2 min-h-11 w-full rounded-full text-[12px] font-black text-[#756276] transition active:bg-white/54"
+              >
+                {t("tarot.flow.wash.again")}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+      </section>
   );
-}
+});

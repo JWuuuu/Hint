@@ -314,7 +314,7 @@ function JewelryImage({ value, size }: { value: string; size: number }) {
   return (
     <img
       src={src}
-      alt={value}
+      alt=""
       width={imageSize}
       height={imageSize}
       className="mx-auto block shrink-0 object-contain"
@@ -338,7 +338,7 @@ function FoodImage({ value, size }: { value: string; size: number }) {
   return (
     <img
       src={src}
-      alt={value}
+      alt=""
       width={imageSize}
       height={imageSize}
       className="mx-auto block shrink-0 object-contain"
@@ -362,7 +362,7 @@ function CarryImage({ value, size }: { value: string; size: number }) {
   return (
     <img
       src={src}
-      alt={value}
+      alt=""
       width={imageSize}
       height={imageSize}
       className="mx-auto block shrink-0 object-contain"
@@ -386,7 +386,7 @@ function FlowerImage({ value, size }: { value: string; size: number }) {
   return (
     <img
       src={src}
-      alt={value}
+      alt=""
       width={imageSize}
       height={imageSize}
       className="mx-auto block shrink-0 object-contain"
@@ -683,24 +683,25 @@ function Flower({ value, size }: { value: string; size: number }) {
 }
 
 export function LuckyIllustration({ item, size = 56 }: LuckyIllustrationProps) {
+  const artworkValue = item.illustrationValue ?? item.value;
   const illustration =
     item.key === "color" ? (
-      <ColorSwatch value={item.value} size={size} />
+      <ColorSwatch value={artworkValue} size={size} />
     ) : item.key === "number" ? (
-      <LuckyNumber value={item.value} size={size} />
+      <LuckyNumber value={artworkValue} size={size} />
     ) : item.key === "jewelry" ? (
-      <JewelryImage value={item.value} size={size} />
+      <JewelryImage value={artworkValue} size={size} />
     ) : item.key === "food" ? (
-      <FoodImage value={item.value} size={size} />
+      <FoodImage value={artworkValue} size={size} />
     ) : item.key === "carry" ? (
-      <CarryImage value={item.value} size={size} />
+      <CarryImage value={artworkValue} size={size} />
     ) : (
-      <FlowerImage value={item.value} size={size} />
+      <FlowerImage value={artworkValue} size={size} />
     );
 
   return (
     <IconSurface size={size} label={item.value}>
-      {illustration}
+      <span aria-hidden="true">{illustration}</span>
     </IconSurface>
   );
 }

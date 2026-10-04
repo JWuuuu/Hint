@@ -1,6 +1,12 @@
+import { SavedLetters } from "../astrology/components/CelestialReports";
+import { rt } from "../astrology/reportCopy";
+import "../astrology/components/astrology-guide.css";
+import { LocalizedText, translateText } from "../../lib/LocalizedText";
+import { DAILY_TAROT_DECK, getDailyPullById } from "../home/data/dailyPulls";
+import { listAskHistory, subscribeToAskHistory } from "../ask/askHistory";
 ﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { Link, useRoute } from "wouter";
+import { Link, useLocation } from "wouter";
 import { BookOpen, CalendarDays, HelpCircle } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { AppScreen, ScreenHeader, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
@@ -25,12 +31,10 @@ import {
   type LocalTarotReading,
 } from "./localTarotReadings";
 import type { SpreadType } from "../hold/chat/types";
-import type { RitualCard } from "../tarot/logic/createHiddenDeck";
 import { getTarotCardImage } from "../tarot/logic/cardImageMap";
-import { SPREAD_CHOICES } from "../hold/useHoldFlow";
-import { TarotHintReadingChat } from "../tarot/components/TarotHintReadingChat";
 import { readBirthProfile } from "../../lib/astro/userBirthProfile";
 import type { BirthProfile } from "../../types/astrology";
+import { HISTORY_COPY } from "./historyCopy";
 
 /**
  * ReadingsView — the room's memory. A real archive of every tarot reading the
@@ -49,44 +53,15 @@ function fmt(iso: string, todayLabel: string): string {
   ) {
     return todayLabel;
   }
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return d.toLocaleDateString(document.documentElement.lang || "en", { month: "short", day: "numeric" });
 }
 
-const CARD_NAMES_ZH: Record<string, string> = {
-  "The Fool": "愚者",
-  "The Magician": "魔术师",
-  "The High Priestess": "女祭司",
-  "The Empress": "皇后",
-  "The Emperor": "皇帝",
-  "The Hierophant": "教皇",
-  "The Lovers": "恋人",
-  "The Chariot": "战车",
-  Strength: "力量",
-  "The Hermit": "隐士",
-  "Wheel of Fortune": "命运之轮",
-  Justice: "正义",
-  "The Hanged Man": "倒吊人",
-  Death: "死神",
-  Temperance: "节制",
-  "The Devil": "恶魔",
-  "The Tower": "高塔",
-  "The Star": "星星",
-  "The Moon": "月亮",
-  "The Sun": "太阳",
-  Judgement: "审判",
-  "The World": "世界",
-};
-
 function displayReading(reading: ReadingSummary, language: HintLanguage) {
-  if (language !== "zh") {
-    return { cardName: reading.cardName, whisper: reading.whisper };
-  }
-
-  const cardName = CARD_NAMES_ZH[reading.cardName] ?? reading.cardName;
-  return {
-    cardName,
-    whisper: `这次解读的核心提示来自「${cardName}」。旧记录会保留原始生成内容，但这里先用中文帮你回到这张牌的重点。`,
-  };
+  const storedId = (reading as ReadingSummary & { cardId?: string }).cardId;
+  const cardId = storedId ?? DAILY_TAROT_DECK.find(card => card.name === reading.cardName)?.id;
+  const cardName = cardId ? getDailyPullById(cardId, language).cardName : translateText(reading.cardName, language);
+  // Preserve the original saved reading; changing locale must not rewrite its meaning.
+  return { cardName, whisper: reading.whisper };
 }
 
 function ReadingCard({
@@ -100,12 +75,13 @@ function ReadingCard({
   todayLabel: string;
   featured?: boolean;
 }) {
+  const { t } = useLanguage();
   const displayed = displayReading(reading, language);
 
   return (
     <Link
-      href={`/readings/${reading.id}`}
-      className={`hint-liquid-panel flex gap-3.5 rounded-[22px] ${featured ? "px-4 py-4" : "px-3.5 py-3.5"}`}
+      href={`/app/readings/${reading.id}`}
+      className={`hint-liquid-panel min-w-0 flex gap-3.5 rounded-[22px] [overflow-wrap:anywhere] ${featured ? "px-4 py-4" : "px-3.5 py-3.5"}`}
       style={{ borderColor: GLASS.border }}
     >
       <span
@@ -131,12 +107,12 @@ function ReadingCard({
             className="font-sans text-[10px] uppercase tracking-[0.14em]"
             style={{ color: GLASS.faint }}
           >
-            {reading.spreadType}
+            <LocalizedText text={SPREAD_LABELS[reading.spreadType as SpreadType] ?? (reading.spreadType === "daily-pull" ? "Daily" : reading.spreadType)} />
           </p>
         </div>
         {reading.question && (
           <p className="font-sans text-[12px] leading-snug" style={{ color: GLASS.faint }}>
-            {reading.question}
+            <LocalizedText text={reading.question} />
           </p>
         )}
         <p
@@ -145,6 +121,7 @@ function ReadingCard({
         >
           {displayed.whisper}
         </p>
+        {language !== "en" && displayed.whisper && <span className="text-[11px]" style={{ color: GLASS.faint }}>{t("quality.originalText")}</span>}
       </div>
     </Link>
   );
@@ -194,22 +171,6 @@ function mergeQuestionHistory(
   );
 }
 
-function tarotReadingToRitualCards(reading: LocalTarotReading): RitualCard[] {
-  return reading.cards.map((card, index) => ({
-    visualId: `${reading.id}-${index}-${card.cardId}`,
-    cardId: card.cardId,
-    name: card.name,
-    orientation: card.orientation,
-    x: 50,
-    y: 50,
-    rotation: 0,
-    rotate: 0,
-    zIndex: index,
-    selected: true,
-    revealed: true,
-  }));
-}
-
 function displayQuestionMeaning(reading: LocalTarotReading): string {
   const question = reading.question?.trim();
   if (!question) return reading.questionMeaning;
@@ -237,9 +198,10 @@ function QuestionCard({
   item: QuestionHistoryItem;
   todayLabel: string;
 }) {
+  const { language } = useLanguage();
   return (
     <div
-      className="hint-liquid-panel rounded-[22px] px-4 py-4"
+      className="hint-liquid-panel min-w-0 rounded-[22px] px-4 py-4 [overflow-wrap:anywhere]"
       style={{ borderColor: GLASS.border }}
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -257,24 +219,22 @@ function QuestionCard({
             background: "color-mix(in srgb, var(--hint-gold) 10%, var(--hint-surface-soft))",
           }}
         >
-          {SPREAD_LABELS[item.spreadType] ?? item.spreadType}
+          <LocalizedText text={SPREAD_LABELS[item.spreadType] ?? item.spreadType} />
         </span>
       </div>
       <p className="font-serif text-[17px] leading-snug" style={{ color: GLASS.text }}>
         {item.question}
       </p>
       <p className="mt-2 font-sans text-[12px] leading-relaxed" style={{ color: GLASS.faint }}>
-        {item.focus}
+        <LocalizedText text={item.focus} />
       </p>
       <Link
-        href={`/readings/${item.readingId ?? item.id}`}
-        className="hint-soft-button mt-4 inline-flex h-10 items-center justify-center rounded-full px-4 font-sans text-[12px] font-bold"
+        href={`/app/readings/${item.readingId ?? item.id}`}
+        className="hint-soft-button mt-4 inline-flex min-h-11 min-w-11 max-w-full items-center justify-center rounded-full px-4 py-2 font-sans text-[12px] leading-relaxed font-bold"
         style={{
           color: "var(--hint-special-action-text)",
         }}
-      >
-        Open
-      </Link>
+      >{HISTORY_COPY[language].openReading}</Link>
     </div>
   );
 }
@@ -329,7 +289,7 @@ function MemoryStat({
           <p className="font-serif text-[18px] leading-none tabular-nums" style={{ color: "var(--hint-text)" }}>
             {value}
           </p>
-          <p className="mt-0.5 whitespace-nowrap font-sans text-[7.5px] font-black uppercase tracking-[0.04em]" style={{ color: "var(--hint-muted)" }}>
+          <p className="mt-1 font-sans text-[11px] leading-snug font-semibold [overflow-wrap:anywhere]" style={{ color: "var(--hint-muted)" }}>
             {label}
           </p>
         </div>
@@ -347,14 +307,14 @@ function HistoryMemoryPanel({
   dailyCount: number;
   questionCount: number;
 }) {
+  const { language } = useLanguage();
+  const copy = HISTORY_COPY[language];
   return (
     <GlassPanel padded={false} className="mb-5 hint-shimmer-border p-4">
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <SectionLabel>Memory</SectionLabel>
-          <h2 className="mt-1.5 font-serif text-[21px] leading-none" style={{ color: "var(--hint-text)" }}>
-            Your Hint memory
-          </h2>
+          <SectionLabel><LocalizedText text={"Memory"} /></SectionLabel>
+          <h2 className="mt-1.5 font-serif text-[21px] leading-none" style={{ color: "var(--hint-text)" }}><LocalizedText text={" Your Hint memory "} /></h2>
         </div>
         <span
           className="rounded-full border px-2.5 py-1 font-sans text-[9px] font-black uppercase tracking-[0.1em]"
@@ -363,27 +323,25 @@ function HistoryMemoryPanel({
             borderColor: "var(--hint-border)",
             background: "color-mix(in srgb, var(--hint-surface-soft) 72%, transparent)",
           }}
-        >
-          History
-        </span>
+        ><LocalizedText text={" History "} /></span>
       </div>
       <div className="grid grid-cols-3 gap-2">
-        <MemoryStat icon={BookOpen} value={readingCount} label="Reads" tone="#d98aaa" />
-        <MemoryStat icon={CalendarDays} value={dailyCount} label="Daily" tone="#cda866" />
-        <MemoryStat icon={HelpCircle} value={questionCount} label="Asks" tone="#9b98c9" />
+        <MemoryStat icon={BookOpen} value={readingCount} label={copy.readings} tone="#d98aaa" />
+        <MemoryStat icon={CalendarDays} value={dailyCount} label={copy.daily} tone="#cda866" />
+        <MemoryStat icon={HelpCircle} value={questionCount} label={copy.questions} tone="#9b98c9" />
       </div>
     </GlassPanel>
   );
 }
 
-function buildAstrologyArchive(profile: BirthProfile | null) {
+function buildAstrologyArchive(profile: BirthProfile | null, language: HintLanguage) {
   return [
     {
       id: "birth",
       title: profile ? "Birth profile saved" : "Birth profile",
       label: profile ? `${profile.birthDate} · ${profile.birthPlace}` : "Add birth details",
       body: profile
-        ? "Your account birth details are ready for charts, transits, together, and reports."
+        ? "Review the birth details saved on this device before calculating a personal chart."
         : "Add birth date, time, and place once, then reuse it across Astrology.",
       href: "/app/astrology?tab=birth",
     },
@@ -391,14 +349,14 @@ function buildAstrologyArchive(profile: BirthProfile | null) {
       id: "chart",
       title: "Chart graph",
       label: "Natal wheel",
-      body: "Return to the visual chart and element balance whenever you need the map.",
+      body: "Open your calculated birth chart, or complete the birth details needed to create it.",
       href: "/app/astrology?tab=chart",
     },
     {
       id: "transits",
       title: "Transit checks",
-      label: "Date-based sky",
-      body: "Look up a transit window for any date, not only today.",
+      label: "Current sky",
+      body: "Check current transits and the calculation date returned by the service.",
       href: "/app/astrology?tab=transits",
     },
     {
@@ -410,9 +368,9 @@ function buildAstrologyArchive(profile: BirthProfile | null) {
     },
     {
       id: "reports",
-      title: "Astrology reports",
-      label: "Long reads",
-      body: "Keep birth, transit, and relationship report previews in one place.",
+      title: rt(language,"reports"),
+      label: rt(language,"open"),
+      body: rt(language,"snapshot"),
       href: "/app/astrology?tab=reports",
     },
   ];
@@ -470,10 +428,11 @@ function QuestionList({
   if (!rows.length) return <EmptyPanel>{empty}</EmptyPanel>;
 
   return (
-    <div className="grid gap-3 md:grid-cols-2">
+    <div className="grid min-w-0 gap-3 md:grid-cols-2">
       {rows.map((item, i) => (
         <motion.div
           key={item.id}
+          className="min-w-0"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -487,9 +446,12 @@ function QuestionList({
 }
 
 function AstrologyArchiveGrid({ profile }: { profile: BirthProfile | null }) {
-  const items = buildAstrologyArchive(profile);
+  const { language } = useLanguage();
+  const items = buildAstrologyArchive(profile, language);
   return (
     <div className="grid gap-3 md:grid-cols-2">
+      <div className="astro-theme md:col-span-2"><SavedLetters /></div>
+      <p className="text-sm leading-relaxed md:col-span-2" style={{ color: GLASS.muted }}><LocalizedText text={"These are shortcuts to Astrology tools. They are not saved reading records."} /></p>
       {items.map((item, index) => (
         <motion.div
           key={item.id}
@@ -504,18 +466,16 @@ function AstrologyArchiveGrid({ profile }: { profile: BirthProfile | null }) {
             style={{ borderColor: GLASS.border }}
           >
             <div className="mb-3 flex items-center justify-between gap-3">
-              <span className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: ACCENT.gold }}>
-                Astrology
-              </span>
+              <span className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Astrology "} /></span>
               <span className="rounded-full border px-2.5 py-1 font-sans text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: GLASS.faint, borderColor: GLASS.border, background: "color-mix(in srgb, var(--hint-surface-soft) 78%, transparent)" }}>
-                {item.label}
+                <LocalizedText text={item.label} />
               </span>
             </div>
             <p className="font-serif text-[20px] leading-tight" style={{ color: GLASS.text }}>
-              {item.title}
+              <LocalizedText text={item.title} />
             </p>
             <p className="mt-2 font-sans text-[12.5px] leading-relaxed" style={{ color: GLASS.muted }}>
-              {item.body}
+              <LocalizedText text={item.body} />
             </p>
           </Link>
         </motion.div>
@@ -527,7 +487,7 @@ function AstrologyArchiveGrid({ profile }: { profile: BirthProfile | null }) {
 export function ReadingsView() {
   const { language, t } = useLanguage();
   const anonId = getAnonId();
-  const { data, isLoading } = useListReadings({ anonId });
+  const { data, isLoading, isError, refetch } = useListReadings({ anonId });
   const [activeTab, setActiveTab] = useState<HistoryTab>("all");
   const [localReadings, setLocalReadings] = useState<ReadingSummary[]>(() =>
     listLocalDailyReadings(anonId),
@@ -539,6 +499,8 @@ export function ReadingsView() {
     listLocalTarotReadings(anonId),
   );
   const [birthProfile, setBirthProfile] = useState<BirthProfile | null>(() => readBirthProfile());
+  const [askHistory, setAskHistory] = useState(() => listAskHistory(anonId));
+  useEffect(() => subscribeToAskHistory(() => setAskHistory(listAskHistory(anonId))), [anonId]);
   const apiReadings = useMemo(() => (data ?? []) as ReadingSummary[], [data]);
   const tarotHistory = useMemo(
     () =>
@@ -572,13 +534,13 @@ export function ReadingsView() {
   const recentHistory = readings.slice(1, 7);
   const historyTabs = useMemo(
     () => [
-      { key: "all" as const, label: t("readings.tab.all"), count: readings.length + displayedQuestionHistory.length + buildAstrologyArchive(birthProfile).length },
+      { key: "all" as const, label: t("readings.tab.all"), count: readings.length + displayedQuestionHistory.length + askHistory.length },
       { key: "tarot" as const, label: t("readings.tab.tarot"), count: tarotHistory.length },
       { key: "daily" as const, label: t("readings.tab.daily"), count: dailyHistory.length },
-      { key: "astrology" as const, label: t("readings.tab.astrology"), count: buildAstrologyArchive(birthProfile).length },
-      { key: "questions" as const, label: t("readings.tab.questions"), count: displayedQuestionHistory.length },
+      { key: "astrology" as const, label: t("readings.tab.astrology"), count: null },
+      { key: "questions" as const, label: t("readings.tab.questions"), count: displayedQuestionHistory.length + askHistory.length },
     ],
-    [birthProfile, dailyHistory.length, displayedQuestionHistory.length, readings.length, t, tarotHistory.length],
+    [birthProfile, dailyHistory.length, displayedQuestionHistory.length, readings.length, t, tarotHistory.length, askHistory.length],
   );
 
   useEffect(() => {
@@ -615,9 +577,13 @@ export function ReadingsView() {
         eyebrow={t("readings.eyebrow")}
         title={t("readings.title")}
         subtitle={t("readings.subtitle")}
-        showBack={false}
+        backHref="/app"
       />
 
+      {isError && <div role="status" className="mb-4 rounded-xl border p-4 text-sm">
+        <p>{t("quality.historyError")}</p>
+        <button type="button" onClick={() => void refetch()} className="min-h-11 underline">{t("quality.retry")}</button>
+      </div>}
       <HistoryMemoryPanel
         readingCount={readings.length}
         dailyCount={dailyHistory.length}
@@ -634,28 +600,36 @@ export function ReadingsView() {
         {historyTabs.map((tab) => (
           <TabButton key={tab.key} active={activeTab === tab.key} onClick={() => setActiveTab(tab.key)}>
             <span>{tab.label}</span>
-            <span
+            {tab.count !== null && <span
               className="ml-2 rounded-full px-2 py-0.5 text-[10px]"
               style={{ background: activeTab === tab.key ? "color-mix(in srgb, var(--hint-gold) 16%, transparent)" : "color-mix(in srgb, var(--hint-surface-soft) 72%, transparent)" }}
             >
               {tab.count}
-            </span>
+            </span>}
           </TabButton>
         ))}
       </div>
 
-      {isLoading && readings.length === 0 && displayedQuestionHistory.length === 0 ? (
+      {(activeTab === "all" || activeTab === "questions") && askHistory.length > 0 && <section className="mb-8">
+        <SectionLabel>{t("quality.askHistory")}</SectionLabel>
+        <div className="grid min-w-0 gap-3">{askHistory.map(conversation => <Link key={conversation.id} href={`/app/ask?conversation=${encodeURIComponent(conversation.id)}`} className="hint-liquid-panel min-w-0 block rounded-2xl p-4 [overflow-wrap:anywhere]">
+          <time className="text-xs" dateTime={conversation.updatedAt}>{fmt(conversation.updatedAt, t("readings.today"))}</time>
+          <p className="mt-2 break-words font-serif text-lg">{conversation.messages.find(message => message.role === "user")?.content}</p>
+          <p className="mt-2 text-sm underline">{t("quality.askResume")}</p>
+        </Link>)}</div>
+      </section>}
+      {isLoading && readings.length === 0 && displayedQuestionHistory.length === 0 && askHistory.length === 0 ? (
         <p className="font-serif italic text-[13px] py-8 text-center" style={{ color: GLASS.muted }}>
           {t("readings.loading")}
         </p>
-      ) : activeTab === "questions" ? (
+      ) : isError && readings.length === 0 && displayedQuestionHistory.length === 0 && askHistory.length === 0 && activeTab !== "astrology" ? null : activeTab === "questions" ? (
         <section className="mb-10">
           <SectionLabel>{t("readings.questions")}</SectionLabel>
-          <QuestionList
+          {(displayedQuestionHistory.length > 0 || askHistory.length === 0) && <QuestionList
             items={displayedQuestionHistory}
             todayLabel={t("readings.today")}
             empty={t("readings.questionsEmpty")}
-          />
+          />}
         </section>
       ) : activeTab === "astrology" ? (
         <section className="mb-10">
@@ -758,10 +732,20 @@ export function ReadingsView() {
 
 export function ReadingDetailView() {
   const { t } = useLanguage();
-  const [, params] = useRoute("/readings/:id");
-  const id = params?.id ?? "";
+  const [location, navigate] = useLocation();
+  const pathname = location.split(/[?#]/, 1)[0] ?? "";
+  const readingPathIndex = pathname.indexOf("/readings/");
+  const encodedId =
+    readingPathIndex >= 0
+      ? pathname.slice(readingPathIndex + "/readings/".length).split("/", 1)[0]
+      : "";
+  let id = encodedId;
+  try {
+    id = decodeURIComponent(encodedId);
+  } catch {
+    // Keep the raw identifier if an old saved URL contains malformed escaping.
+  }
   const anonId = getAnonId();
-  const [chatOpen, setChatOpen] = useState(false);
   const { data } = useListReadings({ anonId });
   const tarotReading = getLocalTarotReading(id, anonId);
   const dailyReading = getLocalDailyReading(id, anonId);
@@ -770,46 +754,22 @@ export function ReadingDetailView() {
   const fallbackReading = dailyReading ?? apiReading;
 
   if (tarotReading) {
-    const spread = SPREAD_CHOICES.find((choice) => choice.id === tarotReading.spreadType) ?? SPREAD_CHOICES[0]!;
-    const selectedCards = tarotReadingToRitualCards(tarotReading);
-
-    if (chatOpen) {
-      return (
-        <div className="absolute inset-x-0 bottom-0 top-32 z-30 overflow-hidden lg:top-28">
-          <button
-            type="button"
-            onClick={() => setChatOpen(false)}
-            className="absolute left-4 top-3 z-50 inline-flex h-10 items-center justify-center rounded-full border px-4 font-sans text-[12px] font-semibold"
-            style={{
-              color: "#f7ead0",
-              borderColor: "rgba(228,193,116,0.28)",
-              background: "rgba(1,2,7,0.72)",
-              boxShadow: "0 12px 28px rgba(0,0,0,0.28)",
-            }}
-          >
-            {t("readings.backToDetail")}
-          </button>
-          <TarotHintReadingChat
-            selectedCards={selectedCards}
-            spread={spread}
-            cardArtId={tarotReading.cardArtId ?? "original"}
-            question={tarotReading.question}
-            story={tarotReading.story}
-            focusLabel={tarotReading.focusLabel}
-            archiveOnOpen={false}
-          />
-        </div>
-      );
-    }
-
+    const backgroundId = tarotReading.roomDesign?.backgroundId ?? "stars";
     return (
-      <AppScreen>
+      <div
+        data-testid="tarot-history-detail"
+        data-room-background={backgroundId}
+        className="relative h-full w-full overflow-hidden"
+      >
+        <div className="relative z-10 h-full">
+          <AppScreen>
         <ScreenHeader
           eyebrow={t("readings.detail")}
           title={tarotReading.spreadLabel}
           subtitle={tarotReading.focusLabel ?? t("readings.savedTarot")}
-          backHref="/readings"
+          backHref="/app/readings"
           backLabel={t("nav.history")}
+          backClassName="min-h-11"
         />
         <ReadingDetailMeta
           spreadType={tarotReading.spreadLabel}
@@ -819,7 +779,11 @@ export function ReadingDetailView() {
         <div className="mb-6">
           <button
             type="button"
-            onClick={() => setChatOpen(true)}
+            onClick={() =>
+              navigate(
+                `/app/tarot?reading=${encodeURIComponent(tarotReading.id)}&returnTo=detail`,
+              )
+            }
             className="inline-flex h-11 items-center justify-center rounded-[999px] px-5 font-sans text-[14px] font-medium"
             style={{
               color: "#08070B",
@@ -833,16 +797,17 @@ export function ReadingDetailView() {
         <section className="mb-6">
           <SectionLabel>{t("readings.cardsDrawn")}</SectionLabel>
           <GlassPanel>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none]">
+              <div className={`flex gap-3 ${tarotReading.cards.length <= 3 ? "justify-center" : "justify-start"}`}>
               {tarotReading.cards.map((card, index) => {
                 const image = getTarotCardImage(card.cardId, tarotReading.cardArtId ?? "original");
                 return (
-                  <div key={`${card.cardId}-${index}`} className="min-w-0 text-center">
+                  <div key={`${card.cardId}-${index}`} className="w-[86px] shrink-0 text-center">
                     <div
                       className="mx-auto h-[132px] w-[82px] overflow-hidden rounded-[8px] border"
                       style={{
                         borderColor: "rgba(206,178,110,0.42)",
-                        background: "rgba(0,0,0,0.22)",
+                        background: "rgba(255,255,255,0.42)",
                       }}
                     >
                       {image ? (
@@ -856,26 +821,27 @@ export function ReadingDetailView() {
                     <p className="mt-2 font-sans text-[9px] uppercase tracking-[0.16em]" style={{ color: ACCENT.gold }}>
                       {card.positionLabel}
                     </p>
-                    <p className="truncate font-serif text-[13px]" style={{ color: GLASS.text }}>
+                    <p className="break-words font-serif text-[12px] leading-tight" style={{ color: GLASS.text }}>
                       {card.name}
                     </p>
                   </div>
                 );
               })}
+              </div>
             </div>
           </GlassPanel>
         </section>
         <section className="mb-6">
           <SectionLabel>{t("readings.answer")}</SectionLabel>
           <GlassPanel>
-            <p className="font-serif text-[18px] leading-relaxed" style={{ color: GLASS.text }}>
+            <p className="font-serif text-[18px] leading-relaxed [overflow-wrap:anywhere]" style={{ color: GLASS.text }}>
               {tarotReading.shortAnswer}
             </p>
             <div className="mt-4 grid gap-2 md:grid-cols-2">
               {tarotReading.cardMeanings.map((meaning, index) => (
                 <p
                   key={`${tarotReading.id}-meaning-${index}`}
-                  className="rounded-[8px] border px-3 py-2.5 font-sans text-[13px] leading-relaxed"
+                  className="min-w-0 rounded-[8px] border px-3 py-2.5 font-sans text-[13px] leading-relaxed [overflow-wrap:anywhere]"
                   style={{ borderColor: GLASS.border, color: GLASS.muted }}
                 >
                   {meaning}
@@ -887,7 +853,9 @@ export function ReadingDetailView() {
             </p>
           </GlassPanel>
         </section>
-      </AppScreen>
+          </AppScreen>
+        </div>
+      </div>
     );
   }
 
@@ -898,7 +866,7 @@ export function ReadingDetailView() {
           eyebrow={t("readings.detail")}
           title={fallbackReading.cardName}
           subtitle={t("readings.savedReading")}
-          backHref="/readings"
+          backHref="/app/readings"
           backLabel={t("nav.history")}
         />
         <ReadingDetailMeta
@@ -922,7 +890,7 @@ export function ReadingDetailView() {
           eyebrow={t("readings.questionDetail")}
           title={SPREAD_LABELS[question.spreadType] ?? question.spreadType}
           subtitle={question.focus}
-          backHref="/readings"
+          backHref="/app/readings"
           backLabel={t("nav.history")}
         />
         <ReadingDetailMeta
@@ -945,7 +913,7 @@ export function ReadingDetailView() {
         eyebrow={t("nav.history")}
         title={t("readings.notFound")}
         subtitle={t("readings.notFoundBody")}
-        backHref="/readings"
+        backHref="/app/readings"
         backLabel={t("nav.history")}
       />
       <EmptyPanel>{t("readings.notFoundHint")}</EmptyPanel>
@@ -962,24 +930,25 @@ function ReadingDetailMeta({
   createdAt: string;
   question?: string;
 }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <section className="mb-6">
       <SectionLabel>{t("readings.summary")}</SectionLabel>
+      {language !== "en" && <p className="mb-2 text-xs" style={{ color: GLASS.faint }}>{t("quality.originalText")}</p>}
       <GlassPanel>
-        <div className="grid gap-3 font-sans text-[13px] sm:grid-cols-3" style={{ color: GLASS.muted }}>
+        <div className="grid min-w-0 gap-3 font-sans text-[13px] [overflow-wrap:anywhere] sm:grid-cols-3" style={{ color: GLASS.muted }}>
           <p>
             <span className="block text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
               {t("readings.meta.spread")}
             </span>
-            {spreadType}
+            <LocalizedText text={spreadType} />
           </p>
           <p>
             <span className="block text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
               {t("readings.meta.time")}
             </span>
-            {new Date(createdAt).toLocaleString()}
+            {new Date(createdAt).toLocaleString(language)}
           </p>
           <p>
             <span className="block text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>

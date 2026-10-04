@@ -1,0 +1,72 @@
+{
+  "before": [
+    {
+      "className": "hint-home-hero",
+      "height": 215,
+      "width": 384,
+      "x": 28,
+      "y": 123
+    },
+    {
+      "className": "hint-home-energy",
+      "height": 205.1953125,
+      "width": 384,
+      "x": 28,
+      "y": 366
+    },
+    {
+      "className": "hint-home-evidence",
+      "height": 44,
+      "width": 384,
+      "x": 28,
+      "y": 575.1953125
+    },
+    {
+      "className": "hint-home-spaces",
+      "height": 199,
+      "width": 384,
+      "x": 28,
+      "y": 629.1953125
+    }
+  ],
+  "after": {
+    "background": "rgb(252, 250, 246) none repeat scroll 0% 0% / auto padding-box border-box",
+    "image": {
+      "complete": true,
+      "naturalHeight": 1848,
+      "naturalWidth": 851,
+      "src": "/brand/backgrounds/home-celestial-v2.png"
+    },
+    "pointerEvents": "none",
+    "text": [
+      {
+        "className": "hint-home-hero",
+        "height": 215,
+        "width": 384,
+        "x": 28,
+        "y": 123
+      },
+      {
+        "className": "hint-home-energy",
+        "height": 205.1953125,
+        "width": 384,
+        "x": 28,
+        "y": 366
+      },
+      {
+        "className": "hint-home-evidence",
+        "height": 44,
+        "width": 384,
+        "x": 28,
+        "y": 575.1953125
+      },
+      {
+        "className": "hint-home-spaces",
+        "height": 199,
+        "width": 384,
+        "x": 28,
+        "y": 629.1953125
+      }
+    ]
+  }
+}

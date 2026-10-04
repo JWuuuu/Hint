@@ -328,99 +328,9 @@ function birthdayThemes(date: Date): TarotTheme[] {
 }
 
 function getPersonalChartSignals(date: Date, birthDetails?: BirthDetailsForSky): SkySignal[] {
-  const birthDateTime = parseBirthDateTime(birthDetails);
-  if (!birthDateTime) return [];
-
-  const natalSun = sunDegreeFor(birthDateTime);
-  const natalSunSign = signForDegree(natalSun);
-  const natalMoon = moonDegreeFor(birthDateTime, natalSun);
-  const natalMoonSign = signForDegree(natalMoon);
-  const risingDegree = approximateRisingDegree(birthDetails ?? {}, birthDateTime);
-  const risingSign = risingDegree !== null ? signForDegree(risingDegree) : null;
-  const todaySun = sunDegreeFor(date);
-  const todayMoon = moonDegreeFor(date, todaySun);
-  const todayVenus = bodyDegreeFor("venus", date, todaySun);
-  const todayMars = bodyDegreeFor("mars", date, todaySun);
-  const natalVenus = bodyDegreeFor("venus", birthDateTime, natalSun);
-  const natalMars = bodyDegreeFor("mars", birthDateTime, natalSun);
-  const activeHouse = risingDegree !== null ? Math.floor(normalizeDegree(todayMoon - risingDegree) / 30) + 1 : null;
-  const venusAspect = closestAspect(angularDistance(todayVenus, natalVenus));
-  const marsAspect = closestAspect(angularDistance(todayMars, natalMars));
-
-  const signals: SkySignal[] = [
-    {
-      id: `natal-sun-${natalSunSign.toLowerCase()}`,
-      label: `Your ${natalSunSign} Sun sets the personal baseline`,
-      bodies: ["sun"],
-      strength: 74,
-      source: "natal-chart",
-      zodiac: natalSunSign,
-      element: SIGN_ELEMENTS[natalSunSign],
-      themes: themesForSign(natalSunSign),
-    },
-    {
-      id: `birth-number-${birthDateTime.getMonth() + 1}-${birthDateTime.getDate()}`,
-      label: "Your birthday number adds a personal pattern layer",
-      bodies: [],
-      strength: 58,
-      source: "natal-chart",
-      themes: birthdayThemes(birthDateTime),
-    },
-  ];
-
-  if (birthDetails?.birthTime) {
-    signals.push({
-      id: `natal-moon-${natalMoonSign.toLowerCase()}`,
-      label: `Your ${natalMoonSign} Moon shapes the emotional filter`,
-      bodies: ["moon"],
-      strength: 72,
-      source: "natal-chart",
-      zodiac: natalMoonSign,
-      element: SIGN_ELEMENTS[natalMoonSign],
-      themes: themesForSign(natalMoonSign),
-    });
-  }
-
-  if (risingSign && activeHouse) {
-    signals.push({
-      id: `rising-${risingSign.toLowerCase()}-house-${activeHouse}`,
-      label: `Your ${risingSign} rising points today toward the ${HOUSE_AREAS[activeHouse] ?? houseLabel(activeHouse)}`,
-      bodies: ["ascendant", "moon"],
-      house: activeHouse,
-      strength: 76,
-      source: "natal-chart",
-      zodiac: risingSign,
-      element: SIGN_ELEMENTS[risingSign],
-      themes: themesForSign(risingSign),
-    });
-  }
-
-  if (venusAspect.exact) {
-    signals.push({
-      id: `venus-${venusAspect.label}-natal-venus`,
-      label: `Venus highlights your self-worth and relationship pattern`,
-      bodies: ["venus"],
-      aspect: venusAspect.label,
-      strength: strengthFromAspect(venusAspect.delta, venusAspect.orb, 70),
-      source: "natal-chart",
-    });
-  }
-
-  if (marsAspect.exact) {
-    signals.push({
-      id: `mars-${marsAspect.label}-natal-mars`,
-      label: `Mars activates action, boundaries, and drive`,
-      bodies: ["mars"],
-      aspect: marsAspect.label,
-      strength: strengthFromAspect(marsAspect.delta, marsAspect.orb, 68),
-      source: "natal-chart",
-    });
-  }
-
-  return signals
-    .map((signal) => ({ ...signal, themes: themesForSignal(signal) }))
-    .sort((a, b) => b.strength - a.strength)
-    .slice(0, 5);
+  // Personal placements belong to the calculated chart. This local reflection generator
+  // has no verified chart and must not invent Moon, rising, houses or natal transits.
+  return [];
 }
 
 export function getDailySkySignals({
@@ -459,9 +369,9 @@ export function getDailySkySignals({
   const signals: SkySignal[] = [
     {
       id: `moon-house-${moonHouse}`,
-      label: birthDate ? `Moon activates your ${HOUSE_AREAS[moonHouse] ?? houseLabel(moonHouse)}` : `Moon moves through ${moonSign}`,
+      label: `General sky reflection: Moon in ${moonSign}`,
       bodies: ["moon"],
-      house: moonHouse,
+
       strength: 88,
       source: "daily-sky",
       zodiac: moonSign,
@@ -484,18 +394,7 @@ export function getDailySkySignals({
       element: dominantElement,
       themes: ELEMENT_THEMES[dominantElement],
     },
-    sunAspect.exact
-      ? {
-          id: `sun-${sunAspect.label}-natal-sun`,
-          label: `Sun ${sunAspect.label === "trine" ? "harmonizes with" : sunAspect.label} your natal Sun`,
-          bodies: ["sun"],
-          aspect: sunAspect.label,
-          strength: strengthFromAspect(sunAspect.delta, sunAspect.orb, 66),
-          source: "daily-sky" as const,
-          zodiac: sunSign,
-          element: SIGN_ELEMENTS[sunSign],
-        }
-      : {
+    {
           id: `sun-in-${signForDegree(todaySun).toLowerCase()}`,
           label: `Sun in ${signForDegree(todaySun)}`,
           bodies: ["sun"],
@@ -726,15 +625,15 @@ export function selectSkyGuidedTarot({
   const strongestPersonalSignal = personalSignals[0]?.label ?? (birthDetails?.birthDate ? "your birth date pattern" : "your saved daily rhythm");
   const historyLine = historyThemes.length
     ? `Hint also noticed recent cards repeating ${historyThemes.slice(0, 2).map((theme) => THEME_LABELS[theme]).join(" and ")}.`
-    : "The final turn keeps the ritual feeling alive after the card has already matched today's personal pool.";
+    : "The final turn keeps the ritual feeling alive after the card has already matched today's reflection pool.";
   const whyThisCard = [
     `Today's sky points to ${strongestDailySignal}.`,
-    `Your chart layer adds ${strongestPersonalSignal}.`,
-    `${cardLabelFromId(selected.cardId)} rose from the personalized pool because it matched ${primaryThemes.map((theme) => THEME_LABELS[theme]).join(" and ") || "truth"}.`,
+    "This is a general reflection, not a calculated personal chart.",
+    `${cardLabelFromId(selected.cardId)} was selected for this reflection because it matched ${primaryThemes.map((theme) => THEME_LABELS[theme]).join(" and ") || "truth"}.`,
     historyLine,
   ].join(" ");
   const chartDepth: SkyGuidedTarotResult["chartDepth"] =
-    birthDetails?.birthDate && birthDetails.birthTime && birthDetails.birthPlace ? "time-place" : birthDetails?.birthDate ? "date-only" : "guest";
+    birthDetails?.birthDate ? "date-only" : "guest";
 
   return {
     selectedCardId: selected.cardId,
@@ -748,7 +647,7 @@ export function selectSkyGuidedTarot({
     chartDepth,
     selectionWeights: {
       dailySky: 40,
-      natalChart: chartDepth === "guest" ? 0 : chartDepth === "date-only" ? 15 : 25,
+      natalChart: 0,
       currentFocus: focusThemes.length ? 15 : 0,
       history: historyThemes.length ? 10 : 0,
       controlledRandomness: 10,

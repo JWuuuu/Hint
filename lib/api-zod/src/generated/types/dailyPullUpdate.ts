@@ -13,4 +13,6 @@ export interface DailyPullUpdate {
   date: string;
   isFlipped?: boolean;
   note?: string;
+  /** Original draft edit time; prevents a late pre-deletion draft from recreating cleared history. */
+  editedAt?: Date;
 }

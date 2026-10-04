@@ -1,0 +1,1272 @@
+{
+  "scope": "Hint src excluding tests plus frontend configs",
+  "files": 316,
+  "digestAlgorithm": "SHA-256 of compact UTF-8 JSON entries (file,sha256), in the stored order",
+  "digest": "db14065591dfd564343b19d6e7553a42c63a4584080d7fe0b78ab91e8e9bdb56",
+  "entries": [
+    {
+      "file": "artifacts/hint/index.html",
+      "sha256": "de00f53442682ad12af61978b1f0990b25cb02950c2714e2e3d785de506fb29b"
+    },
+    {
+      "file": "artifacts/hint/package.json",
+      "sha256": "f48ff7cbcf7abae5d72ef40fa00776df1f01d41a54e9e27ddebfa9dfad19f918"
+    },
+    {
+      "file": "artifacts/hint/src/App.tsx",
+      "sha256": "35db55738450b7db505342d8c23c824364c4cb5954ef01a2a8cc0d56b17a88d0"
+    },
+    {
+      "file": "artifacts/hint/src/AppShell.tsx",
+      "sha256": "aab1687252c15d5ec9d6a2f5cde102ec2c377db204e177b29e9241467c6f688f"
+    },
+    {
+      "file": "artifacts/hint/src/README.md",
+      "sha256": "112ea9586211084c2c94f82c1ed6f7e44ac86369a1b45ac6c748ae75c87f0473"
+    },
+    {
+      "file": "artifacts/hint/src/components/BottomNav.tsx",
+      "sha256": "85e649cb0b460cc91111059dc9d94ff237226aada4c4b9e476664885e98bbf48"
+    },
+    {
+      "file": "artifacts/hint/src/components/LanguageToggle.tsx",
+      "sha256": "294fbd8404543e6244e1a76a107a66fafdecd1426c843f83a410a9bace107754"
+    },
+    {
+      "file": "artifacts/hint/src/components/LegalNotice.tsx",
+      "sha256": "c81ba5186f633ee9b9f3d13ffac3dea78f2fd5762159d916c1ac782db7c19178"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/AppChrome.tsx",
+      "sha256": "ba16ec883a472edef8842214b35c3f24d124905be85fd879f5314c81ebe7f6f8"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/AppLaunchIntro.tsx",
+      "sha256": "56434069253846423552bfb0074a63e9a84842b20da94b653fa36d3c120c9bab"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/CelestialBackdrop.tsx",
+      "sha256": "c8562adbe557d2ec0cbcb5216fde55951bfe360756ca756082674b54ef589e8e"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/DeviceConnectionStatus.tsx",
+      "sha256": "40ce93f64f36ae71b71856c971bb01da2fdd238fa6780ff5a8dbf3846d8be2d1"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/HintLogo.tsx",
+      "sha256": "63fece756ce0622b04e1e90e1df4a21925e916b05e710af1cc4dd4090290b1b9"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/IdentityRecovery.tsx",
+      "sha256": "60d55ca2d6530df32c4c7b1b46f1b4a8fbdbdee311f207f9f194816a83576c60"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/LocalProfileSwitcher.tsx",
+      "sha256": "3a354bde21770ec958d5d64fd5aff1afe7e68a3634c8ea233aeb27602515f521"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/OnboardingGate.tsx",
+      "sha256": "20f172caa2363793ed265f8877af4381ef65ac7d1db30c9f0c4f540509350054"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/ProfileForm.tsx",
+      "sha256": "6cfbd26dc9246e430247d3d845d005f84eb18495f47098f3e5ec274bc0cbf7b2"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/PublicInvitationLanding.tsx",
+      "sha256": "20431077dc08da581834c52596f0f1291e5f2f21a1119f7ab8d4834db4e21db3"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/RoomTransitions.tsx",
+      "sha256": "9fbb1100a75014a859395666d3357d1a9149444010360ffc8c64dee8bce8b288"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/RoomVisitBoundary.tsx",
+      "sha256": "089dd946f24843fe1b2cc03a0230048100f7cda1bec0adfde1a93222620abc72"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/app-launch-intro.css",
+      "sha256": "3b9a71b56f4607edb3373fad67997a617db41ad86b091d471b2f848b0db17b50"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/room-transitions.css",
+      "sha256": "efc27441b67bed56101e335fcf9b11f87693fae1a3e405f4371b7319a21888a6"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/room-visits.css",
+      "sha256": "9584631bc9ff6e3df7ce60dbad6b54a496dfba146ee79e8411b64e88986bcbe5"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/roomEntrance.ts",
+      "sha256": "5007708aa5b0b08a2312c6344c51be521270131a408f00e3ccbfc2b79ed053a8"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/roomExitCopy.ts",
+      "sha256": "4b57fa03c34d7b9d4c976804ea4e23242050dc4847a2e1e64bd1d345c6625d01"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/roomResumeCopy.ts",
+      "sha256": "b2407cc9005b3398742a3432438f20edee59ce7d5a5176ff5cc64097a74114d1"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/roomVisits.ts",
+      "sha256": "48130d9e83c85bf396d44c879fc4ceca4bd6301a8b6003222140f5dd62c96e13"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/theme.ts",
+      "sha256": "50eebea075b20aa59d5d6f403b8ade9d5c7ffba420f8876969a71d7857683a05"
+    },
+    {
+      "file": "artifacts/hint/src/components/app/useSkyDeckPassby.ts",
+      "sha256": "9f877866457c3cd4621a2f07614970c8b9dfc3ffdd0df7e5e32a6dd900afe843"
+    },
+    {
+      "file": "artifacts/hint/src/components/astro/BirthProfileCard.tsx",
+      "sha256": "d964ee909263916b80ad43e446cc68998ed2efdba48a7cd8acf5428b9f5bcd76"
+    },
+    {
+      "file": "artifacts/hint/src/components/astro/BirthProfileForm.tsx",
+      "sha256": "90b3704197b38f0761bb9cf4c275a839d791ca7319505094a735dd0fdbda6d15"
+    },
+    {
+      "file": "artifacts/hint/src/components/astro/NasaSkyBackground.tsx",
+      "sha256": "6c0760272ba19b5e105539fd0ea96c7aa7f4ca107c6e6dad9c0563e005ddf0f7"
+    },
+    {
+      "file": "artifacts/hint/src/components/astro/RealSkyTodayCard.tsx",
+      "sha256": "d4a14fd94e2c338f2846bbdd30e7542f1f8822405ecaeeca2ddf3abb28293d0f"
+    },
+    {
+      "file": "artifacts/hint/src/components/dev/DevicePreview.tsx",
+      "sha256": "8d8bf5f5cb1b6d43cd2727a6dc876669a3ad2dd07d164bca6392dd8b8744b453"
+    },
+    {
+      "file": "artifacts/hint/src/components/dev/device-preview.css",
+      "sha256": "4806a71b293d2762b2649fba65dd5e71b02b16e0393d49dcb42d739acdfb2d45"
+    },
+    {
+      "file": "artifacts/hint/src/components/skydeck/SkyDeckCard.tsx",
+      "sha256": "48f328f189f020d45ae574d6afc06f582c49ef9a7d2b88d095d53013cb155e51"
+    },
+    {
+      "file": "artifacts/hint/src/components/skydeck/SkyDeckEvidenceDrawer.tsx",
+      "sha256": "c131522677f900372081a2cd91bda076dbdc07feb65932e2677b8d21ef87a925"
+    },
+    {
+      "file": "artifacts/hint/src/components/skydeck/SkyDeckExplanation.tsx",
+      "sha256": "34804396abbc020e7cdc269a7343371fec6d839c0d2d6bdf9b0972a4c2255cee"
+    },
+    {
+      "file": "artifacts/hint/src/components/skydeck/SkyScoreBar.tsx",
+      "sha256": "19bdb09c28651eb78e54f5bbfc3e4d7850e6607436ba3bf858185eb9ea624d2e"
+    },
+    {
+      "file": "artifacts/hint/src/components/tarot/SkyCardReveal.tsx",
+      "sha256": "7a5f3833221c9ef6c3f24117eaec268db304aab24015825b35929094c2e970c3"
+    },
+    {
+      "file": "artifacts/hint/src/components/tarot/SkyEvidence.tsx",
+      "sha256": "030eca3e724a7daba8e888cac4486c7a0cd344579321991e61def3fa6d5e8bf9"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/accordion.tsx",
+      "sha256": "dcbfb3243a26096fc3e5f54039ccb5c4c23d9bb79a4d5846b4be75bf912f07d9"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/alert-dialog.tsx",
+      "sha256": "311bede35f785d7b1ecd7398986757e26409d1049352a94ccf83586b8603c92d"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/alert.tsx",
+      "sha256": "5950ac01377e7eedc94b00eb3fee678745e4cc1a72b5343867f0733d07db6660"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/aspect-ratio.tsx",
+      "sha256": "08b0aa0b05efc573c7d63363c03e83d4b101bfeb54140764e96ddea30659cfcc"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/avatar.tsx",
+      "sha256": "e78b35ed76c67d8ff50603fbe0dfa4fe600097bd860d89e65beea3e16683dad8"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/badge.tsx",
+      "sha256": "0f5c195d3993de4c7ab9aa7affba532750e594ef0b494a709c6f18bfdb969c73"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/breadcrumb.tsx",
+      "sha256": "b23e8494010aae6660b9b04608a0bc42ba42b4f186a2f7886a8990da5678ca9f"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/button-group.tsx",
+      "sha256": "e3716d270e9ef6457b5cd29464ae00194abc8093c08ebf726c9204d7a69231d9"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/button.tsx",
+      "sha256": "286c7d3455a69013b980719f6159117a62540040f63275384bf977937d605941"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/calendar.tsx",
+      "sha256": "787a19c855cf2b826942d25440b63150c45094154c6a40e95abdb4109298b8b4"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/card.tsx",
+      "sha256": "525c4bb2c051987be64df0e92e1d90174912b219bf541e24ffbc4a3406de49e8"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/carousel.tsx",
+      "sha256": "c3b0e9c4b24781ac27952b8c61f6a711fc1bb7375c629a02742d6254e2f7c24c"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/chart.tsx",
+      "sha256": "b40d1236f168c746b228adec6bc4e9d196ea362a7910878f161d3c359a013b89"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/checkbox.tsx",
+      "sha256": "ac389a574651c8bedffc10f80674c5fc2f02ab81291a5f4ad9c587d1f775fdce"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/collapsible.tsx",
+      "sha256": "f4cdd104de29928bfcd40b865c7d08eed9157a537fbb8b5e6d0921f02b63cc04"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/command.tsx",
+      "sha256": "5a57ebc119f2357b097098d22865d45de8fda623ee88fe98b99999838c13633b"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/context-menu.tsx",
+      "sha256": "5369fc82c51df067aec2934f5e711aaf9e3f745ed7baadd7ba4b77397dee2a1b"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/dialog.tsx",
+      "sha256": "b4d1b09d5c27b1b9b6999987bd306f9751b68cb397e83f1606e4d6d6a28f646a"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/drawer.tsx",
+      "sha256": "47ff6248307a4ac09bf7e00181a2a29f9f846691092e04cad03e15d749bc249b"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/dropdown-menu.tsx",
+      "sha256": "dc109123ecd59af01d07aa9f3a8e8a7085bd3f337388c5369799ab1ce6c2d45f"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/empty.tsx",
+      "sha256": "9f975582a0290dbc7ce6efa3b36b376a4c3f07863026c3b74c1e73cb0023acb8"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/field.tsx",
+      "sha256": "e463611ab049c5e9b1c61691d239e05970ead7b577a191b3f80aa6f8ffccada9"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/form.tsx",
+      "sha256": "d50adf86568f76246f0f319c9e1e858627475563f6c1e38f5df7d4ee23958559"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/hover-card.tsx",
+      "sha256": "00f9086b1412843e04e01d31d2fab00a25d65d789d1a382e41f01b1f3c167c3b"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/input-group.tsx",
+      "sha256": "e9dad28bc940ca29714312d6c75d83bfe63f0cf7f9a384d2a2969a00a1d79700"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/input-otp.tsx",
+      "sha256": "7c4799e3597f2780c09a39a1391b921fa16eaedd0476457492af734f58e2ec98"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/input.tsx",
+      "sha256": "6299a6a387dc55e528aec4342deaea0b83f1ea3a365c135a31a18ee55334f441"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/item.tsx",
+      "sha256": "90983640aa7cfef8217422347d8e14825cf55137c76369decacf440767f03188"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/kbd.tsx",
+      "sha256": "0c025e7736d435f563bfb44105e562629672799eb1f35cbf194148d06cd1a9f7"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/label.tsx",
+      "sha256": "2eac8fbb04002c42b0fbc4062d20d131e421796eaf65c37d2049e29e42ecbc5a"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/menubar.tsx",
+      "sha256": "def61eb2c47c9ec319423471f4ca20045e99549958211cacf832e4ede769e484"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/navigation-menu.tsx",
+      "sha256": "a06d96a582ac207ffcd38445d773c05e841d646efb185b5e9b65f73e5bd388c7"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/pagination.tsx",
+      "sha256": "5be6d707160d18a6db9ad5afc6cc0ea490ca4fa86419f923ca66d92c3e39b63b"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/popover.tsx",
+      "sha256": "04cf38bf94abd3fe1b51e90227e6e235ca74776f6fc6af718bfc149e7424f582"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/progress.tsx",
+      "sha256": "6b3b4b69a1cb361076174892e9a96e1a09020307616965ef89f2f7e2495b57a9"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/radio-group.tsx",
+      "sha256": "9ba7808b7404cdf2159c81883a39290033bc4308f2978eb80797c92b87421301"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/resizable.tsx",
+      "sha256": "70d1e35a5fb0897af7063cdd841d8ed636e1c332ef7ea6469f0f175a5a93dddf"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/scroll-area.tsx",
+      "sha256": "d7d02600effca55d0dcadce8c09c97ebddda3a19c5fa1d52dc9f6f727b26c6b1"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/select.tsx",
+      "sha256": "3d93ae07a8f3fe121ba60f4439e26bd7859f247eb8bfcafcf4b4a8a069888eec"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/separator.tsx",
+      "sha256": "c956c4cca4b8442fa9314d6079b9f975e1ee39d5804aaf2966990f6258ac342a"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/sheet.tsx",
+      "sha256": "ea0dfcf33af4497963569e037ccbabe9d4fe155f7e77c56fa9c44a611246fbbe"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/sidebar.tsx",
+      "sha256": "952a17e59dea2252f79ceff1fd0ac21896a06d7ff2f2e1751f08cb3e817cfc77"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/skeleton.tsx",
+      "sha256": "87608e7cc815ad3d88e0b9de6c402bb37b58ea1b38636cf69709da1baff6e334"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/slider.tsx",
+      "sha256": "234e38fef59169bd02d8f5b56ca02e5ec13a0bd6846c328927b924e1299f7fb0"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/sonner.tsx",
+      "sha256": "771ab8637d27384c3ed030ba3be01a07b90c791c294eae06646250f8e81bc49e"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/spinner.tsx",
+      "sha256": "3e6e6e8d37fb4069f8e43e55318f8db06fbc36e6c8be0096da3c9337c1c798b9"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/switch.tsx",
+      "sha256": "ba5867cd3145af1290edd80bb56d4b6d61c6331aa8ef96ae0b85487f4499feaf"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/table.tsx",
+      "sha256": "a4a6972c2d47d465d7f02c1dc4a6cbfeda7a97e46479c1b0cebdaf26bf9b497a"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/tabs.tsx",
+      "sha256": "6f74706bc6b53f9e4bcebb5e7ab8743b616aef181edc7758b8ee905f9b2fdcd7"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/textarea.tsx",
+      "sha256": "ec7c92aaed80f6923a7caa4bfe4eead395b50a7001504fd7fbb0b9381804dae9"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/toast.tsx",
+      "sha256": "99f9f4a3e897f71d89b01c6772b2f5db51b888cecb2c8214fb2c2dbb2b3e6356"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/toaster.tsx",
+      "sha256": "1348f1a1f9820e2f1394b93cecc156a7e22f03636ab9270753985549aae2be74"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/toggle-group.tsx",
+      "sha256": "dba95ead40d163af6959198ded9853a2cc9282b2cb534980f99937a65edf4e2d"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/toggle.tsx",
+      "sha256": "955fa1bb97505b7a8bba3f7cff1991035a9afa0e1113f5d598147e6369dbf44b"
+    },
+    {
+      "file": "artifacts/hint/src/components/ui/tooltip.tsx",
+      "sha256": "ce6afa34fb9dae51053a863b4c3f7c6e55f3da23b00149f31a8e4402bc963be0"
+    },
+    {
+      "file": "artifacts/hint/src/hooks/use-mobile.tsx",
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b"
+    },
+    {
+      "file": "artifacts/hint/src/hooks/use-toast.ts",
+      "sha256": "5aab0623ee24bddf9420c259a23a06996292e38ea70eccbac2715516f6d01a0b"
+    },
+    {
+      "file": "artifacts/hint/src/index.css",
+      "sha256": "14c9c772eef63abe81b94ef8ca45ab1e8fe366a7f81cbeba03294a3d0cc14f62"
+    },
+    {
+      "file": "artifacts/hint/src/lib/LocalizedText.tsx",
+      "sha256": "37bdc6a5e1596cd860d37d6fcdac8d3fea7061f8150514b727d2ccc33260ea8e"
+    },
+    {
+      "file": "artifacts/hint/src/lib/ai/astroInterpretationClient.ts",
+      "sha256": "f108b26458b20c22c9b45c8d9ea22b8207abc50428a8cc8ea3b79b7bef943910"
+    },
+    {
+      "file": "artifacts/hint/src/lib/analytics.ts",
+      "sha256": "10b032765c394ca12d9e0a2625d39536eca82946dc118e2e166d987954facd59"
+    },
+    {
+      "file": "artifacts/hint/src/lib/api.ts",
+      "sha256": "560b9a0f6e4bfead979fa7888f3271e8787e9c79825b0ce22a8ee7cee5e0fbf1"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/astroClient.ts",
+      "sha256": "4fa9bfb7444b86e2d78dd0c587ccac35d38ca362b8aa733cb7d0701149cf762e"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/getAstroProvider.ts",
+      "sha256": "6f9faef9fcde7a7666b5099c6ad7c6e29e14b3871ff069de5b2b6dde9f293366"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/mockAstroData.ts",
+      "sha256": "1d83a712073d3cc88303b4d6729c3e25588dacc013c56958b41588428af83625"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/mockAstrologyReports.ts",
+      "sha256": "6feef5401670eb7516ab33a7795d85158f1a1f5a4c17513bc37753149827fe76"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/mockDailyTransits.ts",
+      "sha256": "d25c3d1e1dd987cb750312889a6947d30a63582fd1727c00537c8e9822992c4d"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/mockSynastry.ts",
+      "sha256": "9dbd28ac45db5e603489955596f06c5efc9a8f79b778768e98e0fa4f4568b0ec"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/normalizeClientAstro.ts",
+      "sha256": "cbbe24ea10927f82fbeb8021ad7c27dec35f4fe5e45d24f1af8a399dad9f3381"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/normalizeNatalChart.ts",
+      "sha256": "ce5e2fe55713437ce061f994df734c8f672b92dbafb33b970a99797c2191f647"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/normalizeSynastry.ts",
+      "sha256": "1d77cc2281e5f000fddfd9c147b3c41ccd289ba379226cce6a3da30da0b8583b"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/normalizeTransits.ts",
+      "sha256": "c618261d22c4640650308349b65c04e8d044552e97667bb69230d52124f32f80"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/providers/astrologyApiProvider.ts",
+      "sha256": "669c73b31536a1e143c92fe8319c79b2682658400eb47c4eca5884a5f6640bca"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/providers/freeAstrologyApiProvider.ts",
+      "sha256": "590f43e7fdc5e112ef0fb831c6189881127a483d57e81588004b299714f7eb34"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/providers/mockAstroProvider.ts",
+      "sha256": "23b8218a5f52c86cf06bfe11247a084bd8f4627028b4356f6a96f46d0f58a43c"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/providers/nasaVisualProvider.ts",
+      "sha256": "96c61296e1198bb37252aab15db1d8943235cd0976898c1e099c0205e9345fba"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/providers/types.ts",
+      "sha256": "55dae47148f27b2c3ddfeb1117b2d9c9b4a89f87bfb7fcaf71f2be8d6356d911"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/sampleAstroData.ts",
+      "sha256": "5401c8c80e31fb3e2abdfc64929a6615b3e16ab5cbdfb8bdd03f54a74c28af8c"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/userBirthProfile.ts",
+      "sha256": "f24bdaa06a5aad6a2835b397000b69ce711a70d5ce158e4078cacd76a047b044"
+    },
+    {
+      "file": "artifacts/hint/src/lib/astro/verifiedBirthChart.ts",
+      "sha256": "a78a8dbd487eef79bf6a15f4d3abd73c973a606fdc99357cab9b95af78ec1ffc"
+    },
+    {
+      "file": "artifacts/hint/src/lib/auth.ts",
+      "sha256": "0843d88b025b7ea86ce0719c7291aa2db815298ac6eede46054e68982cf46571"
+    },
+    {
+      "file": "artifacts/hint/src/lib/birthDetails.ts",
+      "sha256": "2948031cb5a9c4d6f990b27d489048c4957721c91acb6dc67bcdf6a765c7805a"
+    },
+    {
+      "file": "artifacts/hint/src/lib/clearHistory.ts",
+      "sha256": "561f52a5e8a4c08067f90ed49f1dd9af0e9966f164bf61f8f0d3066f308de27f"
+    },
+    {
+      "file": "artifacts/hint/src/lib/dailyReceipts.ts",
+      "sha256": "5a2f493d8972e56916e613ab3a7400e61f24d0ecf22f0584f2bed80d9bf03850"
+    },
+    {
+      "file": "artifacts/hint/src/lib/deviceSession.ts",
+      "sha256": "c5cab7a5b083d19c8f75fd1f11b608303b28054bddb3bcb49aedd422252a9627"
+    },
+    {
+      "file": "artifacts/hint/src/lib/deviceSessionCore.ts",
+      "sha256": "abd9636d2ed31f81a9e3c2aac6a7b48f22f13df991a170d70e4aeb170df8170c"
+    },
+    {
+      "file": "artifacts/hint/src/lib/feedback.ts",
+      "sha256": "0561bc25d42c6fb6c13f608a89507e54cf49aa49f8dba351ec9a25872706850b"
+    },
+    {
+      "file": "artifacts/hint/src/lib/flowTranslations.ts",
+      "sha256": "24afdee3527649e89d14709538ce83033f4d290b59d4a0432ded8fc0bba36f49"
+    },
+    {
+      "file": "artifacts/hint/src/lib/i18n.tsx",
+      "sha256": "e770f587c76b55449ba72580a79ad6edd7ea2eefe325e6a523dc4f18feac81d2"
+    },
+    {
+      "file": "artifacts/hint/src/lib/identity.ts",
+      "sha256": "b7568199d68447c82381f38d53d46523a28aae414fd2a81d0a84517575804f1a"
+    },
+    {
+      "file": "artifacts/hint/src/lib/identityLock.ts",
+      "sha256": "689e127bdfc8d812ccbbb7fd8254ec1e70c9d73db0cdb1a23ad3378c727f7345"
+    },
+    {
+      "file": "artifacts/hint/src/lib/literalCopy.ts",
+      "sha256": "727e1430c5029bcfd306ffe875cd754e3ec2337f246501cfd011d5c7fc2b6964"
+    },
+    {
+      "file": "artifacts/hint/src/lib/localProfileDestination.ts",
+      "sha256": "67e261f90a6e4313c40be3263493e19add0f3eda4e6bdd2127f6ace399850fa8"
+    },
+    {
+      "file": "artifacts/hint/src/lib/mobile/abortCompatibility.ts",
+      "sha256": "880865095fe11c0e1d21f6fedd1e98c3418aefc54ec583f0d727a78bf32727df"
+    },
+    {
+      "file": "artifacts/hint/src/lib/mobile/appLifecycle.ts",
+      "sha256": "0d6d16edfc9599b9b107577ce2dbb017b320e7f9d7c55ea787f57887490b4ec5"
+    },
+    {
+      "file": "artifacts/hint/src/lib/mobile/deepLinks.ts",
+      "sha256": "1b1e76062d8bccb1af85e98f9c05c9fa570808f3d8344ad99f29149613e5bcfe"
+    },
+    {
+      "file": "artifacts/hint/src/lib/mobile/index.ts",
+      "sha256": "38e65f3be13805caca941f29daca3d21954218a1a426e0de56f271da9065137b"
+    },
+    {
+      "file": "artifacts/hint/src/lib/mobile/runtime.ts",
+      "sha256": "604d2cab8d60d59592a78977b49604b38f10ac791cd8d3bddf250a8ca253083a"
+    },
+    {
+      "file": "artifacts/hint/src/lib/motionPolicy.tsx",
+      "sha256": "05420f87057aa57b8a055b1da70acbd907ae193a43b25fb87cf95ae07b024ecb"
+    },
+    {
+      "file": "artifacts/hint/src/lib/preferences.ts",
+      "sha256": "717093cfa25bd34f6521be11617af964acdd1d26670fe688266410d3126e1114"
+    },
+    {
+      "file": "artifacts/hint/src/lib/publicUrls.ts",
+      "sha256": "8d3f4c96188592d9179546115b4d5cebd9a7c5d7a639a6c780232bb64a4b4859"
+    },
+    {
+      "file": "artifacts/hint/src/lib/qualityCopy.ts",
+      "sha256": "920d9624bebab3aa12a73f638bf569b9fb8e68b8aebf2301117c6db11b24bc38"
+    },
+    {
+      "file": "artifacts/hint/src/lib/quietMotion.tsx",
+      "sha256": "041e50d1bc878c84031c61069a178789ac9beb9671fab2d1766a77b283e238ad"
+    },
+    {
+      "file": "artifacts/hint/src/lib/readingDays.ts",
+      "sha256": "0b21a85d156e0ead600d736b1864c32fad9fcf8d06b6203423ad63ada28afeb3"
+    },
+    {
+      "file": "artifacts/hint/src/lib/readings/generateAstroCopy.ts",
+      "sha256": "d96d0e814b973953c82cb5b94ee109d4d3312412a9d3fd25006dacff9f325079"
+    },
+    {
+      "file": "artifacts/hint/src/lib/readings/generateSkyCardReading.ts",
+      "sha256": "acdb7217d4bcaffe88e87b3b04ae91c81c2326dd6c3468d4b95ff8f3243a4478"
+    },
+    {
+      "file": "artifacts/hint/src/lib/releaseCopy.ts",
+      "sha256": "fd169ed9e9145f6f7c246cc624596862a7d3481b241d63c42165f3804ac1fa27"
+    },
+    {
+      "file": "artifacts/hint/src/lib/skydeck/generateDailySkyDeck.ts",
+      "sha256": "becc7ce8a29eb4e37f188dd0c1d536cabfa667ad7b216943730525194c18e838"
+    },
+    {
+      "file": "artifacts/hint/src/lib/skydeck/mockSkyDeckData.ts",
+      "sha256": "e8060243582373b6ab092657dbcc2e467edf6263724e743ce8ca3a18f9dd5671"
+    },
+    {
+      "file": "artifacts/hint/src/lib/skydeck/skyDeckSeed.ts",
+      "sha256": "d171584681432fb66d678cf586fd9cf451857558421ccb2ca768e1e29c726986"
+    },
+    {
+      "file": "artifacts/hint/src/lib/speechRecognition.ts",
+      "sha256": "52bf9984dd20381ee6eb609c996e9ee377d53197e471f07ef1d10a39bc8c9ace"
+    },
+    {
+      "file": "artifacts/hint/src/lib/tarot/skyGuidedTarot.ts",
+      "sha256": "0e6233f274b7646899b007adb95f93112e14235657927d1cf3bd912f67948830"
+    },
+    {
+      "file": "artifacts/hint/src/lib/tarot/tarotThemeMap.ts",
+      "sha256": "c6f3d233f3dc1536c795692dc44c3f2f44f1bd0efa8657ebb7c34e82ff733e61"
+    },
+    {
+      "file": "artifacts/hint/src/lib/testerAccount.ts",
+      "sha256": "20105c7ceed75c69c6ca5c2bb5bb86a51d348331c9fc7b1fb40362a73466757c"
+    },
+    {
+      "file": "artifacts/hint/src/lib/textDraft.ts",
+      "sha256": "d6267948a9eecbf7ed5d31266f6bc0936329442aea5536bf3903d9f029126eff"
+    },
+    {
+      "file": "artifacts/hint/src/lib/useLocalDay.ts",
+      "sha256": "f78527f45062f450dda81d84040f00c428ea869c09729969da89c4c9405fef60"
+    },
+    {
+      "file": "artifacts/hint/src/lib/useProfile.ts",
+      "sha256": "ef716e55b93577b6bc1f15913b59e4a3fd55d086f46fa48ad212223f8f9d5a75"
+    },
+    {
+      "file": "artifacts/hint/src/lib/utils.ts",
+      "sha256": "7c8c3dfc0cdd370d44932828eb067ef771c8fe7996693221d5d4b90af6d54f2d"
+    },
+    {
+      "file": "artifacts/hint/src/lib/visual/nasaClient.ts",
+      "sha256": "e10db449b23114910f85b68b25a1bca7935e2a24df6dcb2e1d92813d9d6afc7a"
+    },
+    {
+      "file": "artifacts/hint/src/main.tsx",
+      "sha256": "b895f44656b0415d3c8fdeec9a3288ae30028a002e248cc11fc1f5060b802c8f"
+    },
+    {
+      "file": "artifacts/hint/src/modules/animal-tarot/AnimalTarotView.tsx",
+      "sha256": "118358fd89388e7426c289f6b58890ecd668a0152a7cc961865821bc5b4319a5"
+    },
+    {
+      "file": "artifacts/hint/src/modules/animal-tarot/animal-tarot.css",
+      "sha256": "93908dd503cc7fdb693c843a1478933ce452f5d3c6e4e7e530f4835df1b5dd58"
+    },
+    {
+      "file": "artifacts/hint/src/modules/animal-tarot/index.ts",
+      "sha256": "5b19ca88431ac3d1dd1bb01c08f26ed9bc13ecb75c1ec0ad108fb01b8f05d70a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/ask/AskHint.tsx",
+      "sha256": "7156b63a020a7f8ccbc86fbb1bd3fd4b8ac66d40621dae5ed9b5a502f9988195"
+    },
+    {
+      "file": "artifacts/hint/src/modules/ask/askHistory.ts",
+      "sha256": "ca55501269ccc16ab4e918b94826497026c1d6c22922073275356f85c5a8fcef"
+    },
+    {
+      "file": "artifacts/hint/src/modules/ask/index.ts",
+      "sha256": "f84a7628fb28cbfe0859b598b378cf12aa5bb87874a612ec8a4dadb926a713a8"
+    },
+    {
+      "file": "artifacts/hint/src/modules/ask/useAskHintChat.ts",
+      "sha256": "6c4a56df679f6bd689b02201868b2a9cd4c474f5feb9d794970e5fb71355fc4c"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/astrologyCopy.ts",
+      "sha256": "8f56ed577286900688bf21d5e200f3909c201493afe3b5b26e7fc95f5dba374e"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/astrologyLibrary.ts",
+      "sha256": "961db444cd1de3bb483e69054ff67a04fca43ad41de60d8dd519ee17d654a380"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/chartState.ts",
+      "sha256": "df238cb9661e9ba3e95189bba42200b988cee4bc331642653cf5072d4e190ad6"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/components/AstrologyGuide.tsx",
+      "sha256": "235c099e89922a043e4a0e4fc1958e97c67862f07267d51ef45b2f93f89e9d9e"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/components/NatalWheel.tsx",
+      "sha256": "825eeb236866750a10da64f0c57eb95b6ed94379452b290a24ef4636935f4f0f"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/components/PersonalSignalSeal.tsx",
+      "sha256": "443fe3f7153c66f18707ff92096adabaed118a08876a96c7f21f91779ecb8a9d"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/components/TogetherReading.tsx",
+      "sha256": "538f5f60a7207d7e87581863e3c605ce55b1f3ecf83f051fabccf338b3e8bce7"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/components/astrology-guide.css",
+      "sha256": "d562739d81e28f4d62a33fd1a92437b40ef6ac50e678693bcb39cfc9556fa580"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/relationshipContext.ts",
+      "sha256": "fcc5857289b346624c5299a26f909566d4068aa69bef55ad2b2207a6c6327437"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/togetherCopy.ts",
+      "sha256": "b3d9a4a6aa51c88f9fbbc0cfed6e4d6a0185715ccaefa88a7898ea45529586e6"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/types.ts",
+      "sha256": "c0fec26a9a2ac11a972945741443169a64c72141cc4b81d9a30192191065ba5e"
+    },
+    {
+      "file": "artifacts/hint/src/modules/astrology/useBirthChart.ts",
+      "sha256": "79535a4f0945e119acaab7f7f2097708e4da70745aa8ba9b02464dd1851ebde5"
+    },
+    {
+      "file": "artifacts/hint/src/modules/auth/LoginView.tsx",
+      "sha256": "33240e74966158b1b3175c20a5ad6a71ef8cd4bb544408d9a0f89358a0db7454"
+    },
+    {
+      "file": "artifacts/hint/src/modules/auth/index.ts",
+      "sha256": "3fff8f21531395d94d30984ead6decc406860968736039d994afe75a5ea7fd71"
+    },
+    {
+      "file": "artifacts/hint/src/modules/collection/CardCollectionView.tsx",
+      "sha256": "ee462bf5f00dc8c6a8cff400695479e1922e3cbcc11529b6ec539bfd2f8794d4"
+    },
+    {
+      "file": "artifacts/hint/src/modules/collection/RareCardUnlock.tsx",
+      "sha256": "b0506828c9ccb65242ff90ef9a763728ad2d0f61669ac21abeb54e1db3899a24"
+    },
+    {
+      "file": "artifacts/hint/src/modules/collection/index.ts",
+      "sha256": "fad430a229e6758b8fb675745d78379ac44f71434a5b2cbc1c0c7fb7d1011ec0"
+    },
+    {
+      "file": "artifacts/hint/src/modules/collection/rare-card-unlock.css",
+      "sha256": "a9035b6e6112e244271e50a46789060193ff9dc2040456a7eeec8b734a1f72fe"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/AstrologyView.tsx",
+      "sha256": "8ba7069e64471765584217a161f87b4d8f26080735d56d84b38da7073ac18f4a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/CompatibilityView.tsx",
+      "sha256": "0f9c051201ab9851d228df1b53d112f6fa037e3662aec0321d16f2becadb0484"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/DailyPullView.tsx",
+      "sha256": "bdd222354d0deb6ba66986a169a41c15fb6914a832bbed8bfeed69c00e57b0ee"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/DreamView.tsx",
+      "sha256": "a4a3c419c32ffc7287cb519e1a4b3ea39dcc2078655ee46b69c9b31758a1fac0"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/JournalView.tsx",
+      "sha256": "a600a19af09dc9d3dd2029e9ce424203e3dfecbda486cb818532364d341d8714"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/PersonalitiesView.tsx",
+      "sha256": "3b1a9c80b3ba8815b7509467e4199344bac23a4b59ae5a358bdcc429296d13fd"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/compatibility.css",
+      "sha256": "e918c66fabbfee7cccbd146c78705f8a4c0b43f86e3dce226a0e02a8920a17ef"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/index.ts",
+      "sha256": "d0c536c99e9f02e397f876fb559fa738440a10ba9e75d1b167a9974b1c7b0fc3"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/journal.css",
+      "sha256": "d2437084baf0d8e8bedf4acbbffadaec2cb561e277e308e785d59663e35e815b"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/journalDraft.ts",
+      "sha256": "5a0e5bead0fd99f2402fbcc29df9b988540305b8bfdc19b12f2da73f810d9b23"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/personalityCopy.ts",
+      "sha256": "212c0b567eb1f28ad1c1f8a7395266a1081c096a3a264ad3718e11520214d338"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/personalityProgress.ts",
+      "sha256": "3239920dc64822a9004aceaa3cf6d6417d547d8263aecaf27a226869de762714"
+    },
+    {
+      "file": "artifacts/hint/src/modules/features/shared.tsx",
+      "sha256": "f4858309b410b325e666175937c846f549efd54e7ccaa46adad35bec7a865158"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/HoldExperience.tsx",
+      "sha256": "d76667a4c9c3eda34c1a82bdadf0a67682c08eca6ca88b7fcf7ee07ef985153e"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/Grain.tsx",
+      "sha256": "886af23aeab9243b92067fb85ecc6f034bf78f5fe5377419e73fccdac95effec"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/Haze.tsx",
+      "sha256": "89851d79f47d291843d95cb69b4dcc495c842e83426b6965069b3cc1634a5b8d"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/Moonlight.tsx",
+      "sha256": "325462ed78032f5c18d0e8217b74d2eef6fda16cf43119ca4b750ac1fd94e9d9"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/Particles.tsx",
+      "sha256": "63dddaeea6e7dc14daaa58d4ccbcf0de7203b29aade4ac92b322bdde3086c461"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/PointerContext.tsx",
+      "sha256": "f89a293e3bbb9e26ec3fa83b60911b89aa55a67ec2e886b17c0e1bcd8c47bb57"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/RoomLight.tsx",
+      "sha256": "41f17f0f993b5574a1547a9e92d26f9cdf34dcfdba824eabfb990af14e0ae960"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/Vignette.tsx",
+      "sha256": "e8c70cc9cfad4626b2c293805faba517871ba2841070004d9e232f068f5c3d9a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/atmosphere/index.ts",
+      "sha256": "7fc773c7dba7e8c59829bc1a96152a51be5bf80581183f78c2d40e89553008ca"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/buildChatContext.ts",
+      "sha256": "0a197c0d5437cc3ff9ab37d84bef30c42fe35c9e3a378bdff6b000185ca4da08"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/components/ChatMessage.tsx",
+      "sha256": "70ca901d9d6140d6a8713c2ad200a1f17dc8cfa38a0de0d92aca68a84c73d191"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/components/FollowUpInput.tsx",
+      "sha256": "8fc81b6fceaf840e0a1e70c017d3b3b563d371c8ed3b909057fcc41f4d1f69cb"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/components/ReadingActions.tsx",
+      "sha256": "86a02026b814708609da1317e67d450aef624b5d842b89176a09a635bcf011be"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/components/RedrawPrompt.tsx",
+      "sha256": "94117b54fc6fa784dcb0bfcfe09c60c29733cc2203a1c8126a4557c7c322adc5"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/components/SpeechButton.tsx",
+      "sha256": "b0d7220531ba40dcbbc0a08e66ac3dfc014f09e9f3fbba90f595e21e21ad4c42"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/components/TarotChatRoom.tsx",
+      "sha256": "a701b9e95ac72905f7bdbb2d0a38a018f1537e6824276537e75947040b9a5496"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/redrawRules.ts",
+      "sha256": "dd8c382e7ba6cbe7f6c830cade8e6471421a5f372c48d23ec4ab37ef5e59a607"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/types.ts",
+      "sha256": "ffc0942eb23c87a8bd595792cf325addebe7dbf4f43c328d90993113491dc9d0"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/chat/useTarotChat.ts",
+      "sha256": "473c564d6f387802e1b9a9ebac01bb8e34e809c033e0039796d158a64fffe380"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/components/CardSigil.tsx",
+      "sha256": "c3a94a0310383a04d28e47c6a3520a4dac07e2fe639505812f8f9017d2187da4"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/components/RoomSetup.tsx",
+      "sha256": "95900aabc25c9ec43bbe9f29d92cbd55272f3012484423e8e6e700360a64b655"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/components/StepTerritories.tsx",
+      "sha256": "ae2383e92df12f2114c38eccae682d19255c756de2ffe8f3f73db429f4b42a1a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/components/TarotRitual.tsx",
+      "sha256": "77939cb77c0ae30bdc4c7bd252fa4277d8ad9cc7aa39aa3661e12e222ba6fc7b"
+    },
+    {
+      "file": "artifacts/hint/src/modules/hold/useHoldFlow.ts",
+      "sha256": "2c4c1948b454cb9056e5e1319494f76a1c006a3e0cf9a518ede885eebb066cdc"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/CardChrome.tsx",
+      "sha256": "1666f41c401ecac1cc3a9709083a5e388e32d7540320bd881ed544403c71a6c2"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/DailyPullCard.tsx",
+      "sha256": "bf6e0c6456e373b5a8fda282dfe8c2fd9c81e7f3e298093725094b565c9f2b21"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/DailyReportCard.tsx",
+      "sha256": "c9a7fd5d4ee637ba33215fda5c8468af90965a3bdcb66dd256694003e895d5d2"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/EmotionalWeatherCard.tsx",
+      "sha256": "355362e81f28626fb62bd13c741a94b9ae5af01237266c2713040621817e638c"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/FeedCards.tsx",
+      "sha256": "dcca0e78758eccc87a3b0886b534a2db368d164e82efa8940e8bb68e18123d45"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/HomeDashboard.tsx",
+      "sha256": "17a8eb55578766325d9d95b7bbcb942cb08911740b6a05e5107c4ff1559b16b6"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/LuckyIllustration.tsx",
+      "sha256": "970c9eb2f5f11e4d4a22ae977de1a695ba501513ccdb0dee1639204c283bf76a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/ModuleGrid.tsx",
+      "sha256": "afe7bc8166443cbdff501eac3d6d6fd573ea31df09a9d1010891bb4c15e23364"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/components/ModuleTile.tsx",
+      "sha256": "fb83353a29397a5febc772defff66e83c2b31fd74b034e088f60061838e35036"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/dailyCardCopy.ts",
+      "sha256": "b1fe47dc738784bc7533a665528045f0cd6ab1df66e82e4d8d7d6f7b93ceb324"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/dailyCardSync.ts",
+      "sha256": "c763f14beae05989de2c5370ee3a4f803bfe212f30b2a324a25278b4a532f8f9"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/dailyLuckyCopy.ts",
+      "sha256": "7eebaae7d35a647835afec8d6f79128e94daff3b084ad7bff4e7cf59a057f07f"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/dailyPulls.ts",
+      "sha256": "03fad0d6c08b3016ad85e0dc921b26ce6f63621cee95bb05ef0cd22061c1c16a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/dailyReport.ts",
+      "sha256": "f1685afa85a87a138fa029b79af53b3f0840173cf61f212c74f1f3d45e8235fb"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/feedCopy.ts",
+      "sha256": "ce418e8fa8c77f52c8d09370b1c4ee05c0587334413f6319506773d72bae6c3a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/localRitualProgress.ts",
+      "sha256": "249ba0a5ef69d3776bb166f929bfaa176b1102638486892890d7928fd1ac4750"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/modules.tsx",
+      "sha256": "30f1bbab757c0a8e7045ec35588e247b996b51625c632d7a381b79319970cc1e"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/sigils.tsx",
+      "sha256": "f9757a78745250e1402882eedf3ed27c69913e5490de0ac5c0738db1a48e3bc6"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/data/weather.ts",
+      "sha256": "ade4fe7247872da703d1d6ec0d4e62b509a9770faf88b0d56e7726b521b25ffd"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/index.ts",
+      "sha256": "21d839045f483bcf6e9f57e25b05504d1bc9a99123508a2aff98791c1a476f60"
+    },
+    {
+      "file": "artifacts/hint/src/modules/home/types/home.types.ts",
+      "sha256": "d3290f33341726d916de75299714bcc9274c9536a8d268d4e13e6c58d88b1e10"
+    },
+    {
+      "file": "artifacts/hint/src/modules/legal/LegalPages.tsx",
+      "sha256": "54cdf3998f9183620ddb80568ba52d399e95edbd7b01667e5428c3702e4637a2"
+    },
+    {
+      "file": "artifacts/hint/src/modules/legal/index.ts",
+      "sha256": "3b0347da133cc99435ae655a9432370901e16fc5bf74b898881a005ea0911219"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/MeView.tsx",
+      "sha256": "362e07c9281486577088a15f0b8df3a9868a1cb60059a5aee54561cdd188cf51"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/AccountAccessPanel 2.tsx",
+      "sha256": "b93003031e6dcc8ae9c2f6d1de29d82f26428a6c6cfb3e1641dba4866c90f08f"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/AccountAccessPanel.tsx",
+      "sha256": "8bed6c56df26797b55b08c08b49376ab1ea3e2141a1f1592986e4fed5401545b"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/BalanceGrid.tsx",
+      "sha256": "79c272d50852553423ff17b6e302e3a8cd4737f7bf45123dc666ca44dc45aba5"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/MembershipCard.tsx",
+      "sha256": "965957eca2b8681aab13280578c115ec1bfa1194f312a53525976e2c11049a80"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/MoreGrid.tsx",
+      "sha256": "0717222ab62ded4826d70116964a6080004def67cd1e0ffaeef0fe4a02402408"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/ProfileBanner.tsx",
+      "sha256": "920ea0125e2ff62abdd240b982b4c98e608fcba9c4de3a07d20000ebbd1afa0b"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/ProfileCard.tsx",
+      "sha256": "6e0933e1fd7b694fa7ab33b32685c59a58db6af85062315113f3fd202a9b5512"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/RecordsGrid.tsx",
+      "sha256": "69f4ae704ca6db2cc1be8d619164c74fc3a304a785e3a8b7d565c026256299f3"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/SettingsList.tsx",
+      "sha256": "ff19ead75505bc92a116ff2a1c0e69647b9b9bbe772b8db35fa2a4d9da2cbd67"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/components/TrustCard.tsx",
+      "sha256": "8df4076832bafafcf5216fa71d5e42113fcc894bd402ac2443db457280ef536c"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/index.ts",
+      "sha256": "d0109f032d456c5ea1dca61811450ef25df4a208f32387bb100661f611164969"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/me.css",
+      "sha256": "c77a44541aeb744b7666ab2aeb16e24ca4da352ac3329e82e6460d04949f0437"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/meCopy.ts",
+      "sha256": "a52655ee45f90744e7ccdcc1c69ef84a062f601fcbe7a36a88d77c6c4cbb3905"
+    },
+    {
+      "file": "artifacts/hint/src/modules/me/utils.ts",
+      "sha256": "1c408a04808e5086d22f0b737412d15ebb208b6f10f4838f8df22d87c207a96c"
+    },
+    {
+      "file": "artifacts/hint/src/modules/readings/ReadingsView.tsx",
+      "sha256": "38b6320de9cb8cbfb082b823a1f2e4e913931b204d6191d7233072c811031ce0"
+    },
+    {
+      "file": "artifacts/hint/src/modules/readings/historyCopy.ts",
+      "sha256": "c006b643e338084c57c52421d5521fe56770c872dcf426cb762bddad1ffff378"
+    },
+    {
+      "file": "artifacts/hint/src/modules/readings/index.ts",
+      "sha256": "ae9a78d683ca925ed6d9545f74df0e4b9d25dbf2c0ca267d93a7d86ab5c8265d"
+    },
+    {
+      "file": "artifacts/hint/src/modules/readings/localDailyReadings.ts",
+      "sha256": "4850afc20b9e71a037cb121ce5f87b53403b6a393868057ea9988f29472dbea1"
+    },
+    {
+      "file": "artifacts/hint/src/modules/readings/localQuestionHistory.ts",
+      "sha256": "78cd96db3a42b2d1ac8016ee71803bf26cbcc7254cb4563cf2402a0c9cd5d9a1"
+    },
+    {
+      "file": "artifacts/hint/src/modules/readings/localTarotReadings.ts",
+      "sha256": "43e1f937740c30740fd79be83a626230cfe480592576b5c2b1743d009fc32acb"
+    },
+    {
+      "file": "artifacts/hint/src/modules/rooms/RoomsLibrary.tsx",
+      "sha256": "8aacc87aacf7f116ae7418379bfeb10d3e3045574db460695d8c85961ea41f08"
+    },
+    {
+      "file": "artifacts/hint/src/modules/rooms/index.ts",
+      "sha256": "a909d528120f5d1c6190150bf806ea6e2fb95e10da2a2f5db3bc7a28db904ef5"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/CardWashRitual.tsx",
+      "sha256": "34acae9dc92af3b785dd884a51b1e8cb7e6dd0791c54e6abc036479ad9e1d270"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/DetailedTarotReading.tsx",
+      "sha256": "73a5e710a6aba2f2026bbb168d170fed261d5d4a6caedbbde82c3588178b4639"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/HintTarotCardFront.tsx",
+      "sha256": "e2497abf31b993423185c4ac76908aa10bb8120110fc7a2265bd5dac6828233e"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/ReadingReveal.tsx",
+      "sha256": "8faf35bf21ea9db08639a8a63b623894d7d354ee5a03f37bfe394895f8f33268"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/RibbonSpread.tsx",
+      "sha256": "fbf2589fce59d4d6be8e1da1c91b8dcb535dd75264f0c74b946aeef4b705889c"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/SpreadPreviewCarousel.tsx",
+      "sha256": "988bf64a15068eb1a6e7e81ca46c4fd19bc43a993ddfa9e9175d10b80b7b3332"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/TarotCardVisual.tsx",
+      "sha256": "1958877cc8da36edfce1df7e0d128ad41903d55589c6a3439ad8204af9a644f1"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/TarotHintReadingChat.tsx",
+      "sha256": "5cab052224e42bd8ef221ae0f05a49c8a4155b768e799f95b201c10df95bc149"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/TarotRitualChamber.tsx",
+      "sha256": "fc6aa871fb31b0625b5d2ed17408688b4ed7c5eba629be66014de18d0da1ed08"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/TarotRoomFlow.tsx",
+      "sha256": "d4ee42759e0cf7b502831ef493c587fdda781c3917576b74e180f9e44788ef96"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/reading-motion.css",
+      "sha256": "5fcdd6deede1e90b5fae92e07c1d35467ac900c0ce907e09a91f11a24eae5187"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/components/spread-recommendation.css",
+      "sha256": "172c935adba28ea54160fff96183c684fc4884c26b48632c161d0fb53e4cfbdc"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/index.ts",
+      "sha256": "de8eaaeb9578329bb5177afa2576869b3a5a0717838a014bea542754735ebf17"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/activeTarotSession.ts",
+      "sha256": "1bc70a3148943e617bb762dbbee7ed58cc10efd1e9bf88f3236a83dab81ceb91"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/buildTarotChatContext.ts",
+      "sha256": "5f7a0eeff41c89a465a9c38d0fe6b202970755fdf0732dfa25eb4ccd494baf72"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/cardBacks.ts",
+      "sha256": "126c73192b02b7c9210c4c9b44ffa3abaaa0caad26c91f5d6c8cb2913a86bad1"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/cardImageMap.ts",
+      "sha256": "79bade53b88f16912bf8309602982a562fdf44b82395948564f1f1935cc1aa05"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/cardMeanings.ts",
+      "sha256": "76c84d91f5c27b8acbbf9448460d942abc68ad0e0fd5fbc95009bfb6a7f0ea32"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/createHiddenDeck.ts",
+      "sha256": "372d68a4c8f86f65df8aa13b1ea1a06fe19db205a2a0da8e87f66149eb5521ea"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/pickWheelGeometry.ts",
+      "sha256": "73972346608c9a5eb9056260e39d4516205653fd5730d2bad271e1434ef5dcd1"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/receiptCopy.ts",
+      "sha256": "452f11c22ac32ee34118ade42cfe438908a38ee23435318f174568760867b0c6"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/receiptLayout.ts",
+      "sha256": "b71be470646be88d97bb18a2f2f986723d77d3a23cda75c4c5b34f2c3a78f6da"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/receiptPrivacy.ts",
+      "sha256": "e6ac4f37bcef41baf007532b5f4c2f231ee70b678509ccd70081a83e0e090676"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/requestDetailedTarotReading.ts",
+      "sha256": "2f921a85080f746e086d0c0937b236036ce574c6a337a58a1aa5a00dd7d27185"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/requestTarotFollowUp.ts",
+      "sha256": "4092a342bb3e5b8c1ee759f2f589b168cf10456db659d5f94fb8c800a103f42f"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/ribbonLayout.ts",
+      "sha256": "995aa33190303d74ab172aa390d8781512d33953d882fb20a35da831d0d5b2e9"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/ritualDeckOrder.ts",
+      "sha256": "28c784f31c3e2283653088a80610ddfbedeac085db6351fded47d0f656c441c4"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/ritualFlowMachine.ts",
+      "sha256": "00ddd0b882300644c738117221ebb32d7b50773a4676388c70e1f6c06c1011ac"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/roomVisuals.ts",
+      "sha256": "750c2abc6f635c7bffc282e66d7d6306d5b3b253e6505d2f4133114d8c4e7296"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/selectCards.ts",
+      "sha256": "b21e5330c048a7eb67c21f745d7b8d607da6d0534e0a7f674888dc70cec6c7af"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/shareReceipt.ts",
+      "sha256": "c5c21f8cebc25be127d6680dcf1429f1fed21dfc1a15a4b1b7815c375405037d"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/spreadLabels.ts",
+      "sha256": "463515cbfd745c5ee7ab12fb567279e4e334464ae11fd268c1776cb641b5c07a"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/useTarotReducedMotion.ts",
+      "sha256": "7b10d6fbe98718fd1ef656da8d9c3cb7e70ed0f5d0085f72638989fdce599261"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/washPhysics.ts",
+      "sha256": "b440edc1ee7d9e0f493c1eb0b79b0b52c5176494b10ad5b8c9d6b624e3fcb9d2"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/logic/washRitualMachine.ts",
+      "sha256": "989da23c50578e9a077585945dc2a511527062321923cd9796c003c2219f1e55"
+    },
+    {
+      "file": "artifacts/hint/src/modules/tarot/types/ritual.types.ts",
+      "sha256": "0a7d7514b68b30c98e041ae5519467fcbadc273e02e559ac05a259103eb0fa5a"
+    },
+    {
+      "file": "artifacts/hint/src/product/ProductRouter.tsx",
+      "sha256": "23d14acce77633da44a473da59b96cb2f66a7ca21d8845b35aedd596c65ffe44"
+    },
+    {
+      "file": "artifacts/hint/src/product/RouteLoader.tsx",
+      "sha256": "06762323fce70d795c0550e2136d7c233b8666e72cc49199bff1bcf0639a1bc9"
+    },
+    {
+      "file": "artifacts/hint/src/product/roomPreload.ts",
+      "sha256": "9bfe6c868e4f92abc93f944a455a4e26fd60dace49b0a307dccb5d4c0822af53"
+    },
+    {
+      "file": "artifacts/hint/src/shared/hooks/useCardCollection.ts",
+      "sha256": "0d4e4ce8aa7f18a1be6066f955648c217cad062adace0723ace11a93eae2f117"
+    },
+    {
+      "file": "artifacts/hint/src/shared/navigation/RedirectTo.tsx",
+      "sha256": "64ea54165451f661ddd1597e8b88d0a74177ace949c1c8ab30c348c7c55a7819"
+    },
+    {
+      "file": "artifacts/hint/src/shared/tarot/cardCollection.ts",
+      "sha256": "82c215ec664f20df1fe6bb0751182d0acf2922586894355d3cf71ffc3ba92db3"
+    },
+    {
+      "file": "artifacts/hint/src/shared/ui/SafeImage.tsx",
+      "sha256": "1df1914c05335672683fb91208f17bb1268d85f028d3d0d1329f7bbdf08679ba"
+    },
+    {
+      "file": "artifacts/hint/src/types/astrology.ts",
+      "sha256": "c3c2d41221f991475f2d4d709736074fb1b9cb2c0ca8709dfc75102a3ac4c9cb"
+    },
+    {
+      "file": "artifacts/hint/src/types/qrcode.d.ts",
+      "sha256": "ab341229c85b59f39c77c152d582caef8911935d594cf9bc6d9493973e43df7d"
+    },
+    {
+      "file": "artifacts/hint/tsconfig.json",
+      "sha256": "e0a2fd8a7f3bfc860ccab5623b1881e754eb02336612708ff8b59215e8c256c9"
+    },
+    {
+      "file": "artifacts/hint/vite.config.ts",
+      "sha256": "e68a8205d1381c33b569d846cb67f957ab6a56b3ba3e824708e5149fb59858b8"
+    }
+  ]
+}

@@ -1,0 +1,1774 @@
+{
+  "language": "ja",
+  "theme": "bright",
+  "report": [
+    {
+      "route": "/app",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 今日 ",
+            " あなたのHint は 待っています。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "カードの振り返り ✦"
+          ],
+          "controls": [
+            {
+              "label": "今日のHintをめくる✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "今日のHintカードをめくる",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "タップして詳細を見る",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ タップして詳細を見る ",
+              "width": 132.203125,
+              "height": 44
+            },
+            {
+              "label": "カードの振り返り ✦",
+              "width": 142.390625,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " 今日 ",
+            " あなたのHint は 待っています。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "カードの振り返り ✦"
+          ],
+          "controls": [
+            {
+              "label": "今日のHintをめくる✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "今日のHintカードをめくる",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "タップして詳細を見る",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ タップして詳細を見る ",
+              "width": 132.203125,
+              "height": 44
+            },
+            {
+              "label": "カードの振り返り ✦",
+              "width": 142.390625,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " あなたのHint は 待っています。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "カードの振り返り ✦"
+          ],
+          "controls": [
+            {
+              "label": "今日のHintをめくる✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "今日のHintカードをめくる",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "タップして詳細を見る",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ タップして詳細を見る ",
+              "width": 132.203125,
+              "height": 44
+            },
+            {
+              "label": "カードの振り返り ✦",
+              "width": 142.390625,
+              "height": 63
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/daily",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "毎日の空のカード",
+            "形を与えると、エネルギーは扱いやすくなります。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "火8日9月",
+            "水9日9月",
+            "今夜10日9月",
+            "金11日9月",
+            "土12日9月"
+          ],
+          "controls": [
+            {
+              "label": "日",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "週",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "月",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "年",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "デイリーカレンダー",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "前へ 日",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "次へ 日",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "2026年9月8日",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月9日",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月10日",
+              "width": 71.609375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月11日",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026年9月12日",
+              "width": 71.59375,
+              "height": 76
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "送る前に、メッセージを一度読み返す。タイミングもサインの一部です。",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "送らなくていい一文を書く。すべての真実に観客は必要ありません。",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "明日の朝の自分を守る計画を選ぶ。未来のあなたも今日のリーディングにいます。",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/astrology",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "占星術",
+            "出生情報から始める"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "12星座",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生図",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "トランジット",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生情報",
+              "width": 60.328125,
+              "height": 44
+            },
+            {
+              "label": "二人の星図",
+              "width": 71.40625,
+              "height": 44
+            },
+            {
+              "label": "レポートのプレビュー",
+              "width": 126.8125,
+              "height": 44
+            },
+            {
+              "label": "まず12星座を見る",
+              "width": 112.59375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "占星術",
+            "出生情報から始める"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "12星座",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生図",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "トランジット",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生情報",
+              "width": 60.328125,
+              "height": 44
+            },
+            {
+              "label": "二人の星図",
+              "width": 71.40625,
+              "height": 44
+            },
+            {
+              "label": "レポートのプレビュー",
+              "width": 126.8125,
+              "height": 44
+            },
+            {
+              "label": "まず12星座を見る",
+              "width": 112.59375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "占星術",
+            "出生情報から始める"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "12星座",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生図",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "トランジット",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "出生情報",
+              "width": 60.328125,
+              "height": 44
+            },
+            {
+              "label": "二人の星図",
+              "width": 71.40625,
+              "height": 44
+            },
+            {
+              "label": "レポートのプレビュー",
+              "width": 126.8125,
+              "height": 44
+            },
+            {
+              "label": "まず12星座を見る",
+              "width": 112.59375,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/animal-tarot",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 動物のテラス ",
+            " 一匹の動物を迎えましょう。 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " 一匹の動物を迎えましょう。 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " 動物カードを引く "
+          ],
+          "controls": [
+            {
+              "label": " 動物カードを引く ",
+              "width": 162.03125,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " 一匹の動物を迎えましょう。 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " 動物カードを引く "
+          ],
+          "controls": [
+            {
+              "label": " 動物カードを引く ",
+              "width": 162.03125,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/collection",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " あなたのカードの記録 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "今日のレア報酬を開く：隠者",
+              "width": 219.0625,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "ワンドの3",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドの4",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドの5",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドの6",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドの7",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドの8",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドの9",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドの10",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドのペイジ",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドのナイト",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドのクイーン",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ワンドのキング",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "カップのエース",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "カップの2",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "カップの3",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "ペンタクルの3",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルの4",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルの5",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルの6",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルの7",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルの8",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルの9",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルの10",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルのペイジ",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルのナイト",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルのクイーン",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "ペンタクルのキング",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/personalities",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "あなたのタイプを見つける",
+            "ストレスを感じると、普段は："
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "距離を置く",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "希望を持つ",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "計画を立てる",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "すぐに反応する",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "あなたのタイプを見つける",
+            "ストレスを感じると、普段は："
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "距離を置く",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "希望を持つ",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "計画を立てる",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "すぐに反応する",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "あなたのタイプを見つける",
+            "ストレスを感じると、普段は："
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "距離を置く",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "希望を持つ",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "計画を立てる",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "すぐに反応する",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/ask",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "リーディングになる前に、まず言葉にする。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "本当の質問を見つけたいです。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "カードを引く前に、少し一緒に整理してくれますか？",
+              "width": 358,
+              "height": 64.5
+            },
+            {
+              "label": "ある人のことをずっと考えています。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "送信",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "リーディングになる前に、まず言葉にする。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "本当の質問を見つけたいです。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "カードを引く前に、少し一緒に整理してくれますか？",
+              "width": 358,
+              "height": 64.5
+            },
+            {
+              "label": "ある人のことをずっと考えています。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "送信",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "リーディングになる前に、まず言葉にする。"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "本当の質問を見つけたいです。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "カードを引く前に、少し一緒に整理してくれますか？",
+              "width": 358,
+              "height": 64.5
+            },
+            {
+              "label": "ある人のことをずっと考えています。",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "送信",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/readings",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "リーディング記録",
+            " あなたのHintの記録 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "すべて1",
+              "width": 93.625,
+              "height": 44
+            },
+            {
+              "label": "タロット0",
+              "width": 105.625,
+              "height": 44
+            },
+            {
+              "label": "デイリー1",
+              "width": 105.625,
+              "height": 44
+            },
+            {
+              "label": "占星術",
+              "width": 64.015625,
+              "height": 44
+            },
+            {
+              "label": "質問0",
+              "width": 81.625,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/profile",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "プロフィール",
+            "夜のゲスト"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "プロフィール編集",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "別の端末内プロフィールを作る",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "暗いルーム",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "明るいルーム",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "言語を選択",
+              "width": 102.4375,
+              "height": 44
+            },
+            {
+              "label": "動きを減らす",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "音と触覚",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "夜のゲスト"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "プロフィール編集",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "別の端末内プロフィールを作る",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "暗いルーム",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "明るいルーム",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "言語を選択",
+              "width": 102.4375,
+              "height": 44
+            },
+            {
+              "label": "動きを減らす",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "音と触覚",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "別の端末内プロフィールを作る",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "暗いルーム",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "明るいルーム",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "言語を選択",
+              "width": 102.4375,
+              "height": 44
+            },
+            {
+              "label": "動きを減らす",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "音と触覚",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/rooms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "今必要な部屋を選ぶ。",
+            "内省",
+            "タロット"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "部屋を検索",
+              "width": 348,
+              "height": 48
+            },
+            {
+              "label": "すべて",
+              "width": 59.25,
+              "height": 44
+            },
+            {
+              "label": "内省",
+              "width": 48.171875,
+              "height": 44
+            },
+            {
+              "label": "タロット",
+              "width": 70.328125,
+              "height": 44
+            },
+            {
+              "label": "関係",
+              "width": 48.171875,
+              "height": 44
+            },
+            {
+              "label": "星読み",
+              "width": 59.25,
+              "height": 44
+            },
+            {
+              "label": "内なる自分",
+              "width": 81.40625,
+              "height": 44
+            },
+            {
+              "label": "成長",
+              "width": 48.171875,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 12,
+              "height": 12
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "タロット",
+            "関係",
+            "星読み"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "関係",
+            "星読み",
+            "内なる自分"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/journal",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "感情日記"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "やわらかい",
+              "width": 85.40625,
+              "height": 44
+            },
+            {
+              "label": "軽い",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "重い",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "静か",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "希望がある",
+              "width": 85.40625,
+              "height": 44
+            },
+            {
+              "label": "このページを保存",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "再試行",
+              "width": 58.015625,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "感情日記"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "やわらかい",
+              "width": 85.40625,
+              "height": 44
+            },
+            {
+              "label": "軽い",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "重い",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "静か",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "希望がある",
+              "width": 85.40625,
+              "height": 44
+            },
+            {
+              "label": "このページを保存",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "再試行",
+              "width": 58.015625,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "やわらかい",
+              "width": 85.40625,
+              "height": 44
+            },
+            {
+              "label": "軽い",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "重い",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "静か",
+              "width": 52.171875,
+              "height": 44
+            },
+            {
+              "label": "希望がある",
+              "width": 85.40625,
+              "height": 44
+            },
+            {
+              "label": "このページを保存",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "再試行",
+              "width": 58.015625,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/dream",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "夢の読み解き"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "夢の読み解き"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/compatibility",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Shared chart room",
+            "二つのチャートをわかりやすく比較。",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "招待リンクを作成",
+              "width": 151.421875,
+              "height": 48
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "二つのチャートをわかりやすく比較。",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "招待リンクを作成",
+              "width": 151.421875,
+              "height": 48
+            },
+            {
+              "label": "名前",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "生年月日",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生時刻",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生地",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "場所を検索",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "名前",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "生年月日",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生時刻",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "出生地",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "場所を検索",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "緯度",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "経度",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "タイムゾーン",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "タイムゾーン差",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "出生情報を保存",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/login",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "ログインまたは登録"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "別の端末内プロフィールを作る",
+              "width": 386,
+              "height": 44
+            },
+            {
+              "label": "登録",
+              "width": 59.046875,
+              "height": 44
+            },
+            {
+              "label": "ログイン",
+              "width": 84.09375,
+              "height": 44
+            },
+            {
+              "label": "メール",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "電話",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "メール",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "電話",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "デモコードを生成",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "テストアカウントを使う",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "デモコードを生成",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "テストアカウントを使う",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/about",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Hintについて"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Hintについて"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Hintについて"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "プライバシーポリシー"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "プライバシーポリシー"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "プライバシーポリシー"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/terms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "利用規約"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "利用規約"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "利用規約"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/disclaimer",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "免責事項"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "免責事項"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "免責事項"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "連絡先"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "連絡先"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "連絡先"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "runtimeErrors": [],
+  "navigationDiagnostics": []
+}

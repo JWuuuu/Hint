@@ -1,0 +1,2221 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/Users/jwu/Documents/Hint-main/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/tmp/hint-wash-20260911/playwright.config.mjs",
+      "tarot-wash-refinement.spec.ts",
+      "tarot-room.spec.ts",
+      "--grep",
+      "manual wash|wash and cut|stationary hand|delayed squaring|release reaches|reduced motion keeps|wash has accessible|tap without|wash table stops|rapid Auto|interrupted automatic|backgrounded cut|cancelled wash|reduced motion completes|Auto Wash avoids|completes and restores|spread .* remains contained|five consecutive rituals|receipt preview and exported"
+    ],
+    "configFile": "/tmp/hint-wash-20260911/playwright.config.mjs",
+    "rootDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-wash-20260911/e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/tmp/hint-wash-20260911/e2e",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/tmp/hint-wash-20260911/e2e-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "tarot-room.spec.ts",
+      "file": "tarot-room.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Tarot wash has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4479,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:33:38.463Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-45db298184ef507b6dce",
+          "file": "tarot-room.spec.ts",
+          "line": 658,
+          "column": 1
+        },
+        {
+          "title": "completes and restores the full Tarot Room journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 25055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:33:43.096Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3e7f6c115a77fef16424",
+          "file": "tarot-room.spec.ts",
+          "line": 925,
+          "column": 1
+        },
+        {
+          "title": "a tap without movement cannot finish a manual wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3783,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:34:08.157Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-94d318accc644ee6f3f0",
+          "file": "tarot-room.spec.ts",
+          "line": 1106,
+          "column": 1
+        },
+        {
+          "title": "the wash table stops repainting while idle or after a rejected gesture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5368,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:34:11.946Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-30dfddfa9926c6ad70a2",
+          "file": "tarot-room.spec.ts",
+          "line": 1129,
+          "column": 1
+        },
+        {
+          "title": "a real manual wash release completes the automatic ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8917,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:34:17.318Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ea6e83783657d87e7778",
+          "file": "tarot-room.spec.ts",
+          "line": 1168,
+          "column": 1
+        },
+        {
+          "title": "rapid Auto Wash requests advance through one ordered ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12224,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:34:26.241Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2ce6156789e01f55542d",
+          "file": "tarot-room.spec.ts",
+          "line": 1226,
+          "column": 1
+        },
+        {
+          "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11049,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:34:38.472Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-62f3da85b40e524ac0a6",
+          "file": "tarot-room.spec.ts",
+          "line": 1239,
+          "column": 1
+        },
+        {
+          "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10695,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:34:49.527Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6ca8f9ff50d693bec1e7",
+          "file": "tarot-room.spec.ts",
+          "line": 1250,
+          "column": 1
+        },
+        {
+          "title": "a cancelled wash gesture stays in the wash stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4036,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:35:00.228Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2aebb877f63ed6abeb14",
+          "file": "tarot-room.spec.ts",
+          "line": 1291,
+          "column": 1
+        },
+        {
+          "title": "receipt preview and exported PNG keep the question and chat private by default",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6356,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:35:04.271Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8b141028c96a3de19d39",
+          "file": "tarot-room.spec.ts",
+          "line": 1424,
+          "column": 1
+        },
+        {
+          "title": "system reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2274,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:35:10.632Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-be2cabb6fe12e556a402",
+          "file": "tarot-room.spec.ts",
+          "line": 1596,
+          "column": 3
+        },
+        {
+          "title": "hint reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2239,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:35:12.909Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-700ba5d343208e9c2b2d",
+          "file": "tarot-room.spec.ts",
+          "line": 1596,
+          "column": 3
+        },
+        {
+          "title": "Auto Wash avoids sustained animation stalls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12286,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:35:15.154Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-172b130ba36ecb884db4",
+          "file": "tarot-room.spec.ts",
+          "line": 1610,
+          "column": 1
+        },
+        {
+          "title": "five consecutive rituals do not degrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 140000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 71802,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:35:27.445Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a8f5b7d47f3e7413ba1f",
+          "file": "tarot-room.spec.ts",
+          "line": 2025,
+          "column": 1
+        },
+        {
+          "title": "spread single remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1844,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:39.170Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2f639fe614ff9e72a70c",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread three remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1928,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:41.018Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8ece823f765bc53e9ec7",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread peachBlossom remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1833,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:42.951Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-81b7d8719d94cab42553",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread futureLover remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1894,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:44.788Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5a2e74589ff37e85501d",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread xRelationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1934,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:46.687Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-7c495e431052fe9243ed",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread relationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1877,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:48.625Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c257cecac61137fdc22c",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread reconciliation remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1881,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:50.506Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8d3133a5ac776d6e4580",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread trueHeart remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1859,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:52.391Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-314ad2497a50a9a74d7a",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread loveTree remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1848,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:54.254Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a3bd70839b18c8b93692",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "Tarot wash has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4573,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:37:45.001Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2e510f3c8dea11d48b63",
+          "file": "tarot-room.spec.ts",
+          "line": 658,
+          "column": 1
+        },
+        {
+          "title": "completes and restores the full Tarot Room journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 24411,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:37:49.702Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ab603ca8322fcc04b1f4",
+          "file": "tarot-room.spec.ts",
+          "line": 925,
+          "column": 1
+        },
+        {
+          "title": "a tap without movement cannot finish a manual wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3753,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:38:14.119Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0706802bddc02879bfb4",
+          "file": "tarot-room.spec.ts",
+          "line": 1106,
+          "column": 1
+        },
+        {
+          "title": "the wash table stops repainting while idle or after a rejected gesture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5257,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:38:17.876Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3b3eac7810c1003dbad2",
+          "file": "tarot-room.spec.ts",
+          "line": 1129,
+          "column": 1
+        },
+        {
+          "title": "a real manual wash release completes the automatic ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8748,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:38:23.137Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ddd7d57a5b20c0856372",
+          "file": "tarot-room.spec.ts",
+          "line": 1168,
+          "column": 1
+        },
+        {
+          "title": "rapid Auto Wash requests advance through one ordered ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11988,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:38:31.890Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e5aa8657014cf9c3cd04",
+          "file": "tarot-room.spec.ts",
+          "line": 1226,
+          "column": 1
+        },
+        {
+          "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11026,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:38:43.882Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-18cc98512248a0d1e7a0",
+          "file": "tarot-room.spec.ts",
+          "line": 1239,
+          "column": 1
+        },
+        {
+          "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10486,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:38:54.913Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8b9fb0a71c3405aca2a2",
+          "file": "tarot-room.spec.ts",
+          "line": 1250,
+          "column": 1
+        },
+        {
+          "title": "a cancelled wash gesture stays in the wash stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3890,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:05.404Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-4cde87e951859d0d8cf9",
+          "file": "tarot-room.spec.ts",
+          "line": 1291,
+          "column": 1
+        },
+        {
+          "title": "receipt preview and exported PNG keep the question and chat private by default",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6221,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:09.298Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-55760e02bf42cfdd68dd",
+          "file": "tarot-room.spec.ts",
+          "line": 1424,
+          "column": 1
+        },
+        {
+          "title": "system reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2164,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:15.524Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-04ef48342c09d6f3f9e4",
+          "file": "tarot-room.spec.ts",
+          "line": 1596,
+          "column": 3
+        },
+        {
+          "title": "hint reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2177,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:17.691Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-bc1cc4c2960b2a694225",
+          "file": "tarot-room.spec.ts",
+          "line": 1596,
+          "column": 3
+        },
+        {
+          "title": "Auto Wash avoids sustained animation stalls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "One primary-device frame pacing gate",
+                  "location": {
+                    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+                    "line": 1611,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 119,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:19.873Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "One primary-device frame pacing gate",
+                      "location": {
+                        "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+                        "line": 1611,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-db18e46ab292366aa090",
+          "file": "tarot-room.spec.ts",
+          "line": 1610,
+          "column": 1
+        },
+        {
+          "title": "five consecutive rituals do not degrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "One primary-device soak run",
+                  "location": {
+                    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+                    "line": 2026,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 121,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:19.996Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "One primary-device soak run",
+                      "location": {
+                        "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+                        "line": 2026,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f27424732157a5ca6554",
+          "file": "tarot-room.spec.ts",
+          "line": 2025,
+          "column": 1
+        },
+        {
+          "title": "spread single remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1795,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:20.121Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c31c3064bcf854ede467",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread three remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1814,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:21.919Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b767d58d54304a75a4f9",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread peachBlossom remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1858,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:23.738Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b892a5cefc552ba608f8",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread futureLover remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1812,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:25.601Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-34ad05caec3fdbc7ba8a",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread xRelationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1859,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:27.418Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-9b199ba097a47a5ac314",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread relationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1817,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:29.281Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-945076e9f84ef8713d9f",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread reconciliation remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1817,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:31.101Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d414b061b2910c416794",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread trueHeart remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1829,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:32.922Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3d8c854996d26df096b0",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        },
+        {
+          "title": "spread loveTree remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1871,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:34.755Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ba26572381cc53b3a3f2",
+          "file": "tarot-room.spec.ts",
+          "line": 2099,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "tarot-wash-refinement.spec.ts",
+      "file": "tarot-wash-refinement.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "manual wash uses the full table and keeps its geometry while gathering",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7125,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:36:56.112Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "wash-ready",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-17-pro-max/attachments/wash-ready-edbb49db5b03cff2e8f463e689addc30f4539662.png"
+                    },
+                    {
+                      "name": "wash-in-motion",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-17-pro-max/attachments/wash-in-motion-471a10a089cd96d608a75de36e9f4f00d884e5a8.png"
+                    },
+                    {
+                      "name": "wash-gathering",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-17-pro-max/attachments/wash-gathering-e388ba78e7418b3ddb8e61f64d17138406550248.png"
+                    },
+                    {
+                      "name": "wash-to-cut",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-17-pro-max/attachments/wash-to-cut-9b29737b9abaa93cafa499f2db1a388132e69c33.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-d879bb4ff8741335fdcf",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "release reaches cutting promptly even if the WebView drops transition events",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:37:03.243Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-627f94efc003a6d5aba4",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 97,
+          "column": 1
+        },
+        {
+          "title": "reduced motion keeps Auto Wash functional without playing the decorative wash",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3216,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Cutting the deck.' })\nExpected: visible\nTimeout: 1200ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 1200ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Cutting the deck.' })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Cutting the deck.' })\nExpected: visible\nTimeout: 1200ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 1200ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Cutting the deck.' })\u001b[22m\n\n    at /Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-wash-refinement.spec.ts:112:74",
+                    "location": {
+                      "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-wash-refinement.spec.ts",
+                      "column": 74,
+                      "line": 112
+                    },
+                    "snippet": "  110 |   const startedAt = Date.now();\n  111 |   await page.getByRole(\"button\", { name: \"Auto Wash\", exact: true }).click();\n> 112 |   await expect(page.getByRole(\"heading\", { name: \"Cutting the deck.\" })).toBeVisible({ timeout: 1200 });\n      |                                                                          ^\n  113 |   expect(Date.now() - startedAt).toBeLessThan(1200);\n  114 | });\n  115 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-wash-refinement.spec.ts",
+                        "column": 74,
+                        "line": 112
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Cutting the deck.' })\nExpected: visible\nTimeout: 1200ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 1200ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Cutting the deck.' })\u001b[22m\n\n\n  110 |   const startedAt = Date.now();\n  111 |   await page.getByRole(\"button\", { name: \"Auto Wash\", exact: true }).click();\n> 112 |   await expect(page.getByRole(\"heading\", { name: \"Cutting the deck.\" })).toBeVisible({ timeout: 1200 });\n      |                                                                          ^\n  113 |   expect(Date.now() - startedAt).toBeLessThan(1200);\n  114 | });\n  115 |\n    at /Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-wash-refinement.spec.ts:112:74"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:37:09.645Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-redu-e66c5-playing-the-decorative-wash-iphone-17-pro-max/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-redu-e66c5-playing-the-decorative-wash-iphone-17-pro-max/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-redu-e66c5-playing-the-decorative-wash-iphone-17-pro-max/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-wash-refinement.spec.ts",
+                    "column": 74,
+                    "line": 112
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-af462d7ecad9a3420949",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "wash and cut meet at the same opaque card without a size or position jump",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9991,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:37:13.250Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "wash-cut-seam",
+                      "contentType": "application/json",
+                      "body": "eyJnYXRoZXJlZCI6eyJzdGFnZSI6ImdhdGhlcmluZyIsIngiOjE5MSwieSI6NDk1Ljc5OTk4Nzc5Mjk2ODc1LCJ3aWR0aCI6NTgsImhlaWdodCI6OTIsIm9wYWNpdHkiOjF9LCJjdXQiOnsic3RhZ2UiOiJjdXR0aW5nIiwieCI6MTkxLCJ5Ijo0OTUuNzk2ODc1LCJ3aWR0aCI6NTgsImhlaWdodCI6OTIsIm9wYWNpdHkiOjF9fQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-fd96177e9556e84168f9",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 116,
+          "column": 1
+        },
+        {
+          "title": "a stationary hand lets the cards rest and keeps only clockwise guidance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10981,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:37:23.372Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-be5f82a1a3e8e1b3a69e",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 149,
+          "column": 1
+        },
+        {
+          "title": "a delayed squaring timer recovers even when transition events are lost",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:37:34.359Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-5561757c01b3e74425af",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 167,
+          "column": 1
+        },
+        {
+          "title": "manual wash uses the full table and keeps its geometry while gathering",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6915,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:36.637Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "wash-ready",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-se/attachments/wash-ready-6087de2b18e2d8ab3b32bb7d137efb2e9363863c.png"
+                    },
+                    {
+                      "name": "wash-in-motion",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-se/attachments/wash-in-motion-99e7abfa20ff49321ad25a086ea3a526937c0b57.png"
+                    },
+                    {
+                      "name": "wash-gathering",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-se/attachments/wash-gathering-77bce49dc32074f74b7329223eeda698e3eea59f.png"
+                    },
+                    {
+                      "name": "wash-to-cut",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-wash-20260911/e2e/tarot-wash-refinement-manu-709d1-ts-geometry-while-gathering-iphone-se/attachments/wash-to-cut-2c2b5f4e2e01a7e46bb17df10c0827aa5b7aaf83.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-3f8d7cbe9d9e0872bf25",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 57,
+          "column": 1
+        },
+        {
+          "title": "release reaches cutting promptly even if the WebView drops transition events",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6454,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:43.557Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-ff6d4afab1d5be7d23a2",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 97,
+          "column": 1
+        },
+        {
+          "title": "reduced motion keeps Auto Wash functional without playing the decorative wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2689,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:50.014Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-aa45f957851ebbd24411",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "wash and cut meet at the same opaque card without a size or position jump",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9874,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:39:52.707Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "wash-cut-seam",
+                      "contentType": "application/json",
+                      "body": "eyJnYXRoZXJlZCI6eyJzdGFnZSI6ImdhdGhlcmluZyIsIngiOjE2MC41LCJ5IjozODMuNTIwMDE5NTMxMjUsIndpZHRoIjo1NCwiaGVpZ2h0Ijo4Niwib3BhY2l0eSI6MX0sImN1dCI6eyJzdGFnZSI6ImN1dHRpbmciLCJ4IjoxNjAuNSwieSI6MzgzLjUxNTYyNSwid2lkdGgiOjU0LCJoZWlnaHQiOjg2LCJvcGFjaXR5IjoxfX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-8e8ad29e2d50efd2677a",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 116,
+          "column": 1
+        },
+        {
+          "title": "a stationary hand lets the cards rest and keeps only clockwise guidance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10859,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:40:02.586Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-7aed3317e77a2db50424",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 149,
+          "column": 1
+        },
+        {
+          "title": "a delayed squaring timer recovers even when transition events are lost",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10467,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-12T03:40:13.450Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f37675710bb7f2bf3b0-979832b3c664901c5d52",
+          "file": "tarot-wash-refinement.spec.ts",
+          "line": 167,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-12T03:33:38.136Z",
+    "duration": 405975.375,
+    "expected": 55,
+    "skipped": 2,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

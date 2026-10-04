@@ -1,0 +1,2 @@
+"NSMicrophoneUsageDescription" = "Usa el micrófono para decir tu pregunta. También puedes escribirla.";
+"NSSpeechRecognitionUsageDescription" = "Convierte tu pregunta hablada en texto para revisarla antes de enviarla.";

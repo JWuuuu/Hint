@@ -1,0 +1,254 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/Users/jwu/Documents/Hint-main/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/tmp/hint-me-entrances-20260910/playwright.dev.config.ts",
+      "room-entrances.spec.ts",
+      "-g",
+      "quick first"
+    ],
+    "configFile": "/tmp/hint-me-entrances-20260910/playwright.dev.config.ts",
+    "rootDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-me-entrances-20260910/dev-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/tmp/hint-me-entrances-20260910/dev-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/tmp/hint-me-entrances-20260910/dev-e2e.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "room-entrances.spec.ts",
+      "file": "room-entrances.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 2007,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n    at /Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts:125:51",
+                    "location": {
+                      "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts",
+                      "column": 51,
+                      "line": 125
+                    },
+                    "snippet": "  123 |   await page.locator('.reference-home-crisp a[href$=\"/app/tarot\"]').click();\n  124 |   await assertEntrance(page, \"tarot\");\n> 125 |   expect((await records(page))[0]!.launchVisible).toBe(false);\n      |                                                   ^\n  126 |   await expect(page.getByPlaceholder(\"Type your question...\")).toBeVisible();\n  127 | });\n  128 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts",
+                        "column": 51,
+                        "line": 125
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n\n  123 |   await page.locator('.reference-home-crisp a[href$=\"/app/tarot\"]').click();\n  124 |   await assertEntrance(page, \"tarot\");\n> 125 |   expect((await records(page))[0]!.launchVisible).toBe(false);\n      |                                                   ^\n  126 |   await expect(page.getByPlaceholder(\"Type your question...\")).toBeVisible();\n  127 | });\n  128 |\n    at /Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts:125:51"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T23:20:26.759Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-me-entrances-20260910/dev-results/room-entrances-a-quick-fir-fdc77--launch-sequence-over-Tarot-iphone-17-pro-max/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/hint-me-entrances-20260910/dev-results/room-entrances-a-quick-fir-fdc77--launch-sequence-over-Tarot-iphone-17-pro-max/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/hint-me-entrances-20260910/dev-results/room-entrances-a-quick-fir-fdc77--launch-sequence-over-Tarot-iphone-17-pro-max/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts",
+                    "column": 51,
+                    "line": 125
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-e9c39952211526cc9bfc",
+          "file": "room-entrances.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1521,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n    at /Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts:125:51",
+                    "location": {
+                      "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts",
+                      "column": 51,
+                      "line": 125
+                    },
+                    "snippet": "  123 |   await page.locator('.reference-home-crisp a[href$=\"/app/tarot\"]').click();\n  124 |   await assertEntrance(page, \"tarot\");\n> 125 |   expect((await records(page))[0]!.launchVisible).toBe(false);\n      |                                                   ^\n  126 |   await expect(page.getByPlaceholder(\"Type your question...\")).toBeVisible();\n  127 | });\n  128 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts",
+                        "column": 51,
+                        "line": 125
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m\n\n  123 |   await page.locator('.reference-home-crisp a[href$=\"/app/tarot\"]').click();\n  124 |   await assertEntrance(page, \"tarot\");\n> 125 |   expect((await records(page))[0]!.launchVisible).toBe(false);\n      |                                                   ^\n  126 |   await expect(page.getByPlaceholder(\"Type your question...\")).toBeVisible();\n  127 | });\n  128 |\n    at /Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts:125:51"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T23:20:29.173Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/tmp/hint-me-entrances-20260910/dev-results/room-entrances-a-quick-fir-fdc77--launch-sequence-over-Tarot-iphone-se/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/hint-me-entrances-20260910/dev-results/room-entrances-a-quick-fir-fdc77--launch-sequence-over-Tarot-iphone-se/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/hint-me-entrances-20260910/dev-results/room-entrances-a-quick-fir-fdc77--launch-sequence-over-Tarot-iphone-se/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-entrances.spec.ts",
+                    "column": 51,
+                    "line": 125
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-5813bea14c5ada5a1bc8",
+          "file": "room-entrances.spec.ts",
+          "line": 121,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T23:20:26.527Z",
+    "duration": 4393.168,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

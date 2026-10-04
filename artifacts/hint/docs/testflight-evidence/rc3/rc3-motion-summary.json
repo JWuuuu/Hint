@@ -1,0 +1,953 @@
+{
+  "browserOnly": true,
+  "standaloneWorker": true,
+  "tests": {
+    "startTime": "2026-09-10T20:06:21.029Z",
+    "duration": 101663.678,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "all": {
+    "windows": 40,
+    "totalFrames": 4529,
+    "windowP95RangeMs": [
+      18,
+      29
+    ],
+    "maxFrameGapMs": 68,
+    "framesAtLeast100Ms": 0,
+    "maxConsecutive100MsGaps": 0
+  },
+  "coldIdle": {
+    "windows": 8,
+    "totalFrames": 741,
+    "windowP95RangeMs": [
+      18,
+      29
+    ],
+    "maxFrameGapMs": 36,
+    "framesAtLeast100Ms": 0,
+    "maxConsecutive100MsGaps": 0
+  },
+  "interaction": {
+    "windows": 32,
+    "totalFrames": 3788,
+    "windowP95RangeMs": [
+      18,
+      27
+    ],
+    "maxFrameGapMs": 68,
+    "framesAtLeast100Ms": 0,
+    "maxConsecutive100MsGaps": 0
+  },
+  "byWindow": {
+    "animal-reveal": {
+      "windows": 8,
+      "totalFrames": 774,
+      "windowP95RangeMs": [
+        23,
+        27
+      ],
+      "maxFrameGapMs": 44,
+      "framesAtLeast100Ms": 0,
+      "maxConsecutive100MsGaps": 0
+    },
+    "home-idle": {
+      "windows": 8,
+      "totalFrames": 741,
+      "windowP95RangeMs": [
+        18,
+        29
+      ],
+      "maxFrameGapMs": 36,
+      "framesAtLeast100Ms": 0,
+      "maxConsecutive100MsGaps": 0
+    },
+    "home-reveal": {
+      "windows": 8,
+      "totalFrames": 740,
+      "windowP95RangeMs": [
+        19,
+        27
+      ],
+      "maxFrameGapMs": 60,
+      "framesAtLeast100Ms": 0,
+      "maxConsecutive100MsGaps": 0
+    },
+    "home-scroll": {
+      "windows": 8,
+      "totalFrames": 769,
+      "windowP95RangeMs": [
+        18,
+        25
+      ],
+      "maxFrameGapMs": 29,
+      "framesAtLeast100Ms": 0,
+      "maxConsecutive100MsGaps": 0
+    },
+    "tarot-auto-wash": {
+      "windows": 8,
+      "totalFrames": 1505,
+      "windowP95RangeMs": [
+        18,
+        27
+      ],
+      "maxFrameGapMs": 68,
+      "framesAtLeast100Ms": 0,
+      "maxConsecutive100MsGaps": 0
+    }
+  },
+  "byDevice": {
+    "iphone-17-pro-max": {
+      "windows": 20,
+      "totalFrames": 2260,
+      "windowP95RangeMs": [
+        21,
+        29
+      ],
+      "maxFrameGapMs": 60,
+      "framesAtLeast100Ms": 0,
+      "maxConsecutive100MsGaps": 0
+    },
+    "iphone-se": {
+      "windows": 20,
+      "totalFrames": 2269,
+      "windowP95RangeMs": [
+        18,
+        29
+      ],
+      "maxFrameGapMs": 68,
+      "framesAtLeast100Ms": 0,
+      "maxConsecutive100MsGaps": 0
+    }
+  },
+  "caveat": "Headless WebKit RAF intervals on the macOS host with phone viewports; not physical iPhone frame timing, touch latency, battery, native lifecycle or release readiness. Per-window p95 ranges are not a pooled frame p95. Native 60 Hz release targets remain unverified.",
+  "windows": [
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 99,
+        "p50": 17,
+        "p95": 25,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 82,
+        "p50": 17,
+        "p95": 29,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 82,
+        "p50": 17,
+        "p95": 29,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 94,
+        "p50": 17,
+        "p95": 25,
+        "max": 53,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 82,
+        "p50": 17,
+        "p95": 29,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 21,
+        "max": 22,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 82,
+        "p50": 17,
+        "p95": 29,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 474,
+        "p50": 17,
+        "p95": 23,
+        "max": 32,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 82,
+        "p50": 17,
+        "p95": 29,
+        "max": 36,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 98,
+        "p50": 16,
+        "p95": 25,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 84,
+        "p50": 17,
+        "p95": 29,
+        "max": 33,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 84,
+        "p50": 17,
+        "p95": 29,
+        "max": 33,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 94,
+        "p50": 16,
+        "p95": 26,
+        "max": 60,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 84,
+        "p50": 17,
+        "p95": 29,
+        "max": 33,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 20,
+        "max": 24,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 84,
+        "p50": 17,
+        "p95": 29,
+        "max": 33,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 475,
+        "p50": 17,
+        "p95": 18,
+        "max": 42,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 84,
+        "p50": 17,
+        "p95": 29,
+        "max": 33,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 25,
+        "max": 44,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 27,
+        "max": 58,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 24,
+        "max": 29,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 27,
+        "max": 60,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 97,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 98,
+        "p50": 17,
+        "p95": 23,
+        "max": 29,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 19,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 19,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 25,
+        "max": 52,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 19,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 25,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 19,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 24,
+        "max": 68,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 19,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 27,
+        "max": 43,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 25,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 25,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 91,
+        "p50": 17,
+        "p95": 26,
+        "max": 47,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 25,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 25,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 25,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 93,
+        "p50": 17,
+        "p95": 27,
+        "max": 38,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 25,
+        "max": 28,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 97,
+        "p50": 16,
+        "p95": 26,
+        "max": 27,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 19,
+        "max": 35,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 19,
+        "max": 35,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 24,
+        "max": 48,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 19,
+        "max": 35,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 20,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 19,
+        "max": 35,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 94,
+        "p50": 17,
+        "p95": 24,
+        "max": 43,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 19,
+        "max": 35,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 98,
+        "p50": 17,
+        "p95": 25,
+        "max": 39,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 24,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 24,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 27,
+        "max": 54,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 24,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 25,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 24,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-17-pro-max",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 27,
+        "max": 51,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 24,
+        "max": 26,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/animal-reveal-web-frames.json",
+      "window": "animal-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 95,
+        "p50": 17,
+        "p95": 25,
+        "max": 33,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 20,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/home-idle-web-frames.json",
+      "window": "home-idle",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 20,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": null
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/home-reveal-web-frames.json",
+      "window": "home-reveal",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 92,
+        "p50": 17,
+        "p95": 19,
+        "max": 54,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 20,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/home-scroll-web-frames.json",
+      "window": "home-scroll",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 18,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 20,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    },
+    {
+      "file": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/tarot-auto-wash-web-frames.json",
+      "window": "tarot-auto-wash",
+      "browserOnly": true,
+      "device": "iphone-se",
+      "metrics": {
+        "samples": 94,
+        "p50": 17,
+        "p95": 25,
+        "max": 38,
+        "over100": 0,
+        "longestStallRun": 0
+      },
+      "idleBaseline": {
+        "samples": 96,
+        "p50": 17,
+        "p95": 18,
+        "max": 20,
+        "over100": 0,
+        "longestStallRun": 0
+      }
+    }
+  ]
+}

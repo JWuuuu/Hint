@@ -3,7 +3,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
-import { rm } from "node:fs/promises";
+import { rm, readdir, readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 
 // Plugins (e.g. 'esbuild-plugin-pino') may use `require` to resolve dependencies
 globalThis.require = createRequire(import.meta.url);
@@ -13,6 +14,10 @@ const artifactDir = path.dirname(fileURLToPath(import.meta.url));
 async function buildAll() {
   const distDir = path.resolve(artifactDir, "dist");
   await rm(distDir, { recursive: true, force: true });
+  const migrationDir = path.resolve(artifactDir, "../../lib/db/migrations");
+  const expectedMigrations = await Promise.all((await readdir(migrationDir)).filter(name => /^\d.*\.sql$/.test(name)).sort().map(async name => ({
+    name, sha256: createHash("sha256").update(await readFile(path.join(migrationDir, name))).digest("hex"),
+  })));
 
   await esbuild({
     entryPoints: [path.resolve(artifactDir, "src/index.ts")],
@@ -102,6 +107,7 @@ async function buildAll() {
       "electron",
     ],
     sourcemap: "linked",
+    define: { __HINT_SCHEMA_EXPECTED__: JSON.stringify(expectedMigrations) },
     plugins: [
       // pino relies on workers to handle logging, instead of externalizing it we use a plugin to handle it
       esbuildPluginPino({ transports: ["pino-pretty"] })

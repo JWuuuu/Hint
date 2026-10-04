@@ -1,3 +1,5 @@
+import { LocalizedText } from "../../lib/LocalizedText";
+import { Link } from "wouter";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { AppScreen, ScreenHeader, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
 import { DreamSigil } from "../home/data/sigils";
@@ -35,15 +37,16 @@ export function DreamView() {
         title={t("dream.title")}
         subtitle={t("dream.subtitle")}
         sigil={DreamSigil}
-        backHref="/rooms"
-        backLabel={t("common.back")}
+        backHref="/app/rooms"
+        backLabel={t("nav.rooms")}
       />
 
       <div className="mb-4">
         <PreviewBadge />
       </div>
 
-      {/* Capture mock */}
+      <p className="mb-4 text-[13px] leading-relaxed" style={{ color: GLASS.muted }}><LocalizedText text={"This is a preview with example dream fragments. You can record a dream in your journal now."} /></p>
+      {/* Example dream prompt */}
       <GlassPanel hero className="mb-6">
         <p className="font-serif text-[13px] mb-3" style={{ color: GLASS.muted }}>
           {t("dream.question")}
@@ -56,20 +59,18 @@ export function DreamView() {
             {t("dream.placeholder")}
           </p>
         </div>
-        <div
+        <Link href="/app/journal"
           className="inline-flex items-center justify-center w-full h-11 rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em]"
           style={{
             background: "rgba(206,178,110,0.12)",
             border: "1px solid rgba(206,178,110,0.3)",
             color: ACCENT.gold,
           }}
-        >
-          {t("dream.decode")}
-        </div>
+        ><LocalizedText text={" Write in my journal "} /></Link>
       </GlassPanel>
 
       <section className="mb-6">
-        <SectionLabel>{t("dream.recent")}</SectionLabel>
+        <SectionLabel><LocalizedText text={"Example dream fragments"} /></SectionLabel>
         <div className="flex flex-col gap-3">
           {FRAGMENTS.map((f) => (
             <div

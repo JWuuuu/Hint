@@ -1,0 +1,1426 @@
+{
+  "sourceCommit": "2f6c1962aa0cee608ec536daa835148fc3a7d98a",
+  "baselineCommit": "b9594adf2f4d3114cf8bc33d6cd319d123477a13",
+  "environment": {
+    "platform": "macOS 26.6.2 arm64",
+    "logicalCpuCount": 18,
+    "memoryGiB": 24,
+    "browser": "Playwright 1.62.1 WebKit",
+    "viewport": "440x956",
+    "workers": 1
+  },
+  "method": "Baseline and merge run sequentially after functional testing, using the same isolated production protocol. Browser observations, not physical iPhone or Windows performance. No claim of a controlled hardware benchmark or native release readiness.",
+  "nativeVerified": false,
+  "baseline": {
+    "passed": 5,
+    "failed": 0,
+    "cases": [
+      {
+        "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 21768,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 75,
+                "p50": 18,
+                "p95": 39,
+                "max": 52,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 16,
+                "p95": 22,
+                "max": 23,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 75,
+                "p50": 18,
+                "p95": 39,
+                "max": 52,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 92,
+                "p50": 17,
+                "p95": 26,
+                "max": 72,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 75,
+                "p50": 18,
+                "p95": 39,
+                "max": 52,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 99,
+                "p50": 16,
+                "p95": 26,
+                "max": 29,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 75,
+                "p50": 18,
+                "p95": 39,
+                "max": 52,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 630,
+                "p50": 16,
+                "p95": 24,
+                "max": 32,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 75,
+                "p50": 18,
+                "p95": 39,
+                "max": 52,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 10458,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 31,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 25,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 31,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 92,
+                "p50": 17,
+                "p95": 26,
+                "max": 69,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 31,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 26,
+                "max": 57,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 31,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 93,
+                "p50": 17,
+                "p95": 26,
+                "max": 97,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 31,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 10451,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 25,
+                "max": 41,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 25,
+                "max": 29,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 25,
+                "max": 41,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 92,
+                "p50": 17,
+                "p95": 26,
+                "max": 57,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 25,
+                "max": 41,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 98,
+                "p50": 17,
+                "p95": 25,
+                "max": 30,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 25,
+                "max": 41,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 91,
+                "p50": 17,
+                "p95": 29,
+                "max": 98,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 25,
+                "max": 41,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 10394,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 26,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 25,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 26,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 92,
+                "p50": 17,
+                "p95": 26,
+                "max": 68,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 26,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 26,
+                "max": 29,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 26,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 25,
+                "max": 37,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 26,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "host RAF sample for repeated warm room entrances",
+        "status": "passed",
+        "durationMs": 20897,
+        "observations": [
+          {
+            "name": "warm-room-entrance-web-frames",
+            "data": {
+              "browserOnly": true,
+              "physicalDeviceEvidence": false,
+              "device": "iphone-17-pro-max",
+              "intervalMs": 1550,
+              "samples": [
+                {
+                  "feature": "tarot",
+                  "visit": 1,
+                  "metrics": {
+                    "samples": 91,
+                    "p50": 17,
+                    "p95": 26,
+                    "max": 46,
+                    "over100": 0,
+                    "elapsed": 1558
+                  }
+                },
+                {
+                  "feature": "astrology",
+                  "visit": 1,
+                  "metrics": {
+                    "samples": 93,
+                    "p50": 17,
+                    "p95": 22,
+                    "max": 26,
+                    "over100": 0,
+                    "elapsed": 1555
+                  }
+                },
+                {
+                  "feature": "tarot",
+                  "visit": 2,
+                  "metrics": {
+                    "samples": 91,
+                    "p50": 17,
+                    "p95": 25,
+                    "max": 45,
+                    "over100": 0,
+                    "elapsed": 1555
+                  }
+                },
+                {
+                  "feature": "astrology",
+                  "visit": 2,
+                  "metrics": {
+                    "samples": 93,
+                    "p50": 17,
+                    "p95": 22,
+                    "max": 27,
+                    "over100": 0,
+                    "elapsed": 1556
+                  }
+                },
+                {
+                  "feature": "tarot",
+                  "visit": 3,
+                  "metrics": {
+                    "samples": 92,
+                    "p50": 17,
+                    "p95": 26,
+                    "max": 44,
+                    "over100": 0,
+                    "elapsed": 1555
+                  }
+                },
+                {
+                  "feature": "astrology",
+                  "visit": 3,
+                  "metrics": {
+                    "samples": 92,
+                    "p50": 17,
+                    "p95": 24,
+                    "max": 27,
+                    "over100": 0,
+                    "elapsed": 1554
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "merged": {
+    "passed": 9,
+    "failed": 0,
+    "cases": [
+      {
+        "test": "Astrology host frame samples during chart, detail and scrolling",
+        "status": "passed",
+        "durationMs": 3445,
+        "observations": [
+          {
+            "name": "astrology-host-frames",
+            "data": {
+              "browserOnly": true,
+              "physicalIphoneVerified": false,
+              "idle": {
+                "samples": 73,
+                "p95": 23,
+                "max": 24,
+                "consecutive100ms": 0
+              },
+              "interaction": {
+                "samples": 73,
+                "p95": 19,
+                "max": 29,
+                "consecutive100ms": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "printer frame sample: preparation, printing and replay stay responsive",
+        "status": "passed",
+        "durationMs": 12361,
+        "observations": [
+          {
+            "name": "printer-web-frames",
+            "data": {
+              "browserOnly": true,
+              "samples": 701,
+              "p95": 18,
+              "max": 183,
+              "over100": 1,
+              "longestStallRun": 1,
+              "clickToFrame": 23
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 21699,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 23,
+                "max": 33,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 24,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 23,
+                "max": 33,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 93,
+                "p50": 17,
+                "p95": 28,
+                "max": 60,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 23,
+                "max": 33,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 99,
+                "p50": 16,
+                "p95": 27,
+                "max": 31,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 23,
+                "max": 33,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 626,
+                "p50": 17,
+                "p95": 24,
+                "max": 60,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 23,
+                "max": 33,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 10537,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 26,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 22,
+                "max": 26,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 26,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 93,
+                "p50": 17,
+                "p95": 24,
+                "max": 49,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 26,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 97,
+                "p50": 16,
+                "p95": 25,
+                "max": 29,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 26,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 90,
+                "p50": 17,
+                "p95": 25,
+                "max": 98,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 26,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 10432,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 97,
+                "p50": 17,
+                "p95": 23,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 24,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 97,
+                "p50": 17,
+                "p95": 23,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 93,
+                "p50": 17,
+                "p95": 26,
+                "max": 51,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 97,
+                "p50": 17,
+                "p95": 23,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 26,
+                "max": 70,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 97,
+                "p50": 17,
+                "p95": 23,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 90,
+                "p50": 17,
+                "p95": 27,
+                "max": 94,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 97,
+                "p50": 17,
+                "p95": 23,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+        "status": "passed",
+        "durationMs": 10485,
+        "observations": [
+          {
+            "name": "home-idle-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 24,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": null
+            }
+          },
+          {
+            "name": "home-scroll-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 22,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 24,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "home-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 94,
+                "p50": 17,
+                "p95": 25,
+                "max": 50,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 24,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "animal-reveal-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 96,
+                "p50": 17,
+                "p95": 25,
+                "max": 28,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 24,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          },
+          {
+            "name": "tarot-auto-wash-web-frame-samples",
+            "data": {
+              "browserOnly": true,
+              "device": "iphone-17-pro-max",
+              "metrics": {
+                "samples": 89,
+                "p50": 17,
+                "p95": 28,
+                "max": 94,
+                "over100": 0,
+                "longestStallRun": 0
+              },
+              "idleBaseline": {
+                "samples": 95,
+                "p50": 17,
+                "p95": 24,
+                "max": 27,
+                "over100": 0,
+                "longestStallRun": 0
+              }
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "host RAF sample for repeated warm room entrances",
+        "status": "passed",
+        "durationMs": 20914,
+        "observations": [
+          {
+            "name": "warm-room-entrance-web-frames",
+            "data": {
+              "browserOnly": true,
+              "physicalDeviceEvidence": false,
+              "device": "iphone-17-pro-max",
+              "intervalMs": 1550,
+              "samples": [
+                {
+                  "feature": "tarot",
+                  "visit": 1,
+                  "metrics": {
+                    "samples": 92,
+                    "p50": 17,
+                    "p95": 28,
+                    "max": 48,
+                    "over100": 0,
+                    "elapsed": 1555
+                  }
+                },
+                {
+                  "feature": "astrology",
+                  "visit": 1,
+                  "metrics": {
+                    "samples": 93,
+                    "p50": 17,
+                    "p95": 22,
+                    "max": 27,
+                    "over100": 0,
+                    "elapsed": 1561
+                  }
+                },
+                {
+                  "feature": "tarot",
+                  "visit": 2,
+                  "metrics": {
+                    "samples": 91,
+                    "p50": 17,
+                    "p95": 25,
+                    "max": 53,
+                    "over100": 0,
+                    "elapsed": 1554
+                  }
+                },
+                {
+                  "feature": "astrology",
+                  "visit": 2,
+                  "metrics": {
+                    "samples": 93,
+                    "p50": 17,
+                    "p95": 24,
+                    "max": 27,
+                    "over100": 0,
+                    "elapsed": 1561
+                  }
+                },
+                {
+                  "feature": "tarot",
+                  "visit": 3,
+                  "metrics": {
+                    "samples": 91,
+                    "p50": 17,
+                    "p95": 27,
+                    "max": 54,
+                    "over100": 0,
+                    "elapsed": 1564
+                  }
+                },
+                {
+                  "feature": "astrology",
+                  "visit": 3,
+                  "metrics": {
+                    "samples": 93,
+                    "p50": 17,
+                    "p95": 23,
+                    "max": 28,
+                    "over100": 0,
+                    "elapsed": 1560
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "Auto Wash avoids sustained animation stalls",
+        "status": "passed",
+        "durationMs": 14421,
+        "observations": [
+          {
+            "name": "tarot-host-frames",
+            "data": {
+              "browserOnly": true,
+              "physicalIphoneVerified": false,
+              "sampleCount": 631,
+              "p95": 26,
+              "sustainedStalls": 0
+            }
+          }
+        ],
+        "errors": []
+      },
+      {
+        "test": "five consecutive rituals do not degrade",
+        "status": "passed",
+        "durationMs": 82360,
+        "observations": [
+          {
+            "name": "tarot-five-rituals",
+            "data": {
+              "browserOnly": true,
+              "physicalIphoneVerified": false,
+              "durationsMs": [
+                16536,
+                16292,
+                16267,
+                16246,
+                16307
+              ]
+            }
+          }
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "continuation": "The first merged run completed eight cases before interruption. Only the unfinished five-ritual case was resumed, against the same source and production assets. Completed test records and their JSON observations were retained; an interrupted test was not counted as passed.",
+  "pairedFrameObservations": [
+    {
+      "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-idle",
+      "baselineP95Ms": 39,
+      "mergedP95Ms": 23,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 75,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-scroll",
+      "baselineP95Ms": 22,
+      "mergedP95Ms": 24,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 96,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-reveal",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 28,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 92,
+      "mergedSamples": 93
+    },
+    {
+      "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "animal-reveal",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 27,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 99,
+      "mergedSamples": 99
+    },
+    {
+      "test": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "tarot-auto-wash",
+      "baselineP95Ms": 24,
+      "mergedP95Ms": 24,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 630,
+      "mergedSamples": 626
+    },
+    {
+      "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-idle",
+      "baselineP95Ms": 24,
+      "mergedP95Ms": 24,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 96,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-scroll",
+      "baselineP95Ms": 25,
+      "mergedP95Ms": 22,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 96,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-reveal",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 24,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 92,
+      "mergedSamples": 93
+    },
+    {
+      "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "animal-reveal",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 25,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 95,
+      "mergedSamples": 97
+    },
+    {
+      "test": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+      "operation": "tarot-auto-wash",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 25,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 93,
+      "mergedSamples": 90
+    },
+    {
+      "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-idle",
+      "baselineP95Ms": 25,
+      "mergedP95Ms": 23,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 95,
+      "mergedSamples": 97
+    },
+    {
+      "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-scroll",
+      "baselineP95Ms": 25,
+      "mergedP95Ms": 24,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 96,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-reveal",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 26,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 92,
+      "mergedSamples": 93
+    },
+    {
+      "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "animal-reveal",
+      "baselineP95Ms": 25,
+      "mergedP95Ms": 26,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 98,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "tarot-auto-wash",
+      "baselineP95Ms": 29,
+      "mergedP95Ms": 27,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 91,
+      "mergedSamples": 90
+    },
+    {
+      "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-idle",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 24,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 95,
+      "mergedSamples": 95
+    },
+    {
+      "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-scroll",
+      "baselineP95Ms": 25,
+      "mergedP95Ms": 22,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 96,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "home-reveal",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 25,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 92,
+      "mergedSamples": 94
+    },
+    {
+      "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "animal-reveal",
+      "baselineP95Ms": 26,
+      "mergedP95Ms": 25,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 96,
+      "mergedSamples": 96
+    },
+    {
+      "test": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+      "operation": "tarot-auto-wash",
+      "baselineP95Ms": 25,
+      "mergedP95Ms": 28,
+      "baselineOver100Ms": 0,
+      "mergedOver100Ms": 0,
+      "baselineSamples": 96,
+      "mergedSamples": 89
+    }
+  ]
+}

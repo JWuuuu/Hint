@@ -9,6 +9,251 @@ import * as zod from 'zod';
 
 
 /**
+ * Only source astrologyapi with mode live is calculated personal data. Missing inputs or provider failures remain explicitly partial or fallback. Calculation metadata never claims that requested house settings were confirmed by the provider.
+ * @summary Calculate a tropical natal chart from saved birth details
+ */
+export const calculateNatalChartBodyProfileBirthDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const calculateNatalChartBodyProfileLatitudeMin = -90;
+export const calculateNatalChartBodyProfileLatitudeMax = 90;
+
+export const calculateNatalChartBodyProfileLongitudeMin = -180;
+export const calculateNatalChartBodyProfileLongitudeMax = 180;
+
+export const calculateNatalChartBodyProfileTimezoneOffsetMin = -12;
+export const calculateNatalChartBodyProfileTimezoneOffsetMax = 14;
+
+
+
+export const CalculateNatalChartBody = zod.object({
+  "profile": zod.object({
+  "id": zod.string().optional(),
+  "name": zod.string().optional(),
+  "birthDate": zod.string().regex(calculateNatalChartBodyProfileBirthDateRegExp),
+  "birthTime": zod.string().optional(),
+  "birthPlace": zod.string(),
+  "latitude": zod.number().min(calculateNatalChartBodyProfileLatitudeMin).max(calculateNatalChartBodyProfileLatitudeMax).optional(),
+  "longitude": zod.number().min(calculateNatalChartBodyProfileLongitudeMin).max(calculateNatalChartBodyProfileLongitudeMax).optional(),
+  "timezone": zod.string().optional(),
+  "timezoneOffset": zod.number().min(calculateNatalChartBodyProfileTimezoneOffsetMin).max(calculateNatalChartBodyProfileTimezoneOffsetMax).optional()
+})
+})
+
+export const calculateNatalChartResponseCalculationReturnedPlacementsMin = 0;
+
+export const calculateNatalChartResponseCalculationReturnedHousesMin = 0;
+
+export const calculateNatalChartResponseCalculationReturnedAspectsMin = 0;
+
+
+
+export const CalculateNatalChartResponse = zod.object({
+  "source": zod.enum(['astrologyapi', 'fallback']),
+  "mode": zod.enum(['live', 'partial', 'fallback']),
+  "cached": zod.boolean(),
+  "fetchedAt": zod.coerce.date(),
+  "profileHash": zod.string(),
+  "calculation": zod.object({
+  "zodiacSystem": zod.enum(['tropical']),
+  "requestedHouseSystem": zod.string(),
+  "houseSystem": zod.string().nullable().describe('House system explicitly reported by the provider; null when unconfirmed, even if a setting was requested.'),
+  "returned": zod.object({
+  "placements": zod.number().min(calculateNatalChartResponseCalculationReturnedPlacementsMin),
+  "houses": zod.number().min(calculateNatalChartResponseCalculationReturnedHousesMin),
+  "aspects": zod.number().min(calculateNatalChartResponseCalculationReturnedAspectsMin)
+}).describe('Counts of actual normalized provider data, including an Ascendant derived only from returned house one. Counts do not promise a complete chart.')
+}).optional(),
+  "validation": zod.object({
+  "partial": zod.boolean().optional(),
+  "missing": zod.array(zod.string()).optional(),
+  "message": zod.string().nullish()
+}).optional(),
+  "chart": zod.record(zod.string(), zod.unknown()).describe('Existing normalized chart payload; absent placements, houses and aspects are never inferred from calculation metadata.')
+})
+
+
+/**
+ * Retains all cross-person aspects and exact longitudes. Composite chart aspects are never used as cross-person links. No relationship score is calculated from these angles.
+ * @summary Compare two calculated natal charts with a versioned angular policy
+ */
+export const calculateSynastryChartsBodyUserProfileBirthDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const calculateSynastryChartsBodyUserProfileLatitudeMin = -90;
+export const calculateSynastryChartsBodyUserProfileLatitudeMax = 90;
+
+export const calculateSynastryChartsBodyUserProfileLongitudeMin = -180;
+export const calculateSynastryChartsBodyUserProfileLongitudeMax = 180;
+
+export const calculateSynastryChartsBodyUserProfileTimezoneOffsetMin = -12;
+export const calculateSynastryChartsBodyUserProfileTimezoneOffsetMax = 14;
+
+export const calculateSynastryChartsBodyPartnerProfileBirthDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const calculateSynastryChartsBodyPartnerProfileLatitudeMin = -90;
+export const calculateSynastryChartsBodyPartnerProfileLatitudeMax = 90;
+
+export const calculateSynastryChartsBodyPartnerProfileLongitudeMin = -180;
+export const calculateSynastryChartsBodyPartnerProfileLongitudeMax = 180;
+
+export const calculateSynastryChartsBodyPartnerProfileTimezoneOffsetMin = -12;
+export const calculateSynastryChartsBodyPartnerProfileTimezoneOffsetMax = 14;
+
+
+
+export const CalculateSynastryChartsBody = zod.object({
+  "userProfile": zod.object({
+  "id": zod.string().optional(),
+  "name": zod.string().optional(),
+  "birthDate": zod.string().regex(calculateSynastryChartsBodyUserProfileBirthDateRegExp),
+  "birthTime": zod.string().optional(),
+  "birthPlace": zod.string(),
+  "latitude": zod.number().min(calculateSynastryChartsBodyUserProfileLatitudeMin).max(calculateSynastryChartsBodyUserProfileLatitudeMax).optional(),
+  "longitude": zod.number().min(calculateSynastryChartsBodyUserProfileLongitudeMin).max(calculateSynastryChartsBodyUserProfileLongitudeMax).optional(),
+  "timezone": zod.string().optional(),
+  "timezoneOffset": zod.number().min(calculateSynastryChartsBodyUserProfileTimezoneOffsetMin).max(calculateSynastryChartsBodyUserProfileTimezoneOffsetMax).optional()
+}),
+  "partnerProfile": zod.object({
+  "id": zod.string().optional(),
+  "name": zod.string().optional(),
+  "birthDate": zod.string().regex(calculateSynastryChartsBodyPartnerProfileBirthDateRegExp),
+  "birthTime": zod.string().optional(),
+  "birthPlace": zod.string(),
+  "latitude": zod.number().min(calculateSynastryChartsBodyPartnerProfileLatitudeMin).max(calculateSynastryChartsBodyPartnerProfileLatitudeMax).optional(),
+  "longitude": zod.number().min(calculateSynastryChartsBodyPartnerProfileLongitudeMin).max(calculateSynastryChartsBodyPartnerProfileLongitudeMax).optional(),
+  "timezone": zod.string().optional(),
+  "timezoneOffset": zod.number().min(calculateSynastryChartsBodyPartnerProfileTimezoneOffsetMin).max(calculateSynastryChartsBodyPartnerProfileTimezoneOffsetMax).optional()
+})
+})
+
+export const calculateSynastryChartsResponseNatalUserCalculationReturnedPlacementsMin = 0;
+
+export const calculateSynastryChartsResponseNatalUserCalculationReturnedHousesMin = 0;
+
+export const calculateSynastryChartsResponseNatalUserCalculationReturnedAspectsMin = 0;
+
+export const calculateSynastryChartsResponseNatalPartnerCalculationReturnedPlacementsMin = 0;
+
+export const calculateSynastryChartsResponseNatalPartnerCalculationReturnedHousesMin = 0;
+
+export const calculateSynastryChartsResponseNatalPartnerCalculationReturnedAspectsMin = 0;
+
+export const calculateSynastryChartsResponseAspectsItemFromLongitudeMin = 0;
+export const calculateSynastryChartsResponseAspectsItemFromLongitudeExclusiveMax = 360;
+
+export const calculateSynastryChartsResponseAspectsItemToLongitudeMin = 0;
+export const calculateSynastryChartsResponseAspectsItemToLongitudeExclusiveMax = 360;
+
+export const calculateSynastryChartsResponseAspectsItemSeparationMin = 0;
+export const calculateSynastryChartsResponseAspectsItemSeparationMax = 180;
+
+export const calculateSynastryChartsResponseAspectsItemOrbMin = 0;
+export const calculateSynastryChartsResponseAspectsItemOrbMax = 8;
+
+
+
+export const CalculateSynastryChartsResponse = zod.object({
+  "schemaVersion": zod.literal(2),
+  "source": zod.enum(['astrologyapi', 'fallback']),
+  "mode": zod.enum(['live', 'fallback']),
+  "cached": zod.boolean(),
+  "fetchedAt": zod.coerce.date(),
+  "natal": zod.object({
+  "user": zod.object({
+  "source": zod.enum(['astrologyapi', 'fallback']),
+  "mode": zod.enum(['live', 'partial', 'fallback']),
+  "cached": zod.boolean(),
+  "fetchedAt": zod.coerce.date(),
+  "profileHash": zod.string(),
+  "calculation": zod.object({
+  "zodiacSystem": zod.enum(['tropical']),
+  "requestedHouseSystem": zod.string(),
+  "houseSystem": zod.string().nullable().describe('House system explicitly reported by the provider; null when unconfirmed, even if a setting was requested.'),
+  "returned": zod.object({
+  "placements": zod.number().min(calculateSynastryChartsResponseNatalUserCalculationReturnedPlacementsMin),
+  "houses": zod.number().min(calculateSynastryChartsResponseNatalUserCalculationReturnedHousesMin),
+  "aspects": zod.number().min(calculateSynastryChartsResponseNatalUserCalculationReturnedAspectsMin)
+}).describe('Counts of actual normalized provider data, including an Ascendant derived only from returned house one. Counts do not promise a complete chart.')
+}).optional(),
+  "validation": zod.object({
+  "partial": zod.boolean().optional(),
+  "missing": zod.array(zod.string()).optional(),
+  "message": zod.string().nullish()
+}).optional(),
+  "chart": zod.record(zod.string(), zod.unknown()).describe('Existing normalized chart payload; absent placements, houses and aspects are never inferred from calculation metadata.')
+}),
+  "partner": zod.object({
+  "source": zod.enum(['astrologyapi', 'fallback']),
+  "mode": zod.enum(['live', 'partial', 'fallback']),
+  "cached": zod.boolean(),
+  "fetchedAt": zod.coerce.date(),
+  "profileHash": zod.string(),
+  "calculation": zod.object({
+  "zodiacSystem": zod.enum(['tropical']),
+  "requestedHouseSystem": zod.string(),
+  "houseSystem": zod.string().nullable().describe('House system explicitly reported by the provider; null when unconfirmed, even if a setting was requested.'),
+  "returned": zod.object({
+  "placements": zod.number().min(calculateSynastryChartsResponseNatalPartnerCalculationReturnedPlacementsMin),
+  "houses": zod.number().min(calculateSynastryChartsResponseNatalPartnerCalculationReturnedHousesMin),
+  "aspects": zod.number().min(calculateSynastryChartsResponseNatalPartnerCalculationReturnedAspectsMin)
+}).describe('Counts of actual normalized provider data, including an Ascendant derived only from returned house one. Counts do not promise a complete chart.')
+}).optional(),
+  "validation": zod.object({
+  "partial": zod.boolean().optional(),
+  "missing": zod.array(zod.string()).optional(),
+  "message": zod.string().nullish()
+}).optional(),
+  "chart": zod.record(zod.string(), zod.unknown()).describe('Existing normalized chart payload; absent placements, houses and aspects are never inferred from calculation metadata.')
+})
+}).optional(),
+  "calculation": zod.object({
+  "method": zod.enum(['hint-angular-v1']),
+  "aspectSource": zod.enum(['hint-geometry']),
+  "zodiacSystem": zod.enum(['tropical']),
+  "orbs": zod.object({
+  "conjunction": zod.number(),
+  "opposition": zod.number(),
+  "trine": zod.number(),
+  "square": zod.number(),
+  "sextile": zod.number()
+}).describe('Fixed v1 policy in degrees. Conjunction\/opposition 8; trine\/square 6; sextile 4.')
+}).optional(),
+  "aspects": zod.array(zod.object({
+  "id": zod.string(),
+  "fromOwner": zod.enum(['user']),
+  "toOwner": zod.enum(['partner']),
+  "from": zod.string(),
+  "to": zod.string(),
+  "type": zod.enum(['conjunction', 'opposition', 'trine', 'square', 'sextile']),
+  "fromLongitude": zod.number().min(calculateSynastryChartsResponseAspectsItemFromLongitudeMin).lt(calculateSynastryChartsResponseAspectsItemFromLongitudeExclusiveMax),
+  "toLongitude": zod.number().min(calculateSynastryChartsResponseAspectsItemToLongitudeMin).lt(calculateSynastryChartsResponseAspectsItemToLongitudeExclusiveMax),
+  "separation": zod.number().min(calculateSynastryChartsResponseAspectsItemSeparationMin).max(calculateSynastryChartsResponseAspectsItemSeparationMax).describe('Shortest angular distance between the two actual positions.'),
+  "exactAngle": zod.union([zod.literal(0),zod.literal(60),zod.literal(90),zod.literal(120),zod.literal(180)]),
+  "orb": zod.number().min(calculateSynastryChartsResponseAspectsItemOrbMin).max(calculateSynastryChartsResponseAspectsItemOrbMax).describe('Absolute distance from exactAngle'),
+  "allowedOrb": zod.union([zod.literal(4),zod.literal(6),zod.literal(8)]),
+  "source": zod.enum(['hint-geometry']),
+  "tier": zod.string().optional(),
+  "meaning": zod.string().optional()
+})),
+  "summary": zod.record(zod.string(), zod.string()).optional(),
+  "plainEnglish": zod.record(zod.string(), zod.string()).optional()
+})
+
+
+/**
+ * @summary Inspect the current installation credential
+ */
+export const GetDeviceSessionResponse = zod.object({
+  "ownerId": zod.string().uuid(),
+  "expiresAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Check database connectivity and migration ledger
+ */
+export const ReadinessCheckResponse = zod.object({
+  "status": zod.string()
+})
+
+
+/**
  * Returns server health status
  * @summary Health check
  */
@@ -26,9 +271,9 @@ export const HealthCheckResponse = zod.object({
 
 export const CreateTarotReadingBody = zod.object({
   "question": zod.string().min(1).describe('The user\'s question or intention for the reading'),
-  "spreadType": zod.enum(['single', 'three', 'relationship']).describe('The type of tarot spread to use'),
+  "spreadType": zod.enum(['single', 'three', 'relationship', 'futureLover', 'peachBlossom', 'reconciliation', 'trueHeart', 'loveTree', 'xRelationship']).describe('The type of tarot spread to use'),
   "emotionalContext": zod.string().nullish().describe('Optional emotional context the user shares'),
-  "anonId": zod.string().nullish().describe('Optional anonymous user id; when present the reading is saved to history')
+  "anonId": zod.string().nullish().describe('Deprecated compatibility field. Ignored; readings belong to the authenticated installation.')
 })
 
 export const CreateTarotReadingResponse = zod.object({
@@ -75,11 +320,35 @@ export const SendAmbientChatMessageResponse = zod.object({
 
 
 /**
+ * Generates MP3 audio for an assistant message
+ * @summary Create spoken audio from text
+ */
+export const createSpeechBodyTextMax = 4096;
+
+
+
+export const CreateSpeechBody = zod.object({
+  "text": zod.string().min(1).max(createSpeechBodyTextMax).describe('Assistant text to turn into speech')
+})
+
+
+/**
  * @summary Get the profile for an anonymous user
  */
 export const GetProfileQueryParams = zod.object({
-  "anonId": zod.coerce.string()
+  "anonId": zod.coerce.string().optional().describe('Ignored; ownership comes from the authenticated installation')
 })
+
+export const getProfileResponseLatitudeMin = -90;
+export const getProfileResponseLatitudeMax = 90;
+
+export const getProfileResponseLongitudeMin = -180;
+export const getProfileResponseLongitudeMax = 180;
+
+export const getProfileResponseTimezoneOffsetMin = -12;
+export const getProfileResponseTimezoneOffsetMax = 14;
+
+
 
 export const GetProfileResponse = zod.object({
   "anonId": zod.string(),
@@ -87,6 +356,11 @@ export const GetProfileResponse = zod.object({
   "birthDate": zod.string().describe('ISO calendar date (YYYY-MM-DD)'),
   "birthTime": zod.string().nullish(),
   "birthPlace": zod.string().nullish(),
+  "latitude": zod.number().min(getProfileResponseLatitudeMin).max(getProfileResponseLatitudeMax).nullish(),
+  "longitude": zod.number().min(getProfileResponseLongitudeMin).max(getProfileResponseLongitudeMax).nullish(),
+  "timezone": zod.string().nullish(),
+  "timezoneOffset": zod.number().min(getProfileResponseTimezoneOffsetMin).max(getProfileResponseTimezoneOffsetMax).nullish(),
+  "updatedAt": zod.string().optional(),
   "createdAt": zod.string()
 })
 
@@ -97,6 +371,15 @@ export const GetProfileResponse = zod.object({
 
 
 
+export const saveProfileBodyLatitudeMin = -90;
+export const saveProfileBodyLatitudeMax = 90;
+
+export const saveProfileBodyLongitudeMin = -180;
+export const saveProfileBodyLongitudeMax = 180;
+
+export const saveProfileBodyTimezoneOffsetMin = -12;
+export const saveProfileBodyTimezoneOffsetMax = 14;
+
 
 
 export const SaveProfileBody = zod.object({
@@ -104,8 +387,23 @@ export const SaveProfileBody = zod.object({
   "name": zod.string().min(1),
   "birthDate": zod.string().min(1),
   "birthTime": zod.string().optional(),
-  "birthPlace": zod.string().optional()
+  "birthPlace": zod.string().optional(),
+  "latitude": zod.number().min(saveProfileBodyLatitudeMin).max(saveProfileBodyLatitudeMax).nullish(),
+  "longitude": zod.number().min(saveProfileBodyLongitudeMin).max(saveProfileBodyLongitudeMax).nullish(),
+  "timezone": zod.string().nullish(),
+  "timezoneOffset": zod.number().min(saveProfileBodyTimezoneOffsetMin).max(saveProfileBodyTimezoneOffsetMax).nullish()
 })
+
+export const saveProfileResponseLatitudeMin = -90;
+export const saveProfileResponseLatitudeMax = 90;
+
+export const saveProfileResponseLongitudeMin = -180;
+export const saveProfileResponseLongitudeMax = 180;
+
+export const saveProfileResponseTimezoneOffsetMin = -12;
+export const saveProfileResponseTimezoneOffsetMax = 14;
+
+
 
 export const SaveProfileResponse = zod.object({
   "anonId": zod.string(),
@@ -113,6 +411,11 @@ export const SaveProfileResponse = zod.object({
   "birthDate": zod.string().describe('ISO calendar date (YYYY-MM-DD)'),
   "birthTime": zod.string().nullish(),
   "birthPlace": zod.string().nullish(),
+  "latitude": zod.number().min(saveProfileResponseLatitudeMin).max(saveProfileResponseLatitudeMax).nullish(),
+  "longitude": zod.number().min(saveProfileResponseLongitudeMin).max(saveProfileResponseLongitudeMax).nullish(),
+  "timezone": zod.string().nullish(),
+  "timezoneOffset": zod.number().min(saveProfileResponseTimezoneOffsetMin).max(saveProfileResponseTimezoneOffsetMax).nullish(),
+  "updatedAt": zod.string().optional(),
   "createdAt": zod.string()
 })
 
@@ -152,7 +455,8 @@ export const UpdateDailyPullBody = zod.object({
   "anonId": zod.string().min(1),
   "date": zod.string().min(1),
   "isFlipped": zod.boolean().optional(),
-  "note": zod.string().optional()
+  "note": zod.string().optional(),
+  "editedAt": zod.coerce.date().optional().describe('Original draft edit time; prevents a late pre-deletion draft from recreating cleared history.')
 })
 
 export const UpdateDailyPullResponse = zod.object({
@@ -171,7 +475,7 @@ export const UpdateDailyPullResponse = zod.object({
  * @summary List a user's journal entries, newest first
  */
 export const ListJournalEntriesQueryParams = zod.object({
-  "anonId": zod.coerce.string()
+  "anonId": zod.coerce.string().optional().describe('Ignored; ownership comes from the authenticated installation')
 })
 
 export const ListJournalEntriesResponseItem = zod.object({
@@ -196,7 +500,8 @@ export const CreateJournalEntryBody = zod.object({
   "anonId": zod.string().min(1),
   "title": zod.string().optional(),
   "body": zod.string().min(1),
-  "mood": zod.string().optional()
+  "mood": zod.string().optional(),
+  "editedAt": zod.coerce.date().optional().describe('Original submission time, retained while the request is in flight. A submission predating Clear History is rejected. Optional for legacy clients.')
 })
 
 export const CreateJournalEntryResponse = zod.object({
@@ -213,7 +518,7 @@ export const CreateJournalEntryResponse = zod.object({
  * @summary List a user's saved tarot readings, newest first
  */
 export const ListReadingsQueryParams = zod.object({
-  "anonId": zod.coerce.string()
+  "anonId": zod.coerce.string().optional().describe('Ignored; ownership comes from the authenticated installation')
 })
 
 export const ListReadingsResponseItem = zod.object({
@@ -232,7 +537,7 @@ export const ListReadingsResponse = zod.array(ListReadingsResponseItem)
  * @summary Aggregate counts for the user's Vault
  */
 export const GetUserStatsQueryParams = zod.object({
-  "anonId": zod.coerce.string()
+  "anonId": zod.coerce.string().optional().describe('Ignored; ownership comes from the authenticated installation')
 })
 
 export const GetUserStatsResponse = zod.object({
@@ -253,7 +558,8 @@ export const GetUserStatsResponse = zod.object({
 export const SendTarotChatMessageBody = zod.object({
   "originalQuestion": zod.string().describe('The question the user originally asked'),
   "territory": zod.string().describe('The emotional territory the user selected'),
-  "spreadType": zod.enum(['single', 'three', 'relationship']),
+  "emotionalContext": zod.string().optional().describe('The context the user shared before drawing cards'),
+  "spreadType": zod.enum(['single', 'three', 'relationship', 'futureLover', 'peachBlossom', 'reconciliation', 'trueHeart', 'loveTree', 'xRelationship']),
   "cards": zod.array(zod.object({
   "card": zod.object({
   "id": zod.string(),
@@ -279,5 +585,132 @@ export const SendTarotChatMessageResponse = zod.object({
   "message": zod.string().describe('Hint\'s reply'),
   "createdAt": zod.string()
 })
+
+
+/**
+ * Local beta identity only. Deletes readings, journals, daily history and owned compatibility links. Clients clear local history only after success.
+ * @summary Delete owned history atomically, preserving profile and reveal locks
+ */
+export const ClearOwnedHistoryQueryParams = zod.object({
+  "anonId": zod.coerce.string().optional(),
+  "throughDay": zod.date().optional()
+})
+
+
+/**
+ * @summary Actual revealed daily dates and reading timestamps for distinct-day statistics
+ */
+export const ListActualReadingDatesQueryParams = zod.object({
+  "anonId": zod.coerce.string().optional()
+})
+
+export const ListActualReadingDatesResponseItem = zod.string()
+export const ListActualReadingDatesResponse = zod.array(ListActualReadingDatesResponseItem)
+
+
+/**
+ * @summary Idempotently synchronize a previously revealed card without replacing its identity
+ */
+export const SyncOfflineDailyReceiptBody = zod.object({
+  "anonymousDeviceId": zod.string().optional().describe('Ignored for ownership'),
+  "featureType": zod.enum(['daily-card', 'daily-tarot', 'sky-deck', 'energy-score', 'collection-rare-reward', 'animal-tarot']),
+  "dailyKey": zod.coerce.date(),
+  "assignedCardId": zod.string().nullable(),
+  "orientation": zod.union([zod.literal('upright'),zod.literal('reversed'),zod.literal(null)]).nullish(),
+  "openedAt": zod.coerce.date()
+})
+
+export const SyncOfflineDailyReceiptResponse = zod.object({
+  "assignedCardId": zod.string().nullable(),
+  "dailyKey": zod.coerce.date(),
+  "openedAt": zod.coerce.date().nullable(),
+  "historyExcluded": zod.boolean()
+})
+
+
+/**
+ * @summary Create a seven-day local beta invitation
+ */
+export const createPersistedCompatibilityInviteBodyBirthProfileLatitudeMin = -90;
+export const createPersistedCompatibilityInviteBodyBirthProfileLatitudeMax = 90;
+
+export const createPersistedCompatibilityInviteBodyBirthProfileLongitudeMin = -180;
+export const createPersistedCompatibilityInviteBodyBirthProfileLongitudeMax = 180;
+
+export const createPersistedCompatibilityInviteBodyBirthProfileTimezoneTwoMin = -12;
+export const createPersistedCompatibilityInviteBodyBirthProfileTimezoneTwoMax = 14;
+
+
+
+export const CreatePersistedCompatibilityInviteBody = zod.object({
+  "createdByUserId": zod.string().optional().describe('Ignored for ownership'),
+  "relationshipType": zod.string().optional(),
+  "birthProfile": zod.object({
+  "userId": zod.string().optional(),
+  "name": zod.string().optional(),
+  "birthday": zod.coerce.date(),
+  "birthTime": zod.string().optional(),
+  "birthCity": zod.string().optional(),
+  "birthCountry": zod.string().optional(),
+  "latitude": zod.number().min(createPersistedCompatibilityInviteBodyBirthProfileLatitudeMin).max(createPersistedCompatibilityInviteBodyBirthProfileLatitudeMax).optional(),
+  "longitude": zod.number().min(createPersistedCompatibilityInviteBodyBirthProfileLongitudeMin).max(createPersistedCompatibilityInviteBodyBirthProfileLongitudeMax).optional(),
+  "timezone": zod.union([zod.string(),zod.number().min(createPersistedCompatibilityInviteBodyBirthProfileTimezoneTwoMin).max(createPersistedCompatibilityInviteBodyBirthProfileTimezoneTwoMax)]).optional()
+})
+})
+
+export const CreatePersistedCompatibilityInviteResponse = zod.record(zod.string(), zod.unknown())
+
+
+export const GetPersistedCompatibilityInviteParams = zod.object({
+  "token": zod.coerce.string()
+})
+
+export const GetPersistedCompatibilityInviteResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary Claim one calculation job or reuse its immutable completed result
+ */
+export const CompletePersistedCompatibilityInviteParams = zod.object({
+  "token": zod.coerce.string()
+})
+
+export const completePersistedCompatibilityInviteBodyFriendBirthProfileLatitudeMin = -90;
+export const completePersistedCompatibilityInviteBodyFriendBirthProfileLatitudeMax = 90;
+
+export const completePersistedCompatibilityInviteBodyFriendBirthProfileLongitudeMin = -180;
+export const completePersistedCompatibilityInviteBodyFriendBirthProfileLongitudeMax = 180;
+
+export const completePersistedCompatibilityInviteBodyFriendBirthProfileTimezoneTwoMin = -12;
+export const completePersistedCompatibilityInviteBodyFriendBirthProfileTimezoneTwoMax = 14;
+
+
+
+export const CompletePersistedCompatibilityInviteBody = zod.object({
+  "friendName": zod.string().optional(),
+  "friendBirthProfile": zod.object({
+  "userId": zod.string().optional(),
+  "name": zod.string().optional(),
+  "birthday": zod.coerce.date(),
+  "birthTime": zod.string().optional(),
+  "birthCity": zod.string().optional(),
+  "birthCountry": zod.string().optional(),
+  "latitude": zod.number().min(completePersistedCompatibilityInviteBodyFriendBirthProfileLatitudeMin).max(completePersistedCompatibilityInviteBodyFriendBirthProfileLatitudeMax).optional(),
+  "longitude": zod.number().min(completePersistedCompatibilityInviteBodyFriendBirthProfileLongitudeMin).max(completePersistedCompatibilityInviteBodyFriendBirthProfileLongitudeMax).optional(),
+  "timezone": zod.union([zod.string(),zod.number().min(completePersistedCompatibilityInviteBodyFriendBirthProfileTimezoneTwoMin).max(completePersistedCompatibilityInviteBodyFriendBirthProfileTimezoneTwoMax)]).optional()
+}),
+  "consent": zod.boolean()
+})
+
+export const CompletePersistedCompatibilityInviteResponse = zod.object({
+  "resultId": zod.string().optional()
+})
+
+
+export const GetPersistedCompatibilityResultParams = zod.object({
+  "id": zod.coerce.string().uuid()
+})
+
+export const GetPersistedCompatibilityResultResponse = zod.record(zod.string(), zod.unknown())
 
 

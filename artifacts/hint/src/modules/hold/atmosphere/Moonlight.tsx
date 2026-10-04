@@ -6,7 +6,7 @@
  * Static, breathes very slowly, behind everything.
  */
 
-import { motion } from "framer-motion";
+import { motion } from "../../../lib/quietMotion";
 
 export function Moonlight() {
   return (

@@ -1,0 +1,6 @@
+.hint-compatibility { min-width: 0; padding-bottom: 12px; }
+.hint-compatibility :is(h1,h2,h3,p,code) { overflow-wrap: anywhere; }
+.hint-compatibility :is(section,article,details) { min-width: 0; }
+.hint-compatibility button, .hint-compatibility a { min-height: 44px; }
+.hint-compatibility button { white-space: normal; }
+.hint-compatibility input:not([type="checkbox"]) { max-width: 100%; }

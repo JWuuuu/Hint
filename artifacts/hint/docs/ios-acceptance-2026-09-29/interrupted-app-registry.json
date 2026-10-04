@@ -1,0 +1,1480 @@
+{
+  "run": {
+    "kind": "begin",
+    "at": "2026-09-29T21:33:31.909Z",
+    "source": {
+      "commit": "7eab19e5e4396d508cfb5b07f9b7e28f567c5760",
+      "fingerprint": "ffd5ae6bc991398576d52aa2e11e905172b898cc7fb94d2d1b65d5ebf04baafa"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-reflow-20260929",
+      "fingerprint": "6fda3456e37edd55bbc4d7a6396ba8800509409aef9799c32a26eb35ae121542"
+    },
+    "selected": 922
+  },
+  "end": {
+    "kind": "end",
+    "at": "2026-09-29T21:48:33.873Z",
+    "status": "interrupted"
+  },
+  "counts": {
+    "passed": 110,
+    "timedOut": 1,
+    "skipped": 8,
+    "interrupted": 1
+  },
+  "notRun": 802,
+  "tests": [
+    {
+      "title": "non-Tarot route and phone layout inventory",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 10332,
+      "location": {
+        "file": "app-audit.spec.ts",
+        "line": 6,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "fresh Astrology journey verifies a birthplace, reviews details and restores a personal chart without email",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1568,
+      "location": {
+        "file": "astrology-creation.spec.ts",
+        "line": 3,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3590,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3608,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2130,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2129,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 31338,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "timedOut",
+      "durationMs": 446542,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": [
+        {
+          "message": "\u001b[31mTest timeout of 90000ms exceeded.\u001b[39m"
+        },
+        {
+          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('dialog')\nExpected substring: \u001b[32m\"Ascendant\"\u001b[39m\nReceived string:    \u001b[31m\"\"\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog')\u001b[22m\n\u001b[2m  - \u001b[22m\n"
+        }
+      ]
+    },
+    {
+      "title": "Astrology quality en bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2948,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality en dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2498,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3798,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3709,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1992,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2127,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2078,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2068,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2078,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality zh dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2139,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3603,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3547,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2155,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2028,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2028,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2112,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2217,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality es dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2037,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3561,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3594,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2100,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2067,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2117,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2106,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2209,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ja dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2200,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko bright app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3683,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko dark app=false OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3540,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko bright app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2105,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko dark app=true OS=false",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2084,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko bright app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2154,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko dark app=false OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2222,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko bright app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2136,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology quality ko dark app=true OS=true",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2138,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 86,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Astrology unknown saved selection remains recoverable and does not invent a chart point",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 732,
+      "location": {
+        "file": "astrology-quality.spec.ts",
+        "line": 141,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "report evidence keeps long titles and explanations reachable at 200 percent text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1473,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 19,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "natal letters save once, restore offline and retain exact snapshot evidence",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 10378,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 71,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "storage failure keeps the report readable and retry persists it",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1020,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 123,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "history deletion hides reports immediately and cannot resurrect them on refresh",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1415,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 151,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "two-person charts expose every cross aspect, individual points and a saved relationship letter",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3244,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 181,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "switching local identity cannot open another profile's saved report",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1473,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 254,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "clearing history commits before deleting stored letters and keeps birth details",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2259,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 282,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "illustrated report en retains readable sections at large text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1879,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 356,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "illustrated report zh retains readable sections at large text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1924,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 356,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "illustrated report es retains readable sections at large text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1885,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 356,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "illustrated report ja retains readable sections at large text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1900,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 356,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "illustrated report ko retains readable sections at large text",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1926,
+      "location": {
+        "file": "astrology-reports.spec.ts",
+        "line": 356,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Together invalidates an existing result and ignores a late response after partner edits",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1018,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 29,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "zodiac learning works without an account and sections survive back and refresh",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3557,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 70,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "unknown birth time never produces an invented personal chart",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 660,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 95,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "fallback chart is never presented as personal and explicit retry recovers",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1080,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 107,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "transit failure and empty success never insert sample rows or fabricated dates",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 900,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 123,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "a late chart response cannot overwrite changed birth details",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1053,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 140,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "bright astrology layouts and accessibility",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2676,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 158,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "dark astrology layouts and accessibility",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2562,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 158,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Rooms search and preview recovery have working destinations",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1986,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 181,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "birth place edits clear old coordinates and ignore stale search matches",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 992,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 198,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "Chinese sign learning does not trigger a personal calculation",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1216,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 222,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "dense chart and expanded details remain readable above bottom navigation",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1594,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 238,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "chart points and enlarged chart support keyboard, history and direct detail reload",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1608,
+      "location": {
+        "file": "astrology.spec.ts",
+        "line": 265,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily day, week, month and year controls retain calendar-selected periods",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2569,
+      "location": {
+        "file": "daily-history-periods.spec.ts",
+        "line": 67,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "Days read displays unique dates across local and server records within each period",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1788,
+      "location": {
+        "file": "daily-history-periods.spec.ts",
+        "line": 114,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "unread earlier periods display zero Days read",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1059,
+      "location": {
+        "file": "daily-history-periods.spec.ts",
+        "line": 140,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "History filters isolate fictional records and preserve daily, Tarot and question details",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 7511,
+      "location": {
+        "file": "daily-history-periods.spec.ts",
+        "line": 150,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily zh bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 125,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily zh dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 121,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily es bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 127,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily es dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 121,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily ja bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 124,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily ja dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 119,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily ko bright keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 123,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Daily ko dark keeps localized lucky artwork and full text at 200%",
+      "project": "iphone-17-pro-max",
+      "status": "skipped",
+      "durationMs": 130,
+      "location": {
+        "file": "daily-text-layout.spec.ts",
+        "line": 12,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home respects app=false OS=false, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2138,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 16,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home respects app=true OS=false, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 843,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 16,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home respects app=false OS=true, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 837,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 16,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home respects app=true OS=true, reveals without sync, and restores modal focus",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 803,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 16,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home save reports quota failure, retries once and keeps long result actions reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1160,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 36,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "a failed room chunk can be reloaded without losing its destination",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1849,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 66,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "Home reveal action has localized copy and a reachable 44px target (en)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 993,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 78,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home long card result at 200% text stays readable and scrollable (en)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1708,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 104,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home reveal action has localized copy and a reachable 44px target (zh)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 978,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 78,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home long card result at 200% text stays readable and scrollable (zh)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1643,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 104,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home reveal action has localized copy and a reachable 44px target (es)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 970,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 78,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home long card result at 200% text stays readable and scrollable (es)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1672,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 104,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home reveal action has localized copy and a reachable 44px target (ja)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 980,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 78,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home long card result at 200% text stays readable and scrollable (ja)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1677,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 104,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home reveal action has localized copy and a reachable 44px target (ko)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 976,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 78,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "Home long card result at 200% text stays readable and scrollable (ko)",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1645,
+      "location": {
+        "file": "home-motion.spec.ts",
+        "line": 104,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "draft survives departure for manual recovery and reload, then a failed save can be retried once",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 3886,
+      "location": {
+        "file": "journal.spec.ts",
+        "line": 14,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "history errors are distinct from empty pages and retry recovers",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 977,
+      "location": {
+        "file": "journal.spec.ts",
+        "line": 56,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "confirmed save stays visible when refreshing history fails",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 868,
+      "location": {
+        "file": "journal.spec.ts",
+        "line": 70,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "bright journal has readable controls, bounded inputs and no horizontal overflow",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1343,
+      "location": {
+        "file": "journal.spec.ts",
+        "line": 88,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "dark journal has readable controls, bounded inputs and no horizontal overflow",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1394,
+      "location": {
+        "file": "journal.spec.ts",
+        "line": 88,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected single layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1889,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected three layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1859,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected relationship layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1854,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected futureLover layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1871,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected peachBlossom layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1941,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected reconciliation layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1894,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected trueHeart layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1865,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected loveTree layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1867,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "selected xRelationship layout has its own space above the complete card arc",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1892,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 24,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "production preview switches phones without losing the current room or question",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 1950,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 51,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "Me Tarot setup has a visible bounded entrance into the ready room",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 2839,
+      "location": {
+        "file": "letter-ritual-layout.spec.ts",
+        "line": 80,
+        "column": 1
+      },
+      "errors": []
+    },
+    {
+      "title": "zh bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 26490,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "zh dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 26743,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "es bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 26838,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "es dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 27401,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "ja bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 27323,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "ja dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 26954,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "ko bright: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "passed",
+      "durationMs": 26621,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": []
+    },
+    {
+      "title": "ko dark: main screens, forms and unavailable states remain reachable",
+      "project": "iphone-17-pro-max",
+      "status": "interrupted",
+      "durationMs": 7326,
+      "location": {
+        "file": "locale-surface-audit.spec.ts",
+        "line": 21,
+        "column": 3
+      },
+      "errors": [
+        {
+          "message": "Error: page.goto: Test ended.\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:5255/app/readings?hintPreview=embedded\", waiting until \"load\"\u001b[22m\n"
+        }
+      ]
+    }
+  ]
+}

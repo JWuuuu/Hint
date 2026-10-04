@@ -12,6 +12,8 @@ import { useLanguage } from "../../../../lib/i18n";
 
 interface Props {
   onSend: (text: string) => void;
+  value?: string;
+  onValueChange?: (value: string) => void;
   isThinking: boolean;
   disabled?: boolean;
 }
@@ -22,8 +24,10 @@ export interface FollowUpInputHandle {
 }
 
 export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
-  function FollowUpInput({ onSend, isThinking, disabled }, ref) {
-    const [text, setText] = useState("");
+  function FollowUpInput({ onSend, isThinking, disabled, value, onValueChange }, ref) {
+    const [localText, setLocalText] = useState("");
+    const text = value ?? localText;
+    const setText = (next: string) => { setLocalText(next); onValueChange?.(next); };
     const [focused, setFocused] = useState(false);
     const taRef = useRef<HTMLTextAreaElement | null>(null);
     const { t } = useLanguage();
@@ -44,7 +48,7 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
       const trimmed = text.trim();
       if (!trimmed || isThinking || disabled) return;
       onSend(trimmed);
-      setText("");
+      if (value === undefined) setText("");
     };
 
     const onKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -87,7 +91,7 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
             onBlur={() => setFocused(false)}
             placeholder={isThinking ? t("chat.placeholderThinking") : t("chat.placeholder")}
             disabled={isThinking || disabled}
-            className="hint-chat-input flex-1 resize-none bg-transparent font-sans text-[15px] leading-relaxed focus:outline-none"
+            className="hint-chat-input min-h-11 min-w-0 flex-1 resize-none bg-transparent font-sans text-[16px] leading-relaxed focus:outline-none"
             style={{
               color: IVORY.primary,
               maxHeight: 140,
@@ -97,7 +101,7 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
             type="button"
             onClick={submit}
             disabled={!canSend}
-            className="flex h-10 min-w-10 items-center justify-center rounded-full px-3 font-sans text-[13px] font-medium disabled:cursor-default transition-opacity duration-300 hover:opacity-90"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-full px-3 font-sans text-[13px] font-medium disabled:cursor-default transition-opacity duration-300 hover:opacity-90"
             style={{
               color: canSend ? "#08070B" : IVORY.dim,
               background: canSend

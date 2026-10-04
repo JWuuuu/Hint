@@ -1,0 +1,13 @@
+[0:v]trim=start=1.232:end=4.233,setpts=PTS-STARTPTS[v0];
+[0:v]trim=start=4.236:end=9.588,setpts=PTS-STARTPTS[v1];
+[0:v]trim=start=9.915:end=13.799,setpts=PTS-STARTPTS[v2];
+[0:v]trim=start=13.807:end=16.295,setpts=PTS-STARTPTS[v3];
+[0:v]trim=start=18.759:end=23.603,setpts=PTS-STARTPTS[v4];
+[0:v]trim=start=26.926:end=31.326,setpts=PTS-STARTPTS[v5];
+[0:v]trim=start=31.326:end=36.186,setpts=PTS-STARTPTS[v6];
+[0:v]trim=start=36.683:end=41.437,setpts=PTS-STARTPTS[v7];
+[0:v]trim=start=41.798:end=45.313,setpts=PTS-STARTPTS[v8];
+[0:v]trim=start=46.093:end=48.791,setpts=PTS-STARTPTS[v9];
+[0:v]trim=start=48.950:end=53.895,setpts=PTS-STARTPTS[v10];
+[0:v]trim=start=53.896:end=56.988,setpts=PTS-STARTPTS[v11];
+[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10][v11]concat=n=12:v=1:a=0,scale=1080:1920:flags=lanczos,format=yuv420p[film]

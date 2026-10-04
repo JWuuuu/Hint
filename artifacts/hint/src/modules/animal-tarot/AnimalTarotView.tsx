@@ -1,4 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useLocalDay } from "../../lib/useLocalDay";
+import { getDailyPullById } from "../home/data/dailyPulls";
+import { useMotionPolicy } from "../../lib/motionPolicy";
+import { LocalizedText, translateText } from "../../lib/LocalizedText";
+import { useLanguage } from "../../lib/i18n";
+import { markRoomVisitStarted, roomVisitWasClosed } from "../../components/app/roomVisits";
+import { useRoomVisit } from "../../components/app/RoomVisitBoundary";
+import { roomResumeText } from "../../components/app/roomResumeCopy";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "wouter";
 import {
   Bird,
@@ -17,10 +25,11 @@ import {
   Wind,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { AppScreen, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
+import { AppScreen, GlassPanel, SectionLabel, SpaceNavigation } from "../../components/app/AppChrome";
 import { ACCENT, GLASS } from "../../modules/hold/atmosphere";
 import { getAnonId, getLocalDateString } from "../../lib/identity";
 import {
+  getCachedDailyReceipt, subscribeToDailyReceiptFallbacks,
   getOrCreateDailyReceipt,
   openDailyReceipt,
   type DailyReceipt,
@@ -179,9 +188,9 @@ function SpiritCard({
       <div className="animal-card-face animal-card-back">
         <div className="animal-card-inner-ring" />
         <PawPrint size={compact ? 26 : 34} strokeWidth={1.5} />
-        <span>Animal Tarot</span>
+        <span><LocalizedText text={"Animal Tarot"} /></span>
       </div>
-      <div className="animal-card-face animal-card-front">
+      <div className="animal-card-face animal-card-front" aria-hidden={!revealed} style={{ visibility: revealed ? "visible" : "hidden" }}>
         {cardImage && (
           <SafeImage
             src={cardImage}
@@ -224,21 +233,32 @@ function ReadingBlock({
 }
 
 export function AnimalTarotView() {
+  const { reduced, pageVisible } = useMotionPolicy();
+  const { t, language } = useLanguage();
   const anonId = useMemo(() => getAnonId(), []);
-  const fallbackAssignedCardId = useMemo(() => fallbackAnimalId(anonId), [anonId]);
+  const [freshEntry] = useState(() => roomVisitWasClosed("animal-tarot"));
+  const dailyKey = useLocalDay();
+  const drawGeneration = useRef(0);
+  const revealTimer = useRef<number | null>(null);
+  const fallbackAssignedCardId = useMemo(() => fallbackAnimalId(anonId, dailyKey), [anonId, dailyKey]);
   const [receipt, setReceipt] = useState<DailyReceipt | null>(null);
   const [phase, setPhase] = useState<DrawPhase>("loading");
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const [receiptError, setReceiptError] = useState<string | null>(null);
+  useRoomVisit({ room: "animal-tarot", hasProgress: phase === "revealing" || phase === "revealed", onLeave: () => {
+    drawGeneration.current++;
+    if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
+  } });
 
   useEffect(() => {
     let cancelled = false;
     setPhase("loading");
-    getOrCreateDailyReceipt("animal-tarot", { anonId, fallbackAssignedCardId })
+    getOrCreateDailyReceipt("animal-tarot", { anonId, dailyKey, fallbackAssignedCardId })
       .then((nextReceipt) => {
         if (cancelled) return;
         setReceipt(nextReceipt);
-        setPhase(nextReceipt.openedAt ? "revealed" : "intro");
+        setPhase(nextReceipt.openedAt && !freshEntry ? "revealed" : "intro");
         setReceiptError(nextReceipt.source === "local-fallback"
           ? "Server daily lock is unavailable. This draw is locked locally for now and may resync when the backend returns."
           : null);
@@ -251,65 +271,66 @@ export function AnimalTarotView() {
       });
     return () => {
       cancelled = true;
+      drawGeneration.current++;
+      if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
     };
-  }, [anonId, fallbackAssignedCardId]);
+  }, [anonId, dailyKey, fallbackAssignedCardId, freshEntry]);
+  useEffect(() => subscribeToDailyReceiptFallbacks(() => {
+    const cached = getCachedDailyReceipt("animal-tarot", { anonId, dailyKey });
+    if (cached) { setReceipt(cached); if (cached.syncStatus === "synced") setReceiptError(null); }
+  }), [anonId, dailyKey]);
 
-  const animal = getAnimalById(receipt?.assignedCardId ?? fallbackAssignedCardId);
-  const companion = companionCard(animal.companionCardId);
+  const rawAnimal = getAnimalById(receipt?.assignedCardId ?? fallbackAssignedCardId);
+  const animal = { ...rawAnimal, ...Object.fromEntries(["name", "title", "emotionalMeaning", "todaysMessage", "reflectionPrompt", "task"].map(key => [key, translateText(rawAnimal[key as keyof AnimalSpirit] as string, language)])) };
+  const companion = { ...companionCard(animal.companionCardId), name: getDailyPullById(animal.companionCardId, language).cardName };
   const revealed = phase === "revealed";
   const revealing = phase === "revealing";
   const loading = phase === "loading";
   const canReplay = Boolean(receipt?.openedAt);
-  const fallbackMode = receipt?.source === "local-fallback";
 
-  function drawAnimal() {
-    if (!receipt) {
-      setReceiptError("Animal Tarot is waiting for the daily lock service. Refresh once the backend is available.");
-      return;
-    }
-    setSaved(false);
-    setPhase("revealing");
-    window.setTimeout(() => {
-      openDailyReceipt("animal-tarot", { anonId, fallbackAssignedCardId })
-        .then((opened) => {
-          setReceipt(opened);
-          setReceiptError(opened.source === "local-fallback"
-            ? "Server daily lock is unavailable. This opened draw is locked locally until the backend returns."
-            : null);
-          setPhase("revealed");
-        })
-        .catch(() => {
-          setReceiptError("Animal Tarot could not mark this draw opened on the daily lock service. Try again in a moment.");
-          setPhase(receipt.openedAt ? "revealed" : "intro");
-        });
-    }, 1280);
+
+  function finishReveal(generation: number, delay: number) {
+    revealTimer.current = window.setTimeout(() => { if (generation === drawGeneration.current) setPhase("revealed"); }, reduced ? 16 : delay);
   }
-
+  useEffect(() => {
+    if (phase !== "revealing" || (!reduced && pageVisible)) return;
+    if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
+    setPhase("revealed");
+  }, [phase, reduced, pageVisible]);
+  function drawAnimal() {
+    if (!receipt || phase === "revealing") return;
+    markRoomVisitStarted("animal-tarot");
+    const generation = ++drawGeneration.current;
+    // Persist before showing the card face, including when leaving during the animation.
+    const sync = openDailyReceipt("animal-tarot", { anonId, dailyKey, fallbackAssignedCardId: receipt.assignedCardId });
+    setReceipt(getCachedDailyReceipt("animal-tarot", { anonId, dailyKey }));
+    setSaved(false); setSaveError(false); setPhase("revealing");
+    finishReveal(generation, 1280);
+    void sync.then(opened => { if (generation === drawGeneration.current) { setReceipt(opened); if (opened.syncStatus === "synced") setReceiptError(null); } });
+  }
   function replayReveal() {
-    setSaved(false);
-    setPhase("revealing");
-    window.setTimeout(() => setPhase("revealed"), 1180);
+    if (phase === "revealing") return;
+    markRoomVisitStarted("animal-tarot");
+    const generation = ++drawGeneration.current;
+    setSaved(false); setSaveError(false); setPhase("revealing");
+    finishReveal(generation, 1180);
   }
 
   function saveToCollection() {
-    saveLocalCollectionUnlock(companion.cardId, "animal");
-    setSaved(true);
+    const result = saveLocalCollectionUnlock(companion.cardId, "animal");
+    setSaved(Boolean(result));
+    setSaveError(!result);
   }
 
   return (
     <AppScreen>
+      <SpaceNavigation />
       <header className="animal-tarot-hero mb-6">
         <div className="animal-hero-orbit" aria-hidden />
         <div className="relative z-10">
-          <p className="font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}>
-            Animal Tarot
-          </p>
-          <h1 className="mt-2 font-serif text-[34px] leading-none sm:text-[42px]" style={{ color: GLASS.text }}>
-            Animal Terrace
-          </h1>
-          <p className="mt-3 max-w-2xl font-sans text-[13px] leading-relaxed sm:text-[14px]" style={{ color: GLASS.muted }}>
-            Draw the animal walking with you today. The card is assigned once per server day and stays open after you reveal it.
-          </p>
+          <p className="font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Animal Tarot "} /></p>
+          <h1 className="mt-2 font-serif text-[34px] leading-none sm:text-[42px]" style={{ color: GLASS.text }}><LocalizedText text={" Animal Terrace "} /></h1>
+          <p className="mt-3 max-w-2xl font-sans text-[13px] leading-relaxed sm:text-[14px]" style={{ color: GLASS.muted }}>{roomResumeText(language, "sameAnimal")}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {["Instinct", "Emotion", "Today"].map((item) => (
               <span
@@ -333,36 +354,28 @@ export function AnimalTarotView() {
           </div>
 
           <div>
-            {receiptError && (
+            {(receiptError || receipt?.syncStatus === "conflict" || receipt?.syncStatus === "pending") && (
               <div className="mb-4 rounded-[16px] border px-4 py-3" style={{ borderColor: "rgba(241,166,107,0.34)", background: "rgba(241,166,107,0.08)" }}>
                 <p className="font-sans text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: EMBER }}>
-                  {fallbackMode ? "Local fallback" : "Daily lock unavailable"}
+                  {t(receipt?.persistence === "memory" ? "quality.cardMemory" : "quality.savedLocal")}
                 </p>
                 <p className="mt-1 font-sans text-[12px] leading-relaxed" style={{ color: GLASS.muted }}>
-                  {receiptError}
+                  {t(receipt?.syncStatus === "conflict" ? "quality.cardConflict" : receipt?.persistence === "memory" ? "quality.cardMemory" : "quality.cardPending")}
                 </p>
               </div>
             )}
             <SectionLabel>{revealed ? animal.title : "Mystical animal ritual"}</SectionLabel>
             {loading && (
               <div className="py-6">
-                <h2 className="font-serif text-[34px] leading-tight" style={{ color: GLASS.text }}>
-                  Finding today’s animal.
-                </h2>
-                <p className="mt-4 font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}>
-                  Asking the server for today’s locked draw.
-                </p>
+                <h2 className="font-serif text-[34px] leading-tight" style={{ color: GLASS.text }}><LocalizedText text={" Finding today’s animal. "} /></h2>
+                <p className="mt-4 font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}><LocalizedText text={" Asking the server for today’s locked draw. "} /></p>
               </div>
             )}
 
             {!loading && !revealed && !revealing && (
               <>
-                <h2 className="font-serif text-[32px] leading-tight sm:text-[38px]" style={{ color: GLASS.text }}>
-                  Let one animal step forward.
-                </h2>
-                <p className="mt-4 max-w-lg font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}>
-                  This is not a childish animal picker. Treat it like an instinct card: one animal, one companion tarot card, one clean message for today.
-                </p>
+                <h2 className="font-serif text-[32px] leading-tight sm:text-[38px]" style={{ color: GLASS.text }}><LocalizedText text={" Let one animal step forward. "} /></h2>
+                <p className="mt-4 max-w-lg font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}><LocalizedText text={" This is not a childish animal picker. Treat it like an instinct card: one animal, one companion tarot card, one clean message for today. "} /></p>
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {[
                     ["1", "Hold the question loosely"],
@@ -380,12 +393,8 @@ export function AnimalTarotView() {
 
             {revealing && (
               <div className="py-6">
-                <h2 className="font-serif text-[34px] leading-tight" style={{ color: GLASS.text }}>
-                  The terrace is opening.
-                </h2>
-                <p className="mt-4 font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}>
-                  The animal is stepping through the card. Stay with the first feeling you notice.
-                </p>
+                <h2 className="font-serif text-[34px] leading-tight" style={{ color: GLASS.text }}><LocalizedText text={" The terrace is opening. "} /></h2>
+                <p className="mt-4 font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}><LocalizedText text={" The animal is stepping through the card. Stay with the first feeling you notice. "} /></p>
               </div>
             )}
 
@@ -393,15 +402,12 @@ export function AnimalTarotView() {
               <div className="animal-reading">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <p className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: ACCENT.aqua }}>
-                      Today's animal
-                    </p>
+                    <p className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: ACCENT.aqua }}><LocalizedText text={" Today's animal "} /></p>
                     <h2 className="mt-1 font-serif text-[42px] leading-none" style={{ color: GLASS.text }}>
                       {animal.name}
                     </h2>
                   </div>
-                  <div className="rounded-full border px-3 py-1.5 font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: ACCENT.gold, borderColor: "rgba(206,178,110,0.28)", background: "rgba(206,178,110,0.08)" }}>
-                    Companion: {companion.name}
+                  <div className="rounded-full border px-3 py-1.5 font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: ACCENT.gold, borderColor: "rgba(206,178,110,0.28)", background: "rgba(206,178,110,0.08)" }}><LocalizedText text={" Companion: "} />{companion.name}
                   </div>
                 </div>
 
@@ -417,32 +423,24 @@ export function AnimalTarotView() {
             <div className="mt-6 flex flex-wrap gap-3">
               {!loading && !revealing && !revealed && (
                 <button type="button" onClick={drawAnimal} className="animal-primary-button hint-tap-sparkle" disabled={!receipt}>
-                  <Sparkles size={16} />
-                  Draw animal card
-                </button>
+                  <Sparkles size={16} /><LocalizedText text={" Draw animal card "} /></button>
               )}
               {loading && (
                 <button type="button" className="animal-primary-button hint-tap-sparkle is-loading" disabled>
-                  <Moon size={16} />
-                  Loading lock
-                </button>
+                  <Moon size={16} /><LocalizedText text={" Loading lock "} /></button>
               )}
               {revealing && (
                 <button type="button" className="animal-primary-button hint-tap-sparkle is-loading" disabled>
-                  <Moon size={16} />
-                  Revealing
-                </button>
+                  <Moon size={16} /><LocalizedText text={" Revealing "} /></button>
               )}
               {revealed && (
                 <>
                   <button type="button" onClick={saveToCollection} className="animal-primary-button hint-tap-sparkle">
                     {saved ? <Check size={16} /> : <Bookmark size={16} />}
-                    {saved ? "Saved locally" : "Save to Collection"}
+                    {saved ? t("quality.savedLocal") : saveError ? t("quality.saveRetry") : t("quality.saveCollection")}
                   </button>
                   <button type="button" onClick={canReplay ? replayReveal : drawAnimal} className="animal-secondary-button hint-tap-sparkle">
-                    <RefreshCcw size={15} />
-                    Replay reveal
-                  </button>
+                    <RefreshCcw size={15} /><LocalizedText text={" Replay reveal "} /></button>
                 </>
               )}
             </div>
@@ -453,19 +451,19 @@ export function AnimalTarotView() {
       <section className="mt-6 grid gap-3 sm:grid-cols-2">
         <Link href="/app/tarot" className="animal-action-card hint-tap-sparkle hint-card-lift">
           <Sparkles size={17} />
-          <span>Draw in Tarot Room</span>
+          <span><LocalizedText text={"Draw in Tarot Room"} /></span>
         </Link>
         <Link href="/app/daily" className="animal-action-card hint-tap-sparkle hint-card-lift">
           <Moon size={17} />
-          <span>Open Daily Draw</span>
+          <span><LocalizedText text={"Open Daily Draw"} /></span>
         </Link>
         <Link href="/app/collection" className="animal-action-card hint-tap-sparkle hint-card-lift">
           <Bookmark size={17} />
-          <span>Open Collection</span>
+          <span><LocalizedText text={"Open Collection"} /></span>
         </Link>
         <Link href="/app/ask" className="animal-action-card hint-tap-sparkle hint-card-lift">
           <MessageCircle size={17} />
-          <span>Ask Hint</span>
+          <span><LocalizedText text={"Ask Hint"} /></span>
         </Link>
       </section>
     </AppScreen>

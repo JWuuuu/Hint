@@ -1,4 +1,4 @@
-import { apiUrl } from "../api";
+import { apiFetch, apiUrl } from "../api";
 
 export async function getAstroInterpretation(input: {
   kind: "signs" | "transit" | "synastry" | "reportPreview";
@@ -6,7 +6,7 @@ export async function getAstroInterpretation(input: {
   tone?: "warm" | "direct" | "mirror";
 }) {
   try {
-    const response = await fetch(apiUrl("/api/ai/astro-interpretation"), {
+    const response = await apiFetch(apiUrl("/api/ai/astro-interpretation"), {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(input),

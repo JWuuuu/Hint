@@ -5,12 +5,111 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+export interface DeviceSessionStatus {
+  ownerId: string;
+  expiresAt: string;
+}
+
+export interface DeviceSessionCredential {
+  /** Returned only at creation; never log or share this secret */
+  token: string;
+  ownerId: string;
+  expiresAt: string;
+}
+
+export type OfflineDailyReceiptInputFeatureType = typeof OfflineDailyReceiptInputFeatureType[keyof typeof OfflineDailyReceiptInputFeatureType];
+
+
+export const OfflineDailyReceiptInputFeatureType = {
+  'daily-card': 'daily-card',
+  'daily-tarot': 'daily-tarot',
+  'sky-deck': 'sky-deck',
+  'energy-score': 'energy-score',
+  'collection-rare-reward': 'collection-rare-reward',
+  'animal-tarot': 'animal-tarot',
+} as const;
+
+/**
+ * @nullable
+ */
+export type OfflineDailyReceiptInputOrientation = typeof OfflineDailyReceiptInputOrientation[keyof typeof OfflineDailyReceiptInputOrientation] | null;
+
+
+export const OfflineDailyReceiptInputOrientation = {
+  upright: 'upright',
+  reversed: 'reversed',
+} as const;
+
+export interface OfflineDailyReceiptInput {
+  /**
+     * Ignored for ownership
+     * @deprecated
+     */
+  anonymousDeviceId?: string;
+  featureType: OfflineDailyReceiptInputFeatureType;
+  dailyKey: string;
+  /** @nullable */
+  assignedCardId: string | null;
+  /** @nullable */
+  orientation?: OfflineDailyReceiptInputOrientation;
+  openedAt: string;
+}
+
+export interface CompatibilityBirthInput {
+  userId?: string;
+  name?: string;
+  birthday: string;
+  birthTime?: string;
+  birthCity?: string;
+  birthCountry?: string;
+  /**
+     * @minimum -90
+     * @maximum 90
+     */
+  latitude?: number;
+  /**
+     * @minimum -180
+     * @maximum 180
+     */
+  longitude?: number;
+  timezone?: string | number;
+}
+
+export interface CompatibilityInviteInput {
+  /**
+     * Ignored for ownership
+     * @deprecated
+     */
+  createdByUserId?: string;
+  relationshipType?: string;
+  birthProfile: CompatibilityBirthInput;
+}
+
+export interface CompatibilityCompletionInput {
+  friendName?: string;
+  friendBirthProfile: CompatibilityBirthInput;
+  consent: boolean;
+}
+
 export interface HealthStatus {
   status: string;
 }
 
 export interface ApiError {
   error: string;
+  /** Stable machine-readable failure code */
+  code: string;
+  /** Correlation ID matching X-Request-Id and server logs */
+  requestId: string;
+}
+
+export interface SpeechInput {
+  /**
+     * Assistant text to turn into speech
+     * @minLength 1
+     * @maxLength 4096
+     */
+  text: string;
 }
 
 /**
@@ -45,7 +144,7 @@ export interface TarotReadingInput {
      */
   emotionalContext?: string | null;
   /**
-     * Optional anonymous user id; when present the reading is saved to history
+     * Deprecated compatibility field. Ignored; readings belong to the authenticated installation.
      * @nullable
      */
   anonId?: string | null;
@@ -89,6 +188,27 @@ export interface Profile {
   birthTime?: string | null;
   /** @nullable */
   birthPlace?: string | null;
+  /**
+     * @minimum -90
+     * @maximum 90
+     * @nullable
+     */
+  latitude?: number | null;
+  /**
+     * @minimum -180
+     * @maximum 180
+     * @nullable
+     */
+  longitude?: number | null;
+  /** @nullable */
+  timezone?: string | null;
+  /**
+     * @minimum -12
+     * @maximum 14
+     * @nullable
+     */
+  timezoneOffset?: number | null;
+  updatedAt?: string;
   createdAt: string;
 }
 
@@ -101,6 +221,26 @@ export interface ProfileInput {
   birthDate: string;
   birthTime?: string;
   birthPlace?: string;
+  /**
+     * @minimum -90
+     * @maximum 90
+     * @nullable
+     */
+  latitude?: number | null;
+  /**
+     * @minimum -180
+     * @maximum 180
+     * @nullable
+     */
+  longitude?: number | null;
+  /** @nullable */
+  timezone?: string | null;
+  /**
+     * @minimum -12
+     * @maximum 14
+     * @nullable
+     */
+  timezoneOffset?: number | null;
 }
 
 export interface DailyPull {
@@ -132,6 +272,8 @@ export interface DailyPullUpdate {
   date: string;
   isFlipped?: boolean;
   note?: string;
+  /** Original draft edit time; prevents a late pre-deletion draft from recreating cleared history. */
+  editedAt?: string;
 }
 
 export interface JournalEntry {
@@ -152,6 +294,287 @@ export interface JournalInput {
   /** @minLength 1 */
   body: string;
   mood?: string;
+  /** Original submission time, retained while the request is in flight. A submission predating Clear History is rejected. Optional for legacy clients. */
+  editedAt?: string;
+}
+
+export interface AstroNatalProfile {
+  id?: string;
+  name?: string;
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  birthDate: string;
+  birthTime?: string;
+  birthPlace: string;
+  /**
+     * @minimum -90
+     * @maximum 90
+     */
+  latitude?: number;
+  /**
+     * @minimum -180
+     * @maximum 180
+     */
+  longitude?: number;
+  timezone?: string;
+  /**
+     * @minimum -12
+     * @maximum 14
+     */
+  timezoneOffset?: number;
+}
+
+export interface AstroNatalRequest {
+  profile: AstroNatalProfile;
+}
+
+export type AstroCalculationMetadataZodiacSystem = typeof AstroCalculationMetadataZodiacSystem[keyof typeof AstroCalculationMetadataZodiacSystem];
+
+
+export const AstroCalculationMetadataZodiacSystem = {
+  tropical: 'tropical',
+} as const;
+
+/**
+ * Counts of actual normalized provider data, including an Ascendant derived only from returned house one. Counts do not promise a complete chart.
+ */
+export type AstroCalculationMetadataReturned = {
+  /** @minimum 0 */
+  placements: number;
+  /** @minimum 0 */
+  houses: number;
+  /** @minimum 0 */
+  aspects: number;
+};
+
+export interface AstroCalculationMetadata {
+  zodiacSystem: AstroCalculationMetadataZodiacSystem;
+  requestedHouseSystem: string;
+  /**
+     * House system explicitly reported by the provider; null when unconfirmed, even if a setting was requested.
+     * @nullable
+     */
+  houseSystem: string | null;
+  /** Counts of actual normalized provider data, including an Ascendant derived only from returned house one. Counts do not promise a complete chart. */
+  returned: AstroCalculationMetadataReturned;
+}
+
+export type AstroNatalResultSource = typeof AstroNatalResultSource[keyof typeof AstroNatalResultSource];
+
+
+export const AstroNatalResultSource = {
+  astrologyapi: 'astrologyapi',
+  fallback: 'fallback',
+} as const;
+
+export type AstroNatalResultMode = typeof AstroNatalResultMode[keyof typeof AstroNatalResultMode];
+
+
+export const AstroNatalResultMode = {
+  live: 'live',
+  partial: 'partial',
+  fallback: 'fallback',
+} as const;
+
+export type AstroNatalResultValidation = {
+  partial?: boolean;
+  missing?: string[];
+  /** @nullable */
+  message?: string | null;
+};
+
+/**
+ * Existing normalized chart payload; absent placements, houses and aspects are never inferred from calculation metadata.
+ */
+export type AstroNatalResultChart = { [key: string]: unknown };
+
+export interface AstroNatalResult {
+  source: AstroNatalResultSource;
+  mode: AstroNatalResultMode;
+  cached: boolean;
+  fetchedAt: string;
+  profileHash: string;
+  calculation?: AstroCalculationMetadata;
+  validation?: AstroNatalResultValidation;
+  /** Existing normalized chart payload; absent placements, houses and aspects are never inferred from calculation metadata. */
+  chart: AstroNatalResultChart;
+}
+
+export interface AstroSynastryRequest {
+  userProfile: AstroNatalProfile;
+  partnerProfile: AstroNatalProfile;
+}
+
+export type AstroSynastryResultSchemaVersion = typeof AstroSynastryResultSchemaVersion[keyof typeof AstroSynastryResultSchemaVersion];
+
+
+export const AstroSynastryResultSchemaVersion = {
+  NUMBER_2: 2,
+} as const;
+
+export type AstroSynastryResultSource = typeof AstroSynastryResultSource[keyof typeof AstroSynastryResultSource];
+
+
+export const AstroSynastryResultSource = {
+  astrologyapi: 'astrologyapi',
+  fallback: 'fallback',
+} as const;
+
+export type AstroSynastryResultMode = typeof AstroSynastryResultMode[keyof typeof AstroSynastryResultMode];
+
+
+export const AstroSynastryResultMode = {
+  live: 'live',
+  fallback: 'fallback',
+} as const;
+
+export type AstroSynastryResultNatal = {
+  user: AstroNatalResult;
+  partner: AstroNatalResult;
+};
+
+export type AstroSynastryResultCalculationMethod = typeof AstroSynastryResultCalculationMethod[keyof typeof AstroSynastryResultCalculationMethod];
+
+
+export const AstroSynastryResultCalculationMethod = {
+  'hint-angular-v1': 'hint-angular-v1',
+} as const;
+
+export type AstroSynastryResultCalculationAspectSource = typeof AstroSynastryResultCalculationAspectSource[keyof typeof AstroSynastryResultCalculationAspectSource];
+
+
+export const AstroSynastryResultCalculationAspectSource = {
+  'hint-geometry': 'hint-geometry',
+} as const;
+
+export type AstroSynastryResultCalculationZodiacSystem = typeof AstroSynastryResultCalculationZodiacSystem[keyof typeof AstroSynastryResultCalculationZodiacSystem];
+
+
+export const AstroSynastryResultCalculationZodiacSystem = {
+  tropical: 'tropical',
+} as const;
+
+/**
+ * Fixed v1 policy in degrees. Conjunction/opposition 8; trine/square 6; sextile 4.
+ */
+export type AstroSynastryResultCalculationOrbs = {
+  conjunction: 8;
+  opposition: 8;
+  trine: 6;
+  square: 6;
+  sextile: 4;
+};
+
+export type AstroSynastryResultCalculation = {
+  method: AstroSynastryResultCalculationMethod;
+  aspectSource: AstroSynastryResultCalculationAspectSource;
+  zodiacSystem: AstroSynastryResultCalculationZodiacSystem;
+  /** Fixed v1 policy in degrees. Conjunction/opposition 8; trine/square 6; sextile 4. */
+  orbs: AstroSynastryResultCalculationOrbs;
+};
+
+export type AstroSynastryResultSummary = {[key: string]: string};
+
+export type AstroSynastryResultPlainEnglish = {[key: string]: string};
+
+export type AstroCrossAspectFromOwner = typeof AstroCrossAspectFromOwner[keyof typeof AstroCrossAspectFromOwner];
+
+
+export const AstroCrossAspectFromOwner = {
+  user: 'user',
+} as const;
+
+export type AstroCrossAspectToOwner = typeof AstroCrossAspectToOwner[keyof typeof AstroCrossAspectToOwner];
+
+
+export const AstroCrossAspectToOwner = {
+  partner: 'partner',
+} as const;
+
+export type AstroCrossAspectType = typeof AstroCrossAspectType[keyof typeof AstroCrossAspectType];
+
+
+export const AstroCrossAspectType = {
+  conjunction: 'conjunction',
+  opposition: 'opposition',
+  trine: 'trine',
+  square: 'square',
+  sextile: 'sextile',
+} as const;
+
+export type AstroCrossAspectExactAngle = typeof AstroCrossAspectExactAngle[keyof typeof AstroCrossAspectExactAngle];
+
+
+export const AstroCrossAspectExactAngle = {
+  NUMBER_0: 0,
+  NUMBER_60: 60,
+  NUMBER_90: 90,
+  NUMBER_120: 120,
+  NUMBER_180: 180,
+} as const;
+
+export type AstroCrossAspectAllowedOrb = typeof AstroCrossAspectAllowedOrb[keyof typeof AstroCrossAspectAllowedOrb];
+
+
+export const AstroCrossAspectAllowedOrb = {
+  NUMBER_4: 4,
+  NUMBER_6: 6,
+  NUMBER_8: 8,
+} as const;
+
+export type AstroCrossAspectSource = typeof AstroCrossAspectSource[keyof typeof AstroCrossAspectSource];
+
+
+export const AstroCrossAspectSource = {
+  'hint-geometry': 'hint-geometry',
+} as const;
+
+export interface AstroCrossAspect {
+  id: string;
+  fromOwner: AstroCrossAspectFromOwner;
+  toOwner: AstroCrossAspectToOwner;
+  from: string;
+  to: string;
+  type: AstroCrossAspectType;
+  /**
+     * @minimum 0
+     * @exclusiveMaximum 360
+     */
+  fromLongitude: number;
+  /**
+     * @minimum 0
+     * @exclusiveMaximum 360
+     */
+  toLongitude: number;
+  /**
+     * Shortest angular distance between the two actual positions.
+     * @minimum 0
+     * @maximum 180
+     */
+  separation: number;
+  exactAngle: AstroCrossAspectExactAngle;
+  /**
+     * Absolute distance from exactAngle
+     * @minimum 0
+     * @maximum 8
+     */
+  orb: number;
+  allowedOrb: AstroCrossAspectAllowedOrb;
+  source: AstroCrossAspectSource;
+  tier?: string;
+  meaning?: string;
+}
+
+export interface AstroSynastryResult {
+  schemaVersion: AstroSynastryResultSchemaVersion;
+  source: AstroSynastryResultSource;
+  mode: AstroSynastryResultMode;
+  cached: boolean;
+  fetchedAt: string;
+  natal?: AstroSynastryResultNatal;
+  calculation?: AstroSynastryResultCalculation;
+  aspects: AstroCrossAspect[];
+  summary?: AstroSynastryResultSummary;
+  plainEnglish?: AstroSynastryResultPlainEnglish;
 }
 
 export interface ReadingSummary {
@@ -239,17 +662,59 @@ export interface TarotChatReply {
 }
 
 export type GetProfileParams = {
-anonId: string;
+/**
+ * Ignored; ownership comes from the authenticated installation
+ */
+anonId?: string;
 };
 
 export type ListJournalEntriesParams = {
-anonId: string;
+/**
+ * Ignored; ownership comes from the authenticated installation
+ */
+anonId?: string;
 };
 
 export type ListReadingsParams = {
-anonId: string;
+/**
+ * Ignored; ownership comes from the authenticated installation
+ */
+anonId?: string;
 };
 
 export type GetUserStatsParams = {
-anonId: string;
+/**
+ * Ignored; ownership comes from the authenticated installation
+ */
+anonId?: string;
 };
+
+export type ClearOwnedHistoryParams = {
+anonId?: string;
+throughDay?: string;
+};
+
+export type ListActualReadingDatesParams = {
+anonId?: string;
+};
+
+export type SyncOfflineDailyReceipt200 = {
+  /** @nullable */
+  assignedCardId: string | null;
+  dailyKey: string;
+  /** @nullable */
+  openedAt: string | null;
+  historyExcluded: boolean;
+  [key: string]: unknown;
+ };
+
+export type CreatePersistedCompatibilityInvite200 = { [key: string]: unknown };
+
+export type GetPersistedCompatibilityInvite200 = { [key: string]: unknown };
+
+export type CompletePersistedCompatibilityInvite200 = {
+  resultId?: string;
+};
+
+export type GetPersistedCompatibilityResult200 = { [key: string]: unknown };
+

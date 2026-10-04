@@ -1,0 +1,35 @@
+{
+  "method": "Same WebKit/browser fixtures, byte-identical pixels from separately built base and merge candidate; repository PNG goldens retained unchanged. Both source versions fail those same three old goldens.",
+  "results": [
+    {
+      "theme": "stars",
+      "viewport": "375x667",
+      "baselineCommit": "b9594adf2f4d3114cf8bc33d6cd319d123477a13",
+      "candidateVersusBaselineDifferentPixels": 0,
+      "baseActualSha256": "5919f97f8c1b5882af04154497135dee31f60b69f34ca2ac23c67901f5809fa6",
+      "candidateActualSha256": "5919f97f8c1b5882af04154497135dee31f60b69f34ca2ac23c67901f5809fa6",
+      "repositoryGoldenMatchesBaseline": false,
+      "candidateSourceCommit": "2f6c1962aa0cee608ec536daa835148fc3a7d98a"
+    },
+    {
+      "theme": "dawn",
+      "viewport": "375x667",
+      "baselineCommit": "b9594adf2f4d3114cf8bc33d6cd319d123477a13",
+      "candidateVersusBaselineDifferentPixels": 0,
+      "baseActualSha256": "163b092d9a4e6bc387dc9a5b29d20aa8671847c3a9fa1e3df505f8a132effa98",
+      "candidateActualSha256": "163b092d9a4e6bc387dc9a5b29d20aa8671847c3a9fa1e3df505f8a132effa98",
+      "repositoryGoldenMatchesBaseline": false,
+      "candidateSourceCommit": "2f6c1962aa0cee608ec536daa835148fc3a7d98a"
+    },
+    {
+      "theme": "sea",
+      "viewport": "375x667",
+      "baselineCommit": "b9594adf2f4d3114cf8bc33d6cd319d123477a13",
+      "candidateVersusBaselineDifferentPixels": 0,
+      "baseActualSha256": "a09307668f2bb0e47c4938ca44072d929f80a44bbfd5e2cf5029da9bffeb6910",
+      "candidateActualSha256": "a09307668f2bb0e47c4938ca44072d929f80a44bbfd5e2cf5029da9bffeb6910",
+      "repositoryGoldenMatchesBaseline": false,
+      "candidateSourceCommit": "2f6c1962aa0cee608ec536daa835148fc3a7d98a"
+    }
+  ]
+}

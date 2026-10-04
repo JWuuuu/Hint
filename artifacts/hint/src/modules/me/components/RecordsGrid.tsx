@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import {
@@ -101,9 +102,7 @@ export function RecordsGrid({
                       borderColor: GLASS.border,
                       background: "rgba(255,255,255,0.035)",
                     }}
-                  >
-                    Soon
-                  </span>
+                  ><LocalizedText text={" Soon "} /></span>
                 </div>
               )}
             </motion.div>

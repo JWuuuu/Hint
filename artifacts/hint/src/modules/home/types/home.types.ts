@@ -91,6 +91,8 @@ export interface DailyLuckyItem {
   key: "color" | "jewelry" | "number" | "food" | "carry" | "flower";
   label: string;
   value: string;
+  /** Stable canonical key for artwork; value is localized display text. */
+  illustrationValue?: string;
   hint: string;
 }
 
@@ -100,6 +102,7 @@ export interface DailyTask {
 }
 
 export interface DailyReport {
+  language?: import("../../../lib/i18n").HintLanguage;
   date: string;
   overallScore: number;
   title: string;

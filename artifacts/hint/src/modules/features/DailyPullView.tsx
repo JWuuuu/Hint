@@ -1,9 +1,19 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { apiFetch, apiUrl } from "../../lib/api";
+import { countReadingDays } from "../../lib/readingDays";
+import { LocalizedText, translateText } from "../../lib/LocalizedText";
+import { useLocalDay } from "../../lib/useLocalDay";
+import { getCachedDailyReceipt, getOrCreateDailyReceipt, openDailyReceipt, subscribeToDailyReceiptFallbacks, type DailyReceipt } from "../../lib/dailyReceipts";
+import { getDailyPullById } from "../home/data/dailyPulls";
+import { withDailyCardIdentity } from "../home/data/dailyCardSync";
+import { listLocalTarotReadings } from "../readings/localTarotReadings";
+import { listLocalDailyReadings, saveLocalDailyReading } from "../readings/localDailyReadings";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
-import { AppScreen, ScreenHeader, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
-import { DailyPullSigil } from "../home/data/sigils";
+import { AppScreen, SectionLabel } from "../../components/app/AppChrome";
 import { DailyReportCard } from "../home/components/DailyReportCard";
+import { getSyncedDailyCard } from "../home/data/dailyCardSync";
 import { getDailyReport } from "../home/data/dailyReport";
 import {
   useGetOrCreateDailyPull,
@@ -20,6 +30,8 @@ import {
   subscribeToLocalDailyReadings,
 } from "../readings/localDailyReadings";
 import type { DailyCardMemory } from "../../lib/tarot/skyGuidedTarot";
+
+import { readTextDraft, writeTextDraft, clearTextDraft, textDraftKey, type TextDraft } from "../../lib/textDraft";
 
 const OPTION_WINDOW = [-2, -1, 0, 1, 2] as const;
 const PERIODS = [
@@ -119,11 +131,11 @@ function formatDayLabel(date: Date, offset: number, t: Translate): string {
   if (offset === -1) return t("dailyPull.relative.yesterday");
   if (offset === 1) return t("dailyPull.relative.tomorrow");
 
-  return date.toLocaleDateString(undefined, { weekday: "short" });
+  return date.toLocaleDateString(document.documentElement.lang || "en", { weekday: "short" });
 }
 
 function formatShortDate(date: Date): string {
-  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return date.toLocaleDateString(document.documentElement.lang || "en", { month: "short", day: "numeric" });
 }
 
 function sameLocalDay(a: Date, b: Date): boolean {
@@ -135,7 +147,7 @@ function formatPeriodRange(period: PeriodMode, anchor: Date): string {
   const end = endOfPeriod(period, anchor);
 
   if (period === "day") {
-    return start.toLocaleDateString(undefined, {
+    return start.toLocaleDateString(document.documentElement.lang || "en", {
       weekday: "long",
       month: "short",
       day: "numeric",
@@ -143,7 +155,7 @@ function formatPeriodRange(period: PeriodMode, anchor: Date): string {
   }
 
   if (period === "month") {
-    return start.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+    return start.toLocaleDateString(document.documentElement.lang || "en", { month: "long", year: "numeric" });
   }
 
   if (period === "year") {
@@ -167,7 +179,7 @@ function formatPeriodButtonLabel(period: PeriodMode, offset: number, anchor: Dat
     if (offset === 0) return t("dailyPull.relative.thisMonth");
     if (offset === -1) return t("dailyPull.relative.lastMonth");
     if (offset === 1) return t("dailyPull.relative.nextMonth");
-    return anchor.toLocaleDateString(undefined, { month: "short" });
+    return anchor.toLocaleDateString(document.documentElement.lang || "en", { month: "short" });
   }
   if (offset === 0) return t("dailyPull.relative.thisYear");
   if (offset === -1) return t("dailyPull.relative.lastYear");
@@ -224,7 +236,9 @@ function buildPeriodSummary({
   language,
   birthDetails,
   dailyHistory,
+  serverDays = [],
 }: {
+  serverDays?: string[];
   period: PeriodMode;
   anchor: Date;
   language: ReturnType<typeof useLanguage>["language"];
@@ -269,7 +283,7 @@ function buildPeriodSummary({
     strongest,
     softest,
     bestDay,
-    sampleCount: reports.length,
+    sampleCount: countReadingDays([...serverDays, ...[...listLocalDailyReadings(), ...listLocalTarotReadings()].map(reading => reading.createdAt)], getLocalDateString(dates[0]!), getLocalDateString(dates[dates.length - 1]!)),
     summary: `${strongest.label} carries the strongest signal at ${strongest.score}. ${softest.label} needs the most space, so keep that area simple.`,
     suggestion: middleReport.suggestion,
     avoid: middleReport.avoid,
@@ -280,10 +294,10 @@ function PeriodScoreBar({ score }: { score: DailyScore }) {
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between gap-3">
-        <span className="font-sans text-[10px]" style={{ color: GLASS.muted }}>
+        <span className="font-sans text-[12px] leading-[1.4]" style={{ color: GLASS.muted }}>
           {score.label}
         </span>
-        <span className="font-serif text-[15px] tabular-nums" style={{ color: GLASS.text }}>
+        <span className="font-serif text-[17px] leading-[1.3] tabular-nums" style={{ color: GLASS.text }}>
           {score.score}
         </span>
       </div>
@@ -304,17 +318,16 @@ function PeriodSummaryCard({ summary }: { summary: PeriodSummary }) {
   const { t } = useLanguage();
 
   return (
-    <GlassPanel className="mb-4 hint-shimmer-border" padded={false}>
-      <div className="p-4">
-      <div className="grid gap-4">
+    <section className="grid gap-6">
+      <div className="grid gap-5">
         <div>
           <p
-            className="font-sans text-[10px] uppercase tracking-[0.22em]"
+            className="font-sans text-[12px] leading-[1.4] uppercase tracking-[0.22em]"
             style={{ color: ACCENT.aqua }}
           >
             {summary.rangeLabel}
           </p>
-          <h2 className="mt-1.5 font-serif text-[24px] leading-none sm:text-[30px]" style={{ color: GLASS.text }}>
+          <h2 className="mt-2 font-serif text-[28px] leading-[1.15] sm:text-[30px]" style={{ color: GLASS.text }}>
             {periodTitle(summary.period, t)}
           </h2>
           <div className="mt-3 flex items-end gap-2">
@@ -331,65 +344,64 @@ function PeriodSummaryCard({ summary }: { summary: PeriodSummary }) {
               {t("daily.score")}
             </span>
           </div>
-          <p className="mt-3 max-w-md font-sans text-[12px] leading-relaxed" style={{ color: GLASS.muted }}>
+          <p className="mt-4 max-w-md font-sans text-[15px] leading-[1.6]" style={{ color: GLASS.muted }}>
             {summary.summary}
           </p>
         </div>
 
-        <div className="grid gap-2.5 min-[390px]:grid-cols-2 min-[390px]:gap-x-3">
+        <div className="grid gap-4 min-[390px]:grid-cols-2 min-[390px]:gap-x-5">
           {summary.scores.map((score) => (
             <PeriodScoreBar key={score.key} score={score} />
           ))}
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        <div className="hint-status-pill rounded-[13px] border p-3">
-          <p className="font-sans text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="min-w-0">
+          <p className="font-sans text-[12px] leading-[1.4] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
             {t("dailyPull.strongest")}
           </p>
-          <p className="mt-1.5 truncate font-serif text-[15px]" style={{ color: GLASS.text }}>
+          <p className="mt-2 truncate font-serif text-[16px] leading-[1.4]" style={{ color: GLASS.text }}>
             {summary.strongest.label} · {summary.strongest.score}
           </p>
         </div>
-        <div className="hint-status-pill rounded-[13px] border p-3">
-          <p className="font-sans text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
+        <div className="min-w-0">
+          <p className="font-sans text-[12px] leading-[1.4] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
             {t("dailyPull.bestDay")}
           </p>
-          <p className="mt-1.5 truncate font-serif text-[15px]" style={{ color: GLASS.text }}>
+          <p className="mt-2 truncate font-serif text-[16px] leading-[1.4]" style={{ color: GLASS.text }}>
             {formatShortDate(new Date(`${summary.bestDay.date}T00:00:00`))} · {summary.bestDay.overallScore}
           </p>
         </div>
-        <div className="hint-status-pill rounded-[13px] border p-3">
-          <p className="font-sans text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
+        <div className="min-w-0">
+          <p className="font-sans text-[12px] leading-[1.4] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
             {t("dailyPull.daysRead")}
           </p>
-          <p className="mt-1.5 truncate font-serif text-[15px]" style={{ color: GLASS.text }}>
+          <p className="mt-2 truncate font-serif text-[16px] leading-[1.4]" style={{ color: GLASS.text }}>
             {summary.sampleCount}
           </p>
         </div>
       </div>
 
-      <div className="mt-4 grid gap-3 min-[390px]:grid-cols-2">
+      <div className="grid gap-5 min-[390px]:grid-cols-2">
         <div>
-          <p className="font-sans text-[10px] uppercase tracking-[0.2em]" style={{ color: GLASS.faint }}>
+          <p className="font-sans text-[12px] leading-[1.4] uppercase tracking-[0.2em]" style={{ color: GLASS.faint }}>
             {t("daily.suggest")}
           </p>
-          <p className="mt-1 font-serif text-[14px] leading-snug" style={{ color: GLASS.text }}>
+          <p className="mt-2 font-serif text-[15px] leading-[1.6]" style={{ color: GLASS.text }}>
             {summary.suggestion}
           </p>
         </div>
         <div>
-          <p className="font-sans text-[10px] uppercase tracking-[0.2em]" style={{ color: GLASS.faint }}>
+          <p className="font-sans text-[12px] leading-[1.4] uppercase tracking-[0.2em]" style={{ color: GLASS.faint }}>
             {t("daily.avoid")}
           </p>
-          <p className="mt-1 font-serif text-[14px] leading-snug" style={{ color: GLASS.text }}>
+          <p className="mt-2 font-serif text-[15px] leading-[1.6]" style={{ color: GLASS.text }}>
             {summary.avoid}
           </p>
         </div>
       </div>
-      </div>
-    </GlassPanel>
+    </section>
   );
 }
 
@@ -402,7 +414,7 @@ function calendarCells(cursor: Date): Date[] {
 function weekDayLabels(): string[] {
   const base = new Date(2026, 5, 14);
   return Array.from({ length: 7 }, (_, index) =>
-    addLocalDays(base, index).toLocaleDateString(undefined, { weekday: "short" }).slice(0, 2),
+    addLocalDays(base, index).toLocaleDateString(document.documentElement.lang || "en", { weekday: "short" }).slice(0, 2),
   );
 }
 
@@ -449,7 +461,7 @@ function CalendarJumpMenu({
   return (
     <div
       data-testid="daily-calendar-jump-menu"
-      className="hint-liquid-panel rounded-[28px] p-3"
+      className="hint-liquid-panel rounded-[28px] p-2"
       style={{
         position: "absolute",
         left: 0,
@@ -464,7 +476,7 @@ function CalendarJumpMenu({
         <button
           type="button"
           onClick={() => shiftCursor(-1)}
-          className="grid size-9 place-items-center rounded-full border"
+          className="grid size-11 shrink-0 place-items-center rounded-full border"
           style={{ color: GLASS.text, background: "var(--hint-input-bg)", borderColor: GLASS.border }}
           aria-label={t("common.previous")}
         >
@@ -474,16 +486,14 @@ function CalendarJumpMenu({
           <p className="font-serif text-[20px] leading-none" style={{ color: GLASS.text }}>
             {mode === "year"
               ? `${years[0]} - ${years[years.length - 1]}`
-              : cursor.toLocaleDateString(undefined, { month: "long", year: "numeric" })}
+              : cursor.toLocaleDateString(document.documentElement.lang || "en", { month: "long", year: "numeric" })}
           </p>
-          <p className="mt-1 font-sans text-[9px] font-black uppercase tracking-[0.16em]" style={{ color: GLASS.faint }}>
-            Calendar jump
-          </p>
+          <p className="mt-1 font-sans text-[9px] font-black uppercase tracking-[0.16em]" style={{ color: GLASS.faint }}><LocalizedText text={" Calendar jump "} /></p>
         </div>
         <button
           type="button"
           onClick={() => shiftCursor(1)}
-          className="grid size-9 place-items-center rounded-full border"
+          className="grid size-11 shrink-0 place-items-center rounded-full border"
           style={{ color: GLASS.text, background: "var(--hint-input-bg)", borderColor: GLASS.border }}
           aria-label={t("common.next")}
         >
@@ -491,7 +501,7 @@ function CalendarJumpMenu({
         </button>
       </div>
 
-      <div className="mb-3 grid grid-cols-4 gap-1 rounded-full border p-1" style={{ borderColor: GLASS.border, background: "color-mix(in srgb, var(--hint-surface-soft) 74%, transparent)" }}>
+      <div className="mb-3 flex flex-wrap gap-1 rounded-[22px] border p-1" style={{ borderColor: GLASS.border, background: "color-mix(in srgb, var(--hint-surface-soft) 74%, transparent)" }}>
         {PERIODS.map((item) => {
           const selected = mode === item.key;
           return (
@@ -499,7 +509,7 @@ function CalendarJumpMenu({
               key={item.key}
               type="button"
               onClick={() => setMode(item.key)}
-              className="h-8 rounded-full font-sans text-[10px] font-black uppercase tracking-[0.08em]"
+              className="min-h-11 min-w-max max-w-full flex-[1_1_5em] rounded-full px-2 font-sans text-[10px] font-black uppercase tracking-[0.08em]"
               style={{
                 color: selected ? "var(--hint-special-action-text)" : GLASS.muted,
                 background: selected ? "var(--hint-special-action-bg)" : "transparent",
@@ -521,7 +531,7 @@ function CalendarJumpMenu({
               </span>
             ))}
           </div>
-          <div className="grid grid-cols-7 gap-1">
+          <div className="grid grid-cols-7">
             {cells.map((date) => {
               const inMonth = date.getMonth() === cursor.getMonth();
               const isSelected = sameLocalDay(date, selectedDate);
@@ -532,7 +542,7 @@ function CalendarJumpMenu({
                   key={getLocalDateString(date)}
                   type="button"
                   onClick={() => onSelect(date, mode)}
-                  className="h-9 rounded-[13px] font-serif text-[13px] tabular-nums transition active:scale-[0.96]"
+                  className="min-h-11 rounded-[13px] font-sans text-[13px] tabular-nums transition active:scale-[0.96]"
                   style={{
                     color: selected ? "var(--hint-special-action-text)" : inMonth ? GLASS.text : GLASS.faint,
                     background: selected
@@ -567,7 +577,7 @@ function CalendarJumpMenu({
                   border: `1px solid ${selected ? "color-mix(in srgb, var(--hint-rose) 30%, var(--hint-border))" : GLASS.border}`,
                 }}
               >
-                {date.toLocaleDateString(undefined, { month: "short" })}
+                {date.toLocaleDateString(document.documentElement.lang || "en", { month: "short" })}
               </button>
             );
           })}
@@ -600,10 +610,68 @@ function CalendarJumpMenu({
       <button
         type="button"
         onClick={onClose}
-        className="hint-ghost-button mt-3 h-10 w-full rounded-full font-sans text-[11px] font-black uppercase tracking-[0.12em]"
-      >
-        Close
-      </button>
+        className="hint-ghost-button mt-3 min-h-11 w-full rounded-full font-sans text-[11px] font-black uppercase tracking-[0.12em]"
+      ><LocalizedText text={" Close "} /></button>
+    </div>
+  );
+}
+
+function DayDateStrip({ options, selectedOffset, onSelect }: {
+  options: Array<{ offset: number; date: Date; key: string; label: string; detail: string; day: string }>;
+  selectedOffset: number;
+  onSelect: (offset: number) => void;
+}) {
+  const { language } = useLanguage();
+  const stripRef = useRef<HTMLDivElement>(null);
+  const selectedButtonRef = useRef<HTMLButtonElement>(null);
+
+  useLayoutEffect(() => {
+    const strip = stripRef.current;
+    const button = selectedButtonRef.current;
+    if (!strip || !button) return;
+    strip.scrollLeft = button.offsetLeft - (strip.clientWidth - button.offsetWidth) / 2;
+  }, [selectedOffset]);
+
+  return (
+    <div
+      ref={stripRef}
+      role="group"
+      aria-label={translateText("Choose a date", language)}
+      data-testid="daily-date-strip"
+      className="relative flex min-w-0 gap-2 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y", overflowAnchor: "none" }}
+    >
+      {options.map(({ offset, date, key, label, detail, day }) => {
+        const selected = selectedOffset === offset;
+        return (
+          <button
+            key={key}
+            ref={selected ? selectedButtonRef : undefined}
+            type="button"
+            onClick={() => onSelect(offset)}
+            aria-pressed={selected}
+            aria-current={offset === 0 ? "date" : undefined}
+            aria-label={date.toLocaleDateString(language, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+            data-date={getLocalDateString(date)}
+            className="hint-tap-sparkle min-h-[60px] w-[72px] shrink-0 rounded-[14px] border px-1.5 py-2 text-left transition active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px]"
+            style={{
+              background: selected ? "var(--hint-special-action-bg)" : "transparent",
+              borderColor: selected ? "var(--hint-special-action-border)" : "transparent",
+              color: selected ? "var(--hint-special-action-text)" : "var(--hint-text)",
+            }}
+          >
+            <span className="block truncate font-sans text-[9px] leading-[1.4] font-black uppercase tracking-normal" style={{ color: selected ? "var(--hint-special-action-text)" : "var(--hint-faint)" }}>
+              {label}
+            </span>
+            <span className="mt-1 block font-serif text-[24px] leading-[1.1] tabular-nums">
+              {day}
+            </span>
+            <span className="mt-1 block truncate font-sans text-[9px] leading-[1.4] font-semibold" style={{ color: selected ? "color-mix(in srgb, var(--hint-special-action-text) 72%, transparent)" : "var(--hint-faint)" }}>
+              {detail}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -614,6 +682,12 @@ export function DailyPullView() {
   const [pull, setPull] = useState<DailyPull | null>(null);
   const [note, setNote] = useState("");
   const [savedNote, setSavedNote] = useState("");
+  const [noteError, setNoteError] = useState(false);
+  const [draftError, setDraftError] = useState(false);
+  const noteDrafts = useRef(new Map<string, TextDraft>());
+  const noteSaving = useRef(new Set<string>());
+  const noteSaveVersions = useRef(new Map<string, number>());
+  const noteKey = (date: string) => textDraftKey("daily", getAnonId(), date);
   const [period, setPeriod] = useState<PeriodMode>("day");
   const [periodOffsets, setPeriodOffsets] = useState<PeriodOffsets>({
     day: 0,
@@ -626,6 +700,14 @@ export function DailyPullView() {
   const activePullDateRef = useRef("");
   const { language, t } = useLanguage();
   const { profile } = useProfile();
+  const { data: serverDays = [] } = useQuery<string[]>({
+    queryKey: ["reading-days", getAnonId()],
+    queryFn: async ({ signal }) => {
+      const response = await apiFetch(apiUrl(`/api/reading-days?anonId=${encodeURIComponent(getAnonId())}`), { signal });
+      if (!response.ok) throw new Error("Reading dates unavailable");
+      return response.json();
+    }, staleTime: 30_000, retry: 1,
+  });
   const [birthProfile, setBirthProfile] = useState(() => readBirthProfile());
   const [historyVersion, setHistoryVersion] = useState(0);
   const activeBirthDetails = profile?.birthDate || birthProfile
@@ -642,10 +724,50 @@ export function DailyPullView() {
     () => listLocalDailyReadingMemory().slice(0, 30),
     [historyVersion],
   );
-  const today = useMemo(() => startOfLocalDay(), []);
+  const currentDay = useLocalDay();
+  const today = useMemo(() => startOfLocalDay(new Date(`${currentDay}T12:00:00`)), [currentDay]);
+  const [receiptVersion, setReceiptVersion] = useState(0);
   const activeOffset = period === "day" ? selectedOffset : periodOffsets[period];
   const selectedDate = useMemo(() => getPeriodAnchor(period, today, activeOffset), [activeOffset, period, today]);
   const selectedDateKey = useMemo(() => getLocalDateString(selectedDate), [selectedDate]);
+  const syncedDailyCard = useMemo(
+    () => {
+      const cached = getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey });
+      if (selectedDateKey !== currentDay) {
+        const archived = listLocalDailyReadings().find(row => row.id === `daily-${selectedDateKey}`);
+        if (archived?.cardId) {
+          const saved = getDailyPullById(archived.cardId, language);
+          return saved.cardId === archived.cardId ? saved : null;
+        }
+        const serverCard = getSyncedDailyCard(pull, selectedDateKey, language);
+        if (pull?.isFlipped && serverCard && serverCard.cardId === pull.cardId) return serverCard;
+        if (cached?.openedAt && cached.assignedCardId) {
+          const saved = getDailyPullById(cached.assignedCardId, language);
+          return saved.cardId === cached.assignedCardId ? saved : null;
+        }
+        return null;
+      }
+      if (cached?.assignedCardId) {
+        const base = getDailyReport({ anonId: getAnonId(), date: selectedDate, language }).card;
+        return withDailyCardIdentity(base, cached.assignedCardId, language);
+      }
+      return getSyncedDailyCard(pull, selectedDateKey, language);
+    },
+    [language, pull, selectedDateKey, receiptVersion, currentDay, historyVersion],
+  );
+  useEffect(() => subscribeToDailyReceiptFallbacks(() => setReceiptVersion(value => value + 1)), []);
+  useEffect(() => {
+    let active = true;
+    if (period !== "day" || selectedDateKey !== currentDay) return;
+    const dailyKey = selectedDateKey;
+    const fallbackAssignedCardId = getDailyReport({ anonId: getAnonId(), date: selectedDate, language }).card.cardId;
+    void getOrCreateDailyReceipt("daily-card", { dailyKey, fallbackAssignedCardId }).then(async receipt => {
+      if (!active || dailyKey !== currentDay) return;
+      const revealed = receipt.openedAt ? receipt : await openDailyReceipt("daily-card", { dailyKey, fallbackAssignedCardId: receipt.assignedCardId });
+      if (revealed.assignedCardId) saveLocalDailyReading(getDailyPullById(revealed.assignedCardId, language), new Date(`${dailyKey}T12:00:00`));
+    });
+    return () => { active = false; };
+  }, [selectedDateKey, currentDay, period]);
   const activeLabel = formatPeriodButtonLabel(period, activeOffset, selectedDate, t);
   const activeDetail = formatPeriodRange(period, selectedDate);
   const dayOptions = useMemo(
@@ -658,11 +780,12 @@ export function DailyPullView() {
           date,
           key: `${offset}:${getLocalDateString(date)}`,
           label: formatDayLabel(date, offset, t),
-          detail: date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }),
-          day: date.toLocaleDateString(undefined, { day: "numeric" }),
+          month: date.toLocaleDateString(language, { month: "short" }),
+          detail: date.toLocaleDateString(document.documentElement.lang || "en", { month: "short", day: "numeric", year: "numeric" }),
+          day: date.toLocaleDateString(document.documentElement.lang || "en", { day: "numeric" }),
         };
       }),
-    [selectedOffset, t, today],
+    [selectedOffset, t, today, language],
   );
   const periodOptions = useMemo(
     () =>
@@ -690,6 +813,7 @@ export function DailyPullView() {
             language,
             birthDetails: activeBirthDetails ?? undefined,
             dailyHistory,
+            serverDays,
           }),
     [
       activeBirthDetails?.birthDate,
@@ -699,6 +823,7 @@ export function DailyPullView() {
       activeBirthDetails?.longitude,
       activeBirthDetails?.timezoneOffset,
       dailyHistory,
+      serverDays,
       language,
       period,
       selectedDate,
@@ -708,21 +833,29 @@ export function DailyPullView() {
   useEffect(() => {
     if (period !== "day") return;
     const pullDate = selectedDateKey;
+    const draftKey = noteKey(pullDate);
+    const saveVersion = noteSaveVersions.current.get(draftKey) ?? 0;
     activePullDateRef.current = pullDate;
     setPull(null);
-    setNote("");
+    setNote(noteDrafts.current.get(pullDate)?.text ?? readTextDraft(noteKey(pullDate))?.text ?? "");
     setSavedNote("");
+    setNoteError(false);
+    let current = true;
     drawMutation.mutate(
       { data: { anonId: getAnonId(), date: pullDate } },
       {
         onSuccess: (data) => {
-          if (activePullDateRef.current !== pullDate) return;
+          if (!current || activePullDateRef.current !== pullDate) return;
           setPull(data);
-          setNote(data.note ?? "");
+          // The initial request can finish after a PATCH has saved newer text and
+          // cleared its draft. Its older snapshot must not hydrate the note again.
+          if ((noteSaveVersions.current.get(draftKey) ?? 0) !== saveVersion) return;
+          setNote(noteDrafts.current.get(pullDate)?.text ?? readTextDraft(noteKey(pullDate))?.text ?? data.note ?? "");
           setSavedNote(data.note ?? "");
         },
       },
     );
+    return () => { current = false; activePullDateRef.current = ""; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [period, selectedDateKey]);
 
@@ -745,16 +878,22 @@ export function DailyPullView() {
   );
 
   function saveNote() {
-    if (!pull || note === savedNote) return;
+    if ((note === savedNote && !noteError) || noteSaving.current.has(selectedDateKey)) return;
     const pullDate = selectedDateKey;
-    updateMutation.mutate(
-      { data: { anonId: getAnonId(), date: pullDate, note } },
-      {
-        onSuccess: (data) => {
-          if (activePullDateRef.current === pullDate) setSavedNote(data.note ?? "");
-        },
-      },
-    );
+    const draftKey = noteKey(pullDate);
+    const submitted = noteDrafts.current.get(pullDate) ?? readTextDraft(draftKey) ?? writeTextDraft(draftKey, note).draft;
+    noteSaving.current.add(pullDate);
+    setNoteError(false);
+    // mutateAsync callbacks remain attached when the selected date changes.
+    void updateMutation.mutateAsync({ data: { anonId: getAnonId(), date: pullDate, note: submitted.text, editedAt: submitted.editedAt } })
+      .then((data) => {
+        noteSaveVersions.current.set(draftKey, (noteSaveVersions.current.get(draftKey) ?? 0) + 1);
+        clearTextDraft(draftKey, submitted);
+        if (noteDrafts.current.get(pullDate)?.revision === submitted.revision) noteDrafts.current.delete(pullDate);
+        if (activePullDateRef.current === pullDate) setSavedNote(data.note ?? "");
+      })
+      .catch(() => { if (activePullDateRef.current === pullDate) setNoteError(true); })
+      .finally(() => noteSaving.current.delete(pullDate));
   }
 
   function shiftActivePeriod(delta: number) {
@@ -787,66 +926,149 @@ export function DailyPullView() {
   }
 
   return (
-    <AppScreen>
-      <ScreenHeader
-        eyebrow={t("dailyPull.eyebrow")}
-        title={t("dailyPull.title")}
-        sigil={DailyPullSigil}
-        showBack={false}
-      />
+    <AppScreen
+      allowHorizontalPan
+      contentStyle={{ paddingTop: "max(56px, calc(var(--hint-safe-top) + 16px))" }}
+    >
+      <div className="hint-daily-page grid min-w-0 grid-cols-1 gap-6">
+        <h1 className="sr-only">{t("dailyPull.title")}</h1>
 
-      <section className="relative mb-3">
-        <GlassPanel padded={false} className="p-3">
-          <div className="mb-2 flex items-center gap-2">
-            <div
-              className="grid min-w-0 flex-1 grid-cols-4 gap-1 rounded-full border p-1"
-              style={{
-                background: "color-mix(in srgb, var(--hint-surface-soft) 78%, transparent)",
-                borderColor: "var(--hint-border)",
-              }}
-            >
-              {PERIODS.map((item) => {
-                const selected = period === item.key;
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={() => {
-                      setPeriod(item.key);
-                      setCalendarOpen(false);
-                    }}
-                    aria-pressed={selected}
-                    className="h-8 rounded-full font-sans text-[10px] font-black transition active:scale-[0.98]"
-                    style={{
-                      background: selected ? "var(--hint-special-action-bg)" : "transparent",
-                      color: selected ? "var(--hint-special-action-text)" : GLASS.muted,
-                      boxShadow: selected ? "inset 0 1px 0 rgba(255,255,255,0.42)" : "none",
-                    }}
-                  >
-                    {t(item.labelKey)}
-                  </button>
-                );
-              })}
+        <section className="relative min-w-0">
+          <div className="grid min-w-0 grid-cols-1 gap-3">
+            <div className="flex items-center gap-3">
+              <div
+                className="flex min-w-0 flex-1 flex-wrap gap-1"
+              >
+                {PERIODS.map((item) => {
+                  const selected = period === item.key;
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => {
+                        setPeriod(item.key);
+                        setCalendarOpen(false);
+                      }}
+                      aria-pressed={selected}
+                      className="min-h-11 min-w-11 flex-auto px-2 py-2 rounded-full font-sans text-[13px] leading-[1.3] font-black transition active:scale-[0.98]"
+                      style={{
+                        background: selected ? "var(--hint-special-action-bg)" : "transparent",
+                        color: selected ? "var(--hint-special-action-text)" : GLASS.muted,
+                        boxShadow: selected ? "inset 0 1px 0 rgba(255,255,255,0.42)" : "none",
+                      }}
+                    >
+                      {t(item.labelKey)}
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                type="button"
+                data-testid="button-calendar-jump"
+                onClick={() => setCalendarOpen((open) => !open)}
+                aria-expanded={calendarOpen}
+                aria-label={t("dailyPull.calendarTitle")}
+                className="hint-tap-sparkle grid size-11 shrink-0 place-items-center rounded-full border"
+                style={{
+                  background: calendarOpen
+                    ? "var(--hint-special-action-bg)"
+                    : "color-mix(in srgb, var(--hint-rose) 9%, transparent)",
+                  borderColor: calendarOpen
+                    ? "color-mix(in srgb, var(--hint-rose) 34%, var(--hint-border))"
+                    : "color-mix(in srgb, var(--hint-rose) 24%, var(--hint-border))",
+                  color: calendarOpen ? "var(--hint-special-action-text)" : "var(--hint-rose)",
+                }}
+              >
+                <CalendarDays size={15} />
+              </button>
             </div>
-            <button
-              type="button"
-              data-testid="button-calendar-jump"
-              onClick={() => setCalendarOpen((open) => !open)}
-              aria-expanded={calendarOpen}
-              aria-label="Open calendar jump"
-              className="hint-tap-sparkle grid size-10 shrink-0 place-items-center rounded-full border"
-              style={{
-                background: calendarOpen
-                  ? "var(--hint-special-action-bg)"
-                  : "color-mix(in srgb, var(--hint-rose) 9%, transparent)",
-                borderColor: calendarOpen
-                  ? "color-mix(in srgb, var(--hint-rose) 34%, var(--hint-border))"
-                  : "color-mix(in srgb, var(--hint-rose) 24%, var(--hint-border))",
-                color: calendarOpen ? "var(--hint-special-action-text)" : "var(--hint-rose)",
-              }}
+            {period !== "day" && <div
+              className="grid grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-3"
             >
-              <CalendarDays size={15} />
-            </button>
+              <button
+                type="button"
+                onClick={() => shiftActivePeriod(-1)}
+                aria-label={`${t("common.previous")} ${t(`dailyPull.period.${period}`)}`}
+                className="grid size-11 shrink-0 place-items-center rounded-full border transition active:scale-[0.96]"
+                style={{ background: "var(--hint-surface-soft)", borderColor: "var(--hint-border)", color: GLASS.text }}
+              >
+                <ChevronLeft size={17} />
+              </button>
+              <div className="min-w-0 text-center">
+                <p className="truncate font-serif text-[20px] leading-[1.3]" style={{ color: GLASS.text }}>
+                  {activeLabel}
+                </p>
+                <p className="mt-1 truncate font-sans text-[12px] leading-[1.4] font-bold uppercase tracking-[0.13em]" style={{ color: GLASS.faint }}>
+                  {activeDetail}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => shiftActivePeriod(1)}
+                aria-label={`${t("common.next")} ${t(`dailyPull.period.${period}`)}`}
+                className="grid size-11 shrink-0 place-items-center rounded-full border transition active:scale-[0.96]"
+                style={{ background: "var(--hint-surface-soft)", borderColor: "var(--hint-border)", color: GLASS.text }}
+              >
+                <ChevronRight size={17} />
+              </button>
+            </div>}
+
+            {period === "day" ? (
+              <div className="grid min-w-0 grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => shiftActivePeriod(-1)}
+                  aria-label={`${t("common.previous")} ${t("dailyPull.period.day")}`}
+                  className="grid size-11 shrink-0 place-items-center rounded-full transition active:scale-[0.96]"
+                  style={{ color: GLASS.muted }}
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <DayDateStrip
+                  options={dayOptions}
+                  selectedOffset={selectedOffset}
+                  onSelect={(offset) => setSelectedOffset(offset)}
+                />
+                <button
+                  type="button"
+                  onClick={() => shiftActivePeriod(1)}
+                  aria-label={`${t("common.next")} ${t("dailyPull.period.day")}`}
+                  className="grid size-11 shrink-0 place-items-center rounded-full transition active:scale-[0.96]"
+                  style={{ color: GLASS.muted }}
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            ) : <div className="grid grid-cols-5 gap-1.5">
+              {periodOptions.map((option) => (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() =>
+                        setPeriodOffsets((next) => ({
+                          ...next,
+                          [period]: option.offset,
+                        }))
+                      }
+                      aria-pressed={option.selected}
+                      className="hint-tap-sparkle min-h-[48px] rounded-[12px] border px-1 py-1.5 text-left transition active:scale-[0.98]"
+                      style={{
+                        background: option.selected
+                          ? "var(--hint-special-action-bg)"
+                          : "transparent",
+                        borderColor: option.selected ? "var(--hint-special-action-border)" : "transparent",
+                        color: option.selected ? "var(--hint-special-action-text)" : "var(--hint-text)",
+                      }}
+                    >
+                      <span className="block truncate font-serif text-[13px] leading-[1.3]" style={{ color: option.selected ? "var(--hint-special-action-text)" : "var(--hint-text)" }}>
+                        {option.label}
+                      </span>
+                      <span className="mt-1 block truncate font-sans text-[8px] leading-[1.4] font-bold uppercase tracking-normal" style={{ color: option.selected ? "color-mix(in srgb, var(--hint-special-action-text) 72%, transparent)" : "var(--hint-faint)" }}>
+                        {option.detail}
+                      </span>
+                    </button>
+                  ))}
+            </div>}
           </div>
           {calendarOpen ? (
             <CalendarJumpMenu
@@ -857,155 +1079,72 @@ export function DailyPullView() {
               onClose={() => setCalendarOpen(false)}
             />
           ) : null}
+        </section>
 
-          <div
-            className="mb-2 grid grid-cols-[36px_1fr_36px] items-center gap-2 rounded-[16px] border px-1.5 py-1"
-            style={{
-              background: "color-mix(in srgb, var(--hint-input-bg) 78%, transparent)",
-              borderColor: "var(--hint-border)",
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => shiftActivePeriod(-1)}
-              aria-label={`${t("common.previous")} ${t(`dailyPull.period.${period}`)}`}
-              className="grid size-8 shrink-0 place-items-center rounded-full border transition active:scale-[0.96]"
-              style={{ background: "var(--hint-surface-soft)", borderColor: "var(--hint-border)", color: GLASS.text }}
-            >
-              <ChevronLeft size={17} />
-            </button>
-            <div className="min-w-0 text-center">
-              <p className="truncate font-serif text-[18px] leading-tight" style={{ color: GLASS.text }}>
-                {activeLabel}
-              </p>
-              <p className="truncate font-sans text-[9px] font-bold uppercase tracking-[0.13em]" style={{ color: GLASS.faint }}>
-                {activeDetail}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => shiftActivePeriod(1)}
-              aria-label={`${t("common.next")} ${t(`dailyPull.period.${period}`)}`}
-              className="grid size-8 shrink-0 place-items-center rounded-full border transition active:scale-[0.96]"
-              style={{ background: "var(--hint-surface-soft)", borderColor: "var(--hint-border)", color: GLASS.text }}
-            >
-              <ChevronRight size={17} />
-            </button>
-          </div>
+        {periodSummary ? (
+          <PeriodSummaryCard summary={periodSummary} />
+        ) : (
+          <DailyReportCard
+            key={selectedDateKey}
+            detailed
+            appearance="page"
+            dateOverride={selectedDate}
+            cardOverride={syncedDailyCard}
+            dailyHistory={dailyHistory}
+            statusMessage={
+              getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "conflict"
+                ? t("quality.cardConflict")
+                : getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "pending"
+                  ? t("quality.cardPending")
+                  : undefined
+            }
+          />
+        )}
 
-          <div className="grid grid-cols-5 gap-1.5">
-            {period === "day"
-              ? dayOptions.map((option) => {
-                  const selected = selectedOffset === option.offset;
-                  return (
-                    <button
-                      key={option.key}
-                      type="button"
-                      onClick={() => setSelectedOffset(option.offset)}
-                      aria-pressed={selected}
-                      className="hint-tap-sparkle min-h-[48px] rounded-[12px] border px-1.5 py-1.5 text-left transition active:scale-[0.98]"
-                      style={{
-                        background: selected
-                          ? "var(--hint-special-action-bg)"
-                          : "color-mix(in srgb, var(--hint-input-bg) 82%, transparent)",
-                        borderColor: selected ? "var(--hint-special-action-border)" : "var(--hint-border)",
-                        color: selected ? "var(--hint-special-action-text)" : "var(--hint-text)",
-                      }}
-                    >
-                      <span className="block truncate font-sans text-[7.5px] font-black uppercase tracking-[0.08em]" style={{ color: selected ? "var(--hint-special-action-text)" : "var(--hint-faint)" }}>
-                        {option.label}
-                      </span>
-                      <span className="mt-0.5 block font-serif text-[18px] leading-none tabular-nums" style={{ color: selected ? "var(--hint-special-action-text)" : "var(--hint-text)" }}>
-                        {option.day}
-                      </span>
-                      <span className="mt-0.5 block truncate font-sans text-[7px] font-semibold" style={{ color: selected ? "color-mix(in srgb, var(--hint-special-action-text) 72%, transparent)" : "var(--hint-faint)" }}>
-                        {option.detail}
-                      </span>
-                    </button>
-                  );
-                })
-              : periodOptions.map((option) => (
-                  <button
-                    key={option.key}
-                    type="button"
-                    onClick={() =>
-                      setPeriodOffsets((next) => ({
-                        ...next,
-                        [period]: option.offset,
-                      }))
-                    }
-                    aria-pressed={option.selected}
-                    className="hint-tap-sparkle min-h-[48px] rounded-[12px] border px-1.5 py-1.5 text-left transition active:scale-[0.98]"
-                    style={{
-                      background: option.selected
-                        ? "var(--hint-special-action-bg)"
-                        : "color-mix(in srgb, var(--hint-input-bg) 82%, transparent)",
-                      borderColor: option.selected ? "var(--hint-special-action-border)" : "var(--hint-border)",
-                      color: option.selected ? "var(--hint-special-action-text)" : "var(--hint-text)",
-                    }}
-                  >
-                    <span className="block truncate font-serif text-[13px] leading-tight" style={{ color: option.selected ? "var(--hint-special-action-text)" : "var(--hint-text)" }}>
-                      {option.label}
-                    </span>
-                    <span className="mt-0.5 block truncate font-sans text-[7px] font-bold uppercase tracking-[0.08em]" style={{ color: option.selected ? "color-mix(in srgb, var(--hint-special-action-text) 72%, transparent)" : "var(--hint-faint)" }}>
-                      {option.detail}
-                    </span>
-                  </button>
-                ))}
-          </div>
-        </GlassPanel>
-      </section>
-
-      {periodSummary ? (
-        <PeriodSummaryCard summary={periodSummary} />
-      ) : (
-        <DailyReportCard
-          key={selectedDateKey}
-          detailed
-          dateOverride={selectedDate}
-          dailyHistory={dailyHistory}
-          className="mb-4"
-        />
-      )}
-
-      {period === "day" && drawMutation.isError && (
-        <GlassPanel className="mb-4">
-          <p className="font-serif italic text-[14px] text-center" style={{ color: GLASS.muted }}>
+        {period === "day" && drawMutation.isError && (
+          <p className="font-serif italic text-[15px] leading-[1.6] text-center" style={{ color: GLASS.muted }}>
             {t("dailyPull.error")}
           </p>
-        </GlassPanel>
-      )}
+        )}
 
-      {period === "day" && pull && (
-        <section className="mb-4">
-          <SectionLabel>{t("dailyPull.noteTitle")}</SectionLabel>
-          <GlassPanel padded={false} className="p-3.5">
-            <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              onBlur={saveNote}
-              placeholder={t("dailyPull.notePlaceholder")}
-              className="h-20 w-full resize-none rounded-[22px] bg-transparent px-3.5 py-3 font-serif text-[14px] focus:outline-none"
-              style={{
-                background: "color-mix(in srgb, var(--hint-input-bg) 86%, transparent)",
-                border: `1px solid ${GLASS.border}`,
-                color: GLASS.text,
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
-              }}
-              data-testid="input-pull-note"
-            />
-            <div className="mt-2 flex h-4 items-center justify-between">
-              <span className="font-sans text-[11px]" style={{ color: GLASS.faint }}>
-                {updateMutation.isPending
-                  ? t("profile.keeping")
-                  : note === savedNote && savedNote
-                    ? t("dailyPull.kept")
-                    : ""}
-              </span>
+        {period === "day" && (
+          <section className="[&>div:first-child>p]:text-[12px] [&>div:first-child>p]:leading-[1.4]">
+            <SectionLabel>{t("dailyPull.noteTitle")}</SectionLabel>
+            <div>
+              <textarea
+                value={note}
+                maxLength={2000}
+                onChange={(e) => {
+                  const value = e.target.value; setNote(value);
+                  const result = writeTextDraft(noteKey(selectedDateKey), value);
+                  noteDrafts.current.set(selectedDateKey, result.draft); setDraftError(!result.saved);
+                }}
+                onBlur={saveNote}
+                placeholder={t("dailyPull.notePlaceholder")}
+                className="h-20 w-full resize-none rounded-[22px] bg-transparent px-3.5 py-3 font-serif text-[16px] leading-[1.5] focus:outline-none"
+                style={{
+                  background: "color-mix(in srgb, var(--hint-input-bg) 86%, transparent)",
+                  border: `1px solid ${GLASS.border}`,
+                  color: GLASS.text,
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
+                }}
+                data-testid="input-pull-note"
+              />
+              {draftError && <p role="status">{t("quality.draftFailed")}</p>}
+              {noteError && <button type="button" onClick={saveNote} className="min-h-11 text-sm">{t("quality.saveRetry")}</button>}
+              <div className="mt-2 flex min-h-4 items-center justify-between">
+                <span className="font-sans text-[12px] leading-[1.4]" style={{ color: GLASS.faint }}>
+                  {updateMutation.isPending
+                    ? t("profile.keeping")
+                    : note === savedNote && savedNote
+                      ? t("dailyPull.kept")
+                      : ""}
+                </span>
+              </div>
             </div>
-          </GlassPanel>
-        </section>
-      )}
+          </section>
+        )}
+      </div>
     </AppScreen>
   );
 }

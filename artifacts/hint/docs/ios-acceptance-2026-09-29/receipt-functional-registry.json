@@ -1,0 +1,935 @@
+{
+  "identity": {
+    "kind": "begin",
+    "at": "2026-09-29T20:51:06.397Z",
+    "source": {
+      "commit": "387a15268ea3341e2d03d19dd8ee11b743a6e87c",
+      "fingerprint": "d6516786f32688a1ea85c43627adee0dec1266ef7e5068dc3fe62bb0ebf80723"
+    },
+    "build": {
+      "directory": "/tmp/hint-ios-production-20260929",
+      "fingerprint": "acbd415f3cbaf39b4261f622eda694309e23192de4f4fcd6747638098f211784"
+    },
+    "selected": 70
+  },
+  "stats": {
+    "startTime": "2026-09-29T20:51:06.373Z",
+    "duration": 122201.33200000001,
+    "expected": 69,
+    "skipped": 1,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2050
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1437
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1442
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1455
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1972
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1428
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1433
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1426
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1587
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1375
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1360
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1410
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1561
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1394
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1447
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1499
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko bright app=false system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1568
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko dark app=true system=false text=100",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1405
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko bright app=false system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1463
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko dark app=true system=true text=200",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1425
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 82,
+      "title": "Home, Daily and receipt keep the locked card after refresh and export an actual PNG",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2057
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 103,
+      "title": "a saved historical Daily card wins over an unopened allocation and shares without invented scores",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1203
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 123,
+      "title": "an unopened server allocation is not presented as a saved historical Daily card",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1021
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 140,
+      "title": "selectable iPhone frame keeps Home, Daily and receipt controls inside safe areas",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2479
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 175,
+      "title": "printer frame sample: preparation, printing and replay stay responsive",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 12252
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en bright app=false system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1849
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en dark app=true system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1310
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en bright app=false system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1399
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt en dark app=true system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1367
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh bright app=false system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1833
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh dark app=true system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1329
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh bright app=false system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1405
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt zh dark app=true system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1420
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es bright app=false system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1866
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es dark app=true system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1335
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es bright app=false system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1334
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt es dark app=true system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1384
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja bright app=false system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1479
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja dark app=true system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1365
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja bright app=false system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1364
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ja dark app=true system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1375
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko bright app=false system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1847
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko dark app=true system=false text=100",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1366
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko bright app=false system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1395
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 35,
+      "title": "merged receipt ko dark app=true system=true text=200",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1437
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 82,
+      "title": "Home, Daily and receipt keep the locked card after refresh and export an actual PNG",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1963
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 103,
+      "title": "a saved historical Daily card wins over an unopened allocation and shares without invented scores",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1183
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 123,
+      "title": "an unopened server allocation is not presented as a saved historical Daily card",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1071
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 140,
+      "title": "selectable iPhone frame keeps Home, Daily and receipt controls inside safe areas",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2340
+        }
+      ]
+    },
+    {
+      "file": "merge-receipt.spec.ts",
+      "line": 175,
+      "title": "printer frame sample: preparation, printing and replay stay responsive",
+      "project": "iphone-se",
+      "expected": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "durationMs": 132
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 60,
+      "title": "Personality exports a real PNG and cancelling its preview revokes the old image",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1553
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 103,
+      "title": "Personality exports complete Japanese text in a real PNG",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1133
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 119,
+      "title": "Personality retries a real canvas export after a synthetic generation failure",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1168
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 136,
+      "title": "Personality keeps the preview and retries when browser download initiation throws",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1180
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 156,
+      "title": "Personality ignores a late English export after changing language and creating a new preview",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2415
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 177,
+      "title": "Leaving Personality cancels a pending export without reopening a preview on return",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1230
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "zh Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2343
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "es Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2352
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "ja Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2348
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "ko Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-17-pro-max",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2383
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 60,
+      "title": "Personality exports a real PNG and cancelling its preview revokes the old image",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1560
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 103,
+      "title": "Personality exports complete Japanese text in a real PNG",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1130
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 119,
+      "title": "Personality retries a real canvas export after a synthetic generation failure",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1099
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 136,
+      "title": "Personality keeps the preview and retries when browser download initiation throws",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1170
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 156,
+      "title": "Personality ignores a late English export after changing language and creating a new preview",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2335
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 177,
+      "title": "Leaving Personality cancels a pending export without reopening a preview on return",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1258
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "zh Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2242
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "es Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2213
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "ja Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2241
+        }
+      ]
+    },
+    {
+      "file": "personality-sharing.spec.ts",
+      "line": 198,
+      "title": "ko Tarot printer exports a localized public PNG with the original reversed card",
+      "project": "iphone-se",
+      "expected": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2253
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+
+  ../../../../tmp/hint-pearl-20260912/api-dist/index.mjs               2.5mb ⚠️
+  ../../../../tmp/hint-pearl-20260912/api-dist/pino-worker.mjs       154.5kb
+  ../../../../tmp/hint-pearl-20260912/api-dist/pino-file.mjs         143.1kb
+  ../../../../tmp/hint-pearl-20260912/api-dist/pino-pretty.mjs       116.0kb
+  ..../../tmp/hint-pearl-20260912/api-dist/thread-stream-worker.mjs    7.7kb
+  ../../../../tmp/hint-pearl-20260912/api-dist/index.mjs.map           5.6mb
+  ../../../../tmp/hint-pearl-20260912/api-dist/pino-worker.mjs.map   258.8kb
+  ../../../../tmp/hint-pearl-20260912/api-dist/pino-file.mjs.map     230.9kb
+  ../../../../tmp/hint-pearl-20260912/api-dist/pino-pretty.mjs.map   206.3kb
+  .../tmp/hint-pearl-20260912/api-dist/thread-stream-worker.mjs.map   13.0kb
+
+⚡ Done in 181ms

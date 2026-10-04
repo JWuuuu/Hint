@@ -7,6 +7,8 @@ info:
 servers:
   - url: /api
     description: Base API path
+security:
+  - DeviceBearer: []
 tags:
   - name: health
     description: Health operations
@@ -15,8 +17,92 @@ tags:
   - name: speech
     description: Text-to-speech operations
 paths:
+  /astro/natal:
+    post:
+      operationId: calculateNatalChart
+      summary: Calculate a tropical natal chart from saved birth details
+      description: Only source astrologyapi with mode live is calculated personal data. Missing inputs or provider failures remain explicitly partial or fallback. Calculation metadata never claims that requested house settings were confirmed by the provider.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AstroNatalRequest'
+      responses:
+        '200':
+          description: Calculated result or explicitly unavailable preview state
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AstroNatalResult' }
+        '400': { description: Invalid birth details }
+        '429': { description: Calculation limit reached }
+        '503': { description: Calculation unavailable }
+  /astro/synastry:
+    post:
+      operationId: calculateSynastryCharts
+      summary: Compare two calculated natal charts with a versioned angular policy
+      description: Retains all cross-person aspects and exact longitudes. Composite chart aspects are never used as cross-person links. No relationship score is calculated from these angles.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AstroSynastryRequest'
+      responses:
+        '200':
+          description: Two natal snapshots and their cross-person links, or an explicit unavailable state
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AstroSynastryResult' }
+        '400': { description: Invalid birth details }
+        '429': { description: Calculation limit reached }
+        '503': { description: Calculation unavailable }
+  /device-sessions:
+    post:
+      operationId: createDeviceSession
+      security: []
+      summary: Connect one beta installation with an independent server owner
+      description: Returns a secret once. Never accepts a legacy owner claim. Enrollment is durably limited by trusted IP and globally.
+      responses:
+        '201':
+          description: Store the token securely on this installation
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DeviceSessionCredential' }
+        '429': { description: Enrollment limit reached }
+        '503': { description: Enrollment is closed or unavailable }
+  /device-session:
+    get:
+      operationId: getDeviceSession
+      summary: Inspect the current installation credential
+      responses:
+        '200':
+          description: Current server owner and expiry
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DeviceSessionStatus' }
+        '401': { description: 'Missing, revoked or expired credential; do not silently create a new owner' }
+    delete:
+      operationId: revokeDeviceSession
+      summary: Revoke the current installation credential
+      responses:
+        '204': { description: Credential revoked; local data and server records are retained }
+        '401': { description: 'Missing, revoked or expired credential' }
+  /readyz:
+    get:
+      operationId: readinessCheck
+      security: []
+      summary: Check database connectivity and migration ledger
+      responses:
+        '200':
+          description: Ready
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/HealthStatus' }
+        '503': { description: 'Database, migrations or shutdown prevent serving requests' }
   /healthz:
     get:
+      security: []
       operationId: healthCheck
       tags: [health]
       summary: Health check
@@ -134,7 +220,9 @@ paths:
       parameters:
         - name: anonId
           in: query
-          required: true
+          required: false
+          deprecated: true
+          description: Ignored; ownership comes from the authenticated installation
           schema:
             type: string
       responses:
@@ -236,7 +324,9 @@ paths:
       parameters:
         - name: anonId
           in: query
-          required: true
+          required: false
+          deprecated: true
+          description: Ignored; ownership comes from the authenticated installation
           schema:
             type: string
       responses:
@@ -271,6 +361,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiError"
+        "409":
+          description: History was cleared after this submission began; code HISTORY_CLEARED
 
   /readings:
     get:
@@ -280,7 +372,9 @@ paths:
       parameters:
         - name: anonId
           in: query
-          required: true
+          required: false
+          deprecated: true
+          description: Ignored; ownership comes from the authenticated installation
           schema:
             type: string
       responses:
@@ -301,7 +395,9 @@ paths:
       parameters:
         - name: anonId
           in: query
-          required: true
+          required: false
+          deprecated: true
+          description: Ignored; ownership comes from the authenticated installation
           schema:
             type: string
       responses:
@@ -344,8 +440,182 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /history:
+    delete:
+      operationId: clearOwnedHistory
+      summary: Delete owned history atomically, preserving profile and reveal locks
+      description: Local beta identity only. Deletes readings, journals, daily history and owned compatibility links. Clients clear local history only after success.
+      parameters:
+        - { name: anonId, in: query, required: false, deprecated: true, schema: { type: string } }
+        - { name: throughDay, in: query, schema: { type: string, format: date } }
+      responses:
+        '204': { description: Transaction committed }
+        '400': { description: Missing identity }
+        '500': { description: Transaction failed; no partial deletion }
+  /reading-days:
+    get:
+      operationId: listActualReadingDates
+      summary: Actual revealed daily dates and reading timestamps for distinct-day statistics
+      parameters:
+        - { name: anonId, in: query, required: false, deprecated: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Local calendar dates or ISO timestamps; client normalizes timestamps to its calendar
+          content:
+            application/json:
+              schema: { type: array, items: { type: string } }
+  /daily-receipts/sync:
+    post:
+      operationId: syncOfflineDailyReceipt
+      summary: Idempotently synchronize a previously revealed card without replacing its identity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfflineDailyReceiptInput'
+      responses:
+        '200':
+          description: Original identity synchronized; excluded history stays excluded
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [assignedCardId, dailyKey, openedAt, historyExcluded]
+                properties:
+                  assignedCardId: { type: [string, 'null'] }
+                  dailyKey: { type: string, format: date }
+                  openedAt: { type: [string, 'null'], format: date-time }
+                  historyExcluded: { type: boolean }
+                additionalProperties: true
+        '400': { description: Invalid date or card identity }
+        '409': { description: Another card was already revealed; retain the local card as unsynchronized }
+        '503': { description: Unavailable; safe to retry the same receipt }
+  /compatibility/invite:
+    post:
+      operationId: createPersistedCompatibilityInvite
+      summary: Create a seven-day local beta invitation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompatibilityInviteInput'
+      responses:
+        '200':
+          description: Persisted invitation, excluding private birth input
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+  /compatibility/invite/{token}:
+    get:
+      security: [{}, { DeviceBearer: [] }]
+      operationId: getPersistedCompatibilityInvite
+      parameters:
+        - { name: token, in: path, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Pending, processing, failed or completed invitation
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+        '404': { description: Missing invitation }
+        '410': { description: Seven-day invitation expired }
+  /compatibility/invite/{token}/complete:
+    post:
+      operationId: completePersistedCompatibilityInvite
+      summary: Claim one calculation job or reuse its immutable completed result
+      parameters:
+        - { name: token, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompatibilityCompletionInput'
+      responses:
+        '200':
+          description: Original completed result, including repeated requests
+          content:
+            application/json:
+              schema: { type: object, properties: { resultId: { type: string } } }
+        '202': { description: One calculation is already processing }
+        '400': { description: Invalid birth input or missing consent }
+        '404': { description: Missing invitation }
+        '410': { description: Expired invitation }
+        '503': { description: Calculation failed or returned preview data; retry allowed }
+  /compatibility/{id}:
+    get:
+      operationId: getPersistedCompatibilityResult
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: Immutable result and original input snapshot
+          content:
+            application/json:
+              schema: { type: object, additionalProperties: true }
+        '404': { description: Missing or deleted result }
 components:
+  securitySchemes:
+    DeviceBearer:
+      type: http
+      scheme: bearer
+      description: Opaque per-installation secret. Server ownership never comes from anonId or userId request fields.
   schemas:
+    DeviceSessionStatus:
+      type: object
+      required: [ownerId, expiresAt]
+      properties:
+        ownerId: { type: string, format: uuid }
+        expiresAt: { type: string, format: date-time }
+    DeviceSessionCredential:
+      type: object
+      required: [token, ownerId, expiresAt]
+      properties:
+        token: { type: string, description: Returned only at creation; never log or share this secret }
+        ownerId: { type: string, format: uuid }
+        expiresAt: { type: string, format: date-time }
+    OfflineDailyReceiptInput:
+      type: object
+      required: [featureType, dailyKey, assignedCardId, openedAt]
+      properties:
+        anonymousDeviceId: { type: string, deprecated: true, description: Ignored for ownership }
+        featureType: { type: string, enum: [daily-card, daily-tarot, sky-deck, energy-score, collection-rare-reward, animal-tarot] }
+        dailyKey: { type: string, format: date }
+        assignedCardId: { type: [string, 'null'] }
+        orientation: { type: [string, 'null'], enum: [upright, reversed, null] }
+        openedAt: { type: string, format: date-time }
+    CompatibilityInviteInput:
+      type: object
+      required: [birthProfile]
+      properties:
+        createdByUserId: { type: string, deprecated: true, description: Ignored for ownership }
+        relationshipType: { type: string }
+        birthProfile: { $ref: '#/components/schemas/CompatibilityBirthInput' }
+    CompatibilityCompletionInput:
+      type: object
+      required: [friendBirthProfile, consent]
+      properties:
+        friendName: { type: string }
+        friendBirthProfile: { $ref: '#/components/schemas/CompatibilityBirthInput' }
+        consent: { type: boolean }
+    CompatibilityBirthInput:
+      type: object
+      required: [birthday]
+      properties:
+        userId: { type: string }
+        name: { type: string }
+        birthday: { type: string, format: date }
+        birthTime: { type: string }
+        birthCity: { type: string }
+        birthCountry: { type: string }
+        latitude: { type: number, minimum: -90, maximum: 90 }
+        longitude: { type: number, minimum: -180, maximum: 180 }
+        timezone:
+          oneOf:
+            - { type: string }
+            - { type: number, minimum: -12, maximum: 14 }
     HealthStatus:
       type: object
       properties:
@@ -359,8 +629,17 @@ components:
       properties:
         error:
           type: string
+        code:
+          type: string
+          description: Stable machine-readable failure code
+        requestId:
+          type: string
+          format: uuid
+          description: Correlation ID matching X-Request-Id and server logs
       required:
         - error
+        - code
+        - requestId
 
     SpeechInput:
       type: object
@@ -385,14 +664,14 @@ components:
           description: The user's question or intention for the reading
         spreadType:
           type: string
-          enum: [single, three, relationship]
+          enum: [single, three, relationship, futureLover, peachBlossom, reconciliation, trueHeart, loveTree, xRelationship]
           description: The type of tarot spread to use
         emotionalContext:
           type: ["string", "null"]
           description: Optional emotional context the user shares
         anonId:
           type: ["string", "null"]
-          description: Optional anonymous user id; when present the reading is saved to history
+          description: Deprecated compatibility field. Ignored; readings belong to the authenticated installation.
 
     TarotCardDraw:
       type: object
@@ -482,6 +761,22 @@ components:
           type: ["string", "null"]
         birthPlace:
           type: ["string", "null"]
+        latitude:
+          type: ["number", "null"]
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: ["number", "null"]
+          minimum: -180
+          maximum: 180
+        timezone:
+          type: ["string", "null"]
+        timezoneOffset:
+          type: ["number", "null"]
+          minimum: -12
+          maximum: 14
+        updatedAt:
+          type: string
         createdAt:
           type: string
 
@@ -505,6 +800,20 @@ components:
           type: string
         birthPlace:
           type: string
+        latitude:
+          type: ["number", "null"]
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: ["number", "null"]
+          minimum: -180
+          maximum: 180
+        timezone:
+          type: ["string", "null"]
+        timezoneOffset:
+          type: ["number", "null"]
+          minimum: -12
+          maximum: 14
 
     DailyPull:
       type: object
@@ -564,6 +873,10 @@ components:
           type: boolean
         note:
           type: string
+        editedAt:
+          type: string
+          format: date-time
+          description: Original draft edit time; prevents a late pre-deletion draft from recreating cleared history.
 
     JournalEntry:
       type: object
@@ -602,6 +915,133 @@ components:
           minLength: 1
         mood:
           type: string
+        editedAt:
+          type: string
+          format: date-time
+          description: Original submission time, retained while the request is in flight. A submission predating Clear History is rejected. Optional for legacy clients.
+
+    AstroNatalRequest:
+      type: object
+      required: [profile]
+      properties:
+        profile: { $ref: '#/components/schemas/AstroNatalProfile' }
+
+    AstroNatalProfile:
+      type: object
+      required: [birthDate, birthPlace]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        birthDate: { type: string, pattern: '^\d{4}-\d{2}-\d{2}$' }
+        birthTime: { type: string }
+        birthPlace: { type: string }
+        latitude: { type: number, minimum: -90, maximum: 90 }
+        longitude: { type: number, minimum: -180, maximum: 180 }
+        timezone: { type: string }
+        timezoneOffset: { type: number, minimum: -12, maximum: 14 }
+
+    AstroCalculationMetadata:
+      type: object
+      required: [zodiacSystem, requestedHouseSystem, houseSystem, returned]
+      properties:
+        zodiacSystem: { type: string, enum: [tropical] }
+        requestedHouseSystem: { type: string }
+        houseSystem:
+          type: [string, 'null']
+          description: House system explicitly reported by the provider; null when unconfirmed, even if a setting was requested.
+        returned:
+          type: object
+          description: Counts of actual normalized provider data, including an Ascendant derived only from returned house one. Counts do not promise a complete chart.
+          required: [placements, houses, aspects]
+          properties:
+            placements: { type: integer, minimum: 0 }
+            houses: { type: integer, minimum: 0 }
+            aspects: { type: integer, minimum: 0 }
+
+    AstroNatalResult:
+      type: object
+      required: [source, mode, cached, fetchedAt, profileHash, chart]
+      properties:
+        source: { type: string, enum: [astrologyapi, fallback] }
+        mode: { type: string, enum: [live, partial, fallback] }
+        cached: { type: boolean }
+        fetchedAt: { type: string, format: date-time }
+        profileHash: { type: string }
+        calculation: { $ref: '#/components/schemas/AstroCalculationMetadata' }
+        validation:
+          type: object
+          properties:
+            partial: { type: boolean }
+            missing: { type: array, items: { type: string } }
+            message: { type: [string, 'null'] }
+        chart:
+          type: object
+          description: Existing normalized chart payload; absent placements, houses and aspects are never inferred from calculation metadata.
+          additionalProperties: true
+
+    AstroSynastryRequest:
+      type: object
+      required: [userProfile, partnerProfile]
+      properties:
+        userProfile: { $ref: '#/components/schemas/AstroNatalProfile' }
+        partnerProfile: { $ref: '#/components/schemas/AstroNatalProfile' }
+    AstroSynastryResult:
+      type: object
+      required: [schemaVersion, source, mode, cached, fetchedAt, aspects]
+      properties:
+        schemaVersion: { type: integer, enum: [2] }
+        source: { type: string, enum: [astrologyapi, fallback] }
+        mode: { type: string, enum: [live, fallback] }
+        cached: { type: boolean }
+        fetchedAt: { type: string, format: date-time }
+        natal:
+          type: object
+          required: [user, partner]
+          properties:
+            user: { $ref: '#/components/schemas/AstroNatalResult' }
+            partner: { $ref: '#/components/schemas/AstroNatalResult' }
+        calculation:
+          type: object
+          required: [method, aspectSource, zodiacSystem, orbs]
+          properties:
+            method: { type: string, enum: [hint-angular-v1] }
+            aspectSource: { type: string, enum: [hint-geometry] }
+            zodiacSystem: { type: string, enum: [tropical] }
+            orbs:
+              type: object
+              description: Fixed v1 policy in degrees. Conjunction/opposition 8; trine/square 6; sextile 4.
+              required: [conjunction, opposition, trine, square, sextile]
+              properties:
+                conjunction: { type: number, const: 8 }
+                opposition: { type: number, const: 8 }
+                trine: { type: number, const: 6 }
+                square: { type: number, const: 6 }
+                sextile: { type: number, const: 4 }
+        aspects:
+          type: array
+          items: { $ref: '#/components/schemas/AstroCrossAspect' }
+        summary: { type: object, additionalProperties: { type: string } }
+        plainEnglish: { type: object, additionalProperties: { type: string } }
+
+    AstroCrossAspect:
+      type: object
+      required: [id, fromOwner, toOwner, from, to, type, fromLongitude, toLongitude, separation, exactAngle, orb, allowedOrb, source]
+      properties:
+        id: { type: string }
+        fromOwner: { type: string, enum: [user] }
+        toOwner: { type: string, enum: [partner] }
+        from: { type: string }
+        to: { type: string }
+        type: { type: string, enum: [conjunction, opposition, trine, square, sextile] }
+        fromLongitude: { type: number, minimum: 0, exclusiveMaximum: 360 }
+        toLongitude: { type: number, minimum: 0, exclusiveMaximum: 360 }
+        separation: { type: number, minimum: 0, maximum: 180, description: Shortest angular distance between the two actual positions. }
+        exactAngle: { type: number, enum: [0, 60, 90, 120, 180] }
+        orb: { type: number, minimum: 0, maximum: 8, description: Absolute distance from exactAngle, not the separation. }
+        allowedOrb: { type: number, enum: [4, 6, 8] }
+        source: { type: string, enum: [hint-geometry] }
+        tier: { type: string }
+        meaning: { type: string }
 
     ReadingSummary:
       type: object
@@ -678,7 +1118,7 @@ components:
           description: The context the user shared before drawing cards
         spreadType:
           type: string
-          enum: [single, three, relationship]
+          enum: [single, three, relationship, futureLover, peachBlossom, reconciliation, trueHeart, loveTree, xRelationship]
         cards:
           type: array
           items:

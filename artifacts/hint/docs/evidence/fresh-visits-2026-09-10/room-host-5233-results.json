@@ -1,0 +1,3164 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/Users/jwu/Documents/Hint-main/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "-c",
+      "/tmp/hint-room-visits-20260911/playwright.5233.config.ts",
+      "e2e/room-entrances.spec.ts",
+      "e2e/room-visits.spec.ts",
+      "--grep-invert",
+      "host RAF",
+      "--workers=1"
+    ],
+    "configFile": "/tmp/hint-room-visits-20260911/playwright.5233.config.ts",
+    "rootDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-room-visits-20260911/verified-5233-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/tmp/hint-room-visits-20260911/verified-5233-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/tmp/hint-room-visits-20260911/verified-5233.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "room-entrances.spec.ts",
+      "file": "room-entrances.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2857,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:30.215Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-e9c39952211526cc9bfc",
+          "file": "room-entrances.spec.ts",
+          "line": 139,
+          "column": 1
+        },
+        {
+          "title": "Home tarot entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2974,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:33.233Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "tarot-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvdGFyb3QiLAogICAgInN0YXJ0ZWRBdCI6IDEwNDgsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMzAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMzU3CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-175d02fac37e4038b9bc",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "Home astrology entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2648,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:36.213Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "astrology-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzdHJvbG9neSIsCiAgICAic3RhcnRlZEF0IjogMTA0MSwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEzMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIzNDcKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-a9372f873bbf505513e6",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "Home collection entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2943,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:38.867Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "collection-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbGxlY3Rpb24iLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb2xsZWN0aW9uIiwKICAgICJzdGFydGVkQXQiOiAxMzA2LAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTIwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjUxMQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-78ad8131f8e8cff8594c",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "Home personalities entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2462,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:41.814Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "personalities-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInBlcnNvbmFsaXRpZXMiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9wZXJzb25hbGl0aWVzIiwKICAgICJzdGFydGVkQXQiOiA4OTUsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMTE5CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-1fcd757a2ec5c654854d",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1502,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:44.281Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvdGFyb3QiLAogICAgInN0YXJ0ZWRBdCI6IDk5NiwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEzMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDEwNjkKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-7e1c28a6f31e6447d78d",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1216,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:45.788Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-fd38576dc6618d5a1f4b",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1251,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:47.008Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-bb561a36b10b166a1484",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1194,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:48.263Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-8ba8882fb4460bf28ad3",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "rapid repeated Home taps create one navigation and Back does not replay an entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4034,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:49.461Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-fafe0715ff6eab11ada9",
+          "file": "room-entrances.spec.ts",
+          "line": 174,
+          "column": 1
+        },
+        {
+          "title": "backgrounding a live entrance dismisses it and foregrounding does not replay it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1461,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:53.500Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-abc8fe61dd2d73416e64",
+          "file": "room-entrances.spec.ts",
+          "line": 196,
+          "column": 1
+        },
+        {
+          "title": "query-only navigation keeps the live room and unsent input without a new entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1500,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:54.966Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-a8d7571766b97f47d6f9",
+          "file": "room-entrances.spec.ts",
+          "line": 211,
+          "column": 1
+        },
+        {
+          "title": "supplemental Rooms animal-tarot entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3211,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:56.471Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-animal-tarot-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFuaW1hbC10YXJvdCIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FuaW1hbC10YXJvdCIsCiAgICAic3RhcnRlZEF0IjogODM5LAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTIwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjA0MAogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-1d50f877d99f38b68fcf",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms journal entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3179,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:42:59.688Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-journal-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImpvdXJuYWwiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9qb3VybmFsIiwKICAgICJzdGFydGVkQXQiOiA4MjksCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDQxCiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-edf99c8232dd22577509",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms compatibility entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3197,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:02.872Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-compatibility-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbXBhdGliaWxpdHkiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb21wYXRpYmlsaXR5IiwKICAgICJzdGFydGVkQXQiOiA3OTAsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMzAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMTA1CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-9d96dccbab76f49226ee",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms dream entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3359,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:06.074Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-dream-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImRyZWFtIiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvZHJlYW0iLAogICAgInN0YXJ0ZWRBdCI6IDk2OSwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEzMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIyODUKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-7565cf6840399af302be",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me chart entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2961,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:09.437Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "me-chart-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzdHJvbG9neSIsCiAgICAic3RhcnRlZEF0IjogNzkyLAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTMwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjExMAogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-f4ab40484cd44674bc9d",
+          "file": "room-entrances.spec.ts",
+          "line": 266,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me history entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3249,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:12.406Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "me-history-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInJlYWRpbmdzIiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvcmVhZGluZ3MiLAogICAgInN0YXJ0ZWRBdCI6IDk4NSwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEyMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIxOTQKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-cd64c68359f8acb25421",
+          "file": "room-entrances.spec.ts",
+          "line": 266,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me collection entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3155,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:15.663Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "me-collection-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbGxlY3Rpb24iLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb2xsZWN0aW9uIiwKICAgICJzdGFydGVkQXQiOiA5MDYsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMTE3CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-553b9ee93d33c71cb954",
+          "file": "room-entrances.spec.ts",
+          "line": 266,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock ask entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2950,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:18.832Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-dock-ask-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzayIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzayIsCiAgICAic3RhcnRlZEF0IjogOTE4LAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTMwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjIyNwogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-d901dc1558557f628617",
+          "file": "room-entrances.spec.ts",
+          "line": 292,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock daily entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2561,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:21.788Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-dock-daily-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImRhaWx5IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvZGFpbHkiLAogICAgInN0YXJ0ZWRBdCI6IDkyNCwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEyMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIxMzUKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-fe8a2ea99ea309f39c26",
+          "file": "room-entrances.spec.ts",
+          "line": 292,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock profile entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2472,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:24.354Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-dock-profile-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInByb2ZpbGUiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9wcm9maWxlIiwKICAgICJzdGFydGVkQXQiOiA5MTYsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMTI1CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-5e2fe14563ac329f6c9c",
+          "file": "room-entrances.spec.ts",
+          "line": 292,
+          "column": 3
+        },
+        {
+          "title": "cross-room collection to tarot keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3409,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:26.831Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "collection-to-tarot-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvdGFyb3QiLAogICAgInN0YXJ0ZWRBdCI6IDk3MiwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEzMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIyOTYKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-728606272e42dbad7be9",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "cross-room animal-tarot to collection keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3136,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:30.245Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "animal-tarot-to-collection-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbGxlY3Rpb24iLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb2xsZWN0aW9uIiwKICAgICJzdGFydGVkQXQiOiA4NDAsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDUzCiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-dc50554f5d51faddbfbe",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "cross-room compatibility to astrology keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2885,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:33.389Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "compatibility-to-astrology-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzdHJvbG9neSIsCiAgICAic3RhcnRlZEF0IjogNTkyLAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTMwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMTg5MwogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-3e0894c84b3b82ac4101",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "cross-room dream to journal keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3237,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:36.278Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "dream-to-journal-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImpvdXJuYWwiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9qb3VybmFsIiwKICAgICJzdGFydGVkQXQiOiA4MTgsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDQzCiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-edc3a07b8491c7593109",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "the arriving Tarot question accepts a real touch within its first 300ms",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1977,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:39.521Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "input-during-arrival",
+                      "contentType": "application/json",
+                      "body": "eyJlbGFwc2VkVG9Gb2N1c01zIjoxMTQsImJyb3dzZXJPbmx5Ijp0cnVlfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-3132174bd4208d387514",
+          "file": "room-entrances.spec.ts",
+          "line": 330,
+          "column": 1
+        },
+        {
+          "title": "a slow room chunk shows its real loading state and never waits behind a cover",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4388,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:41.503Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-91518e75a70de7d504ab",
+          "file": "room-entrances.spec.ts",
+          "line": 356,
+          "column": 1
+        },
+        {
+          "title": "rapid room changes settle only the current room and keep navigation fixed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3189,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:45.896Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-16425df6ed2969278e96",
+          "file": "room-entrances.spec.ts",
+          "line": 391,
+          "column": 1
+        },
+        {
+          "title": "switching system reduction on during arrival settles immediately and does not replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1671,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:49.090Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-ed779dd26be7daedbe63",
+          "file": "room-entrances.spec.ts",
+          "line": 409,
+          "column": 1
+        },
+        {
+          "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2774,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:09.733Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-5813bea14c5ada5a1bc8",
+          "file": "room-entrances.spec.ts",
+          "line": 139,
+          "column": 1
+        },
+        {
+          "title": "Home tarot entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2841,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:12.674Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "tarot-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvdGFyb3QiLAogICAgInN0YXJ0ZWRBdCI6IDEwMDUsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMzAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMzE0CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-40a09ca009fec3930d12",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "Home astrology entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2561,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:15.525Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "astrology-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzdHJvbG9neSIsCiAgICAic3RhcnRlZEF0IjogOTA4LAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTMwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjIxNQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-c24ead7a99fdba6ba705",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "Home collection entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2447,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:18.093Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "collection-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbGxlY3Rpb24iLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb2xsZWN0aW9uIiwKICAgICJzdGFydGVkQXQiOiA5MTMsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMTE4CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-d96d6740780f2e99c32c",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "Home personalities entrance reaches its working room and cleans up",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2412,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:20.546Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "personalities-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInBlcnNvbmFsaXRpZXMiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9wZXJzb25hbGl0aWVzIiwKICAgICJzdGFydGVkQXQiOiA4ODAsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDg4CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-764a50afafededb2c0b5",
+          "file": "room-entrances.spec.ts",
+          "line": 148,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1235,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:22.963Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvdGFyb3QiLAogICAgInN0YXJ0ZWRBdCI6IDg1MSwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEzMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDg2MQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-afd5cf27424d28dd421b",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=false without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1136,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:24.203Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-14224edda70aa8ce68fa",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=false OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1620,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:25.343Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-464301832c294a6d332a",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "room entrance respects app=true OS=true without blocking Tarot input",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1167,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:26.968Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "motion-policy-observations",
+                      "contentType": "application/json",
+                      "body": "W10="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-cc7c8c24ededb04c5280",
+          "file": "room-entrances.spec.ts",
+          "line": 163,
+          "column": 3
+        },
+        {
+          "title": "rapid repeated Home taps create one navigation and Back does not replay an entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4251,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:28.141Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-ee9ed524b40a9fc651dd",
+          "file": "room-entrances.spec.ts",
+          "line": 174,
+          "column": 1
+        },
+        {
+          "title": "backgrounding a live entrance dismisses it and foregrounding does not replay it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1262,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:32.397Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-0fd36a81746d341fcb18",
+          "file": "room-entrances.spec.ts",
+          "line": 196,
+          "column": 1
+        },
+        {
+          "title": "query-only navigation keeps the live room and unsent input without a new entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:33.664Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-353d1c4791f2d16658a5",
+          "file": "room-entrances.spec.ts",
+          "line": 211,
+          "column": 1
+        },
+        {
+          "title": "supplemental Rooms animal-tarot entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:34.898Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-animal-tarot-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFuaW1hbC10YXJvdCIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FuaW1hbC10YXJvdCIsCiAgICAic3RhcnRlZEF0IjogODAyLAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTIwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjAxOAogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-ff0e8f231006cc361757",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms journal entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3044,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:37.957Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-journal-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImpvdXJuYWwiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9qb3VybmFsIiwKICAgICJzdGFydGVkQXQiOiA4ODgsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDk5CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-f5991f396bb51c9d311f",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms compatibility entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3193,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:41.005Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-compatibility-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbXBhdGliaWxpdHkiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb21wYXRpYmlsaXR5IiwKICAgICJzdGFydGVkQXQiOiA4ODQsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMzAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMjA3CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-31cae548ada5664e0a89",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Rooms dream entry opens the intended feature",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3144,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:44.203Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "rooms-dream-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImRyZWFtIiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvZHJlYW0iLAogICAgInN0YXJ0ZWRBdCI6IDg5OCwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEzMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIxOTgKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-de18128b36ab55195145",
+          "file": "room-entrances.spec.ts",
+          "line": 240,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me chart entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2890,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:47.351Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "me-chart-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzdHJvbG9neSIsCiAgICAic3RhcnRlZEF0IjogODI4LAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTMwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjEyOQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-1bfca516e8ec3280e7fa",
+          "file": "room-entrances.spec.ts",
+          "line": 266,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me history entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2825,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:50.247Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "me-history-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInJlYWRpbmdzIiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvcmVhZGluZ3MiLAogICAgInN0YXJ0ZWRBdCI6IDg1MywKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEyMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIwNTcKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-c8d6482d309fa4ae984c",
+          "file": "room-entrances.spec.ts",
+          "line": 266,
+          "column": 3
+        },
+        {
+          "title": "supplemental Me collection entry preserves its destination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2819,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:53.076Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "me-collection-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbGxlY3Rpb24iLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb2xsZWN0aW9uIiwKICAgICJzdGFydGVkQXQiOiA3ODksCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDA3CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-e131c0726434190fc6ab",
+          "file": "room-entrances.spec.ts",
+          "line": 266,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock ask entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2697,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:55.899Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-dock-ask-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzayIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzayIsCiAgICAic3RhcnRlZEF0IjogODQwLAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTMwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjE1OQogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-627e0c0f72b061b9be8b",
+          "file": "room-entrances.spec.ts",
+          "line": 292,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock daily entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2445,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:58.600Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-dock-daily-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImRhaWx5IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvZGFpbHkiLAogICAgInN0YXJ0ZWRBdCI6IDg4NSwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEyMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIxMDEKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-bc03ceaf464d74760965",
+          "file": "room-entrances.spec.ts",
+          "line": 292,
+          "column": 3
+        },
+        {
+          "title": "supplemental Home dock profile entry stays directly usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2357,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:01.048Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-dock-profile-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInByb2ZpbGUiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9wcm9maWxlIiwKICAgICJzdGFydGVkQXQiOiA4NDgsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDUyCiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-84d1fe05ca075bef727b",
+          "file": "room-entrances.spec.ts",
+          "line": 292,
+          "column": 3
+        },
+        {
+          "title": "cross-room collection to tarot keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3175,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:03.411Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "collection-to-tarot-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogInRhcm90IiwKICAgICJtb3Rpb24iOiAiZnVsbCIsCiAgICAiaGlkZGVuIjogbnVsbCwKICAgICJwb2ludGVyRXZlbnRzIjogImF1dG8iLAogICAgInBhdGhuYW1lIjogIi9hcHAvdGFyb3QiLAogICAgInN0YXJ0ZWRBdCI6IDg3OCwKICAgICJhbmltYXRpb25EdXJhdGlvbiI6IDEzMDAsCiAgICAiY29udGVudFRhcmdldCI6IHRydWUsCiAgICAibWluT3BhY2l0eSI6IDEsCiAgICAibWF4T3BhY2l0eSI6IDEsCiAgICAibGF1bmNoVmlzaWJsZSI6IGZhbHNlLAogICAgInJlbW92ZWRBdCI6IDIyMDEKICB9Cl0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-07976e26238193d7a96f",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "cross-room animal-tarot to collection keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3025,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:06.590Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "animal-tarot-to-collection-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImNvbGxlY3Rpb24iLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9jb2xsZWN0aW9uIiwKICAgICJzdGFydGVkQXQiOiA4NDYsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDU0CiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-492dc1580c91610c1ad6",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "cross-room compatibility to astrology keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3077,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:09.621Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "compatibility-to-astrology-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImFzdHJvbG9neSIsCiAgICAibW90aW9uIjogImZ1bGwiLAogICAgImhpZGRlbiI6IG51bGwsCiAgICAicG9pbnRlckV2ZW50cyI6ICJhdXRvIiwKICAgICJwYXRobmFtZSI6ICIvYXBwL2FzdHJvbG9neSIsCiAgICAic3RhcnRlZEF0IjogODQ1LAogICAgImFuaW1hdGlvbkR1cmF0aW9uIjogMTMwMCwKICAgICJjb250ZW50VGFyZ2V0IjogdHJ1ZSwKICAgICJtaW5PcGFjaXR5IjogMSwKICAgICJtYXhPcGFjaXR5IjogMSwKICAgICJsYXVuY2hWaXNpYmxlIjogZmFsc2UsCiAgICAicmVtb3ZlZEF0IjogMjE0NwogIH0KXQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-0fd059a70fd22613546e",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "cross-room dream to journal keeps the entrance and direct navigation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3160,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:12.703Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "dream-to-journal-entrance-observations",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJmZWF0dXJlIjogImpvdXJuYWwiLAogICAgIm1vdGlvbiI6ICJmdWxsIiwKICAgICJoaWRkZW4iOiBudWxsLAogICAgInBvaW50ZXJFdmVudHMiOiAiYXV0byIsCiAgICAicGF0aG5hbWUiOiAiL2FwcC9qb3VybmFsIiwKICAgICJzdGFydGVkQXQiOiA4NDYsCiAgICAiYW5pbWF0aW9uRHVyYXRpb24iOiAxMjAwLAogICAgImNvbnRlbnRUYXJnZXQiOiB0cnVlLAogICAgIm1pbk9wYWNpdHkiOiAxLAogICAgIm1heE9wYWNpdHkiOiAxLAogICAgImxhdW5jaFZpc2libGUiOiBmYWxzZSwKICAgICJyZW1vdmVkQXQiOiAyMDUwCiAgfQpd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-cc312881e966597015aa",
+          "file": "room-entrances.spec.ts",
+          "line": 310,
+          "column": 3
+        },
+        {
+          "title": "the arriving Tarot question accepts a real touch within its first 300ms",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2045,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:15.866Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "input-during-arrival",
+                      "contentType": "application/json",
+                      "body": "eyJlbGFwc2VkVG9Gb2N1c01zIjoxNTQsImJyb3dzZXJPbmx5Ijp0cnVlfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-7e0aba3e9d7e1bdda51d",
+          "file": "room-entrances.spec.ts",
+          "line": 330,
+          "column": 1
+        },
+        {
+          "title": "a slow room chunk shows its real loading state and never waits behind a cover",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3859,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:17.915Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-7c644b55a4ee0c2f9b60",
+          "file": "room-entrances.spec.ts",
+          "line": 356,
+          "column": 1
+        },
+        {
+          "title": "rapid room changes settle only the current room and keep navigation fixed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3148,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:21.780Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-e3481f31ef55f68688fe",
+          "file": "room-entrances.spec.ts",
+          "line": 391,
+          "column": 1
+        },
+        {
+          "title": "switching system reduction on during arrival settles immediately and does not replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1394,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:24.931Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "98f6970079d6ed54c77b-0d1f0009dc0cbc94feca",
+          "file": "room-entrances.spec.ts",
+          "line": 409,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "room-visits.spec.ts",
+      "file": "room-visits.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Tarot progress asks before leaving and Stay or Escape preserves the exact step, question and focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2185,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:50.776Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-1088cbe227108e872767",
+          "file": "room-visits.spec.ts",
+          "line": 94,
+          "column": 1
+        },
+        {
+          "title": "confirmed Tarot departure starts a fresh normal visit and preserves the saved archive",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:52.966Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-6d7b441c27a201f03fb0",
+          "file": "room-visits.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "refresh inside an open Tarot visit restores its exact question and selected spread",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2073,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:55.223Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-489e68eab084092bb592",
+          "file": "room-visits.spec.ts",
+          "line": 134,
+          "column": 1
+        },
+        {
+          "title": "browser Back explains the completed departure and Forward begins fresh without another history entry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1847,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:57.302Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-c1250fd9f5e79f32d1d6",
+          "file": "room-visits.spec.ts",
+          "line": 148,
+          "column": 1
+        },
+        {
+          "title": "repeated exit taps and rapid approval commit only one departure",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1556,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:43:59.158Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-e342ee8950c711cdf336",
+          "file": "room-visits.spec.ts",
+          "line": 165,
+          "column": 1
+        },
+        {
+          "title": "explicit History restore remains available after leaving a reading and does not recreate saved records",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3356,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:00.719Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-a035452c9173ff2cee04",
+          "file": "room-visits.spec.ts",
+          "line": 179,
+          "column": 1
+        },
+        {
+          "title": "a delayed approved departure from a saved Tarot reading keeps the destination entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3752,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:04.081Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "delayed-departure-entrances",
+                      "contentType": "application/json",
+                      "body": "WyJyZWFkaW5ncyJd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-67e5b0267a48f36ea5dc",
+          "file": "room-visits.spec.ts",
+          "line": 196,
+          "column": 1
+        },
+        {
+          "title": "an empty Tarot visit returns Home directly without an unnecessary reset dialog",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1299,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:07.839Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-f2150723b90ed92ea341",
+          "file": "room-visits.spec.ts",
+          "line": 226,
+          "column": 1
+        },
+        {
+          "title": "Spanish 200% exit dialog bright keeps its full text and actions reachable on SE",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "The text-reflow stress case targets SE; both phone sizes run the full visit journeys.",
+                  "location": {
+                    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-visits.spec.ts",
+                    "line": 234,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 144,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:09.144Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "The text-reflow stress case targets SE; both phone sizes run the full visit journeys.",
+                      "location": {
+                        "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-visits.spec.ts",
+                        "line": 234,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-be3c7c79e89b4c99e5dc",
+          "file": "room-visits.spec.ts",
+          "line": 233,
+          "column": 41
+        },
+        {
+          "title": "Spanish 200% exit dialog dark keeps its full text and actions reachable on SE",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "The text-reflow stress case targets SE; both phone sizes run the full visit journeys.",
+                  "location": {
+                    "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-visits.spec.ts",
+                    "line": 234,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 138,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:44:09.294Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "The text-reflow stress case targets SE; both phone sizes run the full visit journeys.",
+                      "location": {
+                        "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/room-visits.spec.ts",
+                        "line": 234,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-f0f485badb89fd8c7cd2",
+          "file": "room-visits.spec.ts",
+          "line": 233,
+          "column": 41
+        },
+        {
+          "title": "Tarot progress asks before leaving and Stay or Escape preserves the exact step, question and focus",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1994,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:26.338Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-27a800b406856bf619ea",
+          "file": "room-visits.spec.ts",
+          "line": 94,
+          "column": 1
+        },
+        {
+          "title": "confirmed Tarot departure starts a fresh normal visit and preserves the saved archive",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1991,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:28.337Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-533bebe9098fc1eaf599",
+          "file": "room-visits.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "refresh inside an open Tarot visit restores its exact question and selected spread",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2030,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:30.332Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-ad6656c65e95293f0035",
+          "file": "room-visits.spec.ts",
+          "line": 134,
+          "column": 1
+        },
+        {
+          "title": "browser Back explains the completed departure and Forward begins fresh without another history entry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1650,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:32.374Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-fa21b028e1bf846e89a2",
+          "file": "room-visits.spec.ts",
+          "line": 148,
+          "column": 1
+        },
+        {
+          "title": "repeated exit taps and rapid approval commit only one departure",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1437,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:34.028Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-257515961ccb3c1fd063",
+          "file": "room-visits.spec.ts",
+          "line": 165,
+          "column": 1
+        },
+        {
+          "title": "explicit History restore remains available after leaving a reading and does not recreate saved records",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3607,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:35.470Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-c62d2f7dc01a9be83869",
+          "file": "room-visits.spec.ts",
+          "line": 179,
+          "column": 1
+        },
+        {
+          "title": "a delayed approved departure from a saved Tarot reading keeps the destination entrance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3824,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:39.082Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "delayed-departure-entrances",
+                      "contentType": "application/json",
+                      "body": "WyJyZWFkaW5ncyJd"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-8cfba4cc9564d3a2e0d3",
+          "file": "room-visits.spec.ts",
+          "line": 196,
+          "column": 1
+        },
+        {
+          "title": "an empty Tarot visit returns Home directly without an unnecessary reset dialog",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:42.909Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-3153de64d7c04bec473e",
+          "file": "room-visits.spec.ts",
+          "line": 226,
+          "column": 1
+        },
+        {
+          "title": "Spanish 200% exit dialog bright keeps its full text and actions reachable on SE",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1472,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:44.082Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-a0f54971897464205cbf",
+          "file": "room-visits.spec.ts",
+          "line": 233,
+          "column": 41
+        },
+        {
+          "title": "Spanish 200% exit dialog dark keeps its full text and actions reachable on SE",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1507,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T04:45:45.558Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "570a71fea47a4e13b1f9-a375535a518753a4cc95",
+          "file": "room-visits.spec.ts",
+          "line": 233,
+          "column": 41
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-11T04:42:29.945Z",
+    "duration": 197191.669,
+    "expected": 78,
+    "skipped": 2,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

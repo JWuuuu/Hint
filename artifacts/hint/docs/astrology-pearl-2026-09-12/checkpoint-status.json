@@ -1,0 +1,47 @@
+{
+  "state": "paused-for-windows-transfer",
+  "date": "2026-09-12",
+  "branch": "codex/windows-handoff-2026-09-12",
+  "baseCommit": "538081caee67a7c30f2bb84cca61f56c996e8565",
+  "unit": {
+    "passed": 684,
+    "files": 81,
+    "platform": "macOS"
+  },
+  "api": {
+    "passed": 66,
+    "files": 9,
+    "databaseIntegration": 19,
+    "platform": "macOS",
+    "isolated": true
+  },
+  "functionalE2E": {
+    "scheduled": 342,
+    "recordedPassed": 255,
+    "recordedSkipped": 12,
+    "recordedFailed": 0,
+    "notRecordedAsFinished": 75,
+    "complete": false,
+    "reason": "User stopped to transfer to Windows"
+  },
+  "performanceAndSoak": {
+    "complete": false,
+    "next": "Run sequentially after functional acceptance"
+  },
+  "productionSourceChangesAfterBuild": [],
+  "testChangesAfterBuild": [
+    "artifacts/hint/e2e/tarot-room.spec.ts"
+  ],
+  "previewRunning": false,
+  "apiRunning": false,
+  "databaseRunning": false,
+  "nativeReleaseReady": false,
+  "nativeWindowsVerified": false,
+  "realDataTouched": false,
+  "paidProviderTests": false,
+  "portableConfigDiscovery": {
+    "listedFunctionalCases": 342,
+    "executedOnWindows": false
+  },
+  "wholeCheckpointWhitespaceCheck": "Existing warnings preserved; not globally clean"
+}

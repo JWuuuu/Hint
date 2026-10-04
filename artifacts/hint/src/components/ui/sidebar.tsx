@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../lib/LocalizedText";
 "use client"
 
 import * as React from "react"
@@ -196,8 +197,8 @@ function Sidebar({
           side={side}
         >
           <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            <SheetTitle><LocalizedText text={"Sidebar"} /></SheetTitle>
+            <SheetDescription><LocalizedText text={"Displays the mobile sidebar."} /></SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>
@@ -274,7 +275,7 @@ function SidebarTrigger({
       {...props}
     >
       <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only"><LocalizedText text={"Toggle Sidebar"} /></span>
     </Button>
   )
 }

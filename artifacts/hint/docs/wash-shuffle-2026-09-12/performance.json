@@ -1,0 +1,133 @@
+{
+  "method": "Sequential desktop WebKit mobile emulation, two runs each, no video or screenshots while sampling. RAF gaps through manual wash and gather/cut; DOM mutation latency after pointermove. This is not physical iPhone performance.",
+  "results": [
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 1,
+      "port": 5237,
+      "manual": {
+        "count": 80,
+        "p95": 18,
+        "max": 19,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 347,
+        "p95": 18,
+        "max": 42,
+        "over100": 0
+      },
+      "shuffle": {
+        "count": 115,
+        "p95": 18,
+        "max": 19,
+        "over100": 0
+      },
+      "inputToStyle": {
+        "count": 48,
+        "p95": 14,
+        "max": 15,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 2,
+      "port": 5237,
+      "manual": {
+        "count": 80,
+        "p95": 18,
+        "max": 19,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 347,
+        "p95": 19,
+        "max": 42,
+        "over100": 0
+      },
+      "shuffle": {
+        "count": 115,
+        "p95": 19,
+        "max": 19,
+        "over100": 0
+      },
+      "inputToStyle": {
+        "count": 48,
+        "p95": 14,
+        "max": 14,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 1,
+      "port": 5237,
+      "manual": {
+        "count": 80,
+        "p95": 18,
+        "max": 19,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 347,
+        "p95": 19,
+        "max": 43,
+        "over100": 0
+      },
+      "shuffle": {
+        "count": 115,
+        "p95": 18,
+        "max": 19,
+        "over100": 0
+      },
+      "inputToStyle": {
+        "count": 48,
+        "p95": 14,
+        "max": 15,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 2,
+      "port": 5237,
+      "manual": {
+        "count": 80,
+        "p95": 18,
+        "max": 18,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 348,
+        "p95": 18,
+        "max": 41,
+        "over100": 0
+      },
+      "shuffle": {
+        "count": 115,
+        "p95": 18,
+        "max": 19,
+        "over100": 0
+      },
+      "inputToStyle": {
+        "count": 48,
+        "p95": 14,
+        "max": 14,
+        "over100": 0
+      }
+    }
+  ]
+}

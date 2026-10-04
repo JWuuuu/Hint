@@ -1,5 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { DailyReceiptButton } from "../../receipt-printer/ReceiptShareDialog";
+import { getCachedDailyReceipt } from "../../../lib/dailyReceipts";
+import { LocalizedText } from "../../../lib/LocalizedText";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import "./daily-report-card.css";
+import { motion } from "../../../lib/quietMotion";
+import { useLocalDay } from "../../../lib/useLocalDay";
 import { Link } from "wouter";
 import {
   ArrowRight,
@@ -15,6 +20,7 @@ import { ACCENT } from "../../hold/atmosphere";
 import { CardSigil } from "../../hold/components/CardSigil";
 import { getAnonId, getLocalDateString } from "../../../lib/identity";
 import { getDailyReport } from "../data/dailyReport";
+import { DAILY_REPORT_METADATA } from "../data/dailyLuckyCopy";
 import { localizeDailyPull } from "../data/dailyPulls";
 import { getRitualProgress } from "../data/localRitualProgress";
 import { getTarotCardImage } from "../../tarot/logic/cardImageMap";
@@ -25,6 +31,7 @@ import { readBirthProfile } from "../../../lib/astro/userBirthProfile";
 import { LuckyIllustration } from "./LuckyIllustration";
 import { SafeImage } from "../../../shared/ui/SafeImage";
 import {
+  getLocalDailyReadingForDateKey,
   listLocalDailyReadingMemory,
   subscribeToLocalDailyReadings,
 } from "../../readings/localDailyReadings";
@@ -40,10 +47,12 @@ const SCORE_ICONS: Record<DailyScoreKey, typeof Heart> = {
 
 interface DailyReportCardProps {
   className?: string;
+  appearance?: "card" | "page";
   detailed?: boolean;
   cardOverride?: DailyPull | null;
   dateOverride?: Date;
   dailyHistory?: DailyCardMemory[];
+  statusMessage?: string;
 }
 
 function ScoreBar({ score }: { score: DailyScore }) {
@@ -51,18 +60,18 @@ function ScoreBar({ score }: { score: DailyScore }) {
 
   return (
     <div
-      className="min-w-0 rounded-[12px] border px-2 py-1.5"
+      className="hint-report-surface hint-report-score min-w-0 rounded-[12px] border px-2 py-1.5"
       style={{
         background: "color-mix(in srgb, var(--hint-card-inner) 82%, transparent)",
         borderColor: "var(--hint-border)",
       }}
     >
       <div className="mb-0.5 flex items-center justify-between gap-2">
-        <span className="inline-flex min-w-0 items-center gap-1 overflow-hidden whitespace-nowrap font-sans text-[9.5px]" style={{ color: "var(--hint-muted)" }}>
+        <span className="hint-report-score-label inline-flex min-w-0 items-center gap-1 overflow-hidden whitespace-nowrap font-sans text-[9.5px]" style={{ color: "var(--hint-muted)" }}>
           <Icon size={11} strokeWidth={1.8} style={{ color: score.tone }} />
           {score.label}
         </span>
-        <span className="font-serif text-[13px] tabular-nums" style={{ color: "var(--hint-text)" }}>
+        <span className="hint-report-score-value font-serif text-[13px] tabular-nums" style={{ color: "var(--hint-text)" }}>
           {score.score}
         </span>
       </div>
@@ -85,14 +94,52 @@ function ScoreBar({ score }: { score: DailyScore }) {
   );
 }
 
-function MiniDailyCard({ card, interactive = true }: { card: DailyPull; interactive?: boolean }) {
+function ScoreColumn({ score }: { score: DailyScore }) {
+  const Icon = SCORE_ICONS[score.key];
+  const value = score.score;
+
+  return (
+    <div
+      className="hint-report-score-column"
+      role="meter"
+      aria-label={score.label}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={value}
+    >
+      <span className="hint-report-column-value font-serif" style={{ color: "var(--hint-text)" }}>
+        {value}
+      </span>
+      <div
+        className="hint-report-column-track"
+        style={{ background: `color-mix(in srgb, ${score.tone} 12%, transparent)` }}
+      >
+        <motion.div
+          className="hint-report-column-fill"
+          initial={{ height: 0 }}
+          animate={{ height: `${value}%` }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          style={{
+            background: `linear-gradient(0deg, ${score.tone}, color-mix(in srgb, ${score.tone} 82%, white))`,
+          }}
+        />
+      </div>
+      <span className="hint-report-column-label font-sans" style={{ color: "var(--hint-muted)" }}>
+        <Icon size={15} strokeWidth={1.8} style={{ color: score.tone }} aria-hidden="true" />
+        <span>{score.label}</span>
+      </span>
+    </div>
+  );
+}
+
+function MiniDailyCard({ card, interactive = true, action }: { card: DailyPull; interactive?: boolean; action?: ReactNode }) {
   const { t } = useLanguage();
   const cardImage =
     getTarotCardImage(card.cardId, "original") ??
     getTarotCardImage(card.cardId, "hint-classic");
   const content = (
     <div
-      className="relative grid grid-cols-[50px_1fr] items-center gap-2.5 rounded-[16px] border p-2 sm:grid-cols-[58px_1fr_auto] sm:gap-3"
+      className="hint-report-surface hint-report-card-intro relative grid grid-cols-[50px_1fr] items-center gap-2.5 rounded-[16px] border p-2 sm:grid-cols-[58px_1fr_auto] sm:gap-3"
       style={{
         background: "var(--hint-input-bg)",
         borderColor: "var(--hint-border)",
@@ -120,18 +167,19 @@ function MiniDailyCard({ card, interactive = true }: { card: DailyPull; interact
       </div>
       <div className="min-w-0">
         <p
-          className="font-sans text-[8px] uppercase tracking-[0.16em] sm:text-[9px] sm:tracking-[0.18em]"
+          className={`${action ? "pr-12" : ""} font-sans text-[8px] uppercase tracking-[0.16em] sm:text-[9px] sm:tracking-[0.18em]`}
           style={{ color: ACCENT.gold }}
         >
           {t("daily.card")}
         </p>
-        <h3 className="mt-0.5 font-serif text-[16px] leading-tight sm:text-[18px]" style={{ color: "var(--hint-text)" }}>
+        <h3 className={`${action ? "pr-12" : ""} mt-0.5 font-serif text-[16px] leading-tight sm:text-[18px]`} style={{ color: "var(--hint-text)" }}>
           {card.cardName}
         </h3>
-        <p className="mt-0.5 line-clamp-2 font-sans text-[10px] leading-snug sm:text-[11px]" style={{ color: "var(--hint-muted)" }}>
+        <p className={`mt-0.5 ${interactive ? "line-clamp-2" : ""} font-sans text-[10px] leading-snug sm:text-[11px]`} style={{ color: "var(--hint-muted)" }}>
           {card.whisper}
         </p>
       </div>
+      {action && <div className="hint-report-share absolute right-0 top-0">{action}</div>}
       {interactive ? (
         <ArrowRight
           size={18}
@@ -165,7 +213,7 @@ function CardGuidanceItem({
 
   return (
     <div
-      className="rounded-[12px] border p-3"
+      className="hint-report-surface hint-report-guidance-item rounded-[12px] border p-3"
       style={{
         background: "var(--hint-card-inner)",
         borderColor: "var(--hint-border)",
@@ -175,7 +223,7 @@ function CardGuidanceItem({
         className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em]"
         style={{ color: ACCENT.gold }}
       >
-        {label}
+        <LocalizedText text={label} />
       </p>
       <p
         className="mt-2 font-sans text-[11.5px] leading-snug sm:text-[12.5px] sm:leading-relaxed"
@@ -188,15 +236,17 @@ function CardGuidanceItem({
 }
 
 function CardGuidanceGrid({ card, why }: { card: DailyPull; why?: string }) {
+  const { language } = useLanguage();
+  const metadata = DAILY_REPORT_METADATA[language];
   const badges = [
-    card.orientation === "upright" ? "Upright" : null,
-    card.arcana === "major" ? "Bigger message" : card.arcana === "minor" ? "Daily guidance" : null,
+    card.orientation === "upright" ? metadata.upright : null,
+    card.arcana === "major" ? metadata.major : card.arcana === "minor" ? metadata.minor : null,
     card.keyword,
   ].filter((badge): badge is string => Boolean(badge));
 
   return (
     <div
-      className="mt-4 rounded-[14px] border p-3 sm:p-4"
+      className="hint-report-surface hint-report-guidance mt-4 rounded-[14px] border p-3 sm:p-4"
       style={{
         background: "var(--hint-input-bg)",
         borderColor: "var(--hint-border)",
@@ -206,7 +256,7 @@ function CardGuidanceGrid({ card, why }: { card: DailyPull; why?: string }) {
         {badges.map((badge) => (
           <span
             key={badge}
-            className="rounded-full border px-3 py-1.5 font-sans text-[11px] font-medium"
+            className="hint-report-tag rounded-full border px-3 py-1.5 font-sans text-[11px] font-medium"
             style={{
               borderColor: "var(--hint-border)",
               background: "var(--hint-surface-soft)",
@@ -231,16 +281,19 @@ function CardGuidanceGrid({ card, why }: { card: DailyPull; why?: string }) {
 
 export function DailyReportCard({
   className = "",
+  appearance = "card",
   detailed = false,
   cardOverride,
   dateOverride,
   dailyHistory,
+  statusMessage,
 }: DailyReportCardProps) {
   const { language, t } = useLanguage();
+  const currentDay = useLocalDay();
   const { profile } = useProfile();
   const [birthProfile, setBirthProfile] = useState(() => readBirthProfile());
   const [historyVersion, setHistoryVersion] = useState(0);
-  const dateKey = dateOverride ? getLocalDateString(dateOverride) : undefined;
+  const dateKey = dateOverride ? getLocalDateString(dateOverride) : currentDay;
   const activeBirthDetails = profile?.birthDate || birthProfile
     ? {
         name: profile?.name ?? birthProfile?.name,
@@ -309,46 +362,60 @@ export function DailyReportCard({
     setChecked(report.tasks.map(() => false));
   }, [report.date, report.tasks]);
 
+  // A past date is a saved card record, never a freshly generated historical forecast.
+  if (report.date !== currentDay) {
+    return <section className={`hint-daily-report ${className}`} data-appearance={appearance}>
+      <h2 className="font-serif text-2xl"><LocalizedText text="Saved daily card" /></h2>
+      <p className="my-3 text-sm" style={{ color: "var(--hint-muted)" }}><LocalizedText text={cardOverride ? "Only the saved card is available. Scores and lucky details were not saved for this date." : "No saved card for this date."} /></p>
+      {cardOverride && <MiniDailyCard card={card} interactive={false} action={<DailyReceiptButton report={{ ...report, card }} compact />} />}
+      {statusMessage && <p className="hint-report-sync-status" role="status">{statusMessage}</p>}
+    </section>;
+  }
+
   return (
     <motion.section
+      data-daily-card-id={card.cardId}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.72, ease: "easeOut" }}
-      className={`relative overflow-hidden rounded-[18px] border ${className}`}
+      className={`hint-daily-report hint-report-surface relative overflow-hidden rounded-[18px] border ${className}`}
+      data-appearance={appearance}
       style={{
         background: "var(--hint-liquid-panel-strong)",
         borderColor: "var(--hint-border)",
         boxShadow: "var(--hint-elevated-shadow)",
       }}
     >
-      <div
+      {appearance !== "page" && <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
             "radial-gradient(360px 260px at 18% 8%, rgba(244,175,203,0.18), transparent 70%), radial-gradient(300px 260px at 90% 16%, rgba(213,194,242,0.15), transparent 72%), radial-gradient(300px 220px at 55% 0%, rgba(227,200,137,0.12), transparent 72%)",
         }}
-      />
-      <div className="relative p-3 sm:p-4 lg:p-5">
-        <div className="mb-3 lg:hidden">
-          <MiniDailyCard card={card} interactive={!detailed} />
+      />}
+      <div className="hint-report-content relative p-3 sm:p-4 lg:p-5">
+        <div className="hint-report-card-preview mb-3 lg:hidden">
+          <MiniDailyCard card={card} interactive={!detailed} action={detailed ? <DailyReceiptButton report={{ ...report, card }} compact disabled={!getCachedDailyReceipt("daily-card", { dailyKey: report.date })?.openedAt && !getLocalDailyReadingForDateKey(report.date)} /> : undefined} />
         </div>
 
-        <header className="mb-3 flex items-start justify-between gap-4 lg:mb-4">
+        {statusMessage && <p className="hint-report-sync-status" role="status">{statusMessage}</p>}
+        <header className="hint-report-header mb-3 flex items-start justify-between gap-4 lg:mb-4">
           <div className="min-w-0">
             <p
-              className="font-serif text-[9px] uppercase tracking-[0.22em] lg:text-[11px] lg:tracking-[0.34em]"
+              className="hint-report-eyebrow font-serif text-[9px] uppercase tracking-[0.22em] lg:text-[11px] lg:tracking-[0.34em]"
               style={{ color: ACCENT.aqua }}
             >
               {t("daily.eyebrow")}
             </p>
             {birthProfileLabel ? (
               <span
-                className="mt-2 inline-flex rounded-full border px-2.5 py-1 font-sans text-[10px] font-black uppercase tracking-[0.12em]"
+                className="hint-report-birth-profile mt-2 inline-flex max-w-full rounded-full border px-2.5 py-1 font-sans text-[10px] font-medium tracking-[0.06em]"
                 style={{
                   color: "var(--hint-gold)",
                   borderColor: "color-mix(in srgb, var(--hint-gold) 28%, var(--hint-border))",
                   background: "color-mix(in srgb, var(--hint-gold) 9%, transparent)",
+                  overflowWrap: "anywhere",
                 }}
               >
                 {birthProfileLabel}
@@ -358,7 +425,7 @@ export function DailyReportCard({
               {report.title}
             </h2>
             {detailed ? (
-              <p className="mt-2 max-w-xl font-sans text-[11px] leading-relaxed sm:text-[12px]" style={{ color: "var(--hint-muted)" }}>
+              <p className="hint-report-method mt-2 max-w-xl font-sans text-[11px] leading-relaxed sm:text-[12px]" style={{ color: "var(--hint-muted)" }}>
                 {t("dailyPull.method")}
               </p>
             ) : null}
@@ -377,9 +444,9 @@ export function DailyReportCard({
           </Link>
         </header>
 
-        <div className="grid gap-3 lg:grid-cols-[0.95fr_1.05fr] lg:gap-5">
+        <div className="hint-report-overview grid gap-3 lg:grid-cols-[0.95fr_1.05fr] lg:gap-5">
           <div className="min-w-0">
-            <p className="font-sans text-[12px] leading-relaxed lg:text-[14px]" style={{ color: "var(--hint-muted)" }}>
+            <p className="hint-report-summary font-sans text-[12px] leading-relaxed lg:text-[14px]" style={{ color: "var(--hint-muted)" }}>
               {report.summary}
             </p>
             <div className="mt-3 hidden grid-cols-2 gap-3 lg:grid">
@@ -403,17 +470,17 @@ export function DailyReportCard({
           </div>
 
           <div
-            className="rounded-[18px] border p-2.5"
+            className="hint-report-surface hint-report-energy rounded-[18px] border p-2.5"
             style={{
               background: "color-mix(in srgb, var(--hint-input-bg) 76%, transparent)",
               borderColor: "var(--hint-border)",
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
             }}
           >
-            <div className="mb-2 flex items-end justify-between gap-3">
+            <div className="hint-report-energy-heading mb-2 flex items-end justify-between gap-3">
               <div className="flex items-end gap-2">
                 <span
-                  className="font-serif text-[46px] leading-[0.85] tabular-nums lg:text-[76px]"
+                  className="hint-report-overall-score font-serif text-[46px] leading-[0.85] tabular-nums lg:text-[76px]"
                   style={{
                     color: "var(--hint-score-ink)",
                     textShadow: "var(--hint-score-shadow)",
@@ -421,25 +488,26 @@ export function DailyReportCard({
                 >
                   {report.overallScore}
                 </span>
-                <span className="pb-1 font-serif text-[13px] lg:pb-2.5 lg:text-[20px]" style={{ color: "var(--hint-score-ink)" }}>
+                <span className="hint-report-score-unit pb-1 font-serif text-[13px] lg:pb-2.5 lg:text-[20px]" style={{ color: "var(--hint-score-ink)" }}>
                   {t("daily.score")}
                 </span>
               </div>
-              <span className="pb-1 font-sans text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: "var(--hint-faint)" }}>
-                {report.scores.length} signals
-              </span>
+              <span className="hint-report-signal-count pb-1 font-sans text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: "var(--hint-faint)" }}>
+                {report.scores.length}<LocalizedText text={" signals "} /></span>
             </div>
-            <div className="grid gap-1.5 min-[360px]:grid-cols-2 lg:grid-cols-1 lg:gap-3">
-              {report.scores.map((score) => (
+            <div className={appearance === "page" ? "hint-report-score-columns" : "hint-report-scores-grid grid gap-1.5 min-[360px]:grid-cols-2 lg:grid-cols-1 lg:gap-3"}>
+              {report.scores.map((score) => appearance === "page" ? (
+                <ScoreColumn key={score.key} score={score} />
+              ) : (
                 <ScoreBar key={score.key} score={score} />
               ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-3 grid grid-cols-2 gap-2 lg:hidden">
+        <div className="hint-report-advice-grid mt-3 grid grid-cols-2 gap-2 lg:hidden">
           <div
-            className="rounded-[15px] border p-3"
+            className="hint-report-surface hint-report-advice rounded-[15px] border p-3"
             style={{
               background: "color-mix(in srgb, var(--hint-card-inner) 82%, transparent)",
               borderColor: "var(--hint-border)",
@@ -453,7 +521,7 @@ export function DailyReportCard({
             </p>
           </div>
           <div
-            className="rounded-[15px] border p-3"
+            className="hint-report-surface hint-report-advice rounded-[15px] border p-3"
             style={{
               background: "color-mix(in srgb, var(--hint-card-inner) 82%, transparent)",
               borderColor: "var(--hint-border)",
@@ -469,16 +537,16 @@ export function DailyReportCard({
         </div>
 
         <div className="mt-4 hidden lg:block">
-          <MiniDailyCard card={card} interactive={!detailed} />
+          <MiniDailyCard card={card} interactive={!detailed} action={detailed ? <DailyReceiptButton report={{ ...report, card }} compact disabled={!getCachedDailyReceipt("daily-card", { dailyKey: report.date })?.openedAt && !getLocalDailyReadingForDateKey(report.date)} /> : undefined} />
         </div>
 
         {detailed && <CardGuidanceGrid card={card} why={cardWhy} />}
 
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        <div className="hint-report-lucky-grid mt-3 grid grid-cols-3 gap-2">
           {report.lucky.map((item) => (
             <div
               key={item.key}
-              className="min-h-[112px] rounded-[20px] border px-2 py-3 text-center"
+              className="hint-report-surface hint-report-lucky min-h-[112px] rounded-[20px] border px-2 py-3 text-center"
               style={{
                 background: "var(--hint-lucky-tile-bg-strong)",
                 borderColor: "var(--hint-border)",
@@ -489,10 +557,10 @@ export function DailyReportCard({
               <p className="mt-2 font-sans text-[8px] font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--hint-faint)" }}>
                 {item.label}
               </p>
-              <p className="mt-1 truncate font-serif text-[14px] leading-tight" style={{ color: "var(--hint-text)" }}>
+              <p className="mt-1 break-words font-serif text-[14px] leading-tight" style={{ color: "var(--hint-text)" }}>
                 {item.value}
               </p>
-              <p className="mx-auto mt-1 line-clamp-2 max-w-[8rem] font-sans text-[9px] leading-snug" style={{ color: "var(--hint-muted)" }}>
+              <p className="mx-auto mt-1 max-w-[8rem] break-words font-sans text-[9px] leading-snug" style={{ color: "var(--hint-muted)" }}>
                 {item.hint}
               </p>
             </div>
@@ -500,7 +568,7 @@ export function DailyReportCard({
         </div>
 
         {detailed && (
-          <div className="hint-liquid-panel mt-4 rounded-[24px] p-3" style={{ borderColor: "var(--hint-border)" }}>
+          <div className={`hint-report-tasks mt-4 ${appearance === "page" ? "" : "hint-liquid-panel rounded-[24px] p-3"}`} style={{ borderColor: "var(--hint-border)" }}>
             <div className="mb-3 flex items-center gap-2">
               <Sparkles size={15} style={{ color: ACCENT.gold }} />
               <h3 className="font-serif text-[18px]" style={{ color: "var(--hint-text)" }}>
@@ -545,7 +613,7 @@ export function DailyReportCard({
           </div>
         )}
 
-        <p className="mt-4 font-sans text-[10.5px] leading-relaxed" style={{ color: "var(--hint-faint)" }}>
+        <p className="hint-report-disclaimer mt-4 font-sans text-[10.5px] leading-relaxed" style={{ color: "var(--hint-faint)" }}>
           {t("daily.disclaimer")}
         </p>
       </div>

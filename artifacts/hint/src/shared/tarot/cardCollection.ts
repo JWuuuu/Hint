@@ -116,12 +116,13 @@ function readLocalUnlocks(): LocalCollectionUnlock[] {
   }
 }
 
-function writeLocalUnlocks(unlocks: LocalCollectionUnlock[]) {
+function writeLocalUnlocks(unlocks: LocalCollectionUnlock[]): boolean {
   try {
     localStorage.setItem(LOCAL_UNLOCKS_STORAGE_KEY, JSON.stringify(unlocks));
     window.dispatchEvent(new Event(LOCAL_UNLOCKS_UPDATED_EVENT));
+    return true;
   } catch {
-    // Local reward unlocks should never block the collection view.
+    return false;
   }
 }
 
@@ -162,7 +163,7 @@ export function getCardCollectionSummary(anonId = getAnonId()): CardCollectionSu
   }
 
   for (const reading of listLocalDailyReadings(anonId)) {
-    addSeen(seen, dailyCardId(reading.cardName), "daily", reading.createdAt);
+    addSeen(seen, reading.cardId ?? dailyCardId(reading.cardName), "daily", reading.createdAt);
   }
 
   for (const unlock of readLocalUnlocks().filter((item) => item.anonId === anonId)) {
@@ -208,7 +209,9 @@ export function saveLocalCollectionUnlock(
   cardId: string,
   source: CollectionSource = "reward",
   anonId = getAnonId(),
-): LocalCollectionUnlock {
+): LocalCollectionUnlock | null {
+  const previous = readLocalUnlocks().find(item => item.anonId === anonId && item.cardId === cardId && item.source === source);
+  if (previous) return previous;
   const createdAt = new Date().toISOString();
   const unlock: LocalCollectionUnlock = {
     anonId,
@@ -219,8 +222,7 @@ export function saveLocalCollectionUnlock(
   const existing = readLocalUnlocks().filter(
     (item) => !(item.anonId === anonId && item.cardId === cardId && item.source === source),
   );
-  writeLocalUnlocks([unlock, ...existing].slice(0, 160));
-  return unlock;
+  return writeLocalUnlocks([unlock, ...existing].slice(0, 160)) ? unlock : null;
 }
 
 export function getDailyCollectionReward(anonId = getAnonId(), now = new Date()): DailyCollectionReward {

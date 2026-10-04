@@ -1,0 +1,3839 @@
+{
+  "method": "Individual completed cases from an interrupted run plus exact remaining cases on identical production source; keyed by project, file, and full title. Original false-assertion failures retained in attempts. No snapshot updates.",
+  "expectedCount": 252,
+  "counts": {
+    "passed": 240,
+    "skipped": 12
+  },
+  "missing": [],
+  "unexpected": [],
+  "sourceFiles": 381,
+  "changedSource": [],
+  "groups": {
+    "letter-ritual-layout.spec.ts": {
+      "passed": 22
+    },
+    "me-redesign.spec.ts": {
+      "passed": 29,
+      "skipped": 1
+    },
+    "room-entrances.spec.ts": {
+      "passed": 44
+    },
+    "space-navigation.spec.ts": {
+      "passed": 14
+    },
+    "tarot-all-spreads.spec.ts": {
+      "passed": 9,
+      "skipped": 9
+    },
+    "tarot-room.spec.ts": {
+      "passed": 112,
+      "skipped": 2
+    },
+    "tarot-spread-navigation.spec.ts": {
+      "passed": 4
+    },
+    "tarot-wash-refinement.spec.ts": {
+      "passed": 6
+    }
+  },
+  "cases": [
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected single layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected single layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected three layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected three layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected relationship layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected relationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected futureLover layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected futureLover layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected peachBlossom layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected peachBlossom layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected reconciliation layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected reconciliation layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected trueHeart layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected trueHeart layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected loveTree layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected loveTree layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "selected xRelationship layout has its own space above the complete card arc",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected xRelationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "production preview switches phones without losing the current room or question",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › production preview switches phones without losing the current room or question",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me Tarot setup has a visible bounded entrance into the ready room",
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › Me Tarot setup has a visible bounded entrance into the ready room",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected single layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected single layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected three layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected three layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected relationship layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected relationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected futureLover layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected futureLover layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected peachBlossom layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected peachBlossom layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected reconciliation layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected reconciliation layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected trueHeart layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected trueHeart layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected loveTree layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected loveTree layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "selected xRelationship layout has its own space above the complete card arc",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected xRelationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "production preview switches phones without losing the current room or question",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › production preview switches phones without losing the current room or question",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "letter-ritual-layout.spec.ts",
+      "project": "iphone-se",
+      "title": "Me Tarot setup has a visible bounded entrance into the ready room",
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › Me Tarot setup has a visible bounded entrance into the ready room",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign en bright: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign en bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign en dark: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign en dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign zh bright: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign zh bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign zh dark: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign zh dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign es bright: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign es bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign es dark: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign es dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign ja bright: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ja bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign ja dark: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ja dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign ko bright: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ko bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me redesign ko dark: layout, preferences and disclosures",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ko dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me editor retains failed local saves, retries, and returns focus on cancel",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me editor retains failed local saves, retries, and returns focus on cancel",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me editor identifies an offline save as local and keeps it after reload",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me editor identifies an offline save as local and keeps it after reload",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me Spanish SE 200% text retains long names, places and expanded details",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me Spanish SE 200% text retains long names, places and expanded details",
+      "status": "skipped",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me delayed save preserves newer input in the current editor and its focus",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me delayed save preserves newer input in the current editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Me delayed save preserves a reopened editor and its focus",
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me delayed save preserves a reopened editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign en bright: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign en bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign en dark: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign en dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign zh bright: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign zh bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign zh dark: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign zh dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign es bright: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign es bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign es dark: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign es dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign ja bright: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ja bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign ja dark: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ja dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign ko bright: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ko bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me redesign ko dark: layout, preferences and disclosures",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ko dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me editor retains failed local saves, retries, and returns focus on cancel",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me editor retains failed local saves, retries, and returns focus on cancel",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me editor identifies an offline save as local and keeps it after reload",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me editor identifies an offline save as local and keeps it after reload",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me Spanish SE 200% text retains long names, places and expanded details",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me Spanish SE 200% text retains long names, places and expanded details",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me delayed save preserves newer input in the current editor and its focus",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me delayed save preserves newer input in the current editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "me-redesign.spec.ts",
+      "project": "iphone-se",
+      "title": "Me delayed save preserves a reopened editor and its focus",
+      "key": "[iphone-se] › me-redesign.spec.ts › Me delayed save preserves a reopened editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › a quick first Home entry does not start a second launch sequence over Tarot",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Home tarot entrance reaches its working room and cleans up",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home tarot entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Home astrology entrance reaches its working room and cleans up",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home astrology entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Home collection entrance reaches its working room and cleans up",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home collection entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Home personalities entrance reaches its working room and cleans up",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home personalities entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "room entrance respects app=false OS=false without blocking Tarot input",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=false OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "room entrance respects app=true OS=false without blocking Tarot input",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=true OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "room entrance respects app=false OS=true without blocking Tarot input",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=false OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "room entrance respects app=true OS=true without blocking Tarot input",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=true OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "rapid repeated Home taps create one navigation and Back does not replay an entrance",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › rapid repeated Home taps create one navigation and Back does not replay an entrance",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "backgrounding a live entrance dismisses it and foregrounding does not replay it",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › backgrounding a live entrance dismisses it and foregrounding does not replay it",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "query-only navigation keeps the live room and unsent input without a new entrance",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › query-only navigation keeps the live room and unsent input without a new entrance",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Rooms animal-tarot entry opens the intended feature",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms animal-tarot entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Rooms journal entry opens the intended feature",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms journal entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Rooms compatibility entry opens the intended feature",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms compatibility entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Rooms dream entry opens the intended feature",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms dream entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Me chart entry preserves its destination",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Me chart entry preserves its destination",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Me history entry preserves its destination",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Me history entry preserves its destination",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Me collection entry preserves its destination",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Me collection entry preserves its destination",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Home dock ask entry stays directly usable",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Home dock ask entry stays directly usable",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Home dock daily entry stays directly usable",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Home dock daily entry stays directly usable",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "supplemental Home dock profile entry stays directly usable",
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Home dock profile entry stays directly usable",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "a quick first Home entry does not start a second launch sequence over Tarot",
+      "key": "[iphone-se] › room-entrances.spec.ts › a quick first Home entry does not start a second launch sequence over Tarot",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "Home tarot entrance reaches its working room and cleans up",
+      "key": "[iphone-se] › room-entrances.spec.ts › Home tarot entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "Home astrology entrance reaches its working room and cleans up",
+      "key": "[iphone-se] › room-entrances.spec.ts › Home astrology entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "Home collection entrance reaches its working room and cleans up",
+      "key": "[iphone-se] › room-entrances.spec.ts › Home collection entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "Home personalities entrance reaches its working room and cleans up",
+      "key": "[iphone-se] › room-entrances.spec.ts › Home personalities entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "room entrance respects app=false OS=false without blocking Tarot input",
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=false OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "room entrance respects app=true OS=false without blocking Tarot input",
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=true OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "room entrance respects app=false OS=true without blocking Tarot input",
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=false OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "room entrance respects app=true OS=true without blocking Tarot input",
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=true OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "rapid repeated Home taps create one navigation and Back does not replay an entrance",
+      "key": "[iphone-se] › room-entrances.spec.ts › rapid repeated Home taps create one navigation and Back does not replay an entrance",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "backgrounding a live entrance dismisses it and foregrounding does not replay it",
+      "key": "[iphone-se] › room-entrances.spec.ts › backgrounding a live entrance dismisses it and foregrounding does not replay it",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "query-only navigation keeps the live room and unsent input without a new entrance",
+      "key": "[iphone-se] › room-entrances.spec.ts › query-only navigation keeps the live room and unsent input without a new entrance",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Rooms animal-tarot entry opens the intended feature",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms animal-tarot entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Rooms journal entry opens the intended feature",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms journal entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Rooms compatibility entry opens the intended feature",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms compatibility entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Rooms dream entry opens the intended feature",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms dream entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Me chart entry preserves its destination",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Me chart entry preserves its destination",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Me history entry preserves its destination",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Me history entry preserves its destination",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Me collection entry preserves its destination",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Me collection entry preserves its destination",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Home dock ask entry stays directly usable",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Home dock ask entry stays directly usable",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Home dock daily entry stays directly usable",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Home dock daily entry stays directly usable",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "room-entrances.spec.ts",
+      "project": "iphone-se",
+      "title": "supplemental Home dock profile entry stays directly usable",
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Home dock profile entry stays directly usable",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Every space has a visible direct Home exit: group 1",
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 1",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Every space has a visible direct Home exit: group 2",
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 2",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Every space has a visible direct Home exit: group 3",
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 3",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Every space has a visible direct Home exit: group 4",
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 4",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Every space has a visible direct Home exit: group 5",
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 5",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Nested spaces keep a named parent alongside Home after refresh",
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Nested spaces keep a named parent alongside Home after refresh",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "Every space has a visible direct Home exit: group 1",
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 1",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "Every space has a visible direct Home exit: group 2",
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 2",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "Every space has a visible direct Home exit: group 3",
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 3",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "Every space has a visible direct Home exit: group 4",
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 4",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "Every space has a visible direct Home exit: group 5",
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 5",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "Nested spaces keep a named parent alongside Home after refresh",
+      "key": "[iphone-se] › space-navigation.spec.ts › Nested spaces keep a named parent alongside Home after refresh",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "space-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+      "key": "[iphone-se] › space-navigation.spec.ts › Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete single: select 1 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete single: select 1 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete three: select 3 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete three: select 3 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete relationship: select 3 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete futureLover: select 7 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete loveTree: select 7 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete single: select 1 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete single: select 1 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete three: select 3 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete three: select 3 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete relationship: select 3 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete futureLover: select 7 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete loveTree: select 7 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-all-spreads.spec.ts",
+      "project": "iphone-se",
+      "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Tarot entry has accessible semantics and touch targets",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot entry has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Tarot recommendation has accessible semantics and touch targets",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot recommendation has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread recommendations keep every layout and full explanation in normal flow",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread recommendations keep every layout and full explanation in normal flow",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Tarot room setup has accessible semantics and touch targets",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot room setup has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Tarot wash has accessible semantics and touch targets",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot wash has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Tarot arc has accessible semantics and touch targets",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot arc has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "Tarot reading has accessible semantics and touch targets",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot reading has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "card detail stays gesture-first without visible zoom controls",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › card detail stays gesture-first without visible zoom controls",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper demo reading is explicit, durable, and leaves the original reading private",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "deeper demo reading failure is retryable without a silent upgrade",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper demo reading failure is retryable without a silent upgrade",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "deeper reading motion is reversible and respects normal motion",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper reading motion is reversible and respects normal motion",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "deeper reading motion is reversible and respects system motion",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper reading motion is reversible and respects system motion",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "deeper reading motion is reversible and respects hint motion",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper reading motion is reversible and respects hint motion",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "completes and restores the full Tarot Room journey",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › completes and restores the full Tarot Room journey",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a tap without movement cannot finish a manual wash",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a tap without movement cannot finish a manual wash",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "the wash table stops repainting while idle or after a rejected gesture",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › the wash table stops repainting while idle or after a rejected gesture",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a real manual wash release completes the automatic ritual",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a real manual wash release completes the automatic ritual",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "rapid Auto Wash requests advance through one ordered ritual",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › rapid Auto Wash requests advance through one ordered ritual",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › an interrupted automatic ritual restarts from its stable prepare stage",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a backgrounded cut restarts from Prepare when the iPhone returns",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "an active ritual survives a terminated and reopened webview",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › an active ritual survives a terminated and reopened webview",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a cancelled wash gesture stays in the wash stage",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a cancelled wash gesture stays in the wash stage",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "voice unavailability keeps a clear typed fallback",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › voice unavailability keeps a clear typed fallback",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "cancelling receipt sharing stays quiet and allows sharing again",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › cancelling receipt sharing stays quiet and allows sharing again",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "receipt preview and exported PNG keep the question and chat private by default",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt preview and exported PNG keep the question and chat private by default",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "receipt exports complete 1-card en text and readable artwork",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 1-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "receipt exports complete 3-card en text and readable artwork",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 3-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "receipt exports complete 5-card en text and readable artwork",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 5-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "receipt exports complete 7-card en text and readable artwork",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 7-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "receipt exports complete 9-card en text and readable artwork",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 9-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "receipt exports complete 9-card zh text and readable artwork",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 9-card zh text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "system reduced motion completes the automatic ritual promptly",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › system reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "hint reduced motion completes the automatic ritual promptly",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › hint reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "an offline follow-up is saved and restored with its local reply",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › an offline follow-up is saved and restored with its local reply",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a stalled follow-up releases the composer and keeps one durable local reply",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "leaving a pending follow-up cancels its request before History resumes",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › leaving a pending follow-up cancels its request before History resumes",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a late reading response cannot replace the settled local reading",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a late reading response cannot replace the settled local reading",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a pending interpretation survives refresh with an explicit retry",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a pending interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a local interpretation survives refresh with an explicit retry",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a server-local interpretation survives refresh with an explicit retry",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a server-local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "refresh restores the newest fallback session after durable storage fills",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › refresh restores the newest fallback session after durable storage fills",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a failed save keeps the reading and chat until an explicit durable retry",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a failed save keeps the reading and chat until an explicit durable retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "damaged saved interpretation and design recover without losing the selected cards",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › damaged saved interpretation and design recover without losing the selected cards",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "the reading composer remains visible above a keyboard-sized viewport",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › the reading composer remains visible above a keyboard-sized viewport",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Short-screen keyboard regression",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+            "line": 1990,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "five consecutive rituals do not degrade",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › five consecutive rituals do not degrade",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread single remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread single remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread three remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread three remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread peachBlossom remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread peachBlossom remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread futureLover remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread futureLover remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread xRelationship remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread xRelationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread relationship remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread relationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread reconciliation remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread reconciliation remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread trueHeart remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread trueHeart remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread loveTree remains contained",
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread loveTree remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "Tarot entry has accessible semantics and touch targets",
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot entry has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "Tarot recommendation has accessible semantics and touch targets",
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot recommendation has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread recommendations keep every layout and full explanation in normal flow",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread recommendations keep every layout and full explanation in normal flow",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "Tarot room setup has accessible semantics and touch targets",
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot room setup has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "Tarot wash has accessible semantics and touch targets",
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot wash has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "Tarot arc has accessible semantics and touch targets",
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot arc has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "Tarot reading has accessible semantics and touch targets",
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot reading has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "key": "[iphone-se] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "key": "[iphone-se] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "card detail stays gesture-first without visible zoom controls",
+      "key": "[iphone-se] › tarot-room.spec.ts › card detail stays gesture-first without visible zoom controls",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper demo reading is explicit, durable, and leaves the original reading private",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "deeper demo reading failure is retryable without a silent upgrade",
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper demo reading failure is retryable without a silent upgrade",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "deeper reading motion is reversible and respects normal motion",
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper reading motion is reversible and respects normal motion",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "deeper reading motion is reversible and respects system motion",
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper reading motion is reversible and respects system motion",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "deeper reading motion is reversible and respects hint motion",
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper reading motion is reversible and respects hint motion",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "completes and restores the full Tarot Room journey",
+      "key": "[iphone-se] › tarot-room.spec.ts › completes and restores the full Tarot Room journey",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a tap without movement cannot finish a manual wash",
+      "key": "[iphone-se] › tarot-room.spec.ts › a tap without movement cannot finish a manual wash",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "the wash table stops repainting while idle or after a rejected gesture",
+      "key": "[iphone-se] › tarot-room.spec.ts › the wash table stops repainting while idle or after a rejected gesture",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a real manual wash release completes the automatic ritual",
+      "key": "[iphone-se] › tarot-room.spec.ts › a real manual wash release completes the automatic ritual",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "rapid Auto Wash requests advance through one ordered ritual",
+      "key": "[iphone-se] › tarot-room.spec.ts › rapid Auto Wash requests advance through one ordered ritual",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+      "key": "[iphone-se] › tarot-room.spec.ts › an interrupted automatic ritual restarts from its stable prepare stage",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+      "key": "[iphone-se] › tarot-room.spec.ts › a backgrounded cut restarts from Prepare when the iPhone returns",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "an active ritual survives a terminated and reopened webview",
+      "key": "[iphone-se] › tarot-room.spec.ts › an active ritual survives a terminated and reopened webview",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a cancelled wash gesture stays in the wash stage",
+      "key": "[iphone-se] › tarot-room.spec.ts › a cancelled wash gesture stays in the wash stage",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "voice unavailability keeps a clear typed fallback",
+      "key": "[iphone-se] › tarot-room.spec.ts › voice unavailability keeps a clear typed fallback",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "cancelling receipt sharing stays quiet and allows sharing again",
+      "key": "[iphone-se] › tarot-room.spec.ts › cancelling receipt sharing stays quiet and allows sharing again",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "receipt preview and exported PNG keep the question and chat private by default",
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt preview and exported PNG keep the question and chat private by default",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "receipt exports complete 1-card en text and readable artwork",
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 1-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "receipt exports complete 3-card en text and readable artwork",
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 3-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "receipt exports complete 5-card en text and readable artwork",
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 5-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "receipt exports complete 7-card en text and readable artwork",
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 7-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "receipt exports complete 9-card en text and readable artwork",
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 9-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "receipt exports complete 9-card zh text and readable artwork",
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 9-card zh text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "system reduced motion completes the automatic ritual promptly",
+      "key": "[iphone-se] › tarot-room.spec.ts › system reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "hint reduced motion completes the automatic ritual promptly",
+      "key": "[iphone-se] › tarot-room.spec.ts › hint reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "an offline follow-up is saved and restored with its local reply",
+      "key": "[iphone-se] › tarot-room.spec.ts › an offline follow-up is saved and restored with its local reply",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+      "key": "[iphone-se] › tarot-room.spec.ts › a stalled follow-up releases the composer and keeps one durable local reply",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "leaving a pending follow-up cancels its request before History resumes",
+      "key": "[iphone-se] › tarot-room.spec.ts › leaving a pending follow-up cancels its request before History resumes",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a late reading response cannot replace the settled local reading",
+      "key": "[iphone-se] › tarot-room.spec.ts › a late reading response cannot replace the settled local reading",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a pending interpretation survives refresh with an explicit retry",
+      "key": "[iphone-se] › tarot-room.spec.ts › a pending interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a local interpretation survives refresh with an explicit retry",
+      "key": "[iphone-se] › tarot-room.spec.ts › a local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a server-local interpretation survives refresh with an explicit retry",
+      "key": "[iphone-se] › tarot-room.spec.ts › a server-local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "refresh restores the newest fallback session after durable storage fills",
+      "key": "[iphone-se] › tarot-room.spec.ts › refresh restores the newest fallback session after durable storage fills",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "a failed save keeps the reading and chat until an explicit durable retry",
+      "key": "[iphone-se] › tarot-room.spec.ts › a failed save keeps the reading and chat until an explicit durable retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "damaged saved interpretation and design recover without losing the selected cards",
+      "key": "[iphone-se] › tarot-room.spec.ts › damaged saved interpretation and design recover without losing the selected cards",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "the reading composer remains visible above a keyboard-sized viewport",
+      "key": "[iphone-se] › tarot-room.spec.ts › the reading composer remains visible above a keyboard-sized viewport",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "five consecutive rituals do not degrade",
+      "key": "[iphone-se] › tarot-room.spec.ts › five consecutive rituals do not degrade",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "One primary-device soak run",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+            "line": 2003,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread single remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread single remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread three remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread three remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread peachBlossom remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread peachBlossom remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread futureLover remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread futureLover remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread xRelationship remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread xRelationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread relationship remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread relationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread reconciliation remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread reconciliation remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread trueHeart remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread trueHeart remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-room.spec.ts",
+      "project": "iphone-se",
+      "title": "spread loveTree remains contained",
+      "key": "[iphone-se] › tarot-room.spec.ts › spread loveTree remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-spread-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "spread arrows have generous lateral targets beside the cards",
+      "key": "[iphone-17-pro-max] › tarot-spread-navigation.spec.ts › spread arrows have generous lateral targets beside the cards",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-spread-navigation.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "a vertical gesture cannot turn into an accidental spread change",
+      "key": "[iphone-17-pro-max] › tarot-spread-navigation.spec.ts › a vertical gesture cannot turn into an accidental spread change",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-spread-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "spread arrows have generous lateral targets beside the cards",
+      "key": "[iphone-se] › tarot-spread-navigation.spec.ts › spread arrows have generous lateral targets beside the cards",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-spread-navigation.spec.ts",
+      "project": "iphone-se",
+      "title": "a vertical gesture cannot turn into an accidental spread change",
+      "key": "[iphone-se] › tarot-spread-navigation.spec.ts › a vertical gesture cannot turn into an accidental spread change",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-wash-refinement.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "manual wash uses the full table and keeps its geometry while gathering",
+      "key": "[iphone-17-pro-max] › tarot-wash-refinement.spec.ts › manual wash uses the full table and keeps its geometry while gathering",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-wash-refinement.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "release reaches cutting promptly even if the WebView drops transition events",
+      "key": "[iphone-17-pro-max] › tarot-wash-refinement.spec.ts › release reaches cutting promptly even if the WebView drops transition events",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-wash-refinement.spec.ts",
+      "project": "iphone-17-pro-max",
+      "title": "reduced motion keeps Auto Wash functional without playing the decorative wash",
+      "key": "[iphone-17-pro-max] › tarot-wash-refinement.spec.ts › reduced motion keeps Auto Wash functional without playing the decorative wash",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "file": "tarot-wash-refinement.spec.ts",
+      "project": "iphone-se",
+      "title": "manual wash uses the full table and keeps its geometry while gathering",
+      "key": "[iphone-se] › tarot-wash-refinement.spec.ts › manual wash uses the full table and keeps its geometry while gathering",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-wash-refinement.spec.ts",
+      "project": "iphone-se",
+      "title": "release reaches cutting promptly even if the WebView drops transition events",
+      "key": "[iphone-se] › tarot-wash-refinement.spec.ts › release reaches cutting promptly even if the WebView drops transition events",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "file": "tarot-wash-refinement.spec.ts",
+      "project": "iphone-se",
+      "title": "reduced motion keeps Auto Wash functional without playing the decorative wash",
+      "key": "[iphone-se] › tarot-wash-refinement.spec.ts › reduced motion keeps Auto Wash functional without playing the decorative wash",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    }
+  ],
+  "attempts": [
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign en bright: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected single layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign en dark: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected three layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected relationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign zh bright: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected futureLover layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign zh dark: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected peachBlossom layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected reconciliation layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign es bright: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected trueHeart layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected loveTree layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign es dark: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › selected xRelationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ja bright: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › production preview switches phones without losing the current room or question",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ja dark: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › letter-ritual-layout.spec.ts › Me Tarot setup has a visible bounded entrance into the ready room",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › a quick first Home entry does not start a second launch sequence over Tarot",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ko bright: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home tarot entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home astrology entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ko dark: layout, preferences and disclosures",
+      "status": "failed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home collection entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me editor retains failed local saves, retries, and returns focus on cancel",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me editor identifies an offline save as local and keeps it after reload",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › Home personalities entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me Spanish SE 200% text retains long names, places and expanded details",
+      "status": "skipped",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me delayed save preserves newer input in the current editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=false OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me delayed save preserves a reopened editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=true OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=false OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 1",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › room entrance respects app=true OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 2",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › rapid repeated Home taps create one navigation and Back does not replay an entrance",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 3",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › backgrounding a live entrance dismisses it and foregrounding does not replay it",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › query-only navigation keeps the live room and unsent input without a new entrance",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms animal-tarot entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 4",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms journal entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms compatibility entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 5",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Rooms dream entry opens the intended feature",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Me chart entry preserves its destination",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Me history entry preserves its destination",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Me collection entry preserves its destination",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Nested spaces keep a named parent alongside Home after refresh",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Home dock ask entry stays directly usable",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › space-navigation.spec.ts › Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Home dock daily entry stays directly usable",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › room-entrances.spec.ts › supplemental Home dock profile entry stays directly usable",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot entry has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot recommendation has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete single: select 1 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread recommendations keep every layout and full explanation in normal flow",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot room setup has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot wash has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot arc has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete three: select 3 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › Tarot reading has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete relationship: select 3 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › card detail stays gesture-first without visible zoom controls",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper demo reading is explicit, durable, and leaves the original reading private",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete futureLover: select 7 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper demo reading failure is retryable without a silent upgrade",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper reading motion is reversible and respects normal motion",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper reading motion is reversible and respects system motion",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › deeper reading motion is reversible and respects hint motion",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › completes and restores the full Tarot Room journey",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a tap without movement cannot finish a manual wash",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › the wash table stops repainting while idle or after a rejected gesture",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a real manual wash release completes the automatic ritual",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › rapid Auto Wash requests advance through one ordered ritual",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete loveTree: select 7 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › an interrupted automatic ritual restarts from its stable prepare stage",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a backgrounded cut restarts from Prepare when the iPhone returns",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › an active ritual survives a terminated and reopened webview",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-all-spreads.spec.ts › complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-spread-navigation.spec.ts › spread arrows have generous lateral targets beside the cards",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a cancelled wash gesture stays in the wash stage",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-spread-navigation.spec.ts › a vertical gesture cannot turn into an accidental spread change",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › voice unavailability keeps a clear typed fallback",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › cancelling receipt sharing stays quiet and allows sharing again",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-wash-refinement.spec.ts › manual wash uses the full table and keeps its geometry while gathering",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt preview and exported PNG keep the question and chat private by default",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-wash-refinement.spec.ts › release reaches cutting promptly even if the WebView drops transition events",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 1-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-wash-refinement.spec.ts › reduced motion keeps Auto Wash functional without playing the decorative wash",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 3-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected single layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected three layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 5-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected relationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected futureLover layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected peachBlossom layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected reconciliation layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 7-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected trueHeart layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected loveTree layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 9-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › selected xRelationship layout has its own space above the complete card arc",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › production preview switches phones without losing the current room or question",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › letter-ritual-layout.spec.ts › Me Tarot setup has a visible bounded entrance into the ready room",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › receipt exports complete 9-card zh text and readable artwork",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign en bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › system reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › hint reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign en dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › an offline follow-up is saved and restored with its local reply",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign zh bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign zh dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign es bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign es dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a stalled follow-up releases the composer and keeps one durable local reply",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ja bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › leaving a pending follow-up cancels its request before History resumes",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ja dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ko bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a late reading response cannot replace the settled local reading",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me redesign ko dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a pending interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me editor retains failed local saves, retries, and returns focus on cancel",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me editor identifies an offline save as local and keeps it after reload",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me Spanish SE 200% text retains long names, places and expanded details",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me delayed save preserves newer input in the current editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-se] › me-redesign.spec.ts › Me delayed save preserves a reopened editor and its focus",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a server-local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "final-e2e.log (interrupted run, completed individual case)"
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign en bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign en dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign zh bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign zh dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign es bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign es dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ja bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ja dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ko bright: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › me-redesign.spec.ts › Me redesign ko dark: layout, preferences and disclosures",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › refresh restores the newest fallback session after durable storage fills",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › a failed save keeps the reading and chat until an explicit durable retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › damaged saved interpretation and design recover without losing the selected cards",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › the reading composer remains visible above a keyboard-sized viewport",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Short-screen keyboard regression",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+            "line": 1990,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › five consecutive rituals do not degrade",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread single remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread three remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread peachBlossom remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread futureLover remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread xRelationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread relationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread reconciliation remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread trueHeart remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-17-pro-max] › tarot-room.spec.ts › spread loveTree remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot entry has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot recommendation has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread recommendations keep every layout and full explanation in normal flow",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread preview ignores hover and cancelled gestures and restores a readable reason",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot room setup has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot wash has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot arc has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › Tarot reading has accessible semantics and touch targets",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (normal motion)",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › card zoom tip stays readable and acknowledges interaction (reduced motion)",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › card detail stays gesture-first without visible zoom controls",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper demo reading is explicit, durable, and leaves the original reading private",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper demo reading failure is retryable without a silent upgrade",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper reading motion is reversible and respects normal motion",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper reading motion is reversible and respects system motion",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › deeper reading motion is reversible and respects hint motion",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › completes and restores the full Tarot Room journey",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a tap without movement cannot finish a manual wash",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › the wash table stops repainting while idle or after a rejected gesture",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a real manual wash release completes the automatic ritual",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › rapid Auto Wash requests advance through one ordered ritual",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › an interrupted automatic ritual restarts from its stable prepare stage",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a backgrounded cut restarts from Prepare when the iPhone returns",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › an active ritual survives a terminated and reopened webview",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a cancelled wash gesture stays in the wash stage",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › voice unavailability keeps a clear typed fallback",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › cancelling receipt sharing stays quiet and allows sharing again",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt preview and exported PNG keep the question and chat private by default",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 1-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 3-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 5-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 7-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 9-card en text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › receipt exports complete 9-card zh text and readable artwork",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › system reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › hint reduced motion completes the automatic ritual promptly",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › an offline follow-up is saved and restored with its local reply",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a stalled follow-up releases the composer and keeps one durable local reply",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › leaving a pending follow-up cancels its request before History resumes",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a late reading response cannot replace the settled local reading",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a pending interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a server-local interpretation survives refresh with an explicit retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › refresh restores the newest fallback session after durable storage fills",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › a failed save keeps the reading and chat until an explicit durable retry",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › damaged saved interpretation and design recover without losing the selected cards",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › the reading composer remains visible above a keyboard-sized viewport",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › five consecutive rituals do not degrade",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "One primary-device soak run",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-room.spec.ts",
+            "line": 2003,
+            "column": 8
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread single remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread three remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread peachBlossom remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread futureLover remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread xRelationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread relationship remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread reconciliation remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread trueHeart remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-room.spec.ts › spread loveTree remains contained",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › a quick first Home entry does not start a second launch sequence over Tarot",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › Home tarot entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › Home astrology entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › Home collection entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › Home personalities entrance reaches its working room and cleans up",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=false OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=true OS=false without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=false OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › room entrance respects app=true OS=true without blocking Tarot input",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › rapid repeated Home taps create one navigation and Back does not replay an entrance",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › backgrounding a live entrance dismisses it and foregrounding does not replay it",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › query-only navigation keeps the live room and unsent input without a new entrance",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms animal-tarot entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms journal entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms compatibility entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Rooms dream entry opens the intended feature",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Me chart entry preserves its destination",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Me history entry preserves its destination",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Me collection entry preserves its destination",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Home dock ask entry stays directly usable",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Home dock daily entry stays directly usable",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › room-entrances.spec.ts › supplemental Home dock profile entry stays directly usable",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 1",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 2",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 3",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 4",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › space-navigation.spec.ts › Every space has a visible direct Home exit: group 5",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › space-navigation.spec.ts › Nested spaces keep a named parent alongside Home after refresh",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › space-navigation.spec.ts › Astrology detail returns to signs, birth settings returns to chart, and both retain Home",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete single: select 1 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete three: select 3 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete relationship: select 3 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete futureLover: select 7 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete peachBlossom: select 5 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete reconciliation: select 7 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete trueHeart: select 5 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete loveTree: select 7 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-all-spreads.spec.ts › complete xRelationship: select 9 cards, read, save and restore exact positions",
+      "status": "skipped",
+      "evidence": "resume-e2e.json",
+      "annotations": [
+        {
+          "type": "skip",
+          "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+          "location": {
+            "file": "/Users/jwu/Documents/Hint-main/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+            "line": 40,
+            "column": 10
+          }
+        }
+      ]
+    },
+    {
+      "key": "[iphone-se] › tarot-spread-navigation.spec.ts › spread arrows have generous lateral targets beside the cards",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-spread-navigation.spec.ts › a vertical gesture cannot turn into an accidental spread change",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-wash-refinement.spec.ts › manual wash uses the full table and keeps its geometry while gathering",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-wash-refinement.spec.ts › release reaches cutting promptly even if the WebView drops transition events",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    },
+    {
+      "key": "[iphone-se] › tarot-wash-refinement.spec.ts › reduced motion keeps Auto Wash functional without playing the decorative wash",
+      "status": "passed",
+      "evidence": "resume-e2e.json",
+      "annotations": []
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../lib/LocalizedText";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Sparkles, Check } from "lucide-react";
@@ -76,8 +77,7 @@ export function MembershipCard() {
         }}
         data-testid="button-upgrade"
       >
-        {t("me.plusTrial")} · Soon
-      </button>
+        {t("me.plusTrial")}<LocalizedText text={" · Soon "} /></button>
     </motion.div>
   );
 }

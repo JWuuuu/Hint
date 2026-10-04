@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../../../lib/LocalizedText";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { LockKeyhole, Sparkles } from "lucide-react";
@@ -71,15 +72,9 @@ function ReadingUnlockPanel({
           <LockKeyhole size={15} strokeWidth={1.8} />
         </span>
         <div className="min-w-0">
-          <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: IVORY.mute }}>
-            Deeper thread ready
-          </p>
-          <h2 className="mt-1 font-serif text-[22px] leading-tight" style={{ color: IVORY.primary, textShadow: TEXT_HALO.soft }}>
-            Keep this reading open.
-          </h2>
-          <p className="mt-2 font-sans text-[12px] leading-relaxed" style={{ color: IVORY.mute }}>
-            Ask for card-by-card detail, action steps, timing, or what to watch next. The best follow-up is usually already hiding inside the first spread.
-          </p>
+          <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: IVORY.mute }}><LocalizedText text={" Deeper thread ready "} /></p>
+          <h2 className="mt-1 font-serif text-[22px] leading-tight" style={{ color: IVORY.primary, textShadow: TEXT_HALO.soft }}><LocalizedText text={" Keep this reading open. "} /></h2>
+          <p className="mt-2 font-sans text-[12px] leading-relaxed" style={{ color: IVORY.mute }}><LocalizedText text={" Ask for card-by-card detail, action steps, timing, or what to watch next. The best follow-up is usually already hiding inside the first spread. "} /></p>
         </div>
       </div>
 
@@ -136,9 +131,7 @@ function ReadingUnlockPanel({
           background: "var(--hint-special-action-bg)",
           boxShadow: "0 16px 34px rgba(0,0,0,0.18)",
         }}
-      >
-        Continue in this reading
-      </button>
+      ><LocalizedText text={" Continue in this reading "} /></button>
     </motion.section>
   );
 }
@@ -212,9 +205,7 @@ export function TarotChatRoom({ session, onSessionUpdate, onRedraw, onReset }: P
         <span
           className="font-serif text-[12px] uppercase tracking-[0.4em]"
           style={{ color: IVORY.mute }}
-        >
-          Hint
-        </span>
+        ><LocalizedText text={" Hint "} /></span>
         <button
           onClick={onReset}
           className="font-serif text-[11px] uppercase tracking-[0.32em] transition-colors duration-700 py-1 hover:!text-[rgba(255,245,225,0.85)]"

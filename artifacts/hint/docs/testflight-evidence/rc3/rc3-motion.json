@@ -1,0 +1,588 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "e2e/motion-performance.spec.ts",
+      "--config",
+      "playwright.production.config.ts",
+      "--workers=1",
+      "--reporter=list,json",
+      "--output=/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results"
+    ],
+    "configFile": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/playwright.production.config.ts",
+    "rootDir": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": {},
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "API_PROXY_TARGET=http://127.0.0.1:1 PORT=5195 node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --strictPort",
+      "url": "http://127.0.0.1:5195",
+      "reuseExistingServer": false,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "motion-performance.spec.ts",
+      "file": "motion-performance.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19286,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:06:21.570Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-idle-web-frame-samples-0bd2613b28b25e54d947e27eb64074a961bd51c3.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-scroll-web-frame-samples-e052674f7e53754bb3abed406cc646980cf683ea.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-reveal-web-frame-samples-8f8d6e2731ac15e58361da0402b02b141e9d83bb.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/animal-reveal-web-frame-samples-a125ad3e48fc2bb54f9b93ee3c3153b57fe1a120.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/tarot-auto-wash-web-frame-samples-e4ff34b45f88a450a5ab7a8a6b2a8d138f1ca681.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-6043ed0a4d677904ddf5",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        },
+        {
+          "title": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10460,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:06:41.019Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-idle-web-frame-samples-482cb0e60626ac91bb08936e98b2b6a74e48a9e2.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-scroll-web-frame-samples-4bbcea856767c13035677326ebf15b81a5a4ddd2.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-reveal-web-frame-samples-9028938c34e83464600c9d57ee070ce28fa1dd2d.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/animal-reveal-web-frame-samples-b2eedee5181e00b874fe7a6123d1afff26b40e81.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/tarot-auto-wash-web-frame-samples-53247286dc0fec24ee1fe1bcb1b0d851124b2e91.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-a8991e6fc4f22f07c1b6",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        },
+        {
+          "title": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10394,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:06:51.484Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-idle-web-frame-samples-2198adcdd6fda1adc7bf5cfce9eb8bebead3d66d.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-scroll-web-frame-samples-1e0279a989f1f13dea1162c6921f39ec709dd12f.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-reveal-web-frame-samples-cfcba3d640457709f848a9c981cc95d49926150d.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/animal-reveal-web-frame-samples-b8a8a95ade9e20a97db279e7df878f0aa74a5982.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/tarot-auto-wash-web-frame-samples-c4eace09bd0ad31cf41d7fe74fd2c6b17835c8c8.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-0aba951ed78dc8f7a0a7",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        },
+        {
+          "title": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10194,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:07:01.884Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-idle-web-frame-samples-f92f4f2a17a75cf81ef4fbf90ccb54ce505107c6.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-scroll-web-frame-samples-9adb96b4184e68f8424e1242a430c646ac3bf498.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/home-reveal-web-frame-samples-8055f00621c6ae454a1718ba21f8cfe9e66af657.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/animal-reveal-web-frame-samples-14748cc29b4c704c56fe454c8e079e6e7f1ec62a.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-17-pro-max/attachments/tarot-auto-wash-web-frame-samples-1cb2e1fdb1bfeaff46c8268ad6cb548e031308b6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-537dbfe99297dd563167",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        },
+        {
+          "title": "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19265,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:07:12.301Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-idle-web-frame-samples-49fd168f083ba50e01df9c8f070cd7a816cfadff.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-scroll-web-frame-samples-0cb5bb9b223ab955089320bd4328813370aee4b0.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-reveal-web-frame-samples-25833234366bf72a007d3ff38f24b6e87a43a7f4.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/attachments/animal-reveal-web-frame-samples-ffe13e12d8af7ca7776fd9bc5a1124658309b3ba.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-0fabc-roll-modal-Animal-and-Tarot-iphone-se/attachments/tarot-auto-wash-web-frame-samples-417fb1481d069c2994847737e745a31ecf1375dd.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-3fc475568288df83b6e4",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        },
+        {
+          "title": "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10359,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:07:31.707Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-idle-web-frame-samples-d206a5899e4244767fddec2bd3a6f0bf5a2dd481.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-scroll-web-frame-samples-9309778a72f3f06dc59996cab2a49ed04a586819.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-reveal-web-frame-samples-2df0c7270e46e00b16ee24ce29bac0ab681b63be.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/attachments/animal-reveal-web-frame-samples-8494859d5738196d156b998fa78d77d83300d8ee.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-af73b-roll-modal-Animal-and-Tarot-iphone-se/attachments/tarot-auto-wash-web-frame-samples-efc2bb39adefe2a7ebda622327d33a31eadf3b29.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-8aa41e8e482df5b295ed",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        },
+        {
+          "title": "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10291,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:07:42.070Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-idle-web-frame-samples-cecf3326c505ec0e87342588ebd1f3353cec62a9.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-scroll-web-frame-samples-f8102f64d1298f8cc007f2af41a04ab98a74279b.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-reveal-web-frame-samples-77aaa11a8dac85fcb902a54fe2c65c5dda4c09de.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/attachments/animal-reveal-web-frame-samples-0af90447538193b2b6f20e9744e417cfbfa59427.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-429bb-roll-modal-Animal-and-Tarot-iphone-se/attachments/tarot-auto-wash-web-frame-samples-21403ad4edab9d3cf9e54ccdf9110880ad6b0ca2.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-c3f39a8a88cdc445ef5b",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        },
+        {
+          "title": "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10277,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T20:07:52.366Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "home-idle-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-idle-web-frame-samples-a1b4b1c3cfe0e5c019190b1c4506813f8ff97dc4.json"
+                    },
+                    {
+                      "name": "home-scroll-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-scroll-web-frame-samples-8d7a2c75077ca6e2a453b72dd87de8ade8fc88c8.json"
+                    },
+                    {
+                      "name": "home-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/attachments/home-reveal-web-frame-samples-4697f412fc602f78283ebd66f412f21334bdbc4a.json"
+                    },
+                    {
+                      "name": "animal-reveal-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/attachments/animal-reveal-web-frame-samples-b49821bdcf151fca5ed1194e4849cd39adfd322f.json"
+                    },
+                    {
+                      "name": "tarot-auto-wash-web-frame-samples",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-motion-results/motion-performance-web-fra-63e1b-roll-modal-Animal-and-Tarot-iphone-se/attachments/tarot-auto-wash-web-frame-samples-9ac0c1ff36b215cfa58efee7fb4d49d26eb5e87c.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0edf3a1d80f79f73c871-67bd59f6ae2a5edfbbc5",
+          "file": "motion-performance.spec.ts",
+          "line": 40,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T20:06:21.029Z",
+    "duration": 101663.678,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

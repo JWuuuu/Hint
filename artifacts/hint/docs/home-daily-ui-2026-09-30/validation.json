@@ -1,0 +1,274 @@
+{
+  "checkedAt": "2026-09-30T16:10:47.333Z",
+  "source": {
+    "commit": "69d32dccfc4e9cb6acb1b05313ca17a6dae4ac80",
+    "fingerprint": "05ca042c04fac3c8e85577c8c12bfe700d0cccdb9f67b8582736960b5fb0ca9d"
+  },
+  "build": {
+    "directory": "/tmp/hint-home-daily-zip-ui-final-20260930",
+    "fingerprint": "2230afa92a8c2e4fbabac13f91d20e3828a912d9da63b389fde3bd5b9f89c118"
+  },
+  "baseline": "45796ffa6edad76935ab2cf0c0a4b5e2189ae766",
+  "units": {
+    "passed": 19,
+    "files": [
+      "dailyNoteRecovery.test.tsx",
+      "dailyCardSync.test.ts",
+      "dailyLuckyCopy.test.tsx"
+    ]
+  },
+  "typecheck": "passed",
+  "buildStatus": "passed; existing chunk-size advisory",
+  "browserChecks": {
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0,
+    "checks": [
+      {
+        "phase": "final-flows",
+        "title": "Daily day, week, month and year controls retain calendar-selected periods",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 2873
+      },
+      {
+        "phase": "final-flows",
+        "title": "Days read displays unique dates across local and server records within each period",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 1713
+      },
+      {
+        "phase": "final-flows",
+        "title": "unread earlier periods display zero Days read",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 1024
+      },
+      {
+        "phase": "final-flows",
+        "title": "Home, Daily and receipt keep the locked card after refresh and export an actual PNG",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 2141
+      },
+      {
+        "phase": "final-flows",
+        "title": "a saved historical Daily card wins over an unopened allocation and shares without invented scores",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 1249
+      },
+      {
+        "phase": "final-flows",
+        "title": "an unopened server allocation is not presented as a saved historical Daily card",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 1126
+      },
+      {
+        "phase": "final-flows",
+        "title": "selectable iPhone frame keeps Home, Daily and receipt controls inside safe areas",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 2548
+      },
+      {
+        "phase": "final-flows",
+        "title": "Daily day, week, month and year controls retain calendar-selected periods",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2839
+      },
+      {
+        "phase": "final-flows",
+        "title": "Days read displays unique dates across local and server records within each period",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1681
+      },
+      {
+        "phase": "final-flows",
+        "title": "unread earlier periods display zero Days read",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1056
+      },
+      {
+        "phase": "final-flows",
+        "title": "Home, Daily and receipt keep the locked card after refresh and export an actual PNG",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2041
+      },
+      {
+        "phase": "final-flows",
+        "title": "a saved historical Daily card wins over an unopened allocation and shares without invented scores",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1160
+      },
+      {
+        "phase": "final-flows",
+        "title": "an unopened server allocation is not presented as a saved historical Daily card",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1099
+      },
+      {
+        "phase": "final-flows",
+        "title": "selectable iPhone frame keeps Home, Daily and receipt controls inside safe areas",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2425
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily zh bright keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1277
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily zh dark keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1105
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily es bright keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1103
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily es dark keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1103
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily ja bright keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1155
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily ja dark keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1169
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily ko bright keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1098
+      },
+      {
+        "phase": "final-layout",
+        "title": "Daily ko dark keeps localized lucky artwork and full text at 200%",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 1106
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix en bright app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2830
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix en dark app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2943
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix zh bright app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2966
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix zh dark app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2878
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix es bright app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2847
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix es dark app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2890
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix ja bright app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2954
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix ja dark app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2872
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix ko bright app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2862
+      },
+      {
+        "phase": "final-layout",
+        "title": "merge matrix ko dark app=true system=true text=200",
+        "project": "iphone-se",
+        "status": "passed",
+        "durationMs": 2898
+      },
+      {
+        "phase": "final-promax",
+        "title": "merge matrix en bright app=false system=false text=100",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 4371
+      },
+      {
+        "phase": "final-promax",
+        "title": "merge matrix en dark app=false system=false text=100",
+        "project": "iphone-17-pro-max",
+        "status": "passed",
+        "durationMs": 3595
+      }
+    ]
+  },
+  "baselineReproduction": {
+    "status": "expected failure before Home status repair",
+    "expectedTopMin": 59,
+    "actualTop": 0,
+    "buildFingerprint": "e16b50c0766b66d9a1494adebf7e7213ccc5899176667526ddd7173659c3055c"
+  },
+  "scope": "Home/Daily UI only; not full-app/native acceptance"
+}

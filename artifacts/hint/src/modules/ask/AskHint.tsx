@@ -1,5 +1,6 @@
-﻿import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion } from "../../lib/quietMotion";
+import { useMotionPolicy } from "../../lib/motionPolicy";
 import { Link } from "wouter";
 import { ArrowLeft, MessageCircle, Sparkles } from "lucide-react";
 import { IVORY, GOLD, TEXT_HALO } from "../hold/atmosphere";
@@ -7,6 +8,10 @@ import { ChatMessage } from "../hold/chat/components/ChatMessage";
 import { FollowUpInput, type FollowUpInputHandle } from "../hold/chat/components/FollowUpInput";
 import { useAskHintChat } from "./useAskHintChat";
 import { useLanguage } from "../../lib/i18n";
+import { listAskHistory, subscribeToAskHistory } from "./askHistory";
+import { getAnonId } from "../../lib/identity";
+import { useState } from "react";
+import { roomResumeText } from "../../components/app/roomResumeCopy";
 
 /**
  * Ask Hint — a standalone ambient chat. No cards on the table, no
@@ -15,15 +20,19 @@ import { useLanguage } from "../../lib/i18n";
  */
 export function AskHint() {
   const chat = useAskHintChat();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { reduced } = useMotionPolicy();
   const inputRef = useRef<FollowUpInputHandle | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [history, setHistory] = useState(() => listAskHistory(getAnonId()));
+  useEffect(() => subscribeToAskHistory(() => setHistory(listAskHistory(getAnonId()))), []);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-  }, [chat.messages.length, chat.isThinking]);
+    const hasActivity = chat.messages.length > 0 || chat.isThinking;
+    el.scrollTo({ top: hasActivity ? el.scrollHeight : 0, behavior: reduced || !hasActivity ? "auto" : "smooth" });
+  }, [chat.messages.length, chat.isThinking, reduced]);
 
   const empty = chat.messages.length === 0;
   const starters = [t("ask.starter.1"), t("ask.starter.2"), t("ask.starter.3")];
@@ -35,7 +44,7 @@ export function AskHint() {
         <header className="flex shrink-0 items-center justify-between px-5 pb-3 pt-[calc(var(--hint-safe-top)+1rem)]">
           <Link
             href="/app"
-            className="inline-flex h-9 items-center gap-2 rounded-[8px] border px-3 font-sans text-[11px] uppercase tracking-[0.18em] transition-colors duration-700"
+            className="inline-flex min-h-11 items-center gap-2 rounded-[8px] border px-3 font-sans text-[11px] uppercase tracking-[0.18em] transition-colors duration-700"
             style={{ color: IVORY.mute }}
           >
             <ArrowLeft size={14} />
@@ -49,17 +58,29 @@ export function AskHint() {
           </span>
           <span className="w-[60px]" aria-hidden />
         </header>
+        <div className="shrink-0 px-5 text-xs">
+          {chat.canRestoreDraft && <div className="mb-2 rounded-2xl border p-3" style={{ borderColor: "var(--hint-border)", color: "var(--hint-muted)" }}>
+            <p>{roomResumeText(language, "draftReady")}</p>
+            <button type="button" className="min-h-11 py-2 text-left underline" onClick={() => { chat.restoreDraft(); inputRef.current?.focus(); }}>{roomResumeText(language, "restoreDraft")}</button>
+          </div>}
+          {history.length > 0 && <details className="mb-2">
+            <summary className="min-h-11 cursor-pointer py-3">{t("quality.askHistory")}</summary>
+            <div className="max-h-40 overflow-y-auto">
+              {history.map(item => <button key={item.id} type="button" disabled={chat.isThinking || chat.historySaved === false} onClick={() => chat.openConversation(item.id)} className="block min-h-11 w-full break-words py-3 text-left">{item.messages.find(message => message.role === "user")?.content}</button>)}
+            </div>
+          </details>}
+          {chat.messages.length > 0 && <button type="button" disabled={chat.isThinking || chat.historySaved === false} className="min-h-11 underline" onClick={chat.newConversation}>{t("quality.askNew")}</button>}
+          {chat.historySaved === false && <p role="alert">{t("quality.askUnsaved")} <button type="button" className="min-h-11 underline" onClick={chat.retrySaveHistory}>{t("quality.retry")}</button></p>}
+          {chat.historySaved === true && <p role="status">{t("quality.askSaved")}</p>}
+        </div>
 
         {/* Scrollable thread */}
         <div
           ref={scrollRef}
-          className="hint-app-scroll flex-1 space-y-8 px-5 py-6 scroll-smooth"
+          className="hint-app-scroll flex-1 space-y-8 px-5 py-6"
         >
           {empty ? (
-            <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.8, ease: "easeOut" }}
+            <div
               className="mx-auto flex w-full max-w-xl flex-col items-center gap-6 pt-10 text-center select-none"
             >
               <div 
@@ -120,7 +141,7 @@ export function AskHint() {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ) : (
             chat.messages.map((m) => <ChatMessage key={m.id} message={m} />)
           )}
@@ -156,12 +177,16 @@ export function AskHint() {
               style={{ color: IVORY.mute }}
             >
               {chat.error}
+              <button type="button" className="ml-3 min-h-11 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>
             </p>
           )}
         </div>
 
+        {chat.draftError && <p role="status" className="px-5 text-sm">{t("quality.draftFailed")}</p>}
         {/* Input */}
         <FollowUpInput
+          value={chat.draft}
+          onValueChange={chat.setDraft}
           ref={inputRef}
           onSend={(t) => void chat.sendMessage(t)}
           isThinking={chat.isThinking}

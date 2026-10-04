@@ -1,0 +1,29 @@
+{
+  "historicalUnopenedAllocation": {
+    "before": {
+      "failed": 1,
+      "device": "iphone-se",
+      "expected": "No saved card and no Share receipt for an unopened historical server assignment.",
+      "actual": "The assigned Star appeared as a saved historical card with a share entry."
+    },
+    "fix": "Require the server record to be flipped before hydrating a historical card; keep its note available.",
+    "after": {
+      "passed": 2,
+      "failed": 0,
+      "devices": [
+        "iphone-se",
+        "iphone-17-pro-max"
+      ]
+    },
+    "test": "an unopened server allocation is not presented as a saved historical Daily card"
+  },
+  "additionalMergeFixes": [
+    "Fixed Skip action outside the moving paper so it remains clickable.",
+    "Kept reduced-motion print completion distinct from PNG preparation.",
+    "Restored Safari touch-trigger focus after closing the dialog.",
+    "Made Spanish enlarged-text period buttons wrap instead of overlap.",
+    "Localized new Home tile copy and date-strip accessibility labels.",
+    "Prevented a cached unopened allocation from replacing an actual saved historical daily card."
+  ],
+  "protectedTarotCore": "No changes to shuffle duration, drawing/order, wash physics, ritual state machine or reading persistence."
+}

@@ -1,3 +1,4 @@
+import { LocalizedText } from "../../lib/LocalizedText";
 import type { DailySkyDeck } from "../../lib/skydeck/generateDailySkyDeck";
 import { SkyDeckEvidenceDrawer } from "./SkyDeckEvidenceDrawer";
 import { SkyScoreBar } from "./SkyScoreBar";
@@ -6,7 +7,7 @@ export function SkyDeckCard({ deck, revealed = false }: { deck: DailySkyDeck; re
   return (
     <section className="skydeck-card">
       <div className="skydeck-card__header">
-        <span>Daily SkyDeck</span>
+        <span><LocalizedText text={"Daily SkyDeck"} /></span>
         <strong>{deck.scores.overall}</strong>
       </div>
       <div className="skydeck-card__scores">

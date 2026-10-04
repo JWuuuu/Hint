@@ -1,0 +1,62 @@
+{
+  "spread": "reconciliation",
+  "phone": "iphone-17-pro-max",
+  "language": "en",
+  "motion": "normal",
+  "room": "sea",
+  "readingId": "tarot-1789080252095-qqm0wy",
+  "positions": [
+    "You now",
+    "Them now",
+    "Break",
+    "Positive",
+    "Barrier",
+    "Future",
+    "Advice"
+  ],
+  "cards": [
+    {
+      "visualId": "visual-74-akk60zw",
+      "cardId": "three-pentacles",
+      "name": "Three of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-60-tn8te0a",
+      "cardId": "ace-pentacles",
+      "name": "Ace of Pentacles",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-16-jdn0wjs",
+      "cardId": "16-tower",
+      "name": "The Tower",
+      "orientation": "reversed"
+    },
+    {
+      "visualId": "visual-62-ihepzg5",
+      "cardId": "17-star",
+      "name": "The Star",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-55-wxptaim",
+      "cardId": "knight-swords",
+      "name": "Knight of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-66-9l31xem",
+      "cardId": "ten-swords",
+      "name": "Ten of Swords",
+      "orientation": "upright"
+    },
+    {
+      "visualId": "visual-6-m908g6q",
+      "cardId": "knight-wands",
+      "name": "Knight of Wands",
+      "orientation": "reversed"
+    }
+  ],
+  "readingRequests": 1
+}

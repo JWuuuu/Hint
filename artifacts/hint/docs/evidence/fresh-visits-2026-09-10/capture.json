@@ -1,0 +1,13 @@
+{
+  "baseURL": "http://127.0.0.1:5232",
+  "viewport": "iPhone 17 Pro Max 440x956 in actual selectable DevicePreview",
+  "motion": "Unpaused normal animation, app and system reduction both disabled. Visual recording only; no frame-rate or device-performance claim.",
+  "route": "Home → Tarot entrance → question → Three cards → Next → Previous → horizontal swipe → Relationship spread",
+  "midState": "moving",
+  "errors": [],
+  "apiCallsBlocked": [
+    "http://127.0.0.1:5232/api/device-sessions",
+    "http://127.0.0.1:5232/api/device-sessions",
+    "http://127.0.0.1:5232/api/device-sessions"
+  ]
+}

@@ -18,6 +18,7 @@ import {
   useSpring,
   type MotionValue,
 } from "framer-motion";
+import { useMotionPolicy } from "../../../lib/motionPolicy";
 
 interface PointerCtx {
   /** Smoothed x (0–1). Lags slightly behind raw for cinematic feel. */
@@ -31,6 +32,7 @@ interface PointerCtx {
 const Ctx = createContext<PointerCtx | null>(null);
 
 export function PointerProvider({ children }: { children: ReactNode }) {
+  const { reduced, pageVisible } = useMotionPolicy();
   const rawX = useMotionValue(0.5);
   const rawY = useMotionValue(0.5);
   const active = useMotionValue(0);
@@ -41,6 +43,7 @@ export function PointerProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const w = typeof window === "undefined" ? null : window;
     if (!w) return;
+    if (reduced || !pageVisible) { rawX.set(0.5); rawY.set(0.5); x.jump(0.5); y.jump(0.5); return; }
 
     const setFromClient = (cx: number, cy: number) => {
       rawX.set(cx / w.innerWidth);
@@ -62,7 +65,7 @@ export function PointerProvider({ children }: { children: ReactNode }) {
       w.removeEventListener("touchmove", onTouch);
       w.removeEventListener("touchstart", onTouch);
     };
-  }, [rawX, rawY, active]);
+  }, [rawX, rawY, active, x, y, reduced, pageVisible]);
 
   return <Ctx.Provider value={{ x, y, active }}>{children}</Ctx.Provider>;
 }

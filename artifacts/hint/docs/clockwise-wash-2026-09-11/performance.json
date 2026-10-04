@@ -1,0 +1,215 @@
+{
+  "method": "Baseline and final production builds: two sequential desktop WebKit runs per viewport, no video or screenshots during sampling. Baseline and final groups ran separately. Not physical-iPhone or native release evidence. Pointer-to-paint measures DOM style mutation latency, not display latency.",
+  "baselineSourceDigest": "db14065591dfd564343b19d6e7553a42c63a4584080d7fe0b78ab91e8e9bdb56",
+  "finalSourceDigest": "91e4d47115e7683e3ecabadf177dbb881eda43213f7ce6f2f0e94cccd6332eb8",
+  "results": [
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 1,
+      "port": 5234,
+      "manual": {
+        "count": 81,
+        "p95": 18,
+        "max": 18,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 316,
+        "p95": 18,
+        "max": 46,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 14,
+        "max": 14,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 2,
+      "port": 5234,
+      "manual": {
+        "count": 81,
+        "p95": 18,
+        "max": 19,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 317,
+        "p95": 18,
+        "max": 42,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 14,
+        "max": 14,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 1,
+      "port": 5234,
+      "manual": {
+        "count": 80,
+        "p95": 18,
+        "max": 18,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 317,
+        "p95": 18,
+        "max": 47,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 14,
+        "max": 14,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 2,
+      "port": 5234,
+      "manual": {
+        "count": 80,
+        "p95": 18,
+        "max": 18,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 314,
+        "p95": 18,
+        "max": 44,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 14,
+        "max": 14,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 1,
+      "port": 5235,
+      "manual": {
+        "count": 80,
+        "p95": 19,
+        "max": 19,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 286,
+        "p95": 18,
+        "max": 45,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 14,
+        "max": 15,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "attempt": 2,
+      "port": 5235,
+      "manual": {
+        "count": 79,
+        "p95": 18,
+        "max": 18,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 286,
+        "p95": 18,
+        "max": 40,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 14,
+        "max": 14,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 1,
+      "port": 5235,
+      "manual": {
+        "count": 79,
+        "p95": 18,
+        "max": 18,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 286,
+        "p95": 18,
+        "max": 41,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 13,
+        "max": 14,
+        "over100": 0
+      }
+    },
+    {
+      "viewport": {
+        "width": 440,
+        "height": 956
+      },
+      "attempt": 2,
+      "port": 5235,
+      "manual": {
+        "count": 80,
+        "p95": 18,
+        "max": 18,
+        "over100": 0
+      },
+      "gatherCut": {
+        "count": 286,
+        "p95": 18,
+        "max": 47,
+        "over100": 0
+      },
+      "inputToPaint": {
+        "count": 48,
+        "p95": 13,
+        "max": 14,
+        "over100": 0
+      }
+    }
+  ]
+}

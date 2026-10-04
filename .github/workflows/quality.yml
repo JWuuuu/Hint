@@ -1,0 +1,77 @@
+name: Candidate verification
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      mobile:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: hint_test
+          POSTGRES_PASSWORD: isolated-test-only
+          POSTGRES_DB: hint_quality
+        ports: ['55439:5432']
+        options: >-
+          --health-cmd "pg_isready -U hint_test -d hint_quality"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://hint_test:isolated-test-only@127.0.0.1:55439/hint_quality
+      HINT_ISOLATED_DB: '1'
+      API_PROXY_TARGET: http://127.0.0.1:1
+      HINT_E2E_PORT: '5188'
+      VITE_API_BASE_URL: ${{ inputs.mobile && vars.VITE_API_BASE_URL || '' }}
+      VITE_HINT_PUBLIC_URL: ${{ vars.VITE_HINT_PUBLIC_URL }}
+      VITE_HINT_DOWNLOAD_URL: ${{ vars.VITE_HINT_DOWNLOAD_URL }}
+      HINT_APPLE_TEAM_ID: ${{ vars.HINT_APPLE_TEAM_ID }}
+      HINT_ASSOCIATED_DOMAIN: ${{ vars.HINT_ASSOCIATED_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @workspace/db run migrate
+      - run: pnpm --filter @workspace/db run migrate
+      - run: pnpm --filter @workspace/db run migrate:check
+      - run: pnpm run typecheck
+      - run: pnpm --filter @workspace/hint exec vitest run
+      - run: pnpm --filter @workspace/hint exec node --test scripts/release-config.test.mjs scripts/check-native-assets.test.mjs
+      - run: pnpm --filter @workspace/api-server exec vitest run
+      - run: pnpm run build:api
+      - if: ${{ inputs.mobile }}
+        run: pnpm run mobile:build
+      - if: ${{ !inputs.mobile }}
+        run: pnpm run build:web
+      - if: ${{ inputs.mobile }}
+        run: pnpm --filter @workspace/hint exec node scripts/prepare-universal-links.mjs
+      - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+      - run: pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts
+      - run: pnpm --filter @workspace/hint run check:ios:source
+      - name: Record the verified source revision
+        run: git rev-parse HEAD > artifacts/hint/dist/verified-source.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-web-${{ github.sha }}
+          path: artifacts/hint/dist/
+          if-no-files-found: error
+          include-hidden-files: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: candidate-test-evidence-${{ github.sha }}
+          path: artifacts/hint/test-results/

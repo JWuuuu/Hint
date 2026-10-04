@@ -1,0 +1,182 @@
+[
+  {
+    "file": "screenshots/promax-navigation-ja-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-103be-achable-targets-at-200-text-iphone-17-pro-max/navigation-ja-200.png",
+    "sha256": "959c633891424340919bec29a5ee434b7755f4bf3cbbd229f1944bf482f46ad2",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-ja-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-103be-achable-targets-at-200-text-iphone-17-pro-max/navigation-ja-normal.png",
+    "sha256": "d470d099002bae84cb7f62738b81feecc9809f7b88decb400c99d0a029012e43",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-ko-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-22c74-achable-targets-at-200-text-iphone-17-pro-max/navigation-ko-200.png",
+    "sha256": "0f8a088899ea0dd71baffa6ce1fb316f546f886317f6fa550a7dcbf1d33e707e",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-ko-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-22c74-achable-targets-at-200-text-iphone-17-pro-max/navigation-ko-normal.png",
+    "sha256": "7855091bf3f0581b41b9e137d6637f6296adaee37234a17bf112e6a7df067c1a",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-zh-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-2de85-achable-targets-at-200-text-iphone-17-pro-max/navigation-zh-200.png",
+    "sha256": "a7dcf785fd29f68e69867cd0ba27c11ea14c084d0123f9ff0f2b5bde17fc3da8",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-zh-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-2de85-achable-targets-at-200-text-iphone-17-pro-max/navigation-zh-normal.png",
+    "sha256": "830700d768914e21e840e2d2635d7ed431ffb5fa3cc9e43a380b205016d21cee",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-en-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-338c1-achable-targets-at-200-text-iphone-17-pro-max/navigation-en-200.png",
+    "sha256": "5662d479ed976316e4945c015447789344db6d5ab00ead236acfabd765a8e7b5",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-en-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-338c1-achable-targets-at-200-text-iphone-17-pro-max/navigation-en-normal.png",
+    "sha256": "19d9dbffebc639102f272160cecc7270792c869778510fb9cefc8560e248cd7b",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-es-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-c7e72-achable-targets-at-200-text-iphone-17-pro-max/navigation-es-200.png",
+    "sha256": "3acf900b9f8e16b3284427b4b11adfa8c2637446f3ad3ff7427897b4634cc61f",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-navigation-es-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/navigation-text-layout-Nav-c7e72-achable-targets-at-200-text-iphone-17-pro-max/navigation-es-normal.png",
+    "sha256": "b01515b29fa26d7425a919eb5d5ba3fa30898f5e9c0ae06439e6abbe6e153e18",
+    "review": "No cut or overlapping navigation labels; 200% may wrap individual words."
+  },
+  {
+    "file": "screenshots/promax-es-bright-app-daily-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-bottom.png",
+    "sha256": "3531eef12147ece99f782cbbd910bfb091ae294195d78753eb0712d71e7770b5",
+    "review": "Body and final note readable at top/middle/bottom; Pen artwork retains baked English label."
+  },
+  {
+    "file": "screenshots/promax-es-bright-app-daily-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-middle.png",
+    "sha256": "70ee33c11906dffb45f5ef4c8bc2a595b62a967ac1adcd7aadcc2b3ebe6db15a",
+    "review": "Body and final note readable at top/middle/bottom; Pen artwork retains baked English label."
+  },
+  {
+    "file": "screenshots/promax-es-bright-app-daily-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/locale-surface-audit-es-br-0e4ff-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-top.png",
+    "sha256": "004875dcc524ea5d18f7c57aa85fb28c51cefdca7407cd56acfb01e6840b8541",
+    "review": "Body and final note readable at top/middle/bottom; Pen artwork retains baked English label."
+  },
+  {
+    "file": "screenshots/promax-ja-bright-app-daily-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-bottom.png",
+    "sha256": "ef87c209e63d2c587f27074e37b56dbf9aebb07a370846a0570bbf3ffd01a5bf",
+    "review": "Japanese body, wrapped accessory names and final note readable at top/middle/bottom; accessory art can retain baked English labels."
+  },
+  {
+    "file": "screenshots/promax-ja-bright-app-daily-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-middle.png",
+    "sha256": "47aad6fff8e8feb0d9339438fd255f103138f179c92b6d0da5ea8dfef6a7d466",
+    "review": "Japanese body, wrapped accessory names and final note readable at top/middle/bottom; accessory art can retain baked English labels."
+  },
+  {
+    "file": "screenshots/promax-ja-bright-app-daily-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/locale-surface-audit-ja-br-82fa4-ble-states-remain-reachable-iphone-17-pro-max/-app-daily-top.png",
+    "sha256": "e61208141949c1cbded572ba60bc91c06dae04c35c75cb8c65b47f7b692b344e",
+    "review": "Japanese body, wrapped accessory names and final note readable at top/middle/bottom; accessory art can retain baked English labels."
+  },
+  {
+    "file": "screenshots/promax-home-text-200-es-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/home-motion-Home-long-card-8d88f-readable-and-scrollable-es--iphone-17-pro-max/home-text-200-es-bottom.png",
+    "sha256": "0c294ed3b14780ebb8c0a6a17efff18733aef6317840df8472e568c74386c848",
+    "review": "Long 200% title wraps; summary intentionally ellipsizes with interpretation action; bottom action is fully inside viewport."
+  },
+  {
+    "file": "screenshots/promax-home-text-200-ja-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-production-results/home-motion-Home-long-card-fd4a0-readable-and-scrollable-ja--iphone-17-pro-max/home-text-200-ja-bottom.png",
+    "sha256": "b5a368bacd14f573ce66f013cebdf9d19341de546011fea7f14d6fc7a2e66f85",
+    "review": "Long 200% title wraps; summary intentionally ellipsizes with interpretation action; bottom action is fully inside viewport."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-bottom.png",
+    "sha256": "96941e5302e43b2dcf1585084fc758c1d7f38658865e20cfd9175467bcfc9a66",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-lucky.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-lucky.png",
+    "sha256": "4d20aba5cad42847d80b22c0e096d6cd486596d80d62eae20021cd90331554db",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-middle.png",
+    "sha256": "eb08baea1cad073abf932bb31194a0a116b0388a0828313f9db0eed5e6cd4adf",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-es-bright-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-es-b0c35-twork-and-full-text-at-200--iphone-se/daily-text-200-es-bright-top.png",
+    "sha256": "fda0620705a9183e1c71b36bfbe29101f3463319f719e28aa3c82eff480238cf",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-navigation-es-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/navigation-text-layout-Nav-c7e72-achable-targets-at-200-text-iphone-se/navigation-es-200.png",
+    "sha256": "e551b61d5e1752161125b86a9c2ab44475b5f5bbbdc83080ceb52f893b0307c5",
+    "review": "Normal and 200% navigation targets contain their labels; long labels wrap to two or three lines."
+  },
+  {
+    "file": "screenshots/se-navigation-es-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/navigation-text-layout-Nav-c7e72-achable-targets-at-200-text-iphone-se/navigation-es-normal.png",
+    "sha256": "6d2472fb584d1042ff73fd5f4278e3462bc022852e211e1b1652e2e9f502f910",
+    "review": "Normal and 200% navigation targets contain their labels; long labels wrap to two or three lines."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-bottom.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-bottom.png",
+    "sha256": "044af5717fe36f9085d1d029bf1eb446d4a126898772f2b4fa16f6481821e4db",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-lucky.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-lucky.png",
+    "sha256": "2afec876d68baa4c0de5f8bd159e0daddb1cdd1a71c996eb4fc00432cf42de53",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-middle.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-middle.png",
+    "sha256": "7e487438b572b88f334075442ebe52c6c5b7ed231ac8c14cc5181c82d7c3a1cd",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-daily-text-200-ja-bright-top.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/daily-text-layout-Daily-ja-0130d-twork-and-full-text-at-200--iphone-se/daily-text-200-ja-bright-top.png",
+    "sha256": "cf89686dddaecaf70115df05f736bba34935acf9453fd9953dc25c09a3d19df5",
+    "review": "200% date/period and body/lucky flow readable; final note box is reachable above navigation, with internally clipped enlarged textarea placeholder."
+  },
+  {
+    "file": "screenshots/se-navigation-ja-200.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/navigation-text-layout-Nav-103be-achable-targets-at-200-text-iphone-se/navigation-ja-200.png",
+    "sha256": "a0ceaa8e6ba06a5c13546ff673ba234f42b81c159939debdf1675b508ecc3466",
+    "review": "Normal and 200% navigation targets contain their labels; long labels wrap to two or three lines."
+  },
+  {
+    "file": "screenshots/se-navigation-ja-normal.png",
+    "source": "/tmp/hint-testflight-candidate-20260909-211052/rc2-complete-main-results/navigation-text-layout-Nav-103be-achable-targets-at-200-text-iphone-se/navigation-ja-normal.png",
+    "sha256": "5bd45b700375f5f93356719537fabbad1087eccb2372df40b67fc448ca2d53a7",
+    "review": "Normal and 200% navigation targets contain their labels; long labels wrap to two or three lines."
+  }
+]

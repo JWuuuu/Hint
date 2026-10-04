@@ -1,0 +1,70 @@
+{
+  "video": "/Users/jwu/Documents/Hint-main/artifacts/hint/docs/demo-2026-09-11/Hint-App-Demo.mp4",
+  "estimatedDuration": 47.833,
+  "resolution": "1080x1920",
+  "frameRate": 25,
+  "audio": "none",
+  "sampleData": true,
+  "chapters": [
+    {
+      "chapter": "intro",
+      "start": 0.0,
+      "end": 3.002
+    },
+    {
+      "chapter": "home",
+      "start": 3.002,
+      "end": 8.354
+    },
+    {
+      "chapter": "tarot-arrival",
+      "start": 8.354,
+      "end": 12.238
+    },
+    {
+      "chapter": "spread",
+      "start": 12.238,
+      "end": 14.726
+    },
+    {
+      "chapter": "wash",
+      "start": 14.726,
+      "end": 19.57
+    },
+    {
+      "chapter": "pick",
+      "start": 19.57,
+      "end": 23.97
+    },
+    {
+      "chapter": "reveal",
+      "start": 23.97,
+      "end": 28.83
+    },
+    {
+      "chapter": "astrology-arrival",
+      "start": 28.83,
+      "end": 33.583
+    },
+    {
+      "chapter": "zodiac",
+      "start": 33.583,
+      "end": 37.099
+    },
+    {
+      "chapter": "chart",
+      "start": 37.099,
+      "end": 39.796
+    },
+    {
+      "chapter": "me",
+      "start": 39.796,
+      "end": 44.741
+    },
+    {
+      "chapter": "outro",
+      "start": 44.741,
+      "end": 47.833
+    }
+  ]
+}

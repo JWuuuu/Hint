@@ -1,0 +1,496 @@
+
+ RUN  v3.2.7 /Users/jwu/Documents/Hint-main/artifacts/api-server
+
+ ✓ src/lib/requestContext.test.ts (1 test) 1ms
+ ✓ src/modules/astrology/synastryGeometry.test.ts (11 tests) 9ms
+ ✓ src/modules/astrology/birthPayload.test.ts (2 tests) 12ms
+ ✓ src/modules/tarot/ai/structuredTarotReader.test.ts (16 tests) 7ms
+ ✓ src/modules/astrology/astrologyData.test.ts (11 tests) 17ms
+ ✓ src/modules/tarot/api.test.ts (6 tests) 149ms
+[17:54:02.781] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "534e975c-89a8-4fea-8ea8-7e342bd5514d",
+      "method": "POST",
+      "url": "/api/device-sessions"
+    }
+    [35mres[39m: {
+      "statusCode": 201
+    }
+    [35mresponseTime[39m: 11
+[17:54:02.787] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "1bad39e9-9ca3-425b-946b-61182418dfa2",
+      "method": "POST",
+      "url": "/api/device-sessions"
+    }
+    [35mres[39m: {
+      "statusCode": 201
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.790] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "cc7a0699-09ff-4b53-9bcd-627987f326d1",
+      "method": "POST",
+      "url": "/api/device-sessions"
+    }
+    [35mres[39m: {
+      "statusCode": 201
+    }
+    [35mresponseTime[39m: 1
+[17:54:02.797] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "4632c11e-699e-46d2-a772-c360aa01b50e",
+      "method": "POST",
+      "url": "/api/device-sessions"
+    }
+    [35mres[39m: {
+      "statusCode": 201
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.803] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "af7c5e80-8389-4eda-b5a9-0a5ea2e76a73",
+      "method": "GET",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 404
+    }
+    [35mresponseTime[39m: 4
+[17:54:02.805] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "7530c701-d48a-4772-b189-6db7830f2337",
+      "method": "GET",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.811] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "51903a8b-18d7-4bda-b7f5-a6047f65c724",
+      "method": "GET",
+      "url": "/api/compatibility/invite/[token]"
+    }
+    [35mres[39m: {
+      "statusCode": 410
+    }
+    [35mresponseTime[39m: 3
+[17:54:02.815] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "d60e2be1-10d2-4d63-a74a-489854e8e007",
+      "method": "GET",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 404
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.817] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "926c10b7-39b6-48fd-9b09-949a97a5c124",
+      "method": "GET",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.819] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "a5a55ae7-745d-427a-b5a6-a9e1a93068d4",
+      "method": "DELETE",
+      "url": "/api/history"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.821] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "78cc6f10-97ea-4fef-b5d3-72b6fb561c49",
+      "method": "GET",
+      "url": "/api/readings"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.823] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "e9645c41-4f00-4f7f-828c-178851d585cf",
+      "method": "POST",
+      "url": "/api/journal"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.824] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "d6eb118f-1b62-4767-98e6-29c85422e465",
+      "method": "POST",
+      "url": "/api/daily-receipts/sync"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.826] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "5878ee07-6509-4f3a-b662-887d5905963b",
+      "method": "POST",
+      "url": "/api/astrology/birth-chart"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.828] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "5f1bc87d-8abd-4f5d-8187-893343a9d6c8",
+      "method": "POST",
+      "url": "/api/speech"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.834] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "95360847-4e9a-4a45-8508-d9ce6d53494f",
+      "method": "POST",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 4
+[17:54:02.838] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "303a7442-af56-4bc0-a717-283c0a0478bd",
+      "method": "GET",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 404
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.841] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "ed65f4f5-d657-4c52-8854-9c49847d6e11",
+      "method": "GET",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+ ✓ src/quality/migrations.integration.test.ts (2 tests) 600ms
+[17:54:02.846] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "2f8a7cb6-fbf5-4391-9805-74ce161f677b",
+      "method": "POST",
+      "url": "/api/journal"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 3
+[17:54:02.852] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "ae9858b5-ddd4-4905-b6d3-d7bd3d631937",
+      "method": "DELETE",
+      "url": "/api/history"
+    }
+    [35mres[39m: {
+      "statusCode": 204
+    }
+    [35mresponseTime[39m: 4
+[17:54:02.856] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "7436a0f9-8fc4-4c4d-801a-4ae7d08be24e",
+      "method": "GET",
+      "url": "/api/journal"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.861] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "3094bbb2-c559-493c-8fc0-891d03fa44be",
+      "method": "POST",
+      "url": "/api/compatibility/invite"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 3
+[17:54:02.865] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "d13e9092-7ca9-4687-92ac-b20d9f3c62fb",
+      "method": "GET",
+      "url": "/api/compatibility/invite/[token]"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+ ✓ src/quality/persistence.integration.test.ts (10 tests) 570ms
+[17:54:02.876] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "45c7d211-5881-4552-af21-c6ffc83946c4",
+      "method": "GET",
+      "url": "/api/compatibility/264aaf00-f75c-4178-8c0f-9443062aff31"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.880] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "4666e313-8dd7-4e78-9e67-8e37aa646e4e",
+      "method": "GET",
+      "url": "/api/compatibility/264aaf00-f75c-4178-8c0f-9443062aff31"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.883] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "9bb09d86-4748-4951-90f9-a4d39e7050c0",
+      "method": "GET",
+      "url": "/api/compatibility/264aaf00-f75c-4178-8c0f-9443062aff31"
+    }
+    [35mres[39m: {
+      "statusCode": 404
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.885] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "ba6876ef-3c8c-44be-8cf9-a8e4ee11143d",
+      "method": "GET",
+      "url": "/api/compatibility/264aaf00-f75c-4178-8c0f-9443062aff31"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.888] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "08b84466-8b1f-42f4-9439-e0afca17e503",
+      "method": "GET",
+      "url": "/api/compatibility/invite/[token]"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1
+[17:54:02.892] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "d95ab186-b62e-40d8-a934-89e9b3dcfa6c",
+      "method": "GET",
+      "url": "/api/compatibility/invite/[token]"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.896] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "c758b915-a540-41ef-9cab-3d067055732b",
+      "method": "POST",
+      "url": "/api/compatibility/invite/[token]/complete"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.900] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "94182277-dc80-4920-acbf-6fd5c1fdc1dc",
+      "method": "DELETE",
+      "url": "/api/device-session"
+    }
+    [35mres[39m: {
+      "statusCode": 204
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.902] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "8192ad40-0b44-452f-bdb4-0eb4ce3e646e",
+      "method": "GET",
+      "url": "/api/device-session"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.904] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "b8d8c01f-fa13-48b6-98df-d4cf6c4de954",
+      "method": "GET",
+      "url": "/api/device-session"
+    }
+    [35mres[39m: {
+      "statusCode": 401
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.907] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "11551bd6-a783-4771-9bf9-1d7ca92a079a",
+      "method": "GET",
+      "url": "/api/device-session"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1
+[17:54:02.927] [31mERROR[39m (88355): [36mAPI request failed[39m
+    [35mrequestId[39m: "14373ab3-ebd5-480b-a5a6-ba6f1920d17c"
+    [35merrorType[39m: "Error"
+    [35mstatus[39m: 500
+[17:54:02.927] [32mINFO[39m (88355): [36mrequest errored[39m
+    [35mreq[39m: {
+      "id": "14373ab3-ebd5-480b-a5a6-ba6f1920d17c",
+      "method": "POST",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 500
+    }
+    [35mresponseTime[39m: 4
+    err: {
+      "type": "Error",
+      "message": "failed with status code 500",
+      "stack":
+          Error: failed with status code 500
+              at onResFinished (/Users/jwu/Documents/Hint-main/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)
+              at ServerResponse.onResponseComplete (/Users/jwu/Documents/Hint-main/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)
+              at ServerResponse.emit (node:events:521:24)
+              at onFinish (node:_http_outgoing:1079:10)
+              at callback (node:internal/streams/writable:764:21)
+              at afterWrite (node:internal/streams/writable:708:5)
+              at afterWriteTick (node:internal/streams/writable:694:10)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+    }
+[17:54:02.933] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "63842750-bcc3-46a5-ab00-343689a1ca0c",
+      "method": "GET",
+      "url": "/api/profile"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.936] [31mERROR[39m (88355): [36mAPI request failed[39m
+    [35mrequestId[39m: "4b18e840-958b-4e9f-9ced-fb8d01c92c20"
+    [35merrorType[39m: "Error"
+    [35mstatus[39m: 403
+[17:54:02.936] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "4b18e840-958b-4e9f-9ced-fb8d01c92c20",
+      "method": "GET",
+      "url": "/api/device-session"
+    }
+    [35mres[39m: {
+      "statusCode": 403
+    }
+    [35mresponseTime[39m: 0
+[17:54:02.938] [32mINFO[39m (88355): [36mrequest errored[39m
+    [35mreq[39m: {
+      "id": "61354db4-94a4-4818-bc70-b73dfdb1adc2",
+      "method": "POST",
+      "url": "/api/device-sessions"
+    }
+    [35mres[39m: {
+      "statusCode": 503
+    }
+    [35mresponseTime[39m: 1
+    err: {
+      "type": "Error",
+      "message": "failed with status code 503",
+      "stack":
+          Error: failed with status code 503
+              at onResFinished (/Users/jwu/Documents/Hint-main/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)
+              at ServerResponse.onResponseComplete (/Users/jwu/Documents/Hint-main/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)
+              at ServerResponse.emit (node:events:521:24)
+              at onFinish (node:_http_outgoing:1079:10)
+              at callback (node:internal/streams/writable:764:21)
+              at afterWrite (node:internal/streams/writable:708:5)
+              at afterWriteTick (node:internal/streams/writable:694:10)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+    }
+[17:54:02.941] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "0505705f-c624-4c58-9015-177cd56bc986",
+      "method": "GET",
+      "url": "/api/readyz"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 2
+[17:54:02.942] [32mINFO[39m (88355): [36mrequest errored[39m
+    [35mreq[39m: {
+      "id": "3fedbc11-6ca6-42ef-b92f-af3d586dc45c",
+      "method": "GET",
+      "url": "/api/readyz"
+    }
+    [35mres[39m: {
+      "statusCode": 503
+    }
+    [35mresponseTime[39m: 0
+    err: {
+      "type": "Error",
+      "message": "failed with status code 503",
+      "stack":
+          Error: failed with status code 503
+              at onResFinished (/Users/jwu/Documents/Hint-main/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)
+              at ServerResponse.onResponseComplete (/Users/jwu/Documents/Hint-main/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)
+              at ServerResponse.emit (node:events:521:24)
+              at onFinish (node:_http_outgoing:1079:10)
+              at callback (node:internal/streams/writable:764:21)
+              at afterWrite (node:internal/streams/writable:708:5)
+              at afterWriteTick (node:internal/streams/writable:694:10)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+    }
+[17:54:02.944] [31mERROR[39m (88355): [36mAPI request failed[39m
+    [35mrequestId[39m: "7024e964-6f5b-4cb2-93b3-beb8b7e881db"
+    [35merrorType[39m: "Error"
+    [35mstatus[39m: 500
+[17:54:02.944] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "7024e964-6f5b-4cb2-93b3-beb8b7e881db",
+      "method": "POST",
+      "url": "/api/device-sessions"
+    }
+    [35mres[39m: {
+      "statusCode": 429
+    }
+    [35mresponseTime[39m: 1
+[17:54:02.947] [31mERROR[39m (88355): [36mAPI request failed[39m
+    [35mrequestId[39m: "3413870c-b3cc-4bd1-a32c-e762795a1516"
+    [35merrorType[39m: "Error"
+    [35mstatus[39m: 500
+[17:54:02.947] [32mINFO[39m (88355): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": "3413870c-b3cc-4bd1-a32c-e762795a1516",
+      "method": "POST",
+      "url": "/api/device-sessions"
+    }
+    [35mres[39m: {
+      "statusCode": 429
+    }
+    [35mresponseTime[39m: 1
+ ✓ src/quality/deviceAccess.integration.test.ts (7 tests) 704ms
+
+ Test Files  9 passed (9)
+      Tests  66 passed (66)
+   Start at  17:54:02
+   Duration  924ms (transform 608ms, setup 0ms, collect 852ms, tests 2.07s, environment 1ms, prepare 356ms)
+

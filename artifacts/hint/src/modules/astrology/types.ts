@@ -108,6 +108,9 @@ export type AstrologyStatus = {
 };
 
 export type CompatibilityResult = {
+  schemaVersion?: number;
+  synastry?: import("@/types/astrology").AstroSynastryResponse;
+  inputSnapshot?: { user: BirthProfileInput; friend: BirthProfileInput };
   id: string;
   source: "api" | "preview";
   calculatedAt: string;

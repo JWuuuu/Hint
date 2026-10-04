@@ -1,0 +1,5579 @@
+{
+  "config": {
+    "argv": [
+      "/Users/jwu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/node_modules/@playwright/test/cli.js",
+      "test",
+      "e2e/tarot-room.spec.ts",
+      "e2e/tarot-all-spreads.spec.ts",
+      "--config",
+      "playwright.production.config.ts",
+      "--workers=2",
+      "--reporter=list,json",
+      "--output=/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results"
+    ],
+    "configFile": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/playwright.production.config.ts",
+    "rootDir": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": {},
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "iphone-17-pro-max",
+        "name": "iphone-17-pro-max",
+        "testDir": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "iphone-se",
+        "name": "iphone-se",
+        "testDir": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 2,
+    "webServer": {
+      "command": "API_PROXY_TARGET=http://127.0.0.1:1 PORT=5194 node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --strictPort",
+      "url": "http://127.0.0.1:5194",
+      "reuseExistingServer": false,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "tarot-all-spreads.spec.ts",
+      "file": "tarot-all-spreads.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "complete single: select 1 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17226,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:23.155Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-23050-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-a4502b595a741bae8ba927a8f0412f552496aa1a.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-5bf1a3b0db00cde99f84",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete three: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18005,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:40.585Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-3275b-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-f47e2a8bfd84ab19bce5be96460f663eb39bfc79.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-77edfc60f7e94a1333a9",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18103,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:58.597Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-858b9-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-3f4c7a865c3a8d5c91656bcb29176913991ac1ab.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-a4c71a0d02d44b7b7015",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 20614,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:16.709Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-40fdf-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-e7bc4c35c8d3e0575e3f9f9d1bcda0aa4b88c133.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-36dc7a89d584a127f968",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:37.333Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-2cb94-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-254de8dc25e84e0197f46e08428b33d66303a010.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-884e6cc34f6a8bd3e1f6",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 20590,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:56.850Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-21910-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-eee0b330b3bae798944306172bd4d9d7fecafe7c.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-dc0034eded61b2e72aae",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19908,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:17.447Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-278c2-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-6ba733b1c79181e9b5e398a52f00574142dbe684.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-fc54aa52b6ed6e72d778",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 20616,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:37.362Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-21a0c-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-b3f23c9593b65c0da4392106d3a336bc02e056cf.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-3ec5c0721c8d63dbf4da",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 22184,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:57.985Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "completed-spread-evidence",
+                      "contentType": "application/json",
+                      "path": "/tmp/hint-testflight-candidate-20260909-211052/rc3-tarot-results/tarot-all-spreads-complete-6bcd0-and-restore-exact-positions-iphone-17-pro-max/attachments/completed-spread-evidence-e0140d587df2799c868a6c41ebf7a7ce87aa27da.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-2994d354395bfe2d9790",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete single: select 1 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 391,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:20.728Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-4ac5fec101b8f2e57eb5",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete three: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 200,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:21.373Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-5a1ed9f360118140e74e",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete relationship: select 3 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 193,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:21.583Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-bfca868cb24baad17c8d",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete futureLover: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 185,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:21.783Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-974f1519eb41d88856e9",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete peachBlossom: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 198,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:21.975Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-795fc3824d19f915f11f",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete reconciliation: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 200,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:22.183Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-0ad923ca0ea0515b9197",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete trueHeart: select 5 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 198,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:22.390Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-24992e1c1f927fab6af2",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete loveTree: select 7 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 197,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:22.596Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-3ef49b6b420a22238f7b",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        },
+        {
+          "title": "complete xRelationship: select 9 cards, read, save and restore exact positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                    "line": 40,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 186,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:22.800Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Complete nine-spread journey on ProMax; both phone sizes retain the existing nine-layout regressions.",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-all-spreads.spec.ts",
+                        "line": 40,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a56b8163a3d0d2953330-65b96dd39031a534675e",
+          "file": "tarot-all-spreads.spec.ts",
+          "line": 39,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "tarot-room.spec.ts",
+      "file": "tarot-room.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Tarot entry has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1579,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:23.186Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-42d51f48c8e04de05111",
+          "file": "tarot-room.spec.ts",
+          "line": 430,
+          "column": 1
+        },
+        {
+          "title": "Tarot recommendation has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1486,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:24.936Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-064e8eaae57bd6c8266f",
+          "file": "tarot-room.spec.ts",
+          "line": 477,
+          "column": 1
+        },
+        {
+          "title": "spread recommendations keep every layout and full explanation in normal flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 9594,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:26.427Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-889545daf200de281bae",
+          "file": "tarot-room.spec.ts",
+          "line": 508,
+          "column": 1
+        },
+        {
+          "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1937,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:36.026Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c5c04deca5a100200f8c",
+          "file": "tarot-room.spec.ts",
+          "line": 611,
+          "column": 1
+        },
+        {
+          "title": "Tarot room setup has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1278,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:37.968Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1a81bf0fa118a8d206f8",
+          "file": "tarot-room.spec.ts",
+          "line": 644,
+          "column": 1
+        },
+        {
+          "title": "Tarot wash has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:39.252Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-45db298184ef507b6dce",
+          "file": "tarot-room.spec.ts",
+          "line": 651,
+          "column": 1
+        },
+        {
+          "title": "Tarot arc has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1479,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:43.626Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f94ac57443eaf758eaee",
+          "file": "tarot-room.spec.ts",
+          "line": 658,
+          "column": 1
+        },
+        {
+          "title": "Tarot reading has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2338,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:45.110Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1489ab5f24e2e202e6f0",
+          "file": "tarot-room.spec.ts",
+          "line": 666,
+          "column": 1
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 14449,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:45:47.455Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-eaaba8bc4dbf3ce7f67c",
+          "file": "tarot-room.spec.ts",
+          "line": 675,
+          "column": 3
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 11520,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:01.910Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-64ed38083d0efc8b5af9",
+          "file": "tarot-room.spec.ts",
+          "line": 675,
+          "column": 3
+        },
+        {
+          "title": "card detail stays gesture-first without visible zoom controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3533,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:13.437Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-dfa1dccb9048ec982fc3",
+          "file": "tarot-room.spec.ts",
+          "line": 708,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 7078,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:16.978Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-64f83a845f9a04024df2",
+          "file": "tarot-room.spec.ts",
+          "line": 763,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading failure is retryable without a silent upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2505,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:24.064Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a83c4f5a48557ab67080",
+          "file": "tarot-room.spec.ts",
+          "line": 841,
+          "column": 1
+        },
+        {
+          "title": "deeper reading motion is reversible and respects normal motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4901,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:26.577Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0e09a9423bfd60629273",
+          "file": "tarot-room.spec.ts",
+          "line": 865,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects system motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2400,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:31.484Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-7d6bdc0a72c81591681a",
+          "file": "tarot-room.spec.ts",
+          "line": 865,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects hint motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4283,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:33.889Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d9bfe6862eb97ca7a1f1",
+          "file": "tarot-room.spec.ts",
+          "line": 865,
+          "column": 3
+        },
+        {
+          "title": "completes and restores the full Tarot Room journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 25308,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:46:38.179Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3e7f6c115a77fef16424",
+          "file": "tarot-room.spec.ts",
+          "line": 918,
+          "column": 1
+        },
+        {
+          "title": "a tap without movement cannot finish a manual wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4119,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:03.493Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-94d318accc644ee6f3f0",
+          "file": "tarot-room.spec.ts",
+          "line": 1092,
+          "column": 1
+        },
+        {
+          "title": "the wash table stops repainting while idle or after a rejected gesture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 5460,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:07.618Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-30dfddfa9926c6ad70a2",
+          "file": "tarot-room.spec.ts",
+          "line": 1115,
+          "column": 1
+        },
+        {
+          "title": "a real manual wash release completes the automatic ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 9988,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:13.085Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ea6e83783657d87e7778",
+          "file": "tarot-room.spec.ts",
+          "line": 1154,
+          "column": 1
+        },
+        {
+          "title": "rapid Auto Wash requests advance through one ordered ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 11984,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:23.079Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2ce6156789e01f55542d",
+          "file": "tarot-room.spec.ts",
+          "line": 1212,
+          "column": 1
+        },
+        {
+          "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 10250,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:35.069Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-62f3da85b40e524ac0a6",
+          "file": "tarot-room.spec.ts",
+          "line": 1225,
+          "column": 1
+        },
+        {
+          "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 9875,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:45.327Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6ca8f9ff50d693bec1e7",
+          "file": "tarot-room.spec.ts",
+          "line": 1236,
+          "column": 1
+        },
+        {
+          "title": "an active ritual survives a terminated and reopened webview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 6513,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:47:55.207Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-75d6596f87d0f20b1f38",
+          "file": "tarot-room.spec.ts",
+          "line": 1260,
+          "column": 1
+        },
+        {
+          "title": "a cancelled wash gesture stays in the wash stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4177,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:01.724Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2aebb877f63ed6abeb14",
+          "file": "tarot-room.spec.ts",
+          "line": 1277,
+          "column": 1
+        },
+        {
+          "title": "voice unavailability keeps a clear typed fallback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1103,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:05.908Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e7f0fc8816ad6d8ad5da",
+          "file": "tarot-room.spec.ts",
+          "line": 1306,
+          "column": 1
+        },
+        {
+          "title": "voice completion keeps the transcript usable in the phone sheet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1467,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:07.017Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-52555138e3cc1dc3213f",
+          "file": "tarot-room.spec.ts",
+          "line": 1333,
+          "column": 1
+        },
+        {
+          "title": "cancelling receipt sharing stays quiet and allows sharing again",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3738,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:08.490Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e0f7cae9dbf1f49ded93",
+          "file": "tarot-room.spec.ts",
+          "line": 1375,
+          "column": 1
+        },
+        {
+          "title": "receipt preview and exported PNG keep the question and chat private by default",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 6728,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:12.233Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8b141028c96a3de19d39",
+          "file": "tarot-room.spec.ts",
+          "line": 1401,
+          "column": 1
+        },
+        {
+          "title": "receipt exports complete 1-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4580,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:18.967Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b16e32374a1dc4097ada",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 3-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 5019,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:23.555Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f4505d4a160d501f0885",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 5-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 5569,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:28.583Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2dbd1217fe7d34e2aa49",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 7-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 6180,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:34.158Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b28e0f1641cf056e83d2",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 6881,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:40.346Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b2dca8e0b0c680c79192",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card zh text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 7119,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:47.232Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5437c736284c7ded1430",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "system reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3087,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:54.359Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-be2cabb6fe12e556a402",
+          "file": "tarot-room.spec.ts",
+          "line": 1573,
+          "column": 3
+        },
+        {
+          "title": "hint reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3141,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:57.452Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-700ba5d343208e9c2b2d",
+          "file": "tarot-room.spec.ts",
+          "line": 1573,
+          "column": 3
+        },
+        {
+          "title": "Auto Wash avoids sustained animation stalls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 12177,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:00.599Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-172b130ba36ecb884db4",
+          "file": "tarot-room.spec.ts",
+          "line": 1587,
+          "column": 1
+        },
+        {
+          "title": "an offline follow-up is saved and restored with its local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2629,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:12.782Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a739e22ce94587f9fbb5",
+          "file": "tarot-room.spec.ts",
+          "line": 1625,
+          "column": 1
+        },
+        {
+          "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 15194,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:15.417Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3f773def4220034e163b",
+          "file": "tarot-room.spec.ts",
+          "line": 1662,
+          "column": 1
+        },
+        {
+          "title": "leaving a pending follow-up cancels its request before History resumes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3552,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:30.618Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1cf1733fa32559c48ed0",
+          "file": "tarot-room.spec.ts",
+          "line": 1700,
+          "column": 1
+        },
+        {
+          "title": "a late reading response cannot replace the settled local reading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 11556,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:34.177Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b2ee35769b88cce85547",
+          "file": "tarot-room.spec.ts",
+          "line": 1743,
+          "column": 1
+        },
+        {
+          "title": "a pending interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2959,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:45.740Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6cb3bc28733254563a4f",
+          "file": "tarot-room.spec.ts",
+          "line": 1806,
+          "column": 3
+        },
+        {
+          "title": "a local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3026,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:48.707Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8ff04a1868fb71d9eae7",
+          "file": "tarot-room.spec.ts",
+          "line": 1806,
+          "column": 3
+        },
+        {
+          "title": "a server-local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:51.739Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6479aeef6c180ba1c5f6",
+          "file": "tarot-room.spec.ts",
+          "line": 1806,
+          "column": 3
+        },
+        {
+          "title": "refresh restores the newest fallback session after durable storage fills",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2346,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:55.257Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a742e9eb23d2cf2f0fdb",
+          "file": "tarot-room.spec.ts",
+          "line": 1866,
+          "column": 1
+        },
+        {
+          "title": "a failed save keeps the reading and chat until an explicit durable retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 4635,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:57.609Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-9aee8ec68288b5c1a827",
+          "file": "tarot-room.spec.ts",
+          "line": 1895,
+          "column": 1
+        },
+        {
+          "title": "damaged saved interpretation and design recover without losing the selected cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:02.251Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3aa1a6901dcf79ba3ea7",
+          "file": "tarot-room.spec.ts",
+          "line": 1949,
+          "column": 1
+        },
+        {
+          "title": "the reading composer remains visible above a keyboard-sized viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Short-screen keyboard regression",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-room.spec.ts",
+                    "line": 1983,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "skipped",
+                  "duration": 164,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:06.018Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Short-screen keyboard regression",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-room.spec.ts",
+                        "line": 1983,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-87d57da6d0b852da0098",
+          "file": "tarot-room.spec.ts",
+          "line": 1982,
+          "column": 1
+        },
+        {
+          "title": "five consecutive rituals do not degrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 140000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 70829,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:06.189Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a8f5b7d47f3e7413ba1f",
+          "file": "tarot-room.spec.ts",
+          "line": 1995,
+          "column": 1
+        },
+        {
+          "title": "pick arc stays ordered on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1763,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:17.022Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5722728b4c384e65ffd0",
+          "file": "tarot-room.spec.ts",
+          "line": 2044,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1708,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:18.793Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d70fe931b1c291027294",
+          "file": "tarot-room.spec.ts",
+          "line": 2044,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1850,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:20.508Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1918c4cf7ae9856f28b8",
+          "file": "tarot-room.spec.ts",
+          "line": 2044,
+          "column": 3
+        },
+        {
+          "title": "spread single remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2241,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:22.364Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2f639fe614ff9e72a70c",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread three remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2327,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:24.613Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8ece823f765bc53e9ec7",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread peachBlossom remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2266,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:26.947Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-81b7d8719d94cab42553",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread futureLover remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2294,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:29.221Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5a2e74589ff37e85501d",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread xRelationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:31.523Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-7c495e431052fe9243ed",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread relationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2264,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:33.949Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c257cecac61137fdc22c",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread reconciliation remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2230,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:36.222Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8d3133a5ac776d6e4580",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread trueHeart remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2132,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:38.458Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-314ad2497a50a9a74d7a",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread loveTree remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2208,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:40.597Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a3bd70839b18c8b93692",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "reading layout 1 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2953,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:42.811Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-81594aa858e1d4ebb3ff",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 3 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3051,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:45.771Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-1fda9c9d1e032b4a1e6f",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 5 cards on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3184,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:48.829Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b42c7cfc1f423d6d5ac1",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 7 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 3035,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:52.020Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-589862a2fe59b46e6751",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 9 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-17-pro-max",
+              "projectName": "iphone-17-pro-max",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 2987,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:55.062Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f0042947133c32b5ceef",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "Tarot entry has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1573,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:23.056Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-cedd5c93d9d64ce4370d",
+          "file": "tarot-room.spec.ts",
+          "line": 430,
+          "column": 1
+        },
+        {
+          "title": "Tarot recommendation has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2015,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:24.636Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-67c73c2ff72e13310f08",
+          "file": "tarot-room.spec.ts",
+          "line": 477,
+          "column": 1
+        },
+        {
+          "title": "spread recommendations keep every layout and full explanation in normal flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10671,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:26.658Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f57f36cc875d8b6326f3",
+          "file": "tarot-room.spec.ts",
+          "line": 508,
+          "column": 1
+        },
+        {
+          "title": "spread preview ignores hover and cancelled gestures and restores a readable reason",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2358,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:37.335Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-853b8ebca4bcb0de34fc",
+          "file": "tarot-room.spec.ts",
+          "line": 611,
+          "column": 1
+        },
+        {
+          "title": "Tarot room setup has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1621,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:39.700Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-31e5ca7f1406245281df",
+          "file": "tarot-room.spec.ts",
+          "line": 644,
+          "column": 1
+        },
+        {
+          "title": "Tarot wash has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5291,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:41.327Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2e510f3c8dea11d48b63",
+          "file": "tarot-room.spec.ts",
+          "line": 651,
+          "column": 1
+        },
+        {
+          "title": "Tarot arc has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1836,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:46.625Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-4e3a03fbe2f8afaf5abe",
+          "file": "tarot-room.spec.ts",
+          "line": 658,
+          "column": 1
+        },
+        {
+          "title": "Tarot reading has accessible semantics and touch targets",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:48.468Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-6cafc3b32f053835410f",
+          "file": "tarot-room.spec.ts",
+          "line": 666,
+          "column": 1
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (normal motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14735,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:48:51.127Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-2a20c4d3b121ed620f9c",
+          "file": "tarot-room.spec.ts",
+          "line": 675,
+          "column": 3
+        },
+        {
+          "title": "card zoom tip stays readable and acknowledges interaction (reduced motion)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11731,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:05.869Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c740906308489e7002d3",
+          "file": "tarot-room.spec.ts",
+          "line": 675,
+          "column": 3
+        },
+        {
+          "title": "card detail stays gesture-first without visible zoom controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3484,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:17.607Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-009f89637b1a846b119c",
+          "file": "tarot-room.spec.ts",
+          "line": 708,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading is explicit, durable, and leaves the original reading private",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6969,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:21.097Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-9372f1b05350570d79b3",
+          "file": "tarot-room.spec.ts",
+          "line": 763,
+          "column": 1
+        },
+        {
+          "title": "deeper demo reading failure is retryable without a silent upgrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2687,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:28.073Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e7ae4fdc27ec4549f1ec",
+          "file": "tarot-room.spec.ts",
+          "line": 841,
+          "column": 1
+        },
+        {
+          "title": "deeper reading motion is reversible and respects normal motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5090,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:30.767Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3239ef57ddaa031ee24b",
+          "file": "tarot-room.spec.ts",
+          "line": 865,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects system motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2560,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:35.864Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0267e9d9bd929a9a6415",
+          "file": "tarot-room.spec.ts",
+          "line": 865,
+          "column": 3
+        },
+        {
+          "title": "deeper reading motion is reversible and respects hint motion",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4333,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:38.430Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e4a5e3c3c47075bea75f",
+          "file": "tarot-room.spec.ts",
+          "line": 865,
+          "column": 3
+        },
+        {
+          "title": "completes and restores the full Tarot Room journey",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 25440,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:49:42.768Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ab603ca8322fcc04b1f4",
+          "file": "tarot-room.spec.ts",
+          "line": 918,
+          "column": 1
+        },
+        {
+          "title": "a tap without movement cannot finish a manual wash",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4400,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:08.216Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0706802bddc02879bfb4",
+          "file": "tarot-room.spec.ts",
+          "line": 1092,
+          "column": 1
+        },
+        {
+          "title": "the wash table stops repainting while idle or after a rejected gesture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5660,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:12.622Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3b3eac7810c1003dbad2",
+          "file": "tarot-room.spec.ts",
+          "line": 1115,
+          "column": 1
+        },
+        {
+          "title": "a real manual wash release completes the automatic ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10315,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:18.288Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ddd7d57a5b20c0856372",
+          "file": "tarot-room.spec.ts",
+          "line": 1154,
+          "column": 1
+        },
+        {
+          "title": "rapid Auto Wash requests advance through one ordered ritual",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11956,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:28.609Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e5aa8657014cf9c3cd04",
+          "file": "tarot-room.spec.ts",
+          "line": 1212,
+          "column": 1
+        },
+        {
+          "title": "an interrupted automatic ritual restarts from its stable prepare stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10438,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:40.572Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-18cc98512248a0d1e7a0",
+          "file": "tarot-room.spec.ts",
+          "line": 1225,
+          "column": 1
+        },
+        {
+          "title": "a backgrounded cut restarts from Prepare when the iPhone returns",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10245,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:50:51.015Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8b9fb0a71c3405aca2a2",
+          "file": "tarot-room.spec.ts",
+          "line": 1236,
+          "column": 1
+        },
+        {
+          "title": "an active ritual survives a terminated and reopened webview",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6513,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:01.267Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8e61163420d04ec0c924",
+          "file": "tarot-room.spec.ts",
+          "line": 1260,
+          "column": 1
+        },
+        {
+          "title": "a cancelled wash gesture stays in the wash stage",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4329,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:07.787Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-4cde87e951859d0d8cf9",
+          "file": "tarot-room.spec.ts",
+          "line": 1277,
+          "column": 1
+        },
+        {
+          "title": "voice unavailability keeps a clear typed fallback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1173,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:12.123Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-834fe7ffbc7d5d0e1ddd",
+          "file": "tarot-room.spec.ts",
+          "line": 1306,
+          "column": 1
+        },
+        {
+          "title": "voice completion keeps the transcript usable in the phone sheet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1460,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:13.305Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-802fd42aa56914b67c14",
+          "file": "tarot-room.spec.ts",
+          "line": 1333,
+          "column": 1
+        },
+        {
+          "title": "cancelling receipt sharing stays quiet and allows sharing again",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3637,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:14.772Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-e030be3e7c7f60112d32",
+          "file": "tarot-room.spec.ts",
+          "line": 1375,
+          "column": 1
+        },
+        {
+          "title": "receipt preview and exported PNG keep the question and chat private by default",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7170,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:18.416Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-55760e02bf42cfdd68dd",
+          "file": "tarot-room.spec.ts",
+          "line": 1401,
+          "column": 1
+        },
+        {
+          "title": "receipt exports complete 1-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4499,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:25.594Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-909000cfb484decfe52d",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 3-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5125,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:30.101Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-48a418dffcf74595766f",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 5-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5597,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:35.233Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d1a26a68cad52e7d5403",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 7-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6177,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:40.837Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-45c4be8384dc124e1013",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card en text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6862,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:47.020Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-eda7cf1402018942046b",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "receipt exports complete 9-card zh text and readable artwork",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6785,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:51:53.888Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c86caccadc648f6ac0b6",
+          "file": "tarot-room.spec.ts",
+          "line": 1471,
+          "column": 3
+        },
+        {
+          "title": "system reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2984,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:00.679Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-04ef48342c09d6f3f9e4",
+          "file": "tarot-room.spec.ts",
+          "line": 1573,
+          "column": 3
+        },
+        {
+          "title": "hint reduced motion completes the automatic ritual promptly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2978,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:03.669Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-bc1cc4c2960b2a694225",
+          "file": "tarot-room.spec.ts",
+          "line": 1573,
+          "column": 3
+        },
+        {
+          "title": "Auto Wash avoids sustained animation stalls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "One primary-device frame pacing gate",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-room.spec.ts",
+                    "line": 1588,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 152,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:06.653Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "One primary-device frame pacing gate",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-room.spec.ts",
+                        "line": 1588,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-db18e46ab292366aa090",
+          "file": "tarot-room.spec.ts",
+          "line": 1587,
+          "column": 1
+        },
+        {
+          "title": "an offline follow-up is saved and restored with its local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2406,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:06.810Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-fa70a076775e614c75e8",
+          "file": "tarot-room.spec.ts",
+          "line": 1625,
+          "column": 1
+        },
+        {
+          "title": "a stalled follow-up releases the composer and keeps one durable local reply",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14900,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:09.221Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a5d674ac8640ef49b81d",
+          "file": "tarot-room.spec.ts",
+          "line": 1662,
+          "column": 1
+        },
+        {
+          "title": "leaving a pending follow-up cancels its request before History resumes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3127,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:24.128Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c5cadb2b8c8b1159cdfe",
+          "file": "tarot-room.spec.ts",
+          "line": 1700,
+          "column": 1
+        },
+        {
+          "title": "a late reading response cannot replace the settled local reading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10957,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:27.260Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5e51f0701de526daa049",
+          "file": "tarot-room.spec.ts",
+          "line": 1743,
+          "column": 1
+        },
+        {
+          "title": "a pending interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2893,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:38.222Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3b501c96cf777dfba790",
+          "file": "tarot-room.spec.ts",
+          "line": 1806,
+          "column": 3
+        },
+        {
+          "title": "a local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2841,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:41.121Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-7a57aabb57f2e3041e74",
+          "file": "tarot-room.spec.ts",
+          "line": 1806,
+          "column": 3
+        },
+        {
+          "title": "a server-local interpretation survives refresh with an explicit retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3328,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:43.968Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-8caa03b53b6bb372f6b5",
+          "file": "tarot-room.spec.ts",
+          "line": 1806,
+          "column": 3
+        },
+        {
+          "title": "refresh restores the newest fallback session after durable storage fills",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4373,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:47.302Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0a68db696c4db68ae65d",
+          "file": "tarot-room.spec.ts",
+          "line": 1866,
+          "column": 1
+        },
+        {
+          "title": "a failed save keeps the reading and chat until an explicit durable retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4248,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:51.681Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b9cc0377027d07127c1c",
+          "file": "tarot-room.spec.ts",
+          "line": 1895,
+          "column": 1
+        },
+        {
+          "title": "damaged saved interpretation and design recover without losing the selected cards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3291,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:55.938Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d02bb5b20344c9119ebb",
+          "file": "tarot-room.spec.ts",
+          "line": 1949,
+          "column": 1
+        },
+        {
+          "title": "the reading composer remains visible above a keyboard-sized viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1919,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:52:59.234Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f005352af512c025c3a8",
+          "file": "tarot-room.spec.ts",
+          "line": 1982,
+          "column": 1
+        },
+        {
+          "title": "five consecutive rituals do not degrade",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "One primary-device soak run",
+                  "location": {
+                    "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-room.spec.ts",
+                    "line": 1996,
+                    "column": 8
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 160,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:01.025Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "One primary-device soak run",
+                      "location": {
+                        "file": "/private/tmp/hint-testflight-candidate-20260909-211052/work-rc3/artifacts/hint/e2e/tarot-room.spec.ts",
+                        "line": 1996,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-f27424732157a5ca6554",
+          "file": "tarot-room.spec.ts",
+          "line": 1995,
+          "column": 1
+        },
+        {
+          "title": "pick arc stays ordered on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1363,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:01.190Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-bd27ec57c57c99b61d5f",
+          "file": "tarot-room.spec.ts",
+          "line": 2044,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1445,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:02.559Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-0fabcf1e66b290e57f30",
+          "file": "tarot-room.spec.ts",
+          "line": 2044,
+          "column": 3
+        },
+        {
+          "title": "pick arc stays ordered on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1457,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:04.012Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-266070f2ad39f2f131aa",
+          "file": "tarot-room.spec.ts",
+          "line": 2044,
+          "column": 3
+        },
+        {
+          "title": "spread single remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1909,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:05.475Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c31c3064bcf854ede467",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread three remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1962,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:07.390Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b767d58d54304a75a4f9",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread peachBlossom remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2010,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:09.358Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-b892a5cefc552ba608f8",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread futureLover remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1987,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:11.374Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-34ad05caec3fdbc7ba8a",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread xRelationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1993,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:13.367Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-9b199ba097a47a5ac314",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread relationship remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1969,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:15.366Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-945076e9f84ef8713d9f",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread reconciliation remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1896,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:17.341Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-d414b061b2910c416794",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread trueHeart remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2005,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:19.241Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-3d8c854996d26df096b0",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "spread loveTree remains contained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1940,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:21.252Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-ba26572381cc53b3a3f2",
+          "file": "tarot-room.spec.ts",
+          "line": 2066,
+          "column": 3
+        },
+        {
+          "title": "reading layout 1 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2612,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:23.198Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-a1588717fa7755ff6024",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 3 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2649,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:25.817Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-007c82be8f319dcf64b1",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 5 cards on sea",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2554,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:28.472Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c29a7e0f8a6d59d71a65",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 7 cards on stars",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2605,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:31.032Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-5da13e068e7f9981c584",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        },
+        {
+          "title": "reading layout 9 cards on dawn",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "iphone-se",
+              "projectName": "iphone-se",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2549,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T19:53:33.644Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "bcd9e756c8152615fa45-c6dce0042e6ffe86cf63",
+          "file": "tarot-room.spec.ts",
+          "line": 2105,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T19:45:22.502Z",
+    "duration": 494082.561,
+    "expected": 140,
+    "skipped": 12,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

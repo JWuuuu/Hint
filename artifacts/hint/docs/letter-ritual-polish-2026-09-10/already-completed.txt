@@ -1,0 +1,128 @@
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected single layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected three layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected relationship layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected futureLover layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected peachBlossom layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected reconciliation layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected trueHeart layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected loveTree layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:24:3 › selected xRelationship layout has its own space above the complete card arc
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:51:1 › production preview switches phones without losing the current room or question
+[iphone-17-pro-max] › letter-ritual-layout.spec.ts:70:1 › Me Tarot setup has a visible bounded entrance into the ready room
+[iphone-17-pro-max] › room-entrances.spec.ts:121:1 › a quick first Home entry does not start a second launch sequence over Tarot
+[iphone-17-pro-max] › room-entrances.spec.ts:130:3 › Home tarot entrance reaches its working room and cleans up
+[iphone-17-pro-max] › room-entrances.spec.ts:130:3 › Home astrology entrance reaches its working room and cleans up
+[iphone-17-pro-max] › room-entrances.spec.ts:130:3 › Home collection entrance reaches its working room and cleans up
+[iphone-17-pro-max] › me-redesign.spec.ts:175:1 › Me editor retains failed local saves, retries, and returns focus on cancel
+[iphone-17-pro-max] › me-redesign.spec.ts:228:1 › Me editor identifies an offline save as local and keeps it after reload
+[iphone-17-pro-max] › room-entrances.spec.ts:130:3 › Home personalities entrance reaches its working room and cleans up
+[iphone-17-pro-max] › me-redesign.spec.ts:243:1 › Me Spanish SE 200% text retains long names, places and expanded details
+[iphone-17-pro-max] › me-redesign.spec.ts:268:3 › Me delayed save preserves newer input in the current editor and its focus
+[iphone-17-pro-max] › room-entrances.spec.ts:145:3 › room entrance respects app=false OS=false without blocking Tarot input
+[iphone-17-pro-max] › me-redesign.spec.ts:268:3 › Me delayed save preserves a reopened editor and its focus
+[iphone-17-pro-max] › room-entrances.spec.ts:145:3 › room entrance respects app=true OS=false without blocking Tarot input
+[iphone-17-pro-max] › room-entrances.spec.ts:145:3 › room entrance respects app=false OS=true without blocking Tarot input
+[iphone-17-pro-max] › space-navigation.spec.ts:43:3 › Every space has a visible direct Home exit: group 1
+[iphone-17-pro-max] › room-entrances.spec.ts:145:3 › room entrance respects app=true OS=true without blocking Tarot input
+[iphone-17-pro-max] › space-navigation.spec.ts:43:3 › Every space has a visible direct Home exit: group 2
+[iphone-17-pro-max] › room-entrances.spec.ts:156:1 › rapid repeated Home taps create one navigation and Back does not replay an entrance
+[iphone-17-pro-max] › space-navigation.spec.ts:43:3 › Every space has a visible direct Home exit: group 3
+[iphone-17-pro-max] › room-entrances.spec.ts:178:1 › backgrounding a live entrance dismisses it and foregrounding does not replay it
+[iphone-17-pro-max] › room-entrances.spec.ts:193:1 › query-only navigation keeps the live room and unsent input without a new entrance
+[iphone-17-pro-max] › room-entrances.spec.ts:222:3 › supplemental Rooms animal-tarot entry opens the intended feature
+[iphone-17-pro-max] › space-navigation.spec.ts:43:3 › Every space has a visible direct Home exit: group 4
+[iphone-17-pro-max] › room-entrances.spec.ts:222:3 › supplemental Rooms journal entry opens the intended feature
+[iphone-17-pro-max] › room-entrances.spec.ts:222:3 › supplemental Rooms compatibility entry opens the intended feature
+[iphone-17-pro-max] › space-navigation.spec.ts:43:3 › Every space has a visible direct Home exit: group 5
+[iphone-17-pro-max] › room-entrances.spec.ts:222:3 › supplemental Rooms dream entry opens the intended feature
+[iphone-17-pro-max] › room-entrances.spec.ts:248:3 › supplemental Me chart entry preserves its destination
+[iphone-17-pro-max] › room-entrances.spec.ts:248:3 › supplemental Me history entry preserves its destination
+[iphone-17-pro-max] › room-entrances.spec.ts:248:3 › supplemental Me collection entry preserves its destination
+[iphone-17-pro-max] › space-navigation.spec.ts:48:1 › Nested spaces keep a named parent alongside Home after refresh
+[iphone-17-pro-max] › room-entrances.spec.ts:274:3 › supplemental Home dock ask entry stays directly usable
+[iphone-17-pro-max] › space-navigation.spec.ts:70:1 › Astrology detail returns to signs, birth settings returns to chart, and both retain Home
+[iphone-17-pro-max] › room-entrances.spec.ts:274:3 › supplemental Home dock daily entry stays directly usable
+[iphone-17-pro-max] › room-entrances.spec.ts:274:3 › supplemental Home dock profile entry stays directly usable
+[iphone-17-pro-max] › tarot-room.spec.ts:434:1 › Tarot entry has accessible semantics and touch targets
+[iphone-17-pro-max] › tarot-room.spec.ts:481:1 › Tarot recommendation has accessible semantics and touch targets
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete single: select 1 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:512:1 › spread recommendations keep every layout and full explanation in normal flow
+[iphone-17-pro-max] › tarot-room.spec.ts:615:1 › spread preview ignores hover and cancelled gestures and restores a readable reason
+[iphone-17-pro-max] › tarot-room.spec.ts:648:1 › Tarot room setup has accessible semantics and touch targets
+[iphone-17-pro-max] › tarot-room.spec.ts:655:1 › Tarot wash has accessible semantics and touch targets
+[iphone-17-pro-max] › tarot-room.spec.ts:662:1 › Tarot arc has accessible semantics and touch targets
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete three: select 3 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:670:1 › Tarot reading has accessible semantics and touch targets
+[iphone-17-pro-max] › tarot-room.spec.ts:679:3 › card zoom tip stays readable and acknowledges interaction (normal motion)
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete relationship: select 3 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:679:3 › card zoom tip stays readable and acknowledges interaction (reduced motion)
+[iphone-17-pro-max] › tarot-room.spec.ts:712:1 › card detail stays gesture-first without visible zoom controls
+[iphone-17-pro-max] › tarot-room.spec.ts:767:1 › deeper demo reading is explicit, durable, and leaves the original reading private
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete futureLover: select 7 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:845:1 › deeper demo reading failure is retryable without a silent upgrade
+[iphone-17-pro-max] › tarot-room.spec.ts:869:3 › deeper reading motion is reversible and respects normal motion
+[iphone-17-pro-max] › tarot-room.spec.ts:869:3 › deeper reading motion is reversible and respects system motion
+[iphone-17-pro-max] › tarot-room.spec.ts:869:3 › deeper reading motion is reversible and respects hint motion
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete peachBlossom: select 5 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:922:1 › completes and restores the full Tarot Room journey
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete reconciliation: select 7 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:1099:1 › a tap without movement cannot finish a manual wash
+[iphone-17-pro-max] › tarot-room.spec.ts:1122:1 › the wash table stops repainting while idle or after a rejected gesture
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete trueHeart: select 5 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:1161:1 › a real manual wash release completes the automatic ritual
+[iphone-17-pro-max] › tarot-room.spec.ts:1219:1 › rapid Auto Wash requests advance through one ordered ritual
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete loveTree: select 7 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-room.spec.ts:1232:1 › an interrupted automatic ritual restarts from its stable prepare stage
+[iphone-17-pro-max] › tarot-room.spec.ts:1243:1 › a backgrounded cut restarts from Prepare when the iPhone returns
+[iphone-17-pro-max] › tarot-room.spec.ts:1267:1 › an active ritual survives a terminated and reopened webview
+[iphone-17-pro-max] › tarot-all-spreads.spec.ts:39:3 › complete xRelationship: select 9 cards, read, save and restore exact positions
+[iphone-17-pro-max] › tarot-spread-navigation.spec.ts:20:1 › spread arrows have generous lateral targets beside the cards
+[iphone-17-pro-max] › tarot-room.spec.ts:1284:1 › a cancelled wash gesture stays in the wash stage
+[iphone-17-pro-max] › tarot-spread-navigation.spec.ts:40:1 › a vertical gesture cannot turn into an accidental spread change
+[iphone-17-pro-max] › tarot-room.spec.ts:1313:1 › voice unavailability keeps a clear typed fallback
+[iphone-17-pro-max] › tarot-room.spec.ts:1382:1 › cancelling receipt sharing stays quiet and allows sharing again
+[iphone-17-pro-max] › tarot-wash-refinement.spec.ts:57:1 › manual wash uses the full table and keeps its geometry while gathering
+[iphone-17-pro-max] › tarot-room.spec.ts:1408:1 › receipt preview and exported PNG keep the question and chat private by default
+[iphone-17-pro-max] › tarot-wash-refinement.spec.ts:87:1 › release reaches cutting promptly even if the WebView drops transition events
+[iphone-17-pro-max] › tarot-room.spec.ts:1478:3 › receipt exports complete 1-card en text and readable artwork
+[iphone-17-pro-max] › tarot-wash-refinement.spec.ts:97:1 › reduced motion keeps Auto Wash functional without playing the decorative wash
+[iphone-17-pro-max] › tarot-room.spec.ts:1478:3 › receipt exports complete 3-card en text and readable artwork
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected single layout has its own space above the complete card arc
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected three layout has its own space above the complete card arc
+[iphone-17-pro-max] › tarot-room.spec.ts:1478:3 › receipt exports complete 5-card en text and readable artwork
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected relationship layout has its own space above the complete card arc
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected futureLover layout has its own space above the complete card arc
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected peachBlossom layout has its own space above the complete card arc
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected reconciliation layout has its own space above the complete card arc
+[iphone-17-pro-max] › tarot-room.spec.ts:1478:3 › receipt exports complete 7-card en text and readable artwork
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected trueHeart layout has its own space above the complete card arc
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected loveTree layout has its own space above the complete card arc
+[iphone-17-pro-max] › tarot-room.spec.ts:1478:3 › receipt exports complete 9-card en text and readable artwork
+[iphone-se] › letter-ritual-layout.spec.ts:24:3 › selected xRelationship layout has its own space above the complete card arc
+[iphone-se] › letter-ritual-layout.spec.ts:51:1 › production preview switches phones without losing the current room or question
+[iphone-se] › letter-ritual-layout.spec.ts:70:1 › Me Tarot setup has a visible bounded entrance into the ready room
+[iphone-17-pro-max] › tarot-room.spec.ts:1478:3 › receipt exports complete 9-card zh text and readable artwork
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign en bright: layout, preferences and disclosures
+[iphone-17-pro-max] › tarot-room.spec.ts:1580:3 › system reduced motion completes the automatic ritual promptly
+[iphone-17-pro-max] › tarot-room.spec.ts:1580:3 › hint reduced motion completes the automatic ritual promptly
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign en dark: layout, preferences and disclosures
+[iphone-17-pro-max] › tarot-room.spec.ts:1632:1 › an offline follow-up is saved and restored with its local reply
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign zh bright: layout, preferences and disclosures
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign zh dark: layout, preferences and disclosures
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign es bright: layout, preferences and disclosures
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign es dark: layout, preferences and disclosures
+[iphone-17-pro-max] › tarot-room.spec.ts:1669:1 › a stalled follow-up releases the composer and keeps one durable local reply
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign ja bright: layout, preferences and disclosures
+[iphone-17-pro-max] › tarot-room.spec.ts:1707:1 › leaving a pending follow-up cancels its request before History resumes
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign ja dark: layout, preferences and disclosures
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign ko bright: layout, preferences and disclosures
+[iphone-17-pro-max] › tarot-room.spec.ts:1750:1 › a late reading response cannot replace the settled local reading
+[iphone-se] › me-redesign.spec.ts:122:3 › Me redesign ko dark: layout, preferences and disclosures
+[iphone-17-pro-max] › tarot-room.spec.ts:1813:3 › a pending interpretation survives refresh with an explicit retry
+[iphone-se] › me-redesign.spec.ts:175:1 › Me editor retains failed local saves, retries, and returns focus on cancel
+[iphone-se] › me-redesign.spec.ts:228:1 › Me editor identifies an offline save as local and keeps it after reload
+[iphone-se] › me-redesign.spec.ts:243:1 › Me Spanish SE 200% text retains long names, places and expanded details
+[iphone-17-pro-max] › tarot-room.spec.ts:1813:3 › a local interpretation survives refresh with an explicit retry
+[iphone-se] › me-redesign.spec.ts:268:3 › Me delayed save preserves newer input in the current editor and its focus
+[iphone-se] › me-redesign.spec.ts:268:3 › Me delayed save preserves a reopened editor and its focus
+[iphone-17-pro-max] › tarot-room.spec.ts:1813:3 › a server-local interpretation survives refresh with an explicit retry

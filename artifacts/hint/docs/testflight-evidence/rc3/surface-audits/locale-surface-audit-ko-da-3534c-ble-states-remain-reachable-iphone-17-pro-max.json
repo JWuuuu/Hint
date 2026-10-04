@@ -1,0 +1,1792 @@
+{
+  "language": "ko",
+  "theme": "dark",
+  "report": [
+    {
+      "route": "/app",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 오늘 ",
+            " 나의 Hint 가 기다리고 있어요."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "카드 성찰 ✦"
+          ],
+          "controls": [
+            {
+              "label": "오늘의 Hint 공개✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "오늘의 Hint 카드 공개",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "눌러서 자세히 보기",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ 눌러서 자세히 보기 ",
+              "width": 112.46875,
+              "height": 44
+            },
+            {
+              "label": "카드 성찰 ✦",
+              "width": 116,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " 오늘 ",
+            " 나의 Hint 가 기다리고 있어요."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "카드 성찰 ✦"
+          ],
+          "controls": [
+            {
+              "label": "오늘의 Hint 공개✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "오늘의 Hint 카드 공개",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "눌러서 자세히 보기",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ 눌러서 자세히 보기 ",
+              "width": 112.46875,
+              "height": 44
+            },
+            {
+              "label": "카드 성찰 ✦",
+              "width": 116,
+              "height": 63
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " 오늘 ",
+            " 나의 Hint 가 기다리고 있어요."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "카드 성찰 ✦"
+          ],
+          "controls": [
+            {
+              "label": "오늘의 Hint 공개✦",
+              "width": 170,
+              "height": 44
+            },
+            {
+              "label": "오늘의 Hint 카드 공개",
+              "width": 94,
+              "height": 180
+            },
+            {
+              "label": "눌러서 자세히 보기",
+              "width": 350,
+              "height": 50.5
+            },
+            {
+              "label": "✦ 눌러서 자세히 보기 ",
+              "width": 112.46875,
+              "height": 44
+            },
+            {
+              "label": "카드 성찰 ✦",
+              "width": 116,
+              "height": 63
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/daily",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "데일리 하늘 카드",
+            "부드럽게 나아가기 좋은 하루."
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "화8일9월",
+            "수9일9월",
+            "오늘 밤10일9월",
+            "금11일9월",
+            "토12일9월"
+          ],
+          "controls": [
+            {
+              "label": "일",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "주",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "월",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "년",
+              "width": 77,
+              "height": 44
+            },
+            {
+              "label": "데일리 캘린더",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "이전 일",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "다음 일",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "2026년 9월 8일",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026년 9월 9일",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026년 9월 10일",
+              "width": 71.609375,
+              "height": 76
+            },
+            {
+              "label": "2026년 9월 11일",
+              "width": 71.59375,
+              "height": 76
+            },
+            {
+              "label": "2026년 9월 12일",
+              "width": 71.59375,
+              "height": 76
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "보내지 않아도 되는 한 문장을 쓰기.모든 진실에 관객이 필요한 건 아니에요.",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "내일 아침의 나를 보호하는 계획을 고르기.미래의 나도 오늘의 리딩 안에 있습니다.",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "타로 룸을 열기 전에 진짜 질문에 이름 붙이기.리딩이 흩어지지 않게 해요.",
+              "width": 356,
+              "height": 56.4375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/astrology",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "점성술",
+            "출생 정보부터 시작하기"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "열두 별자리",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "출생 차트",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "트랜짓",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "출생 정보",
+              "width": 60.640625,
+              "height": 44
+            },
+            {
+              "label": "함께",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "보고서 미리보기",
+              "width": 91.78125,
+              "height": 44
+            },
+            {
+              "label": "별자리부터 살펴보기",
+              "width": 118.59375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "점성술",
+            "출생 정보부터 시작하기"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "열두 별자리",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "출생 차트",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "트랜짓",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "출생 정보",
+              "width": 60.640625,
+              "height": 44
+            },
+            {
+              "label": "함께",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "보고서 미리보기",
+              "width": 91.78125,
+              "height": 44
+            },
+            {
+              "label": "별자리부터 살펴보기",
+              "width": 118.59375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "점성술",
+            "출생 정보부터 시작하기"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "열두 별자리",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "출생 차트",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "트랜짓",
+              "width": 128,
+              "height": 48
+            },
+            {
+              "label": "출생 정보",
+              "width": 60.640625,
+              "height": 44
+            },
+            {
+              "label": "함께",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "보고서 미리보기",
+              "width": 91.78125,
+              "height": 44
+            },
+            {
+              "label": "별자리부터 살펴보기",
+              "width": 118.59375,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/animal-tarot",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 동물 테라스 ",
+            " 동물 한 마리를 맞이하세요. "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            " 동물 한 마리를 맞이하세요. "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " 동물 카드 뽑기 "
+          ],
+          "controls": [
+            {
+              "label": " 동물 카드 뽑기 ",
+              "width": 139.625,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            " 동물 한 마리를 맞이하세요. "
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            " 동물 카드 뽑기 "
+          ],
+          "controls": [
+            {
+              "label": " 동물 카드 뽑기 ",
+              "width": 139.625,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/collection",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            " 나의 카드 기록 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "오늘의 희귀 보상 열기: 세계",
+              "width": 203.34375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "완드 3",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 4",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 5",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 6",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 7",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 8",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 9",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 10",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 페이지",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 나이트",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 퀸",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "완드 킹",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "컵 에이스",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "컵 2",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "컵 3",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "controls": [
+            {
+              "label": "펜타클 3",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 4",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 5",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 6",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 7",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 8",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 9",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 10",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 페이지",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 나이트",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 퀸",
+              "width": 128,
+              "height": 197.5625
+            },
+            {
+              "label": "펜타클 킹",
+              "width": 128,
+              "height": 197.5625
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/personalities",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "나의 유형 찾기",
+            "스트레스를 받으면 보통:"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "혼자만의 공간 갖기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "희망 유지하기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "계획 세우기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "빠르게 반응하기",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "나의 유형 찾기",
+            "스트레스를 받으면 보통:"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "혼자만의 공간 갖기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "희망 유지하기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "계획 세우기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "빠르게 반응하기",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "나의 유형 찾기",
+            "스트레스를 받으면 보통:"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "혼자만의 공간 갖기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "희망 유지하기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "계획 세우기",
+              "width": 374,
+              "height": 56
+            },
+            {
+              "label": "빠르게 반응하기",
+              "width": 374,
+              "height": 56
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/ask",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "리딩이 되기 전에 먼저 말해보세요."
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "진짜 질문을 찾고 싶어요.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "카드를 뽑기 전에 같이 정리해 줄 수 있나요?",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "계속 어떤 사람이 생각나요.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "보내기",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "리딩이 되기 전에 먼저 말해보세요."
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "진짜 질문을 찾고 싶어요.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "카드를 뽑기 전에 같이 정리해 줄 수 있나요?",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "계속 어떤 사람이 생각나요.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "보내기",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "리딩이 되기 전에 먼저 말해보세요."
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "진짜 질문을 찾고 싶어요.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "카드를 뽑기 전에 같이 정리해 줄 수 있나요?",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "계속 어떤 사람이 생각나요.",
+              "width": 358,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 310,
+              "height": 44
+            },
+            {
+              "label": "보내기",
+              "width": 44,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/readings",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "리딩 기록",
+            " 나의 Hint 기록 "
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "전체1",
+              "width": 80.109375,
+              "height": 44
+            },
+            {
+              "label": "타로0",
+              "width": 80.109375,
+              "height": 44
+            },
+            {
+              "label": "데일리1",
+              "width": 91.359375,
+              "height": 44
+            },
+            {
+              "label": "점성술",
+              "width": 61.75,
+              "height": 44
+            },
+            {
+              "label": "질문0",
+              "width": 80.109375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/profile",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "프로필",
+            "밤의 손님"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "프로필 수정",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "다른 로컬 프로필 만들기",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "어두운 룸",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "밝은 룸",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "언어 선택",
+              "width": 100.515625,
+              "height": 44
+            },
+            {
+              "label": "움직임 줄이기",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "소리와 햅틱",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "밤의 손님"
+          ],
+          "overflow": [],
+          "clippedSummaries": [
+            ""
+          ],
+          "controls": [
+            {
+              "label": "프로필 수정",
+              "width": 44,
+              "height": 44
+            },
+            {
+              "label": "다른 로컬 프로필 만들기",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "어두운 룸",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "밝은 룸",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "언어 선택",
+              "width": 100.515625,
+              "height": 44
+            },
+            {
+              "label": "움직임 줄이기",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "소리와 햅틱",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "다른 로컬 프로필 만들기",
+              "width": 382,
+              "height": 44
+            },
+            {
+              "label": "어두운 룸",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "밝은 룸",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "언어 선택",
+              "width": 100.515625,
+              "height": 44
+            },
+            {
+              "label": "움직임 줄이기",
+              "width": 48,
+              "height": 44
+            },
+            {
+              "label": "소리와 햅틱",
+              "width": 48,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/rooms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "지금 필요한 룸을 선택하세요.",
+            "성찰",
+            "타로"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "방 검색",
+              "width": 348,
+              "height": 48
+            },
+            {
+              "label": "전체",
+              "width": 46.765625,
+              "height": 44
+            },
+            {
+              "label": "성찰",
+              "width": 46.765625,
+              "height": 44
+            },
+            {
+              "label": "타로",
+              "width": 46.765625,
+              "height": 44
+            },
+            {
+              "label": "관계",
+              "width": 46.765625,
+              "height": 44
+            },
+            {
+              "label": "점성",
+              "width": 46.765625,
+              "height": 44
+            },
+            {
+              "label": "내면",
+              "width": 46.765625,
+              "height": 44
+            },
+            {
+              "label": "성장",
+              "width": 46.765625,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 12,
+              "height": 12
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "타로",
+            "관계",
+            "점성"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "관계",
+            "점성",
+            "내면"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/journal",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "감정 일기"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "다정함",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "가벼움",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "무거움",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "고요함",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "희망적",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "이 페이지 저장",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "다시 시도",
+              "width": 70.375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "감정 일기"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "다정함",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "가벼움",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "무거움",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "고요함",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "희망적",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "이 페이지 저장",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "다시 시도",
+              "width": 70.375,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 51.59375
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 180
+            },
+            {
+              "label": "다정함",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "가벼움",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "무거움",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "고요함",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "희망적",
+              "width": 61.140625,
+              "height": 44
+            },
+            {
+              "label": "이 페이지 저장",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "다시 시도",
+              "width": 70.375,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/dream",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "꿈 해석"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "꿈 해석"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "꿈 해석"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/app/compatibility",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Shared chart room",
+            "두 차트를 명확하게 비교하세요.",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "초대 링크 만들기",
+              "width": 140.0625,
+              "height": 48
+            },
+            {
+              "label": "이름",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "두 차트를 명확하게 비교하세요.",
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "초대 링크 만들기",
+              "width": 140.0625,
+              "height": 48
+            },
+            {
+              "label": "이름",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "생년월일",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "출생 시간",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "출생지",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "장소 찾기",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Save your birth details"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "이름",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "생년월일",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "출생 시간",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "출생지",
+              "width": 330,
+              "height": 42
+            },
+            {
+              "label": "장소 찾기",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "위도",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "경도",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "시간대",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "시간대 오프셋",
+              "width": 352,
+              "height": 44
+            },
+            {
+              "label": "출생 정보 저장",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/app/login",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "로그인 또는 가입"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "다른 로컬 프로필 만들기",
+              "width": 386,
+              "height": 44
+            },
+            {
+              "label": "가입",
+              "width": 57.640625,
+              "height": 44
+            },
+            {
+              "label": "로그인",
+              "width": 69.46875,
+              "height": 44
+            },
+            {
+              "label": "이메일",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "전화",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "데모 코드 생성",
+              "width": 378,
+              "height": 48
+            }
+          ]
+        },
+        {
+          "position": "middle",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "이메일",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "전화",
+              "width": 185,
+              "height": 44
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "데모 코드 생성",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "테스터 계정 사용",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        },
+        {
+          "position": "bottom",
+          "headings": [],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": [
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "데모 코드 생성",
+              "width": 378,
+              "height": 48
+            },
+            {
+              "label": "테스터 계정 사용",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "AApple",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "GGoogle",
+              "width": 378,
+              "height": 44
+            },
+            {
+              "label": "fFacebook",
+              "width": 378,
+              "height": 44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/about",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "Hint 소개"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "Hint 소개"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "Hint 소개"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "개인정보 처리방침"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "개인정보 처리방침"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "개인정보 처리방침"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/terms",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "이용약관"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "이용약관"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "이용약관"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/disclaimer",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "면책 안내"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "면책 안내"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "면책 안내"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "frames": [
+        {
+          "position": "top",
+          "headings": [
+            "연락처"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "middle",
+          "headings": [
+            "연락처"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        },
+        {
+          "position": "bottom",
+          "headings": [
+            "연락처"
+          ],
+          "overflow": [],
+          "clippedSummaries": [],
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "runtimeErrors": [],
+  "navigationDiagnostics": []
+}
