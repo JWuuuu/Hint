@@ -4,15 +4,15 @@ Continue the merged application, rather than importing either ZIP over it.
 
 **Goal paused at the owner's request; confirmed on 2026-09-30.** Wait for an explicit request to resume. The acceptance scope expanded on 2026-09-29: the owner requires actual iPhone acceptance and a prepared TestFlight candidate, without uploading. Browser acceptance is only the first layer. Continue `artifacts/hint/docs/ios-acceptance-2026-09-29/README.md`; Simulator, physical-device evidence and a signed candidate are required before the goal can be complete. The merge evidence below is historical evidence for its exact revision, not an iPhone release approval.
 
-**Named checkpoint:** `codex/checkpoint-2026-09-30-merged-app`. Read [the checkpoint record](artifacts/hint/docs/checkpoints/2026-09-30-merged-app.md) for exact source/build fingerprints, preview state and outstanding work. This checkpoint adds documentation only; the application implementation remains `3280bcf`.
+**Named checkpoint:** `checkpoint-2026-09-30-merged-app`. Read [the checkpoint record](artifacts/hint/docs/checkpoints/2026-09-30-merged-app.md) for exact source/build fingerprints, preview state and outstanding work. This checkpoint adds documentation only; the application implementation remains `3280bcf`.
 
 **Subsequent owner-requested Home/Daily correction:** [ZIP fidelity review](artifacts/hint/docs/home-daily-ui-2026-09-30/README.md), implementation `69d32dc`. It restores the ZIP's date-first Daily and Home composition, keeps sharing compact, and fixes the Home offline status entering the iPhone island area. Tarot is unchanged. This narrow task does not resume the paused Goal; use the latest integration branch rather than the older named checkpoint for these corrections.
 
-- Repository: https://github.com/JWuuuu/Hint-App.git
-- Integration branch: `codex/merge-home-daily-receipt`
+- Repository: https://github.com/JWuuuu/Hint.git
+- Integration branch: `merge-home-daily-receipt`
 - Current implementation checkpoint: **`69d32dccfc4e9cb6acb1b05313ca17a6dae4ac80`**. Its following documentation commit records this focused correction; use the latest integration-branch tip.
 - Historical merge implementation: `2f6c1962aa0cee608ec536daa835148fc3a7d98a`; expanded iPhone acceptance is still incomplete.
-- Original handoff remains untouched: `codex/windows-handoff-2026-09-12` at `b9594adf2f4d3114cf8bc33d6cd319d123477a13`.
+- Original handoff remains untouched: `windows-handoff-2026-09-12` at `b9594adf2f4d3114cf8bc33d6cd319d123477a13`.
 - `main` is not the working baseline; do not replace this branch with it. The `old-hint` remote has a disabled push URL.
 
 ## What is combined
@@ -62,7 +62,7 @@ Mac browser evidence does not establish physical-iPhone or Windows results. Nati
 Use a short path and a fresh dependency installation. Do not copy Mac node_modules or browser binaries.
 
 ```powershell
-git clone -c core.autocrlf=false --branch codex/merge-home-daily-receipt https://github.com/JWuuuu/Hint-App.git C:\dev\Hint-App
+git clone -c core.autocrlf=false --branch merge-home-daily-receipt https://github.com/JWuuuu/Hint.git C:\dev\Hint-App
 Set-Location C:\dev\Hint-App
 git status --short
 git log -3 --oneline
@@ -75,7 +75,7 @@ pnpm.cmd --filter @workspace/hint exec vitest run --maxWorkers=2
 pnpm.cmd run build:api
 ```
 
-The clone keeps LF line endings for the recorded source hashes using a repository-local setting. Use Node 24.x (`.node-version`) and pnpm 11.5.0 (`package.json`). `.cmd` avoids PowerShell launcher-policy problems without changing execution policy. Restart desktop Codex if its PATH has not picked up newly installed tools.
+The clone keeps LF line endings for the recorded source hashes using a repository-local setting. Use Node 24.x (`.node-version`) and pnpm 11.5.0 (`package.json`). `.cmd` avoids PowerShell launcher-policy problems without changing execution policy. Restart the development app if its PATH has not picked up newly installed tools.
 
 ## Isolated app preview
 
@@ -120,14 +120,14 @@ The actual browser/API bridge requires exactly `postgresql://hint_test:isolated-
 
 Keep the brand “The universe leaves you a letter every day.” Preserve the approved three contributors' work and restrained room transitions. First inspect the transferred application in the phone frame, then reproduce any issue before editing. Use local branches/commits for work and push to this repository; sync those commits back to Mac for interim and final native checks.
 
-Git transfers source, assets, tests, evidence and this handoff. It does not transfer .env, API credentials, Keychain sessions, browser localStorage/IndexedDB, databases, dependencies or private Codex conversation/configuration. The new desktop profile can start empty; no Mac user records were deleted or moved.
+Git transfers source, assets, tests, evidence and this handoff. It does not transfer .env, API credentials, Keychain sessions, browser localStorage/IndexedDB, databases, dependencies or private local development conversations/configuration. The new desktop profile can start empty; no Mac user records were deleted or moved.
 
 Windows can be the primary web/API development and browser-test machine. Xcode, iOS Simulator, signing and iOS packaging stay on Mac. Release URLs and Apple Team ID are still unspecified; do not ask repeatedly while independent web work can proceed.
 
-## Paste into desktop Codex
+## Continue development on another computer
 
 ```text
-Continue Hint on the latest codex/merge-home-daily-receipt branch, including runtime commit 3280bcfb5e6975194e2bd1f29479306b3d8425c6 and its following handoff commit. Read HANDOFF_WINDOWS.md and artifacts/hint/docs/ios-acceptance-2026-09-29/README.md first. The Mac had confirmed thermal-protection sleep, and I asked to save progress until Windows is ready. Do not start a long Mac run. Use the older merge report only as historical evidence.
+Continue Hint on the latest merge-home-daily-receipt branch, including runtime commit 3280bcfb5e6975194e2bd1f29479306b3d8425c6 and its following handoff commit. Read HANDOFF_WINDOWS.md and artifacts/hint/docs/ios-acceptance-2026-09-29/README.md first. The Mac had confirmed thermal-protection sleep, and I asked to save progress until Windows is ready. Do not start a long Mac run. Use the older merge report only as historical evidence.
 The three-way merge is implemented: my Tarot/Astrology/data functions, Xiaoyu's Home/Daily/navigation visuals, and Tiantian's printer as the real sharing dialog. Do not re-import the ZIPs or overwrite with main. Preserve all nine spreads, the 2.8-second two-packet shuffle, fixed daily-card identity, private-by-default immutable receipts, and complete Astrology charts/reports.
 Install fresh Windows dependencies, restore the selectable iPhone-frame preview, and continue only unfinished functional/performance checks. The receipt long-frame repair, full-size PNG equivalence, dark/large-text fixes and real browser/API/DB bridge are recorded. Three SE references were reviewed individually; do not bulk-update other screenshots. Preserve source/data safeguards.
 The active goal includes Simulator, physical-iPhone acceptance and a prepared signed TestFlight candidate. Use one worker and durable progress logs; verify source/build fingerprints before resuming. Finish consolidated coverage and retain separate Simulator/device/build evidence. Missing Xcode, real HTTPS configuration, signing or device proof prevents completion. Do not mark the expanded goal complete from browser checks or upload TestFlight.

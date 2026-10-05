@@ -6,16 +6,16 @@ This is a saved development checkpoint, not a release approval. The three contri
 
 | Item | Recorded value |
 | --- | --- |
-| Repository | `https://github.com/JWuuuu/Hint-App.git` |
-| Working branch | `codex/merge-home-daily-receipt` |
-| Annotated checkpoint tag | `codex/checkpoint-2026-09-30-merged-app` |
+| Repository | `https://github.com/JWuuuu/Hint.git` |
+| Working branch | `merge-home-daily-receipt` |
+| Annotated checkpoint tag | `checkpoint-2026-09-30-merged-app` |
 | Commit before this documentation checkpoint | `1b630d02bcd7db652cfba7a0f0532880d9c1986c` |
 | Latest application implementation commit | `3280bcfb5e6975194e2bd1f29479306b3d8425c6` |
 | Source/test fingerprint | `092a37b05f85b12b5884f8d83929a4ff6b5935f103bb8c8c7f4e5ac753c9b32e` |
 | Built web-assets fingerprint | `cd5d14ee0baacb51c4dd619e2bfc8d402a4cb973559fd351d53e04e64ece197c` |
 | Verification time | `2026-09-30 15:32:12 UTC` |
 
-Fingerprints were recalculated with `scripts/qa-progress-reporter.cjs`. Before the checkpoint edits, the working tree was clean and the local commit matched the live GitHub branch. The checkpoint tag identifies the following documentation commit; runtime source, assets and tests are unchanged. `main` and `codex/windows-handoff-2026-09-12` are unchanged.
+Fingerprints were recalculated with `scripts/qa-progress-reporter.cjs`. Before the checkpoint edits, the working tree was clean and the local commit matched the live GitHub branch. The checkpoint tag identifies the following documentation commit; runtime source, assets and tests are unchanged. `main` and `windows-handoff-2026-09-12` are unchanged.
 
 ## Included work
 
@@ -71,7 +71,7 @@ To locate this exact checkpoint without altering the checkout:
 
 ```sh
 git fetch origin --tags
-git show --no-patch codex/checkpoint-2026-09-30-merged-app
+git show --no-patch checkpoint-2026-09-30-merged-app
 ```
 
 For future work from the exact checkpoint, first preserve any current uncommitted changes, then create a new branch from that tag rather than resetting or overwriting existing work. The full Windows startup and test commands are in `HANDOFF_WINDOWS.md`.
