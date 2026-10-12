@@ -1,0 +1,32 @@
+[
+  {
+    "engine": "chromium",
+    "passed": true,
+    "checks": [
+      "Begin works while image assets are pending; an asset failure leaves the form visible and editable",
+      "return visit starts at the greeting; touch/click and keyboard alternate eyes without restarting the wave; visibility suspension freezes and resumes the clock",
+      "keyboard focus moves to the new heading and first field; existing local sign-in completes, saves the profile once, resumes the requested Ask route and retains the same character and undelivered letter",
+      "the saved completion survives a reload"
+    ],
+    "errors": [],
+    "api": "isolated fixtures",
+    "signIn": "existing local preview flow; no email sent",
+    "visibility": "simulated document state",
+    "nativeDevice": false
+  },
+  {
+    "engine": "webkit",
+    "passed": true,
+    "checks": [
+      "Begin works while image assets are pending; an asset failure leaves the form visible and editable",
+      "return visit starts at the greeting; touch/click and keyboard alternate eyes without restarting the wave; visibility suspension freezes and resumes the clock",
+      "keyboard focus moves to the new heading and first field; existing local sign-in completes, saves the profile once, resumes the requested Ask route and retains the same character and undelivered letter",
+      "the saved completion survives a reload"
+    ],
+    "errors": [],
+    "api": "isolated fixtures",
+    "signIn": "existing local preview flow; no email sent",
+    "visibility": "simulated document state",
+    "nativeDevice": false
+  }
+]

@@ -259,7 +259,7 @@
 /* The donor paper composition also uses the app's existing night palette. */
 [data-hint-theme="dark"] .hint-home-page {
   color: var(--hint-text);
-  background: var(--hint-page-bg) !important;
+  background: transparent;
 }
 [data-hint-theme="dark"] .hint-home-page :is(
   .hint-home-eyebrow, .hint-home-card-copy, .hint-home-energy-total,

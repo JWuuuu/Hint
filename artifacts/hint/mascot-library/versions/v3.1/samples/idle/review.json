@@ -1,0 +1,117 @@
+{
+  "gesture": "idle",
+  "seconds": 7.7008999999761585,
+  "sampleTimes": [
+    0.0005,
+    0.604199999988079,
+    1.204199999988079,
+    1.8041999999880791,
+    2.404099999988079,
+    3.004199999988079,
+    4.204099999988078,
+    4.804099999988079,
+    5.4040999999880786,
+    6.003999999988079,
+    6.604099999988079,
+    7.203899999988079
+  ],
+  "sampleStates": [
+    {
+      "gesture": "idle",
+      "time": 0,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 0.3833,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 0.9833000000000004,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 1.5831999999999988,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 2.1831999999999994,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 2.783199999999998,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 3.9830999999999954,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 4.583100000000003,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 5.1831000000000085,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 5.783100000000017,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 6.383000000000026,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 6.983100000000031,
+      "letter": "held",
+      "phase": "holding"
+    }
+  ],
+  "medianFrameMs": 16.699999999999818,
+  "p95FrameMs": 16.799999999999727,
+  "decorativeAccents": false,
+  "errors": [],
+  "video": {
+    "duration": 7.7,
+    "codec": "h264",
+    "width": 640,
+    "height": 640
+  },
+  "keyframeTimes": [
+    0,
+    0.6416666666666666,
+    1.2833333333333332,
+    1.9249999999999998,
+    2.5666666666666664,
+    3.208333333333333,
+    3.8499999999999996,
+    4.491666666666666,
+    5.133333333333333,
+    5.7749999999999995,
+    6.416666666666666,
+    7.058333333333333
+  ],
+  "keyframesFromVideo": true
+}

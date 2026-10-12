@@ -1,0 +1,53 @@
+{
+  "scope": "Opt-in app welcome and profile flow",
+  "status": "reviewed prototype; full v3.2 goal remains active",
+  "visualReview": {
+    "method": "Normal-speed browser recordings captured. Visual inspection covered 14 controlled timeline frames, recording contact sheets and both browser screenshots.",
+    "findings": [
+      "The peek passes behind the logo before the character enters the foreground.",
+      "The welcome wave continues while one eye winks; the opposite eye responds to a later keyboard activation.",
+      "Rounded paw and envelope contact remain intact in the reviewed greeting samples.",
+      "Welcome content fades before form content appears, preventing readable text from sitting behind the moving character.",
+      "The character settles beside the form and moves clear of the fields when the keyboard viewport shrinks.",
+      "The 320 by 568 welcome keeps the primary action and closed profile selector in view."
+    ],
+    "samples": [
+      "welcome-introduction.mp4",
+      "welcome-introduction-half.mp4",
+      "hello-wave-and-wink.mp4",
+      "keyframes.png",
+      "device-preview-frame.png"
+    ]
+  },
+  "verification": {
+    "browsers": [
+      "Chrome",
+      "WebKit"
+    ],
+    "widths": [
+      320,
+      390,
+      430
+    ],
+    "pureTests": 37,
+    "appTests": 22,
+    "typecheck": true,
+    "productionBuild": true,
+    "previewFlagDefault": false,
+    "api": "isolated fixtures",
+    "voice": "simulated recognition and playback in regression checks",
+    "nativeDevice": false
+  },
+  "fixedDuringReview": [
+    "Form content initially appeared before the large character had moved clear; reveal now follows the shared animation clock.",
+    "Profile selector text lacked contrast on the light welcome; the welcome now supplies its own surface colors.",
+    "An early Begin click could wait for image loading; the form now opens immediately until the guide has rendered.",
+    "Reduced-height welcome layout was tightened to keep the closed profile selector fully visible."
+  ],
+  "remaining": [
+    "Home daily receipt and real card integration",
+    "Page-loading continuity between onboarding and the daily content",
+    "Final review of all 20 gestures with the shared transitions",
+    "Native iPhone performance and release verification"
+  ]
+}

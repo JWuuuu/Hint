@@ -1,0 +1,58 @@
+[
+  {
+    "gesture": "wink-left",
+    "frames": 58,
+    "majorCharacterComponents": 1,
+    "minArea": 74249,
+    "maxArea": 74614
+  },
+  {
+    "gesture": "wink-right",
+    "frames": 63,
+    "majorCharacterComponents": 1,
+    "minArea": 74423,
+    "maxArea": 74481
+  },
+  {
+    "gesture": "nod",
+    "frames": 70,
+    "majorCharacterComponents": 1,
+    "minArea": 73116,
+    "maxArea": 75144
+  },
+  {
+    "gesture": "listening",
+    "frames": 133,
+    "majorCharacterComponents": 1,
+    "minArea": 74433,
+    "maxArea": 78102
+  },
+  {
+    "gesture": "thinking",
+    "frames": 139,
+    "majorCharacterComponents": 1,
+    "minArea": 74433,
+    "maxArea": 75073
+  },
+  {
+    "gesture": "celebration",
+    "frames": 88,
+    "majorCharacterComponents": 1,
+    "minArea": 74407,
+    "maxArea": 74477
+  },
+  {
+    "gesture": "offer-letter",
+    "frames": 67,
+    "majorCharacterComponents": 1,
+    "minArea": 74433,
+    "maxArea": 76788
+  },
+  {
+    "gesture": "deliver-letter",
+    "frames": 79,
+    "majorCharacterComponents": 1,
+    "minArea": 74396,
+    "maxArea": 77979
+  }
+]

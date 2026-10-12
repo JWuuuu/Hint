@@ -1,0 +1,113 @@
+{
+  "distinctFaceDrawings": 20,
+  "mouthChanges": [
+    {
+      "gesture": "idle",
+      "changedPixels": 0
+    },
+    {
+      "gesture": "welcome",
+      "changedPixels": 80
+    },
+    {
+      "gesture": "offer-letter",
+      "changedPixels": 393
+    },
+    {
+      "gesture": "listening",
+      "changedPixels": 322
+    },
+    {
+      "gesture": "thinking",
+      "changedPixels": 351
+    },
+    {
+      "gesture": "reading",
+      "changedPixels": 322
+    },
+    {
+      "gesture": "speaking",
+      "changedPixels": 98
+    },
+    {
+      "gesture": "waiting",
+      "changedPixels": 274
+    },
+    {
+      "gesture": "wink-left",
+      "changedPixels": 532
+    },
+    {
+      "gesture": "wink-right",
+      "changedPixels": 503
+    },
+    {
+      "gesture": "nod",
+      "changedPixels": 160
+    },
+    {
+      "gesture": "shake-head",
+      "changedPixels": 245
+    },
+    {
+      "gesture": "celebration",
+      "changedPixels": 1393
+    },
+    {
+      "gesture": "curious",
+      "changedPixels": 367
+    },
+    {
+      "gesture": "surprised",
+      "changedPixels": 1657
+    },
+    {
+      "gesture": "shy",
+      "changedPixels": 261
+    },
+    {
+      "gesture": "comfort",
+      "changedPixels": 146
+    },
+    {
+      "gesture": "disappointed",
+      "changedPixels": 420
+    },
+    {
+      "gesture": "frustrated",
+      "changedPixels": 349
+    },
+    {
+      "gesture": "sleepy",
+      "changedPixels": 1788
+    }
+  ],
+  "poseOrder": [
+    "idle",
+    "welcome",
+    "offer-letter",
+    "listening",
+    "thinking",
+    "reading",
+    "speaking",
+    "waiting",
+    "wink-left",
+    "wink-right",
+    "nod",
+    "shake-head",
+    "celebration",
+    "curious",
+    "surprised",
+    "shy",
+    "comfort",
+    "disappointed",
+    "frustrated",
+    "sleepy"
+  ],
+  "decorativeAccents": false,
+  "sizes": [
+    220,
+    160,
+    96
+  ]
+}

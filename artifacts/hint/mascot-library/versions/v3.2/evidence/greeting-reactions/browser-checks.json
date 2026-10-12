@@ -1,0 +1,28 @@
+[
+  {
+    "engine": "chromium",
+    "passed": true,
+    "checks": [
+      "welcome waves automatically; touch overlays a left wink while the original paw sequence continues",
+      "a later keyboard activation uses the opposite wink; repeated taps do not restart a reaction",
+      "pause and background suspension preserve the combined gesture",
+      "tap response and one-eye expression remain visible at 320, 390 and 430 px widths",
+      "half-speed wave and wink remain coordinated; navigation carries the exact pose into the form",
+      "reduced motion keeps the greeting still and navigation immediately usable"
+    ],
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "passed": true,
+    "checks": [
+      "welcome waves automatically; touch overlays a left wink while the original paw sequence continues",
+      "a later keyboard activation uses the opposite wink; repeated taps do not restart a reaction",
+      "pause and background suspension preserve the combined gesture",
+      "tap response and one-eye expression remain visible at 320, 390 and 430 px widths",
+      "half-speed wave and wink remain coordinated; navigation carries the exact pose into the form",
+      "reduced motion keeps the greeting still and navigation immediately usable"
+    ],
+    "errors": []
+  }
+]

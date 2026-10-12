@@ -10,6 +10,7 @@ import { ProductRouter } from "./product/ProductRouter";
 import { RedirectTo } from "./shared/navigation/RedirectTo";
 import { MotionPolicyProvider } from "./lib/motionPolicy";
 import { RoomVisitBoundary, guardRoomNavigation } from "./components/app/RoomVisitBoundary";
+import { HintGuideProvider } from "./components/mascot/HintGuide";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ function App() {
         <MotionPolicyProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")} aroundNav={guardRoomNavigation}>
           <RoomVisitBoundary>
+          <HintGuideProvider>
           <AppShell>
             <Switch>
               <Route path="/" component={RootRedirect} />
@@ -107,6 +109,7 @@ function App() {
               </Route>
             </Switch>
           </AppShell>
+          </HintGuideProvider>
           </RoomVisitBoundary>
         </WouterRouter>
         </MotionPolicyProvider>

@@ -1,0 +1,29 @@
+{
+  "status": "reviewed prototype, integration remains opt-in",
+  "activityReview": {
+    "idle": "Quiet breathing with a natural blink. Paws stay against the torso.",
+    "waiting": "Hands stay closer together with a patient gaze. No repeated entrance.",
+    "listening": "Side lean and short paw near the head; the other paw stays down.",
+    "thinking": "Upward gaze, pursed mouth and paw below the cheek; readable with the question mark hidden.",
+    "reading": "Downward scanning gaze at the compact avatar size; no talking mouth.",
+    "speaking": "Mouth changes and gentle body emphasis only while playback is active."
+  },
+  "visualChecks": [
+    "Normal-speed recordings and sampled held poses inspected",
+    "Half-speed state transitions exercised in both browser previews",
+    "Actual Ask and voice screens inspected at phone size",
+    "Short paws remain connected and faces stay attached across sampled frames",
+    "Voice transcript reduces the same character into the available space"
+  ],
+  "functionalEvidence": [
+    "../conversation/browser-checks.json",
+    "../conversation/holds/review.json",
+    "browser-checks.json"
+  ],
+  "limitations": [
+    "Recorded timing is desktop browser performance, not iPhone performance",
+    "Recognition and audio are controlled fixtures",
+    "All 20 gestures still require the final v3.2 review",
+    "Onboarding and daily-letter app integration are still pending"
+  ]
+}

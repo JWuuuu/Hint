@@ -1,0 +1,101 @@
+import { createRequire } from 'node:module';
+import assert from 'node:assert/strict';
+import { writeFile, copyFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
+const { chromium, webkit } = createRequire(import.meta.url)('@playwright/test');
+const dir = fileURLToPath(new URL('../',import.meta.url));
+const url = process.env.HINT_PREVIEW_URL || 'http://127.0.0.1:8767/preview/index.html';
+const state = page => page.evaluate(() => document.getElementById('hint-gesture-library').mascot.getState());
+const call = (page, method, ...args) => page.evaluate(({method,args}) => document.getElementById('hint-gesture-library').mascot[method](...args),{method,args});
+const waitDone = page => page.waitForFunction(() => !document.getElementById('hint-gesture-library').mascot.getState().active, null, {timeout:15000});
+const report = [];
+for(const name of process.argv.slice(2).length ? process.argv.slice(2) : ['chromium','webkit']) {
+  const browser = await (name==='chromium'?chromium:webkit).launch(name==='chromium'?{channel:'chrome',headless:true}:{headless:true});
+  try {
+    const context = await browser.newContext({viewport:{width:390,height:850},deviceScaleFactor:2,hasTouch:true});
+    const page = await context.newPage(),errors=[];
+    page.on('pageerror',e=>errors.push(e.message));
+    await page.goto(url);await page.waitForFunction(()=>document.getElementById('hint-gesture-library').mascot);
+    await page.evaluate(()=>{window.completions=[];document.getElementById('hint-gesture-library').addEventListener('hint:gesture-complete',e=>window.completions.push(e.detail));});
+    await page.waitForFunction(()=>document.getElementById('hint-gesture-library').mascot.getState().time>.25);
+    const beforeTap=(await state(page)).time;
+    await page.locator('.hint-character').tap();
+    assert.ok((await state(page)).time>=beforeTap,'A repeated tap restarted the gesture');
+    await call(page,'pause');const paused=(await state(page)).time;
+    await page.waitForTimeout(160);assert.equal((await state(page)).time,paused);
+    await page.locator('[data-play]').click();await waitDone(page);
+    const timings=[];
+    for(const gesture of ['wink-right','nod','listening','thinking','celebration']) {
+      const start=Date.now();await page.locator('[data-gesture]').selectOption(gesture);
+      assert.equal((await state(page)).gesture,gesture);await waitDone(page);
+      timings.push({gesture,milliseconds:Date.now()-start});
+      assert.equal((await state(page)).time,(await state(page)).duration);
+    }
+    await page.locator('[data-gesture]').selectOption('offer-letter');await waitDone(page);
+    assert.equal((await state(page)).letter,'offered');const hold=(await state(page)).time;
+    await page.waitForTimeout(240);assert.equal((await state(page)).time,hold);
+    assert.equal(await call(page,'playGesture','nod'),false);
+    await page.locator('[data-play]').click();
+    assert.equal(await call(page,'acceptLetter'),false,'Second accept restarted delivery');
+    await call(page,'pause');await call(page,'seek',.75);
+    assert.equal(await call(page,'acceptLetter'),false,'Scrubbed delivery became a fresh offer');
+    assert.equal(await page.locator('[data-play]').textContent(),'Continue');
+    await page.locator('[data-play]').click();await waitDone(page);
+    assert.equal((await state(page)).letter,'delivered');
+    await page.screenshot({path:path.join(dir,`evidence/${name}-delivered.png`),fullPage:true});
+    await page.locator('[data-gesture]').selectOption('wink-left');await waitDone(page);
+    assert.equal((await state(page)).letter,'delivered');
+    await call(page,'resetScene');await call(page,'playGesture','nod');await call(page,'pause');await call(page,'seek',.8);
+    assert.equal(await call(page,'playGesture','thinking'),false);
+    await call(page,'resume');await waitDone(page);
+    await call(page,'resetScene');await call(page,'playGesture','thinking');
+    await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});
+    const background=(await state(page)).time;await page.waitForTimeout(180);assert.equal((await state(page)).time,background);
+    await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});
+    await page.waitForTimeout(120);assert.ok((await state(page)).time>background);
+    await call(page,'resetScene');
+    for(const width of [320,390,430,736]) {
+      await page.setViewportSize({width,height:850});
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}px overflow`);
+      const controls=await page.locator('.hint-actions button,[data-gesture]').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().height));
+      assert.ok(controls.every(h=>h>=44),`${width}px touch targets`);
+    }
+    await page.setViewportSize({width:390,height:850});
+    await page.locator('[data-reference] summary').click();
+    const frame=page.frameLocator('[data-approved]');await frame.locator('canvas[data-ready="true"]').waitFor();
+    assert.equal(await frame.locator('h2').textContent(),'Hey, welcome to Hint.');
+    await call(page,'playGesture','listening');await page.locator('[data-approved]').scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>!document.getElementById('hint-gesture-library').mascot.getState().visible);
+    const offscreen=(await state(page)).time;await page.waitForTimeout(150);assert.equal((await state(page)).time,offscreen);
+    await page.locator('canvas').scrollIntoViewIfNeeded();await page.waitForTimeout(160);assert.ok((await state(page)).time>offscreen);
+    await call(page,'resetScene');await page.locator('[data-reference] summary').click();
+    await page.locator('[data-play]').focus();await page.keyboard.press('Enter');assert.equal((await state(page)).active,true);
+    await waitDone(page);
+    await page.screenshot({path:path.join(dir,`evidence/${name}-preview.png`),fullPage:true});
+    const completed=await page.evaluate(()=>window.completions);
+    assert.equal(completed.filter(c=>c.gesture==='offer-letter').length,1);
+    assert.equal(completed.filter(c=>c.gesture==='deliver-letter').length,1);
+    const reducedPage=await context.newPage();await reducedPage.emulateMedia({reducedMotion:'reduce'});
+    reducedPage.on('pageerror',e=>errors.push(e.message));
+    await reducedPage.goto(url);await reducedPage.waitForFunction(()=>document.getElementById('hint-gesture-library').mascot);
+    const rest=await state(reducedPage);await reducedPage.waitForTimeout(180);
+    assert.deepEqual(await state(reducedPage),rest);assert.equal(rest.paused,true);
+    await reducedPage.locator('[data-play]').click();await waitDone(reducedPage);
+    assert.equal((await state(reducedPage)).paused,true);assert.equal((await state(reducedPage)).clock,0);
+    await copyFile(path.join(dir,'preview/index.html'),path.join(dir,'evidence/relocated-preview.html'));
+    const offline=await browser.newContext({viewport:{width:390,height:850},reducedMotion:'reduce'});
+    await offline.route('https://**/*',route=>route.abort());
+    const offlinePage=await offline.newPage();offlinePage.on('pageerror',e=>errors.push(e.message));
+    await offlinePage.goto('file://'+path.join(dir,'evidence/relocated-preview.html'));
+    await offlinePage.waitForFunction(()=>document.getElementById('hint-gesture-library').mascot);
+    await call(offlinePage,'playGesture','offer-letter');await call(offlinePage,'seek',2.2);
+    assert.equal((await state(offlinePage)).letter,'offered');
+    assert.deepEqual(errors,[]);
+    const result={browser:name,passed:true,timings,checks:['autoplay','repeat taps','pause/resume','six expressions','offer waits','single acceptance','delivery scrub','empty-paw reactions','scrub continuation','simulated background suspension','offscreen suspension','320/390/430/736 layout','44px controls','untouched comparison','keyboard','completion callbacks','reduced motion','relocated offline preview'],errors};
+    report.push(result);console.log(JSON.stringify(result));
+    await writeFile(path.join(dir,`evidence/${name}-checks.json`),JSON.stringify(result,null,2)+'\n');
+  } finally { await browser.close(); }
+}
+await writeFile(path.join(dir,'evidence/browser-checks.json'),JSON.stringify(report,null,2)+'\n');

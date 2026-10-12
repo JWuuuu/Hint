@@ -1,0 +1,41 @@
+{
+  "version": "3.1.0",
+  "verifiedFiles": 679,
+  "readOnlyApprovedFiles": 35,
+  "independentBuild": true,
+  "builtInTestsPassed": 16,
+  "browsers": [
+    {
+      "browser": "Chrome",
+      "offline": true,
+      "widths": [
+        320,
+        390,
+        430
+      ],
+      "gestures": 20,
+      "clips": 20,
+      "delivery": true,
+      "comparisons": true,
+      "errors": []
+    },
+    {
+      "browser": "WebKit",
+      "offline": true,
+      "widths": [
+        320,
+        390,
+        430
+      ],
+      "gestures": 20,
+      "clips": 20,
+      "delivery": true,
+      "comparisons": true,
+      "errors": []
+    }
+  ],
+  "build": {
+    "output": "preview/hint-gestures.html",
+    "bytes": 3738511
+  }
+}

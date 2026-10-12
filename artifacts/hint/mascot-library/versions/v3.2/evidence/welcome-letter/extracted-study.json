@@ -1,0 +1,34 @@
+{
+  "folder": "/var/folders/ch/kj981q1j5g3g3w6p5mctdd580000gn/T/hint-study-check-z7r9detj/welcome-letter-study-02",
+  "files": 296,
+  "sha256": "6c98e906ad8e265cee3e536bbcb1cec1b1299aaac2fc1ba974db18d8ce0d2a5c",
+  "archive": "/Users/jwu/Documents/Hint-main/artifacts/hint/mascot-library/versions/v3.2/iterations/welcome-letter-study-02/hint-v3.2-welcome-letter-study-02.zip",
+  "checks": [
+    {
+      "engine": "chromium",
+      "passed": true,
+      "checks": [
+        "checksummed extracted files",
+        "standalone welcome and wink",
+        "profile, handoff and reading",
+        "isolated letter loads",
+        "no HTTP requests"
+      ],
+      "errors": [],
+      "network": []
+    },
+    {
+      "engine": "webkit",
+      "passed": true,
+      "checks": [
+        "checksummed extracted files",
+        "standalone welcome and wink",
+        "profile, handoff and reading",
+        "isolated letter loads",
+        "no HTTP requests"
+      ],
+      "errors": [],
+      "network": []
+    }
+  ]
+}

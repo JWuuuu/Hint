@@ -1,0 +1,114 @@
+[
+  {
+    "gesture": "wink-left",
+    "letter": "held",
+    "frames": 58,
+    "majorCharacterComponents": 1,
+    "minArea": 74130,
+    "maxArea": 74832
+  },
+  {
+    "gesture": "wink-left",
+    "letter": "delivered",
+    "frames": 58,
+    "majorCharacterComponents": 1,
+    "minArea": 74076,
+    "maxArea": 74782
+  },
+  {
+    "gesture": "wink-right",
+    "letter": "held",
+    "frames": 63,
+    "majorCharacterComponents": 1,
+    "minArea": 74243,
+    "maxArea": 74787
+  },
+  {
+    "gesture": "wink-right",
+    "letter": "delivered",
+    "frames": 63,
+    "majorCharacterComponents": 1,
+    "minArea": 74202,
+    "maxArea": 74733
+  },
+  {
+    "gesture": "nod",
+    "letter": "held",
+    "frames": 70,
+    "majorCharacterComponents": 1,
+    "minArea": 70697,
+    "maxArea": 75525
+  },
+  {
+    "gesture": "nod",
+    "letter": "delivered",
+    "frames": 70,
+    "majorCharacterComponents": 1,
+    "minArea": 70624,
+    "maxArea": 75474
+  },
+  {
+    "gesture": "listening",
+    "letter": "held",
+    "frames": 133,
+    "majorCharacterComponents": 1,
+    "minArea": 74575,
+    "maxArea": 81266
+  },
+  {
+    "gesture": "listening",
+    "letter": "delivered",
+    "frames": 133,
+    "majorCharacterComponents": 1,
+    "minArea": 74518,
+    "maxArea": 81206
+  },
+  {
+    "gesture": "thinking",
+    "letter": "held",
+    "frames": 139,
+    "majorCharacterComponents": 1,
+    "minArea": 73488,
+    "maxArea": 74804
+  },
+  {
+    "gesture": "thinking",
+    "letter": "delivered",
+    "frames": 139,
+    "majorCharacterComponents": 1,
+    "minArea": 73488,
+    "maxArea": 74768
+  },
+  {
+    "gesture": "celebration",
+    "letter": "held",
+    "frames": 88,
+    "majorCharacterComponents": 1,
+    "minArea": 74539,
+    "maxArea": 76120
+  },
+  {
+    "gesture": "celebration",
+    "letter": "delivered",
+    "frames": 88,
+    "majorCharacterComponents": 1,
+    "minArea": 74484,
+    "maxArea": 76632
+  },
+  {
+    "gesture": "offer-letter",
+    "letter": "held",
+    "frames": 67,
+    "majorCharacterComponents": 1,
+    "minArea": 74497,
+    "maxArea": 76788
+  },
+  {
+    "gesture": "deliver-letter",
+    "letter": "delivered",
+    "frames": 79,
+    "majorCharacterComponents": 1,
+    "minArea": 74351,
+    "maxArea": 78077
+  }
+]

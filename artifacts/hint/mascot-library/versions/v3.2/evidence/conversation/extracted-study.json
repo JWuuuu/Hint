@@ -1,0 +1,47 @@
+{
+  "root": "/var/folders/ch/kj981q1j5g3g3w6p5mctdd580000gn/T/hint-conversation-review-p_14kggn/conversation-study-03",
+  "archive": "/Users/jwu/Documents/Hint-main/artifacts/hint/mascot-library/versions/v3.2/iterations/conversation-study-03/hint-v3.2-conversation-study-03.zip",
+  "sha256": "e98afa866dd8470a4cd95e0b7b188c7b370564702e43be67678628a3acf92806",
+  "filesVerified": 488,
+  "approvedReadOnly": true,
+  "protectedFiles": {
+    "files": 35,
+    "protectedV1Files": 0,
+    "protectedV2Files": 0,
+    "protectedV3Files": 0,
+    "protectedV31Files": 0,
+    "greetingSha256": "fbda0c5e0722a0a9f706b1323336f3d4a704d2cb91252e28e5eca42725200191",
+    "collectionV1Sha256": "087ae13cd100d7b9e2f001a07674a547ee50adf7c656292a23445e72f421d82d",
+    "collectionV2Sha256": "bd0063fc1a722fedfb8a0569c8471001b7f9ba547256da0551d82f1331ae62f6",
+    "collectionV3Sha256": "af0faac85bc35255767bb74512ba78ef4854f494b92ba159646a883ab55feaa4",
+    "collectionV31Sha256": "95cca48345456fd347d566e0aff897e11430e2b7c3bd75fe6cf3eaeda3d32749"
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "passed": true,
+      "httpRequests": 0,
+      "errors": [],
+      "checks": [
+        "independent file loading",
+        "listening",
+        "tap wink and repeat guard",
+        "speaking",
+        "pause"
+      ]
+    },
+    {
+      "engine": "webkit",
+      "passed": true,
+      "httpRequests": 0,
+      "errors": [],
+      "checks": [
+        "independent file loading",
+        "listening",
+        "tap wink and repeat guard",
+        "speaking",
+        "pause"
+      ]
+    }
+  ]
+}

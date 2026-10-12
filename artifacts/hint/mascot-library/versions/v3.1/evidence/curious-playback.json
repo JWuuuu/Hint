@@ -1,0 +1,26 @@
+[
+  {
+    "gesture": "curious",
+    "letter": "held",
+    "speed": 1,
+    "elapsed": 3432.599999964237,
+    "frames": 204,
+    "medianFrameMs": 16.699999999982538,
+    "p95FrameMs": 16.79999999998836,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  },
+  {
+    "gesture": "curious",
+    "letter": "held",
+    "speed": 0.5,
+    "elapsed": 6827.399999976158,
+    "frames": 408,
+    "medianFrameMs": 16.699999999982538,
+    "p95FrameMs": 16.70000000001164,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  }
+]

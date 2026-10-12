@@ -1,0 +1,46 @@
+.hint-app-shell-root.hint-constellation-shell {
+  isolation: isolate;
+  background: #fcfaf6;
+}
+
+.hint-app-shell-root.hint-constellation-shell[data-hint-theme="dark"] {
+  background: #17151e;
+}
+
+/* Page typography and surfaces keep their themes; the backdrop owns the sky. */
+.hint-constellation-shell.hint-cream-route::before,
+.hint-constellation-shell.hint-cream-route::after {
+  display: none;
+}
+
+.hint-constellation-shell .hint-onboarding {
+  background: transparent;
+}
+
+.hint-constellation-shell .hint-onboarding::after,
+.hint-constellation-shell .hint-onboarding-spotlight,
+.hint-constellation-shell .hint-onboarding-stars {
+  display: none;
+}
+
+.hint-constellation-shell[data-hint-theme="dark"] .hint-onboarding h1 {
+  color: var(--hint-text);
+}
+
+.hint-constellation-shell[data-hint-theme="dark"] .hint-onboarding h1 + p {
+  color: var(--hint-muted);
+}
+
+.hint-app-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hint-app-background canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

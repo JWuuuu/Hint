@@ -1,0 +1,24 @@
+[
+  {
+    "gesture": "wink-right",
+    "speed": 1,
+    "elapsed": 2082.199999988079,
+    "frames": 123,
+    "medianFrameMs": 16.699999999999932,
+    "p95FrameMs": 16.700000000000273,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  },
+  {
+    "gesture": "wink-right",
+    "speed": 0.5,
+    "elapsed": 4133.800000011921,
+    "frames": 246,
+    "medianFrameMs": 16.699999999999818,
+    "p95FrameMs": 16.700000000000728,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  }
+]

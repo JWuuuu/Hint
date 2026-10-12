@@ -10,6 +10,7 @@ type BrowserSpeechRecognition = {
   interimResults: boolean;
   lang: string;
   maxAlternatives: number;
+  onstart: (() => void) | null;
   onresult: ((event: {
     resultIndex?: number;
     results: { length: number; [index: number]: BrowserSpeechResult | undefined };
@@ -30,6 +31,7 @@ export type HintSpeechSession = {
 
 export type HintSpeechOptions = {
   language: string;
+  continuous?: boolean;
   signal?: AbortSignal;
   onStart?: () => void;
   onTranscript: (transcript: string) => void;
@@ -163,9 +165,9 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
     });
     checkCancelled();
   } catch (error) {
+    if (!options.signal?.aborted) reportError("failed");
     if (startRequested) await cleanup(true);
     await removeListeners();
-    if (!options.signal?.aborted) reportError("failed");
     finish();
     throw error;
   }
@@ -189,7 +191,7 @@ function startBrowserSpeech(options: HintSpeechOptions): HintSpeechSession {
     throw new Error("Speech recognition unavailable");
   }
   const recognition = new Recognition();
-  recognition.continuous = true;
+  recognition.continuous = options.continuous ?? true;
   recognition.interimResults = true;
   recognition.lang = options.language;
   recognition.maxAlternatives = 1;
@@ -199,6 +201,7 @@ function startBrowserSpeech(options: HintSpeechOptions): HintSpeechSession {
   const finish = () => {
     if (ended) return;
     ended = true;
+    recognition.onstart = null;
     recognition.onresult = null;
     recognition.onerror = null;
     recognition.onend = null;
@@ -210,6 +213,7 @@ function startBrowserSpeech(options: HintSpeechOptions): HintSpeechSession {
     errorReported = true;
     options.onError(reason);
   };
+  recognition.onstart = () => { if (!ended) options.onStart?.(); };
   recognition.onresult = (event) => {
     if (ended) return;
     finalText = "";
@@ -244,7 +248,6 @@ function startBrowserSpeech(options: HintSpeechOptions): HintSpeechSession {
     recognition.start();
     if (!ended) {
       options.signal?.addEventListener("abort", onAbort, { once: true });
-      options.onStart?.();
     }
   } catch (error) {
     reportError("failed");

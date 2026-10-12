@@ -1,0 +1,34 @@
+{
+  "engine": "chromium",
+  "passed": true,
+  "shots": [
+    {
+      "width": 320,
+      "gestures": 20
+    },
+    {
+      "width": 390,
+      "gestures": 20
+    },
+    {
+      "width": 430,
+      "gestures": 20
+    }
+  ],
+  "checks": [
+    "20 actions at 320, 390, and 430 px",
+    "44 px touch controls",
+    "keyboard",
+    "touch and repeat taps",
+    "pause and resume",
+    "single handoff",
+    "all reactions preserve delivered state",
+    "simulated background suspension",
+    "hidden names and accents",
+    "96 and 160 px previews",
+    "saved v2, v1, and approved greeting comparisons",
+    "offscreen suspension",
+    "reduced motion and explicit one-shot playback"
+  ],
+  "errors": []
+}

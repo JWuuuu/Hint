@@ -34,6 +34,7 @@ import { useLanguage } from "./lib/i18n";
 import { triggerFeedback } from "./lib/feedback";
 import { useMotionPolicy } from "./lib/motionPolicy";
 import { RoomTransitions } from "./components/app/RoomTransitions";
+import { useHintGuideEnabled } from "./components/mascot/HintGuide";
 
 /** Full-screen flows own their navigation, so the global bottom nav is hidden there. */
 const NAV_HIDDEN_ROUTES = ["/tarot", "/ask", "/login", "/app/tarot", "/app/ask", "/app/login"];
@@ -79,6 +80,7 @@ function onboardingOwnsScreen(): boolean {
  * Children are placed above the atmosphere on z-20.
  */
 export function AppShell({ children }: { children: ReactNode }) {
+  const guideEnabled = useHintGuideEnabled();
   const [location] = useLocation();
   const routePath = location.split(/[?#]/, 1)[0]?.replace(/\/+$/, "") || "/";
   const [theme, setTheme] = useState<HintTheme>(getInitialHintTheme);
@@ -220,6 +222,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         ) : null}
 
         {ENABLE_LAUNCH_INTRO &&
+        !(guideEnabled && onboardingOwnsScreen()) &&
         isProductRoute &&
         !referenceHomeRoute &&
         !creamStyleRoute &&

@@ -1,0 +1,18 @@
+{
+  "name": "hint-mascot-library",
+  "version": "2.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "verify": "node scripts/verify-approved.mjs",
+    "rebuild:approved": "node scripts/rebuild-approved.mjs",
+    "package": "python3 scripts/package-release.py",
+    "test": "node --test scripts/motion.test.mjs",
+    "prepare:expressions": "node scripts/prepare-expressions.mjs",
+    "prepare:paws": "node scripts/prepare-connected-paws.mjs",
+    "test:browsers": "node scripts/check-browsers.mjs",
+    "review:faces": "node scripts/inspect-expressions.mjs",
+    "review:frames": "node scripts/audit-frames.mjs"
+  }
+}

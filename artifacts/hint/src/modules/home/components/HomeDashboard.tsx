@@ -1,4 +1,5 @@
 import { DailyReceiptButton } from "../../receipt-printer/ReceiptShareDialog";
+import { ConstellationBackdrop } from "../../../components/app/ConstellationBackdrop";
 import { LocalizedText, translateText } from "../../../lib/LocalizedText";
 import { useLocalDay } from "../../../lib/useLocalDay";
 import { withDailyCardIdentity } from "../data/dailyCardSync";
@@ -2250,149 +2251,6 @@ const REFERENCE_SCORE_ICONS: Record<DailyScore["key"], LucideIcon> = {
   people: UsersRound,
 };
 
-function ReferenceOrbitBackdrop() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <span
-        className="absolute left-[-6rem] top-[9rem] h-[20rem] w-[20rem] rounded-full blur-3xl"
-        style={{ background: "rgba(231, 208, 205, 0.060)" }}
-      />
-      <span
-        className="absolute right-[-7rem] top-[-1rem] h-[22rem] w-[22rem] rounded-full blur-3xl"
-        style={{ background: "rgba(229, 207, 176, 0.072)" }}
-      />
-      <span
-        className="absolute inset-0"
-        style={{
-          background: "linear-gradient(118deg, transparent 0%, rgba(255,255,255,0.17) 45%, transparent 64%)",
-          opacity: 0.34,
-        }}
-      />
-      <svg
-        viewBox="0 0 472 230"
-        className="absolute left-1/2 top-0 h-[230px] w-full max-w-[472px] -translate-x-1/2"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <radialGradient id="reference-top-planet" cx="38%" cy="30%" r="62%">
-            <stop offset="0" stopColor="#e8cfc6" stopOpacity="0.92" />
-            <stop offset="0.48" stopColor="#c8a3af" stopOpacity="0.76" />
-            <stop offset="1" stopColor="#927aa7" stopOpacity="0.68" />
-          </radialGradient>
-          <linearGradient id="reference-top-gold-line" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stopColor="#d5a76d" stopOpacity="0.18" />
-            <stop offset="0.55" stopColor="#d9b98d" stopOpacity="0.34" />
-            <stop offset="1" stopColor="#d5a76d" stopOpacity="0.12" />
-          </linearGradient>
-        </defs>
-        <g fill="none" strokeLinecap="round">
-          <path
-            d="M316 -6 C282 21 255 36 226 68"
-            stroke="rgba(255,255,255,0.44)"
-            strokeWidth="0.72"
-          />
-          <path
-            d="M338 16 C381 -7 437 1 463 42 C489 84 470 135 428 157"
-            stroke="url(#reference-top-gold-line)"
-            strokeWidth="0.82"
-          />
-          <path
-            d="M374 38 C403 10 445 25 455 63 C465 104 435 137 394 132"
-            stroke="rgba(202,157,104,0.18)"
-            strokeWidth="0.72"
-          />
-          <path
-            d="M326 94 L359 118 L389 102 L420 135"
-            stroke="rgba(203,158,103,0.18)"
-            strokeWidth="0.72"
-          />
-          <path
-            d="M245 80 C279 58 335 60 382 84"
-            stroke="rgba(222,174,111,0.18)"
-            strokeWidth="0.82"
-          />
-          <ellipse
-            cx="305"
-            cy="84"
-            rx="72"
-            ry="15"
-            transform="rotate(11 305 84)"
-            stroke="rgba(218,168,105,0.22)"
-            strokeWidth="0.72"
-          />
-          <ellipse
-            cx="305"
-            cy="84"
-            rx="54"
-            ry="10"
-            transform="rotate(11 305 84)"
-            stroke="rgba(255,241,214,0.36)"
-            strokeWidth="0.58"
-          />
-          <path
-            d="M247 89 C284 105 343 101 383 80"
-            stroke="rgba(255,246,226,0.22)"
-            strokeWidth="0.62"
-          />
-        </g>
-        <circle cx="305" cy="84" r="9.2" fill="url(#reference-top-planet)" opacity="0.74" />
-        <g fill="rgba(190,139,83,0.38)">
-          <circle cx="350" cy="24" r="1.7" />
-          <circle cx="393" cy="33" r="1.1" />
-          <circle cx="459" cy="42" r="1.4" />
-          <circle cx="328" cy="97" r="1.75" />
-          <circle cx="359" cy="118" r="1.35" />
-          <circle cx="389" cy="102" r="1.25" />
-          <circle cx="420" cy="135" r="1.45" />
-          <circle cx="449" cy="177" r="1.1" />
-        </g>
-        <g fill="rgba(222,174,111,0.18)">
-          <circle cx="426" cy="20" r="0.9" />
-          <circle cx="452" cy="113" r="0.8" />
-          <circle cx="284" cy="83" r="0.75" />
-          <circle cx="236" cy="90" r="0.9" />
-        </g>
-        <g stroke="rgba(214,160,95,0.28)" strokeLinecap="round" strokeWidth="0.76">
-          <path d="M155 101 L155 112 M149 106.5 L160.5 106.5" />
-          <path d="M385 68 L385 75 M381.5 71.5 L388.5 71.5" />
-        </g>
-      </svg>
-      <svg viewBox="0 0 440 1120" className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
-        <g fill="none" stroke="rgba(190, 146, 102, 0.060)" strokeLinecap="round" strokeWidth="0.72">
-          <path d="M245 82 C309 24 374 77 425 18" />
-          <path d="M253 88 C304 111 365 112 417 75" />
-          <ellipse cx="376" cy="74" rx="62" ry="39" transform="rotate(-22 376 74)" opacity="0.78" />
-          <path d="M356 393 C419 345 468 349 504 399" opacity="0.55" />
-          <path d="M-44 804 C70 724 171 740 246 828" opacity="0.52" />
-          <path d="M-24 930 C86 846 190 864 274 962" opacity="0.35" />
-        </g>
-        <g fill="none" stroke="rgba(255, 255, 255, 0.36)" strokeLinecap="round" strokeWidth="0.66">
-          <path d="M430 -10 C379 22 314 43 254 88" />
-          <path d="M226 96 C267 72 306 75 343 105" opacity="0.52" />
-        </g>
-        <g fill="rgba(191, 143, 93, 0.13)">
-          <circle cx="268" cy="42" r="2" />
-          <circle cx="332" cy="32" r="1.15" />
-          <circle cx="392" cy="107" r="1.35" />
-          <circle cx="423" cy="25" r="1.05" />
-          <circle cx="348" cy="79" r="1.1" />
-        </g>
-        <g fill="rgba(218, 174, 116, 0.085)">
-          <circle cx="312" cy="302" r="1.05" />
-          <circle cx="382" cy="384" r="1.25" />
-          <circle cx="52" cy="676" r="1" />
-          <circle cx="399" cy="748" r="1.1" />
-        </g>
-        <g stroke="rgba(214, 160, 95, 0.10)" strokeLinecap="round" strokeWidth="0.76">
-          <path d="M350 58 L350 67 M345 62.5 L354.5 62.5" />
-          <path d="M390 88 L390 94 M387 91 L393 91" />
-          <path d="M205 846 L205 854 M201 850 L209 850" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
 function ReferenceHintLogo() {
   return (
     <Link
@@ -3982,25 +3840,11 @@ function ReferenceHomePage({
   onCardRevealed: () => void;
 }) {
   return (
+    <div className="relative h-full w-full">
+    <ConstellationBackdrop />
     <div
       className="reference-home-crisp hint-home-page relative h-full w-full overflow-x-hidden overflow-y-auto overscroll-none"
-      style={{
-        background:
-          "radial-gradient(520px 380px at 8% -4%, rgba(237,222,213,0.26), transparent 72%), radial-gradient(460px 340px at 94% 4%, rgba(230,203,167,0.15), transparent 74%), radial-gradient(560px 480px at 52% 55%, rgba(216,196,185,0.060), transparent 76%), linear-gradient(180deg, #fcf9f4 0%, #f8f3ed 52%, #f5eee7 100%)",
-      }}
     >
-      <ReferenceOrbitBackdrop />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 30%, rgba(95, 72, 51, 0.030) 0 0.45px, transparent 0.7px), radial-gradient(circle at 70% 72%, rgba(126, 93, 68, 0.022) 0 0.55px, transparent 0.9px), linear-gradient(90deg, rgba(255,255,255,0.16), transparent 42%, rgba(120,86,60,0.018))",
-          backgroundSize: "7px 7px, 11px 11px, 100% 100%",
-          opacity: 0.50,
-          mixBlendMode: "multiply",
-        }}
-      />
       <div className="hint-home-content relative z-10 mx-auto w-full">
         <header className="hint-home-header">
           <h1 className="sr-only"><LocalizedText text="Today" /></h1>
@@ -4031,6 +3875,7 @@ function ReferenceHomePage({
         onClose={onCloseRevealOverlay}
         onCardRevealed={onCardRevealed}
       />
+    </div>
     </div>
   );
 }

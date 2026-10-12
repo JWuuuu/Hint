@@ -199,6 +199,7 @@ describe("native Hint speech recognition", () => {
           interimResults: boolean;
           lang: string;
           maxAlternatives: number;
+          onstart: (() => void) | null;
           onresult: ((event: {
             resultIndex: number;
             results: { length: number; 0: { isFinal: boolean; 0: { transcript: string } } };
@@ -213,6 +214,7 @@ describe("native Hint speech recognition", () => {
       interimResults = false;
       lang = "";
       maxAlternatives = 0;
+      onstart = null;
       onresult = null;
       onerror = null;
       onend = null;
@@ -229,6 +231,9 @@ describe("native Hint speech recognition", () => {
     vi.stubGlobal("window", { SpeechRecognition: BrowserRecognition });
 
     const session = await startHintSpeechRecognition(callbacks);
+    expect(callbacks.onStart).not.toHaveBeenCalled();
+    recognition?.onstart?.();
+    expect(callbacks.onStart).toHaveBeenCalledOnce();
     expect(recognition).toMatchObject({
       continuous: true,
       interimResults: true,
