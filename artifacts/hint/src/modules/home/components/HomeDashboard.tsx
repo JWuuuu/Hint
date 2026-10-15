@@ -1,4 +1,5 @@
 import { DailyReceiptButton } from "../../receipt-printer/ReceiptShareDialog";
+import { ConstellationBackdrop } from "../../../components/app/ConstellationBackdrop";
 import { LocalizedText, translateText } from "../../../lib/LocalizedText";
 import { useLocalDay } from "../../../lib/useLocalDay";
 import { withDailyCardIdentity } from "../data/dailyCardSync";
@@ -2250,6 +2251,32 @@ const REFERENCE_SCORE_ICONS: Record<DailyScore["key"], LucideIcon> = {
   people: UsersRound,
 };
 
+function ReferenceHintLogo() {
+  return (
+    <Link
+      href="/app/profile"
+      aria-label="Open profile"
+      onPointerDown={() => triggerFeedback("select")}
+      className="hint-pressable relative grid size-[62px] shrink-0 place-items-center overflow-hidden rounded-full border text-center active:scale-95"
+      style={{
+        color: REFERENCE_TYPE.ink,
+        background: "linear-gradient(145deg, rgba(255,254,250,0.70), rgba(248,239,230,0.40))",
+        borderColor: "rgba(191, 159, 132, 0.105)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.54), 0 10px 22px rgba(98,78,64,0.026)",
+      }}
+    >
+      <span
+        aria-hidden
+        className="absolute inset-x-2 top-1 h-px rounded-full"
+        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.86), transparent)" }}
+      />
+      <span className="grid justify-items-center">
+        <Sparkles size={19} strokeWidth={1.5} />
+        <span className="font-serif text-[15px] leading-none"><LocalizedText text={"hint"} /></span>
+      </span>
+    </Link>
+  );
+}
 
 function referenceDailyCardImage(cardId: string) {
   return (
@@ -3382,7 +3409,13 @@ function ReferenceEnergyValue({ score }: { score: number }) {
 }
 
 function ReferenceEnergyPanel({ report }: { report: DailyReport }) {
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const scores = report.scores;
+
+  function toggleDetails() {
+    triggerFeedback("select");
+    setDetailsOpen((open) => !open);
+  }
 
   return (
     <section id="today-summary" className="hint-home-energy" aria-label={translateText("Today’s energy", report.language)}>
@@ -3397,22 +3430,40 @@ function ReferenceEnergyPanel({ report }: { report: DailyReport }) {
           <p className="hint-home-theme-copy font-serif">{referenceThemeLine(report)}</p>
         </div>
       </div>
-      <Link
-        href="/app/daily"
-        onClick={() => triggerFeedback("select")}
+      <button
+        type="button"
+        onClick={toggleDetails}
+        aria-expanded={detailsOpen}
+        aria-controls="hint-home-energy-details"
         aria-label={translateText("See details", report.language)}
         className="hint-pressable hint-home-scores"
       >
         {scores.map((score) => <ReferenceScoreItem key={score.key} score={score} />)}
-      </Link>
-      <Link
-        href="/app/daily"
-        onClick={() => triggerFeedback("select")}
+      </button>
+      <button
+        type="button"
+        onClick={toggleDetails}
+        aria-expanded={detailsOpen}
+        aria-controls="hint-home-energy-details"
         className="hint-pressable hint-home-details-link font-serif"
       >
         <span><LocalizedText text="See details" /></span>
-        <ArrowRight size={15} strokeWidth={1.5} aria-hidden />
-      </Link>
+        <ArrowRight size={15} strokeWidth={1.5} aria-hidden
+          style={{ transform: detailsOpen ? "rotate(90deg)" : undefined, transition: "transform 180ms ease" }} />
+      </button>
+      {detailsOpen ? (
+        <div id="hint-home-energy-details" className="hint-home-energy-details hint-home-detail-content">
+          <p className="font-serif">{report.title}</p>
+          <dl>
+            {scores.map((score) => (
+              <div key={score.key}>
+                <dt>{score.label}</dt>
+                <dd className="font-serif">{score.score}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -3771,6 +3822,7 @@ function ReferenceHomePage({
   dailyCardRevealed,
   dailyCardRevealing,
   dailyReceiptReady,
+  receiptStatusMessage,
   dailyRevealOverlayOpen,
   onReveal,
   onCloseRevealOverlay,
@@ -3781,28 +3833,26 @@ function ReferenceHomePage({
   dailyCardRevealed: boolean;
   dailyCardRevealing: boolean;
   dailyReceiptReady: boolean;
+  receiptStatusMessage?: string;
   dailyRevealOverlayOpen: boolean;
   onReveal: () => void | Promise<void>;
   onCloseRevealOverlay: () => void;
   onCardRevealed: () => void;
 }) {
   return (
+    <div className="relative h-full w-full">
+    <ConstellationBackdrop />
     <div
       className="reference-home-crisp hint-home-page relative h-full w-full overflow-x-hidden overflow-y-auto overscroll-none"
     >
       <div className="hint-home-content relative z-10 mx-auto w-full">
-        <h1 className="sr-only"><LocalizedText text="Today" /></h1>
         <header className="hint-home-header">
-          <DailyReceiptButton report={report} compact disabled={!dailyCardRevealed} />
-          <span className="hint-home-header-space" aria-hidden />
-          <Link
-            href="/app/profile"
-            aria-label={translateText("Open profile", report.language)}
-            onPointerDown={() => triggerFeedback("select")}
-            className="hint-pressable hint-home-profile-circle font-serif"
-          >
-            <LocalizedText text="Me" />
-          </Link>
+          <h1 className="sr-only"><LocalizedText text="Today" /></h1>
+          {(dailyCardRevealed || receiptStatusMessage) && <div className="hint-home-share-status">
+            {dailyCardRevealed && <DailyReceiptButton report={report} compact />}
+            {receiptStatusMessage && <p className="hint-home-sync-status" role="status">{receiptStatusMessage}</p>}
+          </div>}
+          <ReferenceHintLogo />
         </header>
 
         <div className="hint-home-sections">
@@ -3826,12 +3876,13 @@ function ReferenceHomePage({
         onCardRevealed={onCardRevealed}
       />
     </div>
+    </div>
   );
 }
 
 export function HomeDashboard() {
   const currentDay = useLocalDay();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { profile } = useProfile();
   const initialDailySignalComplete = useMemo(
     () => hasCompletedDailySignalIntro(getAnonId(), getLocalDateString()),
@@ -4042,6 +4093,9 @@ export function HomeDashboard() {
       dailyCardRevealed={dailyCardRevealed && dailyReceipt?.dailyKey === currentDay}
       dailyCardRevealing={dailyCardRevealing}
       dailyReceiptReady={dailyReceiptReady}
+      receiptStatusMessage={dailyReceipt?.openedAt && dailyReceipt.syncStatus !== "synced"
+        ? t(dailyReceipt.persistence === "memory" ? "quality.cardMemory" : dailyReceipt.syncStatus === "conflict" ? "quality.cardConflict" : "quality.cardPending")
+        : undefined}
       dailyRevealOverlayOpen={dailyRevealOverlayOpen}
       onReveal={revealDailyCard}
       onCloseRevealOverlay={closeDailyRevealOverlay}

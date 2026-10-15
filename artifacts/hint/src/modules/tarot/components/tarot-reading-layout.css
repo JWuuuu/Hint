@@ -1,0 +1,96 @@
+/* A quiet, consistent accent across the ritual and reading actions. */
+.tarot-reading-theme {
+  --reading-base: #fcfaf6;
+  --reading-ink: #44374d;
+  --reading-body: #625467;
+  --reading-muted: #8b7a88;
+  --reading-accent: #796582;
+  --reading-error: #8b5167;
+  --reading-header: rgba(255, 249, 244, .70);
+  --reading-composer: rgba(255, 249, 244, .82);
+  --reading-input: rgba(255, 255, 255, .78);
+  --reading-control: #eae2ed;
+  --reading-answer: #f5f0f3;
+  --reading-bubble: #eee7f0;
+  --reading-transcript: rgba(252, 250, 246, .96);
+  --reading-hover: rgba(121, 101, 130, .10);
+}
+[data-hint-theme="dark"] .tarot-reading-theme {
+  --reading-base: #17151e;
+  --reading-ink: #f3edf5;
+  --reading-body: #d9cedf;
+  --reading-muted: #b5a4be;
+  --reading-accent: #c7a8d6;
+  --reading-error: #e6a4bd;
+  --reading-header: rgba(23, 21, 30, .70);
+  --reading-composer: rgba(23, 21, 30, .82);
+  --reading-input: rgba(49, 40, 58, .86);
+  --reading-control: #382f42;
+  --reading-answer: #27222f;
+  --reading-bubble: #342c3f;
+  --reading-transcript: rgba(30, 26, 38, .96);
+  --reading-hover: rgba(185, 151, 201, .12);
+}
+/* Soften stars beneath copy without adding another visible panel. */
+.tarot-reading-copy {
+  position: relative;
+  isolation: isolate;
+}
+.tarot-reading-copy::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  border-radius: 8px;
+  background: var(--reading-base);
+  box-shadow: 0 0 12px 8px var(--reading-base);
+  opacity: .96;
+  pointer-events: none;
+}
+.tarot-action-primary {
+  background: #796582;
+  border: 1px solid rgba(96, 74, 107, .16);
+  color: #fffaf6;
+  box-shadow: 0 6px 18px rgba(91, 65, 100, .13);
+}
+.tarot-action-primary:enabled:hover { background: #6d5976; }
+.tarot-action-primary:disabled { background: #dfd8e1; color: #817186; box-shadow: none; }
+.tarot-action-secondary {
+  border: 1px solid rgba(121, 101, 130, .17);
+  background: rgba(253, 249, 250, .78);
+  color: #716078;
+  box-shadow: 0 3px 12px rgba(91, 65, 100, .05);
+}
+.tarot-action-secondary:enabled:hover { background: #f0eaf1; }
+.tarot-action-primary:focus-visible, .tarot-action-secondary:focus-visible {
+  outline: 2px solid #796582;
+  outline-offset: 3px;
+}
+.hint-voice-orb { background: radial-gradient(circle at 32% 28%, #fffaf3 0%, #e7d8ec 44%, #c1a8cd 76%, #d8b96e 100%); }
+.hint-voice-bars i { height: 12px; }
+.hint-voice-bars i:nth-child(2), .hint-voice-bars i:nth-child(4) { height: 24px; animation-delay: -.2s; }
+.hint-voice-bars i:nth-child(3) { height: 36px; animation-delay: -.4s; }
+.hint-voice-bars i:nth-child(5) { animation-delay: -.6s; }
+.hint-voice-orb[data-phase="paused"], .hint-voice-orb[data-phase="error"] { filter: saturate(.35); }
+.hint-voice-orb[data-phase="starting"] .hint-voice-ring,
+.hint-voice-orb[data-phase="thinking"] .hint-voice-ring,
+.hint-voice-orb[data-phase="preparing"] .hint-voice-ring { border-top-color: #796582; border-right-color: #b997c9; }
+@media (prefers-reduced-motion: no-preference) {
+  .hint-voice-orb[data-phase="listening"][data-reduced-motion="false"] { animation: hint-voice-breathe 2.4s ease-in-out infinite; }
+  .hint-voice-orb[data-phase="listening"][data-reduced-motion="false"] .hint-voice-ring { animation: hint-voice-ripple 2.4s ease-out infinite; }
+  .hint-voice-orb[data-phase="listening"][data-reduced-motion="false"] .hint-voice-bars i { animation-name: hint-voice-wave; animation-duration: 1.3s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+  .hint-voice-orb[data-phase="speaking"][data-reduced-motion="false"] .hint-voice-bars i { animation-name: hint-voice-wave; animation-duration: .65s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+  .hint-voice-orb[data-phase="starting"][data-reduced-motion="false"] .hint-voice-ring,
+  .hint-voice-orb[data-phase="thinking"][data-reduced-motion="false"] .hint-voice-ring,
+  .hint-voice-orb[data-phase="preparing"][data-reduced-motion="false"] .hint-voice-ring { animation: hint-voice-turn 1.6s linear infinite; }
+}
+@keyframes hint-voice-breathe { 50% { transform: scale(1.04); } }
+@keyframes hint-voice-ripple { 0% { transform: scale(.96); opacity: .8; } 100% { transform: scale(1.18); opacity: 0; } }
+@keyframes hint-voice-wave { 50% { transform: scaleY(.45); opacity: .65; } }
+@keyframes hint-voice-turn { to { transform: rotate(360deg); } }
+
+.hint-reply-dots i { width: 5px; height: 5px; border-radius: 50%; background: #9985a2; }
+.hint-reply-dots[data-reduced-motion="false"] i { animation: hint-reply-pulse 1.2s ease-in-out infinite; }
+.hint-reply-dots i:nth-child(2) { animation-delay: .15s; }
+.hint-reply-dots i:nth-child(3) { animation-delay: .3s; }
+@keyframes hint-reply-pulse { 0%, 80%, 100% { opacity: .35; } 40% { opacity: 1; } }

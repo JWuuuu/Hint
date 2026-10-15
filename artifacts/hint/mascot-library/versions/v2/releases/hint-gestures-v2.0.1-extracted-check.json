@@ -1,0 +1,39 @@
+{
+  "version": "2.0.1",
+  "verifiedFiles": 171,
+  "readOnlyApprovedFiles": 35,
+  "independentBuild": true,
+  "builtInTestsPassed": 9,
+  "browsers": [
+    {
+      "browser": "Chrome",
+      "offline": true,
+      "widths": [
+        320,
+        390,
+        430
+      ],
+      "gestures": 7,
+      "delivery": true,
+      "comparisons": true,
+      "errors": []
+    },
+    {
+      "browser": "WebKit",
+      "offline": true,
+      "widths": [
+        320,
+        390,
+        430
+      ],
+      "gestures": 7,
+      "delivery": true,
+      "comparisons": true,
+      "errors": []
+    }
+  ],
+  "build": {
+    "output": "/Users/jwu/Documents/Hint-main/artifacts/hint/mascot-library/versions/v2/iterations/release-check-v2.0.1/hint-gestures-v2.0.1/preview/hint-gestures.html",
+    "bytes": 971536
+  }
+}

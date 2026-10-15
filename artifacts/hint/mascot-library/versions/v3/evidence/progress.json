@@ -1,0 +1,127 @@
+{
+  "version": "3.0.0",
+  "status": "complete",
+  "protectedVersions": [
+    "approved/v1",
+    "v1",
+    "v2"
+  ],
+  "gestures": {
+    "idle": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true,
+      "minuteReview": true
+    },
+    "welcome": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "offer-letter": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "listening": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true,
+      "minuteReview": true
+    },
+    "thinking": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true,
+      "minuteReview": true
+    },
+    "reading": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true,
+      "minuteReview": true
+    },
+    "speaking": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true,
+      "minuteReview": true
+    },
+    "waiting": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true,
+      "minuteReview": true
+    },
+    "wink-left": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "wink-right": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "nod": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "shake-head": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "celebration": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "curious": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "surprised": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "shy": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "comfort": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "disappointed": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "frustrated": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    },
+    "sleepy": {
+      "implemented": true,
+      "visualReview": true,
+      "finalReview": true
+    }
+  },
+  "checks": {
+    "controllerChrome": true,
+    "controllerWebKit": true,
+    "phoneLayouts": true,
+    "smallSizes": true,
+    "completeSceneJourneys": true,
+    "archive": true
+  },
+  "next": null,
+  "release": "releases/hint-gestures-v3.0.0.zip"
+}

@@ -5,6 +5,7 @@ import type { LocalStructuredTarotReading, LocalTarotReading } from "../../readi
 import { requestDetailedTarotReading, type DetailedTarotRequest } from "../logic/requestDetailedTarotReading";
 import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
 import "./reading-motion.css";
+import "./tarot-reading-layout.css";
 
 export function DetailedTarotReading({ request, saved, savedContext = "", feedback, onContextChange, onFeedback, onGenerated }: {
   request: DetailedTarotRequest;
@@ -74,7 +75,7 @@ export function DetailedTarotReading({ request, saved, savedContext = "", feedba
       </div>
       <button ref={toggleButton} type="button" onClick={() => void open()} disabled={status === "loading"}
         aria-expanded={expanded} aria-controls={contentId}
-        className="tarot-reading-press mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-[14px] bg-[#735583] px-4 py-3 font-sans text-[13px] font-semibold text-white disabled:opacity-70">
+        className="tarot-reading-press mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-[14px] tarot-action-primary px-4 py-3 font-sans text-[13px] font-semibold disabled:opacity-70">
         {status === "loading" && <LoaderCircle aria-hidden="true" size={15} className="tarot-reading-spinner" />}{label}
       </button>
       <div className="min-h-10 pt-2">
@@ -98,15 +99,18 @@ export function DetailedTarotReading({ request, saved, savedContext = "", feedba
               <p className="mt-2 font-serif text-[16px] leading-7 text-[#3b3045]">{detail.overall_summary}</p>
             </section>
             <section>
-              <h4 className={headingClass}>{t("tarot.flow.chat.deepConnection")}</h4>
-              {detail.cards_connection && <p className="mt-2 font-sans text-[13px] leading-6 text-[#625467]">{detail.cards_connection}</p>}
-              <div className="mt-3 space-y-4">
-                {detail.cards.map((card, index) => <section key={`${index}-${card.card_name}`}>
-                  <h5 className="font-serif text-[16px] text-[#3b3045]">{card.position} · {card.card_name}</h5>
+              <h4 className={headingClass}>{t("tarot.flow.chat.cards")}</h4>
+              <ol aria-label={t("tarot.flow.chat.cards")} className="mt-3 list-none space-y-4">
+                {detail.cards.map((card, index) => <li key={`${index}-${card.card_name}`}>
+                  <h5 className="font-serif text-[16px] text-[#3b3045]">{index + 1}. {card.position} · {card.card_name}</h5>
                   <p className="mt-1 font-sans text-[13px] leading-6 text-[#625467]">{card.meaning}</p>
-                </section>)}
-              </div>
+                </li>)}
+              </ol>
             </section>
+            {detail.cards_connection && <section>
+              <h4 className={headingClass}>{t("tarot.flow.chat.deepConnection")}</h4>
+              <p className="mt-2 font-sans text-[13px] leading-6 text-[#625467]">{detail.cards_connection}</p>
+            </section>}
             {detail.watch_for && <section>
               <h4 className={headingClass}>{t("tarot.flow.chat.deepWatch")}</h4>
               <p className="mt-2 font-sans text-[13px] leading-6 text-[#625467]">{detail.watch_for}</p>

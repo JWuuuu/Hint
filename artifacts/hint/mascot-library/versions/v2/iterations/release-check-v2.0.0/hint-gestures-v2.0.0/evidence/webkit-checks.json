@@ -1,0 +1,55 @@
+{
+  "browser": "webkit",
+  "passed": true,
+  "timings": [
+    {
+      "gesture": "wink-left",
+      "milliseconds": 1920
+    },
+    {
+      "gesture": "wink-right",
+      "milliseconds": 2082
+    },
+    {
+      "gesture": "nod",
+      "milliseconds": 2331
+    },
+    {
+      "gesture": "listening",
+      "milliseconds": 4432
+    },
+    {
+      "gesture": "thinking",
+      "milliseconds": 4631
+    },
+    {
+      "gesture": "celebration",
+      "milliseconds": 2932
+    }
+  ],
+  "checks": [
+    "autoplay",
+    "repeat taps",
+    "pause/resume",
+    "six expressions",
+    "offer waits",
+    "single acceptance",
+    "delivery scrub",
+    "empty-paw reactions",
+    "scrub continuation",
+    "simulated background suspension",
+    "offscreen suspension",
+    "320/390/430/736 layout",
+    "44px controls",
+    "hidden labels",
+    "accents toggle",
+    "96/160px previews",
+    "v1 compressed comparison",
+    "untouched approved greeting",
+    "keyboard",
+    "completion callbacks",
+    "reduced motion",
+    "relocated offline preview"
+  ],
+  "errors": []
+}

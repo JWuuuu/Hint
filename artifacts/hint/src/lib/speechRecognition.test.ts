@@ -199,6 +199,7 @@ describe("native Hint speech recognition", () => {
           interimResults: boolean;
           lang: string;
           maxAlternatives: number;
+          onstart: (() => void) | null;
           onresult: ((event: {
             resultIndex: number;
             results: { length: number; 0: { isFinal: boolean; 0: { transcript: string } } };
@@ -213,6 +214,7 @@ describe("native Hint speech recognition", () => {
       interimResults = false;
       lang = "";
       maxAlternatives = 0;
+      onstart = null;
       onresult = null;
       onerror = null;
       onend = null;
@@ -229,6 +231,9 @@ describe("native Hint speech recognition", () => {
     vi.stubGlobal("window", { SpeechRecognition: BrowserRecognition });
 
     const session = await startHintSpeechRecognition(callbacks);
+    expect(callbacks.onStart).not.toHaveBeenCalled();
+    recognition?.onstart?.();
+    expect(callbacks.onStart).toHaveBeenCalledOnce();
     expect(recognition).toMatchObject({
       continuous: true,
       interimResults: true,
@@ -257,6 +262,30 @@ describe("native Hint speech recognition", () => {
     await session.cancel();
     expect(abort).not.toHaveBeenCalled();
     expect(callbacks.onEnd).toHaveBeenCalledOnce();
+  });
+
+  it.each([
+    ["not-allowed", "permission"],
+    ["service-not-allowed", "unavailable"],
+    ["language-not-supported", "unavailable"],
+    ["audio-capture", "micMissing"],
+    ["network", "network"],
+  ])("distinguishes %s from microphone permission failures", async (error, reason) => {
+    const callbacks = options();
+    class BrowserRecognition {
+      onerror: ((event: { error: string }) => void) | null = null;
+      onend: (() => void) | null = null;
+      start = () => { this.onerror?.({ error }); this.onend?.(); };
+      stop = vi.fn();
+      abort = vi.fn();
+    }
+    native.isNativeShell.mockReturnValue(false);
+    vi.stubGlobal("window", { SpeechRecognition: BrowserRecognition });
+    const session = await startHintSpeechRecognition(callbacks);
+    await session.cancel();
+    expect(callbacks.onError).toHaveBeenCalledExactlyOnceWith(reason);
+    expect(callbacks.onEnd).toHaveBeenCalledOnce();
+    expect(callbacks.onTranscript).not.toHaveBeenCalled();
   });
 
   it("reports and ends browser dictation when recognition fails during startup", async () => {

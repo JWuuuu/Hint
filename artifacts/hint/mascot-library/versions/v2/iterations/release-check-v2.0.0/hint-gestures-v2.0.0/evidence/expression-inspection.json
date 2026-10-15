@@ -1,0 +1,53 @@
+{
+  "distinctFaceDrawings": 8,
+  "mouthChanges": [
+    {
+      "gesture": "neutral",
+      "changedPixels": 0
+    },
+    {
+      "gesture": "wink-left",
+      "changedPixels": 532
+    },
+    {
+      "gesture": "wink-right",
+      "changedPixels": 503
+    },
+    {
+      "gesture": "nod",
+      "changedPixels": 160
+    },
+    {
+      "gesture": "listening",
+      "changedPixels": 322
+    },
+    {
+      "gesture": "thinking",
+      "changedPixels": 351
+    },
+    {
+      "gesture": "celebration",
+      "changedPixels": 1393
+    },
+    {
+      "gesture": "offer-letter",
+      "changedPixels": 392
+    }
+  ],
+  "poseOrder": [
+    "neutral",
+    "wink-left",
+    "wink-right",
+    "nod",
+    "listening",
+    "thinking",
+    "celebration",
+    "offer-letter"
+  ],
+  "decorativeAccents": false,
+  "sizes": [
+    220,
+    160,
+    96
+  ]
+}

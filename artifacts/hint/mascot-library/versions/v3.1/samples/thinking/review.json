@@ -1,0 +1,117 @@
+{
+  "gesture": "thinking",
+  "seconds": 7.1973000000119205,
+  "sampleTimes": [
+    0,
+    0.6017999999999992,
+    1.2017999999999993,
+    1.8017999999999992,
+    2.401700000000001,
+    3.001700000000001,
+    3.6015999999999986,
+    4.201599999999998,
+    4.8017,
+    5.401599999999998,
+    6.001599999999999,
+    6.6015
+  ],
+  "sampleStates": [
+    {
+      "gesture": "idle",
+      "time": 0,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 0.38329999999999925,
+      "letter": "held",
+      "phase": "entering"
+    },
+    {
+      "gesture": "thinking",
+      "time": 0.9832999999999986,
+      "letter": "held",
+      "phase": "entering"
+    },
+    {
+      "gesture": "thinking",
+      "time": 1.5832999999999995,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 2.1832000000000016,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 2.7232999999999987,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 3.3232999999999975,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 3.9232999999999967,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 4.5232000000000046,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 5.123300000000009,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "thinking",
+      "time": 5.723200000000018,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 0.3834000000000016,
+      "letter": "held",
+      "phase": "exiting"
+    }
+  ],
+  "medianFrameMs": 16.69999999999709,
+  "p95FrameMs": 16.700000000004366,
+  "decorativeAccents": false,
+  "errors": [],
+  "video": {
+    "duration": 7.173833,
+    "codec": "h264",
+    "width": 640,
+    "height": 640
+  },
+  "keyframeTimes": [
+    0,
+    0.5978194166666667,
+    1.1956388333333334,
+    1.79345825,
+    2.391277666666667,
+    2.9890970833333337,
+    3.5869165,
+    4.184735916666667,
+    4.782555333333334,
+    5.3803747500000005,
+    5.978194166666667,
+    6.576013583333333
+  ],
+  "keyframesFromVideo": true
+}

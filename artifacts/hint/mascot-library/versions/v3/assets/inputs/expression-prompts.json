@@ -1,0 +1,6 @@
+{
+  "editTarget": "assets/letter-body.webp",
+  "savedOutput": "assets/inputs/clean-face.png",
+  "transparentBackground": true,
+  "prompt": "Use case: precise-object-edit. Edit target: the supplied cream plush star clean body. This is a texture plate for the SAME animation character, not a redesign. Remove ONLY its two dark plum oval eyes and tiny dark curved mouth, seamlessly replacing those three features with matching cream plush fabric and the existing smooth warm lighting. Retain the pink cheek blush in exactly the same places. Retain every other detail and exact silhouette: curled star tip, asymmetric star head, lilac scarf and scarf tail, rounded lower body, original proportions, framing, camera angle and shading. No paws and no envelope should be added. The face is blank because matching animated features will be placed back later. Transparent background. Full body, same square composition, no text, no additional objects, no redesign."
+}

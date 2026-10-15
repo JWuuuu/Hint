@@ -94,6 +94,8 @@ export function ReadingReveal({
   const gridClass = revealGridClass(selectedCards.length);
   const cardSizeClass = revealCardSizeClass(selectedCards.length);
   const cardShellClass = revealCardShellClass(selectedCards.length);
+  const pageOverlay = theme?.chamberOverlay ?? "var(--hint-page-bg)";
+  const starClassName = theme?.starClassName ?? "";
 
   useEffect(() => {
     onRevealRef.current = onReveal;
@@ -135,7 +137,10 @@ export function ReadingReveal({
   }, [allRevealed, reduceMotion, selectedCards.length]);
 
   return (
-    <section className="relative h-full w-full overflow-y-auto overflow-x-hidden px-4 pb-[calc(var(--hint-safe-bottom)+2rem)] pt-[calc(var(--hint-safe-top)+5.25rem)] text-center text-[color:var(--tarot-page-ink,#332d45)]">
+    <section className="relative h-full w-full overflow-y-auto overflow-x-hidden px-4 pb-[calc(var(--hint-safe-bottom)+2rem)] pt-[calc(var(--hint-safe-top)+5.25rem)] text-center text-[#332d45]">
+      <div className="absolute inset-0" style={{ background: pageOverlay }} />
+      <div className={`pointer-events-none absolute inset-0 ${starClassName}`} />
+      <div className="pointer-events-none absolute inset-x-0 top-[18%] mx-auto h-[58%] max-w-5xl rounded-full blur-3xl" style={{ background: "color-mix(in srgb, var(--hint-rose, #f0b6cf) 12%, transparent)" }} />
       <motion.div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[45%] h-[410px] w-[410px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl"
@@ -162,8 +167,8 @@ export function ReadingReveal({
       />
 
       <div className="relative z-30 mx-auto mb-7 max-w-3xl sm:mb-9">
-        <p className="font-serif text-[30px] leading-tight text-[color:var(--tarot-page-ink,#332d45)]">{title}</p>
-        <p className="mt-3 font-sans text-sm text-[color:var(--tarot-page-muted,#746276)]">{subtitle}</p>
+        <p className="font-serif text-[30px] leading-tight text-[#332d45]">{title}</p>
+        <p className="mt-3 font-sans text-sm text-[#746276]">{subtitle}</p>
         <div className="mx-auto mt-4 flex w-fit flex-wrap items-center justify-center gap-2 rounded-full border border-[#d8b96e]/30 bg-white/48 px-3 py-2 font-sans text-[10px] uppercase tracking-[0.14em] text-[#756777] shadow-[0_8px_22px_rgba(86,62,92,0.08)] backdrop-blur-md">
           <span className="text-[#9a7442]">
             {allRevealed
@@ -270,7 +275,7 @@ export function ReadingReveal({
                   {label}
                 </p>
                 {revealed && (
-                  <p className="max-w-[7rem] truncate font-serif text-[15px] leading-tight text-[color:var(--tarot-page-ink,#332d45)]">
+                  <p className="max-w-[7rem] truncate font-serif text-[15px] leading-tight text-[#332d45]">
                     {card.name}
                   </p>
                 )}

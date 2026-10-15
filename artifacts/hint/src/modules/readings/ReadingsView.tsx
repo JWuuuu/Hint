@@ -30,6 +30,10 @@ import {
   subscribeToLocalTarotReadings,
   type LocalTarotReading,
 } from "./localTarotReadings";
+import {
+  getTarotRoomStarClassName,
+  getTarotRoomSurfaceBackground,
+} from "../tarot/logic/roomVisuals";
 import type { SpreadType } from "../hold/chat/types";
 import { getTarotCardImage } from "../tarot/logic/cardImageMap";
 import { readBirthProfile } from "../../lib/astro/userBirthProfile";
@@ -760,7 +764,16 @@ export function ReadingDetailView() {
         data-testid="tarot-history-detail"
         data-room-background={backgroundId}
         className="relative h-full w-full overflow-hidden"
+        style={{ background: getTarotRoomSurfaceBackground(backgroundId) }}
       >
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 ${getTarotRoomStarClassName(backgroundId)}`}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_30%,rgba(255,249,244,0.16))]"
+        />
         <div className="relative z-10 h-full">
           <AppScreen>
         <ScreenHeader

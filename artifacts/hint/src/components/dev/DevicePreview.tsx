@@ -181,6 +181,7 @@ export function DevicePreview() {
             ref={iframeRef}
             title={`${device.label} preview`}
             src={embeddedUrl}
+            allow="microphone 'self'"
             className="hint-preview-screen"
             style={{
               width: device.width,

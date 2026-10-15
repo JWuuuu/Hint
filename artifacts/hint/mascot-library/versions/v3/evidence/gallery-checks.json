@@ -1,0 +1,296 @@
+[
+  {
+    "engine": "chromium",
+    "clips": [
+      {
+        "label": "Idle",
+        "duration": 7.683984,
+        "width": 640,
+        "height": 640,
+        "time": 0.101402
+      },
+      {
+        "label": "Welcome",
+        "duration": 5.271933,
+        "width": 640,
+        "height": 640,
+        "time": 0.101756
+      },
+      {
+        "label": "Offer a letter",
+        "duration": 5.9059,
+        "width": 640,
+        "height": 640,
+        "time": 0.101926
+      },
+      {
+        "label": "Listening",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 0.101245
+      },
+      {
+        "label": "Thinking",
+        "duration": 7.183984,
+        "width": 640,
+        "height": 640,
+        "time": 0.10242
+      },
+      {
+        "label": "Reading",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 0.102817
+      },
+      {
+        "label": "Speaking",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 0.102557
+      },
+      {
+        "label": "Waiting",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 0.101132
+      },
+      {
+        "label": "Left wink",
+        "duration": 2.666667,
+        "width": 640,
+        "height": 640,
+        "time": 0.100574
+      },
+      {
+        "label": "Right wink",
+        "duration": 2.8028,
+        "width": 640,
+        "height": 640,
+        "time": 0.102262
+      },
+      {
+        "label": "Nod",
+        "duration": 3.066667,
+        "width": 640,
+        "height": 640,
+        "time": 0.102171
+      },
+      {
+        "label": "Shake head",
+        "duration": 3.870533,
+        "width": 640,
+        "height": 640,
+        "time": 0.100758
+      },
+      {
+        "label": "Celebration",
+        "duration": 3.670333,
+        "width": 640,
+        "height": 640,
+        "time": 0.102716
+      },
+      {
+        "label": "Curious",
+        "duration": 4.15415,
+        "width": 640,
+        "height": 640,
+        "time": 0.100973
+      },
+      {
+        "label": "Surprised",
+        "duration": 3.45345,
+        "width": 640,
+        "height": 640,
+        "time": 0.102743
+      },
+      {
+        "label": "Shy",
+        "duration": 4.371033,
+        "width": 640,
+        "height": 640,
+        "time": 0.101675
+      },
+      {
+        "label": "Comfort",
+        "duration": 4.571233,
+        "width": 640,
+        "height": 640,
+        "time": 0.091948
+      },
+      {
+        "label": "Disappointed",
+        "duration": 4.766667,
+        "width": 640,
+        "height": 640,
+        "time": 0.102588
+      },
+      {
+        "label": "A little frustrated",
+        "duration": 4.270933,
+        "width": 640,
+        "height": 640,
+        "time": 0.101821
+      },
+      {
+        "label": "Sleepy",
+        "duration": 5.372033,
+        "width": 640,
+        "height": 640,
+        "time": 0.102673
+      }
+    ],
+    "errors": [],
+    "passed": true
+  },
+  {
+    "engine": "webkit",
+    "clips": [
+      {
+        "label": "Idle",
+        "duration": 7.684,
+        "width": 640,
+        "height": 640,
+        "time": 3.22728
+      },
+      {
+        "label": "Welcome",
+        "duration": 5.271933333333333,
+        "width": 640,
+        "height": 640,
+        "time": 2.2506399583603924
+      },
+      {
+        "label": "Offer a letter",
+        "duration": 5.9059,
+        "width": 640,
+        "height": 640,
+        "time": 2.5754129412952373
+      },
+      {
+        "label": "Listening",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 3.027024
+      },
+      {
+        "label": "Thinking",
+        "duration": 7.184,
+        "width": 640,
+        "height": 640,
+        "time": 3.01728
+      },
+      {
+        "label": "Reading",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 3.027024
+      },
+      {
+        "label": "Speaking",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 3.027024
+      },
+      {
+        "label": "Waiting",
+        "duration": 7.2072,
+        "width": 640,
+        "height": 640,
+        "time": 3.027024
+      },
+      {
+        "label": "Left wink",
+        "duration": 2.667,
+        "width": 640,
+        "height": 640,
+        "time": 1.12014
+      },
+      {
+        "label": "Right wink",
+        "duration": 2.8028,
+        "width": 640,
+        "height": 640,
+        "time": 1.177176
+      },
+      {
+        "label": "Nod",
+        "duration": 3.067,
+        "width": 640,
+        "height": 640,
+        "time": 1.28814
+      },
+      {
+        "label": "Shake head",
+        "duration": 3.8705333333333334,
+        "width": 640,
+        "height": 640,
+        "time": 1.625624
+      },
+      {
+        "label": "Celebration",
+        "duration": 3.6703333333333332,
+        "width": 640,
+        "height": 640,
+        "time": 1.54154
+      },
+      {
+        "label": "Curious",
+        "duration": 4.15415,
+        "width": 640,
+        "height": 640,
+        "time": 1.8424356083355673
+      },
+      {
+        "label": "Surprised",
+        "duration": 3.45345,
+        "width": 640,
+        "height": 640,
+        "time": 1.450449
+      },
+      {
+        "label": "Shy",
+        "duration": 4.371033333333333,
+        "width": 640,
+        "height": 640,
+        "time": 1.9328791086521915
+      },
+      {
+        "label": "Comfort",
+        "duration": 4.571233333333334,
+        "width": 640,
+        "height": 640,
+        "time": 1.919918
+      },
+      {
+        "label": "Disappointed",
+        "duration": 4.767,
+        "width": 640,
+        "height": 640,
+        "time": 2.098775125290722
+      },
+      {
+        "label": "A little frustrated",
+        "duration": 4.270933333333334,
+        "width": 640,
+        "height": 640,
+        "time": 1.793792
+      },
+      {
+        "label": "Sleepy",
+        "duration": 5.372033333333333,
+        "width": 640,
+        "height": 640,
+        "time": 2.3534222747038984
+      }
+    ],
+    "errors": [],
+    "passed": true
+  }
+]

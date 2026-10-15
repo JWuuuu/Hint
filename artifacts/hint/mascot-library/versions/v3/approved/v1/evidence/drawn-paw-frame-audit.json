@@ -1,0 +1,2057 @@
+{
+  "summary": {
+    "frames": 136,
+    "majorArmPieces": [
+      1
+    ],
+    "majorWholePieces": [
+      1
+    ],
+    "armAreaRange": [
+      4352,
+      7097
+    ]
+  },
+  "frames": [
+    {
+      "t": 0,
+      "arm": {
+        "area": 4928,
+        "components": [
+          4928
+        ]
+      },
+      "whole": {
+        "area": 168313,
+        "components": [
+          168313
+        ]
+      }
+    },
+    {
+      "t": 0.03333333333333333,
+      "arm": {
+        "area": 4920,
+        "components": [
+          4920
+        ]
+      },
+      "whole": {
+        "area": 168338,
+        "components": [
+          168338
+        ]
+      }
+    },
+    {
+      "t": 0.06666666666666667,
+      "arm": {
+        "area": 4915,
+        "components": [
+          4915
+        ]
+      },
+      "whole": {
+        "area": 168350,
+        "components": [
+          168350
+        ]
+      }
+    },
+    {
+      "t": 0.1,
+      "arm": {
+        "area": 4924,
+        "components": [
+          4924
+        ]
+      },
+      "whole": {
+        "area": 168364,
+        "components": [
+          168364
+        ]
+      }
+    },
+    {
+      "t": 0.13333333333333333,
+      "arm": {
+        "area": 4922,
+        "components": [
+          4922
+        ]
+      },
+      "whole": {
+        "area": 168385,
+        "components": [
+          168385
+        ]
+      }
+    },
+    {
+      "t": 0.16666666666666666,
+      "arm": {
+        "area": 4928,
+        "components": [
+          4928
+        ]
+      },
+      "whole": {
+        "area": 168414,
+        "components": [
+          168414
+        ]
+      }
+    },
+    {
+      "t": 0.2,
+      "arm": {
+        "area": 4930,
+        "components": [
+          4930
+        ]
+      },
+      "whole": {
+        "area": 168425,
+        "components": [
+          168425
+        ]
+      }
+    },
+    {
+      "t": 0.23333333333333334,
+      "arm": {
+        "area": 4919,
+        "components": [
+          4919
+        ]
+      },
+      "whole": {
+        "area": 168463,
+        "components": [
+          168463
+        ]
+      }
+    },
+    {
+      "t": 0.26666666666666666,
+      "arm": {
+        "area": 4911,
+        "components": [
+          4911
+        ]
+      },
+      "whole": {
+        "area": 168472,
+        "components": [
+          168472
+        ]
+      }
+    },
+    {
+      "t": 0.3,
+      "arm": {
+        "area": 4900,
+        "components": [
+          4900
+        ]
+      },
+      "whole": {
+        "area": 168541,
+        "components": [
+          168541
+        ]
+      }
+    },
+    {
+      "t": 0.3333333333333333,
+      "arm": {
+        "area": 4889,
+        "components": [
+          4889
+        ]
+      },
+      "whole": {
+        "area": 168637,
+        "components": [
+          168637
+        ]
+      }
+    },
+    {
+      "t": 0.36666666666666664,
+      "arm": {
+        "area": 4854,
+        "components": [
+          4854
+        ]
+      },
+      "whole": {
+        "area": 168696,
+        "components": [
+          168696
+        ]
+      }
+    },
+    {
+      "t": 0.4,
+      "arm": {
+        "area": 4845,
+        "components": [
+          4845
+        ]
+      },
+      "whole": {
+        "area": 168857,
+        "components": [
+          168857
+        ]
+      }
+    },
+    {
+      "t": 0.43333333333333335,
+      "arm": {
+        "area": 4809,
+        "components": [
+          4809
+        ]
+      },
+      "whole": {
+        "area": 169072,
+        "components": [
+          169072
+        ]
+      }
+    },
+    {
+      "t": 0.4666666666666667,
+      "arm": {
+        "area": 4780,
+        "components": [
+          4780
+        ]
+      },
+      "whole": {
+        "area": 169277,
+        "components": [
+          169277
+        ]
+      }
+    },
+    {
+      "t": 0.5,
+      "arm": {
+        "area": 4750,
+        "components": [
+          4750
+        ]
+      },
+      "whole": {
+        "area": 169529,
+        "components": [
+          169529
+        ]
+      }
+    },
+    {
+      "t": 0.5333333333333333,
+      "arm": {
+        "area": 4714,
+        "components": [
+          4714
+        ]
+      },
+      "whole": {
+        "area": 169825,
+        "components": [
+          169825
+        ]
+      }
+    },
+    {
+      "t": 0.5666666666666667,
+      "arm": {
+        "area": 4680,
+        "components": [
+          4680
+        ]
+      },
+      "whole": {
+        "area": 170106,
+        "components": [
+          170106
+        ]
+      }
+    },
+    {
+      "t": 0.6,
+      "arm": {
+        "area": 4649,
+        "components": [
+          4649
+        ]
+      },
+      "whole": {
+        "area": 170355,
+        "components": [
+          170355
+        ]
+      }
+    },
+    {
+      "t": 0.6333333333333333,
+      "arm": {
+        "area": 4445,
+        "components": [
+          4445
+        ]
+      },
+      "whole": {
+        "area": 170397,
+        "components": [
+          170397
+        ]
+      }
+    },
+    {
+      "t": 0.6666666666666666,
+      "arm": {
+        "area": 4395,
+        "components": [
+          4395
+        ]
+      },
+      "whole": {
+        "area": 170584,
+        "components": [
+          170584
+        ]
+      }
+    },
+    {
+      "t": 0.7,
+      "arm": {
+        "area": 4372,
+        "components": [
+          4372
+        ]
+      },
+      "whole": {
+        "area": 170720,
+        "components": [
+          170720
+        ]
+      }
+    },
+    {
+      "t": 0.7333333333333333,
+      "arm": {
+        "area": 4352,
+        "components": [
+          4352
+        ]
+      },
+      "whole": {
+        "area": 170837,
+        "components": [
+          170837
+        ]
+      }
+    },
+    {
+      "t": 0.7666666666666667,
+      "arm": {
+        "area": 4368,
+        "components": [
+          4368
+        ]
+      },
+      "whole": {
+        "area": 170984,
+        "components": [
+          170984
+        ]
+      }
+    },
+    {
+      "t": 0.8,
+      "arm": {
+        "area": 4433,
+        "components": [
+          4433
+        ]
+      },
+      "whole": {
+        "area": 171117,
+        "components": [
+          171117
+        ]
+      }
+    },
+    {
+      "t": 0.8333333333333334,
+      "arm": {
+        "area": 4540,
+        "components": [
+          4540
+        ]
+      },
+      "whole": {
+        "area": 171267,
+        "components": [
+          171267
+        ]
+      }
+    },
+    {
+      "t": 0.8666666666666667,
+      "arm": {
+        "area": 4789,
+        "components": [
+          4789
+        ]
+      },
+      "whole": {
+        "area": 171590,
+        "components": [
+          171590
+        ]
+      }
+    },
+    {
+      "t": 0.9,
+      "arm": {
+        "area": 4899,
+        "components": [
+          4899
+        ]
+      },
+      "whole": {
+        "area": 171729,
+        "components": [
+          171729
+        ]
+      }
+    },
+    {
+      "t": 0.9333333333333333,
+      "arm": {
+        "area": 5008,
+        "components": [
+          5008
+        ]
+      },
+      "whole": {
+        "area": 171919,
+        "components": [
+          171919
+        ]
+      }
+    },
+    {
+      "t": 0.9666666666666667,
+      "arm": {
+        "area": 5138,
+        "components": [
+          5138
+        ]
+      },
+      "whole": {
+        "area": 172053,
+        "components": [
+          172053
+        ]
+      }
+    },
+    {
+      "t": 1,
+      "arm": {
+        "area": 5251,
+        "components": [
+          5251
+        ]
+      },
+      "whole": {
+        "area": 172192,
+        "components": [
+          172192
+        ]
+      }
+    },
+    {
+      "t": 1.0333333333333334,
+      "arm": {
+        "area": 5357,
+        "components": [
+          5357
+        ]
+      },
+      "whole": {
+        "area": 172298,
+        "components": [
+          172298
+        ]
+      }
+    },
+    {
+      "t": 1.0666666666666667,
+      "arm": {
+        "area": 5465,
+        "components": [
+          5465
+        ]
+      },
+      "whole": {
+        "area": 172390,
+        "components": [
+          172390
+        ]
+      }
+    },
+    {
+      "t": 1.1,
+      "arm": {
+        "area": 5563,
+        "components": [
+          5563
+        ]
+      },
+      "whole": {
+        "area": 172459,
+        "components": [
+          172459
+        ]
+      }
+    },
+    {
+      "t": 1.1333333333333333,
+      "arm": {
+        "area": 5656,
+        "components": [
+          5656
+        ]
+      },
+      "whole": {
+        "area": 172477,
+        "components": [
+          172477
+        ]
+      }
+    },
+    {
+      "t": 1.1666666666666667,
+      "arm": {
+        "area": 5744,
+        "components": [
+          5744
+        ]
+      },
+      "whole": {
+        "area": 172449,
+        "components": [
+          172449
+        ]
+      }
+    },
+    {
+      "t": 1.2,
+      "arm": {
+        "area": 5881,
+        "components": [
+          5881
+        ]
+      },
+      "whole": {
+        "area": 172379,
+        "components": [
+          172379
+        ]
+      }
+    },
+    {
+      "t": 1.2333333333333334,
+      "arm": {
+        "area": 6067,
+        "components": [
+          6067
+        ]
+      },
+      "whole": {
+        "area": 172229,
+        "components": [
+          172229
+        ]
+      }
+    },
+    {
+      "t": 1.2666666666666666,
+      "arm": {
+        "area": 6294,
+        "components": [
+          6294
+        ]
+      },
+      "whole": {
+        "area": 172063,
+        "components": [
+          172063
+        ]
+      }
+    },
+    {
+      "t": 1.3,
+      "arm": {
+        "area": 6548,
+        "components": [
+          6548
+        ]
+      },
+      "whole": {
+        "area": 171875,
+        "components": [
+          171875
+        ]
+      }
+    },
+    {
+      "t": 1.3333333333333333,
+      "arm": {
+        "area": 6763,
+        "components": [
+          6763
+        ]
+      },
+      "whole": {
+        "area": 171726,
+        "components": [
+          171726
+        ]
+      }
+    },
+    {
+      "t": 1.3666666666666667,
+      "arm": {
+        "area": 6959,
+        "components": [
+          6959
+        ]
+      },
+      "whole": {
+        "area": 171606,
+        "components": [
+          171606
+        ]
+      }
+    },
+    {
+      "t": 1.4,
+      "arm": {
+        "area": 7058,
+        "components": [
+          7058
+        ]
+      },
+      "whole": {
+        "area": 171529,
+        "components": [
+          171529
+        ]
+      }
+    },
+    {
+      "t": 1.4333333333333333,
+      "arm": {
+        "area": 7097,
+        "components": [
+          7097
+        ]
+      },
+      "whole": {
+        "area": 171516,
+        "components": [
+          171516
+        ]
+      }
+    },
+    {
+      "t": 1.4666666666666666,
+      "arm": {
+        "area": 7077,
+        "components": [
+          7077
+        ]
+      },
+      "whole": {
+        "area": 171588,
+        "components": [
+          171588
+        ]
+      }
+    },
+    {
+      "t": 1.5,
+      "arm": {
+        "area": 6998,
+        "components": [
+          6998
+        ]
+      },
+      "whole": {
+        "area": 171712,
+        "components": [
+          171712
+        ]
+      }
+    },
+    {
+      "t": 1.5333333333333334,
+      "arm": {
+        "area": 6894,
+        "components": [
+          6894
+        ]
+      },
+      "whole": {
+        "area": 171907,
+        "components": [
+          171907
+        ]
+      }
+    },
+    {
+      "t": 1.5666666666666667,
+      "arm": {
+        "area": 6740,
+        "components": [
+          6740
+        ]
+      },
+      "whole": {
+        "area": 172114,
+        "components": [
+          172114
+        ]
+      }
+    },
+    {
+      "t": 1.6,
+      "arm": {
+        "area": 6583,
+        "components": [
+          6583
+        ]
+      },
+      "whole": {
+        "area": 172354,
+        "components": [
+          172354
+        ]
+      }
+    },
+    {
+      "t": 1.6333333333333333,
+      "arm": {
+        "area": 6468,
+        "components": [
+          6468
+        ]
+      },
+      "whole": {
+        "area": 172606,
+        "components": [
+          172606
+        ]
+      }
+    },
+    {
+      "t": 1.6666666666666667,
+      "arm": {
+        "area": 6323,
+        "components": [
+          6323
+        ]
+      },
+      "whole": {
+        "area": 172750,
+        "components": [
+          172750
+        ]
+      }
+    },
+    {
+      "t": 1.7,
+      "arm": {
+        "area": 6258,
+        "components": [
+          6258
+        ]
+      },
+      "whole": {
+        "area": 172817,
+        "components": [
+          172817
+        ]
+      }
+    },
+    {
+      "t": 1.7333333333333334,
+      "arm": {
+        "area": 6237,
+        "components": [
+          6237
+        ]
+      },
+      "whole": {
+        "area": 172810,
+        "components": [
+          172810
+        ]
+      }
+    },
+    {
+      "t": 1.7666666666666666,
+      "arm": {
+        "area": 6209,
+        "components": [
+          6209
+        ]
+      },
+      "whole": {
+        "area": 172736,
+        "components": [
+          172736
+        ]
+      }
+    },
+    {
+      "t": 1.8,
+      "arm": {
+        "area": 6153,
+        "components": [
+          6153
+        ]
+      },
+      "whole": {
+        "area": 172556,
+        "components": [
+          172556
+        ]
+      }
+    },
+    {
+      "t": 1.8333333333333333,
+      "arm": {
+        "area": 6123,
+        "components": [
+          6123
+        ]
+      },
+      "whole": {
+        "area": 172364,
+        "components": [
+          172364
+        ]
+      }
+    },
+    {
+      "t": 1.8666666666666667,
+      "arm": {
+        "area": 6064,
+        "components": [
+          6064
+        ]
+      },
+      "whole": {
+        "area": 172081,
+        "components": [
+          172081
+        ]
+      }
+    },
+    {
+      "t": 1.9,
+      "arm": {
+        "area": 6006,
+        "components": [
+          6006
+        ]
+      },
+      "whole": {
+        "area": 171806,
+        "components": [
+          171806
+        ]
+      }
+    },
+    {
+      "t": 1.9333333333333333,
+      "arm": {
+        "area": 5960,
+        "components": [
+          5960
+        ]
+      },
+      "whole": {
+        "area": 171540,
+        "components": [
+          171540
+        ]
+      }
+    },
+    {
+      "t": 1.9666666666666666,
+      "arm": {
+        "area": 5935,
+        "components": [
+          5935
+        ]
+      },
+      "whole": {
+        "area": 171322,
+        "components": [
+          171322
+        ]
+      }
+    },
+    {
+      "t": 2,
+      "arm": {
+        "area": 5909,
+        "components": [
+          5909
+        ]
+      },
+      "whole": {
+        "area": 171113,
+        "components": [
+          171113
+        ]
+      }
+    },
+    {
+      "t": 2.033333333333333,
+      "arm": {
+        "area": 5892,
+        "components": [
+          5892
+        ]
+      },
+      "whole": {
+        "area": 170998,
+        "components": [
+          170998
+        ]
+      }
+    },
+    {
+      "t": 2.066666666666667,
+      "arm": {
+        "area": 5869,
+        "components": [
+          5869
+        ]
+      },
+      "whole": {
+        "area": 170897,
+        "components": [
+          170897
+        ]
+      }
+    },
+    {
+      "t": 2.1,
+      "arm": {
+        "area": 5835,
+        "components": [
+          5835
+        ]
+      },
+      "whole": {
+        "area": 170843,
+        "components": [
+          170843
+        ]
+      }
+    },
+    {
+      "t": 2.1333333333333333,
+      "arm": {
+        "area": 5874,
+        "components": [
+          5874
+        ]
+      },
+      "whole": {
+        "area": 170879,
+        "components": [
+          170879
+        ]
+      }
+    },
+    {
+      "t": 2.1666666666666665,
+      "arm": {
+        "area": 5894,
+        "components": [
+          5894
+        ]
+      },
+      "whole": {
+        "area": 170940,
+        "components": [
+          170940
+        ]
+      }
+    },
+    {
+      "t": 2.2,
+      "arm": {
+        "area": 5910,
+        "components": [
+          5910
+        ]
+      },
+      "whole": {
+        "area": 171074,
+        "components": [
+          171074
+        ]
+      }
+    },
+    {
+      "t": 2.2333333333333334,
+      "arm": {
+        "area": 5937,
+        "components": [
+          5937
+        ]
+      },
+      "whole": {
+        "area": 171233,
+        "components": [
+          171233
+        ]
+      }
+    },
+    {
+      "t": 2.2666666666666666,
+      "arm": {
+        "area": 5966,
+        "components": [
+          5966
+        ]
+      },
+      "whole": {
+        "area": 171459,
+        "components": [
+          171459
+        ]
+      }
+    },
+    {
+      "t": 2.3,
+      "arm": {
+        "area": 6007,
+        "components": [
+          6007
+        ]
+      },
+      "whole": {
+        "area": 171699,
+        "components": [
+          171699
+        ]
+      }
+    },
+    {
+      "t": 2.3333333333333335,
+      "arm": {
+        "area": 6086,
+        "components": [
+          6086
+        ]
+      },
+      "whole": {
+        "area": 171976,
+        "components": [
+          171976
+        ]
+      }
+    },
+    {
+      "t": 2.3666666666666667,
+      "arm": {
+        "area": 6140,
+        "components": [
+          6140
+        ]
+      },
+      "whole": {
+        "area": 172241,
+        "components": [
+          172241
+        ]
+      }
+    },
+    {
+      "t": 2.4,
+      "arm": {
+        "area": 6164,
+        "components": [
+          6164
+        ]
+      },
+      "whole": {
+        "area": 172396,
+        "components": [
+          172396
+        ]
+      }
+    },
+    {
+      "t": 2.433333333333333,
+      "arm": {
+        "area": 6219,
+        "components": [
+          6219
+        ]
+      },
+      "whole": {
+        "area": 172544,
+        "components": [
+          172544
+        ]
+      }
+    },
+    {
+      "t": 2.466666666666667,
+      "arm": {
+        "area": 6253,
+        "components": [
+          6253
+        ]
+      },
+      "whole": {
+        "area": 172597,
+        "components": [
+          172597
+        ]
+      }
+    },
+    {
+      "t": 2.5,
+      "arm": {
+        "area": 6279,
+        "components": [
+          6279
+        ]
+      },
+      "whole": {
+        "area": 172549,
+        "components": [
+          172549
+        ]
+      }
+    },
+    {
+      "t": 2.533333333333333,
+      "arm": {
+        "area": 6345,
+        "components": [
+          6345
+        ]
+      },
+      "whole": {
+        "area": 172427,
+        "components": [
+          172427
+        ]
+      }
+    },
+    {
+      "t": 2.566666666666667,
+      "arm": {
+        "area": 6454,
+        "components": [
+          6454
+        ]
+      },
+      "whole": {
+        "area": 172306,
+        "components": [
+          172306
+        ]
+      }
+    },
+    {
+      "t": 2.6,
+      "arm": {
+        "area": 6563,
+        "components": [
+          6563
+        ]
+      },
+      "whole": {
+        "area": 172094,
+        "components": [
+          172094
+        ]
+      }
+    },
+    {
+      "t": 2.6333333333333333,
+      "arm": {
+        "area": 6688,
+        "components": [
+          6688
+        ]
+      },
+      "whole": {
+        "area": 171871,
+        "components": [
+          171871
+        ]
+      }
+    },
+    {
+      "t": 2.6666666666666665,
+      "arm": {
+        "area": 6833,
+        "components": [
+          6833
+        ]
+      },
+      "whole": {
+        "area": 171643,
+        "components": [
+          171643
+        ]
+      }
+    },
+    {
+      "t": 2.7,
+      "arm": {
+        "area": 6941,
+        "components": [
+          6941
+        ]
+      },
+      "whole": {
+        "area": 171459,
+        "components": [
+          171459
+        ]
+      }
+    },
+    {
+      "t": 2.7333333333333334,
+      "arm": {
+        "area": 7037,
+        "components": [
+          7037
+        ]
+      },
+      "whole": {
+        "area": 171282,
+        "components": [
+          171282
+        ]
+      }
+    },
+    {
+      "t": 2.7666666666666666,
+      "arm": {
+        "area": 7097,
+        "components": [
+          7097
+        ]
+      },
+      "whole": {
+        "area": 171165,
+        "components": [
+          171165
+        ]
+      }
+    },
+    {
+      "t": 2.8,
+      "arm": {
+        "area": 7086,
+        "components": [
+          7086
+        ]
+      },
+      "whole": {
+        "area": 171111,
+        "components": [
+          171111
+        ]
+      }
+    },
+    {
+      "t": 2.8333333333333335,
+      "arm": {
+        "area": 7084,
+        "components": [
+          7084
+        ]
+      },
+      "whole": {
+        "area": 171102,
+        "components": [
+          171102
+        ]
+      }
+    },
+    {
+      "t": 2.8666666666666667,
+      "arm": {
+        "area": 6986,
+        "components": [
+          6986
+        ]
+      },
+      "whole": {
+        "area": 171116,
+        "components": [
+          171116
+        ]
+      }
+    },
+    {
+      "t": 2.9,
+      "arm": {
+        "area": 6840,
+        "components": [
+          6840
+        ]
+      },
+      "whole": {
+        "area": 171187,
+        "components": [
+          171187
+        ]
+      }
+    },
+    {
+      "t": 2.933333333333333,
+      "arm": {
+        "area": 6681,
+        "components": [
+          6681
+        ]
+      },
+      "whole": {
+        "area": 171326,
+        "components": [
+          171326
+        ]
+      }
+    },
+    {
+      "t": 2.966666666666667,
+      "arm": {
+        "area": 6458,
+        "components": [
+          6458
+        ]
+      },
+      "whole": {
+        "area": 171470,
+        "components": [
+          171470
+        ]
+      }
+    },
+    {
+      "t": 3,
+      "arm": {
+        "area": 6274,
+        "components": [
+          6274
+        ]
+      },
+      "whole": {
+        "area": 171600,
+        "components": [
+          171600
+        ]
+      }
+    },
+    {
+      "t": 3.033333333333333,
+      "arm": {
+        "area": 6074,
+        "components": [
+          6074
+        ]
+      },
+      "whole": {
+        "area": 171716,
+        "components": [
+          171716
+        ]
+      }
+    },
+    {
+      "t": 3.066666666666667,
+      "arm": {
+        "area": 5917,
+        "components": [
+          5917
+        ]
+      },
+      "whole": {
+        "area": 171838,
+        "components": [
+          171838
+        ]
+      }
+    },
+    {
+      "t": 3.1,
+      "arm": {
+        "area": 5790,
+        "components": [
+          5790
+        ]
+      },
+      "whole": {
+        "area": 171892,
+        "components": [
+          171892
+        ]
+      }
+    },
+    {
+      "t": 3.1333333333333333,
+      "arm": {
+        "area": 5696,
+        "components": [
+          5696
+        ]
+      },
+      "whole": {
+        "area": 171950,
+        "components": [
+          171950
+        ]
+      }
+    },
+    {
+      "t": 3.1666666666666665,
+      "arm": {
+        "area": 5633,
+        "components": [
+          5633
+        ]
+      },
+      "whole": {
+        "area": 171967,
+        "components": [
+          171967
+        ]
+      }
+    },
+    {
+      "t": 3.2,
+      "arm": {
+        "area": 5575,
+        "components": [
+          5575
+        ]
+      },
+      "whole": {
+        "area": 171944,
+        "components": [
+          171944
+        ]
+      }
+    },
+    {
+      "t": 3.2333333333333334,
+      "arm": {
+        "area": 5496,
+        "components": [
+          5496
+        ]
+      },
+      "whole": {
+        "area": 171889,
+        "components": [
+          171889
+        ]
+      }
+    },
+    {
+      "t": 3.2666666666666666,
+      "arm": {
+        "area": 5409,
+        "components": [
+          5409
+        ]
+      },
+      "whole": {
+        "area": 171797,
+        "components": [
+          171797
+        ]
+      }
+    },
+    {
+      "t": 3.3,
+      "arm": {
+        "area": 5329,
+        "components": [
+          5329
+        ]
+      },
+      "whole": {
+        "area": 171712,
+        "components": [
+          171712
+        ]
+      }
+    },
+    {
+      "t": 3.3333333333333335,
+      "arm": {
+        "area": 5245,
+        "components": [
+          5245
+        ]
+      },
+      "whole": {
+        "area": 171622,
+        "components": [
+          171622
+        ]
+      }
+    },
+    {
+      "t": 3.3666666666666667,
+      "arm": {
+        "area": 5149,
+        "components": [
+          5149
+        ]
+      },
+      "whole": {
+        "area": 171548,
+        "components": [
+          171548
+        ]
+      }
+    },
+    {
+      "t": 3.4,
+      "arm": {
+        "area": 5058,
+        "components": [
+          5058
+        ]
+      },
+      "whole": {
+        "area": 171445,
+        "components": [
+          171445
+        ]
+      }
+    },
+    {
+      "t": 3.433333333333333,
+      "arm": {
+        "area": 4970,
+        "components": [
+          4970
+        ]
+      },
+      "whole": {
+        "area": 171317,
+        "components": [
+          171317
+        ]
+      }
+    },
+    {
+      "t": 3.466666666666667,
+      "arm": {
+        "area": 4896,
+        "components": [
+          4896
+        ]
+      },
+      "whole": {
+        "area": 171207,
+        "components": [
+          171207
+        ]
+      }
+    },
+    {
+      "t": 3.5,
+      "arm": {
+        "area": 4797,
+        "components": [
+          4797
+        ]
+      },
+      "whole": {
+        "area": 171049,
+        "components": [
+          171049
+        ]
+      }
+    },
+    {
+      "t": 3.533333333333333,
+      "arm": {
+        "area": 4601,
+        "components": [
+          4601
+        ]
+      },
+      "whole": {
+        "area": 170800,
+        "components": [
+          170800
+        ]
+      }
+    },
+    {
+      "t": 3.566666666666667,
+      "arm": {
+        "area": 4494,
+        "components": [
+          4494
+        ]
+      },
+      "whole": {
+        "area": 170682,
+        "components": [
+          170682
+        ]
+      }
+    },
+    {
+      "t": 3.6,
+      "arm": {
+        "area": 4425,
+        "components": [
+          4425
+        ]
+      },
+      "whole": {
+        "area": 170549,
+        "components": [
+          170549
+        ]
+      }
+    },
+    {
+      "t": 3.6333333333333333,
+      "arm": {
+        "area": 4376,
+        "components": [
+          4376
+        ]
+      },
+      "whole": {
+        "area": 170445,
+        "components": [
+          170445
+        ]
+      }
+    },
+    {
+      "t": 3.6666666666666665,
+      "arm": {
+        "area": 4366,
+        "components": [
+          4366
+        ]
+      },
+      "whole": {
+        "area": 170329,
+        "components": [
+          170329
+        ]
+      }
+    },
+    {
+      "t": 3.7,
+      "arm": {
+        "area": 4392,
+        "components": [
+          4392
+        ]
+      },
+      "whole": {
+        "area": 170222,
+        "components": [
+          170222
+        ]
+      }
+    },
+    {
+      "t": 3.7333333333333334,
+      "arm": {
+        "area": 4426,
+        "components": [
+          4426
+        ]
+      },
+      "whole": {
+        "area": 170054,
+        "components": [
+          170054
+        ]
+      }
+    },
+    {
+      "t": 3.7666666666666666,
+      "arm": {
+        "area": 4642,
+        "components": [
+          4642
+        ]
+      },
+      "whole": {
+        "area": 169997,
+        "components": [
+          169997
+        ]
+      }
+    },
+    {
+      "t": 3.8,
+      "arm": {
+        "area": 4698,
+        "components": [
+          4698
+        ]
+      },
+      "whole": {
+        "area": 169721,
+        "components": [
+          169721
+        ]
+      }
+    },
+    {
+      "t": 3.8333333333333335,
+      "arm": {
+        "area": 4731,
+        "components": [
+          4731
+        ]
+      },
+      "whole": {
+        "area": 169394,
+        "components": [
+          169394
+        ]
+      }
+    },
+    {
+      "t": 3.8666666666666667,
+      "arm": {
+        "area": 4771,
+        "components": [
+          4771
+        ]
+      },
+      "whole": {
+        "area": 169051,
+        "components": [
+          169051
+        ]
+      }
+    },
+    {
+      "t": 3.9,
+      "arm": {
+        "area": 4815,
+        "components": [
+          4815
+        ]
+      },
+      "whole": {
+        "area": 168737,
+        "components": [
+          168737
+        ]
+      }
+    },
+    {
+      "t": 3.933333333333333,
+      "arm": {
+        "area": 4842,
+        "components": [
+          4842
+        ]
+      },
+      "whole": {
+        "area": 168524,
+        "components": [
+          168524
+        ]
+      }
+    },
+    {
+      "t": 3.966666666666667,
+      "arm": {
+        "area": 4864,
+        "components": [
+          4864
+        ]
+      },
+      "whole": {
+        "area": 168345,
+        "components": [
+          168345
+        ]
+      }
+    },
+    {
+      "t": 4,
+      "arm": {
+        "area": 4897,
+        "components": [
+          4897
+        ]
+      },
+      "whole": {
+        "area": 168215,
+        "components": [
+          168215
+        ]
+      }
+    },
+    {
+      "t": 4.033333333333333,
+      "arm": {
+        "area": 4906,
+        "components": [
+          4906
+        ]
+      },
+      "whole": {
+        "area": 168154,
+        "components": [
+          168154
+        ]
+      }
+    },
+    {
+      "t": 4.066666666666666,
+      "arm": {
+        "area": 4923,
+        "components": [
+          4923
+        ]
+      },
+      "whole": {
+        "area": 168113,
+        "components": [
+          168113
+        ]
+      }
+    },
+    {
+      "t": 4.1,
+      "arm": {
+        "area": 4919,
+        "components": [
+          4919
+        ]
+      },
+      "whole": {
+        "area": 168101,
+        "components": [
+          168101
+        ]
+      }
+    },
+    {
+      "t": 4.133333333333334,
+      "arm": {
+        "area": 4912,
+        "components": [
+          4912
+        ]
+      },
+      "whole": {
+        "area": 168090,
+        "components": [
+          168090
+        ]
+      }
+    },
+    {
+      "t": 4.166666666666667,
+      "arm": {
+        "area": 4918,
+        "components": [
+          4918
+        ]
+      },
+      "whole": {
+        "area": 168088,
+        "components": [
+          168088
+        ]
+      }
+    },
+    {
+      "t": 4.2,
+      "arm": {
+        "area": 4922,
+        "components": [
+          4922
+        ]
+      },
+      "whole": {
+        "area": 168075,
+        "components": [
+          168075
+        ]
+      }
+    },
+    {
+      "t": 4.233333333333333,
+      "arm": {
+        "area": 4914,
+        "components": [
+          4914
+        ]
+      },
+      "whole": {
+        "area": 168077,
+        "components": [
+          168077
+        ]
+      }
+    },
+    {
+      "t": 4.266666666666667,
+      "arm": {
+        "area": 4919,
+        "components": [
+          4919
+        ]
+      },
+      "whole": {
+        "area": 168078,
+        "components": [
+          168078
+        ]
+      }
+    },
+    {
+      "t": 4.3,
+      "arm": {
+        "area": 4922,
+        "components": [
+          4922
+        ]
+      },
+      "whole": {
+        "area": 168109,
+        "components": [
+          168109
+        ]
+      }
+    },
+    {
+      "t": 4.333333333333333,
+      "arm": {
+        "area": 4911,
+        "components": [
+          4911
+        ]
+      },
+      "whole": {
+        "area": 168073,
+        "components": [
+          168073
+        ]
+      }
+    },
+    {
+      "t": 4.366666666666666,
+      "arm": {
+        "area": 4923,
+        "components": [
+          4923
+        ]
+      },
+      "whole": {
+        "area": 168082,
+        "components": [
+          168082
+        ]
+      }
+    },
+    {
+      "t": 4.4,
+      "arm": {
+        "area": 4920,
+        "components": [
+          4920
+        ]
+      },
+      "whole": {
+        "area": 168092,
+        "components": [
+          168092
+        ]
+      }
+    },
+    {
+      "t": 4.433333333333334,
+      "arm": {
+        "area": 4915,
+        "components": [
+          4915
+        ]
+      },
+      "whole": {
+        "area": 168107,
+        "components": [
+          168107
+        ]
+      }
+    },
+    {
+      "t": 4.466666666666667,
+      "arm": {
+        "area": 4923,
+        "components": [
+          4923
+        ]
+      },
+      "whole": {
+        "area": 168109,
+        "components": [
+          168109
+        ]
+      }
+    },
+    {
+      "t": 4.5,
+      "arm": {
+        "area": 4921,
+        "components": [
+          4921
+        ]
+      },
+      "whole": {
+        "area": 168120,
+        "components": [
+          168120
+        ]
+      }
+    }
+  ]
+}

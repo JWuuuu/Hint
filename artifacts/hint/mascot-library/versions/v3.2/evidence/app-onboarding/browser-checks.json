@@ -1,0 +1,34 @@
+[
+  {
+    "engine": "chromium",
+    "passed": true,
+    "checks": [
+      "star flight, peek, jump, landing, greeting wave and tap reaction use one player; Begin is available immediately",
+      "phone widths 320/390/430; form transition reuses the canvas; invalid data does not save; keyboard layout keeps the character clear; valid profile saves once and nods; Back does not replay the flight",
+      "skip during flight, peek and wave reaches the form without replacing the player",
+      "reduced motion presents a static welcome and keeps navigation available",
+      "the original onboarding remains when the preview flag is disabled"
+    ],
+    "errors": [],
+    "profileSaves": 1,
+    "api": "isolated fixtures",
+    "keyboard": "viewport simulation",
+    "nativeDevice": false
+  },
+  {
+    "engine": "webkit",
+    "passed": true,
+    "checks": [
+      "star flight, peek, jump, landing, greeting wave and tap reaction use one player; Begin is available immediately",
+      "phone widths 320/390/430; form transition reuses the canvas; invalid data does not save; keyboard layout keeps the character clear; valid profile saves once and nods; Back does not replay the flight",
+      "skip during flight, peek and wave reaches the form without replacing the player",
+      "reduced motion presents a static welcome and keeps navigation available",
+      "the original onboarding remains when the preview flag is disabled"
+    ],
+    "errors": [],
+    "profileSaves": 1,
+    "api": "isolated fixtures",
+    "keyboard": "viewport simulation",
+    "nativeDevice": false
+  }
+]

@@ -1,0 +1,81 @@
+import { createRequire } from 'node:module';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const {chromium,webkit}=createRequire(import.meta.url)('@playwright/test');
+const root=fileURLToPath(new URL('../',import.meta.url)),out=path.join(root,'evidence/entrance');
+await mkdir(path.join(out,'videos'),{recursive:true});
+const report=[];
+for(const engine of process.argv.includes('--fallback-only')?[]:['chromium','webkit']){
+  const browser=await ({chromium,webkit}[engine]).launch(engine==='chromium'?{channel:'chrome',headless:true}:{headless:true});
+  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,hasTouch:true,recordVideo:{dir:path.join(out,'videos/raw'),size:{width:390,height:844}}});
+  const page=await context.newPage(),errors=[],checks=[];
+  page.on('pageerror',error=>errors.push(error.message));
+  const call=(method,...args)=>page.evaluate(({method,args})=>window.hintJourney[method](...args),{method,args});
+  const state=()=>call('getState');
+  try{
+    await page.goto('http://127.0.0.1:8767/versions/v3.2/preview/journey.html');await page.waitForFunction(()=>window.hintJourney);
+    await call('replay');
+    await page.waitForFunction(()=>window.hintJourney.getState().phase==='ready',null,{timeout:16000});
+    await page.locator('[data-stage]').screenshot({path:path.join(out,`${engine}-welcome-390.png`)});
+    checks.push('normal-speed flight, peek, jump, settle and greeting complete');
+    assert.equal(await call('react'),true);assert.equal(await call('react'),false);
+    await page.waitForTimeout(280);await call('pause');const frozen=(await state()).clock;await page.waitForTimeout(240);assert.equal((await state()).clock,frozen);
+    await call('setMotionPolicy',{visible:false});await call('setMotionPolicy',{visible:true});assert.equal((await state()).paused,true);
+    await call('resume');await page.waitForTimeout(160);assert.ok((await state()).clock>frozen);
+    checks.push('repeated reactions ignored; pause freezes actor and scene; visibility does not undo manual pause');
+    await page.locator('[data-continue]').tap();await page.waitForFunction(()=>window.hintJourney.getState().phase==='profile');
+    for(const width of [320,390,430]){
+      await page.setViewportSize({width,height:844});await page.waitForTimeout(80);
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+      await page.locator('[data-stage]').screenshot({path:path.join(out,`${engine}-profile-${width}.png`)});
+      const form=await page.locator('[data-profile]').boundingBox(),stage=await page.locator('[data-stage]').boundingBox();
+      assert.ok(form.y+form.height<=stage.y+stage.height,`profile fits ${width}`);
+    }
+    await page.locator('#first-name').fill('Jamie');await page.locator('#birth-date').fill('2000-03-21');
+    await page.locator('#birth-date').press('Tab');await page.keyboard.press('Enter');
+    assert.equal((await state()).mode,'daily');assert.equal(await call('completeProfile'),false);
+    await page.waitForFunction(()=>window.hintJourney.getState().letter==='offered',null,{timeout:10000});
+    await page.locator('[data-accept]').tap();assert.equal(await call('acceptLetter'),false);
+    await page.waitForFunction(()=>window.hintJourney.getState().letterPhase==='reading',null,{timeout:10000});
+    await page.locator('[data-flip]').tap();await page.waitForTimeout(900);
+    await page.locator('[data-stage]').screenshot({path:path.join(out,`${engine}-journey-reading.png`)});
+    assert.equal((await state()).letter,'delivered');assert.equal(await page.locator('[data-actor-canvas]').count(),1);
+    checks.push('touch navigation; 320/390/430 layouts; keyboard form submission');
+    checks.push('profile to daily letter to reading keeps one character canvas and empty paws after delivery');
+    await call('replay');await call('seek',3.25);await call('resume');await page.locator('[data-continue]').tap();
+    await page.waitForFunction(()=>window.hintJourney.getState().phase==='profile');
+    checks.push('continue during the peek reaches the form');
+    await call('replay');await call('seek',5.3);await call('resume');await call('setMotionPolicy',{visible:false});
+    const hidden=(await state()).clock;await page.waitForTimeout(240);assert.equal((await state()).clock,hidden);
+    await call('setMotionPolicy',{visible:true});await page.waitForTimeout(130);assert.ok((await state()).clock>hidden);
+    checks.push('visibility policy freezes the shared clock and resumes without elapsed catch-up');
+    await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(100);assert.equal((await state()).phase,'ready');
+    const reduced=(await state()).clock;await page.waitForTimeout(200);assert.equal((await state()).clock,reduced);
+    await page.locator('[data-continue]').tap();assert.equal((await state()).phase,'profile');
+    checks.push('reduced motion uses stable poses with immediate usable navigation');
+    await page.emulateMedia({reducedMotion:'no-preference'});await call('replay');await call('setSpeed',.5);
+    const slowStart=(await state()).time;await page.waitForTimeout(650);const slowAdvance=(await state()).time-slowStart;
+    assert.ok(slowAdvance>.18&&slowAdvance<.44,`half speed advanced ${slowAdvance} seconds`);
+    await page.waitForFunction(()=>window.hintJourney.getState().time>4.8,null,{timeout:18000});
+    if(engine==='chromium')await page.waitForFunction(()=>window.hintJourney.getState().phase==='ready',null,{timeout:14000});
+    checks.push(engine==='chromium'?'complete half-speed entrance and wave':'half-speed peek, jump and landing');
+    await call('destroy');const destroyed=(await state()).clock;await page.waitForTimeout(180);assert.equal((await state()).clock,destroyed);
+    checks.push('destroy stops rendering');assert.deepEqual(errors,[]);
+    report.push({engine,passed:true,checks,errors});
+    await writeFile(path.join(out,`${engine}-checks.json`),JSON.stringify(report.at(-1),null,2)+'\n');
+  }finally{
+    const video=page.video();await context.close();if(video)await video.saveAs(path.join(out,'videos',`${engine}-welcome-review.webm`));await browser.close();
+  }
+  console.log(JSON.stringify(report.at(-1)));
+}
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:390,height:844}});
+await page.addInitScript(()=>{const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return type==='webgl'?null:original.call(this,type,...args);};});
+await page.goto('http://127.0.0.1:8767/versions/v3.2/preview/journey.html');await page.waitForFunction(()=>window.hintJourney);
+await page.locator('[data-continue]').click();await page.waitForFunction(()=>window.hintJourney.getState().phase==='profile');
+assert.equal(await page.locator('#hint-journey').getAttribute('data-fallback'),'true');assert.ok(await page.locator('img[data-fallback]').isVisible());
+await page.locator('[data-stage]').screenshot({path:path.join(out,'static-fallback.png')});await browser.close();
+report.push({case:'unavailable WebGL',passed:true,checks:['static character remains visible','profile navigation remains usable']});
+await writeFile(path.join(out,'browser-checks.json'),JSON.stringify(report,null,2)+'\n');

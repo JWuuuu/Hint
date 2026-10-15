@@ -23,6 +23,8 @@ type TarotCardVisualProps = {
   cardArtId?: TarotCardArtId;
   positionLabel?: string;
   ariaLabel?: string;
+  pressed?: boolean;
+  ariaControls?: string;
   className?: string;
   showFrontCaption?: boolean;
   instantReveal?: boolean;
@@ -119,6 +121,8 @@ export function TarotCardVisual({
   cardArtId = "original",
   positionLabel,
   ariaLabel,
+  pressed,
+  ariaControls,
   className = "",
   showFrontCaption = true,
   instantReveal = false,
@@ -138,6 +142,8 @@ export function TarotCardVisual({
       onClick={onClick}
       disabled={!onClick}
       aria-label={accessibleLabel}
+      aria-pressed={pressed}
+      aria-controls={ariaControls}
       className={`relative block shrink-0 rounded-[12px] outline-none ${!onClick ? "pointer-events-none" : ""} ${compact ? "h-[82px] w-[54px] sm:h-[98px] sm:w-[64px] md:h-[112px] md:w-[72px]" : "h-[218px] w-[132px] sm:h-[264px] sm:w-[160px] md:h-[294px] md:w-[178px]"} ${className}`}
       animate={{
         y: selected ? -18 : 0,

@@ -68,3 +68,6 @@ artifacts/checkpoints/*.zip
 .vercel
 .env*
 !artifacts/hint/.env.mobile.example
+
+# Frozen mascot backup ZIPs are included in the full Windows release download.
+/artifacts/hint/mascot-library/**/*.zip

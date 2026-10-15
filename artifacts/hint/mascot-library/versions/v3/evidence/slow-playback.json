@@ -1,0 +1,233 @@
+[
+  {
+    "gesture": "sleepy",
+    "speed": 0.5,
+    "elapsedMilliseconds": 9224,
+    "expectedMilliseconds": 9200,
+    "frames": 554,
+    "medianFrameMilliseconds": 16.699999999999818,
+    "p95FrameMilliseconds": 16.799999999999727,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "frustrated",
+    "speed": 0.5,
+    "elapsedMilliseconds": 7005,
+    "expectedMilliseconds": 7000,
+    "frames": 422,
+    "medianFrameMilliseconds": 16.69999999999891,
+    "p95FrameMilliseconds": 16.700000000000728,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "disappointed",
+    "speed": 0.5,
+    "elapsedMilliseconds": 8007,
+    "expectedMilliseconds": 8000,
+    "frames": 482,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.799999999999272,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "comfort",
+    "speed": 0.5,
+    "elapsedMilliseconds": 7605,
+    "expectedMilliseconds": 7600,
+    "frames": 458,
+    "medianFrameMilliseconds": 16.700000000000728,
+    "p95FrameMilliseconds": 16.799999999999272,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "shy",
+    "speed": 0.5,
+    "elapsedMilliseconds": 7221,
+    "expectedMilliseconds": 7200,
+    "frames": 434,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.700000000004366,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "surprised",
+    "speed": 0.5,
+    "elapsedMilliseconds": 5403,
+    "expectedMilliseconds": 5400,
+    "frames": 326,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.700000000004366,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "curious",
+    "speed": 0.5,
+    "elapsedMilliseconds": 6819,
+    "expectedMilliseconds": 6800,
+    "frames": 410,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.700000000004366,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "shake-head",
+    "speed": 0.5,
+    "elapsedMilliseconds": 6214,
+    "expectedMilliseconds": 6200,
+    "frames": 374,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.700000000004366,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "welcome",
+    "speed": 0.5,
+    "elapsedMilliseconds": 9010,
+    "expectedMilliseconds": 9000,
+    "frames": 542,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.70000000001164,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "idle",
+    "speed": 0.5,
+    "elapsedMilliseconds": 12017,
+    "expectedMilliseconds": 12000,
+    "frames": 722,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.79999999998836,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "waiting",
+    "speed": 0.5,
+    "elapsedMilliseconds": 12018,
+    "expectedMilliseconds": 12000,
+    "frames": 723,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.70000000001164,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "speaking",
+    "speed": 0.5,
+    "elapsedMilliseconds": 11207,
+    "expectedMilliseconds": 11200,
+    "frames": 674,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.70000000001164,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "reading",
+    "speed": 0.5,
+    "elapsedMilliseconds": 10804,
+    "expectedMilliseconds": 10800,
+    "frames": 650,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.70000000001164,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "wink-left",
+    "speed": 0.5,
+    "elapsedMilliseconds": 3803,
+    "expectedMilliseconds": 3800,
+    "frames": 230,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.70000000001164,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "wink-right",
+    "speed": 0.5,
+    "elapsedMilliseconds": 4111,
+    "expectedMilliseconds": 4100,
+    "frames": 248,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.79999999998836,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "nod",
+    "speed": 0.5,
+    "elapsedMilliseconds": 4603,
+    "expectedMilliseconds": 4600,
+    "frames": 278,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.70000000001164,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "listening",
+    "speed": 0.5,
+    "elapsedMilliseconds": 8825,
+    "expectedMilliseconds": 8800,
+    "frames": 530,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.79999999998836,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "thinking",
+    "speed": 0.5,
+    "elapsedMilliseconds": 9205,
+    "expectedMilliseconds": 9200,
+    "frames": 554,
+    "medianFrameMilliseconds": 16.699999999982538,
+    "p95FrameMilliseconds": 16.70000000001164,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "celebration",
+    "speed": 0.5,
+    "elapsedMilliseconds": 5831,
+    "expectedMilliseconds": 5800,
+    "frames": 350,
+    "medianFrameMilliseconds": 16.699999999982538,
+    "p95FrameMilliseconds": 16.79999999998836,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "offer-letter",
+    "speed": 0.5,
+    "elapsedMilliseconds": 4800,
+    "expectedMilliseconds": 4800,
+    "frames": 290,
+    "medianFrameMilliseconds": 16.699999999982538,
+    "p95FrameMilliseconds": 16.79999999998836,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "deliver-letter",
+    "speed": 0.5,
+    "elapsedMilliseconds": 3626,
+    "expectedMilliseconds": 3600,
+    "frames": 218,
+    "medianFrameMilliseconds": 16.699999999982538,
+    "p95FrameMilliseconds": 16.79999999998836,
+    "monotonic": true,
+    "endsPaused": true
+  }
+]

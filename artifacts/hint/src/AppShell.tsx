@@ -9,10 +9,18 @@ import {
   UserRound,
   type LucideIcon,
 } from "lucide-react";
-import { PointerProvider } from "./modules/hold/atmosphere";
+import {
+  PointerProvider,
+  RoomLight,
+  Particles,
+  Vignette,
+  Grain,
+  Haze,
+  Moonlight,
+} from "./modules/hold/atmosphere";
 import { AppLaunchIntro } from "./components/app/AppLaunchIntro";
 import type { LaunchIntroVariant } from "./components/app/AppLaunchIntro";
-import { ConstellationBackdrop } from "./components/app/ConstellationBackdrop";
+import { CelestialBackdrop } from "./components/app/CelestialBackdrop";
 import { trackEvent } from "./lib/analytics";
 import {
   getInitialHintTheme,
@@ -26,6 +34,7 @@ import { useLanguage } from "./lib/i18n";
 import { triggerFeedback } from "./lib/feedback";
 import { useMotionPolicy } from "./lib/motionPolicy";
 import { RoomTransitions } from "./components/app/RoomTransitions";
+import { useHintGuideEnabled } from "./components/mascot/HintGuide";
 
 /** Full-screen flows own their navigation, so the global bottom nav is hidden there. */
 const NAV_HIDDEN_ROUTES = ["/tarot", "/ask", "/login", "/app/tarot", "/app/ask", "/app/login"];
@@ -66,11 +75,12 @@ function onboardingOwnsScreen(): boolean {
 }
 
 /**
- * AppShell — the persistent room. The constellation backdrop is mounted once
- * so routes can change without restarting the star light.
+ * AppShell — the persistent room. Atmosphere is mounted once at the app
+ * level so routes can crossfade without the particles/moonlight resetting.
  * Children are placed above the atmosphere on z-20.
  */
 export function AppShell({ children }: { children: ReactNode }) {
+  const guideEnabled = useHintGuideEnabled();
   const [location] = useLocation();
   const routePath = location.split(/[?#]/, 1)[0]?.replace(/\/+$/, "") || "/";
   const [theme, setTheme] = useState<HintTheme>(getInitialHintTheme);
@@ -181,11 +191,22 @@ export function AppShell({ children }: { children: ReactNode }) {
         data-hint-theme={theme}
         data-hint-cream-route={creamStyleRoute ? "true" : undefined}
         className={[
-          "hint-app-shell-root hint-constellation-shell fixed inset-0 overflow-hidden",
+          "hint-app-shell-root fixed inset-0 overflow-hidden",
           creamStyleRoute ? "hint-cream-route" : "",
         ].join(" ")}
       >
-        <ConstellationBackdrop />
+        {!referenceHomeRoute && !creamStyleRoute ? (
+          <>
+            {/* Atmosphere stack — back to front */}
+            <CelestialBackdrop theme={theme} />
+            <Moonlight />
+            <Haze />
+            <Particles />
+            <RoomLight />
+            <Vignette />
+            <Grain />
+          </>
+        ) : null}
 
         {/* Route content sits above the atmosphere.
             Pages own their own scroll model — AppShell does not impose
@@ -201,6 +222,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         ) : null}
 
         {ENABLE_LAUNCH_INTRO &&
+        !(guideEnabled && onboardingOwnsScreen()) &&
         isProductRoute &&
         !referenceHomeRoute &&
         !creamStyleRoute &&

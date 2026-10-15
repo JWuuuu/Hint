@@ -1,0 +1,7 @@
+{
+  "mode": "built-in",
+  "prompt": "Use case: precise-object-edit. Asset type: high-resolution game animation envelope texture.\nInput image 1 is the edit target: the little cream envelope Hint holds. Recreate this same single envelope as an isolated larger straight-on front view, not at a diagonal. Preserve the ivory textured thick paper, soft rounded corners, triangular closed flap, small round plum wax seal with the same four-point cream star, gentle warm upper-left light, subtle paper fold shadows, and understated plush-world style. The envelope has landscape proportions about 1.45:1 and fills 78 percent of the square canvas width, centered. All four outer corners must be completely clean and intact, with no stair-step cutouts and no hands. Keep the closed flap point and wax seal in the lower middle of the envelope. True transparent alpha background, no ground plane, no cast shadow outside the envelope, no text, no additional objects. Match the original object; do not redesign it.",
+  "source": "../envelope.webp",
+  "output": "envelope-front-v1.png",
+  "usage": "Front-facing letter texture for the v3.2 handoff study."
+}

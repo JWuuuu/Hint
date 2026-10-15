@@ -1,0 +1,44 @@
+[
+  {
+    "engine": "chromium",
+    "heldPose": true,
+    "switchFromHeldPose": true,
+    "readingResumes": true,
+    "faces": [
+      {
+        "id": "idle",
+        "middleMinusCorners": 5.093137254901933
+      },
+      {
+        "id": "frustrated",
+        "middleMinusCorners": -5.423128342246002
+      },
+      {
+        "id": "disappointed",
+        "middleMinusCorners": -7.590909090909065
+      }
+    ],
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "heldPose": true,
+    "switchFromHeldPose": true,
+    "readingResumes": true,
+    "faces": [
+      {
+        "id": "idle",
+        "middleMinusCorners": 5.064814814814838
+      },
+      {
+        "id": "frustrated",
+        "middleMinusCorners": -5.411064425770348
+      },
+      {
+        "id": "disappointed",
+        "middleMinusCorners": -7.590909090909065
+      }
+    ],
+    "errors": []
+  }
+]

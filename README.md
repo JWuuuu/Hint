@@ -3,6 +3,10 @@
 Hint is a Vite React frontend with a Node/Express API, generated API clients,
 and a Postgres-backed Drizzle schema.
 
+For the current Tarot, Read My Hint, and mascot v3.2 checkpoint, start with
+[the Windows handoff](HANDOFF_WINDOWS.md). The full download includes all saved
+animation versions and backup archives.
+
 ## Code layout
 
 This repo stays as one pnpm workspace, but the app is organized as separate

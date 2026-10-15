@@ -1,0 +1,16 @@
+{
+  "engine": "chromium",
+  "passed": true,
+  "checks": [
+    "normal-speed flight, peek, jump, settle and greeting complete",
+    "repeated reactions ignored; pause freezes actor and scene; visibility does not undo manual pause",
+    "touch navigation; 320/390/430 layouts; keyboard form submission",
+    "profile to daily letter to reading keeps one character canvas and empty paws after delivery",
+    "continue during the peek reaches the form",
+    "visibility policy freezes the shared clock and resumes without elapsed catch-up",
+    "reduced motion uses stable poses with immediate usable navigation",
+    "complete half-speed entrance and wave",
+    "destroy stops rendering"
+  ],
+  "errors": []
+}

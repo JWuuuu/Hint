@@ -1,0 +1,15 @@
+{
+  "approvedGreetingSha256": "fbda0c5e0722a0a9f706b1323336f3d4a704d2cb91252e28e5eca42725200191",
+  "preservedCounts": {
+    "approved": 35,
+    "v1": 99,
+    "v2": 641,
+    "v3": 1000,
+    "v3.1": 831
+  },
+  "unchangedReadOnlyArchives": {
+    "welcome-study-01/hint-welcome-study-01.zip": "45c13da11d21b861ba2958ee797ae8ff7ec38c6c6fa26504d568bf014d21a8e2",
+    "welcome-letter-study-02/hint-v3.2-welcome-letter-study-02.zip": "6c98e906ad8e265cee3e536bbcb1cec1b1299aaac2fc1ba974db18d8ce0d2a5c",
+    "conversation-study-03/hint-v3.2-conversation-study-03.zip": "e98afa866dd8470a4cd95e0b7b188c7b370564702e43be67678628a3acf92806"
+  }
+}

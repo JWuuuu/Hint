@@ -1,0 +1,26 @@
+[
+  {
+    "part": "body",
+    "frames": 2378,
+    "verticesPerFrame": 19881,
+    "trianglesPerFrame": 39200,
+    "minimumSignedDoubleArea": 0.000029523880384907386,
+    "valid": true
+  },
+  {
+    "part": "paws",
+    "frames": 2378,
+    "verticesPerFrame": 19881,
+    "trianglesPerFrame": 39200,
+    "minimumSignedDoubleArea": 0.000029523880384907386,
+    "valid": true
+  },
+  {
+    "part": "face",
+    "frames": 2378,
+    "verticesPerFrame": 19881,
+    "trianglesPerFrame": 39200,
+    "minimumSignedDoubleArea": 0.000029523880384907386,
+    "valid": true
+  }
+]

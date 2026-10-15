@@ -1,0 +1,322 @@
+[
+  {
+    "gesture": "sleepy",
+    "letter": "held",
+    "frames": 112,
+    "majorCharacterComponents": 1,
+    "minArea": 70410,
+    "maxArea": 75469
+  },
+  {
+    "gesture": "sleepy",
+    "letter": "delivered",
+    "frames": 112,
+    "majorCharacterComponents": 1,
+    "minArea": 70356,
+    "maxArea": 75408
+  },
+  {
+    "gesture": "frustrated",
+    "letter": "held",
+    "frames": 85,
+    "majorCharacterComponents": 1,
+    "minArea": 69328,
+    "maxArea": 74584
+  },
+  {
+    "gesture": "frustrated",
+    "letter": "delivered",
+    "frames": 85,
+    "majorCharacterComponents": 1,
+    "minArea": 69187,
+    "maxArea": 74529
+  },
+  {
+    "gesture": "disappointed",
+    "letter": "held",
+    "frames": 97,
+    "majorCharacterComponents": 1,
+    "minArea": 69196,
+    "maxArea": 74624
+  },
+  {
+    "gesture": "disappointed",
+    "letter": "delivered",
+    "frames": 97,
+    "majorCharacterComponents": 1,
+    "minArea": 69586,
+    "maxArea": 74726
+  },
+  {
+    "gesture": "comfort",
+    "letter": "held",
+    "frames": 93,
+    "majorCharacterComponents": 1,
+    "minArea": 74583,
+    "maxArea": 79341
+  },
+  {
+    "gesture": "comfort",
+    "letter": "delivered",
+    "frames": 93,
+    "majorCharacterComponents": 1,
+    "minArea": 74527,
+    "maxArea": 79408
+  },
+  {
+    "gesture": "shy",
+    "letter": "held",
+    "frames": 88,
+    "majorCharacterComponents": 1,
+    "minArea": 69266,
+    "maxArea": 74602
+  },
+  {
+    "gesture": "shy",
+    "letter": "delivered",
+    "frames": 88,
+    "majorCharacterComponents": 1,
+    "minArea": 69176,
+    "maxArea": 74534
+  },
+  {
+    "gesture": "surprised",
+    "letter": "held",
+    "frames": 66,
+    "majorCharacterComponents": 1,
+    "minArea": 67167,
+    "maxArea": 75276
+  },
+  {
+    "gesture": "surprised",
+    "letter": "delivered",
+    "frames": 66,
+    "majorCharacterComponents": 1,
+    "minArea": 67115,
+    "maxArea": 75144
+  },
+  {
+    "gesture": "curious",
+    "letter": "held",
+    "frames": 83,
+    "majorCharacterComponents": 1,
+    "minArea": 72516,
+    "maxArea": 79708
+  },
+  {
+    "gesture": "curious",
+    "letter": "delivered",
+    "frames": 83,
+    "majorCharacterComponents": 1,
+    "minArea": 72484,
+    "maxArea": 79696
+  },
+  {
+    "gesture": "shake-head",
+    "letter": "held",
+    "frames": 76,
+    "majorCharacterComponents": 1,
+    "minArea": 69256,
+    "maxArea": 75454
+  },
+  {
+    "gesture": "shake-head",
+    "letter": "delivered",
+    "frames": 76,
+    "majorCharacterComponents": 1,
+    "minArea": 69157,
+    "maxArea": 75274
+  },
+  {
+    "gesture": "welcome",
+    "letter": "held",
+    "frames": 109,
+    "majorCharacterComponents": 1,
+    "minArea": 74565,
+    "maxArea": 76236
+  },
+  {
+    "gesture": "welcome",
+    "letter": "delivered",
+    "frames": 109,
+    "majorCharacterComponents": 1,
+    "minArea": 74522,
+    "maxArea": 76236
+  },
+  {
+    "gesture": "idle",
+    "letter": "held",
+    "frames": 145,
+    "majorCharacterComponents": 1,
+    "minArea": 74583,
+    "maxArea": 74626
+  },
+  {
+    "gesture": "idle",
+    "letter": "delivered",
+    "frames": 145,
+    "majorCharacterComponents": 1,
+    "minArea": 74527,
+    "maxArea": 74570
+  },
+  {
+    "gesture": "waiting",
+    "letter": "held",
+    "frames": 145,
+    "majorCharacterComponents": 1,
+    "minArea": 72806,
+    "maxArea": 74717
+  },
+  {
+    "gesture": "waiting",
+    "letter": "delivered",
+    "frames": 145,
+    "majorCharacterComponents": 1,
+    "minArea": 72619,
+    "maxArea": 74606
+  },
+  {
+    "gesture": "speaking",
+    "letter": "held",
+    "frames": 136,
+    "majorCharacterComponents": 1,
+    "minArea": 73798,
+    "maxArea": 74875
+  },
+  {
+    "gesture": "speaking",
+    "letter": "delivered",
+    "frames": 136,
+    "majorCharacterComponents": 1,
+    "minArea": 73779,
+    "maxArea": 74862
+  },
+  {
+    "gesture": "reading",
+    "letter": "held",
+    "frames": 131,
+    "majorCharacterComponents": 1,
+    "minArea": 71577,
+    "maxArea": 74764
+  },
+  {
+    "gesture": "reading",
+    "letter": "delivered",
+    "frames": 131,
+    "majorCharacterComponents": 1,
+    "minArea": 71511,
+    "maxArea": 74710
+  },
+  {
+    "gesture": "wink-left",
+    "letter": "held",
+    "frames": 47,
+    "majorCharacterComponents": 1,
+    "minArea": 73194,
+    "maxArea": 74778
+  },
+  {
+    "gesture": "wink-left",
+    "letter": "delivered",
+    "frames": 47,
+    "majorCharacterComponents": 1,
+    "minArea": 73189,
+    "maxArea": 74727
+  },
+  {
+    "gesture": "wink-right",
+    "letter": "held",
+    "frames": 51,
+    "majorCharacterComponents": 1,
+    "minArea": 74307,
+    "maxArea": 74723
+  },
+  {
+    "gesture": "wink-right",
+    "letter": "delivered",
+    "frames": 51,
+    "majorCharacterComponents": 1,
+    "minArea": 74243,
+    "maxArea": 74681
+  },
+  {
+    "gesture": "nod",
+    "letter": "held",
+    "frames": 57,
+    "majorCharacterComponents": 1,
+    "minArea": 71197,
+    "maxArea": 74897
+  },
+  {
+    "gesture": "nod",
+    "letter": "delivered",
+    "frames": 57,
+    "majorCharacterComponents": 1,
+    "minArea": 71122,
+    "maxArea": 74836
+  },
+  {
+    "gesture": "listening",
+    "letter": "held",
+    "frames": 107,
+    "majorCharacterComponents": 1,
+    "minArea": 74583,
+    "maxArea": 80227
+  },
+  {
+    "gesture": "listening",
+    "letter": "delivered",
+    "frames": 107,
+    "majorCharacterComponents": 1,
+    "minArea": 74527,
+    "maxArea": 80208
+  },
+  {
+    "gesture": "thinking",
+    "letter": "held",
+    "frames": 112,
+    "majorCharacterComponents": 1,
+    "minArea": 71426,
+    "maxArea": 74583
+  },
+  {
+    "gesture": "thinking",
+    "letter": "delivered",
+    "frames": 112,
+    "majorCharacterComponents": 1,
+    "minArea": 71426,
+    "maxArea": 74527
+  },
+  {
+    "gesture": "celebration",
+    "letter": "held",
+    "frames": 71,
+    "majorCharacterComponents": 1,
+    "minArea": 74164,
+    "maxArea": 75833
+  },
+  {
+    "gesture": "celebration",
+    "letter": "delivered",
+    "frames": 71,
+    "majorCharacterComponents": 1,
+    "minArea": 74526,
+    "maxArea": 75999
+  },
+  {
+    "gesture": "offer-letter",
+    "letter": "held",
+    "frames": 59,
+    "majorCharacterComponents": 1,
+    "minArea": 74072,
+    "maxArea": 78560
+  },
+  {
+    "gesture": "deliver-letter",
+    "letter": "delivered",
+    "frames": 45,
+    "majorCharacterComponents": 1,
+    "minArea": 73927,
+    "maxArea": 79430
+  }
+]

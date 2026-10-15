@@ -12,6 +12,8 @@ import { listAskHistory, subscribeToAskHistory } from "./askHistory";
 import { getAnonId } from "../../lib/identity";
 import { useState } from "react";
 import { roomResumeText } from "../../components/app/roomResumeCopy";
+import { HintGuideSlot, useHintGuideEnabled } from "../../components/mascot/HintGuide";
+import { askGuideContext } from "../../components/mascot/hintGuideContext";
 
 /**
  * Ask Hint — a standalone ambient chat. No cards on the table, no
@@ -25,6 +27,10 @@ export function AskHint() {
   const inputRef = useRef<FollowUpInputHandle | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [history, setHistory] = useState(() => listAskHistory(getAnonId()));
+  const guideEnabled = useHintGuideEnabled();
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const guideContext = askGuideContext({ messageCount: chat.messages.length, thinking: chat.isThinking,
+    lastRole: chat.messages.at(-1)?.role, error: chat.error, typing: Boolean(chat.draft?.trim()), keyboardOpen });
   useEffect(() => subscribeToAskHistory(() => setHistory(listAskHistory(getAnonId()))), []);
 
   useEffect(() => {
@@ -38,7 +44,9 @@ export function AskHint() {
   const starters = [t("ask.starter.1"), t("ask.starter.2"), t("ask.starter.3")];
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col items-center">
+    <div className="flex h-full min-h-0 w-full flex-col items-center"
+      onFocusCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setKeyboardOpen(true); }}
+      onBlurCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setKeyboardOpen(false); }}>
       <div className="flex h-full min-h-0 w-full max-w-[42rem] flex-col">
         {/* Header */}
         <header className="flex shrink-0 items-center justify-between px-5 pb-3 pt-[calc(var(--hint-safe-top)+1rem)]">
@@ -74,6 +82,11 @@ export function AskHint() {
           {chat.historySaved === true && <p role="status">{t("quality.askSaved")}</p>}
         </div>
 
+        {guideEnabled && (!empty || keyboardOpen) && <div className="flex shrink-0 items-center gap-1 px-5">
+          <HintGuideSlot context={guideContext} className="h-24 w-24 shrink-0" />
+          <p className="font-serif text-base" style={{ color: IVORY.body }}>{chat.isThinking ? t("ask.thinking") : "Hint"}</p>
+        </div>}
+
         {/* Scrollable thread */}
         <div
           ref={scrollRef}
@@ -81,7 +94,7 @@ export function AskHint() {
         >
           {empty ? (
             <div
-              className="mx-auto flex w-full max-w-xl flex-col items-center gap-6 pt-10 text-center select-none"
+              className={`mx-auto flex w-full max-w-xl flex-col items-center gap-6 text-center select-none ${guideEnabled ? "pt-0" : "pt-10"}`}
             >
               <div 
                 className="w-full rounded-[8px] border p-5 sm:p-7"
@@ -91,7 +104,7 @@ export function AskHint() {
                   boxShadow: "var(--hint-elevated-shadow)",
                 }}
               >
-                <div
+                {!(guideEnabled && keyboardOpen) && <HintGuideSlot context={guideContext} className="mx-auto -my-4 h-60 w-60" fallback={<div
                   className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-[8px]"
                   style={{
                     color: GOLD.ink,
@@ -100,7 +113,7 @@ export function AskHint() {
                   }}
                 >
                   <MessageCircle size={22} strokeWidth={1.7} />
-                </div>
+                </div>} />}
                 <p
                   className="font-sans text-[11px] font-medium uppercase tracking-[0.14em]"
                   style={{ color: IVORY.mute }}

@@ -75,6 +75,17 @@ function renderWithProviders(children: ReactNode) {
   );
 }
 
+async function openReadingMenu() {
+  const trigger = screen.getByRole("button", { name: "Reading options" });
+  if (trigger.getAttribute("aria-expanded") !== "true") await userEvent.setup().click(trigger);
+}
+
+async function chooseReadingOption(name: string) {
+  await openReadingMenu();
+  await userEvent.setup().click(await screen.findByRole("menuitem", { name }));
+  if (name === "Receive") await screen.findByRole("dialog", { name: "A letter to keep" });
+}
+
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -163,6 +174,123 @@ describe("Tarot Room components", () => {
     fireEvent.click(screen.getByRole("button", { name: /^Next$/ }));
     await screen.findByRole("heading", { name: /^Three cards$/ });
   });
+  it("answers first and pairs each card with its explanation in the chat", async () => {
+    const user = userEvent.setup();
+    const cards = createHiddenDeck().slice(0, 3);
+    const { reading: saved } = saveLocalTarotReading({
+      spreadType: "three", spreadLabel: "Three cards", roomDesign: ROOM_DESIGN,
+      question: "What deserves my attention?", shortAnswer: "Take your time.",
+      questionMeaning: "Choose one thing.", cardMeanings: ["Past meaning", "Present meaning", "Next meaning"],
+      structuredReading: {
+        signal_type: "opening", overall_summary: "Take your time.",
+        cards: cards.map((card, index) => ({ position: ["Past", "Present", "Next"][index]!, card_name: card.name, orientation: card.orientation, meaning: ["Past meaning", "Present meaning", "Next meaning"][index]! })),
+        cards_connection: "The whole spread points toward one practical choice.",
+        final_action_advice: "Choose one thing.", follow_up_invitation: "What would help?",
+      },
+      cards: cards.map((card, index) => ({ ...card, positionLabel: ["Past", "Present", "Next"][index]!, keywords: ["clarity"] })),
+    });
+    renderWithProviders(<TarotHintReadingChat selectedCards={cards} spread={{ ...SINGLE_SPREAD, cardCount: 3 }}
+      question={saved.question} archivedReading={saved} archiveOnOpen={false} onBack={vi.fn()} />);
+    const feed = screen.getByTestId("tarot-reading-feed");
+    expect(feed.contains(screen.getByText(saved.question!))).toBe(true);
+    expect(feed.contains(screen.getByTestId("tarot-reading-header"))).toBe(false);
+    expect(feed.contains(screen.getByTestId("tarot-follow-up-composer"))).toBe(false);
+    expect(within(screen.getByTestId("tarot-reading-header")).getAllByRole("button")).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: "Back" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Refresh the interpretation" })).toBeNull();
+    expect(screen.queryByTestId("tarot-reading-card-strip")).toBeNull();
+    const answer = screen.getByTestId("tarot-short-answer");
+    const meanings = screen.getByRole("list", { name: "Cards" });
+    const synthesis = screen.getByTestId("tarot-cards-synthesis");
+    expect(answer.compareDocumentPosition(meanings) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(meanings.compareDocumentPosition(synthesis) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(meanings).getAllByRole("listitem")).toHaveLength(3);
+    expect(within(meanings).getAllByRole("heading").map(heading => heading.textContent)).toEqual(cards.map((card, index) => `${index + 1}. ${card.name}`));
+    expect(screen.getByText("Saved in History. You can leave and come back later.").closest("section")?.className).toBe("sr-only");
+    expect(screen.queryByRole("button", { name: "History" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Receive" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Explore deeper · Free demo" })).toBeNull();
+    for (const [index, item] of within(meanings).getAllByRole("listitem").entries()) {
+      expect(within(item).getByRole("button", { name: `Preview ${["Past", "Present", "Next"][index]}, ${cards[index]!.name}, ${cards[index]!.orientation}` })).toBeTruthy();
+      expect(within(item).getByText(["Past meaning", "Present meaning", "Next meaning"][index]!)).toBeTruthy();
+    }
+    const cardButton = within(meanings).getAllByRole("button")[1]!;
+    await user.click(cardButton);
+    expect(screen.getByRole("dialog", { name: cards[1]!.name })).toBeTruthy();
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(document.activeElement).toBe(cardButton);
+    await chooseReadingOption("Deeper reading");
+    expect(screen.getByRole("button", { name: "Explore deeper · Free demo" })).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Close deeper reading" }));
+    expect(screen.queryByRole("button", { name: "Explore deeper · Free demo" })).toBeNull();
+  });
+
+  it("keeps stopped dictation editable and automatically sends a completed recording once", async () => {
+    const user = userEvent.setup();
+    const card = createHiddenDeck()[0]!;
+    const { reading: saved } = saveLocalTarotReading({
+      spreadType: "single", spreadLabel: "One card", shortAnswer: "Pause.", questionMeaning: "Reflect.",
+      cardMeanings: ["Signal: Your card."], cards: [{ ...card, positionLabel: "Signal", keywords: [] }],
+    });
+    let callbacks!: Parameters<typeof speech.startHintSpeechRecognition>[0];
+    const cancel = vi.fn(async () => undefined);
+    vi.spyOn(speech, "startHintSpeechRecognition").mockImplementation(async options => {
+      callbacks = options;
+      options.onStart?.();
+      return { stop: vi.fn(async () => undefined), cancel };
+    });
+    const fetch = vi.fn().mockResolvedValue(jsonResponse({ message: "A response to your voice draft." }));
+    vi.stubGlobal("fetch", fetch);
+    const mounted = renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
+    const composer = screen.getByTestId("tarot-follow-up-composer") as HTMLTextAreaElement;
+    await user.type(composer, "About today:");
+    await user.click(screen.getByRole("button", { name: "Start voice input" }));
+    act(() => callbacks.onTranscript("what should I try?"));
+    expect(composer.value).toBe("About today: what should I try?");
+    expect((screen.getByRole("button", { name: "Send follow-up" }) as HTMLButtonElement).disabled).toBe(true);
+    expect(fetch).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Stop voice input" }));
+    act(() => callbacks.onTranscript("late transcript"));
+    expect(composer.value).toBe("About today: what should I try?");
+    expect(composer.readOnly).toBe(false);
+    await user.click(screen.getByRole("button", { name: "Send follow-up" }));
+    expect(await screen.findByText("A response to your voice draft.")).toBeTruthy();
+    expect(fetch).toHaveBeenCalledOnce();
+    await user.click(screen.getByRole("button", { name: "Start voice input" }));
+    act(() => { callbacks.onTranscript("What about tomorrow?"); callbacks.onEnd(); callbacks.onEnd(); });
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    expect(composer.value).toBe("");
+    expect(JSON.parse(fetch.mock.calls[1][1].body).followUp).toBe("What about tomorrow?");
+    await waitFor(() => expect((screen.getByRole("button", { name: "Start voice input" }) as HTMLButtonElement).disabled).toBe(false));
+    await user.click(screen.getByRole("button", { name: "Start voice input" }));
+    const activeSignal = callbacks.signal!;
+    mounted.unmount();
+    expect(activeSignal.aborted).toBe(true);
+    expect(cancel).toHaveBeenCalledTimes(3);
+  });
+
+  it("keeps typing available if chat dictation is unavailable or denied", async () => {
+    const user = userEvent.setup();
+    const card = createHiddenDeck()[0]!;
+    const { reading: saved } = saveLocalTarotReading({
+      spreadType: "single", spreadLabel: "One card", shortAnswer: "Pause.", questionMeaning: "Reflect.",
+      cardMeanings: ["Signal: Your card."], cards: [{ ...card, positionLabel: "Signal", keywords: [] }],
+    });
+    vi.spyOn(speech, "startHintSpeechRecognition").mockImplementation(async options => {
+      options.onError("permission");
+      options.onEnd();
+      throw new Error("Denied");
+    });
+    renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
+    await user.click(screen.getByRole("button", { name: "Start voice input" }));
+    expect(screen.getByRole("alert").textContent).toMatch(/microphone|mic/i);
+    const composer = screen.getByTestId("tarot-follow-up-composer") as HTMLTextAreaElement;
+    await user.type(composer, "I can still type.");
+    expect(composer.value).toBe("I can still type.");
+    expect(composer.readOnly).toBe(false);
+  });
+
   it.each(["receipt", "card"] as const)("the %s modal keeps keyboard focus inside, closes on Escape and restores its opener", async (kind) => {
     const user = userEvent.setup();
     const card = createHiddenDeck()[0]!;
@@ -173,8 +301,9 @@ describe("Tarot Room components", () => {
       cards: [{ ...card, positionLabel: "Signal", keywords: ["clarity"] }],
     });
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} question={saved.question} archivedReading={saved} archiveOnOpen={false} />);
-    const opener = screen.getByRole("button", { name: kind === "receipt" ? "Receive" : /^Preview Signal,/ });
-    await user.click(opener);
+    const opener = screen.getByRole("button", { name: kind === "receipt" ? "Reading options" : /^Preview Signal,/ });
+    if (kind === "receipt") await chooseReadingOption("Receive");
+    else await user.click(opener);
     const dialog = screen.getByRole("dialog", { name: kind === "receipt" ? "A letter to keep" : card.name });
     await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true));
     const chatContent = document.querySelector<HTMLElement>("[data-tarot-chat-content]")!;
@@ -220,7 +349,7 @@ describe("Tarot Room components", () => {
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
     expect(screen.getByText(structuredReading.overall_summary)).toBeTruthy();
     expect(screen.getByText(structuredReading.cards[0]!.meaning)).toBeTruthy();
-    expect(screen.getByText("Original spread")).toBeTruthy();
+    expect(screen.getByText(/Original spread/)).toBeTruthy();
     expect(fetchMock).not.toHaveBeenCalled();
     await user.type(screen.getByPlaceholderText("继续问你想理解的部分……"), "What next?");
     fireEvent.keyDown(screen.getByPlaceholderText("继续问你想理解的部分……"), { key: "Enter", code: "Enter" });
@@ -247,7 +376,7 @@ describe("Tarot Room components", () => {
     const create = vi.spyOn(receiptSharing, "createTarotReceiptBlob").mockReturnValueOnce(preparing);
     const share = vi.spyOn(receiptSharing, "shareTarotReceipt").mockResolvedValue("saved");
     const view = renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} question={saved.question} archivedReading={saved} archiveOnOpen={false} />);
-    await user.click(screen.getByRole("button", { name: "Receive" }));
+    await chooseReadingOption("Receive");
     const dialog = within(screen.getByRole("dialog", { name: "A letter to keep" }));
     const action = dialog.getByRole("button", { name: "Share receipt" });
     fireEvent.click(action);
@@ -267,7 +396,7 @@ describe("Tarot Room components", () => {
 
     if (departure === "close") {
       create.mockResolvedValueOnce(new Blob(["new receipt"], { type: "image/png" }));
-      await user.click(screen.getByRole("button", { name: "Receive" }));
+      await chooseReadingOption("Receive");
       const reopened = within(screen.getByRole("dialog", { name: "A letter to keep" }));
       expect((reopened.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
       await waitFor(() => expect((reopened.getByRole("button", { name: "Share receipt" }) as HTMLButtonElement).disabled).toBe(false));
@@ -291,7 +420,8 @@ describe("Tarot Room components", () => {
     const onArchived = vi.fn();
     const view = renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} roomDesign={ROOM_DESIGN} onArchived={onArchived} />);
     expect(await screen.findByText(local.overall_summary)).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Refresh the interpretation" })).toBeTruthy();
+    await openReadingMenu();
+    expect(screen.getByRole("menuitem", { name: "Refresh the interpretation" })).toBeTruthy();
     await waitFor(() => expect(onArchived.mock.lastCall?.[0].interpretationStatus).toBe("local"));
     const first = onArchived.mock.lastCall![0];
     const { reading: saved } = saveLocalTarotReading({ ...first, chatMessages: [{ id: "keep", role: "assistant", content: "The conversation stays available." }] });
@@ -300,14 +430,15 @@ describe("Tarot Room components", () => {
     expect(screen.getByText(local.overall_summary)).toBeTruthy();
     expect(fetchMock).toHaveBeenCalledOnce();
     fetchMock.mockResolvedValueOnce(jsonResponse({ ...local, source: "api", overall_summary: "The complete provider answer." }));
-    await user.click(screen.getByRole("button", { name: "Refresh the interpretation" }));
+    await chooseReadingOption("Refresh the interpretation");
     expect(await screen.findByText("The complete provider answer.")).toBeTruthy();
     await waitFor(() => expect(getLocalTarotReading(saved.id, saved.anonId)?.interpretationStatus).toBe("ready"));
     const final = getLocalTarotReading(saved.id, saved.anonId)!;
     expect(final.cards).toEqual(saved.cards);
     expect(final.roomDesign).toEqual(saved.roomDesign);
     expect(final.chatMessages).toEqual(saved.chatMessages);
-    expect(screen.queryByRole("button", { name: "Refresh the interpretation" })).toBeNull();
+    await openReadingMenu();
+    expect(screen.queryByRole("menuitem", { name: "Refresh the interpretation" })).toBeNull();
   });
 
   it.each(["name", "orientation", "position"])("rejects an interpretation attached to a different %s", async (field) => {
@@ -321,7 +452,8 @@ describe("Tarot Room components", () => {
       cards: [meaning], final_action_advice: "Pause.", follow_up_invitation: "What next?",
     })));
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} roomDesign={ROOM_DESIGN} />);
-    expect(await screen.findByRole("button", { name: "Refresh the interpretation" })).toBeTruthy();
+    await openReadingMenu();
+    expect(await screen.findByRole("menuitem", { name: "Refresh the interpretation" })).toBeTruthy();
     expect(screen.queryByText("Do not display this mismatched reading.")).toBeNull();
   });
 
@@ -340,7 +472,7 @@ describe("Tarot Room components", () => {
     const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ message: "A complete new reply.", source: "api" }));
     vi.stubGlobal("fetch", fetchMock);
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
-    await user.type(screen.getByPlaceholderText("Ask what you want to understand next..."), "What next?");
+    await user.type(screen.getByPlaceholderText("Message Hint..."), "What next?");
     await user.click(screen.getByRole("button", { name: "Send follow-up" }));
     expect(await screen.findByText("A complete new reply.")).toBeTruthy();
     const request = JSON.parse(fetchMock.mock.calls[0]![1].body);
@@ -368,6 +500,7 @@ describe("Tarot Room components", () => {
     vi.stubGlobal("fetch", fetch);
     const mounted = renderWithProviders(<TarotHintReadingChat selectedCards={[selectedCard]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
     expect(fetch).not.toHaveBeenCalled();
+    await chooseReadingOption("Deeper reading");
     await user.click(screen.getByRole("button", { name: "Explore deeper · Free demo" }));
     expect(await screen.findByText(detail.overall_summary)).toBeTruthy();
     const restored = getLocalTarotReading(saved.id, saved.anonId)!;
@@ -378,6 +511,7 @@ describe("Tarot Room components", () => {
     expect(restored.chatMessages).toEqual(saved.chatMessages);
     mounted.unmount();
     renderWithProviders(<TarotHintReadingChat selectedCards={[selectedCard]} spread={SINGLE_SPREAD} archivedReading={restored} archiveOnOpen={false} />);
+    await chooseReadingOption("Deeper reading");
     await user.click(screen.getByRole("button", { name: "Read your deeper interpretation" }));
     expect(screen.getByText(detail.overall_summary)).toBeTruthy();
     expect(fetch).toHaveBeenCalledOnce();
@@ -396,7 +530,7 @@ describe("Tarot Room components", () => {
     });
     vi.stubGlobal("fetch", vi.fn());
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} question={question} />);
-    await user.click(screen.getByRole("button", { name: "Receive" }));
+    await chooseReadingOption("Receive");
     const receipt = within(screen.getByRole("dialog", { name: "A letter to keep" }));
     const insight = receipt.getByTestId("receipt-insight");
     expect(insight.textContent).toBe(buildTarotReceiptModel(saved, false, "https://hint.example/download").insight);
@@ -423,7 +557,7 @@ describe("Tarot Room components", () => {
     const fetchMock = vi.fn().mockReturnValue(new Promise((resolve) => { finish = resolve; }));
     vi.stubGlobal("fetch", fetchMock);
     const view = renderWithProviders(<TarotHintReadingChat selectedCards={[selectedCard]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} roomDesign={ROOM_DESIGN} />);
-    await user.type(screen.getByPlaceholderText("Ask what you want to understand next..."), "An earlier question.");
+    await user.type(screen.getByPlaceholderText("Message Hint..."), "An earlier question.");
     await user.click(screen.getByRole("button", { name: "Send follow-up" }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
     const signal = fetchMock.mock.calls[0]![1].signal as AbortSignal;
@@ -436,6 +570,88 @@ describe("Tarot Room components", () => {
     expect(localStorage.getItem("hint_local_tarot_readings_v1")).toBe(archive);
   });
 
+  it("retries a failed reply without duplicating the question or clearing the next draft", async () => {
+    const user = userEvent.setup();
+    const card = createHiddenDeck()[0]!;
+    const { reading: saved } = saveLocalTarotReading({ spreadType: "single", spreadLabel: "One card", shortAnswer: "Pause.", questionMeaning: "Reflect.", cardMeanings: ["Signal: Your card."], cards: [{ ...card, positionLabel: "Signal", keywords: [] }] });
+    const fetchMock = vi.fn().mockResolvedValueOnce(jsonResponse({}, 503)).mockResolvedValueOnce(jsonResponse({ source: "api", message: "The requested reply." }));
+    vi.stubGlobal("fetch", fetchMock);
+    renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
+    const composer = screen.getByTestId("tarot-follow-up-composer") as HTMLTextAreaElement;
+    await user.type(composer, "What should I try?");
+    await user.click(screen.getByRole("button", { name: "Send follow-up" }));
+    expect(await screen.findByText("Couldn’t get a reply.")).toBeTruthy();
+    expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages).toHaveLength(1);
+    await user.type(composer, "A draft for later");
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+    expect(await screen.findByText("The requested reply.")).toBeTruthy();
+    expect(composer.value).toBe("A draft for later");
+    expect(screen.getAllByText("What should I try?")).toHaveLength(1);
+    const request = JSON.parse(fetchMock.mock.calls[1]![1].body);
+    expect(request.messages).toEqual([]);
+    expect(request.followUp).toBe("What should I try?");
+    expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages).toHaveLength(2);
+  });
+
+  it("allows a new draft while waiting and ignores a reply received after stopping", async () => {
+    const user = userEvent.setup();
+    const card = createHiddenDeck()[0]!;
+    const { reading: saved } = saveLocalTarotReading({ spreadType: "single", spreadLabel: "One card", shortAnswer: "Pause.", questionMeaning: "Reflect.", cardMeanings: ["Signal: Your card."], cards: [{ ...card, positionLabel: "Signal", keywords: [] }] });
+    let finish!: (response: Response) => void;
+    const fetchMock = vi.fn().mockReturnValue(new Promise(resolve => { finish = resolve; }));
+    vi.stubGlobal("fetch", fetchMock);
+    renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
+    const composer = screen.getByTestId("tarot-follow-up-composer") as HTMLTextAreaElement;
+    await user.type(composer, "First question");
+    await user.click(screen.getByRole("button", { name: "Send follow-up" }));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+    expect(composer.disabled).toBe(false);
+    await user.type(composer, "My next question");
+    fireEvent.keyDown(composer, { key: "Enter" });
+    expect(fetchMock).toHaveBeenCalledOnce();
+    await user.click(screen.getByRole("button", { name: "Stop response" }));
+    expect(await screen.findByText("Response stopped.")).toBeTruthy();
+    expect((fetchMock.mock.calls[0]![1].signal as AbortSignal).aborted).toBe(true);
+    await act(async () => { finish(jsonResponse({ source: "api", message: "Too late." })); });
+    expect(screen.queryByText("Too late.")).toBeNull();
+    expect(composer.value).toBe("My next question");
+    expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages).toHaveLength(1);
+  });
+
+  it("restores an unanswered question with an explicit retry", async () => {
+    const user = userEvent.setup();
+    const card = createHiddenDeck()[0]!;
+    const { reading: saved } = saveLocalTarotReading({ spreadType: "single", spreadLabel: "One card", shortAnswer: "Pause.", questionMeaning: "Reflect.", cardMeanings: ["Signal: Your card."], cards: [{ ...card, positionLabel: "Signal", keywords: [] }], chatMessages: [{ id: "interrupted", role: "user", content: "An unanswered question" }] });
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ source: "api", message: "Now answered." }));
+    vi.stubGlobal("fetch", fetchMock);
+    renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
+    expect(screen.getByText("No reply yet. You can try again.")).toBeTruthy();
+    expect(fetchMock).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+    expect(await screen.findByText("Now answered.")).toBeTruthy();
+    expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages.map(message => message.content)).toEqual(["An unanswered question", "Now answered."]);
+  });
+
+  it("keeps the reading position when a reply arrives and lets the reader jump to it", async () => {
+    const user = userEvent.setup();
+    const card = createHiddenDeck()[0]!;
+    const { reading: saved } = saveLocalTarotReading({ spreadType: "single", spreadLabel: "One card", shortAnswer: "Pause.", questionMeaning: "Reflect.", cardMeanings: ["Signal: Your card."], cards: [{ ...card, positionLabel: "Signal", keywords: [] }] });
+    let finish!: (response: Response) => void;
+    vi.stubGlobal("fetch", vi.fn().mockReturnValue(new Promise(resolve => { finish = resolve; })));
+    renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
+    await user.type(screen.getByTestId("tarot-follow-up-composer"), "What next?");
+    await user.click(screen.getByRole("button", { name: "Send follow-up" }));
+    const feed = screen.getByTestId("tarot-reading-feed");
+    Object.defineProperties(feed, { scrollHeight: { configurable: true, value: 1500 }, clientHeight: { configurable: true, value: 400 }, scrollTop: { configurable: true, value: 200 } });
+    fireEvent.scroll(feed);
+    vi.mocked(feed.scrollTo).mockClear();
+    await act(async () => { finish(jsonResponse({ source: "api", message: "A reply below the current position." })); });
+    expect(feed.scrollTo).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Jump to latest" }));
+    expect(feed.scrollTo).toHaveBeenCalledWith({ top: 1500, behavior: "auto" });
+    expect(screen.queryByRole("button", { name: "Jump to latest" })).toBeNull();
+  });
+
   it("keeps IME confirmation in the composer and sends only on an explicit Enter", async () => {
     const selectedCard = createHiddenDeck()[0]!;
     const { reading: saved } = saveLocalTarotReading({
@@ -446,7 +662,7 @@ describe("Tarot Room components", () => {
     const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ message: "A complete reply." }));
     vi.stubGlobal("fetch", fetchMock);
     renderWithProviders(<TarotHintReadingChat selectedCards={[selectedCard]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
-    const composer = screen.getByPlaceholderText("Ask what you want to understand next...");
+    const composer = screen.getByPlaceholderText("Message Hint...");
     fireEvent.change(composer, { target: { value: "A composed question" } });
     fireEvent.keyDown(composer, { key: "Enter", isComposing: true });
     fireEvent.keyDown(composer, { key: "Enter", keyCode: 229 });
@@ -491,15 +707,15 @@ describe("Tarot Room components", () => {
     expect(screen.queryByText("Saved in History. You can leave and come back later.")).toBeNull();
     expect(onArchived).not.toHaveBeenCalled();
 
-    await user.type(screen.getByPlaceholderText("Ask what you want to understand next..."), "Keep this follow-up too.");
+    await user.type(screen.getByPlaceholderText("Message Hint..."), "Keep this follow-up too.");
     await user.click(screen.getByRole("button", { name: "Send follow-up" }));
     expect(await screen.findByText("This follow-up stays with your reading.")).toBeTruthy();
     expect(localStorage.getItem("hint_local_tarot_readings_v1")).toBeNull();
 
-    await user.click(screen.getByRole("button", { name: "Back" }));
+    expect(screen.queryByRole("button", { name: "Back" })).toBeNull();
     await user.click(screen.getByRole("button", { name: "Return home" }));
-    await user.click(screen.getByRole("button", { name: "New reading" }));
-    expect(confirm).toHaveBeenCalledTimes(3);
+    await chooseReadingOption("New reading");
+    expect(confirm).toHaveBeenCalledTimes(2);
     expect(onBack).not.toHaveBeenCalled();
     expect(onNewReading).not.toHaveBeenCalled();
     expect(window.location.pathname).toBe("/app/tarot");
@@ -507,7 +723,7 @@ describe("Tarot Room components", () => {
     window.dispatchEvent(blockedReload);
     expect(blockedReload.defaultPrevented).toBe(true);
 
-    await user.click(screen.getByRole("button", { name: "Receive" }));
+    await chooseReadingOption("Receive");
     expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
     await user.click(screen.getByRole("button", { name: "Back to reading" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
@@ -524,9 +740,10 @@ describe("Tarot Room components", () => {
     const allowedReload = new Event("beforeunload", { cancelable: true });
     window.dispatchEvent(allowedReload);
     expect(allowedReload.defaultPrevented).toBe(false);
-    await user.click(screen.getByRole("button", { name: "Back" }));
-    expect(onBack).toHaveBeenCalledOnce();
-    expect(confirm).toHaveBeenCalledTimes(3);
+    await chooseReadingOption("New reading");
+    expect(onNewReading).toHaveBeenCalledOnce();
+    expect(onBack).not.toHaveBeenCalled();
+    expect(confirm).toHaveBeenCalledTimes(2);
   });
 
   it("preserves archived chat when a later follow-up cannot save until retry", async () => {
@@ -542,7 +759,7 @@ describe("Tarot Room components", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse({ message: "Your newest reply." })));
     renderWithProviders(<TarotHintReadingChat selectedCards={[selectedCard]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} roomDesign={ROOM_DESIGN} />);
     const storage = interruptTarotStorage();
-    await user.type(screen.getByPlaceholderText("Ask what you want to understand next..."), "One more question.");
+    await user.type(screen.getByPlaceholderText("Message Hint..."), "One more question.");
     await user.click(screen.getByRole("button", { name: "Send follow-up" }));
     expect(await screen.findByText("Your newest reply.")).toBeTruthy();
     expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages).toEqual(saved.chatMessages);
@@ -557,7 +774,8 @@ describe("Tarot Room components", () => {
   it.each([null, { cards: [{ meaning: null }] }, { overall_summary: ["bad"], cards: [] }])("shows an intentional local fallback for malformed AI data: %j", async (response) => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(jsonResponse(response)));
     renderWithProviders(<TarotHintReadingChat selectedCards={[createHiddenDeck()[0]!]} spread={SINGLE_SPREAD} roomDesign={ROOM_DESIGN} />);
-    expect(await screen.findByRole("button", { name: "Refresh the interpretation" })).toBeTruthy();
+    await openReadingMenu();
+    expect(await screen.findByRole("menuitem", { name: "Refresh the interpretation" })).toBeTruthy();
     const records = JSON.parse(localStorage.getItem("hint_local_tarot_readings_v1")!);
     expect(records[0].interpretationStatus).toBe("local");
     expect(typeof records[0].structuredReading.overall_summary).toBe("string");
@@ -843,11 +1061,10 @@ describe("Tarot Room components", () => {
     expect(screen.getByText(saved.shortAnswer)).toBeTruthy();
     expect(screen.getByText("What did I miss?")).toBeTruthy();
     expect(screen.getByText("The saved conversation is still here.")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Back" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Back" })).toBeNull();
     expect(screen.getByRole("button", { name: "Return home" })).toBeTruthy();
     expect(screen.queryByText("Cards drawn")).toBeNull();
     expect(screen.getByText(completeCardMeaning)).toBeTruthy();
-    expect(await screen.findByText("Tap a card to look closer")).toBeTruthy();
     const cardPreviewButton = screen.getByRole("button", {
       name: `Preview Signal, ${selectedCard.name}, ${selectedCard.orientation}`,
     });
@@ -863,7 +1080,7 @@ describe("Tarot Room components", () => {
     await user.click(screen.getByRole("button", { name: "Close card detail" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
-    await user.click(screen.getByRole("button", { name: "Receive" }));
+    await chooseReadingOption("Receive");
     expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
     expect((screen.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
     expect(screen.getByRole("button", { name: "Share receipt" })).toBeTruthy();
@@ -872,7 +1089,7 @@ describe("Tarot Room components", () => {
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
     const composer = screen.getByPlaceholderText(
-      "Ask what you want to understand next...",
+      "Message Hint...",
     );
     await user.type(composer, "What should I do next?");
     await user.click(screen.getByRole("button", { name: "Send follow-up" }));
@@ -927,7 +1144,8 @@ describe("Tarot Room components", () => {
       />,
     );
 
-    const retry = await screen.findByRole("button", {
+    await openReadingMenu();
+    const retry = await screen.findByRole("menuitem", {
       name: "Refresh the interpretation",
     });
     expect(
@@ -986,7 +1204,8 @@ describe("Tarot Room components", () => {
     );
 
     expect(screen.getByText(saved.shortAnswer)).toBeTruthy();
-    const retry = await screen.findByRole("button", { name: "Refresh the interpretation" });
+    await openReadingMenu();
+    const retry = await screen.findByRole("menuitem", { name: "Refresh the interpretation" });
     expect(fetchMock).not.toHaveBeenCalled();
     await user.click(retry);
     expect(await screen.findByText("The requested interpretation is now complete.", {}, { timeout: 2_000 })).toBeTruthy();

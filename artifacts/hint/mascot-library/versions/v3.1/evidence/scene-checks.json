@@ -1,0 +1,34 @@
+[
+  {
+    "engine": "chromium",
+    "passed": true,
+    "checks": [
+      "welcome → offer → waiting → one handoff → quiet reading",
+      "waiting → listening → thinking → preparation → speaking",
+      "pause freezes scene timing",
+      "interruption returns smoothly to listening",
+      "voice scene preserves delivered letter",
+      "playback completion returns to listening",
+      "scene changes do not recreate letter",
+      "latest scene request waits safely for handoff",
+      "reduced-motion scene has explicit phase controls"
+    ],
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "passed": true,
+    "checks": [
+      "welcome → offer → waiting → one handoff → quiet reading",
+      "waiting → listening → thinking → preparation → speaking",
+      "pause freezes scene timing",
+      "interruption returns smoothly to listening",
+      "voice scene preserves delivered letter",
+      "playback completion returns to listening",
+      "scene changes do not recreate letter",
+      "latest scene request waits safely for handoff",
+      "reduced-motion scene has explicit phase controls"
+    ],
+    "errors": []
+  }
+]

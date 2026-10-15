@@ -1,0 +1,152 @@
+{
+  "version": "3.2.0-dev.1",
+  "status": "in-progress",
+  "completedStudies": [
+    "Welcome entrance with continuous movement to the profile form",
+    "Profile completion to the daily letter with the same character canvas",
+    "Forward letter handoff, envelope opening, card extraction and flip",
+    "Tap-to-wink responses during the welcome wave without replacing the paw movement",
+    "Reusable scene director and persistent scene player with continuous activity and placement transitions",
+    "Ask and voice previews with independent lifecycle, pause and playback control",
+    "Feature-flagged Ask Hint and Tarot voice app adapters with one persistent canvas",
+    "First welcome and profile form integrated into the opt-in app with the same character canvas",
+    "Welcome wave and independent tap or keyboard winks verified in the app; form reveal follows the character movement"
+  ],
+  "currentWork": "Welcome and profile flow, Ask Hint and Tarot voice are integrated behind the preview flag. Next integrate the reviewed foreground letter with the real Home daily receipt and card identity.",
+  "verified": {
+    "pureTests": 37,
+    "welcomeBrowsers": [
+      "Chrome",
+      "WebKit"
+    ],
+    "phoneWidths": [
+      320,
+      390,
+      430
+    ],
+    "welcomeStandaloneArchive": "welcome-study-01/hint-welcome-study-01.zip",
+    "welcomeArchiveSha256": "45c13da11d21b861ba2958ee797ae8ff7ec38c6c6fa26504d568bf014d21a8e2",
+    "nativeDevice": false,
+    "letterBrowsers": [
+      "Chrome",
+      "WebKit"
+    ],
+    "letterNormalAndHalfSpeed": true,
+    "staticFallback": [
+      "Chrome",
+      "WebKit"
+    ],
+    "visualReview": "Keyframes and contact sheets of the entrance, handoff and combined journey; combined wave and wink reviewed at phone widths; browser recordings saved for normal and half-speed playback",
+    "greetingReactions": "Chrome and WebKit: touch and keyboard winks, repeated-tap guard, continuous wave, navigation during wink, pause, visibility and reduced motion",
+    "greetingSample": "../evidence/greeting-reactions/welcome-wave-and-wink.mp4",
+    "combinedStudyArchive": "welcome-letter-study-02/hint-v3.2-welcome-letter-study-02.zip",
+    "combinedStudySha256": "6c98e906ad8e265cee3e536bbcb1cec1b1299aaac2fc1ba974db18d8ce0d2a5c",
+    "extractedStudy": "All 296 file checksums matched; Chrome and WebKit loaded the extracted welcome, wink, form, letter and reading without HTTP requests",
+    "sceneDirectorTests": 10,
+    "appTargetedTests": 22,
+    "conversationBrowsers": [
+      "Chrome",
+      "WebKit"
+    ],
+    "appGuideBrowsers": [
+      "Chrome",
+      "WebKit"
+    ],
+    "appVoiceInputs": "Simulated microphone and audio; no live speech or network service used",
+    "activityHolds": {
+      "activities": [
+        "idle",
+        "waiting",
+        "listening",
+        "thinking",
+        "reading",
+        "speaking"
+      ],
+      "wallSecondsEach": 60,
+      "clockAdvanceEach": 60.014,
+      "desktopFrameP95Ms": 16.8,
+      "visualReview": "Full-page screenshots, five-second frame samples and contact sheets; videos retained"
+    },
+    "rendererRecovery": "Chrome and WebKit context loss, static fallback and return to current activity",
+    "appTypecheck": true,
+    "appProductionBuild": true,
+    "appBuildFlag": "VITE_HINT_GUIDE_V32=1",
+    "appDefaultEnabled": false,
+    "conversationStudyArchive": "conversation-study-03/hint-v3.2-conversation-study-03.zip",
+    "conversationStudySha256": "e98afa866dd8470a4cd95e0b7b188c7b370564702e43be67678628a3acf92806",
+    "productionBrowsers": [
+      "Chrome",
+      "WebKit"
+    ],
+    "onboardingBrowsers": [
+      "Chrome",
+      "WebKit"
+    ],
+    "onboardingWidths": [
+      320,
+      390,
+      430
+    ],
+    "onboardingShortViewport": {
+      "width": 320,
+      "height": 568,
+      "browser": "Chrome"
+    },
+    "onboardingKeyframes": 14,
+    "onboardingRecovery": [
+      "continue before assets finish loading",
+      "asset failure fallback",
+      "skip during flight, peek and wave",
+      "return without replaying the flight",
+      "keyboard focus moves to the new heading and first field",
+      "visibility suspension",
+      "reduced motion",
+      "existing local sign-in and profile persistence with isolated fixtures"
+    ],
+    "onboardingAppBuild": true,
+    "onboardingStudyArchive": "onboarding-study-04/hint-v3.2-onboarding-study-04.zip",
+    "onboardingStudySha256": "62098a25cd6de9b481370404701dfb9cd179c203c273f48df93122df8208a89e",
+    "onboardingExtractedStudy": "All 573 file checksums matched; extracted journey and conversation loaded without HTTP requests in Chrome and WebKit; approved files remained read-only."
+  },
+  "pending": [
+    "Port the reviewed foreground letter presentation into the shared gesture controller; the 20-gesture inspector still has its earlier receiver layout",
+    "Review all 20 gestures and sustained activities with the new transition system",
+    "Integrate Home daily delivery with the existing receipt and real card identity; verify reloads, acceptance exactly once and the page-loading transition from onboarding",
+    "Verify daily receipt persistence and real voice lifecycle",
+    "Measure performance and resource cleanup",
+    "Verify local Release build, simulators and a physical iPhone",
+    "Package the complete release and verify extracted loading and all protected checksums"
+  ],
+  "limitations": [
+    "Full Xcode and physical iPhone testing were unavailable at the last environment check",
+    "Browser voice integration used simulated recognition and playback",
+    "Production build reports the existing large main chunk and the optional 1.4 MB mascot asset chunk; mobile profiling remains open",
+    "The combined journey preview still uses its study controller; the shared app director now covers welcome/profile and conversation, while its foreground daily handoff remains to be ported",
+    "Onboarding sign-in checks exercise the existing local preview flow; they do not verify email delivery or a production authentication service",
+    "The half-speed welcome video is a slowed review export, not a separate device performance measurement"
+  ],
+  "evidence": [
+    "../evidence/entrance/browser-checks.json",
+    "../evidence/entrance/extracted-archive.json",
+    "../evidence/entrance/contact-sheet.png",
+    "../evidence/letter-scene/browser-checks.json",
+    "../evidence/letter-scene/contact-sheet.png",
+    "../evidence/welcome-letter/review.json",
+    "../evidence/welcome-letter/contact-sheet.png",
+    "../evidence/greeting-reactions/browser-checks.json",
+    "../evidence/greeting-reactions/sample.json",
+    "../evidence/welcome-letter/extracted-study.json",
+    "../evidence/conversation/browser-checks.json",
+    "../evidence/conversation/holds/review.json",
+    "../evidence/app-guide/browser-checks.json",
+    "../evidence/app-guide/production-checks.json",
+    "../evidence/app-guide/review.json",
+    "../evidence/conversation/extracted-study.json",
+    "../evidence/app-onboarding/browser-checks.json",
+    "../evidence/app-onboarding/recovery-checks.json",
+    "../evidence/app-onboarding/keyframes.json",
+    "../evidence/app-onboarding/review.json",
+    "../evidence/app-onboarding/protected-checks.json",
+    "../evidence/app-onboarding/extracted-study.json"
+  ]
+}

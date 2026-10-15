@@ -5,7 +5,7 @@ import "./constellation-backdrop.css";
 
 const CONSTELLATION_SETTINGS = { strength: .65, motion: .55, glow: .95 };
 
-export function ConstellationBackdrop() {
+export function ConstellationBackdrop({ paused = false }: { paused?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const elapsedRef = useRef(0);
   const renderer = useMemo(createConstellationRenderer, []);
@@ -34,10 +34,10 @@ export function ConstellationBackdrop() {
         canvas.height = pixelHeight;
       }
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const theme = themeRoot.dataset.hintTheme === "dark" ? "dark" : "bright";
-      paintConstellationBackground(context, width, height, theme);
+      const backgroundTheme = themeRoot.dataset.hintTheme === "dark" ? "dark" : "bright";
+      paintConstellationBackground(context, width, height, backgroundTheme);
       renderer.draw(context, width, height, elapsedRef.current, CONSTELLATION_SETTINGS);
-      canvas.dataset.backgroundTheme = theme;
+      canvas.dataset.backgroundTheme = backgroundTheme;
     };
 
     const animate = (now: number) => {
@@ -55,18 +55,18 @@ export function ConstellationBackdrop() {
     const themeChange = new MutationObserver(draw);
     themeChange.observe(themeRoot, { attributes: true, attributeFilter: ["data-hint-theme"] });
     draw();
-    if (!reduced && pageVisible) frame = window.requestAnimationFrame(animate);
+    if (!reduced && pageVisible && !paused) frame = window.requestAnimationFrame(animate);
 
     return () => {
       window.cancelAnimationFrame(frame);
       resize.disconnect();
       themeChange.disconnect();
     };
-  }, [renderer, reduced, pageVisible]);
+  }, [renderer, reduced, pageVisible, paused]);
 
   return (
     <div className="hint-app-background" aria-hidden>
-      <canvas ref={canvasRef} data-motion={reduced || !pageVisible ? "paused" : "playing"} />
+      <canvas ref={canvasRef} data-motion={reduced || !pageVisible || paused ? "paused" : "playing"} />
     </div>
   );
 }

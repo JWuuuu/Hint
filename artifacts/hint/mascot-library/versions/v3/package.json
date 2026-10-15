@@ -1,0 +1,27 @@
+{
+  "name": "hint-mascot-library",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "verify": "node scripts/verify-approved.mjs",
+    "rebuild:approved": "node scripts/rebuild-approved.mjs",
+    "package": "python3 scripts/package-release.py",
+    "test": "node --test scripts/motion.test.mjs",
+    "prepare:expressions": "node scripts/prepare-expressions.mjs",
+    "prepare:paws": "node scripts/prepare-connected-paws.mjs",
+    "test:browsers": "node scripts/check-browsers.mjs",
+    "review:faces": "node scripts/inspect-expressions.mjs",
+    "review:frames": "node scripts/audit-frames.mjs",
+    "test:controller": "node scripts/check-controller.mjs --all",
+    "test:scenes": "node scripts/check-scenes.mjs",
+    "review:activity": "node scripts/review-activity.mjs",
+    "review:transitions": "node scripts/review-transitions.mjs",
+    "export:samples": "node scripts/export-samples.mjs && node scripts/finalize-samples.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "sharp": "0.35.4"
+  }
+}

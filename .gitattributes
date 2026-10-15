@@ -1,0 +1,2 @@
+# Preserve the exact bytes checked by the mascot snapshot manifests on Windows.
+artifacts/hint/mascot-library/** -text

@@ -13,10 +13,11 @@ function reading(count = 3, long = false) {
 
 describe("follow-up reading context", () => {
   it("preserves a short reading and never sends an unused context draft", () => {
-    const original = reading();
+    const original = { ...reading(), cards_connection: "Curiosity starts the exercise, but repetition makes progress visible." };
     const context = buildTarotChatContext({ reading: original, additionalContext: "An unsent detail" });
     expect(context).toContain(original.overall_summary);
     expect(context).toContain(original.final_action_advice);
+    expect(context).toContain(original.cards_connection);
     for (const card of original.cards) expect(context).toContain(card.meaning);
     expect(context).not.toContain("An unsent detail");
   });

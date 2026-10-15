@@ -1,0 +1,20 @@
+✔ approved greeting and its assets remain read-only and unchanged (352.670375ms)
+✔ each expression starts and ends at the same neutral pose (12.486667ms)
+✔ thinking, listening, nod, and celebration have distinct acting without accents (0.185875ms)
+✔ expressive paws retain valid geometry with and without a held letter (315.568792ms)
+✔ winks close only the named eye; left and right belong to Hint (0.303583ms)
+✔ the waiting offer and start of delivery match exactly (0.90675ms)
+✔ both paws remain finite and have no inverted fan triangles throughout delivery (14.1605ms)
+✔ the receiver retains an opaque letter and Hint keeps empty paws (0.504459ms)
+✔ motion has continuous velocity through internal keyframes and zero velocity at rest (2.536792ms)
+✔ the held envelope follows the two paw contact anchors until handoff (35.996375ms)
+✔ sustained listening and thinking keep their main pose beyond one minute (2.301542ms)
+✔ activity transitions and interrupted waves keep valid connected paw contours (111.553958ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 902.101959

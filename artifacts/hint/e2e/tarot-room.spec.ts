@@ -4,6 +4,16 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+async function openReadingMenu(page: Page) {
+  const trigger = page.getByRole("button", { name: "Reading options" });
+  if (await trigger.getAttribute("aria-expanded") !== "true") await trigger.click();
+}
+
+async function chooseReadingOption(page: Page, name: string) {
+  await openReadingMenu(page);
+  await page.getByRole("menuitem", { name, exact: true }).click();
+}
+
 const READING_SUMMARY =
   "A clear opening is present, but it asks for one calm and deliberate next step.";
 const LATE_READING_SUMMARY =
@@ -679,36 +689,26 @@ test("Tarot reading has accessible semantics and touch targets", async ({ page }
 });
 
 for (const reduced of [false, true]) {
-  test(`card zoom tip stays readable and acknowledges interaction (${reduced ? "reduced" : "normal"} motion)`, async ({ page }, testInfo) => {
+  test(`cards sit beside their explanations and open their artwork (${reduced ? "reduced" : "normal"} motion)`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: reduced ? "reduce" : "no-preference" });
     await seedReadingSession(page, VISUAL_CASES[1]);
     await page.goto("/app/tarot?hintPreview=embedded");
-    const tip = page.getByTestId("tarot-card-tip");
-    await expect(tip).toContainText("Open any card, then tap or pinch to zoom in on the artwork.");
-    await expect(page.locator(".hint-launch-intro")).toHaveCount(0);
-    await expectMinimumTouchTargets(page);
-    await page.screenshot({ path: testInfo.outputPath("card-zoom-tip.png") });
-    // Reading time is independent of animation preferences; the old tip vanished
-    // after 3.2 seconds under reduced motion and was never offered again.
-    await page.waitForTimeout(5_000);
-    await expect(tip).toBeVisible();
-    await page.reload();
-    await expect(tip).toBeVisible(); // Displaying it alone is not acknowledgment.
+    const cards = page.getByRole("list", { name: "Cards", exact: true });
+    await expect(cards.getByRole("button")).toHaveCount(3);
+    for (const row of await cards.getByRole("listitem").all()) {
+      const art = await row.getByRole("button").boundingBox();
+      const title = await row.getByRole("heading").boundingBox();
+      expect(art).not.toBeNull();
+      expect(title).not.toBeNull();
+      expect(title!.x).toBeGreaterThanOrEqual(art!.x + art!.width);
+      expect(Math.abs(title!.y - art!.y)).toBeLessThan(2);
+    }
     await page.getByRole("button", { name: /^Preview / }).first().tap();
     await expect(page.getByRole("dialog", { name: "The Fool" })).toBeVisible();
-    await expect(tip).toHaveCount(0);
+    await page.getByRole("button", { name: "Close card detail" }).tap();
     await page.reload();
-    await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
-    await page.waitForTimeout(700);
-    await expect(tip).toHaveCount(0);
-    await seedReadingSession(page, VISUAL_CASES[0]);
-    await page.reload();
-    await expect(tip).toBeVisible(); // A different reading gets its own tip.
-    await page.getByRole("button", { name: "Dismiss card tip" }).tap();
-    await page.reload();
-    await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
-    await page.waitForTimeout(700);
-    await expect(tip).toHaveCount(0);
+    await expect(cards).toBeVisible();
+    await expect(page.getByTestId("tarot-card-tip")).toHaveCount(0);
   });
 }
 
@@ -716,8 +716,6 @@ test("card detail stays gesture-first without visible zoom controls", async ({ p
   await seedReadingSession(page, VISUAL_CASES[1]);
   await page.goto("/app/tarot?hintPreview=embedded");
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
-  await expect(page.getByText("Tap a card to look closer", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Dismiss card tip" }).click();
 
   const card = page.getByRole("button", { name: /^Preview / }).first();
   const beforeHover = await card.boundingBox();
@@ -767,6 +765,80 @@ test("card detail stays gesture-first without visible zoom controls", async ({ p
   );
 });
 
+for (const language of ["en", "zh"] as const) {
+  test(`reading template answers first, explains numbered cards, then connects them in ${language}`, async ({ page }, testInfo) => {
+    await seedReadingSession(page, VISUAL_CASES[1]);
+    await page.addInitScript((value) => localStorage.setItem("hint-language", value), language);
+    const copy = language === "zh" ? {
+      answer: "先选一个小练习，坚持用同一种方法做几次，再比较结果。你现在更需要稳定的练习，而不是继续寻找新教程。",
+      meanings: [
+        "愚人逆位提醒你留意没有准备好的开始。放在过去的位置，它可以对应学习中不断换方法的冲动，因此这次适合先选定一个能完成的小练习。",
+        "皇后正位代表耐心培养和持续投入。放在当下的位置，它提醒你给练习留出固定的时间，让同一种方法有机会产生可以观察的进步。",
+        "圣杯骑士正位代表带着兴趣采取行动。放在接下来的方向，它鼓励你选一个自己愿意完成的小项目，用兴趣支持练习，而不是只停留在想象中。",
+      ],
+      synthesis: "这三张牌连起来，把重点放在从尝试走向持续行动。愚人逆位提醒你留意开始太快、方法换得太频繁的问题，皇后则强调给同一个练习足够的时间。圣杯骑士为这个过程补上动力：选一个你有兴趣的小项目，把练习用进去。这样既保留了探索的兴趣，也能看清进步来自哪里；几次尝试后再根据结果调整方法。",
+      next: "今天用十五分钟完成一个小练习，留下结果，下次做同一个练习时再比较。",
+    } : {
+      answer: "Choose one small exercise and repeat it before changing methods. A steady practice will tell you more about your progress than another tutorial.",
+      meanings: [
+        "The reversed Fool points to a start that needs more preparation. In the past position, it invites you to check whether switching approaches too quickly has made progress difficult to notice. For this learning question, its contribution is to make the next experiment small enough to finish.",
+        "The upright Empress represents patient care and steady growth. In the present position, she points toward giving one exercise enough time to develop. A regular practice slot would let you test whether consistency helps more than finding a different method.",
+        "The upright Knight of Cups represents interest turned into action. In the next-step position, it suggests choosing a small project you want to finish. That interest can sustain practice, provided you turn the idea into a specific task.",
+      ],
+      synthesis: "Together, these cards suggest moving from trying things to sustaining one useful practice. The reversed Fool asks you to check whether rushed starts interrupt learning, while the Empress supports staying with one exercise long enough to notice a difference. The Knight of Cups adds motivation through a small project you care about. Choose one method, apply it to that project, and compare a few attempts before adjusting. This gives your curiosity a clear task and makes progress easier to judge.",
+      next: "Spend fifteen minutes on one exercise today and keep the result so you can compare your next attempt.",
+    };
+    let requests = 0;
+    await page.route("**/api/tarot/structured-reading", async (route) => {
+      requests += 1;
+      const body = route.request().postDataJSON();
+      expect(body.depth).toBeUndefined();
+      await route.fulfill({ json: {
+        source: "api", signal_type: "mixed_signal", overall_summary: copy.answer,
+        cards: body.cards.map((card: { name: string; orientation: string; position: string }, index: number) => ({
+          card_name: card.name, orientation: card.orientation, position: card.position, meaning: copy.meanings[index],
+        })),
+        cards_connection: copy.synthesis, final_action_advice: copy.next, follow_up_invitation: "What would you like to explore?",
+      } });
+    });
+    await page.goto("/app/tarot?hintPreview=embedded");
+    const answer = page.getByTestId("tarot-short-answer");
+    const cards = page.getByRole("list", { name: language === "zh" ? "卡牌" : "Cards", exact: true });
+    const synthesis = page.getByTestId("tarot-cards-synthesis");
+    await expect(answer).toContainText(copy.answer);
+    await expect(cards.getByRole("listitem")).toHaveCount(3);
+    for (const [index, meaning] of copy.meanings.entries()) {
+      const item = cards.getByRole("listitem").nth(index);
+      await expect(item).toContainText(`${index + 1}.`);
+      await expect(item).toContainText(meaning);
+    }
+    await expect(synthesis).toContainText(copy.synthesis);
+    const order = await page.locator('[data-testid="tarot-short-answer"], article ol, [data-testid="tarot-cards-synthesis"]').evaluateAll((nodes) => nodes.map((node) => node.getAttribute("data-testid") ?? node.tagName));
+    expect(order).toEqual(["tarot-short-answer", "OL", "tarot-cards-synthesis"]);
+    await expect(page.getByTestId("tarot-detailed-reading")).toHaveCount(0);
+    await expect(page.locator(".hint-launch-intro")).toHaveCount(0);
+    const cardTip = page.getByRole("button", { name: language === "zh" ? "关闭卡牌提示" : "Dismiss card tip" });
+    if (await cardTip.isVisible()) await cardTip.tap();
+    await cards.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: testInfo.outputPath(`reading-cards-${language}.png`) });
+    await synthesis.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: testInfo.outputPath(`reading-synthesis-${language}.png`) });
+    expect(await page.locator("article").evaluate((article) => article.scrollWidth <= article.clientWidth + 1)).toBe(true);
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_local_tarot_readings_v1") ?? "[]")[0]);
+    expect(saved.structuredReading.cards_connection).toBe(copy.synthesis);
+    await page.reload();
+    await expect(synthesis).toContainText(copy.synthesis);
+    expect(requests).toBe(1);
+    await page.route("**/api/tarot/chat", async (route) => {
+      expect(route.request().postDataJSON().initialReading).toContain(copy.synthesis.slice(0, 100));
+      await route.fulfill({ json: { source: "api", message: "Compare two attempts at the same exercise." } });
+    });
+    await page.getByPlaceholder(language === "zh" ? "继续问你想理解的部分……" : "Message Hint...").fill("How do I start?");
+    await page.getByRole("button", { name: language === "zh" ? "发送追问" : "Send follow-up", exact: true }).tap();
+    await expect(page.getByText("Compare two attempts at the same exercise.", { exact: true })).toBeVisible();
+  });
+}
+
 test("deeper demo reading is explicit, durable, and leaves the original reading private", async ({ page }, testInfo) => {
   await seedReadingSession(page, VISUAL_CASES[1]);
   let requests = 0;
@@ -798,8 +870,14 @@ test("deeper demo reading is explicit, durable, and leaves the original reading 
   if (await cardTip.isVisible()) await cardTip.tap();
   const original = await readSaved();
   expect(requests).toBe(0);
+  await expect(page.getByPlaceholder("What's the main thing making this difficult?")).not.toBeVisible();
+  await chooseReadingOption(page, "Deeper reading");
+  await page.getByPlaceholder("What's the main thing making this difficult?").fill("A draft to clear.");
+  await page.getByPlaceholder("What's the main thing making this difficult?").fill("");
+  await expect(page.getByPlaceholder("What's the main thing making this difficult?")).toBeVisible();
   await page.getByPlaceholder("What's the main thing making this difficult?").fill("I keep changing my mind when I feel rushed.");
   await page.reload();
+  await chooseReadingOption(page, "Deeper reading");
   await expect(page.getByPlaceholder("What's the main thing making this difficult?")).toHaveValue("I keep changing my mind when I feel rushed.");
   await page.getByRole("button", { name: "Explore deeper · Free demo" }).tap();
   await expect(page.getByTestId("tarot-detailed-reading")).toBeVisible();
@@ -820,6 +898,7 @@ test("deeper demo reading is explicit, durable, and leaves the original reading 
   await page.getByTestId("tarot-detailed-reading").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("deeper-reading.png") });
   await page.reload();
+  await chooseReadingOption(page, "Deeper reading");
   await page.getByRole("button", { name: "Read your deeper interpretation" }).tap();
   await expect(page.getByTestId("tarot-detailed-reading")).toContainText(detailSummary);
   expect(requests).toBe(1);
@@ -836,11 +915,11 @@ test("deeper demo reading is explicit, durable, and leaves the original reading 
     expect(body.initialReading.length).toBeLessThanOrEqual(8000);
     await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ source: "api", message: followUpReply }) });
   });
-  await page.getByPlaceholder("Ask what you want to understand next...").fill("How do I try this next step?");
+  await page.getByPlaceholder("Message Hint...").fill("How do I try this next step?");
   await page.getByRole("button", { name: "Send follow-up" }).tap();
   await expect(page.getByText(followUpReply, { exact: true })).toBeVisible();
   expect(chatRequests).toBe(1);
-  await page.getByRole("button", { name: "Receive", exact: true }).tap();
+  await chooseReadingOption(page, "Receive");
   await expect(page.getByRole("dialog", { name: "A letter to keep" })).not.toContainText(detailSummary);
   await expect(page.getByRole("dialog", { name: "A letter to keep" })).not.toContainText(followUpReply);
 });
@@ -855,6 +934,7 @@ test("deeper demo reading failure is retryable without a silent upgrade", async 
   });
   await page.goto("/app/tarot?hintPreview=embedded");
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
+  await chooseReadingOption(page, "Deeper reading");
   await page.getByRole("button", { name: "Explore deeper · Free demo" }).tap();
   await expect(page.getByRole("alert")).toContainText("original answer is unchanged");
   await page.getByRole("button", { name: "Retry deeper reading · Free demo" }).tap();
@@ -864,7 +944,9 @@ test("deeper demo reading failure is retryable without a silent upgrade", async 
   expect(saved.shortAnswer).toBe(READING_SUMMARY);
   expect(saved.detailedReading).toBeUndefined();
   await page.reload();
-  await expect(page.getByRole("button", { name: "Explore deeper · Free demo" })).toBeAttached();
+  await openReadingMenu(page);
+  await expect(page.getByRole("menuitem", { name: "Deeper reading" })).toBeVisible();
+  await expect(page.getByPlaceholder("What's the main thing making this difficult?")).not.toBeVisible();
   expect(requests).toBe(2);
 });
 
@@ -874,6 +956,7 @@ for (const motionMode of ["normal", "system", "hint"] as const) {
     await page.emulateMedia({ reducedMotion: motionMode === "system" ? "reduce" : "no-preference" });
     await page.goto("/app/tarot?hintPreview=embedded");
     await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
+    await chooseReadingOption(page, "Deeper reading");
     await page.getByRole("button", { name: "Explore deeper · Free demo" }).tap();
     await expect(page.getByTestId("tarot-detailed-reading")).toHaveAttribute("data-open", "true");
     await page.getByRole("button", { name: "Close deeper interpretation" }).tap();
@@ -886,6 +969,7 @@ for (const motionMode of ["normal", "system", "hint"] as const) {
         window.dispatchEvent(new Event("hint:preferences-updated"));
       });
       await page.reload();
+      await chooseReadingOption(page, "Deeper reading");
     }
     const open = page.getByRole("button", { name: "Read your deeper interpretation" });
     await open.scrollIntoViewIfNeeded();
@@ -1020,10 +1104,10 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   const followUp = "What should I do next?";
   const followUpReply =
     "Choose the smallest honest action, then leave enough space to notice what changes.";
-  await page.getByPlaceholder("Ask what you want to understand next...").fill(followUp);
+  await page.getByPlaceholder("Message Hint...").fill(followUp);
   await page.getByRole("button", { name: "Send follow-up" }).click();
   await expect(page.getByText(followUpReply, { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Receive", exact: true }).click();
+  await chooseReadingOption(page, "Receive");
   const receipt = page.getByRole("dialog", { name: "A letter to keep" });
   await expect(receipt).toBeVisible();
   await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
@@ -1410,7 +1494,7 @@ test("cancelling receipt sharing stays quiet and allows sharing again", async ({
       },
     });
   });
-  await page.getByRole("button", { name: "Receive", exact: true }).click();
+  await chooseReadingOption(page, "Receive");
   const receipt = page.getByRole("dialog", { name: "A letter to keep" });
   const share = receipt.getByRole("button", { name: "Share receipt", exact: true });
   await share.click();
@@ -1439,7 +1523,7 @@ test("receipt preview and exported PNG keep the question and chat private by def
   await page.goto("/app/tarot?hintPreview=embedded");
   await expect(page.locator(".hint-launch-intro")).toHaveCount(0);
   await expect(page.getByText(privateAnswer, { exact: true })).toBeVisible();
-  await page.getByPlaceholder("Ask what you want to understand next...").fill(privateChat);
+  await page.getByPlaceholder("Message Hint...").fill(privateChat);
   await page.getByRole("button", { name: "Send follow-up" }).tap();
   await expect(page.getByText("Choose the smallest honest action, then leave enough space to notice what changes.", { exact: true })).toBeVisible();
   await page.evaluate(() => {
@@ -1452,7 +1536,7 @@ test("receipt preview and exported PNG keep the question and chat private by def
       else original.call(this, text, x, y, maxWidth);
     };
   });
-  await page.getByRole("button", { name: "Receive", exact: true }).tap();
+  await chooseReadingOption(page, "Receive");
   const receipt = page.getByRole("dialog", { name: "A letter to keep" });
   await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
   for (const includeQuestion of [false, true, false]) {
@@ -1525,7 +1609,7 @@ for (const receiptCase of [
     }, receiptCase.language);
     await page.goto(`/app/tarot?reading=${data.id}&hintPreview=embedded`);
     await expect(page.getByText(data.insight, { exact: true })).toBeVisible();
-    await page.getByRole("button", { name: "Receive", exact: true }).tap();
+    await chooseReadingOption(page, "Receive");
     const receipt = page.getByRole("dialog", { name: "A letter to keep" });
     await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
     await page.evaluate(() => {
@@ -1651,7 +1735,7 @@ test("Auto Wash avoids sustained animation stalls", async ({ page }, testInfo) =
   expect(frameMetrics.sustainedStalls).toBeLessThanOrEqual(2);
 });
 
-test("an offline follow-up is saved and restored with its local reply", async ({ page }) => {
+test("an offline follow-up is saved and can be retried without duplication", async ({ page }) => {
   await seedReadingSession(page, VISUAL_CASES[1]);
   await page.unroute("**/api/tarot/chat");
   await page.route("**/api/tarot/chat", (route) =>
@@ -1661,11 +1745,11 @@ test("an offline follow-up is saved and restored with its local reply", async ({
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
 
   const followUp = "What can I still do offline?";
-  await page.getByPlaceholder("Ask what you want to understand next...").fill(followUp);
+  await page.getByPlaceholder("Message Hint...").fill(followUp);
   await page.getByRole("button", { name: "Send follow-up" }).click();
   await expect(
     page.getByText(
-      "The live reading line is quiet right now, so this reply used the local reading context.",
+      "Couldn’t get a reply.",
       { exact: true },
     ),
   ).toBeVisible();
@@ -1676,19 +1760,25 @@ test("an offline follow-up is saved and restored with its local reply", async ({
     ) as Array<{ chatMessages?: Array<{ role: string; content: string }> }>;
     return readings[0]?.chatMessages ?? [];
   });
-  expect(savedMessages).toHaveLength(2);
+  expect(savedMessages).toHaveLength(1);
   expect(savedMessages[0]).toMatchObject({ role: "user", content: followUp });
-  expect(savedMessages[1]?.role).toBe("assistant");
-  expect(savedMessages[1]?.content).toBeTruthy();
 
   await page.reload();
   await expect(page.getByRole("main").getByText(followUp, { exact: true })).toBeVisible();
-  await expect(
-    page.getByText(savedMessages[1]!.content, { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("No reply yet. You can try again.", { exact: true })).toBeVisible();
+  await page.unroute("**/api/tarot/chat");
+  await page.route("**/api/tarot/chat", async route => {
+    expect(route.request().postDataJSON().followUp).toBe(followUp);
+    await route.fulfill({ json: { source: "api", message: "Your live reply is available again." } });
+  });
+  await page.getByRole("button", { name: "Try again", exact: true }).click();
+  await expect(page.getByText("Your live reply is available again.", { exact: true })).toBeVisible();
+  const restored = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_local_tarot_readings_v1") ?? "[]")[0]);
+  expect(restored.chatMessages).toHaveLength(2);
+  expect(restored.chatMessages[0].content).toBe(followUp);
 });
 
-test("a stalled follow-up releases the composer and keeps one durable local reply", async ({ page }) => {
+test("a stalled follow-up keeps the composer editable and preserves the unanswered question", async ({ page }) => {
   await seedReadingSession(page, VISUAL_CASES[1]);
   let release = () => {};
   const held = new Promise<void>((resolve) => { release = resolve; });
@@ -1706,17 +1796,18 @@ test("a stalled follow-up releases the composer and keeps one durable local repl
     const composer = page.getByTestId("tarot-follow-up-composer");
     await composer.fill("What if the connection stalls?");
     await page.getByRole("button", { name: "Send follow-up" }).click();
-    await expect(composer).toBeDisabled();
-    await expect(page.getByText("The live reading line is quiet right now, so this reply used the local reading context.", { exact: true })).toBeVisible({ timeout: 15_000 });
+    await expect(composer).toBeEnabled();
+    await composer.fill("A draft for later");
+    await expect(page.getByText("Couldn’t get a reply.", { exact: true })).toBeVisible({ timeout: 15_000 });
     await expect(composer).toBeEnabled();
     await expect.poll(() => cancelled).toBe(true);
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_local_tarot_readings_v1") ?? "[]")[0]);
-    expect(saved.chatMessages).toHaveLength(2);
+    expect(saved.chatMessages).toHaveLength(1);
     expect(saved.chatMessages[0].content).toBe("What if the connection stalls?");
-    expect(saved.chatMessages[1].content).toBeTruthy();
+    await expect(composer).toHaveValue("A draft for later");
     release();
     await page.reload();
-    await expect(page.getByText(saved.chatMessages[1].content, { exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Try again", exact: true })).toBeVisible();
     await expect(page.getByText("This reply arrived too late.", { exact: true })).toHaveCount(0);
     const restored = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_local_tarot_readings_v1") ?? "[]")[0]);
     expect(restored.chatMessages).toEqual(saved.chatMessages);
@@ -1744,7 +1835,7 @@ test("leaving a pending follow-up cancels its request before History resumes", a
   try {
     await page.goto("/app/tarot?hintPreview=embedded");
     await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
-    await page.getByPlaceholder("Ask what you want to understand next...").fill("Keep this question when I leave.");
+    await page.getByPlaceholder("Message Hint...").fill("Keep this question when I leave.");
     const request = page.waitForRequest("**/api/tarot/chat");
     await page.getByRole("button", { name: "Send follow-up" }).click();
     await request;
@@ -1759,7 +1850,7 @@ test("leaving a pending follow-up cancels its request before History resumes", a
     await page.unroute("**/api/tarot/chat", holdReply);
     await page.goto(`/app/tarot?hintPreview=embedded&reading=${saved.id}&returnTo=detail`);
     await expect(page.getByText("Keep this question when I leave.", { exact: true })).toBeVisible();
-    await page.getByPlaceholder("Ask what you want to understand next...").fill("Now I am back.");
+    await page.getByPlaceholder("Message Hint...").fill("Now I am back.");
     await page.getByRole("button", { name: "Send follow-up" }).click();
     await expect(page.getByText("Choose the smallest honest action, then leave enough space to notice what changes.", { exact: true })).toBeVisible();
     const restored = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_local_tarot_readings_v1") ?? "[]")[0]);
@@ -1777,7 +1868,7 @@ test("a late reading response cannot replace the settled local reading", async (
   await seedReadingSession(page, VISUAL_CASES[1]);
   await page.unroute("**/api/tarot/structured-reading");
   await page.route("**/api/tarot/structured-reading", async (route) => {
-    await new Promise((resolve) => setTimeout(resolve, 8_700));
+    await new Promise((resolve) => setTimeout(resolve, 15_700));
     const request = route.request().postDataJSON() as {
       cards: Array<{ name: string; orientation: "upright" | "reversed"; position: string }>;
     };
@@ -1799,13 +1890,14 @@ test("a late reading response cannot replace the settled local reading", async (
         }),
       });
     } catch {
-      // The application intentionally aborts this request after eight seconds.
+      // The application intentionally aborts this request after fifteen seconds.
     }
   });
 
   await page.goto("/app/tarot?hintPreview=embedded");
-  const retry = page.getByRole("button", { name: "Refresh the interpretation" });
-  await expect(retry).toBeVisible({ timeout: 10_500 });
+  await openReadingMenu(page);
+  const retry = page.getByRole("menuitem", { name: "Refresh the interpretation" });
+  await expect(retry).toBeVisible({ timeout: 17_500 });
   await page.waitForTimeout(1_200);
   await expect(page.getByText(LATE_READING_SUMMARY, { exact: true })).toHaveCount(0);
 
@@ -1873,7 +1965,8 @@ for (const initialStatus of ["pending", "local", "server-local"] as const) {
       const before = await savedReading();
       await page.reload();
       releaseRequest();
-      const retry = page.getByRole("button", { name: "Refresh the interpretation" });
+      await openReadingMenu(page);
+      const retry = page.getByRole("menuitem", { name: "Refresh the interpretation" });
       await expect(retry).toBeVisible();
       await expect(page.getByText(before.shortAnswer, { exact: true })).toBeVisible();
       expect(requests).toBe(1);
@@ -1947,7 +2040,7 @@ test("a failed save keeps the reading and chat until an explicit durable retry",
   await expect(page.getByRole("alert").filter({ hasText: "Changes aren't saved" })).toBeVisible();
 
   const followUp = "Keep this follow-up even when saving fails.";
-  await page.getByPlaceholder("Ask what you want to understand next...").fill(followUp);
+  await page.getByPlaceholder("Message Hint...").fill(followUp);
   await page.getByRole("button", { name: "Send follow-up" }).tap();
   await expect(page.getByText("Choose the smallest honest action, then leave enough space to notice what changes.", { exact: true })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("hint_local_tarot_readings_v1"))).toBeNull();
@@ -1999,7 +2092,8 @@ test("damaged saved interpretation and design recover without losing the selecte
     return { id: reading.id, cards: reading.cards };
   });
   await page.goto(`/app/tarot?hintPreview=embedded&reading=${encodeURIComponent(original.id)}&returnTo=detail`);
-  await expect(page.getByRole("button", { name: "Refresh the interpretation" })).toBeVisible();
+  await openReadingMenu(page);
+  await expect(page.getByRole("menuitem", { name: "Refresh the interpretation" })).toBeVisible();
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: /^Preview / })).toHaveCount(3);
   await expect(page.locator('[data-room-background="dawn"]')).toBeVisible();
@@ -2009,8 +2103,10 @@ test("damaged saved interpretation and design recover without losing the selecte
   expect(recovered.interpretationStatus).toBe("local");
   expect(recovered.roomDesign).toMatchObject({ backgroundId: "dawn", cardArtId: "hint-classic", backStyle: "rose" });
   expect(typeof recovered.roomDesign.cardBackId).toBe("string");
-  await page.getByRole("button", { name: "Refresh the interpretation" }).click();
-  await expect(page.getByRole("button", { name: "Refresh the interpretation" })).toHaveCount(0);
+  await chooseReadingOption(page, "Refresh the interpretation");
+  await openReadingMenu(page);
+  await expect(page.getByRole("menuitem", { name: "Refresh the interpretation" })).toHaveCount(0);
+  await page.keyboard.press("Escape");
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -2021,7 +2117,7 @@ test("the reading composer remains visible above a keyboard-sized viewport", asy
   await page.goto("/app/tarot?hintPreview=embedded");
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
   await page.setViewportSize({ width: 375, height: 430 });
-  const composer = page.getByPlaceholder("Ask what you want to understand next...");
+  const composer = page.getByPlaceholder("Message Hint...");
   await expect(composer).toBeVisible();
   const box = await composer.boundingBox();
   expect(box).not.toBeNull();
