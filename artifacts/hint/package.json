@@ -16,6 +16,7 @@
     "test:tarot": "vitest run src/modules/tarot/logic/*.test.ts src/modules/tarot/components/*.component.test.tsx src/lib/feedback.test.ts src/lib/speechRecognition.test.ts src/lib/mobile/appLifecycle.test.ts",
     "test:e2e:tarot": "playwright test e2e/tarot-room.spec.ts",
     "test:e2e:tarot:production": "pnpm run build && playwright test e2e/tarot-room.spec.ts --config playwright.production.config.ts",
+    "test:e2e:voice": "playwright test --config playwright.voice.config.ts",
     "check:tarot:startup": "node scripts/check-tarot-startup.mjs",
     "check:ios:source": "node scripts/check-ios-release.mjs --static",
     "mobile:ios:check": "pnpm run mobile:build && cap sync ios && node scripts/check-ios-release.mjs --build",

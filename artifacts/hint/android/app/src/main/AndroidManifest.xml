@@ -38,4 +38,16 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Voice questions and voice conversation. Requested only when the user taps the mic. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Required by the WebView microphone fallback (getUserMedia). -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
+    <!-- Android 11+ package visibility: lets SpeechRecognizer find the device's recognition service. -->
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
 </manifest>

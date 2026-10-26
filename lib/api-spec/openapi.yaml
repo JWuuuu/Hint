@@ -212,6 +212,69 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /transcribe:
+    post:
+      operationId: createTranscription
+      tags: [speech]
+      summary: Transcribe one spoken turn
+      description: >
+        Speech-to-text for clients without on-device recognition (Android
+        WebView, Firefox). The body is the raw recording from MediaRecorder,
+        at most 6 MB.
+      parameters:
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+          description: BCP-47 language of the speaker, for example en-US
+      requestBody:
+        required: true
+        content:
+          audio/webm:
+            schema:
+              type: string
+              format: binary
+          audio/mp4:
+            schema:
+              type: string
+              format: binary
+          audio/ogg:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Transcript of the recording
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TranscriptionResult"
+        "400":
+          description: The recording was empty
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "413":
+          description: The recording is too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "415":
+          description: Unsupported audio format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "502":
+          description: Transcription provider unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   /profile:
     get:
       operationId: getProfile
@@ -651,6 +714,15 @@ components:
           minLength: 1
           maxLength: 4096
           description: Assistant text to turn into speech
+
+    TranscriptionResult:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: What the speaker said; empty when nothing was heard
 
     TarotReadingInput:
       type: object

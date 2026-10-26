@@ -31,6 +31,7 @@ import type {
   CompatibilityInviteInput,
   CompletePersistedCompatibilityInvite200,
   CreatePersistedCompatibilityInvite200,
+  CreateTranscriptionParams,
   DailyPull,
   DailyPullRequest,
   DailyPullUpdate,
@@ -56,6 +57,7 @@ import type {
   TarotChatReply,
   TarotReading,
   TarotReadingInput,
+  TranscriptionResult,
   UserStats
 } from './api.schemas';
 
@@ -802,6 +804,87 @@ export const useCreateSpeech = <TError = ErrorType<ApiError>,
         TContext
       > => {
       return useMutation(getCreateSpeechMutationOptions(options));
+    }
+
+export const getCreateTranscriptionUrl = (params?: CreateTranscriptionParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/transcribe?${stringifiedParams}` : `/api/transcribe`
+}
+
+/**
+ * Speech-to-text for clients without on-device recognition (Android WebView, Firefox). The body is the raw recording from MediaRecorder, at most 6 MB.
+
+ * @summary Transcribe one spoken turn
+ */
+export const createTranscription = async (createTranscriptionBody: Blob,
+    params?: CreateTranscriptionParams, options?: RequestInit): Promise<TranscriptionResult> => {
+
+  return customFetch<TranscriptionResult>(getCreateTranscriptionUrl(params),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'audio/webm', ...options?.headers },
+    body: JSON.stringify(
+      createTranscriptionBody,)
+  }
+);}
+
+
+
+
+export const getCreateTranscriptionMutationOptions = <TError = ErrorType<ApiError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createTranscription>>, TError,{data: BodyType<Blob>;params?: CreateTranscriptionParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createTranscription>>, TError,{data: BodyType<Blob>;params?: CreateTranscriptionParams}, TContext> => {
+
+const mutationKey = ['createTranscription'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createTranscription>>, {data: BodyType<Blob>;params?: CreateTranscriptionParams}> = (props) => {
+          const {data,params} = props ?? {};
+
+          return  createTranscription(data,params,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateTranscriptionMutationResult = NonNullable<Awaited<ReturnType<typeof createTranscription>>>
+    export type CreateTranscriptionMutationBody = BodyType<Blob>
+    export type CreateTranscriptionMutationError = ErrorType<ApiError>
+
+    /**
+ * @summary Transcribe one spoken turn
+ */
+export const useCreateTranscription = <TError = ErrorType<ApiError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createTranscription>>, TError,{data: BodyType<Blob>;params?: CreateTranscriptionParams}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createTranscription>>,
+        TError,
+        {data: BodyType<Blob>;params?: CreateTranscriptionParams},
+        TContext
+      > => {
+      return useMutation(getCreateTranscriptionMutationOptions(options));
     }
 
 export const getGetProfileUrl = (params?: GetProfileParams,) => {

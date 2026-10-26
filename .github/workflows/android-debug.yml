@@ -1,0 +1,45 @@
+name: Android debug build
+# Compiles the Capacitor Android shell (including the app-local voice and
+# device-credential plugins) and keeps an installable debug APK for phone tests.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'artifacts/hint/android/**'
+      - 'artifacts/hint/capacitor.config.json'
+      - 'artifacts/hint/src/lib/speechRecognition.ts'
+      - 'artifacts/hint/src/lib/recordedSpeech.ts'
+      - 'artifacts/hint/src/lib/deviceSession.ts'
+      - '.github/workflows/android-debug.yml'
+permissions:
+  contents: read
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    env:
+      # Without a deployed API the APK opens, but readings and voice cannot reach the server.
+      VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:web
+      - run: pnpm --filter @workspace/hint exec cap sync android
+      - name: Assemble debug APK
+        working-directory: artifacts/hint/android
+        run: bash ./gradlew assembleDebug --no-daemon --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hint-android-debug-${{ github.sha }}
+          path: artifacts/hint/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

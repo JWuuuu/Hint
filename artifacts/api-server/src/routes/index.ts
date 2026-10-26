@@ -3,6 +3,7 @@ import healthRouter from "./health";
 import tarotRouter from "./tarot";
 import hintRouter from "./hint";
 import speechRouter from "./speech";
+import transcribeRouter from "./transcribe";
 import profileRouter from "./profile";
 import historyRouter from "./history";
 import dailyReceiptsRouter from "./dailyReceipts";
@@ -33,6 +34,7 @@ router.use(async (req, _res, next) => {
 router.use(tarotRouter);
 router.use(hintRouter);
 router.use(speechRouter);
+router.use(transcribeRouter);
 router.use(profileRouter);
 router.use(historyRouter);
 router.use(dailyReceiptsRouter);

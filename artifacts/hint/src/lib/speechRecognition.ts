@@ -48,6 +48,17 @@ function browserSpeechConstructor(): BrowserSpeechConstructor | null {
   return speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition ?? null;
 }
 
+/** MediaRecorder + server transcription works where on-device recognition does not. */
+function canRecordSpeech(): boolean {
+  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+  return typeof window.MediaRecorder === "function" && typeof navigator.mediaDevices?.getUserMedia === "function";
+}
+
+async function startRecorded(options: HintSpeechOptions): Promise<HintSpeechSession> {
+  const { startRecordedSpeech } = await import("./recordedSpeech");
+  return startRecordedSpeech(options);
+}
+
 function browserError(error?: string): Parameters<HintSpeechOptions["onError"]>[0] {
   if (error === "not-allowed") return "permission";
   if (error === "service-not-allowed" || error === "language-not-supported") return "unavailable";
@@ -119,9 +130,17 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
   let result: { matches?: string[] };
   try {
     checkCancelled();
-    const availability = await SpeechRecognition.available({ language: options.language });
+    let availability: { available: boolean };
+    try {
+      availability = await SpeechRecognition.available({ language: options.language });
+    } catch (error) {
+      // Shells without the native recogniser (or a broken bridge) can still record a turn.
+      if (!options.signal?.aborted && canRecordSpeech()) return startRecorded(options);
+      throw error;
+    }
     checkCancelled();
     if (!availability.available) {
+      if (canRecordSpeech()) return startRecorded(options);
       reportError("unavailable");
       throw new Error("Speech recognition unavailable");
     }
@@ -266,5 +285,6 @@ export async function startHintSpeechRecognition(
   options: HintSpeechOptions,
 ): Promise<HintSpeechSession> {
   if (isNativeShell()) return startNativeSpeech(options);
+  if (!browserSpeechConstructor() && canRecordSpeech()) return startRecorded(options);
   return startBrowserSpeech(options);
 }

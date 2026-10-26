@@ -112,6 +112,11 @@ export interface SpeechInput {
   text: string;
 }
 
+export interface TranscriptionResult {
+  /** What the speaker said; empty when nothing was heard */
+  text: string;
+}
+
 /**
  * The type of tarot spread to use
  */
@@ -660,6 +665,13 @@ export interface TarotChatReply {
   message: string;
   createdAt: string;
 }
+
+export type CreateTranscriptionParams = {
+/**
+ * BCP-47 language of the speaker, for example en-US
+ */
+language?: string;
+};
 
 export type GetProfileParams = {
 /**

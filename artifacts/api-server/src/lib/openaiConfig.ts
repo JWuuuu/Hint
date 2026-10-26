@@ -15,6 +15,10 @@ export const openaiTtsModel =
 
 export const openaiTtsVoice = process.env.OPENAI_TTS_VOICE ?? "coral";
 
+/** Speech-to-text for devices without on-device recognition (Android WebView, Firefox). */
+export const openaiTranscribeModel =
+  process.env.OPENAI_TRANSCRIBE_MODEL ?? "gpt-4o-mini-transcribe";
+
 export function requireOpenAIKey(): string {
   if (!openaiApiKey) {
     throw new Error("Missing OpenAI credentials. Set OPENAI_API_KEY.");

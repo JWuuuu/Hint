@@ -333,6 +333,20 @@ export const CreateSpeechBody = zod.object({
 
 
 /**
+ * Speech-to-text for clients without on-device recognition (Android WebView, Firefox). The body is the raw recording from MediaRecorder, at most 6 MB.
+
+ * @summary Transcribe one spoken turn
+ */
+export const CreateTranscriptionQueryParams = zod.object({
+  "language": zod.coerce.string().optional().describe('BCP-47 language of the speaker, for example en-US')
+})
+
+export const CreateTranscriptionResponse = zod.object({
+  "text": zod.string().describe('What the speaker said; empty when nothing was heard')
+})
+
+
+/**
  * @summary Get the profile for an anonymous user
  */
 export const GetProfileQueryParams = zod.object({
