@@ -4,7 +4,7 @@ import { LocalizedText, translateText } from "../../../lib/LocalizedText";
 import { useLocalDay } from "../../../lib/useLocalDay";
 import { withDailyCardIdentity } from "../data/dailyCardSync";
 import { getCachedDailyReceipt, subscribeToDailyReceiptFallbacks } from "../../../lib/dailyReceipts";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { motion } from "../../../lib/quietMotion";
 import { useMotionPolicy } from "../../../lib/motionPolicy";
 import { Dialog, DialogPortal, DialogSurface, DialogTitle } from "../../../components/ui/dialog";
@@ -71,6 +71,10 @@ import type { DailyReport, DailyScore } from "../types/home.types";
 import { LuckyIllustration } from "./LuckyIllustration";
 import { SkyEvidence } from "../../../components/tarot/SkyEvidence";
 import { SafeImage } from "../../../shared/ui/SafeImage";
+import { HintGuideSlot, useHintGuideGesture } from "../../../components/mascot/HintGuide";
+import { useDailyReveal } from "../../../components/mascot/useDailyReveal";
+import { useDailyDelivery } from "../../../components/mascot/useDailyDelivery";
+import { dailyGuideContext } from "../../../components/mascot/hintGuideContext";
 
 const SKY_DECK_CARD_BACK_IMAGE = getTarotCardBackImage(getDefaultTarotCardBackForStyle("nocturne"));
 const DAILY_SIGNAL_INTRO_COMPLETIONS_KEY = "hint_home_daily_signal_intro_completions_v1";
@@ -2824,27 +2828,30 @@ function ReferenceHeroArt({
 export function ReferenceDailyRevealOverlay({
   open,
   revealing,
+  fresh = true,
   report,
   onClose,
   onCardRevealed,
+  reviewControls,
 }: {
   open: boolean;
   revealing: boolean;
+  fresh?: boolean;
   report: DailyReport;
   onClose: () => void;
   onCardRevealed: () => void;
+  reviewControls?: ReactNode;
 }) {
   const { t } = useLanguage();
   const { reduced, pageVisible } = useMotionPolicy();
+  const playGuideGesture = useHintGuideGesture();
   const reading = useMemo(() => referenceDailyCardReading(report), [report]);
   const cardImage = referenceDailyCardImage(report.card.cardId);
   const keyword = report.card.keyword?.split("·")[0]?.trim() || report.card.cardName;
-  const [flipped, setFlipped] = useState(false);
-  const [detailsReady, setDetailsReady] = useState(false);
-  const didAnnounceRevealRef = useRef(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState(false);
   const opener = useRef<HTMLElement | null>(null);
+  const delivery = useDailyDelivery({ open, fresh, preparing: revealing, identity: report.date + ':' + report.card.cardId, cardBack: SKY_DECK_CARD_BACK_IMAGE });
 
   useEffect(() => {
     if (!open) return;
@@ -2861,41 +2868,15 @@ export function ReferenceDailyRevealOverlay({
     const result = saveLocalCollectionUnlock(report.card.cardId, "daily");
     setSaved(Boolean(result));
     setSaveError(!result);
+    playGuideGesture?.(result ? "celebration" : "reassure");
   }
 
-  useEffect(() => {
-    if (!open) return;
-    setFlipped(false);
-    setDetailsReady(false);
-    didAnnounceRevealRef.current = false;
-  }, [open, report.card.cardId]);
-
-  useEffect(() => {
-    if (!open || !flipped) return;
-    const timer = window.setTimeout(() => setDetailsReady(true), reduced || !pageVisible ? 0 : 680);
-    return () => window.clearTimeout(timer);
-  }, [flipped, open, reduced, pageVisible]);
-
-  useEffect(() => {
-    if (!open || revealing || flipped) return;
-    const timer = window.setTimeout(() => {
-      if (pageVisible) triggerFeedback("reveal");
-      setFlipped(true);
-    }, reduced || !pageVisible ? 0 : 620);
-    return () => window.clearTimeout(timer);
-  }, [flipped, open, revealing, reduced, pageVisible]);
-
-  useEffect(() => {
-    if (!detailsReady || didAnnounceRevealRef.current) return;
-    didAnnounceRevealRef.current = true;
-    onCardRevealed();
-  }, [detailsReady, onCardRevealed]);
-
-  function handleFlipCard() {
-    if (revealing || flipped) return;
-    triggerFeedback("reveal");
-    setFlipped(true);
-  }
+  const { flipped, detailsReady, rotation, flip: handleFlipCard } = useDailyReveal({
+    open, preparing: revealing || delivery.active, fresh, identity: report.date + ':' + report.card.cardId,
+    delivered: delivery.delivered,
+    onRevealed: onCardRevealed, onFlip: () => triggerFeedback("reveal"),
+  });
+  const still = reduced || !pageVisible;
 
   if (!open || typeof document === "undefined") return null;
 
@@ -2910,10 +2891,11 @@ export function ReferenceDailyRevealOverlay({
       target?.focus();
     }}>
     <motion.div
-      className="fixed inset-0 z-[200] overflow-x-hidden overflow-y-auto px-5 pb-[calc(1.1rem+var(--hint-safe-bottom))] pt-[calc(1.35rem+var(--hint-safe-top))] outline-none"
+      className="hint-daily-reveal-scroll fixed inset-0 z-[200] overflow-x-hidden overflow-y-auto px-5 pb-[calc(1.1rem+var(--hint-safe-bottom))] pt-[calc(1.35rem+var(--hint-safe-top))] outline-none"
       data-testid="home-daily-reveal"
+      data-review-controls={import.meta.env.DEV && reviewControls ? "true" : undefined}
       aria-label={`${translateText("Today's tarot card", report.language)}: ${report.card.cardName}`}
-      initial={{ opacity: 0 }}
+      initial={reduced ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.28, ease: "easeOut" }}
     >
@@ -2986,16 +2968,26 @@ export function ReferenceDailyRevealOverlay({
         {saved ? <Check size={18} strokeWidth={1.7} /> : <Bookmark size={18} strokeWidth={1.7} />}
       </button>
 
+      <div className="absolute left-1/2 top-[calc(var(--hint-safe-top)+0.1rem)] -translate-x-1/2">
+        <HintGuideSlot priority={210}
+          delivery={delivery.slot}
+          context={dailyGuideContext({ ready: !revealing, revealed: detailsReady, opening: fresh && !detailsReady, error: saveError })}
+          className="h-[72px] w-[72px]" />
+      </div>
+
       <motion.div
         className="relative z-10 mx-auto flex min-h-full w-full max-w-[430px] flex-col items-center text-center"
-        initial={{ y: 18, scale: 0.97, filter: "blur(6px)" }}
+        initial={reduced || delivery.presentation ? false : { y: 18, scale: 0.97, filter: "blur(6px)" }}
         animate={{ y: 0, scale: 1, filter: "blur(0px)" }}
         transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
       >
         <div
+          ref={delivery.target}
+          aria-hidden={delivery.active || undefined}
           className="relative mt-[52px] h-[clamp(228px,34svh,326px)] w-[clamp(142px,21.15svh,203px)] shrink-0 min-[420px]:mt-[54px]"
-          style={{ perspective: "1300px" }}
+          style={{ perspective: "1300px", visibility: delivery.materialVisible ? "visible" : "hidden" }}
         >
+          <motion.div className="pointer-events-none absolute inset-0" style={{ opacity: delivery.handoff }}>
           <motion.span
             aria-hidden
             className="absolute inset-[-42px] rounded-full"
@@ -3003,8 +2995,8 @@ export function ReferenceDailyRevealOverlay({
               background: "radial-gradient(ellipse at 50% 52%, rgba(255,226,154,0.38), rgba(224,178,103,0.16) 42%, transparent 70%)",
               filter: "blur(13px)",
             }}
-            animate={{ opacity: flipped ? [0.58, 0.88, 0.62] : [0.24, 0.44, 0.28], scale: [0.96, 1.03, 0.98] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ opacity: still ? 0.5 : flipped ? [0.58, 0.88, 0.62] : [0.24, 0.44, 0.28], scale: still ? 1 : [0.96, 1.03, 0.98] }}
+            transition={{ duration: 2.4, repeat: still ? 0 : Infinity, ease: "easeInOut" }}
           />
           <motion.span
             aria-hidden
@@ -3013,8 +3005,8 @@ export function ReferenceDailyRevealOverlay({
               background: "linear-gradient(180deg, transparent, rgba(255,226,158,0.44) 18%, rgba(255,240,197,0.34) 54%, rgba(255,213,132,0.30) 82%, transparent)",
               filter: "blur(12px)",
             }}
-            animate={{ opacity: flipped ? [0.34, 0.66, 0.42] : 0.18 }}
-            transition={{ duration: 2.2, repeat: flipped ? Infinity : 0, ease: "easeInOut" }}
+            animate={{ opacity: still ? 0.5 : flipped ? [0.34, 0.66, 0.42] : 0.18 }}
+            transition={{ duration: 2.2, repeat: flipped && !still ? Infinity : 0, ease: "easeInOut" }}
           />
           <motion.span
             aria-hidden
@@ -3023,8 +3015,8 @@ export function ReferenceDailyRevealOverlay({
               background: "linear-gradient(180deg, transparent, rgba(255,230,164,0.52) 16%, rgba(255,244,207,0.42) 55%, rgba(255,214,130,0.34) 84%, transparent)",
               filter: "blur(13px)",
             }}
-            animate={{ opacity: flipped ? [0.42, 0.78, 0.48] : 0.20 }}
-            transition={{ duration: 2.4, repeat: flipped ? Infinity : 0, ease: "easeInOut", delay: 0.1 }}
+            animate={{ opacity: still ? 0.5 : flipped ? [0.42, 0.78, 0.48] : 0.20 }}
+            transition={{ duration: 2.4, repeat: flipped && !still ? Infinity : 0, ease: "easeInOut", delay: 0.1 }}
           />
           <motion.span
             aria-hidden
@@ -3033,8 +3025,8 @@ export function ReferenceDailyRevealOverlay({
               background: "radial-gradient(ellipse at 50% 48%, transparent 42%, rgba(255,232,169,0.16) 62%, transparent 78%)",
               filter: "blur(8px)",
             }}
-            animate={{ opacity: flipped ? [0.20, 0.42, 0.24] : 0.10 }}
-            transition={{ duration: 2.7, repeat: flipped ? Infinity : 0, ease: "easeInOut" }}
+            animate={{ opacity: still ? 0.5 : flipped ? [0.20, 0.42, 0.24] : 0.10 }}
+            transition={{ duration: 2.7, repeat: flipped && !still ? Infinity : 0, ease: "easeInOut" }}
           />
           <motion.span
             aria-hidden
@@ -3043,8 +3035,8 @@ export function ReferenceDailyRevealOverlay({
               background: "linear-gradient(90deg, transparent 1%, rgba(255,226,158,0.42) 12%, rgba(255,246,213,0.58) 50%, rgba(255,226,158,0.42) 88%, transparent 99%)",
               filter: "blur(10px)",
             }}
-            animate={{ opacity: flipped ? [0.46, 0.84, 0.52] : 0.16 }}
-            transition={{ duration: 2.35, repeat: flipped ? Infinity : 0, ease: "easeInOut" }}
+            animate={{ opacity: still ? 0.5 : flipped ? [0.46, 0.84, 0.52] : 0.16 }}
+            transition={{ duration: 2.35, repeat: flipped && !still ? Infinity : 0, ease: "easeInOut" }}
           />
           <motion.span
             aria-hidden
@@ -3053,8 +3045,8 @@ export function ReferenceDailyRevealOverlay({
               background: "linear-gradient(90deg, transparent, rgba(255,245,210,0.84) 16%, rgba(255,226,146,0.98) 50%, rgba(255,245,210,0.84) 84%, transparent)",
               boxShadow: "0 0 16px rgba(255,228,153,0.72), 0 0 34px rgba(239,190,103,0.32)",
             }}
-            animate={{ opacity: flipped ? [0.58, 1, 0.66] : 0.22 }}
-            transition={{ duration: 1.9, repeat: flipped ? Infinity : 0, ease: "easeInOut" }}
+            animate={{ opacity: still ? 0.5 : flipped ? [0.58, 1, 0.66] : 0.22 }}
+            transition={{ duration: 1.9, repeat: flipped && !still ? Infinity : 0, ease: "easeInOut" }}
           />
           {REFERENCE_REVEAL_DUST.map((dot, index) => (
             <motion.span
@@ -3070,37 +3062,40 @@ export function ReferenceDailyRevealOverlay({
                 boxShadow: `0 0 ${8 + dot.size * 3}px rgba(255,222,137,${dot.glow})`,
               }}
               animate={{
-                opacity: flipped ? [0.18, 0.86, 0.26] : [0.05, 0.36, 0.10],
-                scale: flipped ? [0.78, 1.42, 0.90] : [0.72, 1.12, 0.80],
-                y: flipped ? [0, -3, 0] : [0, -2, 0],
+                opacity: still ? 0.5 : flipped ? [0.18, 0.86, 0.26] : [0.05, 0.36, 0.10],
+                scale: still ? 1 : flipped ? [0.78, 1.42, 0.90] : [0.72, 1.12, 0.80],
+                y: still ? 0 : flipped ? [0, -3, 0] : [0, -2, 0],
               }}
-              transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: dot.delay }}
+              transition={{ duration: 2.6, repeat: still ? 0 : Infinity, ease: "easeInOut", delay: dot.delay }}
             />
           ))}
+          </motion.div>
           <button
             type="button"
-            disabled={revealing || flipped}
+            disabled={revealing || delivery.active || flipped}
             onClick={handleFlipCard}
             className="hint-pressable relative z-10 h-full w-full rounded-[20px] border-0 bg-transparent p-0 text-left disabled:cursor-default"
             aria-label={flipped ? `${report.card.cardName} revealed` : "Today's tarot card is turning"}
           >
             <motion.div
               className="relative h-full w-full"
-              initial={{ rotateY: 0, rotateZ: -2.5, y: 10, scale: 0.94 }}
+              initial={reduced || !fresh || delivery.presentation ? false : { rotateZ: -2.5, y: 10, scale: 0.94 }}
               animate={{
-                rotateY: flipped ? 180 : 0,
-                rotateZ: flipped ? 0 : [-2.5, -1.4, -2.5],
-                y: flipped ? 0 : [10, 4, 10],
-                scale: flipped ? 1 : 0.96,
+                rotateZ: flipped || still || delivery.presentation ? 0 : [-2.5, -1.4, -2.5],
+                y: flipped || still || delivery.presentation ? 0 : [10, 4, 10],
+                scale: flipped || delivery.presentation ? 1 : 0.96,
               }}
               transition={{
-                rotateY: { duration: 0.86, ease: [0.18, 0.9, 0.2, 1] },
                 rotateZ: { duration: flipped ? 0.86 : 3.2, repeat: flipped ? 0 : Infinity, ease: "easeInOut" },
                 y: { duration: flipped ? 0.86 : 3.2, repeat: flipped ? 0 : Infinity, ease: "easeInOut" },
                 scale: { duration: 0.64, ease: "easeOut" },
               }}
-              style={{ transformStyle: "preserve-3d" }}
+              style={{ transformStyle: "preserve-3d", rotateY: rotation }}
             >
+              <motion.div aria-hidden className="absolute inset-0 rounded-[20px]" style={{
+                opacity: delivery.handoff, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+                boxShadow: "0 0 20px rgba(255,216,139,0.32), 0 24px 58px rgba(0,0,0,0.34)",
+              }} />
               <div
                 className="absolute inset-0 overflow-hidden rounded-[20px] border-[1.5px]"
                 style={{
@@ -3109,7 +3104,7 @@ export function ReferenceDailyRevealOverlay({
                   borderColor: "rgba(255,222,152,0.88)",
                   background: "linear-gradient(155deg, #071423, #0b1120 54%, #151123)",
                   boxShadow:
-                    "0 0 0 1px rgba(255,246,214,0.28) inset, 0 0 20px rgba(255,216,139,0.32), 0 24px 58px rgba(0,0,0,0.34)",
+                    "0 0 0 1px rgba(255,246,214,0.28) inset",
                 }}
               >
                 {SKY_DECK_CARD_BACK_IMAGE ? (
@@ -3170,8 +3165,8 @@ export function ReferenceDailyRevealOverlay({
                     boxShadow:
                       "inset 0 0 0 2px rgba(255,240,198,0.82), 0 0 20px rgba(255,230,168,0.72), 0 0 44px rgba(244,199,112,0.30)",
                   }}
-                  animate={{ opacity: flipped ? [0.78, 1, 0.82] : 0.64 }}
-                  transition={{ duration: 1.65, repeat: flipped ? Infinity : 0, ease: "easeInOut" }}
+                  animate={{ opacity: still ? 0.5 : flipped ? [0.78, 1, 0.82] : 0.64 }}
+                  transition={{ duration: 1.65, repeat: flipped && !still ? Infinity : 0, ease: "easeInOut" }}
                 />
                 <motion.span
                   aria-hidden
@@ -3180,18 +3175,19 @@ export function ReferenceDailyRevealOverlay({
                     background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.28), rgba(255,231,170,0.18), transparent)",
                     filter: "blur(6px)",
                   }}
-                  animate={flipped ? { x: ["0%", "620%"], opacity: [0, 0.34, 0] } : { opacity: 0 }}
-                  transition={{ duration: 3.2, repeat: flipped ? Infinity : 0, repeatDelay: 1.45, ease: "easeInOut" }}
+                  animate={flipped && !still ? { x: ["0%", "620%"], opacity: [0, 0.34, 0] } : { opacity: 0 }}
+                  transition={{ duration: 3.2, repeat: flipped && !still ? Infinity : 0, repeatDelay: 1.45, ease: "easeInOut" }}
                 />
               </div>
             </motion.div>
           </button>
+          <motion.div className="pointer-events-none absolute inset-0" style={{ opacity: delivery.handoff }}>
           <motion.svg
             viewBox="0 0 320 104"
             className="pointer-events-none absolute -bottom-[52px] left-1/2 z-[3] h-[96px] w-[300px] -translate-x-1/2 min-[420px]:w-[326px]"
             aria-hidden
-            animate={{ opacity: flipped ? [0.76, 1, 0.82] : [0.30, 0.48, 0.34], scale: flipped ? [0.98, 1.035, 1] : [0.94, 1, 0.96] }}
-            transition={{ duration: 2.35, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ opacity: still ? 0.5 : flipped ? [0.76, 1, 0.82] : [0.30, 0.48, 0.34], scale: still ? 1 : flipped ? [0.98, 1.035, 1] : [0.94, 1, 0.96] }}
+            transition={{ duration: 2.35, repeat: still ? 0 : Infinity, ease: "easeInOut" }}
           >
             <defs>
               <radialGradient id="referenceRevealBaseGlow" cx="50%" cy="50%" r="50%">
@@ -3218,10 +3214,11 @@ export function ReferenceDailyRevealOverlay({
             className="absolute -bottom-[6px] left-1/2 h-px w-[82px] -translate-x-1/2 rounded-full"
             style={{ background: "rgba(255,241,204,0.72)", boxShadow: "0 0 18px rgba(255,222,150,0.65)" }}
             animate={{
-              opacity: flipped ? [0.50, 0.98, 0.64] : [0.24, 0.42, 0.28],
+              opacity: still ? 0.5 : flipped ? [0.50, 0.98, 0.64] : [0.24, 0.42, 0.28],
             }}
-            transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 1.7, repeat: still ? 0 : Infinity, ease: "easeInOut" }}
           />
+          </motion.div>
         </div>
 
         {!detailsReady ? (
@@ -3231,20 +3228,22 @@ export function ReferenceDailyRevealOverlay({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.36, ease: "easeOut" }}
           >
+            <div className={delivery.active ? "sr-only" : undefined}>
             <p className="font-sans text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: "rgba(224,187,237,0.86)" }}>
-              <LocalizedText text={revealing ? "Preparing today’s tarot" : "Choosing today’s tarot"} />
+              <LocalizedText text={revealing ? "Preparing today’s tarot" : "Today’s tarot"} />
             </p>
             <p className="mt-2 font-serif text-[24px] font-medium leading-tight text-white/90">
-              <LocalizedText text={revealing ? "Your card is arriving." : "The card is turning."} />
+              <LocalizedText text={delivery.active ? "Hint has a letter for you." : revealing ? "Your card is arriving." : "The card is turning."} />
             </p>
             <p className="mx-auto mt-3 max-w-[16rem] font-serif text-[14px] font-medium leading-snug text-white/58">
-              <LocalizedText text={revealing ? "One soft second while the daily pull settles." : "The back comes forward first, then opens into today’s message."} />
+              <LocalizedText text={delivery.active ? "A little pause for today’s message." : revealing ? "One soft second while the daily pull settles." : "The back comes forward first, then opens into today’s message."} />
             </p>
+            </div>
           </motion.div>
         ) : (
           <motion.div
             className="mt-[34px] w-full min-[420px]:mt-[36px]"
-            initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+            initial={reduced || !fresh ? false : { opacity: 0, y: 16, filter: "blur(4px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.46, ease: "easeOut" }}
           >
@@ -3288,6 +3287,8 @@ export function ReferenceDailyRevealOverlay({
           </motion.div>
         )}
       </motion.div>
+      {delivery.active && !revealing && <button type="button" onClick={delivery.skip} className="hint-pressable fixed bottom-[calc(24px+var(--hint-safe-bottom))] left-1/2 z-20 min-h-11 -translate-x-1/2 rounded-full border border-white/20 px-5 text-sm text-white/80" style={import.meta.env.DEV && reviewControls ? { bottom: "calc(88px + var(--hint-safe-bottom))" } : undefined}><LocalizedText text="Show my card" /></button>}
+      {import.meta.env.DEV && reviewControls}
     </motion.div>
     </DialogSurface>
     </DialogPortal>
@@ -3824,6 +3825,7 @@ function ReferenceHomePage({
   dailyReceiptReady,
   receiptStatusMessage,
   dailyRevealOverlayOpen,
+  dailyRevealFresh,
   onReveal,
   onCloseRevealOverlay,
   onCardRevealed,
@@ -3835,6 +3837,7 @@ function ReferenceHomePage({
   dailyReceiptReady: boolean;
   receiptStatusMessage?: string;
   dailyRevealOverlayOpen: boolean;
+  dailyRevealFresh: boolean;
   onReveal: () => void | Promise<void>;
   onCloseRevealOverlay: () => void;
   onCardRevealed: () => void;
@@ -3848,6 +3851,8 @@ function ReferenceHomePage({
       <div className="hint-home-content relative z-10 mx-auto w-full">
         <header className="hint-home-header">
           <h1 className="sr-only"><LocalizedText text="Today" /></h1>
+          <HintGuideSlot context={dailyGuideContext({ ready: dailyReceiptReady, revealed: dailyCardRevealed, opening: dailyCardRevealing })}
+            className="-my-5 -ml-4 mr-auto h-24 w-24 shrink-0" />
           {(dailyCardRevealed || receiptStatusMessage) && <div className="hint-home-share-status">
             {dailyCardRevealed && <DailyReceiptButton report={report} compact />}
             {receiptStatusMessage && <p className="hint-home-sync-status" role="status">{receiptStatusMessage}</p>}
@@ -3870,6 +3875,7 @@ function ReferenceHomePage({
       </div>
       <ReferenceDailyRevealOverlay
         open={dailyRevealOverlayOpen}
+        fresh={dailyRevealFresh}
         revealing={dailyCardRevealing}
         report={report}
         onClose={onCloseRevealOverlay}
@@ -3893,6 +3899,7 @@ export function HomeDashboard() {
   const [dailyCardRevealed, setDailyCardRevealed] = useState(initialDailySignalComplete);
   const [dailyCardRevealing, setDailyCardRevealing] = useState(false);
   const [dailyRevealOverlayOpen, setDailyRevealOverlayOpen] = useState(false);
+  const [dailyRevealFresh, setDailyRevealFresh] = useState(false);
   const [signalIntroComplete, setSignalIntroComplete] = useState(initialDailySignalComplete);
   const [dailyReceipt, setDailyReceipt] = useState<DailyReceipt | null>(null);
   const [dailyReceiptReady, setDailyReceiptReady] = useState(false);
@@ -3992,10 +3999,12 @@ export function HomeDashboard() {
 
   function revealDailyCard() {
     if (revealInFlight.current || !dailyReceiptReady) return;
-    if (dailyCardRevealed) {
+    if (dailyCardRevealed || dailyReceipt?.openedAt) {
+      setDailyRevealFresh(false);
       setDailyRevealOverlayOpen(true);
       return;
     }
+    setDailyRevealFresh(true);
     setDailyCardRevealing(true);
     setDailyRevealOverlayOpen(true);
     revealInFlight.current = true;
@@ -4097,6 +4106,7 @@ export function HomeDashboard() {
         ? t(dailyReceipt.persistence === "memory" ? "quality.cardMemory" : dailyReceipt.syncStatus === "conflict" ? "quality.cardConflict" : "quality.cardPending")
         : undefined}
       dailyRevealOverlayOpen={dailyRevealOverlayOpen}
+      dailyRevealFresh={dailyRevealFresh}
       onReveal={revealDailyCard}
       onCloseRevealOverlay={closeDailyRevealOverlay}
       onCardRevealed={markDailyCardRevealed}

@@ -1,5 +1,5 @@
 export type ActivityId = 'idle' | 'listening' | 'thinking' | 'reading' | 'speaking' | 'waiting';
-export type GestureId = ActivityId | 'welcome' | 'offer-letter' | 'wink-left' | 'wink-right' | 'nod' | 'shake-head' | 'celebration' | 'curious' | 'surprised' | 'shy' | 'comfort' | 'disappointed' | 'frustrated' | 'sleepy';
+export type GestureId = ActivityId | 'welcome' | 'welcome-back' | 'acknowledge' | 'reassure' | 'present-card' | 'offer-letter' | 'wink-left' | 'wink-right' | 'nod' | 'shake-head' | 'celebration' | 'curious' | 'surprised' | 'shy' | 'comfort' | 'disappointed' | 'frustrated' | 'sleepy';
 export type MotionId = GestureId | 'deliver-letter';
 export type LetterState = 'held' | 'offered' | 'delivered';
 export type ActivityPhase = 'entering' | 'holding' | 'exiting' | 'gesture' | 'offered' | 'settled';
@@ -27,6 +27,10 @@ export interface HintPose {
   question: number; sparkles: number;
 }
 export interface PawDrawing { center: [number, number]; points: [number, number][]; }
+export interface PawFrame extends PawDrawing {
+  side: 'left' | 'right';
+  layers?: {texture: string; uv: PawDrawing; weight: number}[];
+}
 export interface HintAssets {
   images: Record<string, string>;
   geometry: {root: [number, number]; segments: number; poses: (PawDrawing & {angle: number; radius: number; local: [number, number][]})[]};
@@ -59,8 +63,9 @@ export const activities: ActivityId[];
 export const gestures: Record<MotionId, {label: string; title: string; duration: number; tracks: Record<string, [number, number][]>}>;
 
 export interface HintSceneContext {
-  room: 'ask' | 'voice' | 'away' | 'welcome' | 'profile';
+  room: 'ask' | 'voice' | 'away' | 'welcome' | 'profile' | 'home';
   introduction?: boolean;
+  revealing?: boolean;
   phase: 'idle' | 'waiting' | 'starting' | 'listening' | 'thinking' | 'preparing' | 'speaking' | 'reading' | 'paused' | 'error';
   hasMessages: boolean;
   keyboardOpen: boolean;
@@ -72,7 +77,7 @@ export interface HintSceneState {
   activity: ActivityId;
   activityTime: number;
   clock: number;
-  phase: 'gesture' | 'entering' | 'arriving' | 'holding' | 'introduction';
+  phase: 'gesture' | 'entering' | 'arriving' | 'holding' | 'introduction' | 'delivery';
   letter: LetterState;
   placement: 'welcome' | 'avatar' | 'voice' | 'away';
   gesture: GestureId | null;
@@ -89,22 +94,25 @@ export interface HintSceneState {
 export interface HintSceneFrame {
   state: HintSceneState;
   pose: HintPose;
+  paws?: PawFrame[];
   actor: {x: number; y: number; width: number; height: number};
   look: {x: number; y: number};
-  gesture: GestureId;
+  gesture: MotionId;
   gestureTime: number;
   shadow: {x: number; y: number; width: number; opacity: number};
   fallback?: boolean;
+  delivery?: {key: string; phase: string; time: number; handoff: number} | null;
   letter: LetterState;
   intro: null | {time: number; phase: string; skyFade: number; logoOpacity: number; bubble: number;
     maskY: number; actor: {opacity: number; front: boolean}; logo: {x: number; y: number; width: number};
     shadow: {opacity: number; scale: number}};
 }
 export interface HintScenePlayer {
+  setDelivery(delivery: {key: string; cardBack: string; card: {x: number; y: number; width: number; height: number}; done?: boolean} | null): void;
   setContext(context: Partial<HintSceneContext>): boolean;
   setAnchor(anchor: {x: number; y: number; width: number}, options?: {followLayout?: boolean}): boolean;
   react(): boolean;
-  playGesture(id: GestureId): boolean;
+  playGesture(id: GestureId, options?: {interrupt?: boolean}): boolean;
   pause(): void;
   resume(): void;
   setMotionPolicy(policy: {reduced?: boolean; visible?: boolean}): void;
@@ -114,13 +122,14 @@ export interface HintScenePlayer {
   getFrame(): HintSceneFrame;
   destroy(): void;
 }
-export interface HintSceneDirector extends Omit<HintScenePlayer, 'getFrame'> {
+export interface HintSceneDirector extends Omit<HintScenePlayer, 'getFrame' | 'setDelivery'> {
+  setDelivery(delivery: {key: string; card: {x: number; y: number; width: number; height: number}; ready: boolean; done?: boolean} | null): void;
   sample(): HintSceneFrame;
   advance(seconds: number): void;
   setViewport(width: number, height: number): void;
   setPointer(x: number, y: number): void;
 }
-export function createHintSceneDirector(options?: {context?: Partial<HintSceneContext>; onComplete?: (result: {gesture: GestureId}) => void}): HintSceneDirector;
+export function createHintSceneDirector(options?: {context?: Partial<HintSceneContext>; letterGeometry?: HintAssets['letterGeometry']; pawGeometry?: HintAssets; onComplete?: (result: {gesture: GestureId}) => void}): HintSceneDirector;
 export function describeHintContext(context: Partial<HintSceneContext>): {activity: ActivityId; placement: HintSceneState['placement']; frozen: boolean; speaking: boolean};
 export function createHintScenePlayer(canvas: HTMLCanvasElement, options: {
   assets: HintAssets;
@@ -128,6 +137,7 @@ export function createHintScenePlayer(canvas: HTMLCanvasElement, options: {
   pointerTarget?: HTMLElement;
   motionPolicy?: {reduced?: boolean; visible?: boolean};
   onFrame?: (frame: HintSceneFrame) => void;
+  onPerformance?: (timing: {sampleMs: number; renderMs: number}) => void;
   onComplete?: (result: {gesture: GestureId}) => void;
   onRendererState?: (state: 'ready' | 'unavailable') => void;
   onError?: (error: unknown) => void;

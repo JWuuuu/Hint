@@ -1,7 +1,52 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createHintSceneDirector,describeHintContext} from '../src/scene-director.js';
+import {createHintSceneDirector,describeHintContext,gestureForContext} from '../src/scene-director.js';
 const advance=(director,seconds)=>{for(let i=0;i<Math.ceil(seconds*120);i++)director.advance(seconds/Math.ceil(seconds*120));};
+
+test('explicit save feedback can interrupt card presentation and a tap reaction without snapping',()=>{
+  for(const tap of [false,true]){
+    const director=createHintSceneDirector({context:{room:'home',phase:'reading'}});advance(director,2);
+    director.playGesture('present-card');advance(director,.7);
+    if(tap){director.react();advance(director,.4);}
+    const previous=director.sample();director.advance(.0001);const before=director.sample();
+    assert.equal(director.playGesture('celebration'),false,'ordinary gestures still wait');
+    assert.equal(director.playGesture('celebration',{interrupt:true}),true,'user action takes priority');
+    const current=director.sample();director.advance(.0001);const next=director.sample();
+    for(const key of Object.keys(before.pose)){
+      assert.ok(Math.abs(before.pose[key]-current.pose[key])<1e-9,key+' position');
+      assert.ok(Math.abs((before.pose[key]-previous.pose[key])/.0001-(next.pose[key]-current.pose[key])/.0001)<.04,key+' velocity');
+    }
+    assert.equal(current.state.reaction,null);assert.equal(current.state.gesture,'celebration');
+    advance(director,4);assert.equal(director.getState().activity,'reading');assert.equal(director.getState().gesture,null);
+  }
+});
+
+test('manual feedback replaces a pending automatic cue and respects reduced motion and visibility',()=>{
+  const d=createHintSceneDirector({context:{room:'home',phase:'waiting',revealing:true}});advance(d,2);
+  d.setContext({phase:'reading',revealing:false});assert.equal(d.playGesture('celebration',{interrupt:true}),true);
+  advance(d,4);assert.equal(d.getState().gesture,null);
+  d.setMotionPolicy({reduced:true});assert.equal(d.playGesture('nod',{interrupt:true}),false);
+  d.setMotionPolicy({reduced:false,visible:false});assert.equal(d.playGesture('nod',{interrupt:true}),false);
+});
+
+test('hidden scenes reject taps and discard stale cues without losing a running pose',()=>{
+  const director=createHintSceneDirector({context:{room:'ask',phase:'thinking'}});advance(director,2);
+  director.setContext({phase:'reading'});director.setMotionPolicy({visible:false});
+  assert.equal(director.react(),false);assert.equal(director.playGesture('present-card'),false);
+  director.setMotionPolicy({visible:true});advance(director,2);assert.equal(director.getState().gesture,null);
+  director.playGesture('present-card');advance(director,1);director.setMotionPolicy({visible:false});
+  const pose=director.sample().pose;advance(director,20);assert.deepEqual(director.sample().pose,pose);
+  director.setMotionPolicy({visible:true});assert.deepEqual(director.sample().pose,pose);
+  advance(director,3);assert.equal(director.getState().gesture,null);
+});
+
+test('the onboarding letter never leaks into Home or conversation gestures',()=>{
+  const director=createHintSceneDirector({context:{room:'welcome'}});
+  director.setContext({room:'profile'});assert.equal(director.sample().letter,'held');
+  director.setContext({room:'home'});assert.equal(director.sample().letter,'delivered');
+  advance(director,3);director.setContext({room:'ask',phase:'thinking'});
+  assert.equal(director.sample().letter,'delivered');
+});
 
 test('speech follows playback while connection and preparation remain waiting',()=>{
   for(const phase of ['starting','listening','thinking','preparing','speaking','paused','error'])for(const audioPlaying of [false,true]){
@@ -9,11 +54,27 @@ test('speech follows playback while connection and preparation remain waiting',(
     assert.equal(state.speaking,phase==='speaking'&&audioPlaying);
     assert.equal(state.activity==='speaking',phase==='speaking'&&audioPlaying);
   }
-  assert.equal(describeHintContext({room:'ask',phase:'speaking',audioPlaying:true}).speaking,false);
+  assert.equal(describeHintContext({room:'home',phase:'speaking',audioPlaying:true}).speaking,false);
   const director=createHintSceneDirector({context:{room:'voice',phase:'speaking',audioPlaying:true}});
   advance(director,1.2);assert.ok(director.sample().pose.speech>.3);
   director.setContext({audioPlaying:false});assert.equal(director.sample().pose.speech,0);
   advance(director,2);assert.equal(director.getState().activity,'waiting');
+});
+
+test('Ask response playback speaks only while audio is audible and keeps its avatar placement',()=>{
+  for(const phase of ['reading','thinking','preparing','speaking','error'])for(const audioPlaying of [false,true]){
+    const state=describeHintContext({room:'ask',phase,audioPlaying,hasMessages:true});
+    assert.equal(state.speaking,phase==='speaking'&&audioPlaying);
+    assert.equal(state.activity==='speaking',phase==='speaking'&&audioPlaying);
+    assert.equal(state.placement,'avatar');
+  }
+  const director=createHintSceneDirector({context:{room:'ask',phase:'reading',hasMessages:true}});
+  advance(director,2);director.setContext({phase:'preparing'});advance(director,1);
+  assert.equal(director.getState().activity,'waiting');assert.equal(director.sample().pose.speech,0);
+  director.setContext({phase:'speaking',audioPlaying:true});advance(director,1.2);
+  assert.ok(director.sample().pose.speech>.3);
+  director.setContext({phase:'reading',audioPlaying:false});assert.equal(director.sample().pose.speech,0);
+  advance(director,1);assert.equal(director.getState().activity,'reading');
 });
 
 test('activity and actor transitions retain position and incoming velocity',()=>{
@@ -124,4 +185,48 @@ test('reduced motion and a return visit omit the full star flight',()=>{
   assert.equal(reduced.sample().intro,null);assert.equal(reduced.getState().letter,'held');assert.equal(reduced.getState().transitioning,false);
   const returning=createHintSceneDirector({context:{room:'welcome',introduction:false}});
   assert.equal(returning.sample().intro.phase,'welcome');assert.equal(returning.sample().intro.skyFade,1);
+});
+
+test('app reactions follow actual request and daily reveal transitions',()=>{
+  assert.equal(gestureForContext({room:'ask',phase:'thinking'},{room:'ask',phase:'reading'}),'acknowledge');
+  assert.equal(gestureForContext({room:'ask',phase:'reading'},{room:'ask',phase:'reading'}),null);
+  assert.equal(gestureForContext({room:'ask',phase:'thinking'},{room:'ask',phase:'error'}),'reassure');
+  assert.equal(gestureForContext({room:'ask',phase:'error'},{room:'ask',phase:'error'}),null);
+  assert.equal(gestureForContext({room:'away',phase:'idle'},{room:'home',phase:'reading'}),null,'reloading a saved card is not a new reveal');
+  assert.equal(gestureForContext({room:'home',phase:'waiting',revealing:true},{room:'home',phase:'reading',revealing:false}),'present-card');
+  assert.equal(gestureForContext({room:'home',phase:'waiting',revealing:false},{room:'home',phase:'reading',revealing:false}),null,'loading a cached receipt does not replay a reveal');
+});
+
+test('routine typing and layout context changes preserve an active gesture',()=>{
+  const director=createHintSceneDirector({context:{room:'ask',phase:'reading',hasMessages:true}});
+  advance(director,2);assert.equal(director.playGesture('acknowledge'),true);advance(director,.8);
+  const before=director.sample();director.setContext({keyboardOpen:true,typing:true});const after=director.sample();
+  assert.equal(after.state.gesture,'acknowledge');assert.equal(after.gestureTime,before.gestureTime);
+  assert.deepEqual(after.pose,before.pose);
+});
+
+test('automatic gestures play once and obsolete requests never surface in another room',()=>{
+  const completed=[];
+  const director=createHintSceneDirector({context:{room:'ask',phase:'thinking',hasMessages:true},onComplete:e=>completed.push(e.gesture)});
+  advance(director,2);director.setContext({phase:'reading'});advance(director,4);
+  assert.deepEqual(completed,['acknowledge']);
+  director.setContext({typing:true});advance(director,5);assert.deepEqual(completed,['acknowledge']);
+  director.setContext({phase:'error'});director.setContext({room:'voice',phase:'listening'});advance(director,5);
+  assert.deepEqual(completed,['acknowledge']);
+});
+
+test('reduced motion discards queued reactions without replaying them on resume',()=>{
+  const director=createHintSceneDirector({context:{room:'ask',phase:'thinking'}});advance(director,2);
+  director.setContext({phase:'reading'});director.setMotionPolicy({reduced:true});advance(director,10);
+  director.setMotionPolicy({reduced:false});advance(director,2);assert.equal(director.getState().gesture,null);
+});
+
+test('new reactions enter and leave sustained poses without visible position jumps',()=>{
+  for(const phase of ['idle','listening','thinking','reading'])for(const id of ['welcome-back','acknowledge','reassure','present-card']){
+    const director=createHintSceneDirector({context:{room:phase==='reading'?'ask':'voice',phase}});advance(director,2);
+    const before=director.sample();assert.equal(director.playGesture(id),true);const after=director.sample();
+    for(const channel of ['headPitch','headYaw','headRoll','pawReach','pawThink','pawOpen','y','roll'])assert.ok(Math.abs(before.pose[channel]-after.pose[channel])<1e-9,`${id} ${channel}`);
+    for(let i=0;i<600;i++){director.advance(1/120);const frame=director.sample();assert.ok(Object.values(frame.pose).every(Number.isFinite));}
+    assert.equal(director.getState().gesture,null);assert.equal(director.getState().activity,phase);
+  }
 });

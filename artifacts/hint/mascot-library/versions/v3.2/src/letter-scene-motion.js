@@ -1,6 +1,6 @@
 import { ease, clamp, sampleGesture, sampleActivity, blendPose, sampleEnvelope, projectEnvelopePoint, HANDOFF_TIME, idleBlink } from './motion.js';
 
-export const letterSceneTiming=Object.freeze({offer:2.4,handoff:HANDOFF_TIME,approachEnd:1.62,openStart:1.64,openEnd:2.24,extractStart:2.16,extractEnd:3.18,settled:3.6,flip:.62});
+export const letterSceneTiming=Object.freeze({offer:2.4,handoff:HANDOFF_TIME,approachEnd:1.62,openStart:1.64,openEnd:2.24,extractStart:2.3,extractEnd:3,presentEnd:3.58,handoffStart:3.58,handoffEnd:3.8,settled:3.8,flip:.62});
 export const paperCorners=[[233,356],[362,378],[345,467],[221,445]];
 export const dailyActorFrame={x:.08,y:.205,width:.84,height:.42};
 const letterMix=(a,b,t)=>a+(b-a)*t;

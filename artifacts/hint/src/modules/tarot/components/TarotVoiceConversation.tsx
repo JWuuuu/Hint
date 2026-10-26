@@ -173,10 +173,15 @@ export function TarotVoiceConversation({ onSend, onClose, playback, busy }: {
             <button type="button" onClick={onClose} aria-label={t("tarot.chatVoice.close")} className="grid h-11 w-11 place-items-center rounded-full hover:bg-[#796582]/10"><X size={21} /></button>
           </div>
         </header>
-        <div className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-5">
+        <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto px-6 py-5 [container-type:size]">
+          {/* Auto margins center the stage when it fits and collapse when it overflows,
+              so a short screen scrolls from its first line rather than an unreachable top.
+              The stage may shrink to the body height so the transcript keeps a bounded scroll box;
+              the mascot is capped by a share of the body height (cqh) as well as its width. */}
+          <div className="my-auto flex min-h-0 w-full flex-col items-center gap-5">
           <HintGuideSlot context={voiceGuideContext(displayPhase, playback.status)} priority={100}
-            className={`shrink-0 ${showTranscript ? "h-44 w-44" : "h-72 w-72"}`} fallback={<div aria-hidden="true" data-testid="tarot-voice-orb" data-phase={displayPhase} data-reduced-motion={reducedMotion}
-            className={`hint-voice-orb relative grid shrink-0 place-items-center rounded-full text-[#796582] shadow-[0_20px_70px_rgba(121,101,130,0.15)] ${showTranscript ? "h-28 w-28" : "h-40 w-40"}`}>
+            className={`aspect-square shrink-0 ${showTranscript ? "w-[min(100%,11rem,32cqh)]" : "w-[min(100%,18rem,55cqh)]"}`} fallback={<div aria-hidden="true" data-testid="tarot-voice-orb" data-phase={displayPhase} data-reduced-motion={reducedMotion}
+            className={`hint-voice-orb relative grid aspect-square w-full shrink-0 place-items-center rounded-full text-[#796582] shadow-[0_20px_70px_rgba(121,101,130,0.15)] ${showTranscript ? "max-w-28" : "max-w-40"}`}>
             <span className="hint-voice-ring absolute -inset-3 rounded-full border border-[#b997c9]/35" />
             {canResume ? <MicOff size={36} strokeWidth={1.4} /> : <span className="hint-voice-bars flex h-12 items-center gap-[5px]">
               {[0, 1, 2, 3, 4].map(bar => <i key={bar} className="block w-[5px] rounded-full bg-[#796582]" />)}
@@ -196,6 +201,7 @@ export function TarotVoiceConversation({ onSend, onClose, playback, busy }: {
             {transcript && <div><p className="mb-1 text-[11px] font-semibold text-[var(--reading-muted)]">{t("tarot.chatVoice.you")}</p><p className="text-[var(--reading-accent)]">{transcript}</p></div>}
           </div>
           {notice && <p role="alert" className="tarot-reading-copy max-w-md shrink-0 text-center font-sans text-[13px] leading-5 text-[var(--reading-error)]">{notice}</p>}
+          </div>
         </div>
         <footer className="relative z-10 px-6 pb-[calc(var(--hint-safe-bottom)+1rem)] pt-3 text-center">
           <div className="flex justify-center gap-4">

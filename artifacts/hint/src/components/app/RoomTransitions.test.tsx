@@ -221,6 +221,31 @@ it.each(["focus", "click", "typing", "pointerdown", "wheel"])("a real %s interac
   expect(mountCount).toBe(1);
 });
 
+it.each(["finish", "cancel", "deadline"])("announces the running entrance to persistent layers until its %s", async kind => {
+  const events: { id: string; active: boolean; entrance: string | null }[] = [];
+  const listen = (event: Event) => events.push({ ...(event as CustomEvent<{ id: string; active: boolean }>).detail, entrance: content().getAttribute("data-room-entrance") });
+  window.addEventListener("hint:room-motion", listen);
+  render(<Harness />);
+  fireEvent.click(screen.getByRole("link", { name: "Tarot" }));
+  expect(events).toEqual([{ id: expect.any(String), active: true, entrance: "tarot" }]);
+  if (kind === "finish") await act(async () => animations[0]!.finish());
+  else if (kind === "cancel") fireEvent.click(screen.getByText("Back"));
+  else act(() => vi.advanceTimersByTime(ROOM_ENTRANCES.tarot.duration + 80));
+  // The final notice follows the restored layout, exactly once.
+  expect(events).toEqual([{ id: events[0]!.id, active: true, entrance: "tarot" }, { id: events[0]!.id, active: false, entrance: null }]);
+  window.removeEventListener("hint:room-motion", listen);
+});
+
+it("does not announce motion for a reduced-motion navigation", () => {
+  policy.reduced = true;
+  const listen = vi.fn();
+  window.addEventListener("hint:room-motion", listen);
+  render(<Harness />);
+  fireEvent.click(screen.getByRole("link", { name: "Tarot" }));
+  expect(listen).not.toHaveBeenCalled();
+  window.removeEventListener("hint:room-motion", listen);
+});
+
 it("reduced motion navigates immediately without starting any animation", () => {
   policy.reduced = true;
   render(<Harness />);

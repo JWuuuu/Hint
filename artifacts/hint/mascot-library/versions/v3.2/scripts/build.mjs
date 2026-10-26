@@ -8,12 +8,13 @@ await verifyApproved();
 const output = path.join(library, 'preview/hint-gestures.html');
 assertWorkingOutput(output);
 const images = {};
-for (const name of ['expression-body','expression-eyes','connected-thinking','connected-listening',...Array.from({length:6},(_,i)=>`paw-${i}`),'envelope','letter-detail','daily-card-back','daily-card-front','approved-rest',...['left','right'].flatMap(side=>Array.from({length:7},(_,i)=>`letter-${side}-${i}`))]) {
+const letterGeometry=JSON.parse(await readFile(path.join(library,'assets/letter-geometry.json'),'utf8'));
+for (const name of ['expression-body','expression-eyes','connected-thinking','connected-listening',...Array.from({length:6},(_,i)=>`paw-${i}`),'envelope','letter-detail','daily-card-back','daily-card-front','approved-rest',...['left','right'].flatMap(side=>Array.from({length:letterGeometry[side].length},(_,i)=>`letter-${side}-${i}`))]) {
   images[name] = 'data:image/webp;base64,' + (await readFile(path.join(library, 'assets', name + '.webp'))).toString('base64');
 }
 const assets = { images, geometry: JSON.parse(await readFile(path.join(library, 'assets/geometry.json'), 'utf8')) };
 images['empty-rest']='data:image/png;base64,'+(await readFile(path.join(library,'assets/empty-rest.png'))).toString('base64');
-assets.letterGeometry=JSON.parse(await readFile(path.join(library,'assets/letter-geometry.json'),'utf8'));
+assets.letterGeometry=letterGeometry;
 assets.expressionGeometry=JSON.parse(await readFile(path.join(library,'assets/expression-geometry.json'),'utf8'));
 assets.expressionGeometry.connected=JSON.parse(await readFile(path.join(library,'assets/connected-geometry.json'),'utf8'));
 await writeFile(path.join(library,'preview/hint-assets.js'),'export const assets = '+JSON.stringify(assets)+';\n');

@@ -14,6 +14,7 @@ import { useState } from "react";
 import { roomResumeText } from "../../components/app/roomResumeCopy";
 import { HintGuideSlot, useHintGuideEnabled } from "../../components/mascot/HintGuide";
 import { askGuideContext } from "../../components/mascot/hintGuideContext";
+import { useTarotSpeechPlayback } from "../tarot/logic/useTarotSpeechPlayback";
 
 /**
  * Ask Hint — a standalone ambient chat. No cards on the table, no
@@ -22,6 +23,8 @@ import { askGuideContext } from "../../components/mascot/hintGuideContext";
  */
 export function AskHint() {
   const chat = useAskHintChat();
+  const speech = useTarotSpeechPlayback();
+  const speechInConversation = chat.messages.some(message => message.id === speech.id);
   const { t, language } = useLanguage();
   const { reduced } = useMotionPolicy();
   const inputRef = useRef<FollowUpInputHandle | null>(null);
@@ -30,7 +33,9 @@ export function AskHint() {
   const guideEnabled = useHintGuideEnabled();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const guideContext = askGuideContext({ messageCount: chat.messages.length, thinking: chat.isThinking,
-    lastRole: chat.messages.at(-1)?.role, error: chat.error, typing: Boolean(chat.draft?.trim()), keyboardOpen });
+    lastRole: chat.messages.at(-1)?.role, error: chat.error, typing: Boolean(chat.draft?.trim()), keyboardOpen,
+    playbackStatus: speechInConversation && !chat.isThinking ? speech.status : "idle" });
+  useEffect(() => { if (speech.id && (!speechInConversation || chat.isThinking)) speech.stop(); }, [speech.id, speechInConversation, chat.isThinking, speech.stop]);
   useEffect(() => subscribeToAskHistory(() => setHistory(listAskHistory(getAnonId()))), []);
 
   useEffect(() => {
@@ -156,7 +161,7 @@ export function AskHint() {
               </div>
             </div>
           ) : (
-            chat.messages.map((m) => <ChatMessage key={m.id} message={m} />)
+            chat.messages.map((m) => <ChatMessage key={m.id} message={m} speech={speech} />)
           )}
 
           {chat.isThinking && (

@@ -293,6 +293,58 @@ export const gestures = {
       sparkles: [[0,0],[.7,0],[1.03,1],[1.5,1],[2.2,0],[2.9,0]]
     }
   },
+  'welcome-back': {
+    label: 'Welcome back', title: 'Good to see you.', duration: 2.8,
+    tracks: {
+      headRoll: [[0,0],[.36,-.018],[1.02,.075],[1.52,.065],[2.8,0]],
+      headPitch: [[0,0],[.36,-.035],[1.05,.11],[1.5,.085],[2.8,0]],
+      pawReach: [[0,0],[.3,0],[1.02,.4],[1.58,.4],[2.8,0]],
+      soft: [[0,0],[.9,.7],[1.7,.7],[2.8,0]],
+      assurance: [[0,0],[1.05,.45],[1.65,.45],[2.8,0]],
+      roll: [[0,0],[.36,-.005],[1.1,.012],[1.6,.01],[2.8,0]],
+      y: [[0,0],[.42,-.003],[1.1,.004],[1.6,.003],[2.8,0]]
+    }
+  },
+  acknowledge: {
+    label: 'Acknowledge', title: 'I hear you.', duration: 2.15,
+    tracks: {
+      headPitch: [[0,0],[.32,-.065],[.9,.22],[1.12,.2],[1.68,-.018],[2.15,0]],
+      crouch: [[0,0],[.32,-.025],[.92,.085],[1.14,.075],[2.15,0]],
+      y: [[0,0],[.32,-.002],[.94,.006],[1.14,.005],[2.15,0]],
+      soft: [[0,0],[.6,.6],[1.25,.6],[2.15,0]],
+      assurance: [[0,0],[.6,.5],[1.3,.5],[2.15,0]],
+      pawHug: [[0,0],[.3,0],[.95,.22],[1.2,.22],[2.15,0]],
+      gazeY: [[0,0],[.35,-.04],[.94,.24],[1.15,.2],[2.15,0]]
+    }
+  },
+  reassure: {
+    label: 'Reassure', title: 'We can take our time.', duration: 3.6,
+    tracks: {
+      headRoll: [[0,0],[.42,-.018],[1.25,.075],[2.25,.075],[3.6,0]],
+      headPitch: [[0,0],[.4,-.025],[1.3,.075],[2.2,.075],[3.6,0]],
+      breath: [[0,0],[.65,.35],[1.7,-.18],[2.5,-.08],[3.6,0]],
+      soft: [[0,0],[1.05,.85],[2.4,.85],[3.6,0]],
+      assurance: [[0,0],[1.15,.65],[2.3,.65],[3.6,0]],
+      pawReach: [[0,0],[.45,0],[1.35,.28],[2.2,.28],[3.6,0]],
+      lean: [[0,0],[.45,-.003],[1.35,.012],[2.2,.012],[3.6,0]],
+      roll: [[0,0],[.45,-.004],[1.4,.009],[2.2,.009],[3.6,0]],
+      y: [[0,0],[.65,-.003],[1.65,.002],[2.3,.002],[3.6,0]]
+    }
+  },
+  'present-card': {
+    label: 'Present the card', title: 'A small moment for you.', duration: 3.1,
+    tracks: {
+      headPitch: [[0,0],[.34,-.035],[1.05,.16],[1.75,.12],[3.1,0]],
+      headRoll: [[0,0],[.4,-.02],[1.15,.065],[1.8,.055],[3.1,0]],
+      gazeY: [[0,0],[.55,.12],[1.05,.55],[1.65,.48],[2.45,0],[3.1,0]],
+      pawReach: [[0,0],[.34,0],[1.15,.48],[1.85,.48],[3.1,0]],
+      assurance: [[0,0],[.8,.5],[1.9,.5],[3.1,0]],
+      soft: [[0,0],[.9,.65],[2,.65],[3.1,0]],
+      breath: [[0,0],[.5,.18],[1.35,-.1],[2.2,0],[3.1,0]],
+      y: [[0,0],[.4,-.002],[1.12,.004],[1.85,.003],[3.1,0]],
+      roll: [[0,0],[.4,-.004],[1.15,.009],[1.85,.008],[3.1,0]]
+    }
+  },
   'offer-letter': {
     label: 'Offer a letter', title: 'This is for you.', duration: 2.4,
     tracks: {
@@ -300,11 +352,11 @@ export const gestures = {
       y: [[0,0],[.42,-.008],[1.6,-.007],[2.4,-.006]],
       roll: [[0,0],[.42,.009],[1.55,-.028],[2.4,-.022]],
       head: [[0,0],[2.4,0]],
-      headPitch:[[0,0],[.42,.1],[.78,.12],[1.7,.17],[2.4,.16]],
+      headPitch:[[0,0],[.42,.1],[.78,.12],[1.7,.26],[2.4,.24]],
       headYaw:[[0,0],[.42,-.1],[.75,-.1],[1.7,0],[2.4,0]],
-      crouch:[[0,0],[.42,-.08],[1.7,.22],[2.4,.2]],
-      lean: [[0,0],[.4,-.01],[1.7,.016],[2.4,.012]],
-      scale: [[0,0],[.4,.003],[1.7,.043],[2.4,.04]],
+      crouch:[[0,0],[.42,-.08],[1.7,.3],[2.4,.28]],
+      lean: [[0,0],[.4,-.01],[1.7,.04],[2.4,.036]],
+      scale: [[0,0],[.4,.003],[1.7,.062],[2.4,.06]],
       expectant: [[0,0],[.6,.2],[1.65,1],[2.4,1]],
       gazeY: [[0,0],[.35,.9],[.7,.8],[1.55,-.06],[2.4,0]],
       gazeX: [[0,0],[.4,-.2],[.75,-.2],[1.5,0],[2.4,0]]
@@ -315,11 +367,11 @@ export const gestures = {
     tracks: {
       y: [[0,-.006],[.48,-.007],[1.1,-.003],[1.8,0]],
       roll: [[0,-.022],[.48,-.027],[1.25,.006],[1.8,0]],
-      lean: [[0,.012],[.48,.02],[1.3,-.004],[1.8,0]],
+      lean: [[0,.036],[.48,.048],[1.3,-.004],[1.8,0]],
       head: [[0,0],[1.8,0]],
-      headPitch:[[0,.16],[.48,.19],[1.05,.07],[1.8,0]],
-      crouch:[[0,.2],[.48,.25],[1.15,.07],[1.8,0]],
-      scale: [[0,.04],[.48,.05],[1.3,0],[1.8,0]],
+      headPitch:[[0,.24],[.48,.28],[1.05,.07],[1.8,0]],
+      crouch:[[0,.28],[.48,.34],[1.15,.07],[1.8,0]],
+      scale: [[0,.06],[.48,.075],[1.3,0],[1.8,0]],
       expectant: [[0,1],[.45,1],[1.4,0],[1.8,0]],
       gazeY: [[0,0],[.5,-.1],[1,-.45],[1.8,0]],
       assurance: [[0,0],[.55,0],[1.05,.8],[1.8,0]],
@@ -334,7 +386,7 @@ export function neutralPose() {
     pawThink:0,pawOpen:0,pawCelebrate:0,pawHug:0,pawDip:0,question:0,sparkles:0,breath:0,turn:0,wide:0,soft:0,round:0,speech:0,reading:0,shy:0,sad:0,grumpy:0,tired:0,yawn:0,pawReach:0,pawWave:0,waveTime:0,headYaw:0,headPitch:0,headRoll:0,crouch:0,pawFold:0,pawRest:0,engage:0 };
 }
 
-export const reviewTimes={idle:1.6,welcome:1.72,'offer-letter':2.4,listening:1.8,thinking:1.8,reading:2,speaking:1.15,waiting:2,'wink-left':.65,'wink-right':.75,nod:.88,'shake-head':.78,celebration:1.1,curious:1.3,surprised:.8,shy:1.6,comfort:1.6,disappointed:1.8,frustrated:1.5,sleepy:1.8};
+export const reviewTimes={idle:1.6,welcome:1.72,'welcome-back':1.1,acknowledge:.95,reassure:1.4,'present-card':1.25,'offer-letter':2.4,listening:1.8,thinking:1.8,reading:2,speaking:1.15,waiting:2,'wink-left':.65,'wink-right':.75,nod:.88,'shake-head':.78,celebration:1.1,curious:1.3,surprised:.8,shy:1.6,comfort:1.6,disappointed:1.8,frustrated:1.5,sleepy:1.8};
 
 export function sampleGesture(id, time) {
   const clip = gestures[id],pose=neutralPose();
@@ -355,43 +407,65 @@ export function sampleGesture(id, time) {
 
 export const HANDOFF_TIME = .48;
 export const letterKeys = {
-  'offer-letter': [[0,0],[.42,0],[1.65,6],[2.4,6]],
-  'deliver-letter': [[0,6],[.48,6],[.72,6],[1.28,4],[1.8,5]]
+  'offer-letter': [[0,0],[.42,0],[1.65,7],[2.4,7]],
+  'deliver-letter': [[0,7],[.48,7],[.72,7],[1.28,4],[1.8,5]]
 };
 
 function sampleLetterPaws(geometry, id, time, letter) {
   const keys=letterKeys[id] || [[0,letter==='delivered'?5:0],[1,letter==='delivered'?5:0]];
   let index=0;while(index<keys.length-2&&keys[index+1][0]<time)index++;
   const u=clamp((time-keys[index][0])/(keys[index+1][0]-keys[index][0]));
+  // Move the hands and their held paper toward the recipient as one rigid
+  // foreground group. Uniform perspective keeps the hooked palms intact.
+  const reach=geometry.giving?(id==='offer-letter'
+    ?curve([[0,0],[.95,0],[2.1,1],[2.4,1]],time)
+    :id==='deliver-letter'?curve([[0,1],[.72,1],[1.28,0],[1.8,0]],time):0):0;
+  const forward=point=>point.map((v,k)=>[299,358][k]+(v-[299,358][k])*(1+.22*reach));
   return ['left','right'].map(side=>{
     const poses=geometry[side],a=poses[keys[index][1]],b=poses[keys[index+1][1]];
     const interpolate=get=>curve(keys.map(([t,i])=>[t,get(poses[i])]),time);
     const spread=id==='deliver-letter'?curve([[0,0],[.48,0],[.85,5],[1.4,0],[1.8,0]],time)*(side==='left'?-1:1):0;
-    return {side,a:keys[index][1],b:keys[index+1][1],mix:ease(u),
-      center:[0,1].map(c=>interpolate(p=>p.center[c])+(c===0?spread:0)),
-      points:a.points.map((_,j)=>[0,1].map(c=>interpolate(p=>p.points[j][c])+(c===0?spread:0))),
+    const paw={side,a:keys[index][1],b:keys[index+1][1],mix:ease(u),
+      grip:forward([0,1].map(c=>interpolate(p=>(p.grip||p.center.map((v,k)=>v+(side==='left'?[28,-3]:[-28,-14])[k]))[c])+(c===0?spread:0))),
+      center:forward([0,1].map(c=>interpolate(p=>p.center[c])+(c===0?spread:0))),
+      points:a.points.map((_,j)=>forward([0,1].map(c=>interpolate(p=>p.points[j][c])+(c===0?spread:0)))),
       uvA:a,uvB:b};
+    // Unhook at release before retracting the arms. Rotate each whole mitten
+    // about its contact point, preserving the drawn palm instead of stretching it.
+    const unhook=id==='deliver-letter'?curve([[0,0],[HANDOFF_TIME,0],[.72,.28],[1.28,0],[1.8,0]],time)*(side==='left'?1:-1):0;
+    if(unhook){
+      const c=Math.cos(unhook),s=Math.sin(unhook),[gx,gy]=paw.grip;
+      const rotate=([x,y])=>[gx+(x-gx)*c-(y-gy)*s,gy+(x-gx)*s+(y-gy)*c];
+      paw.center=rotate(paw.center);paw.points=paw.points.map(rotate);
+    }
+    return paw;
   });
 }
 
-function letterTilt(id,time) {
-  if(id==='offer-letter')return curve([[0,0],[.42,0],[.98,.18],[1.65,.8],[2.12,1],[2.4,1]],time);
-  if(id==='deliver-letter')return curve([[0,1],[HANDOFF_TIME,1],[.82,.84],[1.4,0],[1.8,0]],time);
-  return 0;
+const envelopeSourceCorners=[[233,356],[362,378],[345,467],[221,445]];
+const envelopePoint=(corners,u,v)=>[0,1].map(k=>(1-v)*(corners[0][k]+(corners[1][k]-corners[0][k])*u)+v*(corners[3][k]+(corners[2][k]-corners[3][k])*u));
+function envelopeUV([x,y]){
+  let u=(x-233)/129,v=(y-356)/89;
+  for(let i=0;i<4;i++){
+    const p=envelopePoint(envelopeSourceCorners,u,v),a=129-5*v,b=-12-5*u,det=a*89-b*22,dx=x-p[0],dy=y-p[1];
+    u+=(dx*89-dy*b)/det;v+=(a*dy-22*dx)/det;
+  }
+  return [u,v];
 }
 
 const letterPivot=[294,407],letterAxis=Math.atan2(18,116);
 export function projectEnvelopePoint(point,envelope) {
+  if(envelope.corners){const [u,v]=envelopeUV(point);return envelopePoint(envelope.corners,u,v);}
   const {x,y,scale,angle,tilt=0}=envelope;
   let [px,py]=point;
   if(tilt>0){
     const c=Math.cos(letterAxis),s=Math.sin(letterAxis);
     const u=(px-letterPivot[0])*c+(py-letterPivot[1])*s;
     const v=-(px-letterPivot[0])*s+(py-letterPivot[1])*c;
-    const pitch=-.21*tilt,yaw=-.08*tilt;
+    const pitch=-.18*tilt,yaw=-.04*tilt;
     const z=v*Math.sin(pitch),horizontal=u*Math.cos(yaw)+z*Math.sin(yaw);
     const vertical=v*Math.cos(pitch),depth=-u*Math.sin(yaw)+z*Math.cos(yaw);
-    const perspective=650/(650+depth),roll=letterAxis-.04*tilt;
+    const perspective=650/(650+depth),roll=letterAxis;
     px=letterPivot[0]+(horizontal*Math.cos(roll)-vertical*Math.sin(roll))*perspective;
     py=letterPivot[1]+(horizontal*Math.sin(roll)+vertical*Math.cos(roll))*perspective;
   }
@@ -403,6 +477,20 @@ function letterPlane(geometry,id,time,letter) {
   let x=0,y=0,scale=1,angle=0;
   if(geometry&&(id.includes('letter')||letter==='offered')){
     const paws=sampleLetterPaws(geometry,id,time,letter);
+    if(geometry.giving){
+      const giving=geometry.giving,keys=letterKeys[id]||[[0,0],[1,0]];
+      const reach=curve(keys.map(([t,i])=>[t,i===giving.pose?1:0]),time);
+      const corners=envelopeSourceCorners.map((p,i)=>p.map((v,k)=>v+(giving.corners[i][k]-v)*reach));
+      const uv=['left','right'].map(side=>{
+        const rest=geometry[side][0].center.map((v,k)=>v+(side==='left'?[28,-3]:[-28,-14])[k]);
+        return envelopeUV(rest).map((v,k)=>v+(giving.gripUV[side][k]-v)*reach);
+      });
+      const expected=uv.map(([u,v])=>envelopePoint(corners,u,v)),actual=paws.map(p=>p.grip);
+      const a=expected[1].map((v,k)=>v-expected[0][k]),b=actual[1].map((v,k)=>v-actual[0][k]);
+      const length=a[0]**2+a[1]**2,c=(a[0]*b[0]+a[1]*b[1])/length,s=(a[0]*b[1]-a[1]*b[0])/length;
+      const attached=corners.map(p=>{const dx=p[0]-expected[0][0],dy=p[1]-expected[0][1];return [actual[0][0]+dx*c-dy*s,actual[0][1]+dx*s+dy*c];});
+      return {x:0,y:0,scale:1,angle:0,tilt:0,reach,corners:attached};
+    }
     const left=[paws[0].center[0]+28,paws[0].center[1]-3];
     const right=[paws[1].center[0]-28,paws[1].center[1]-14];
     const base=[geometry.left[0].center[0]+28,geometry.left[0].center[1]-3];
@@ -415,26 +503,83 @@ function letterPlane(geometry,id,time,letter) {
     x=(left[0]+right[0])/2+(292-mx)*c*scale-(411-my)*s*scale-292;
     y=(left[1]+right[1])/2+(292-mx)*s*scale+(411-my)*c*scale-411;
   }
-  return {x,y,scale,angle,tilt:letterTilt(id,time)};
+  return {x,y,scale,angle,tilt:0};
+}
+
+const unitChannels=new Set(['eyeLeft','eyeRight','pawWave','engage','pawThink','pawOpen','pawCelebrate','pawReach','pawFold','pawRest',
+  'thought','joy','attention','assurance','playful','expectant','question','sparkles','wide','soft','round','speech','reading','shy','sad','grumpy','tired','yawn']);
+export function carryMotion(values,velocity={},distance=0) {
+  return Object.fromEntries(Object.entries(values).map(([key,value])=>{
+    const speed=velocity?.[key]||0;
+    if(unitChannels.has(key)){
+      // Keep incoming velocity while approaching a unit-interval blend boundary.
+      const room=speed>0?1-value:value;
+      return [key,room>1e-9?value+Math.sign(speed)*room*(1-Math.exp(-Math.abs(speed)*distance/room)):value];
+    }
+    return [key,value+speed*distance];
+  }));
+}
+
+export function pawLayers(paw) {
+  if(paw.layers)return paw.layers;
+  const base=paw.baseMix||0,mix=paw.mix||0;
+  return [
+    {texture:paw.textureA,uv:paw.uvA,weight:(1-base)*(1-mix)},
+    {texture:paw.textureB,uv:paw.uvB,weight:(1-base)*mix},
+    {texture:paw.textureC,uv:paw.uvC,weight:base}
+  ].filter(layer=>layer.weight>0);
+}
+
+function samePawUV(a,b) {
+  if(a===b)return true;
+  if(a.points.length!==b.points.length)return false;
+  const samePoint=(p,q)=>Math.abs(p[0]-q[0])<=1e-6&&Math.abs(p[1]-q[1])<=1e-6;
+  return samePoint(a.center,b.center)&&a.points.every((point,index)=>samePoint(point,b.points[index]));
+}
+
+// Blend the actual silhouettes as well as their drawings. Repeated interruptions
+// retain the current mixture; no texture or finger shape switches in one frame.
+export function blendPaws(from,to,amount,velocity=[],elapsed=0) {
+  if(amount<=0)return from;
+  if(amount>=1)return to;
+  const u=clamp(elapsed/.12),carry=.12*(u-2.5*u**4+3*u**5-u**6);
+  return to.map((paw,i)=>{
+    const source=from[i],motion=velocity[i];
+    const point=(a,b,v)=>a.map((value,k)=>(value+(v?.[k]||0)*carry)*(1-amount)+b[k]*amount);
+    let layers=[];
+    for(const [drawing,weight] of [[source,1-amount],[paw,amount]])for(const layer of pawLayers(drawing)){
+      const contribution=layer.weight*weight;
+      if(contribution<=0)continue;
+      // A sampled wave recreates UV objects even when their values are unchanged.
+      // Merge equivalent drawings before deciding which faint history to retire.
+      const existing=layers.find(item=>item.texture===layer.texture&&samePawUV(item.uv,layer.uv));
+      if(existing)existing.weight+=contribution;else layers.push({...layer,weight:contribution});
+    }
+    const total=layers.reduce((sum,layer)=>sum+layer.weight,0),budget=total/1024;
+    let removed=0;const retired=new Set();
+    for(const layer of layers.slice().sort((a,b)=>a.weight-b.weight)){
+      if(removed+layer.weight>budget)break;
+      removed+=layer.weight;retired.add(layer);
+    }
+    // The cumulative normalized pixel change is at most 1/1024, regardless of
+    // how many tiny layers accumulated. A per-layer cutoff would not bound it.
+    layers=layers.filter(layer=>!retired.has(layer));
+    for(const layer of layers)layer.weight/=(total-removed);
+    return {...paw,center:point(source.center,paw.center,motion?.center),
+      points:paw.points.map((p,j)=>point(source.points[j],p,motion?.points[j])),layers};
+  });
+}
+
+export function pawVelocity(current,previous,seconds) {
+  return current.map((paw,i)=>({
+    center:paw.center.map((v,k)=>(v-previous[i].center[k])/seconds),
+    points:paw.points.map((p,j)=>p.map((v,k)=>(v-previous[i].points[j][k])/seconds))
+  }));
 }
 
 export function samplePaws(geometry,id,time,letter,expressionGeometry,pose=sampleGesture(id,time),greetingGeometry) {
   const paws=sampleLetterPaws(geometry,id,time,letter);
   paws.forEach(p=>{p.textureA='letter-'+p.side+'-'+p.a;p.textureB='letter-'+p.side+'-'+p.b;});
-  if(id.includes('letter')){
-    const envelope=letterPlane(geometry,id,time,letter);
-    paws.forEach((p,index)=>{
-      const offset=index===0?[28,-3]:[-28,-14];
-      if(envelope.tilt===0){p.grip=p.center.map((v,c)=>v+offset[c]);return;}
-      const base=geometry[p.side][0].center.map((v,c)=>v+offset[c]);
-      const contact=projectEnvelopePoint(base,envelope);
-      // Rotate the whole rounded paw at its grip; paper foreshortening never flattens the paw.
-      const angle=envelope.tilt*(index===0?.14:-.18),c=Math.cos(angle),s=Math.sin(angle);
-      const grip=p.center.map((v,c)=>v+offset[c]);
-      const rotate=q=>[contact[0]+(q[0]-grip[0])*c-(q[1]-grip[1])*s,contact[1]+(q[0]-grip[0])*s+(q[1]-grip[1])*c];
-      p.center=rotate(p.center);p.points=p.points.map(rotate);p.grip=contact;
-    });
-  }
   if(!expressionGeometry)return paws;
   if(pose.pawWave>0&&greetingGeometry){
     const data=greetingGeometry,phase=pose.waveTime;
@@ -558,17 +703,18 @@ export function sampleActivity(id,time){
   }
   if(id==='reading'){
     p=sampleGesture('reading',1.2);
-    const line=time%5.6;
-    p.gazeX=curve([[0,-.75],[1.8,.65],[2.3,-.75],[4.2,.65],[4.75,-.75],[5.6,-.75]],line);
-    p.gazeY=.85+Math.sin(time*Math.PI/7)*.09;
+    const line=time%7.2;
+    p.gazeX=curve([[0,-.6],[2.2,.55],[2.85,-.6],[5.25,.55],[5.95,-.6],[7.2,-.6]],line);
     p.head=0;p.headPitch=.4+Math.sin(time*Math.PI/7)*.025;
-    p.headYaw=p.gazeX*.19;p.gazeX*=1.5;p.gazeY=1.35+Math.sin(time*Math.PI/7)*.10;
+    // Eyes follow each line while the head keeps a quiet downward reading pose.
+    p.headYaw=-.035+Math.sin(time*Math.PI/7)*.018;p.gazeY=1.35+Math.sin(time*Math.PI/7)*.10;
     p.reading=1;p.soft=.45;
   }
   if(id==='speaking'){
     p=sampleGesture('speaking',1.1);p.speech=speechEnvelope(time);
     p.head=Math.sin(time*Math.PI/2.4)*.25;p.roll=Math.sin(time*Math.PI/3.6)*.016;
-    p.pawReach=.4+.32*speechEnvelope(time);
+    // A hand emphasizes a phrase, not every syllable of the mouth animation.
+    p.pawReach=.26+.26*curve([[0,0],[.6,0],[1.6,1],[2.7,.8],[4.1,0],[5.2,0],[6.4,.65],[7.2,.65],[8.7,0],[9.6,0]],time%9.6);
     p.gazeX=.15*Math.sin(time*Math.PI/4);p.assurance=.4;
     p.headPitch=Math.sin(time*Math.PI/2.4)*.12;p.headYaw=Math.sin(time*Math.PI/3.6)*.13;
   }

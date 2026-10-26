@@ -2,6 +2,13 @@ import { samplePaws, sampleEnvelope, sampleGesture, projectEnvelopePoint, HANDOF
 import { createFacePainter } from './face.js';
 import { projectBodyPoint } from './letter-scene-motion.js';
 
+// The flying back uses the same inner box and object-cover crop as the app.
+export function cardSurface(width,height,imageAspect=2/3){
+  const border=1.5,radius=Math.min(20,width/2,height/2);
+  const contentAspect=(width-2*border)/(height-2*border);
+  return {width,height,radius,border,crop:[Math.min(1,contentAspect/imageAspect),Math.min(1,imageAspect/contentAspect)]};
+}
+
 export async function createRenderer(canvas, bundle) {
   const images = await Promise.all(Object.entries(bundle.images).map(async ([name, src]) => {
     const image = new Image();
@@ -57,9 +64,25 @@ export async function createRenderer(canvas, bundle) {
   const fragment = `precision mediump float;
     varying vec2 v_uv,v_uvB,v_uvC;
     uniform sampler2D u_image,u_imageB,u_imageC;
-    uniform float u_opacity,u_mix,u_base,u_paper;
+    uniform float u_opacity,u_mix,u_base,u_paper,u_premultiplied;
+    uniform vec4 u_cardShape;
+    uniform vec2 u_cardCrop;
     void main(){
       vec4 a=texture2D(u_image,v_uv),b=texture2D(u_imageB,v_uvB),c=texture2D(u_imageC,v_uvC);
+      if(u_cardShape.x>0.){
+        vec2 size=u_cardShape.xy;
+        float radius=u_cardShape.z,border=u_cardShape.w;
+        vec2 corner=abs((v_uvB-.5)*size)-(size*.5-vec2(radius));
+        float distance=length(max(corner,0.))+min(max(corner.x,corner.y),0.)-radius;
+        float edge=1.-smoothstep(-.6,.6,distance);
+        float inside=1.-smoothstep(-border-.5,-border+.5,distance);
+        vec2 content=(v_uvB*size-vec2(border))/(size-vec2(2.*border));
+        vec4 art=texture2D(u_image,vec2(.5)+(content-.5)*u_cardCrop);
+        vec3 background=vec3(.02745,.07843,.13725);
+        vec3 rim=mix(background,vec3(1.,.87059,.59608),.88);
+        vec3 color=mix(rim,mix(background,art.rgb,art.a),inside);
+        gl_FragColor=vec4(color,1.)*edge*u_opacity;return;
+      }
       if(u_paper>.5){
         vec2 q=v_uvB;
         float flap=.65*(1.-abs(q.x-.5)*2.);
@@ -78,8 +101,9 @@ export async function createRenderer(canvas, bundle) {
         else edge=1.-smoothstep(.995,1.005,seal);
         gl_FragColor=vec4(a.rgb*a.a,a.a)*u_opacity*edge;return;
       }
-      vec4 drawing=mix(vec4(a.rgb*a.a,a.a),vec4(b.rgb*b.a,b.a),u_mix);
-      gl_FragColor=mix(drawing,vec4(c.rgb*c.a,c.a),u_base)*u_opacity;
+      if(u_premultiplied<.5){a.rgb*=a.a;b.rgb*=b.a;c.rgb*=c.a;}
+      vec4 drawing=mix(a,b,u_mix);
+      gl_FragColor=mix(drawing,c,u_base)*u_opacity;
     }`;
   const compile = (type, source) => {
     const shader = gl.createShader(type); gl.shaderSource(shader, source); gl.compileShader(shader);
@@ -93,7 +117,7 @@ export async function createRenderer(canvas, bundle) {
   gl.useProgram(program);
   const attributes = ['position', 'uv', 'uvB', 'uvC'].map(name => gl.getAttribLocation(program, 'a_' + name));
   attributes.forEach(value => gl.enableVertexAttribArray(value));
-  const uniforms = Object.fromEntries(['time', 'part', 'engage', 'head', 'lean', 'breath', 'turn', 'crouch', 'scarf', 'headRotation', 'look', 'shape', 'pose', 'opacity', 'mix', 'base','frame','paper'].map(name => [name, gl.getUniformLocation(program, 'u_' + name)]));
+  const uniforms = Object.fromEntries(['time', 'part', 'engage', 'head', 'lean', 'breath', 'turn', 'crouch', 'scarf', 'headRotation', 'look', 'shape', 'pose', 'opacity', 'mix', 'base','frame','paper','premultiplied','cardShape','cardCrop'].map(name => [name, gl.getUniformLocation(program, 'u_' + name)]));
   gl.uniform1i(gl.getUniformLocation(program,'u_image'),0);gl.uniform1i(gl.getUniformLocation(program,'u_imageB'),1);
   gl.uniform1i(gl.getUniformLocation(program,'u_imageC'),2);
   const textures = Object.fromEntries(images.map(([name, img]) => {
@@ -145,7 +169,8 @@ export async function createRenderer(canvas, bundle) {
   const paperSteps=24,paperVertices=new Float32Array((paperSteps+1)**2*6),paperIndices=[];
   for(let y=0;y<paperSteps;y++)for(let x=0;x<paperSteps;x++){const a=y*(paperSteps+1)+x,b=a+paperSteps+1;paperIndices.push(a,b,a+1,a+1,b,b+1);}
   const paperMesh=mesh(paperVertices,paperIndices,true);
-  function paintPaper(point,part,texture='letter-detail'){
+  let paperOpacity=1,appCardImageAspect=2/3;
+  function paintPaper(point,part,texture='letter-detail',surface=null){
     let offset=0;
     for(let y=0;y<=paperSteps;y++)for(let x=0;x<=paperSteps;x++){
       const u=x/paperSteps,v=y/paperSteps,p=point(u,v);
@@ -155,12 +180,19 @@ export async function createRenderer(canvas, bundle) {
       paperVertices[offset++]=u;paperVertices[offset++]=v;
     }
     gl.bindBuffer(gl.ARRAY_BUFFER,paperMesh.v);gl.bufferSubData(gl.ARRAY_BUFFER,0,paperVertices);
-    gl.uniform1f(uniforms.paper,part);draw(paperMesh,texture,4);gl.uniform1f(uniforms.paper,0);
+    if(surface){
+      gl.uniform4f(uniforms.cardShape,surface.width,surface.height,surface.radius,surface.border);
+      gl.uniform2f(uniforms.cardCrop,...surface.crop);
+    }
+    gl.uniform1f(uniforms.paper,part);draw(paperMesh,texture,4,paperOpacity);gl.uniform1f(uniforms.paper,0);
+    if(surface)gl.uniform4f(uniforms.cardShape,0,0,0,0);
   }
   function paintLetterScene(scene){
-    const point=scene.point,angle=scene.opening*Math.PI*.94;
+    const opacity=scene.opacity??1,envelopeOpacity=opacity*(scene.envelopeOpacity??1);
+    paperOpacity=envelopeOpacity;
+    const point=scene.point,angle=scene.opening*Math.PI*.94,flapBehind=Math.cos(angle)<=0;
     const fold=(u,v)=>{const depth=1/(1+Math.sin(angle)*v*.18);return point(.5+(u-.5)*depth,v*Math.cos(angle)*depth);};
-    if(scene.opening>.5)paintPaper(fold,3);
+    if(flapBehind)paintPaper(fold,3);
     paintPaper(point,4);
     if(scene.opening>0){
       const extraction=scene.extraction,flip=scene.flip||0;
@@ -172,11 +204,15 @@ export async function createRenderer(canvas, bundle) {
         const xf=initial[0]+(.29+.42*face-initial[0])*extraction;
         return [middle+(xf-middle)*Math.cos(Math.PI*flip),py];
       };
-      paintPaper(card,0,flip>.5?'daily-card-front':'daily-card-back');
+      paperOpacity=opacity*(scene.cardOpacity??1);
+      const surface=scene.cardFrame?cardSurface(scene.cardFrame.width*canvas.clientWidth,scene.cardFrame.height*canvas.clientHeight,appCardImageAspect):null;
+      paintPaper(scene.cardPoint||card,0,scene.cardTexture||(flip>.5?'daily-card-front':'daily-card-back'),surface);
+      paperOpacity=envelopeOpacity;
     }
     paintPaper(point,1);
-    if(scene.opening<=.5)paintPaper(fold,2);
+    if(!flapBehind)paintPaper(fold,2);
     paintPaper(point,5);
+    paperOpacity=1;
   }
   const rings=8,count=bundle.letterGeometry.segments,pawIndices=[];
   for(let j=0;j<count;j++)pawIndices.push(0,1+j,1+(j+1)%count);
@@ -185,6 +221,38 @@ export async function createRenderer(canvas, bundle) {
     pawIndices.push(a,c,b,b,c,d);
   }
   const paws=[mesh(new Float32Array((1+rings*count)*8),pawIndices,true,8),mesh(new Float32Array((1+rings*count)*8),pawIndices,true,8)];
+  const pawMaterialMesh=mesh(new Float32Array((1+rings*count)*8),pawIndices,true,8);
+  const pawDisk={center:[320,320],points:Array.from({length:count},(_,i)=>[320+300*Math.cos(i/count*Math.PI*2),320+300*Math.sin(i/count*Math.PI*2)])};
+  const pawDiskUV={center:pawDisk.center,points:pawDisk.points.map(([x,y])=>[x,640-y])};
+  let pawFramebuffer=null,pawSurfaceUnavailable=false;
+  function paintBlendedPaw(target,paw){
+    if(pawSurfaceUnavailable)return false;
+    if(!pawFramebuffer){
+      // A small temporary material surface avoids a hard texture switch, even
+      // when a second interruption happens halfway through the first blend.
+      const texture=gl.createTexture();textures['paw-transition']=texture;
+      gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);
+      for(const p of [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T])gl.texParameteri(gl.TEXTURE_2D,p,gl.CLAMP_TO_EDGE);
+      for(const p of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,p,gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,256,256,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+      pawFramebuffer=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,pawFramebuffer);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,texture,0);
+      if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE){
+        gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.deleteFramebuffer(pawFramebuffer);gl.deleteTexture(texture);
+        pawFramebuffer=null;delete textures['paw-transition'];pawSurfaceUnavailable=true;return false;
+      }
+    }else gl.bindFramebuffer(gl.FRAMEBUFFER,pawFramebuffer);
+    gl.viewport(0,0,256,256);gl.clear(gl.COLOR_BUFFER_BIT);gl.blendFunc(gl.ONE,gl.ONE);
+    for(const layer of paw.layers){
+      if(layer.weight<=0)continue;
+      updatePaw(pawMaterialMesh,{...pawDisk,uvA:layer.uv,uvB:layer.uv});
+      draw(pawMaterialMesh,layer.texture,4,layer.weight);
+    }
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,canvas.width,canvas.height);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+    updatePaw(target,{...paw,uvA:pawDiskUV,uvB:pawDiskUV,uvC:pawDiskUV});
+    draw(target,'paw-transition',1,1,'paw-transition',0,'paw-transition',0,true);
+    return true;
+  }
   function updatePaw(target,p) {
     const data=[];
     const uvC=p.uvC||p.uvA;
@@ -214,7 +282,7 @@ export async function createRenderer(canvas, bundle) {
     }
     gl.bindBuffer(gl.ARRAY_BUFFER,envelopeMesh.v);gl.bufferSubData(gl.ARRAY_BUFFER,0,data);
   }
-  function draw(target, texture, part = 0, opacity = 1, textureB=texture, mix=0, textureC=texture, base=0) {
+  function draw(target, texture, part = 0, opacity = 1, textureB=texture, mix=0, textureC=texture, base=0, premultiplied=false) {
     gl.bindBuffer(gl.ARRAY_BUFFER, target.v);
     attributes.forEach((attribute, i) => gl.vertexAttribPointer(attribute, 2, gl.FLOAT, false, target.components*4, Math.min(i,target.components/2-1)*8));
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, target.i);
@@ -222,10 +290,12 @@ export async function createRenderer(canvas, bundle) {
     gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,textures[textureC]);
     gl.uniform1f(uniforms.part, part);gl.uniform1f(uniforms.opacity, opacity);gl.uniform1f(uniforms.mix,mix);
     gl.uniform1f(uniforms.base,base);
+    gl.uniform1f(uniforms.premultiplied,premultiplied?1:0);
     gl.drawElements(gl.TRIANGLES, target.count, gl.UNSIGNED_SHORT, 0);
   }
   gl.viewport(0, 0, canvas.width, canvas.height);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   return {
+    setCardBack(image){appCardImageAspect=(image.naturalWidth||image.width)/(image.naturalHeight||image.height);dynamicTexture('app-card-back',image);},
     setLetterTarget(value){target={...target,...value};},
     render(pose, time, look, letter = 'held', gesture='wink-left', gestureTime=0, presentation={}) {
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -251,15 +321,15 @@ export async function createRenderer(canvas, bundle) {
           updateEnvelope(envelope,pose,time,look,gesture,gestureTime);
           if(envelope.opacity>0)draw(envelopeMesh,'envelope',envelope.received?4:1,envelope.opacity);
         }
-        const foreground=presentation.letterScene?.approach>.014;
-        if(presentation.letterScene&&!foreground)paintLetterScene(presentation.letterScene);
-        samplePaws(bundle.letterGeometry,gesture,gestureTime,letter,bundle.expressionGeometry,pose,bundle.geometry).forEach((p,i)=>{
-          updatePaw(paws[i],p);draw(paws[i],p.textureA,1,1,p.textureB,p.mix,p.textureC||p.textureA,p.baseMix||0);
+        // The letter slides out beneath the fingers; keeping this order avoids
+        // suddenly painting over a still-overlapping hooked hand after release.
+        if(presentation.letterScene)paintLetterScene(presentation.letterScene);
+        (presentation.paws||samplePaws(bundle.letterGeometry,gesture,gestureTime,letter,bundle.expressionGeometry,pose,bundle.geometry)).forEach((p,i)=>{
+          if(!p.layers||!paintBlendedPaw(paws[i],p)){updatePaw(paws[i],p);draw(paws[i],p.textureA,1,1,p.textureB,p.mix,p.textureC||p.textureA,p.baseMix||0);}
         });
-        if(presentation.letterScene&&foreground)paintLetterScene(presentation.letterScene);
         if(pose.question>0||pose.sparkles>0){paintAccents(pose);draw(body,'accents',3);}
       }
     },
-    destroy() { meshes.forEach(m => { gl.deleteBuffer(m.v);gl.deleteBuffer(m.i); });Object.values(textures).forEach(t => gl.deleteTexture(t));shaders.forEach(s => gl.deleteShader(s));gl.deleteProgram(program); }
+    destroy() { if(pawFramebuffer)gl.deleteFramebuffer(pawFramebuffer);meshes.forEach(m => { gl.deleteBuffer(m.v);gl.deleteBuffer(m.i); });Object.values(textures).forEach(t => gl.deleteTexture(t));shaders.forEach(s => gl.deleteShader(s));gl.deleteProgram(program); }
   };
 }

@@ -3882,7 +3882,7 @@ export function TarotRoomFlow() {
   const { language, t } = useLanguage();
   const reduceMotion = useTarotReducedMotion();
   const setupRequested = isRoomSetupRequested();
-  const [archivedRequest] = useState(getArchivedReadingRequest);
+  const [archivedRequest, setArchivedRequest] = useState(getArchivedReadingRequest);
   const [freshVisit] = useState(() => roomVisitWasClosed("tarot"));
   const visitOpen = useRef(true);
   const [restoredSession] = useState(() =>
@@ -4259,6 +4259,9 @@ export function TarotRoomFlow() {
             }}
             onNewReading={() => {
               clearActiveTarotSession();
+              // Same-route navigation keeps this instance mounted; consume the
+              // archive request so the missing-reading redirect cannot fire.
+              setArchivedRequest(null);
               setArchivedReading(null);
               readingArchiveRef.current = null;
               setQuestion("");

@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
 import type { ChatMessage as ChatMessageType } from "../types";
 import { IVORY, TEXT_HALO } from "../../atmosphere";
-import { SpeechButton } from "./SpeechButton";
+import { SpeechButton, type SpeechPlayback } from "./SpeechButton";
 import { useLanguage } from "../../../../lib/i18n";
 
 interface Props {
   message: ChatMessageType;
+  speech?: SpeechPlayback;
 }
 
-export function ChatMessage({ message }: Props) {
+export function ChatMessage({ message, speech }: Props) {
   const { t } = useLanguage();
   const isUser = message.role === "user";
 
@@ -32,7 +33,7 @@ export function ChatMessage({ message }: Props) {
       >
         {!isUser && (
           <div className="mb-3">
-            <SpeechButton text={message.content} />
+            <SpeechButton text={message.content} playback={speech} playbackId={message.id} />
           </div>
         )}
         {isUser && (

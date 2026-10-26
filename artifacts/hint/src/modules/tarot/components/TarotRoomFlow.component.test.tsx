@@ -16,7 +16,8 @@ import {
   type LocalTarotRoomDesign,
 } from "../../readings/localTarotReadings";
 import { createHiddenDeck } from "../logic/createHiddenDeck";
-import { clearActiveTarotSession, saveActiveTarotSession } from "../logic/activeTarotSession";
+import { clearActiveTarotSession, loadActiveTarotSession, saveActiveTarotSession } from "../logic/activeTarotSession";
+import { markRoomVisitStarted } from "../../../components/app/roomVisits";
 import { getAnonId } from "../../../lib/identity";
 import { buildTarotReceiptModel } from "../logic/shareReceipt";
 import * as receiptSharing from "../logic/shareReceipt";
@@ -1107,6 +1108,108 @@ describe("Tarot Room components", () => {
         "The new reply is saved too.",
       ]);
     });
+  });
+
+  it("starts a clean question from a saved reading without bouncing to History", async () => {
+    const selectedCard = createHiddenDeck()[0]!;
+    // A complete current-format ready archive: opening it re-persists identical
+    // content, so the raw stored bytes must survive the whole visit unchanged.
+    const structuredReading = {
+      signal_type: "opening" as const,
+      overall_summary: "The saved answer stays in History.",
+      cards: [
+        {
+          position: "Signal",
+          card_name: selectedCard.name,
+          orientation: selectedCard.orientation,
+          meaning: "The saved card meaning.",
+        },
+      ],
+      final_action_advice: "Take one deliberate next step.",
+      follow_up_invitation: "Ask about the signal when you are ready.",
+    };
+    const chatMessages = [
+      { id: "saved-user", role: "user" as const, content: "What did I miss?" },
+      { id: "saved-assistant", role: "assistant" as const, content: "The saved conversation is still here." },
+    ];
+    const { reading: saved } = saveLocalTarotReading({
+      id: "saved-new-reading",
+      anonId: getAnonId(),
+      createdAt: "2026-09-02T00:00:00.000Z",
+      spreadType: SINGLE_SPREAD.id,
+      spreadLabel: SINGLE_SPREAD.label,
+      question: "What is opening now?",
+      focusLabel: "Clear signal",
+      cardArtId: ROOM_DESIGN.cardArtId,
+      roomDesign: ROOM_DESIGN,
+      structuredReading,
+      interpretationStatus: "ready",
+      chatMessages,
+      shortAnswer: structuredReading.overall_summary,
+      questionMeaning: structuredReading.final_action_advice,
+      cardMeanings: [`Signal: ${structuredReading.cards[0]!.meaning}`],
+      // Stored-card key order, so a re-persist serializes identically.
+      cards: [
+        {
+          cardId: selectedCard.cardId,
+          name: selectedCard.name,
+          orientation: selectedCard.orientation,
+          positionLabel: "Signal",
+          keywords: ["clarity"],
+          visualId: selectedCard.visualId,
+        },
+      ],
+    });
+    const archiveBefore = getLocalTarotReading(saved.id, saved.anonId);
+    expect(archiveBefore?.interpretationStatus).toBe("ready");
+    expect(archiveBefore?.structuredReading).toEqual(structuredReading);
+    expect(archiveBefore?.chatMessages).toEqual(chatMessages);
+    const storedBefore = localStorage.getItem("hint_local_tarot_readings_v1");
+    vi.stubGlobal("fetch", vi.fn(async () => jsonResponse({ error: "Offline test" }, 503)));
+    window.history.replaceState({}, "", `/app/tarot?reading=${encodeURIComponent(saved.id)}&returnTo=detail`);
+    // An open visit (not a fresh entrance), so the reset question state is autosaved.
+    markRoomVisitStarted("tarot");
+
+    // Rendered directly, like ProductRouter: same-route URL changes keep this instance mounted.
+    renderWithProviders(<TarotRoomFlow />);
+    expect(await screen.findByText("The saved answer stays in History.")).toBeTruthy();
+    expect(screen.getByText("What did I miss?")).toBeTruthy();
+    expect(screen.getByText("The saved conversation is still here.")).toBeTruthy();
+    expect(screen.getByRole("button", {
+      name: `Preview Signal, ${selectedCard.name}, ${selectedCard.orientation}`,
+    })).toBeTruthy();
+    expect(window.location.search).toBe(`?reading=${saved.id}&returnTo=detail`);
+
+    await chooseReadingOption("New reading");
+
+    expect(await screen.findByRole("heading", { name: "What do you need help seeing clearly?" })).toBeTruthy();
+    expect((screen.getByPlaceholderText("Type your question...") as HTMLTextAreaElement).value).toBe("");
+    expect(screen.queryByRole("button", { name: "Reading options" })).toBeNull();
+    expect(screen.queryByText("What is opening now?")).toBeNull();
+    // Let any redirect effect run before checking the final URL.
+    await act(async () => { await Promise.resolve(); });
+    expect(window.location.pathname).toBe("/app/tarot");
+    expect(window.location.search).toBe("");
+    expect(new URLSearchParams(window.location.search).get("reading")).toBeNull();
+    expect(getLocalTarotReading(saved.id, saved.anonId)).toEqual(archiveBefore);
+    expect(localStorage.getItem("hint_local_tarot_readings_v1")).toBe(storedBefore);
+    await waitFor(() => expect(loadActiveTarotSession()).toMatchObject({
+      phase: "question",
+      question: "",
+      selectedCards: [],
+      revealedIds: [],
+    }));
+    const session = loadActiveTarotSession()!;
+    expect(session.deck).toBeUndefined();
+    expect(session.readingId).toBeUndefined();
+    expect(session.readingCreatedAt).toBeUndefined();
+  });
+
+  it("still sends a missing archived reading back to History", async () => {
+    window.history.replaceState({}, "", "/app/tarot?reading=missing-reading&returnTo=detail");
+    renderWithProviders(<TarotRoomFlow />);
+    await waitFor(() => expect(window.location.pathname).toBe("/app/readings"));
+    expect(getLocalTarotReading("missing-reading")).toBeNull();
   });
 
   it("shows a stable local reading on failure and replaces it only after retry", async () => {

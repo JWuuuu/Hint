@@ -8,7 +8,7 @@
     "verify": "node scripts/verify-approved.mjs",
     "rebuild:approved": "node scripts/rebuild-approved.mjs",
     "package": "python3 scripts/package-release.py",
-    "test": "node --test scripts/motion.test.mjs scripts/entrance.test.mjs scripts/letter-scene.test.mjs scripts/scene-director.test.mjs",
+    "test": "node --test scripts/*.test.mjs",
     "prepare:expressions": "node scripts/prepare-expressions.mjs",
     "prepare:paws": "node scripts/prepare-connected-paws.mjs",
     "test:browsers": "node scripts/check-browsers.mjs",

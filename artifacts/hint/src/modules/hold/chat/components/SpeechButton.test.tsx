@@ -2,9 +2,12 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const transport = vi.hoisted(() => ({ fetch: vi.fn() }));
+const native = vi.hoisted(() => ({ state: (_active: boolean) => {} }));
 vi.mock("../../../../lib/api", () => ({ apiFetch: transport.fetch, apiUrl: (path: string) => path }));
 vi.mock("../../../../lib/i18n", () => ({ useLanguage: () => ({ t: (key: string) => key }) }));
+vi.mock("../../../../lib/mobile/appLifecycle", () => ({ addNativeAppStateListener: async (listener: (active: boolean) => void) => { native.state = listener;return async () => {}; } }));
 import { SpeechButton } from "./SpeechButton";
+import { useTarotSpeechPlayback } from "../../../tarot/logic/useTarotSpeechPlayback";
 
 const audioInstances: Array<{ play: ReturnType<typeof vi.fn>; pause: ReturnType<typeof vi.fn>; onended: (() => void) | null; onerror: (() => void) | null }> = [];
 let createUrl: ReturnType<typeof vi.fn>;
@@ -20,7 +23,7 @@ beforeEach(() => {
   });
   vi.stubGlobal("URL", class extends URL { static createObjectURL = createUrl; static revokeObjectURL = revokeUrl; });
 });
-afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
+afterEach(() => { cleanup();vi.restoreAllMocks();vi.unstubAllGlobals(); });
 
 describe("speech request lifecycle", () => {
   it("prevents double requests, offers a retry after failure, and releases playback on stop", async () => {
@@ -36,7 +39,7 @@ describe("speech request lifecycle", () => {
     const stop = await screen.findByRole("button", { name: "reading.speech.stop" });
     fireEvent.click(stop);
     expect(audioInstances[0].pause).toHaveBeenCalled();
-    expect(revokeUrl).toHaveBeenCalledWith("blob:speech-fixture");
+    await waitFor(() => expect(revokeUrl).toHaveBeenCalledWith("blob:speech-fixture"));
     expect(screen.getByRole("button", { name: "reading.speech.play" })).toBeTruthy();
   });
 
@@ -68,7 +71,45 @@ describe("speech request lifecycle", () => {
     expect((transport.fetch.mock.calls[0][1].signal as AbortSignal).aborted).toBe(true);
     expect(audioInstances[0].pause).toHaveBeenCalled();
     expect(audioInstances[0].onended).toBeNull();
-    expect(revokeUrl).toHaveBeenCalled();
+    await waitFor(() => expect(revokeUrl).toHaveBeenCalled());
     await act(async () => finishPlayback());
+  });
+
+  it.each(["browser", "native"])("stops actual speech on %s suspension and does not auto-replay", async source => {
+    transport.fetch.mockResolvedValue({ ok: true, blob: async () => new Blob(["fixture"]) });
+    render(<SpeechButton text="Reading" />);fireEvent.click(screen.getByRole("button"));
+    await screen.findByRole("button", { name: "reading.speech.stop" });
+    await act(async () => {
+      if (source === "browser") { vi.spyOn(document, "hidden", "get").mockReturnValue(true);document.dispatchEvent(new Event("visibilitychange")); }
+      else native.state(false);
+    });
+    expect(audioInstances[0].pause).toHaveBeenCalled();expect(revokeUrl).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "reading.speech.play" })).toBeTruthy();
+    await act(async () => {
+      if (source === "browser") { vi.spyOn(document, "hidden", "get").mockReturnValue(false);document.dispatchEvent(new Event("visibilitychange")); }
+      else native.state(true);
+    });
+    expect(transport.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("shares one player across Ask responses and only marks speech after audio starts", async () => {
+    let start!: () => void;playbackStart = new Promise(resolve => { start = resolve; });
+    transport.fetch.mockResolvedValue({ ok: true, blob: async () => new Blob(["fixture"]) });
+    function Conversation() {
+      const playback = useTarotSpeechPlayback();
+      return <><SpeechButton text="First" playbackId="first" playback={playback} /><SpeechButton text="Second" playbackId="second" playback={playback} /></>;
+    }
+    render(<Conversation />);fireEvent.click(screen.getAllByRole("button")[0]);
+    await waitFor(() => expect(audioInstances).toHaveLength(1));
+    expect(screen.queryByRole("button", { name: "reading.speech.stop" })).toBeNull();
+    await act(async () => start());
+    expect(screen.getAllByRole("button", { name: "reading.speech.stop" })).toHaveLength(1);
+    fireEvent.click(screen.getByRole("button", { name: "reading.speech.play" }));
+    await waitFor(() => expect(audioInstances).toHaveLength(2));
+    expect(audioInstances[0].pause).toHaveBeenCalled();
+    expect((transport.fetch.mock.calls[0][1].signal as AbortSignal).aborted).toBe(true);
+    expect(screen.getAllByRole("button", { name: "reading.speech.stop" })).toHaveLength(1);
+    await act(async () => audioInstances[1].onended?.());
+    expect(screen.queryByRole("button", { name: "reading.speech.stop" })).toBeNull();
   });
 });

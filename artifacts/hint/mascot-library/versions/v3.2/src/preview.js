@@ -13,7 +13,7 @@ const query=new URLSearchParams(location.search),requested=query.get('gesture');
 const initialGesture=gestures[requested]&&requested!=='deliver-letter'?requested:saved?.version==='gesture-library-v3.2'&&gestures[saved.gesture]&&saved.gesture!=='deliver-letter'?saved.gesture:'idle';
 let selected=initialGesture;
 let api, lastStatus = '',scene='library',scenePhase='library',phaseStart=0;
-const order=['idle','welcome','offer-letter','listening','thinking','reading','speaking','waiting','wink-left','wink-right','nod','shake-head','celebration','curious','surprised','shy','comfort','disappointed','frustrated','sleepy'];
+const order=['idle','welcome','welcome-back','acknowledge','reassure','present-card','offer-letter','listening','thinking','reading','speaking','waiting','wink-left','wink-right','nod','shake-head','celebration','curious','surprised','shy','comfort','disappointed','frustrated','sleepy'];
 choice.replaceChildren(...order.map(id=>new Option(gestures[id].label,id)));choice.value=selected;
 const persist=()=>window.openai?.setWidgetState?.({modelContent:{mascot:'Hint',gesture:gestures[selected].label,letter:api.getState().letter},privateContent:{version:'gesture-library-v3.2',gesture:selected,paused:api.getState().paused}})?.catch(()=>{});
 const sceneTitles={welcome:'Hey, welcome to Hint.',offer:'This is for you.',offered:'A letter for you.',handoff:'This one is yours.',reading:'Take your time.',waiting:'I’m right here.',listening:'I’m listening.',thinking:'Let me think.',preparing:'One moment.',speaking:'Here’s what I’m thinking.'};

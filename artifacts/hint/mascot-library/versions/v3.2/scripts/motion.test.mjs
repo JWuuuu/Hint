@@ -2,12 +2,24 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { gestures, activities, blendPose, sampleGesture, samplePaws, sampleEnvelope, projectEnvelopePoint, letterKeys, sampleActivity, HANDOFF_TIME } from '../src/motion.js';
+import {paperSourcePoint} from '../src/letter-scene-motion.js';
 import { approved, assertWorkingOutput, verifyApproved } from './verify-approved.mjs';
 
 const geometry = JSON.parse(await readFile(new URL('../assets/letter-geometry.json', import.meta.url), 'utf8'));
+const givingLandmarks=JSON.parse(await readFile(new URL('../evidence/giving-paws-v2/landmarks.json',import.meta.url),'utf8'));
 const greetingGeometry=JSON.parse(await readFile(new URL('../assets/geometry.json',import.meta.url),'utf8'));
 const expressionGeometry=JSON.parse(await readFile(new URL('../assets/expression-geometry.json',import.meta.url),'utf8'));
 expressionGeometry.connected=JSON.parse(await readFile(new URL('../assets/connected-geometry.json',import.meta.url),'utf8'));
+const givingScale=1.22,givingContactTolerance=.25*givingScale;
+function givingProjection(paws){
+ const from=['left','right'].map(side=>givingLandmarks.paws[side].meshCenter),to=paws.map(paw=>paw.center);
+ const a=from[1].map((v,k)=>v-from[0][k]),b=to[1].map((v,k)=>v-to[0][k]);
+ const length=a[0]**2+a[1]**2,c=(a[0]*b[0]+a[1]*b[1])/length,s=(a[0]*b[1]-a[1]*b[0])/length;
+ return {scale:Math.hypot(c,s),point(point){
+  const dx=point[0]-from[0][0],dy=point[1]-from[0][1];
+  return [to[0][0]+dx*c-dy*s,to[0][1]+dx*s+dy*c];
+ }};
+}
 test('approved greeting and its assets remain read-only and unchanged', async () => {
   assert.equal((await verifyApproved()).files, 35);
   assert.throws(() => assertWorkingOutput(approved + '/hint-drawn-paw.html'));
@@ -86,27 +98,37 @@ test('motion has continuous velocity through internal keyframes and zero velocit
   }
 });
 
-test('the held envelope follows the two paw contact anchors until handoff',()=>{
- const base=[[geometry.left[0].center[0]+28,geometry.left[0].center[1]-3],[geometry.right[0].center[0]-28,geometry.right[0].center[1]-14]];
- for(const id of ['offer-letter','deliver-letter'])for(let t=0;t<=(id==='offer-letter'?2.4:HANDOFF_TIME);t+=1/120){
-  const paws=samplePaws(geometry,id,t,'held'),e=sampleEnvelope(id,t,'held',geometry);
-  const desired=paws.map((p,i)=>{
-   const [x,y]=i===0?[28,-3]:[-28,-14],angle=e.tilt*(i===0?.14:-.18),c=Math.cos(angle),s=Math.sin(angle);
-   return [p.center[0]+x*c-y*s,p.center[1]+x*s+y*c];
-  });
-  base.forEach((point,i)=>{const [a,b]=projectEnvelopePoint(point,e);
-   assert.ok(Math.hypot(a-desired[i][0],b-desired[i][1])<1e-6);});
-  assert.equal(e.opacity,1);
+test('the giving envelope stays attached to the visible paw notches until handoff',()=>{
+ // These segments and UVs were annotated on the new artwork, independently of
+ // runtime grip coordinates. The extraction tolerance grows with the same
+ // uniform foreground projection as the hands and paper.
+ for(const side of ['left','right']){
+  const landmark=givingLandmarks.paws[side];
+  assert.ok(landmark.gripSegment.distance<.25,'visible notch has a precise contour annotation');
+  assert.ok(landmark.gripUV[1]>=0&&landmark.gripUV[1]<.25,'grip is at the top of the paper');
+  assert.ok(side==='left'?landmark.gripUV[0]<.1:landmark.gripUV[0]>.9,'grip is near its upper corner');
+ }
+ for(const [id,start,end] of [['offer-letter',1.65,2.4],['deliver-letter',0,HANDOFF_TIME]]){
+  const count=Math.ceil((end-start)*120);
+  for(let step=0;step<=count;step++){
+   const t=start+(end-start)*step/count,paws=samplePaws(geometry,id,t,'held'),envelope=sampleEnvelope(id,t,'held',geometry);
+   for(const [index,side] of ['left','right'].entries()){
+    const landmark=givingLandmarks.paws[side],{indices,mix}=landmark.gripSegment,paw=paws[index];
+    const notch=paw.points[indices[0]].map((v,k)=>v+(paw.points[indices[1]][k]-v)*mix);
+    const paperContact=projectEnvelopePoint(paperSourcePoint(...landmark.gripUV),envelope);
+    assert.ok(Math.hypot(...notch.map((v,k)=>v-paperContact[k]))<givingContactTolerance,`${id} ${t} ${side}: paper meets the visible contour notch`);
+   }
+   assert.equal(envelope.opacity,1);
+  }
  }
 });
 
-test('the paper gradually foreshortens into a perspective plane, with a stable waiting pose',()=>{
+test('the paper reaches the fitted giving plane without reversing and waits steadily',()=>{
  const corners=[[233,356],[362,378],[345,467],[221,445]];
- const area=points=>Math.abs(points.reduce((sum,p,i)=>{const q=points[(i+1)%points.length];return sum+p[0]*q[1]-p[1]*q[0];},0)/2);
  let previous=0;
  for(let t=0;t<=2.4;t+=1/120){
   const e=sampleEnvelope('offer-letter',t,'held',geometry);
-  assert.ok(e.tilt>=previous-1e-10&&e.tilt<=1);previous=e.tilt;
+  assert.ok(e.reach>=previous-1e-10&&e.reach<=1);previous=e.reach;
   const points=corners.map(p=>projectEnvelopePoint(p,e));
   assert.ok(points.every(p=>p.every(Number.isFinite)));
   for(let i=0;i<4;i++){
@@ -115,12 +137,15 @@ test('the paper gradually foreshortens into a perspective plane, with a stable w
   }
  }
  const e=sampleEnvelope('offer-letter',2.4,'offered',geometry);
- const tilted=corners.map(p=>projectEnvelopePoint(p,e));
- const flat=corners.map(p=>projectEnvelopePoint(p,{...e,tilt:0}));
- assert.ok(area(tilted)/area(flat)>.9&&area(tilted)/area(flat)<1,'a small forward tilt preserves the readable front of the envelope');
+ const projection=givingProjection(samplePaws(geometry,'offer-letter',2.4,'offered'));
+ corners.forEach((point,index)=>{
+  const actual=projectEnvelopePoint(point,e),fitted=projection.point(givingLandmarks.envelope.corners[index]);
+  assert.ok(Math.hypot(...actual.map((v,k)=>v-fitted[k]))<givingContactTolerance,'paper and hands share one projection of the independently fitted giving quad');
+ });
  assert.deepEqual(e,sampleEnvelope('offer-letter',60,'offered',geometry));
  assert.deepEqual(e,sampleEnvelope('deliver-letter',0,'offered',geometry));
- for(let t=HANDOFF_TIME;t<=1.8;t+=1/60)assert.equal(sampleEnvelope('deliver-letter',t,'delivered',geometry).tilt,1);
+ const released=sampleEnvelope('deliver-letter',HANDOFF_TIME,'delivered',geometry).corners;
+ for(let t=HANDOFF_TIME;t<=1.8;t+=1/60)assert.deepEqual(sampleEnvelope('deliver-letter',t,'delivered',geometry).corners,released,'released plane stays independent of the retreating paws');
 });
 
 test('the paper and wrist motion have no position or velocity jumps',()=>{
@@ -138,10 +163,31 @@ test('the paper and wrist motion have no position or velocity jumps',()=>{
  }
 });
 
-test('tilting the envelope rotates each paw without stretching its volume',()=>{
- for(const [i,side] of ['left','right'].entries()){
-  const base=geometry[side][6],paw=samplePaws(geometry,'offer-letter',2.4,'offered')[i];
-  base.points.forEach((p,j)=>assert.ok(Math.abs(Math.hypot(p[0]-base.center[0],p[1]-base.center[1])-Math.hypot(paw.points[j][0]-paw.center[0],paw.points[j][1]-paw.center[1]))<1e-8));
+test('one uniform foreground projection preserves the giving palms and shoulder attachment',()=>{
+ assert.equal(givingLandmarks.pose,7);
+ for(const [id,time] of [['offer-letter',2.4],['deliver-letter',0],['deliver-letter',HANDOFF_TIME]]){
+  const paws=samplePaws(geometry,id,time,'offered'),projection=givingProjection(paws);
+  assert.ok(Math.abs(projection.scale-givingScale)<1e-10,'hands move toward the reader at the intended uniform scale');
+  for(const [index,side] of ['left','right'].entries()){
+   const base=geometry[side][givingLandmarks.pose],landmark=givingLandmarks.paws[side],paw=paws[index];
+   for(let vertex=0;vertex<base.points.length;vertex++){
+    const expected=projection.point(base.points[vertex]);
+    assert.ok(Math.hypot(...paw.points[vertex].map((v,k)=>v-expected[k]))<1e-8,'all contour vertices share one similarity transform, with no anisotropic warp');
+   }
+   assert.deepEqual(paw.uvA.points,base.points,'foreground projection does not distort drawing UVs');
+   assert.deepEqual(paw.uvB.points,base.points,'both drawing samples retain the native pose');
+   const root=paw.points[landmark.rootIndex];
+   for(let axis=0;axis<2;axis++){
+    const values=landmark.rootRegion.map(point=>point[axis]);
+    assert.ok(root[axis]>=Math.min(...values)-8&&root[axis]<=Math.max(...values)+8,'projected root stays within the annotated shoulder area');
+   }
+   for(let i=0;i<landmark.palmIndices.length;i++)for(let j=i+1;j<landmark.palmIndices.length;j++){
+    const a=landmark.palmIndices[i],b=landmark.palmIndices[j];
+    const original=Math.hypot(...base.points[a].map((v,k)=>v-base.points[b][k]));
+    const actual=Math.hypot(...paw.points[a].map((v,k)=>v-paw.points[b][k]));
+    assert.ok(Math.abs(actual-original*projection.scale)<1e-8,'rounded palm grows uniformly without stretching or flattening');
+   }
+  }
  }
 });
 
