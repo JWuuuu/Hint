@@ -15,7 +15,8 @@ permissions:
   contents: read
 jobs:
   assemble:
-    runs-on: ubuntu-latest
+    # Pinned: this image ships the Android SDK with ANDROID_HOME set.
+    runs-on: ubuntu-24.04
     env:
       # Without a deployed API the APK opens, but readings and voice cannot reach the server.
       VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
@@ -37,7 +38,20 @@ jobs:
       - run: pnpm --filter @workspace/hint exec cap sync android
       - name: Assemble debug APK
         working-directory: artifacts/hint/android
-        run: bash ./gradlew assembleDebug --no-daemon --stacktrace
+        run: |
+          set -o pipefail
+          echo "ANDROID_HOME=${ANDROID_HOME:-unset}"
+          bash ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee gradle.log
+      - name: Report the Gradle failure as an annotation
+        if: failure()
+        working-directory: artifacts/hint/android
+        run: |
+          # Annotations are visible on the run page and through the API without opening the log.
+          [ -f gradle.log ] || { echo "::error title=Android build::Gradle did not start (ANDROID_HOME=${ANDROID_HOME:-unset})"; exit 0; }
+          summary=$( { grep -E "\.java:[0-9]+: error|^e: |error: " gradle.log | head -15; sed -n '/^\* What went wrong:/,/^\* Try:/p' gradle.log | head -30; } )
+          [ -n "$summary" ] || summary=$(tail -30 gradle.log)
+          summary=${summary//'%'/'%25'}; summary=${summary//$'\r'/'%0D'}; summary=${summary//$'\n'/'%0A'}
+          echo "::error title=Android build::${summary}"
       - uses: actions/upload-artifact@v4
         with:
           name: hint-android-debug-${{ github.sha }}
