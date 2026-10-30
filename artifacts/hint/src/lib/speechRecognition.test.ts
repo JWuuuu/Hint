@@ -25,8 +25,21 @@ const native = vi.hoisted(() => {
   return { isNativeShell: vi.fn(() => true), listeners, removers, plugin };
 });
 
+const recorded = vi.hoisted(() => ({
+  session: { stop: async () => undefined, cancel: async () => undefined },
+  start: vi.fn(),
+}));
+
 vi.mock("./mobile/runtime", () => ({ isNativeShell: native.isNativeShell }));
 vi.mock("@capacitor/core", () => ({ registerPlugin: () => native.plugin }));
+// Mirrors the module's real capability check so the routing tests below can
+// switch recording support on and off through the stubbed globals.
+vi.mock("./recordedSpeech", () => ({
+  startRecordedSpeech: recorded.start,
+  canRecordSpeech: () => typeof window !== "undefined" && typeof navigator !== "undefined"
+    && typeof (window as { MediaRecorder?: unknown }).MediaRecorder === "function"
+    && typeof navigator.mediaDevices?.getUserMedia === "function",
+}));
 
 import { startHintSpeechRecognition } from "./speechRecognition";
 
@@ -320,6 +333,78 @@ describe("native Hint speech recognition", () => {
     );
     expect(callbacks.onError).toHaveBeenCalledOnce();
     expect(callbacks.onError).toHaveBeenCalledWith("failed");
+    expect(callbacks.onEnd).toHaveBeenCalledOnce();
+  });
+});
+
+describe("recorded speech fallback routing", () => {
+  const recordingPlatform = () => {
+    vi.stubGlobal("window", { MediaRecorder: function MediaRecorder() {} });
+    vi.stubGlobal("navigator", { mediaDevices: { getUserMedia: vi.fn() } });
+  };
+
+  beforeEach(() => {
+    recorded.start.mockReset();
+    recorded.start.mockResolvedValue(recorded.session);
+    native.plugin.available.mockReset();
+    native.plugin.available.mockResolvedValue({ available: true });
+    native.plugin.requestPermissions.mockClear();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("records and transcribes on the server when the browser has no speech recognition", async () => {
+    native.isNativeShell.mockReturnValue(false);
+    recordingPlatform();
+    const callbacks = { ...options(), continuous: false };
+    await expect(startHintSpeechRecognition(callbacks)).resolves.toBe(recorded.session);
+    expect(recorded.start).toHaveBeenCalledExactlyOnceWith(callbacks);
+  });
+
+  it("keeps on-device browser recognition when it exists", async () => {
+    native.isNativeShell.mockReturnValue(false);
+    class BrowserRecognition {
+      continuous = false; interimResults = false; lang = ""; maxAlternatives = 1;
+      onstart = null; onresult = null; onerror = null; onend = null;
+      start() {} stop() {} abort() {}
+    }
+    vi.stubGlobal("window", { SpeechRecognition: BrowserRecognition, MediaRecorder: function MediaRecorder() {} });
+    vi.stubGlobal("navigator", { mediaDevices: { getUserMedia: vi.fn() } });
+    await startHintSpeechRecognition(options());
+    expect(recorded.start).not.toHaveBeenCalled();
+  });
+
+  it("falls back to recording when the native shell has no speech plugin", async () => {
+    native.isNativeShell.mockReturnValue(true);
+    recordingPlatform();
+    native.plugin.available.mockRejectedValueOnce(Object.assign(new Error("not implemented on android"), { code: "UNIMPLEMENTED" }));
+    const callbacks = options();
+    await expect(startHintSpeechRecognition(callbacks)).resolves.toBe(recorded.session);
+    expect(recorded.start).toHaveBeenCalledOnce();
+    expect(callbacks.onError).not.toHaveBeenCalled();
+    expect(callbacks.onEnd).not.toHaveBeenCalled();
+    expect(native.plugin.requestPermissions).not.toHaveBeenCalled();
+  });
+
+  it("falls back to recording when on-device recognition is unavailable for the language", async () => {
+    native.isNativeShell.mockReturnValue(true);
+    recordingPlatform();
+    native.plugin.available.mockResolvedValueOnce({ available: false });
+    const callbacks = options();
+    await startHintSpeechRecognition(callbacks);
+    expect(recorded.start).toHaveBeenCalledOnce();
+    expect(callbacks.onError).not.toHaveBeenCalled();
+  });
+
+  it("still reports unavailable when neither the native recogniser nor recording works", async () => {
+    native.isNativeShell.mockReturnValue(true);
+    native.plugin.available.mockResolvedValueOnce({ available: false });
+    const callbacks = options();
+    await expect(startHintSpeechRecognition(callbacks)).rejects.toThrow("Speech recognition unavailable");
+    expect(recorded.start).not.toHaveBeenCalled();
+    expect(callbacks.onError).toHaveBeenCalledExactlyOnceWith("unavailable");
     expect(callbacks.onEnd).toHaveBeenCalledOnce();
   });
 });

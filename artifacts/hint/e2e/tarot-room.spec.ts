@@ -1411,6 +1411,11 @@ test("voice unavailability keeps a clear typed fallback", async ({ page }) => {
       configurable: true,
       value: undefined,
     });
+    // Without recording support there is no server-transcription fallback either.
+    Object.defineProperty(window, "MediaRecorder", {
+      configurable: true,
+      value: undefined,
+    });
   });
   await page.goto("/app/tarot?hintPreview=embedded");
   await page.getByRole("button", { name: "Voice input" }).click();
