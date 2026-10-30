@@ -14,3 +14,11 @@
 .hint-guide-welcome[data-phase="flight"] .hint-guide-welcome-header,.hint-guide-welcome[data-phase="peek"] .hint-guide-welcome-header{color:#d3b8c8}
 @media(max-height:720px){.hint-guide-welcome-stage{min-height:335px;padding-top:50px}.hint-guide-welcome-slot{width:min(78vw,294px);height:min(78vw,294px)}.hint-guide-welcome-bubble{top:12px;font-size:25px;padding:13px 22px}.hint-guide-welcome-actions{gap:12px}}
 @media(max-height:620px){.hint-guide-welcome{padding-bottom:calc(var(--hint-safe-bottom) + 16px)}.hint-guide-welcome-stage{min-height:280px}.hint-guide-welcome-slot{width:min(72vw,230px);height:min(72vw,230px)}.hint-guide-welcome-bubble{top:6px;font-size:24px;padding:12px 20px}.hint-guide-welcome-actions{gap:10px;padding-top:14px}}
+/* Night: the bubble becomes a lit plum card; copy steps down to moonlit ink. */
+[data-hint-theme="dark"] .hint-guide-welcome{--hint-text:#e6dcea;--hint-border:rgba(232,222,238,.14);--hint-surface-soft:rgba(244,236,246,.06);color:#e6dcea}
+[data-hint-theme="dark"] .hint-guide-welcome-header{color:rgba(208,196,222,.62)}
+[data-hint-theme="dark"] .hint-guide-welcome[data-phase="flight"] .hint-guide-welcome-header,[data-hint-theme="dark"] .hint-guide-welcome[data-phase="peek"] .hint-guide-welcome-header{color:rgba(208,196,222,.42)}
+[data-hint-theme="dark"] .hint-guide-welcome-bubble{color:#f4ecf1;background:#3f374f;border-color:rgba(232,222,238,.14);box-shadow:0 10px 30px rgba(2,2,10,.4),inset 0 1px 0 rgba(255,255,255,.06)}
+[data-hint-theme="dark"] .hint-guide-welcome-bubble::after{background:#3f374f;box-shadow:1px 1px 0 rgba(232,222,238,.14)}
+[data-hint-theme="dark"] .hint-guide-welcome-actions p{color:rgba(222,212,228,.7)}
+[data-hint-theme="dark"] .hint-guide-welcome-header button:focus-visible{outline:2px solid #bcb2e2;outline-offset:2px}

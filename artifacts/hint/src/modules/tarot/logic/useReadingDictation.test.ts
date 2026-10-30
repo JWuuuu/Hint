@@ -74,6 +74,26 @@ it("never submits a pre-existing draft when no speech was captured", async () =>
   expect(view.onComplete).not.toHaveBeenCalled();
 });
 
+it("flushes final words on manual stop and leaves them editable without auto-sending", async () => {
+  speech.start.mockImplementation(async (options: HintSpeechOptions) => {
+    callbacks = options;
+    return { cancel: vi.fn(), stop: async () => {
+      options.onProcessing?.();
+      options.onTranscript("the complete final phrase");
+      options.onEnd();
+    } };
+  });
+  const view = setup("About today:");
+  await act(async () => view.result.current.start());
+  act(() => { callbacks.onStart?.(); callbacks.onTranscript("the complete"); });
+  await act(async () => view.result.current.start());
+  expect(view.onDraft).toHaveBeenLastCalledWith("About today: the complete final phrase");
+  expect(view.onComplete).not.toHaveBeenCalled();
+  expect(view.result.current.status).toBe("idle");
+  act(() => { callbacks.onTranscript("Late words"); callbacks.onEnd(); });
+  expect(view.onDraft).toHaveBeenCalledTimes(2);
+});
+
 it("stops a stalled startup and ignores a delayed microphone callback", async () => {
   const view = setup();
   await act(async () => view.result.current.start());

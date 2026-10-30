@@ -464,6 +464,11 @@ describe("Tarot Room components", () => {
     const messages = Array.from({ length: 52 }, (_, index) => ({
       id: `message-${index}`, role: index % 2 ? "assistant" as const : "user" as const, content: `Previous message ${index}.`,
     }));
+    const { reading: earlier } = saveLocalTarotReading({
+      spreadType: "single", spreadLabel: "One card", question: "Will we reconnect this month?",
+      shortAnswer: "An earlier answer.", questionMeaning: "", cardMeanings: [],
+      cards: [{ ...card, orientation: "reversed", positionLabel: "Obstacle", keywords: [] }],
+    });
     const { reading: saved } = saveLocalTarotReading({
       spreadType: "single", spreadLabel: "One card", roomDesign: ROOM_DESIGN,
       shortAnswer: "Your original answer.", questionMeaning: "Take one step.",
@@ -477,6 +482,11 @@ describe("Tarot Room components", () => {
     await user.click(screen.getByRole("button", { name: "Send follow-up" }));
     expect(await screen.findByText("A complete new reply.")).toBeTruthy();
     const request = JSON.parse(fetchMock.mock.calls[0]![1].body);
+    const history = JSON.parse(request.spreadHistory);
+    expect(history).toMatchObject({ includedReadings: 1, omittedReadings: 0 });
+    expect(history.readings[0]).toMatchObject({ id: earlier.id, question: earlier.question,
+      cards: [{ cardId: card.cardId, orientation: "reversed", position: "Obstacle" }] });
+    expect(history.readings.some((item: { id: string }) => item.id === saved.id)).toBe(false);
     expect(request.messages).toEqual(messages.slice(-12).map(({ role, content }) => ({ role, content })));
     expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages).toHaveLength(54);
     expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages.slice(0, 52)).toEqual(messages);

@@ -2,7 +2,10 @@
   --hint-home-section-gap: 12px;
   color: #35303a;
   padding-bottom: calc(6.5rem + var(--hint-safe-bottom) + var(--hint-nav-extra-height, 0px));
+  /* Home scrolls itself; like every app page it shows no permanent track. */
+  scrollbar-width: none;
 }
+.hint-home-page::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
 .hint-home-content {
   max-width: 430px;
@@ -26,7 +29,11 @@
   min-width: 0;
   margin-right: auto;
 }
-.hint-home-header .receipt-share-trigger--compact {
+/* The share action sits beside the revealed reading's own action. */
+.hint-home-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; max-width: 100%; }
+.hint-home-hero-actions .hint-home-reveal { margin-top: 0; }
+.hint-home-hero-copy .hint-home-sync-status { margin-top: 8px; max-width: 220px; }
+.hint-home-hero-actions .receipt-share-trigger--compact {
   flex: 0 0 44px;
   width: 44px;
   height: 44px;
@@ -292,11 +299,45 @@
   .hint-home-evidence-signal[data-selected="true"]
 ) { color: var(--hint-lavender); }
 [data-hint-theme="dark"] .hint-home-energy-details > p { color: var(--hint-text); }
+/* Night counterparts of the paper composition: same layout and roles, with
+   smoked surfaces, hairlines and one lavender accent instead of cream. */
+[data-hint-theme="dark"] .hint-home-page :is(.hint-home-tarot-label, .hint-home-card-title em, .hint-home-sky-toggle) { color: var(--hint-night-lavender); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-card-copy { color: var(--hint-night-body); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-eyebrow { color: var(--hint-night-faint); }
+[data-hint-theme="dark"] .hint-home-hero::before {
+  background: radial-gradient(ellipse, rgba(134, 122, 190, .16), transparent 70%);
+}
+[data-hint-theme="dark"] .hint-home-card-face {
+  border-color: rgba(232, 208, 160, .72);
+  box-shadow: 0 18px 34px rgba(2, 2, 10, .46), 0 0 20px rgba(232, 200, 140, .16);
+}
+/* Mirrors the paper theme's soft lilac pill rather than the global prism action. */
 [data-hint-theme="dark"] .hint-home-reveal {
-  color: var(--hint-special-action-text);
-  background: var(--hint-special-action-bg);
+  color: #ebe4f6;
+  background: linear-gradient(135deg, rgba(188, 178, 226, .22), rgba(134, 122, 190, .14));
+  box-shadow: inset 0 0 0 1px rgba(205, 196, 236, .2), inset 0 1px 0 rgba(255, 255, 255, .1);
 }
+[data-hint-theme="dark"] .hint-home-page :is(.hint-home-score-label, .hint-home-energy-total) { color: var(--hint-night-faint); }
+[data-hint-theme="dark"] .hint-home-page :is(.hint-home-theme-copy, .hint-home-details-link) { color: var(--hint-night-body); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-details-link::before,
+[data-hint-theme="dark"] .hint-home-page .hint-home-details-link::after,
+[data-hint-theme="dark"] .hint-home-rule { background: var(--hint-night-line); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-evidence-card {
+  padding: 12px 14px;
+  border: 1px solid var(--hint-night-line);
+  border-radius: 14px;
+}
+[data-hint-theme="dark"] .hint-home-page .hint-home-evidence-signal { color: var(--hint-night-body); }
+[data-hint-theme="dark"] .hint-home-space-star { color: var(--hint-night-candle); }
 [data-hint-theme="dark"] .hint-home-space {
-  background: var(--hint-card-inner);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+  background: var(--hint-night-surface);
+  box-shadow: inset 0 0 0 1px var(--hint-night-line), inset 0 1px 0 rgba(255,255,255,.05);
 }
+/* Each room keeps its paper hue; a night wash sinks the pastel disc into the surface. */
+[data-hint-theme="dark"] .hint-home-space-icon {
+  box-shadow: inset 0 0 0 40px rgba(46, 37, 60, .5), inset 0 0 0 1px rgba(232, 222, 238, .12);
+}
+[data-hint-theme="dark"] .hint-home-space-icon svg { filter: brightness(1.28) saturate(.9); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-space-description { color: var(--hint-night-faint); }
+[data-hint-theme="dark"] .hint-home-page button:focus-visible,
+[data-hint-theme="dark"] .hint-home-page a:focus-visible { outline-color: var(--hint-night-lavender); }

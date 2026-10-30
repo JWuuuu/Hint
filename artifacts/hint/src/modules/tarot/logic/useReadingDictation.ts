@@ -10,11 +10,12 @@ export function useReadingDictation({ draft, onDraft, onComplete, language, t }:
   language: HintLanguage;
   t: (key: string) => string;
 }) {
-  const [status, setStatus] = useState<"idle" | "starting" | "listening">("idle");
+  const [status, setStatus] = useState<"idle" | "starting" | "listening" | "processing">("idle");
   const [notice, setNotice] = useState<string | null>(null);
   const controller = useRef<AbortController | null>(null);
   const session = useRef<HintSpeechSession | null>(null);
   const silence = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const submitOnEnd = useRef(true);
   const latest = useRef({ onDraft, onComplete });
   latest.current = { onDraft, onComplete };
 
@@ -43,9 +44,20 @@ export function useReadingDictation({ draft, onDraft, onComplete, language, t }:
   }, [stop]);
 
   async function start() {
-    if (controller.current) { stop(); return; }
+    if (controller.current) {
+      if (session.current && status === "listening") {
+        // A manual stop keeps the finished words in the editable draft.
+        submitOnEnd.current = false;
+        const stoppingRequest = controller.current;
+        await session.current.stop();
+        if (controller.current === stoppingRequest) stop();
+      }
+      else stop();
+      return;
+    }
     const request = new AbortController();
     controller.current = request;
+    submitOnEnd.current = true;
     const prefix = draft.trimEnd();
     const current = () => controller.current === request && !request.signal.aborted;
     const locale = { en: "en-US", zh: "zh-CN", es: "es-ES", ja: "ja-JP", ko: "ko-KR" }[language];
@@ -56,7 +68,7 @@ export function useReadingDictation({ draft, onDraft, onComplete, language, t }:
       ended = true;
       const text = transcript.trim();
       stop();
-      if (text && !document.hidden) latest.current.onComplete([prefix, text].filter(Boolean).join(" "));
+      if (text && submitOnEnd.current && !document.hidden) latest.current.onComplete([prefix, text].filter(Boolean).join(" "));
     };
     setNotice(null);
     setStatus("starting");
@@ -75,6 +87,11 @@ export function useReadingDictation({ draft, onDraft, onComplete, language, t }:
           if (!current()) return;
           if (silence.current) clearTimeout(silence.current);
           setStatus("listening");
+        },
+        onProcessing: () => {
+          if (!current() || ended) return;
+          if (silence.current) clearTimeout(silence.current);
+          setStatus("processing");
         },
         onTranscript: text => {
           if (!current() || ended) return;

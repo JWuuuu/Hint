@@ -1,7 +1,7 @@
 import { validBirthDate } from "../../lib/birthDetails";
 import { LocalizedText } from "../../lib/LocalizedText";
 import { useLanguage } from "../../lib/i18n";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation } from "wouter";
 import {
   ArrowLeft,
@@ -23,8 +23,8 @@ import { useProfile } from "../../lib/useProfile";
 import { LocalProfileSwitcher } from "./LocalProfileSwitcher";
 import { HintGuideSlot, useHintGuideEnabled, useHintGuideGesture, useHintGuideFrames } from "../mascot/HintGuide";
 import { HintOnboardingBackdrop, HintOnboardingWelcome, onboardingGuideContext } from "../mascot/HintOnboarding";
+import { markOnboardingComplete, onboardingIsComplete, useOnboardingResetRequested, withoutOnboardingReset } from "./onboardingState";
 
-const ONBOARDING_COMPLETE_KEY = "hint_onboarding_complete_v3";
 const ONBOARDING_PREFERENCES_KEY = "hint_onboarding_preferences_v1";
 
 type OnboardingStep = "welcome" | "profile" | "focus" | "account";
@@ -37,14 +37,6 @@ const FOCUS_OPTIONS: Array<{ id: FocusChoice; label: string; detail: string; ico
   { id: "self", label: "Self & patterns", detail: "Emotions, habits, and inner growth", icon: MoonStar },
   { id: "decision", label: "A decision", detail: "See the situation from a clearer angle", icon: BookOpen },
 ];
-
-function onboardingIsComplete() {
-  try {
-    return window.localStorage.getItem(ONBOARDING_COMPLETE_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
 
 const isValidBirthDate = validBirthDate;
 
@@ -79,7 +71,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
   const [location, navigate] = useLocation();
   const account = useLocalAccount();
   const { anonId, profile, saveProfile, isSaving } = useProfile();
-  const forceReset = useMemo(() => new URLSearchParams(window.location.search).get("onboarding") === "reset", [location]);
+  const forceReset = useOnboardingResetRequested();
   const pathname = location.split(/[?#]/, 1)[0] ?? "";
   const isStandaloneAuth = pathname.endsWith("/login") || pathname.endsWith("/signup");
   const localAstrologyJourney = /^(?:\/app)?\/(?:astrology|compatibility)(?:\/|$)/.test(pathname);
@@ -100,6 +92,13 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
   const savingIdentity = useRef(false);
 
   const shouldShow = !isStandaloneAuth && !finished && (forceReset || !localAstrologyJourney && !onboardingIsComplete());
+
+  useEffect(() => {
+    // A replay requested after an earlier finish in this session starts over.
+    if (!forceReset) return;
+    setFinished(false);
+    setStep("welcome");
+  }, [forceReset]);
 
   useEffect(() => {
     if (guideEnabled && step !== "welcome") root.current?.querySelector<HTMLElement>(".hint-onboarding-step h1")?.focus({ preventScroll: true });
@@ -206,13 +205,16 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
         verifiedAt: new Date().toISOString(),
       });
     }
-      window.localStorage.setItem(ONBOARDING_COMPLETE_KEY, "1");
+      markOnboardingComplete();
     } catch {
       setError(t("quality.accountSaveFailed"));
       return;
     }
     setFinished(true);
-    navigate(window.location.pathname.startsWith("/app") ? `${window.location.pathname}${window.location.search}${window.location.hash}` : "/app", { replace: true });
+    // Consume a replay's `onboarding=reset` so app chrome stops treating the screen
+    // as onboarding. `pathname` is router-relative, so the app base is preserved.
+    const target = pathname.startsWith("/app") ? pathname : "/app";
+    navigate(`${target}${withoutOnboardingReset(window.location.search)}${window.location.hash}`, { replace: true });
   }
 
   function verifyCode() {
@@ -244,7 +246,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
             </button>
             <div className="flex items-center gap-1.5" aria-label={t("quality.onboardingStep").replace("{step}", String(stepIndex))}>
               {[1, 2, 3].map((item) => (
-                <span key={item} className="h-1 rounded-full transition-all" style={{ width: item === stepIndex ? 28 : 7, background: item <= stepIndex ? "#7d596f" : "rgba(74,54,68,0.16)" }} />
+                <span key={item} className="h-1 rounded-full transition-all" style={{ width: item === stepIndex ? 28 : 7, background: item <= stepIndex ? "var(--hint-onboarding-progress-on, #7d596f)" : "var(--hint-onboarding-progress-off, rgba(74,54,68,0.16))" }} />
               ))}
             </div>
             <HintGuideSlot priority={110} context={onboardingGuideContext(step, keyboardOpen)} className={keyboardOpen ? "h-16 w-16 shrink-0" : "h-20 w-20 shrink-0"}

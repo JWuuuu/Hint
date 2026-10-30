@@ -1,9 +1,8 @@
 import { useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { ChevronDown, ChevronRight, FileText, Globe2, Info, LifeBuoy, Lock, Moon, Palette, ShieldAlert, Smartphone, Sparkles, Sun, Trash2, UserRound, Vibrate, Wind, type LucideIcon } from "lucide-react";
+import { ChevronDown, ChevronRight, Globe2, Moon, Smartphone, Sparkles, Sun, Trash2, Vibrate, Wind, type LucideIcon } from "lucide-react";
 import { Link } from "wouter";
 import { LanguageToggle } from "../../../components/LanguageToggle";
 import { useLanguage } from "../../../lib/i18n";
-import { useLocalAccount } from "../../../lib/auth";
 import { deleteHistory } from "../../../lib/clearHistory";
 import { getAnonId } from "../../../lib/identity";
 import { HINT_PREFERENCES_UPDATED_EVENT, setHintThemePreference, useHintPreferences } from "../../../lib/preferences";
@@ -11,6 +10,7 @@ import { getInitialHintTheme, type HintTheme } from "../../../components/app/the
 import { ME_COPY } from "../meCopy";
 
 type Row = { id: string; icon: LucideIcon; label: string; detail?: string; href?: string; danger?: boolean; disabled?: boolean; onClick?: () => void };
+type StorageStatus = "synced" | "local" | "unsaved";
 
 function subscribeTheme(listener: () => void) {
   window.addEventListener(HINT_PREFERENCES_UPDATED_EVENT, listener);
@@ -18,12 +18,12 @@ function subscribeTheme(listener: () => void) {
   return () => { window.removeEventListener(HINT_PREFERENCES_UPDATED_EVENT, listener); window.removeEventListener("storage", listener); };
 }
 
-export function SettingsList({ deviceManagement }: { deviceManagement?: ReactNode }) {
+/** Everyday choices, then the person's data, then help: in that order of use. */
+export function SettingsList({ onOpenStorage, storageStatus }: { onOpenStorage: () => void; storageStatus: StorageStatus }) {
   const theme = useSyncExternalStore(subscribeTheme, getInitialHintTheme, () => "dark");
   const { preferences, setPreference } = useHintPreferences();
   const { language, t } = useLanguage();
   const copy = ME_COPY[language];
-  const account = useLocalAccount();
   const [clearing, setClearing] = useState(false);
   const clearInFlight = useRef(false);
   const [clearError, setClearError] = useState(false);
@@ -38,45 +38,39 @@ export function SettingsList({ deviceManagement }: { deviceManagement?: ReactNod
     finally { clearInFlight.current = false; setClearing(false); }
   }
 
-  function chooseTheme(nextTheme: HintTheme) { setHintThemePreference(nextTheme); }
-
-  const supportRows: Row[] = [
-    { id: "about", icon: Info, label: t("me.about"), detail: t("me.aboutDetail"), href: "/about" },
-    { id: "support", icon: LifeBuoy, label: t("me.support"), detail: copy.supportDetail, href: "/contact" },
-    { id: "privacy", icon: Lock, label: t("me.privacyPolicy"), detail: copy.privacyDetail, href: "/privacy" },
-    { id: "terms", icon: FileText, label: t("me.terms"), detail: t("me.termsDetail"), href: "/terms" },
-    { id: "disclaimer", icon: ShieldAlert, label: t("me.settings.disclaimerTitle"), detail: t("me.settings.disclaimerDetail"), href: "/disclaimer" },
+  const status = t(storageStatus === "synced" ? "quality.synced" : storageStatus === "local" ? "quality.savedLocal" : "quality.unsaved");
+  const helpLinks = [
+    { id: "about", label: t("me.about"), href: "/about" },
+    { id: "support", label: t("me.support"), href: "/contact" },
+    { id: "privacy", label: t("me.privacyPolicy"), href: "/privacy" },
+    { id: "terms", label: t("me.terms"), href: "/terms" },
+    { id: "disclaimer", label: t("me.settings.disclaimerTitle"), href: "/disclaimer" },
   ];
 
   return <div className="me-settings-stack">
     <section className="me-section" aria-labelledby="me-preferences-heading">
       <div className="me-section-heading"><h2 id="me-preferences-heading">{copy.preferences}</h2></div>
-      <p className="me-section-description">{copy.preferencesDetail}</p>
-      <div className="me-surface me-preferences">
-        <div className="me-appearance">
-          <div className="me-setting-label"><IconTile icon={Palette} /><span><strong>{copy.appearance}</strong><span>{copy.appearanceDetail}</span></span></div>
-          <div className="me-theme-options">
-            <ThemeButton theme="bright" active={theme === "bright"} icon={Sun} label={copy.bright} onClick={() => chooseTheme("bright")} />
-            <ThemeButton theme="dark" active={theme === "dark"} icon={Moon} label={copy.dark} onClick={() => chooseTheme("dark")} />
-          </div>
-        </div>
-        <ControlRow icon={Globe2} label={t("language.switch")} detail={copy.languageDetail} control={<LanguageToggle menuPlacement="bottom" menuClassName="me-language-menu" />} />
+      {/* Appearance is a choice between two skies, so it is shown as two previews. */}
+      <div className="me-theme-options" role="group" aria-label={copy.appearance}>
+        <ThemeButton theme="bright" active={theme === "bright"} icon={Sun} label={copy.bright} onClick={() => setHintThemePreference("bright")} />
+        <ThemeButton theme="dark" active={theme === "dark"} icon={Moon} label={copy.dark} onClick={() => setHintThemePreference("dark")} />
+      </div>
+      <div className="me-group me-preferences">
+        <ControlRow icon={Globe2} label={t("language.switch")} control={<LanguageToggle menuPlacement="bottom" menuClassName="me-language-menu" />} />
         <ControlRow icon={Wind} label={t("me.reduceMotion")} detail={copy.motionDetail} control={<ToggleSwitch label={t("me.reduceMotion")} checked={preferences.reduceMotion} onChange={checked => setPreference("reduceMotion", checked)} />} />
         <ControlRow icon={Vibrate} label={copy.feedback} detail={copy.feedbackDetail} control={<ToggleSwitch label={copy.feedback} checked={preferences.soundAndHaptics} onChange={checked => setPreference("soundAndHaptics", checked)} />} />
         <SettingsRow row={{ id: "tarot", icon: Sparkles, label: t("me.settings.tarotTitle"), detail: t("me.settings.tarotDetail"), href: "/app/tarot?setup=1" }} />
       </div>
     </section>
 
-    <section className="me-section" aria-labelledby="me-device-heading">
-      <div className="me-section-heading"><h2 id="me-device-heading">{copy.device}</h2><Smartphone size={16} aria-hidden="true" /></div>
-      <p className="me-section-description">{copy.deviceDetail}</p>
-      <div className="me-device-content me-surface">
-        <div className="me-beta-note"><Lock size={15} aria-hidden="true" /><p>{copy.beta}</p></div>
-        {deviceManagement}
-        {!account && <details className="me-access">
-          <summary className="me-disclosure-summary"><IconTile icon={UserRound} /><span><strong>{copy.account}</strong><span>{copy.accountDetail}</span></span><ChevronDown size={16} aria-hidden="true" /></summary>
-          <div className="me-access-actions"><Link href="/app/signup">{copy.create}<ChevronRight size={16} aria-hidden="true" /></Link><Link href="/app/login?mode=login">{copy.open}<ChevronRight size={16} aria-hidden="true" /></Link></div>
-        </details>}
+    <section className="me-section" aria-labelledby="me-data-heading">
+      <div className="me-section-heading"><h2 id="me-data-heading">{copy.dataHeading}</h2></div>
+      <div className="me-group">
+        <button type="button" className="me-settings-row" onClick={onOpenStorage} data-testid="button-open-storage">
+          <IconTile icon={Smartphone} />
+          <span className="me-row-copy"><strong>{copy.device}</strong><span role="status" data-status={storageStatus}>{status}</span></span>
+          <ChevronRight size={16} aria-hidden="true" />
+        </button>
         <details className="me-data-disclosure">
           <summary className="me-disclosure-summary"><IconTile icon={Trash2} /><span><strong>{copy.clearLabel}</strong><span>{copy.clearIntro}</span></span><ChevronDown size={16} aria-hidden="true" /></summary>
           <SettingsRow row={{ id: "clear-history", icon: Trash2, label: clearing ? t("profile.keeping") : t("me.clearHistory"), detail: copy.clearDetail, danger: true, disabled: clearing, onClick: () => void clearHistory() }} />
@@ -85,10 +79,12 @@ export function SettingsList({ deviceManagement }: { deviceManagement?: ReactNod
       </div>
     </section>
 
-    <section className="me-section"><details className="me-help me-surface">
-      <summary className="me-disclosure-summary"><IconTile icon={LifeBuoy} /><span><strong>{copy.help}</strong><span>{copy.helpDetail}</span></span><ChevronDown size={16} aria-hidden="true" /></summary>
-      {supportRows.map(row => <SettingsRow key={row.id} row={row} />)}
-    </details></section>
+    <section className="me-section me-help" aria-labelledby="me-help-heading">
+      <div className="me-section-heading"><h2 id="me-help-heading">{copy.help}</h2></div>
+      <nav className="me-help-links" aria-labelledby="me-help-heading">
+        {helpLinks.map(link => <Link key={link.id} href={link.href} className="me-help-link">{link.label}</Link>)}
+      </nav>
+    </section>
   </div>;
 }
 
@@ -101,8 +97,8 @@ function SettingsRow({ row }: { row: Row }) {
     : <button type="button" className="me-settings-row" data-danger={row.danger || undefined} disabled={row.disabled} onClick={row.onClick} data-testid={row.danger ? "button-clear-history" : undefined}>{content}</button>;
 }
 
-function ControlRow({ icon, label, detail, control }: { icon: LucideIcon; label: string; detail: string; control: ReactNode }) {
-  return <div className="me-control-row"><div className="me-setting-label"><IconTile icon={icon} /><span><strong>{label}</strong><span>{detail}</span></span></div><span className="me-control">{control}</span></div>;
+function ControlRow({ icon, label, detail, control }: { icon: LucideIcon; label: string; detail?: string; control: ReactNode }) {
+  return <div className="me-control-row"><div className="me-setting-label"><IconTile icon={icon} /><span><strong>{label}</strong>{detail && <span>{detail}</span>}</span></div><span className="me-control">{control}</span></div>;
 }
 
 function ThemeButton({ active, theme, icon: Icon, label, onClick }: { active: boolean; theme: HintTheme; icon: LucideIcon; label: string; onClick: () => void }) {

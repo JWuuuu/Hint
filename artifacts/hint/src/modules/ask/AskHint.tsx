@@ -14,6 +14,7 @@ import { useState } from "react";
 import { roomResumeText } from "../../components/app/roomResumeCopy";
 import { HintGuideSlot, useHintGuideEnabled } from "../../components/mascot/HintGuide";
 import { askGuideContext } from "../../components/mascot/hintGuideContext";
+import { useHintTyping } from "../../components/mascot/useHintTyping";
 import { useTarotSpeechPlayback } from "../tarot/logic/useTarotSpeechPlayback";
 
 /**
@@ -32,9 +33,13 @@ export function AskHint() {
   const [history, setHistory] = useState(() => listAskHistory(getAnonId()));
   const guideEnabled = useHintGuideEnabled();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const guideContext = askGuideContext({ messageCount: chat.messages.length, thinking: chat.isThinking,
-    lastRole: chat.messages.at(-1)?.role, error: chat.error, typing: Boolean(chat.draft?.trim()), keyboardOpen,
-    playbackStatus: speechInConversation && !chat.isThinking ? speech.status : "idle" });
+  const typing = useHintTyping(chat.draft ?? "");
+  const [voiceStatus, setVoiceStatus] = useState<"idle" | "starting" | "listening" | "processing">("idle");
+  const guideContext = { ...askGuideContext({ messageCount: chat.messages.length, thinking: chat.isThinking,
+    lastRole: chat.messages.at(-1)?.role, error: chat.error, typing: typing && voiceStatus === "idle", keyboardOpen,
+    playbackStatus: speechInConversation && !chat.isThinking ? speech.status : "idle" }),
+    ...(voiceStatus !== "idle" ? { phase: voiceStatus === "listening" ? "listening" as const : "preparing" as const } : {}) };
+  useEffect(() => { if (voiceStatus !== "idle") speech.stop(); }, [voiceStatus, speech.stop]);
   useEffect(() => { if (speech.id && (!speechInConversation || chat.isThinking)) speech.stop(); }, [speech.id, speechInConversation, chat.isThinking, speech.stop]);
   useEffect(() => subscribeToAskHistory(() => setHistory(listAskHistory(getAnonId()))), []);
 
@@ -209,6 +214,7 @@ export function AskHint() {
           onSend={(t) => void chat.sendMessage(t)}
           isThinking={chat.isThinking}
           disabled={chat.isLimited}
+          onVoiceStatusChange={setVoiceStatus}
         />
       </div>
     </div>

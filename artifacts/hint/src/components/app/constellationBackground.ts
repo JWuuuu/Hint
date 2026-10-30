@@ -38,6 +38,7 @@ export interface ConstellationConfig {
   strength?: number;
   motion?: number;
   glow?: number;
+  theme?: 'dark' | 'bright';
 }
 
 export interface ConstellationRenderer {
@@ -125,6 +126,9 @@ export function createConstellationRenderer(): ConstellationRenderer {
 
   const lavender: Color = [151, 129, 164];
   const warmGold: Color = [182, 151, 112];
+  // Paper inks sink into the night ground; dark uses lifted siblings of the same hues.
+  const nightLavender: Color = [190, 170, 220];
+  const nightGold: Color = [218, 190, 140];
   // Stable, art-directed positions remain fixed while only the star light changes.
   const placements: Placement[] = [
     [.18, .14, .82, -8], [.72, .19, 1.02, 5],
@@ -244,7 +248,8 @@ export function createConstellationRenderer(): ConstellationRenderer {
           const x = (p[0] - middleX) * fit, y = (p[1] - middleY) * fit;
           return [cx + x * cos - y * sin, cy + x * sin + y * cos];
         });
-        const color = index % 3 === 1 ? warmGold : lavender;
+        const night = opts.theme === 'dark';
+        const color = index % 3 === 1 ? (night ? nightGold : warmGold) : (night ? nightLavender : lavender);
 
         ctx.strokeStyle = rgba(color, 0.18 * strength);
         ctx.lineWidth = Math.max(0.45, 0.76 * unit);
@@ -320,16 +325,36 @@ export function createConstellationRenderer(): ConstellationRenderer {
 export function paintConstellationBackground(ctx: CanvasRenderingContext2D, width: number, height: number, theme: 'dark' | 'bright'): void {
   const dark = theme === 'dark';
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = dark ? '#17151e' : '#fcfaf6';
+  // Night is twilight, not void: a purple-blue ground (#2e253c) with
+  // periwinkle-lilac moonlight in the upper corner and a low candle-gold
+  // horizon warming the bottom.
+  ctx.fillStyle = dark ? '#2e253c' : '#fcfaf6';
   ctx.fillRect(0, 0, width, height);
   const corner = ctx.createRadialGradient(width * .9, height * .1, 0, width * .9, height * .1, width * .85);
-  corner.addColorStop(0, dark ? 'rgba(55,42,68,.36)' : 'rgba(229,215,234,.36)');
-  corner.addColorStop(1, dark ? 'rgba(23,21,30,0)' : 'rgba(252,250,246,0)');
+  corner.addColorStop(0, dark ? 'rgba(137,114,168,.40)' : 'rgba(229,215,234,.36)');
+  corner.addColorStop(1, dark ? 'rgba(46,37,60,0)' : 'rgba(252,250,246,0)');
   ctx.fillStyle = corner;
   ctx.fillRect(0, 0, width, height);
   const bottom = ctx.createRadialGradient(width * .25, height * .98, 0, width * .25, height * .98, width * 1.05);
-  bottom.addColorStop(0, dark ? 'rgba(46,35,62,.44)' : 'rgba(232,219,238,.44)');
-  bottom.addColorStop(1, dark ? 'rgba(23,21,30,0)' : 'rgba(252,250,246,0)');
+  bottom.addColorStop(0, dark ? 'rgba(196,142,112,.20)' : 'rgba(232,219,238,.44)');
+  bottom.addColorStop(1, dark ? 'rgba(46,37,60,0)' : 'rgba(252,250,246,0)');
   ctx.fillStyle = bottom;
   ctx.fillRect(0, 0, width, height);
+  if (dark) {
+    // A pocket of moonlit blue (~15% at its heart) in the left sky, fading out
+    // before it reaches the lilac corner or the candle horizon.
+    const mist = ctx.createRadialGradient(width * .12, height * .42, 0, width * .12, height * .42, width * .85);
+    mist.addColorStop(0, 'rgba(112,142,210,.15)');
+    mist.addColorStop(.5, 'rgba(112,142,210,.065)');
+    mist.addColorStop(1, 'rgba(112,142,210,0)');
+    ctx.fillStyle = mist;
+    ctx.fillRect(0, 0, width, height);
+    // A fainter echo high on the right, just under the lilac moonlight, so the
+    // blue belongs to the whole sky instead of one side.
+    const echo = ctx.createRadialGradient(width * .86, height * .3, 0, width * .86, height * .3, width * .6);
+    echo.addColorStop(0, 'rgba(112,142,210,.08)');
+    echo.addColorStop(1, 'rgba(112,142,210,0)');
+    ctx.fillStyle = echo;
+    ctx.fillRect(0, 0, width, height);
+  }
 }

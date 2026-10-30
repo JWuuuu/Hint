@@ -5,12 +5,13 @@ import router from "../../routes/tarot.js";
 import { deck } from "./data/deck.js";
 import { structuredTarotReadingSchema } from "./ai/structuredTarotReader.js";
 
-const ai = vi.hoisted(() => ({ reading: vi.fn(), chat: vi.fn() }));
+const ai = vi.hoisted(() => ({ reading: vi.fn(), chat: vi.fn(), narrative: vi.fn() }));
 vi.mock("@workspace/db", () => ({ db: {}, readingsTable: {} }));
 vi.mock("../../lib/logger.js", () => ({ logger: { error: vi.fn() } }));
 vi.mock("../../lib/aiCostGuards.js", () => ({ consumeAiBudget: () => true }));
 vi.mock("./ai/structuredTarotReader.js", async (original) => ({ ...await original<object>(), generateStructuredTarotReading: ai.reading }));
 vi.mock("./chat/chatReader.js", () => ({ generateTarotChatReply: ai.chat }));
+vi.mock("./ai/tarotReader.js", () => ({ generateTarotReading: ai.narrative }));
 
 let server: Server;
 let url: string;
@@ -31,9 +32,34 @@ beforeAll(async () => {
   url = `http://127.0.0.1:${address.port}`;
 });
 afterAll(async () => { server.closeAllConnections(); await new Promise<void>((resolve) => server.close(() => resolve())); });
-beforeEach(() => { ai.reading.mockReset(); ai.chat.mockReset(); });
+beforeEach(() => { ai.reading.mockReset(); ai.chat.mockReset(); ai.narrative.mockReset(); });
 
 describe("Tarot HTTP response provenance", () => {
+  it("passes saved spreads through initial readings, detailed readings, and follow-ups", async () => {
+    const spreadHistory = JSON.stringify({ availableReadings: 1, includedReadings: 1, omittedReadings: 0,
+      readings: [{ id: "earlier", question: "Will we reconnect this month?", cards }] });
+    ai.narrative.mockResolvedValue({ interpretation: "A reading", emotionalQuote: "A conclusion" });
+    ai.reading.mockResolvedValue({ overall_summary: "Provider answer" });
+    ai.chat.mockResolvedValue("An overall synthesis.");
+    expect((await post("/tarot/reading", { question: readingInput.question, spreadType: "single", spreadHistory })).status).toBe(200);
+    expect(ai.narrative).toHaveBeenCalledWith(expect.objectContaining({ spreadHistory }));
+    expect((await post("/tarot/structured-reading", { ...readingInput, spreadHistory })).status).toBe(200);
+    expect(ai.reading).toHaveBeenLastCalledWith(expect.objectContaining({ spreadHistory }));
+    const originalReading = { signal_type: "mixed_signal", overall_summary: "Unclear.",
+      cards: cards.map((card) => ({ card_name: card.name, position: card.position, orientation: card.orientation, meaning: "Symbolic reference." })),
+      final_action_advice: "Timing is uncertain.", follow_up_invitation: "Which part?" };
+    expect((await post("/tarot/structured-reading", { ...readingInput, depth: "detailed", originalReading, spreadHistory })).status).toBe(200);
+    expect(ai.reading).toHaveBeenLastCalledWith(expect.objectContaining({ depth: "detailed", spreadHistory }));
+    expect((await post("/tarot/chat", { ...chatInput, followUp: "Based on all our spreads, what do you think?", spreadHistory })).status).toBe(200);
+    expect(ai.chat).toHaveBeenCalledWith(expect.objectContaining({ spreadHistory }));
+  });
+  it.each(["/tarot/reading", "/tarot/structured-reading", "/tarot/chat"])("rejects oversized history at %s before calling the provider", async (path) => {
+    const response = await post(path, { ...readingInput, ...chatInput, spreadHistory: "x".repeat(24001) });
+    expect(response.status).toBe(400);
+    expect(ai.reading).not.toHaveBeenCalled();
+    expect(ai.narrative).not.toHaveBeenCalled();
+    expect(ai.chat).not.toHaveBeenCalled();
+  });
   it("marks a successful provider response as api", async () => {
     ai.reading.mockResolvedValue({ overall_summary: "Provider answer" });
     const response = await post("/tarot/structured-reading", readingInput);

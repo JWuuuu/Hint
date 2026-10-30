@@ -36,7 +36,7 @@ export function ConstellationBackdrop({ paused = false }: { paused?: boolean }) 
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
       const backgroundTheme = themeRoot.dataset.hintTheme === "dark" ? "dark" : "bright";
       paintConstellationBackground(context, width, height, backgroundTheme);
-      renderer.draw(context, width, height, elapsedRef.current, CONSTELLATION_SETTINGS);
+      renderer.draw(context, width, height, elapsedRef.current, { ...CONSTELLATION_SETTINGS, theme: backgroundTheme });
       canvas.dataset.backgroundTheme = backgroundTheme;
     };
 

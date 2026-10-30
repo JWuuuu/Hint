@@ -1,5 +1,7 @@
 import { TarotVoiceConversation } from "./TarotVoiceConversation";
-import { ConstellationBackdrop } from "../../../components/app/ConstellationBackdrop";
+import { HintGuideSlot } from "../../../components/mascot/HintGuide";
+import { askGuideContext } from "../../../components/mascot/hintGuideContext";
+import { useHintTyping } from "../../../components/mascot/useHintTyping";
 import { TarotMessageActions } from "./TarotMessageActions";
 import { useTarotSpeechPlayback } from "../logic/useTarotSpeechPlayback";
 import "./tarot-reading-layout.css";
@@ -52,6 +54,7 @@ import type { WashRitualTheme } from "./CardWashRitual";
 import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
 import { requestTarotFollowUp } from "../logic/requestTarotFollowUp";
 import { buildTarotChatContext } from "../logic/buildTarotChatContext";
+import { getTarotSpreadHistory } from "../logic/buildTarotSpreadHistory";
 import { useLanguage, type HintLanguage } from "../../../lib/i18n";
 import { Dialog, DialogSurface, DialogTitle } from "../../../components/ui/dialog";
 
@@ -661,6 +664,8 @@ export function TarotHintReadingChat({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dictation = useReadingDictation({ draft, onDraft: setDraft, onComplete: text => { void send(text); }, language, t });
   const voiceActive = dictation.status !== "idle";
+  const typing = useHintTyping(draft);
+  const [composerFocused, setComposerFocused] = useState(false);
   const [voiceConversationOpen, setVoiceConversationOpen] = useState(false);
   const playback = useTarotSpeechPlayback();
   useEffect(() => {
@@ -814,6 +819,7 @@ export function TarotHintReadingChat({
       emotionalContext: story?.trim() || null,
       focusLabel: focusLabel?.trim() || null,
       requiredCardCount: selectedCards.length,
+      spreadHistory: getTarotSpreadHistory({ activeReadingId: savedReadingRef.current?.id ?? existingReadingId, question }),
       cards: selectedCards.map((card, index) => {
         const meaning = getReadableCardMeaning(card);
         const isMajor = /^\d+-/.test(card.cardId);
@@ -1001,6 +1007,7 @@ export function TarotHintReadingChat({
             toApiCardDraw(card, index, displaySpread),
           ),
           initialReading: initialReadingText,
+          spreadHistory: getTarotSpreadHistory({ activeReadingId: savedReadingRef.current?.id ?? existingReadingId, question }),
           messages: priorMessages.slice(-12).map((message) => ({
             role: message.role,
             content: message.content,
@@ -1074,9 +1081,9 @@ export function TarotHintReadingChat({
   return (
     <section
       data-room-background={roomDesign?.backgroundId ?? "stars"}
-      className="tarot-reading-theme relative flex h-full w-full flex-col overflow-hidden bg-[var(--reading-base)] text-[var(--reading-ink)]"
+      className="tarot-reading-theme relative flex h-full w-full flex-col overflow-hidden bg-transparent text-[var(--reading-ink)]"
     >
-      <ConstellationBackdrop paused={voiceConversationOpen} />
+      {/* The shell's shared sky shows through; this room paints no backdrop. */}
       <div
         data-tarot-chat-content
         className="contents"
@@ -1111,7 +1118,15 @@ export function TarotHintReadingChat({
           className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[var(--reading-accent)] hover:bg-[var(--reading-hover)]" aria-label={t("tarot.flow.chat.returnHome")}>
           <Home size={19} strokeWidth={1.7} />
         </button>
-        <h1 className="min-w-0 flex-1 truncate text-center font-serif text-[22px] text-[var(--reading-ink)]">Hint</h1>
+        <div className="flex min-w-0 flex-1 items-center justify-center">
+          <HintGuideSlot priority={55} className="-my-3 h-20 w-20 shrink-0" context={{
+            ...askGuideContext({ messageCount: messages.length, thinking: chatMutation.isPending || readingStatus === "loading",
+              lastRole: messages.at(-1)?.role, typing: typing && !voiceActive, keyboardOpen: composerFocused,
+              playbackStatus: playback.status, error: dictation.notice }),
+            room: "tarot", ...(voiceActive ? { phase: dictation.status === "listening" ? "listening" : "preparing" } : {}),
+          }} />
+          <h1 className="truncate font-serif text-[22px] text-[var(--reading-ink)]">Hint</h1>
+        </div>
         <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
           <DropdownMenuTrigger asChild>
             <button ref={menuTriggerRef} type="button" aria-label={t("tarot.flow.chat.readingOptions")}
@@ -1213,6 +1228,7 @@ export function TarotHintReadingChat({
                       position: getSpreadPositionLabel(displaySpread, index),
                     })),
                     originalReading: reading,
+                    activeReadingId: savedReadingRef.current?.id ?? existingReadingId,
                   }}
                   saved={detailedReading}
                   savedContext={detailedContext}
@@ -1287,7 +1303,7 @@ export function TarotHintReadingChat({
         <div className="mx-auto max-w-2xl">
           {(dictation.notice || voiceActive) && (
             <p role={dictation.notice ? "alert" : "status"} className="mb-2 px-2 font-sans text-xs text-[var(--reading-muted)]">
-              {dictation.notice || t(dictation.status === "starting" ? "tarot.flow.question.voiceStarting" : "tarot.chatVoice.autoSend")}
+              {dictation.notice || t(dictation.status === "starting" ? "tarot.flow.question.voiceStarting" : dictation.status === "processing" ? "tarot.voice.processing" : "tarot.chatVoice.autoSend")}
             </p>
           )}
           <div className="flex items-end gap-1 rounded-[26px] border border-[#7b5b91]/16 bg-[var(--reading-input)] px-3 py-2 shadow-[0_4px_18px_rgba(91,65,100,0.06)]">
@@ -1297,6 +1313,8 @@ export function TarotHintReadingChat({
               rows={1}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
+              onFocus={() => setComposerFocused(true)}
+              onBlur={() => setComposerFocused(false)}
               onKeyDown={onKeyDown}
               placeholder={t("tarot.flow.chat.placeholder")}
               aria-label={t("tarot.flow.chat.placeholder")}

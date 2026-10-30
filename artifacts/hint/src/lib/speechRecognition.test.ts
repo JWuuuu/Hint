@@ -257,8 +257,15 @@ describe("native Hint speech recognition", () => {
     });
     expect(callbacks.onTranscript).toHaveBeenLastCalledWith("What should I notice?");
 
-    await session.stop();
+    const stopping = session.stop();
     expect(stop).toHaveBeenCalledOnce();
+    expect(callbacks.onEnd).not.toHaveBeenCalled();
+    recognition?.onresult?.({ resultIndex: 0, results: {
+      0: { isFinal: true, 0: { transcript: "What should I notice today?" } }, length: 1,
+    } });
+    expect(callbacks.onTranscript).toHaveBeenLastCalledWith("What should I notice today?");
+    recognition?.onend?.();
+    await stopping;
     await session.cancel();
     expect(abort).not.toHaveBeenCalled();
     expect(callbacks.onEnd).toHaveBeenCalledOnce();

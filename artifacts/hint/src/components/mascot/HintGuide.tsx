@@ -138,7 +138,7 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
       const size = Math.min(bounds.width, bounds.height);
       player.current.setAnchor({ x: (bounds.left + bounds.width / 2 - screen.left) / width, y: (bounds.top + bounds.height / 2 - screen.top) / height, width: size / width },
         // A moving room also scales its slot; the guide rides along without a new glide.
-        { followLayout: followLayout && !changed && !contextChanged && (tracking || Math.abs(previousWidth - size) < 1) });
+        { followLayout: followLayout && !changed && (tracking || Math.abs(previousWidth - size) < 1) });
       if (deliveryNode !== target) { if (deliveryNode) resize.unobserve(deliveryNode);deliveryNode = target;if (target) resize.observe(target); }
       if (slot.delivery && targetBounds) {
         const rect = targetBounds;

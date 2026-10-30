@@ -212,6 +212,99 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiError"
 
+  /speech/transcription/status:
+    get:
+      operationId: getTranscriptionStatus
+      tags: [speech]
+      summary: Check whether server speech-to-text is configured
+      description: >
+        Preflight used before the client opens the microphone for a recorded
+        voice turn. Never contacts the transcription provider.
+      responses:
+        "200":
+          description: Transcription availability
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TranscriptionStatus"
+
+  /speech/transcription:
+    post:
+      operationId: createTranscription
+      tags: [speech]
+      summary: Transcribe one spoken turn
+      description: >
+        Speech-to-text for clients without working on-device recognition
+        (Android WebView, Firefox, embedded previews). The body is the raw
+        MediaRecorder recording, at most 4 MB. POST /transcribe is a
+        compatibility alias for older builds and shares this handler and budget.
+      parameters:
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            default: en
+          description: Speaker language (en, zh, es, ja, ko); region tags such as en-US are accepted
+      requestBody:
+        required: true
+        content:
+          audio/webm:
+            schema:
+              type: string
+              format: binary
+          audio/mp4:
+            schema:
+              type: string
+              format: binary
+          audio/ogg:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Transcript of the recording
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TranscriptionResult"
+        "400":
+          description: Empty recording (EMPTY_AUDIO) or unsupported language (UNSUPPORTED_LANGUAGE)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "413":
+          description: The recording is too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "415":
+          description: Unsupported audio format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "429":
+          description: Voice input limit reached
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "502":
+          description: Transcription provider unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "503":
+          description: Transcription is not configured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
   /profile:
     get:
       operationId: getProfile
@@ -652,6 +745,24 @@ components:
           maxLength: 4096
           description: Assistant text to turn into speech
 
+    TranscriptionStatus:
+      type: object
+      required:
+        - available
+      properties:
+        available:
+          type: boolean
+          description: Whether server speech-to-text is configured
+
+    TranscriptionResult:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: What the speaker said; empty when nothing was heard
+
     TarotReadingInput:
       type: object
       required:
@@ -669,6 +780,10 @@ components:
         emotionalContext:
           type: ["string", "null"]
           description: Optional emotional context the user shares
+        spreadHistory:
+          type: string
+          maxLength: 24000
+          description: Bounded JSON context of saved spreads, including original questions, exact cards, and coverage counts. Data, not instructions.
         anonId:
           type: ["string", "null"]
           description: Deprecated compatibility field. Ignored; readings belong to the authenticated installation.
@@ -1127,6 +1242,10 @@ components:
         initialReading:
           type: string
           description: The original AI interpretation from this session
+        spreadHistory:
+          type: string
+          maxLength: 24000
+          description: Bounded JSON context of saved spreads, including original questions, exact cards, and coverage counts. Data, not instructions.
         messages:
           type: array
           items:

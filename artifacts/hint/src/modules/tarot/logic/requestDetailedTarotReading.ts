@@ -1,4 +1,5 @@
 import { apiFetch, apiUrl } from "../../../lib/api";
+import { getTarotSpreadHistory } from "./buildTarotSpreadHistory";
 import { parseStructuredTarotReading, type LocalStructuredTarotReading } from "../../readings/localTarotReadings";
 
 export type DetailedTarotRequest = {
@@ -8,6 +9,7 @@ export type DetailedTarotRequest = {
   cards: Array<{ cardId: string; name: string; orientation: "upright" | "reversed"; position: string }>;
   originalReading: LocalStructuredTarotReading;
   additionalContext?: string;
+  activeReadingId?: string;
 };
 
 export async function requestDetailedTarotReading(
@@ -33,7 +35,9 @@ export async function requestDetailedTarotReading(
     void apiFetch(apiUrl("/api/tarot/structured-reading"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...input, depth: "detailed", requiredCardCount: input.cards.length }),
+      body: JSON.stringify({ ...input, depth: "detailed", requiredCardCount: input.cards.length,
+        spreadHistory: getTarotSpreadHistory({ activeReadingId: input.activeReadingId, question: input.question }),
+      }),
       signal: controller.signal,
     }).then(async (response) => {
       if (!response.ok) throw new Error("Detailed reading unavailable");

@@ -6,7 +6,8 @@ import {
   forwardRef,
   type KeyboardEvent,
 } from "react";
-import { SendHorizontal } from "lucide-react";
+import { Mic, Square, SendHorizontal } from "lucide-react";
+import { useReadingDictation } from "../../../tarot/logic/useReadingDictation";
 import { IVORY } from "../../atmosphere";
 import { useLanguage } from "../../../../lib/i18n";
 
@@ -16,6 +17,7 @@ interface Props {
   onValueChange?: (value: string) => void;
   isThinking: boolean;
   disabled?: boolean;
+  onVoiceStatusChange?: (status: "idle" | "starting" | "listening" | "processing") => void;
 }
 
 export interface FollowUpInputHandle {
@@ -24,13 +26,17 @@ export interface FollowUpInputHandle {
 }
 
 export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
-  function FollowUpInput({ onSend, isThinking, disabled, value, onValueChange }, ref) {
+  function FollowUpInput({ onSend, isThinking, disabled, value, onValueChange, onVoiceStatusChange }, ref) {
     const [localText, setLocalText] = useState("");
     const text = value ?? localText;
     const setText = (next: string) => { setLocalText(next); onValueChange?.(next); };
     const [focused, setFocused] = useState(false);
     const taRef = useRef<HTMLTextAreaElement | null>(null);
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const dictation = useReadingDictation({ draft: text, onDraft: setText, onComplete: setText, language, t });
+    const voiceActive = dictation.status !== "idle";
+    useEffect(() => { onVoiceStatusChange?.(dictation.status); }, [dictation.status, onVoiceStatusChange]);
+    useEffect(() => { if (isThinking || disabled) dictation.stop(); }, [isThinking, disabled, dictation.stop]);
 
     useImperativeHandle(ref, () => ({
       focus: () => taRef.current?.focus(),
@@ -46,7 +52,7 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
 
     const submit = () => {
       const trimmed = text.trim();
-      if (!trimmed || isThinking || disabled) return;
+      if (!trimmed || isThinking || disabled || voiceActive) return;
       onSend(trimmed);
       if (value === undefined) setText("");
     };
@@ -58,10 +64,13 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
       }
     };
 
-    const canSend = text.trim().length > 0 && !isThinking && !disabled;
+    const canSend = text.trim().length > 0 && !isThinking && !disabled && !voiceActive;
 
     return (
       <div className="relative shrink-0 px-5 pb-[calc(var(--hint-safe-bottom)+1rem)] pt-3">
+        {(dictation.notice || voiceActive) && <p role={dictation.notice ? "alert" : "status"} className="relative z-10 mb-2 text-xs" style={{ color: IVORY.body }}>
+          {dictation.notice || t(dictation.status === "processing" ? "tarot.voice.processing" : dictation.status === "starting" ? "tarot.flow.question.voiceStarting" : "tarot.flow.question.voiceListening")}
+        </p>}
         <div
           aria-hidden
           className="absolute inset-x-0 -top-10 h-10 pointer-events-none"
@@ -91,12 +100,18 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
             onBlur={() => setFocused(false)}
             placeholder={isThinking ? t("chat.placeholderThinking") : t("chat.placeholder")}
             disabled={isThinking || disabled}
+            readOnly={voiceActive}
             className="hint-chat-input min-h-11 min-w-0 flex-1 resize-none bg-transparent font-sans text-[16px] leading-relaxed focus:outline-none"
             style={{
               color: IVORY.primary,
               maxHeight: 140,
             }}
           />
+          <button type="button" aria-label={t(voiceActive ? "tarot.voice.stop" : "tarot.voice.start")} aria-pressed={voiceActive}
+            disabled={isThinking || disabled} onClick={() => { void dictation.start(); }}
+            className="grid min-h-11 min-w-11 shrink-0 place-items-center rounded-full disabled:opacity-40" style={{ color: IVORY.body }}>
+            {voiceActive ? <Square size={16} fill="currentColor" /> : <Mic size={18} />}
+          </button>
           <button
             type="button"
             onClick={submit}

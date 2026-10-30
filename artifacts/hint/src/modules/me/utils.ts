@@ -101,3 +101,67 @@ export function initialsFrom(name?: string | null): string {
       .join("") || "ME"
   );
 }
+
+/** Something the person kept on this device: a tarot reading or a daily pull. */
+export type PracticeEntry = { id: string; createdAt: string };
+
+function localDayKey(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+/** Which of the last `days` local days (oldest first, ending today) hold at least one entry. */
+export function practiceRhythm(entries: PracticeEntry[], today = new Date(), days = 14): { active: boolean[]; count: number } {
+  const kept = new Set(entries
+    .map(entry => new Date(entry.createdAt))
+    .filter(date => Number.isFinite(date.getTime()))
+    .map(localDayKey));
+  const active = Array.from({ length: days }, (_, index) =>
+    kept.has(localDayKey(new Date(today.getFullYear(), today.getMonth(), today.getDate() - (days - 1 - index)))));
+  return { active, count: active.filter(Boolean).length };
+}
+
+/** Stable 0..1 value for an id, so a star keeps its place between visits. */
+function unitHash(value: string, seed = 2166136261): number {
+  let hash = seed;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  // Final avalanche: ids that differ only in their last character (r1, r2…)
+  // must still land far apart.
+  hash ^= hash >>> 16;
+  hash = Math.imul(hash, 0x85ebca6b);
+  hash ^= hash >>> 13;
+  hash = Math.imul(hash, 0xc2b2ae35);
+  hash ^= hash >>> 16;
+  return (hash >>> 0) / 4294967295;
+}
+
+export type SkyStar = { id: string; x: number; y: number; latest: boolean };
+export const PRACTICE_SKY = { width: 320, height: 112, max: 12, inset: 14 } as const;
+
+/** The most recent entries as one constellation: oldest to newest, left to right. */
+export function practiceSky(entries: PracticeEntry[], { width, height, max, inset } = PRACTICE_SKY): SkyStar[] {
+  const recent = entries
+    .filter(entry => Number.isFinite(Date.parse(entry.createdAt)))
+    .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
+    .slice(-max);
+  const span = width - inset * 2;
+  const step = recent.length > 1 ? span / (recent.length - 1) : 0;
+  let height01 = 0.5;
+  return recent.map((entry, index) => {
+    const along = recent.length === 1 ? 0.5 : index / (recent.length - 1);
+    const last = index === recent.length - 1;
+    // Inner stars drift a little sideways (never past a neighbour) so the
+    // path reads as a constellation rather than a timeline.
+    const drift = index === 0 || last ? 0 : (unitHash(entry.id, 374761393) - 0.5) * step * 0.5;
+    // Each star eases toward its neighbour so the line reads as one gentle path.
+    height01 = height01 * 0.3 + unitHash(entry.id) * 0.7;
+    return {
+      id: entry.id,
+      x: inset + along * span + drift,
+      y: inset + height01 * (height - inset * 2),
+      latest: last,
+    };
+  });
+}

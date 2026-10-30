@@ -32,6 +32,15 @@ export const welcomeKeys=[
   [4.07,0,-.002,-.002,-.009],[4.5,0,0,0,0]
 ];
 export const gestures = {
+  sitting:{label:'Sitting',title:'Right here with you.',duration:5,tracks:{
+    crouch:[[0,0],[1,.72],[4,.72],[5,0]],pawRest:[[0,0],[1,.85],[4,.85],[5,0]],
+    soft:[[0,0],[1,.3],[4,.3],[5,0]],headPitch:[[0,0],[1,.08],[4,.08],[5,0]]
+  }},
+  typing:{label:'Typing',title:'One thought at a time.',duration:5,tracks:{
+    crouch:[[0,0],[.7,.35],[4,.35],[5,0]],pawFold:[[0,0],[.7,.4],[4,.4],[5,0]],
+    pawDip:[[0,0],[1,.9],[1.4,-.9],[1.8,.9],[2.2,-.9],[2.6,.9],[3,-.9],[3.4,.9],[4,0],[5,0]],
+    headPitch:[[0,0],[.7,.3],[4,.3],[5,0]],gazeY:[[0,0],[.7,1],[4,1],[5,0]]
+  }},
   sleepy:{label:'Sleepy',title:'Just a little sleepy.',duration:4.6,tracks:{
     crouch:[[0,0],[1.4,-0.12],[2.1,-0.12],[3.4,0.65],[3.75,0.65],[4.25,-0.08],[4.6,0]],
     headRoll:[[0,0],[1.4,-0.06],[2.1,-0.06],[3.35,0.2],[3.75,0.2],[4.2,-0.03],[4.6,0]],
@@ -671,7 +680,7 @@ export function idleBlink(time) {
   return p > .29 ? 0 : p < .085 ? ease(p / .085) : p < .125 ? 1 : 1 - ease((p - .125) / .165);
 }
 
-export const activities = ['idle','listening','thinking','reading','speaking','waiting'];
+export const activities = ['idle','listening','thinking','reading','speaking','waiting','sitting','typing'];
 export function speechEnvelope(time){
   const t=time%4.8;
   let level=0;
@@ -688,11 +697,30 @@ export function blendPose(a,b,amount){
 }
 export function sampleActivity(id,time){
   let p=neutralPose();
+  if(id==='sitting'){
+    const cycle=time%24;
+    const stretch=curve([[0,0],[12,0],[13.4,1],[14.2,1],[16,0],[24,0]],cycle);
+    p.crouch=.72-.26*stretch;p.pawRest=.85-.4*stretch;p.pawOpen=.28*stretch;
+    p.soft=.3;p.headPitch=.08-.22*stretch;
+    p.gazeX=curve([[0,0],[3,0],[4.5,.45],[6,.45],[7.5,0],[18,0],[19.5,-.4],[21,-.4],[22.5,0],[24,0]],cycle);
+    p.headYaw=p.gazeX*.18;p.headRoll=.025*Math.sin(time*Math.PI/7);
+    p.breath=.15*Math.sin(time*Math.PI/3.5)+.25*stretch;
+    p.eyeLeft=p.eyeRight=.55*stretch;
+  }
+  if(id==='typing'){
+    // Short alternating paw taps, with a pause to look back up between phrases.
+    const pause=curve([[0,1],[3.2,1],[3.8,0],[4.8,0],[5.4,1],[6,1]],time%6);
+    p.crouch=.35;p.pawFold=.4;p.pawHug=.2;
+    p.pawDip=.9*Math.sin(time*Math.PI*4)*pause;
+    p.headPitch=.12+.18*pause;p.gazeY=.2+.8*pause;
+    p.headYaw=.04*Math.sin(time*Math.PI/2);p.soft=.25;
+  }
   if(id==='listening'){
     p=sampleGesture('listening',1.65);p.eyeLeft=p.eyeRight=0;
     p.head+=Math.sin(time*Math.PI/4)*.12;p.roll+=Math.sin(time*Math.PI/5)*.004;
     p.gazeX=-.25+Math.sin(time*Math.PI/6)*.15;
-    p.headPitch=.04+Math.sin(time*Math.PI/4)*.025;
+    const nod=curve([[0,0],[4.5,0],[4.9,.11],[5.3,-.025],[5.8,0],[9,0]],time%9);
+    p.headPitch=.04+Math.sin(time*Math.PI/4)*.025+nod;
   }
   if(id==='thinking'){
     p=sampleGesture('thinking',1.8);p.eyeLeft=p.eyeRight=0;
@@ -700,6 +728,8 @@ export function sampleActivity(id,time){
     p.head+=Math.sin(time*Math.PI/5)*.1;
     p.headYaw=.22+Math.sin(time*Math.PI/6)*.035;
     p.question=.65+.12*Math.sin(time*Math.PI/8);
+    const ponder=curve([[0,0],[5,0],[6.2,1],[7.4,.7],[9,0],[12,0]],time%12);
+    p.headRoll=.08*ponder;p.headPitch-=.06*ponder;
   }
   if(id==='reading'){
     p=sampleGesture('reading',1.2);

@@ -26,11 +26,12 @@ export function voiceGuideContext(phase: HintSceneContext["phase"], playbackStat
   };
 }
 
-export function dailyGuideContext({ ready, revealed, opening = false, error = false }: {
-  ready: boolean; revealed: boolean; opening?: boolean; error?: boolean;
+export function dailyGuideContext({ ready, revealed, opening = false, error = false, resting = false }: {
+  ready: boolean; revealed: boolean; opening?: boolean; error?: boolean; resting?: boolean;
 }): HintSceneContext {
   return {
     room: "home",
+    resting,
     revealing: opening,
     phase: error ? "error" : !ready || opening ? "waiting" : revealed ? "reading" : "idle",
     hasMessages: revealed,

@@ -1,5 +1,4 @@
 import { DailyReceiptButton } from "../../receipt-printer/ReceiptShareDialog";
-import { ConstellationBackdrop } from "../../../components/app/ConstellationBackdrop";
 import { LocalizedText, translateText } from "../../../lib/LocalizedText";
 import { useLocalDay } from "../../../lib/useLocalDay";
 import { withDailyCardIdentity } from "../data/dailyCardSync";
@@ -134,16 +133,18 @@ type RoomShortcutData = {
   tint: string;
 };
 
+// Paper ink is the fallback; the dark theme supplies --hint-home-* overrides.
 const REFERENCE_TYPE = {
-  ink: "#34313a",
-  inkSoft: "#46414b",
-  body: "#5d5660",
-  muted: "#746d75",
-  label: "#716b72",
-  faint: "#8d858d",
-  purple: "#a97fac",
-  purpleDeep: "#926a96",
-  score: "#9d85ad",
+  ink: "var(--hint-home-ink, #34313a)",
+  inkSoft: "var(--hint-home-ink, #46414b)",
+  body: "var(--hint-home-body, #5d5660)",
+  muted: "var(--hint-home-muted, #746d75)",
+  label: "var(--hint-home-muted, #716b72)",
+  faint: "var(--hint-home-faint, #8d858d)",
+  purple: "var(--hint-home-accent, #a97fac)",
+  purpleDeep: "var(--hint-home-accent, #926a96)",
+  score: "var(--hint-home-score, #9d85ad)",
+  warm: "var(--hint-home-warm, #b58d71)",
 } as const;
 
 const LOCALE_BY_LANGUAGE: Record<string, string> = {
@@ -2264,15 +2265,15 @@ function ReferenceHintLogo() {
       className="hint-pressable relative grid size-[62px] shrink-0 place-items-center overflow-hidden rounded-full border text-center active:scale-95"
       style={{
         color: REFERENCE_TYPE.ink,
-        background: "linear-gradient(145deg, rgba(255,254,250,0.70), rgba(248,239,230,0.40))",
-        borderColor: "rgba(191, 159, 132, 0.105)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.54), 0 10px 22px rgba(98,78,64,0.026)",
+        background: "var(--hint-home-logo-bg, linear-gradient(145deg, rgba(255,254,250,0.70), rgba(248,239,230,0.40)))",
+        borderColor: "var(--hint-home-logo-border, rgba(191, 159, 132, 0.105))",
+        boxShadow: "var(--hint-home-logo-shadow, inset 0 1px 0 rgba(255,255,255,0.54), 0 10px 22px rgba(98,78,64,0.026))",
       }}
     >
       <span
         aria-hidden
         className="absolute inset-x-2 top-1 h-px rounded-full"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.86), transparent)" }}
+        style={{ background: "var(--hint-home-logo-sheen, linear-gradient(90deg, transparent, rgba(255,255,255,0.86), transparent))" }}
       />
       <span className="grid justify-items-center">
         <Sparkles size={19} strokeWidth={1.5} />
@@ -3301,12 +3302,14 @@ function ReferenceHero({
   revealing,
   receiptReady,
   onReveal,
+  statusMessage,
 }: {
   report: DailyReport;
   revealed: boolean;
   revealing: boolean;
   receiptReady: boolean;
   onReveal: () => void | Promise<void>;
+  statusMessage?: string;
 }) {
   const reading = useMemo(() => referenceDailyCardReading(report), [report]);
   const cardImage = referenceDailyCardImage(report.card.cardId);
@@ -3334,16 +3337,20 @@ function ReferenceHero({
         <p className="hint-home-card-copy font-serif">
           {revealed ? reading.shortAnswer : translateText("The universe left you a little note.", report.language)}
         </p>
-        <button
-          type="button"
-          disabled={!revealed && (!receiptReady || revealing)}
-          onClick={handleRevealClick}
-          aria-busy={!revealed && revealing ? "true" : "false"}
-          data-testid={revealed ? "home-reveal-trigger" : "home-reveal-action"} className="hint-pressable hint-home-reveal"
-        >
-          {translateText(revealed ? "View card again" : revealing ? "Opening Today’s Hint" : receiptReady ? "Reveal Today’s Hint" : "Preparing Today’s Hint", report.language)}
-          <ArrowRight size={16} strokeWidth={1.4} aria-hidden />
-        </button>
+        <div className="hint-home-hero-actions">
+          <button
+            type="button"
+            disabled={!revealed && (!receiptReady || revealing)}
+            onClick={handleRevealClick}
+            aria-busy={!revealed && revealing ? "true" : "false"}
+            data-testid={revealed ? "home-reveal-trigger" : "home-reveal-action"} className="hint-pressable hint-home-reveal"
+          >
+            {translateText(revealed ? "View card again" : revealing ? "Opening Today’s Hint" : receiptReady ? "Reveal Today’s Hint" : "Preparing Today’s Hint", report.language)}
+            <ArrowRight size={16} strokeWidth={1.4} aria-hidden />
+          </button>
+          {revealed && <DailyReceiptButton report={report} compact />}
+        </div>
+        {statusMessage && <p className="hint-home-sync-status" role="status">{statusMessage}</p>}
       </motion.div>
       {revealed ? (
         <button
@@ -3699,11 +3706,11 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.18, ease: "easeOut" }}
-          className="hint-home-detail-content"
+          className="hint-home-detail-content hint-home-evidence-card"
           style={{
-            background: "rgba(255,253,249,0.55)",
-            borderColor: "rgba(198, 165, 142, 0.048)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.34)",
+            background: "var(--hint-home-detail-bg, rgba(255,253,249,0.55))",
+            borderColor: "var(--hint-home-detail-border, rgba(198, 165, 142, 0.048))",
+            boxShadow: "var(--hint-home-detail-shadow, inset 0 1px 0 rgba(255,255,255,0.34))",
           }}
         >
           <p className="font-sans text-[10px] font-medium uppercase tracking-[0.18em]" style={{ color: REFERENCE_TYPE.faint }}>
@@ -3717,7 +3724,7 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
               {activeEvidenceExplanation.why}
             </p>
             <p className="font-sans text-[12px] font-normal leading-snug" style={{ color: REFERENCE_TYPE.muted }}>
-              <span className="mr-1 font-medium uppercase tracking-[0.14em]" style={{ color: "#b58d71" }}>
+              <span className="mr-1 font-medium uppercase tracking-[0.14em]" style={{ color: REFERENCE_TYPE.warm }}>
                 Brings
               </span>
               {activeEvidenceExplanation.brings}
@@ -3732,17 +3739,17 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
           id="hint-home-sky-details"
-          className="hint-home-detail-content"
+          className="hint-home-detail-content hint-home-evidence-card"
           style={{
-            background: "linear-gradient(145deg, rgba(255,252,248,0.34), rgba(255,246,241,0.23))",
-            borderColor: "rgba(198, 165, 142, 0.045)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.24)",
+            background: "var(--hint-home-detail-bg, linear-gradient(145deg, rgba(255,252,248,0.34), rgba(255,246,241,0.23)))",
+            borderColor: "var(--hint-home-detail-border, rgba(198, 165, 142, 0.045))",
+            boxShadow: "var(--hint-home-detail-shadow, inset 0 1px 0 rgba(255,255,255,0.24))",
           }}
         >
           <div className="grid gap-2">
             {detailLines.map((line, index) => (
               <p key={`${line}-${index}`} className="font-sans text-[12px] leading-snug" style={{ color: REFERENCE_TYPE.body }}>
-                <span className="mr-1.5 text-[9px] uppercase tracking-[0.14em]" style={{ color: "#b58d71" }}>
+                <span className="mr-1.5 text-[9px] uppercase tracking-[0.14em]" style={{ color: REFERENCE_TYPE.warm }}>
                   {index + 1}
                 </span>
                 {line}
@@ -3755,9 +3762,9 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
               onPointerDown={() => triggerFeedback("select")}
               className="hint-pressable inline-flex min-h-11 items-center rounded-full border px-3 font-serif text-[12px] active:scale-[0.98]"
               style={{
-                color: "#836a7d",
-                background: "rgba(255, 251, 246, 0.52)",
-                borderColor: "rgba(198, 165, 142, 0.085)",
+                color: "var(--hint-home-chip-text, #836a7d)",
+                background: "var(--hint-home-chip-bg, rgba(255, 251, 246, 0.52))",
+                borderColor: "var(--hint-home-chip-border, rgba(198, 165, 142, 0.085))",
               }}
             ><LocalizedText text={" Open sky map "} /></Link>
             {sky ? (
@@ -3766,9 +3773,9 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
                 onPointerDown={() => triggerFeedback("select")}
                 className="hint-pressable inline-flex min-h-11 items-center rounded-full px-3 font-serif text-[12px] active:scale-[0.98]"
                 style={{
-                  color: "#fff8f4",
-                  background: "linear-gradient(145deg, #9775a8, #765985)",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 18px rgba(104,72,119,0.12)",
+                  color: "var(--hint-home-cta-text, #fff8f4)",
+                  background: "var(--hint-home-cta-bg, linear-gradient(145deg, #9775a8, #765985))",
+                  boxShadow: "var(--hint-home-cta-shadow, inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 18px rgba(104,72,119,0.12))",
                 }}
               ><LocalizedText text={" Ask about this hint "} /></Link>
             ) : null}
@@ -3844,29 +3851,26 @@ function ReferenceHomePage({
 }) {
   return (
     <div className="relative h-full w-full">
-    <ConstellationBackdrop />
     <div
       className="reference-home-crisp hint-home-page relative h-full w-full overflow-x-hidden overflow-y-auto overscroll-none"
     >
       <div className="hint-home-content relative z-10 mx-auto w-full">
         <header className="hint-home-header">
           <h1 className="sr-only"><LocalizedText text="Today" /></h1>
-          <HintGuideSlot context={dailyGuideContext({ ready: dailyReceiptReady, revealed: dailyCardRevealed, opening: dailyCardRevealing })}
-            className="-my-5 -ml-4 mr-auto h-24 w-24 shrink-0" />
-          {(dailyCardRevealed || receiptStatusMessage) && <div className="hint-home-share-status">
-            {dailyCardRevealed && <DailyReceiptButton report={report} compact />}
-            {receiptStatusMessage && <p className="hint-home-sync-status" role="status">{receiptStatusMessage}</p>}
-          </div>}
+          <HintGuideSlot context={dailyGuideContext({ ready: dailyReceiptReady, revealed: dailyCardRevealed, opening: dailyCardRevealing, resting: true })}
+            className="-my-5 -ml-4 mr-auto h-28 w-28 shrink-0" />
           <ReferenceHintLogo />
         </header>
 
         <div className="hint-home-sections">
+          {/* Sharing and save status belong to the reading they describe, not the header. */}
           <ReferenceHero
             report={report}
             revealed={dailyCardRevealed}
             revealing={dailyCardRevealing}
             receiptReady={dailyReceiptReady}
             onReveal={onReveal}
+            statusMessage={receiptStatusMessage}
           />
           <ReferenceEnergyPanel report={report} />
           <ReferenceEvidencePanel report={report} />

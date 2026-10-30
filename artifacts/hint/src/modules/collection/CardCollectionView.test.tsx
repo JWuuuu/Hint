@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => ({ getReceipt: vi.fn(), unlock: vi.fn(), open: vi
 const fixtureCard = { cardId: "0-fool", name: "The Fool", image: "/fixture.jpg", rare: true, unlocked: true, sources: [], count: 1, lastSeenAt: "2026-09-09T12:00:00" };
 vi.mock("../../lib/i18n", () => ({ useLanguage: () => ({ language: "ja", t: (key: string) => key }) }));
 vi.mock("../../lib/LocalizedText", () => ({ LocalizedText: ({ text }: { text: string }) => <>{text}</> }));
-vi.mock("wouter", () => ({ Link: ({ children, href }: { children: ReactNode; href: string }) => <a href={href}>{children}</a> }));
+vi.mock("wouter", () => ({ useLocation: () => ["/app/collection", vi.fn()], Link: ({ children, href }: { children: ReactNode; href: string }) => <a href={href}>{children}</a> }));
 vi.mock("../../components/app/AppChrome", async importOriginal => ({
   ...await importOriginal<typeof import("../../components/app/AppChrome")>(),
   AppScreen: ({ children }: { children: ReactNode }) => <div>{children}</div>,

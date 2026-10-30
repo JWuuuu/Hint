@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { deck } from "../data/deck.js";
 import { buildLocalStructuredTarotReading, generateStructuredTarotReading, validateGeneratedReading } from "./structuredTarotReader.js";
 import { generateTarotChatReply } from "../chat/chatReader.js";
+import { generateTarotReading } from "./tarotReader.js";
+import { HINT_SYSTEM_PROMPT } from "./tarotPrompt.js";
 
 const provider = vi.hoisted(() => ({ create: vi.fn() }));
 vi.mock("../../../lib/openaiConfig.js", () => ({
@@ -24,6 +26,26 @@ function completion(content = JSON.stringify(reading()), finish_reason = "stop",
 beforeEach(() => provider.create.mockReset());
 
 describe("Tarot provider contract", () => {
+  it("uses the shared reader rules and supplied history in every reading mode without promoting user context to system instructions", async () => {
+    const spreadHistory = JSON.stringify({ readings: [{ question: "Will we reconnect this month?", cards: [{ name: "The Tower", orientation: "reversed", position: "Obstacle" }] }], omittedReadings: 2 });
+    provider.create.mockResolvedValue(completion());
+    await generateTarotReading({ ...input, spreadHistory });
+    await generateStructuredTarotReading({ ...input, spreadHistory });
+    await generateStructuredTarotReading({ ...input, question: "我们这个月会复合吗？", spreadHistory });
+    provider.create.mockResolvedValue(completion("Lean No. The supplied spreads disagree on whether contact develops into commitment."));
+    await generateTarotChatReply({ originalQuestion: input.question, territory: "Relationships", emotionalContext: null,
+      spreadType: "three", cards, initialReading: "An earlier answer.", messages: [],
+      followUp: "Based on all our spreads, be more specific.", spreadHistory });
+    for (const [request] of provider.create.mock.calls) {
+      expect(request.messages[0].content).toContain(HINT_SYSTEM_PROMPT);
+      expect(request.messages[1].role).toBe("user");
+      expect(request.messages[1].content).toContain(spreadHistory);
+      expect(request.messages[0].content).not.toContain(spreadHistory);
+      expect(request.messages[1].content).toContain("Position 2");
+      expect(request.messages[1].content).toContain("reversed");
+    }
+    expect(provider.create.mock.calls.at(-1)![0].messages.at(-1).content).toBe("Based on all our spreads, be more specific.");
+  });
   it("preserves exact selected identities, positions, orientations and full copy", () => {
     const value = reading();
     value.cards[0]!.card_name = "A translated display name";

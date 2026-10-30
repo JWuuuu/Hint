@@ -1,6 +1,9 @@
 import { LocalizedText } from "../../../lib/LocalizedText";
 import { useRoomVisit } from "../../../components/app/RoomVisitBoundary";
 import { markRoomVisitStarted, roomVisitWasClosed } from "../../../components/app/roomVisits";
+import { HintGuideSlot } from "../../../components/mascot/HintGuide";
+import { useHintTyping } from "../../../components/mascot/useHintTyping";
+import { voiceGuideContext } from "../../../components/mascot/hintGuideContext";
 import {
   useEffect,
   useReducer,
@@ -1265,7 +1268,7 @@ function PrimaryButton({
   );
 }
 
-function StepShell({ children, className = "" }: { children: ReactNode; className?: string }) {
+function StepShell({ children, className = "", composing = false }: { children: ReactNode; className?: string; composing?: boolean }) {
   const reduceMotion = useTarotReducedMotion();
   return (
     <motion.section
@@ -1275,6 +1278,7 @@ function StepShell({ children, className = "" }: { children: ReactNode; classNam
       transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.8, 0.22, 1] }}
       className={`hint-app-scroll absolute inset-0 z-10 flex w-full transform-gpu flex-col px-5 pb-[calc(var(--hint-safe-bottom)+1.25rem)] pt-[calc(var(--hint-safe-top)+4rem)] will-change-[opacity,transform] ${className}`}
     >
+      <HintGuideSlot priority={35} className="-mb-3 -mt-4 ml-auto h-20 w-20 shrink-0" context={{ room: "tarot", phase: "idle", typing: composing, keyboardOpen: composing, hasMessages: false, audioPlaying: false }} />
       {children}
     </motion.section>
   );
@@ -1329,6 +1333,7 @@ function VoicePanel({
   notice,
   listening,
   starting,
+  onStop,
   onUse,
   onCancel,
 }: {
@@ -1336,16 +1341,17 @@ function VoicePanel({
   notice?: string | null;
   listening: boolean;
   starting: boolean;
+  onStop: () => void;
   onUse: () => void;
   onCancel: () => void;
 }) {
   const { t } = useLanguage();
   const reduceMotion = useTarotReducedMotion();
   const animateWave = listening && !reduceMotion;
-  const title = notice
-    ? t("tarot.voice.stopped")
-    : starting
+  const title = starting
       ? t("tarot.flow.question.voiceStarting")
+    : notice
+      ? t("tarot.voice.stopped")
       : listening
       ? t("tarot.flow.question.voiceListening")
       : transcript
@@ -1365,7 +1371,8 @@ function VoicePanel({
     >
       <div className="absolute inset-x-4 bottom-[calc(var(--hint-safe-bottom)+1rem)] mx-auto max-w-[440px] rounded-[32px] border border-white/70 bg-[#fff9f4]/98 p-5 text-center shadow-[0_24px_70px_rgba(61,40,74,0.28)]">
         <p role="status" className="font-serif text-[28px] text-[#382f45]">{title}</p>
-        <div aria-hidden="true" className="relative mx-auto mt-5 h-20 max-w-[260px]">
+        <HintGuideSlot priority={100} className="mx-auto h-28 w-28" context={voiceGuideContext(starting ? "starting" : listening ? "listening" : notice ? "error" : "paused", "idle")}
+          fallback={<div aria-hidden="true" className="relative mx-auto mt-5 h-20 max-w-[260px]">
           {[0, 1, 2, 3, 4].map((line) => {
             const width = 112 - line * 9;
             return (
@@ -1399,11 +1406,12 @@ function VoicePanel({
             />
             );
           })}
-        </div>
+        </div>} />
         <p className="mx-auto min-h-12 max-w-[20rem] font-sans text-[14px] font-semibold leading-relaxed text-[#6b586d]">
           {notice || transcript || t("tarot.flow.question.voiceHint")}
         </p>
         <div className="mt-5 flex gap-2">
+          {listening && <button type="button" onClick={onStop} className="min-h-11 flex-1 rounded-full border border-[#d9c9d6] text-[12px] font-bold text-[#6f6072]">{t("tarot.voice.stop")}</button>}
           <button
             type="button"
             onClick={onCancel}
@@ -1447,6 +1455,8 @@ function QuestionStep({
   const [voiceNotice, setVoiceNotice] = useState<string | null>(null);
   const [voiceListening, setVoiceListening] = useState(false);
   const [voiceStarting, setVoiceStarting] = useState(false);
+  const typing = useHintTyping(question);
+  const transcriptRef = useRef("");
   const speechSessionRef = useRef<HintSpeechSession | null>(null);
   const speechStartRef = useRef<Promise<HintSpeechSession> | null>(null);
   const speechAbortRef = useRef<AbortController | null>(null);
@@ -1455,15 +1465,18 @@ function QuestionStep({
   const canContinue = Boolean(cleanQuestion(question));
 
   async function stopVoice(cancel = false) {
-    voiceRequestRef.current += 1;
-    if (cancel) speechAbortRef.current?.abort();
-    speechAbortRef.current = null;
+    if (cancel) {
+      voiceRequestRef.current += 1;
+      speechAbortRef.current?.abort();
+      speechAbortRef.current = null;
+    }
     const session = speechSessionRef.current;
     const pending = speechStartRef.current;
-    speechSessionRef.current = null;
+    if (cancel) speechSessionRef.current = null;
     const startedSession = session ?? await pending?.catch(() => null);
     if (!startedSession) return;
     await (cancel ? startedSession.cancel() : startedSession.stop()).catch(() => undefined);
+    if (speechSessionRef.current === startedSession) speechSessionRef.current = null;
   }
 
   useEffect(() => {
@@ -1483,6 +1496,7 @@ function QuestionStep({
     const isCurrent = () => voiceRequestRef.current === requestId && !controller.signal.aborted;
     let sessionEnded = false;
     setTranscript("");
+    transcriptRef.current = "";
     setVoiceNotice(null);
     setVoiceListening(false);
     setVoiceStarting(true);
@@ -1509,7 +1523,14 @@ function QuestionStep({
         onTranscript: (nextTranscript) => {
           if (!isCurrent()) return;
           setVoiceNotice(null);
+          transcriptRef.current = nextTranscript;
           setTranscript(nextTranscript);
+        },
+        onProcessing: () => {
+          if (!isCurrent()) return;
+          setVoiceListening(false);
+          setVoiceStarting(true);
+          setVoiceNotice(t("tarot.voice.processing"));
         },
         onEnd: () => {
           sessionEnded = true;
@@ -1522,18 +1543,7 @@ function QuestionStep({
           if (!isCurrent()) return;
           setVoiceStarting(false);
           setVoiceListening(false);
-          const key =
-            reason === "permission"
-              ? "tarot.voice.permission"
-              : reason === "micMissing"
-                ? "tarot.voice.micMissing"
-              : reason === "network"
-                ? "tarot.voice.network"
-                : reason === "no-speech"
-                  ? "tarot.voice.noSpeech"
-                  : reason === "unavailable"
-                    ? "tarot.voice.unavailable"
-                    : "tarot.voice.failed";
+          const key = `tarot.voice.${reason === "no-speech" ? "noSpeech" : reason}`;
           setVoiceNotice(t(key));
         },
       });
@@ -1556,7 +1566,7 @@ function QuestionStep({
 
   return (
     <>
-      <StepShell>
+      <StepShell composing={typing}>
         <div className="pb-[calc(var(--hint-safe-bottom)+7.5rem)]">
           <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#9c7d92]">
             {t("tarot.flow.question.eyebrow")}
@@ -1687,14 +1697,17 @@ function QuestionStep({
             notice={voiceNotice}
             listening={voiceListening}
             starting={voiceStarting}
+            onStop={() => { void stopVoice(); }}
             onCancel={() => {
               void stopVoice(true);
               closeVoice();
             }}
-            onUse={() => {
+            onUse={async () => {
               hapticTick(8);
-              void stopVoice();
-              setQuestion(transcript);
+              const requestId = voiceRequestRef.current;
+              await stopVoice();
+              if (voiceRequestRef.current !== requestId) return;
+              setQuestion(transcriptRef.current);
               closeVoice();
             }}
           />

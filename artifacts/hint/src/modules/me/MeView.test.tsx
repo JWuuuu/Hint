@@ -28,18 +28,55 @@ vi.mock("../../components/app/DeviceConnectionStatus", () => ({ DeviceConnection
 beforeEach(() => {
   state.language = "en"; state.profile = null; state.storageStatus = "local"; state.reduced = false;
   window.localStorage.removeItem("hint-theme");
+  window.localStorage.removeItem("hint_local_tarot_readings_v1");
   state.save.mockReset(); state.deleteHistory.mockReset(); state.setPreference.mockReset(); state.setTheme.mockReset();
   vi.spyOn(window, "confirm").mockReturnValue(true);
 });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 
-it("keeps chart, history and collection accessible without adding an email", () => {
+const READINGS_KEY = "hint_local_tarot_readings_v1";
+
+it("invites a first reading and birth details instead of showing empty counts", () => {
   render(<MeView />);
-  expect(screen.getByRole("link", { name: /My birth chart/ }).getAttribute("href")).toBe("/app/astrology?tab=chart");
-  expect(screen.getByRole("link", { name: /Reading history/ }).getAttribute("href")).toBe("/app/readings");
-  expect(screen.getByRole("link", { name: /My collection/ }).getAttribute("href")).toBe("/app/collection");
-  expect(screen.getByText(ME_COPY.en.beta)).toBeTruthy();
+  expect(screen.getByText(ME_COPY.en.firstLetterTitle)).toBeTruthy();
+  expect(screen.getByRole("link", { name: ME_COPY.en.firstLetterAction }).getAttribute("href")).toBe("/app/daily");
+  expect(screen.getByTestId("button-edit-profile").textContent).toBe(ME_COPY.en.addBirth);
+  expect(screen.queryByText(/\b0 of\b/)).toBeNull();
+  expect(screen.queryByRole("link", { name: /See all/ })).toBeNull();
+  expect(screen.getByRole("link", { name: /Find your type/ }).getAttribute("href")).toBe("/app/personalities");
   expect(screen.queryByRole("textbox", { name: /email/i })).toBeNull();
+});
+
+it("shows the newest kept reading as a letter and opens history, rhythm and deck", () => {
+  const card = (cardId: string, name: string, orientation: "upright" | "reversed") => ({ cardId, name, orientation, positionLabel: "Now", keywords: [] });
+  const reading = (id: string, question: string, createdAt: string) => ({
+    schemaVersion: 2, id, anonId: "fictional-me-owner", source: "tarot", spreadType: "three", spreadLabel: "Three cards", question,
+    chatMessages: [], shortAnswer: "A fictional answer", questionMeaning: "", cardMeanings: ["", "", ""],
+    cards: [card("the-star", "The Star", "upright"), card("two-of-cups", "Two of Cups", "reversed"), card("page-of-pentacles", "Page of Pentacles", "upright")],
+    createdAt,
+  });
+  window.localStorage.setItem(READINGS_KEY, JSON.stringify([
+    reading("older", "An older fictional question?", new Date(Date.now() - 3 * 86400000).toISOString()),
+    reading("newer", "What is opening for me?", new Date(Date.now() - 3600000).toISOString()),
+  ]));
+  render(<MeView />);
+  expect(screen.getByText("“What is opening for me?”")).toBeTruthy();
+  expect(screen.queryByText("“An older fictional question?”")).toBeNull();
+  expect(screen.getByText("The Star, Two of Cups, Page of Pentacles")).toBeTruthy();
+  expect(screen.getByRole("link", { name: "See all 2" }).getAttribute("href")).toBe("/app/readings");
+  expect(screen.getByRole("link", { name: new RegExp(ME_COPY.en.rhythm) }).getAttribute("href")).toBe("/app/daily");
+  expect(screen.getByRole("link", { name: new RegExp(ME_COPY.en.deck) }).getAttribute("href")).toBe("/app/collection");
+  expect(screen.queryByText(ME_COPY.en.firstLetterTitle)).toBeNull();
+});
+
+it("keeps device storage one step away and returns focus when leaving it", () => {
+  render(<MeView />);
+  expect(screen.queryByText(ME_COPY.en.beta)).toBeNull();
+  fireEvent.click(screen.getByTestId("button-open-storage"));
+  expect(document.activeElement?.id).toBe("me-storage-heading");
+  expect(screen.getByText(ME_COPY.en.beta)).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: ME_COPY.en.back }));
+  expect(document.activeElement).toBe(screen.getByTestId("button-open-storage"));
 });
 
 it("preserves failed edits and restores focus when the user returns", async () => {
@@ -142,6 +179,7 @@ for (const language of ["en", "zh", "es", "ja", "ko"] as const) {
     expect(screen.getByRole("heading", { name: ME_COPY[language].title })).toBeTruthy();
     expect(screen.getByText(ME_COPY[language].unknownTime)).toBeTruthy();
     expect(screen.getByText("Fictional City")).toBeTruthy();
+    expect(screen.getByRole("link", { name: ME_COPY[language].openChart }).getAttribute("href")).toBe("/app/astrology?tab=chart");
     expect(screen.getByRole("status").textContent).not.toMatch(/undefined|quality\./);
     expect(screen.queryByText(/Pisces|双鱼座|魚座|물고기자리/)).toBeNull();
   });

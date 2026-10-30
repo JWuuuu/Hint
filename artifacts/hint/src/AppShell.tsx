@@ -9,18 +9,10 @@ import {
   UserRound,
   type LucideIcon,
 } from "lucide-react";
-import {
-  PointerProvider,
-  RoomLight,
-  Particles,
-  Vignette,
-  Grain,
-  Haze,
-  Moonlight,
-} from "./modules/hold/atmosphere";
+import { PointerProvider } from "./modules/hold/atmosphere";
 import { AppLaunchIntro } from "./components/app/AppLaunchIntro";
 import type { LaunchIntroVariant } from "./components/app/AppLaunchIntro";
-import { CelestialBackdrop } from "./components/app/CelestialBackdrop";
+import { ConstellationBackdrop } from "./components/app/ConstellationBackdrop";
 import { trackEvent } from "./lib/analytics";
 import {
   getInitialHintTheme,
@@ -35,11 +27,11 @@ import { triggerFeedback } from "./lib/feedback";
 import { useMotionPolicy } from "./lib/motionPolicy";
 import { RoomTransitions } from "./components/app/RoomTransitions";
 import { useHintGuideEnabled } from "./components/mascot/HintGuide";
+import { useOnboardingOwnsScreen } from "./components/app/onboardingState";
 
 /** Full-screen flows own their navigation, so the global bottom nav is hidden there. */
 const NAV_HIDDEN_ROUTES = ["/tarot", "/ask", "/login", "/app/tarot", "/app/ask", "/app/login"];
 const HINT_LAUNCH_SEEN_STORAGE_KEY = "hint_launch_seen_v2";
-const HINT_ONBOARDING_COMPLETE_STORAGE_KEY = "hint_onboarding_complete_v3";
 const ENABLE_LAUNCH_INTRO = true;
 const CREAM_STYLE_ROUTES = [
   "/app/daily",
@@ -63,15 +55,6 @@ function getLaunchIntroVariant(): LaunchIntroVariant {
 function isCreamStyleRoute(location: string): boolean {
   const pathname = location.split(/[?#]/, 1)[0]?.replace(/\/+$/, "") || "/";
   return CREAM_STYLE_ROUTES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
-}
-
-function onboardingOwnsScreen(): boolean {
-  if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("onboarding") === "reset") return true;
-  try {
-    return window.localStorage.getItem(HINT_ONBOARDING_COMPLETE_STORAGE_KEY) !== "1";
-  } catch {
-    return true;
-  }
 }
 
 /**
@@ -103,7 +86,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const isProductRoute = !["/privacy", "/terms", "/disclaimer", "/contact", "/about"].includes(routePath);
   const referenceHomeRoute = routePath === "/app" || routePath === "/";
   const creamStyleRoute = !referenceHomeRoute && isCreamStyleRoute(routePath);
-  const showNav = isProductRoute && !onboardingOwnsScreen() && !NAV_HIDDEN_ROUTES.some(
+  // Reactive: finishing or replaying onboarding changes storage/search without a reload.
+  const onboardingActive = useOnboardingOwnsScreen();
+  const showNav = isProductRoute && !onboardingActive && !NAV_HIDDEN_ROUTES.some(
     (r) => routePath === r || routePath.startsWith(r + "/"),
   );
 
@@ -191,22 +176,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         data-hint-theme={theme}
         data-hint-cream-route={creamStyleRoute ? "true" : undefined}
         className={[
-          "hint-app-shell-root fixed inset-0 overflow-hidden",
+          "hint-app-shell-root hint-sky-shell fixed inset-0 overflow-hidden",
           creamStyleRoute ? "hint-cream-route" : "",
         ].join(" ")}
       >
-        {!referenceHomeRoute && !creamStyleRoute ? (
-          <>
-            {/* Atmosphere stack — back to front */}
-            <CelestialBackdrop theme={theme} />
-            <Moonlight />
-            <Haze />
-            <Particles />
-            <RoomLight />
-            <Vignette />
-            <Grain />
-          </>
-        ) : null}
+        {/* The one sky. Mounted here, outside route content, so Today, Daily,
+            Me, History and every other page share the same canvas, palette
+            and uninterrupted motion. Pages keep transparent backgrounds. */}
+        <ConstellationBackdrop />
 
         {/* Route content sits above the atmosphere.
             Pages own their own scroll model — AppShell does not impose
@@ -222,7 +199,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         ) : null}
 
         {ENABLE_LAUNCH_INTRO &&
-        !(guideEnabled && onboardingOwnsScreen()) &&
+        !(guideEnabled && onboardingActive) &&
         isProductRoute &&
         !referenceHomeRoute &&
         !creamStyleRoute &&
@@ -348,12 +325,14 @@ function HintAiMark({ active, referenceHome = false }: { active: boolean; refere
         referenceHome ? "size-[54px]" : "size-[52px]",
       ].join(" ")}
       style={{
+        // The dark theme supplies its own pearl through --hint-orb-fill*.
         background: active
-          ? "radial-gradient(circle at 34% 20%, rgba(255,244,252,0.94), rgba(204,164,211,0.64) 40%, rgba(128,92,145,0.88) 100%)"
-          : "radial-gradient(circle at 34% 20%, rgba(255,243,252,0.90), rgba(207,163,216,0.56) 42%, rgba(132,98,151,0.80) 100%)",
+          ? "var(--hint-orb-fill-active, radial-gradient(circle at 34% 20%, rgba(255,244,252,0.94), rgba(204,164,211,0.64) 40%, rgba(128,92,145,0.88) 100%))"
+          : "var(--hint-orb-fill, radial-gradient(circle at 34% 20%, rgba(255,243,252,0.90), rgba(207,163,216,0.56) 42%, rgba(132,98,151,0.80) 100%))",
         color: "#fff8f4",
+        // Dark theme swaps the white halo for a ring cut from the dock plate.
         boxShadow:
-          "0 0 0 5px rgba(255,255,255,0.52), 0 11px 22px rgba(105,77,120,0.105), 0 0 24px rgba(195,145,206,0.12), inset 0 1px 0 rgba(255,255,255,0.54), inset 0 -10px 20px rgba(63,38,83,0.085), inset 0 0 0 1px rgba(255,255,255,0.34)",
+          "0 0 0 5px var(--hint-orb-ring, rgba(255,255,255,0.52)), var(--hint-orb-shadow, 0 11px 22px rgba(105,77,120,0.105), 0 0 24px rgba(195,145,206,0.12)), inset 0 1px 0 rgba(255,255,255,0.54), inset 0 -10px 20px rgba(63,38,83,0.085), inset 0 0 0 1px rgba(255,255,255,0.34)",
       }}
     >
       <span

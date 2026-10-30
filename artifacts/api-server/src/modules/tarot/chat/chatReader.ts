@@ -28,6 +28,7 @@ export async function generateTarotChatReply(params: {
   initialReading: string;
   messages: TarotChatTurn[];
   followUp: string;
+  spreadHistory?: string;
   signal?: AbortSignal;
 }): Promise<string> {
   const sessionContext = buildSessionContextBlock({
@@ -37,6 +38,7 @@ export async function generateTarotChatReply(params: {
     spreadType: params.spreadType,
     cards: params.cards,
     initialReading: params.initialReading,
+    spreadHistory: params.spreadHistory,
   });
 
   // Cap prior history to the last 12 turns to keep context bounded.
@@ -44,7 +46,7 @@ export async function generateTarotChatReply(params: {
 
   const messages: ChatCompletionMessageParam[] = [
     { role: "system", content: HINT_CHAT_SYSTEM_PROMPT },
-    { role: "system", content: sessionContext },
+    { role: "user", content: sessionContext },
     ...trimmed.map<ChatCompletionMessageParam>((m) => ({
       role: m.role,
       content: m.content,
@@ -54,7 +56,7 @@ export async function generateTarotChatReply(params: {
 
   const response = await getOpenAIClient().chat.completions.create({
     model: openaiModel,
-    max_completion_tokens: 700,
+    max_completion_tokens: 1100,
     messages,
   }, { signal: params.signal, timeout: 11_500 });
 

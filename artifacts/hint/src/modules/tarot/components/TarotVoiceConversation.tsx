@@ -10,7 +10,7 @@ import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
 import { HintGuideSlot } from "../../../components/mascot/HintGuide";
 import { voiceGuideContext } from "../../../components/mascot/hintGuideContext";
 
-type Phase = "starting" | "listening" | "thinking" | "speaking" | "paused" | "error";
+type Phase = "starting" | "listening" | "preparing" | "thinking" | "speaking" | "paused" | "error";
 
 export function TarotVoiceConversation({ onSend, onClose, playback, busy }: {
   onSend: (text: string) => Promise<string | null | undefined>;
@@ -90,7 +90,10 @@ export function TarotVoiceConversation({ onSend, onClose, playback, busy }: {
         if (active()) { setNotice(current.current.t("tarot.chatVoice.replyError")); setPhase("error"); }
       }
     };
-    finishTurn.current = () => { void finish(); };
+    finishTurn.current = () => {
+      if (session.current) void session.current.stop().then(() => finish());
+      else void finish();
+    };
     silence.current = setTimeout(() => {
       if (!active() || finished) return;
       finished = true;
@@ -106,6 +109,12 @@ export function TarotVoiceConversation({ onSend, onClose, playback, busy }: {
           if (!active() || finished) return;
           if (silence.current) clearTimeout(silence.current);
           setPhase("listening");
+        },
+        onProcessing: () => {
+          if (!active() || finished) return;
+          if (silence.current) clearTimeout(silence.current);
+          setPhase("preparing");
+          setNotice(current.current.t("tarot.voice.processing"));
         },
         onTranscript: value => {
           if (!active() || finished) return;
@@ -220,7 +229,7 @@ export function TarotVoiceConversation({ onSend, onClose, playback, busy }: {
             </div>
             {phase === "speaking" && <button type="button" onClick={() => { void listen(); }} aria-label={t("tarot.chatVoice.interrupt")}
               className="grid h-14 w-14 place-items-center rounded-full tarot-action-primary"><Mic size={22} /></button>}
-            {listening && transcript.trim() && <button type="button" onClick={() => finishTurn.current?.()} aria-label={t("tarot.chatVoice.send")}
+            {phase === "listening" && <button type="button" onClick={() => finishTurn.current?.()} aria-label={t("tarot.chatVoice.send")}
               className="grid h-14 w-14 place-items-center rounded-full tarot-action-primary"><Check size={22} /></button>}
             <div className="space-y-2">
               <button type="button" onClick={onClose} aria-label={t("tarot.chatVoice.end")} className="grid h-14 w-14 place-items-center rounded-full bg-[var(--reading-control)] text-[var(--reading-body)]"><X size={23} /></button>

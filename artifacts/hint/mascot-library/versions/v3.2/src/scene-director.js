@@ -4,7 +4,7 @@ import {sampleDailyDelivery,dailyDeliveryDuration} from './daily-delivery-motion
 
 export function describeHintContext(context) {
   const voice=context.room==='voice';
-  const speaking=['voice','ask'].includes(context.room)&&context.phase==='speaking'&&Boolean(context.audioPlaying);
+  const speaking=['voice','ask','tarot'].includes(context.room)&&context.phase==='speaking'&&Boolean(context.audioPlaying);
   let activity='idle';
   if(voice){
     if(context.phase==='listening')activity='listening';
@@ -12,7 +12,10 @@ export function describeHintContext(context) {
     else if(context.phase==='speaking'&&context.audioPlaying)activity='speaking';
     else if(['starting','preparing','speaking'].includes(context.phase))activity='waiting';
   }else if(speaking)activity='speaking';
+  else if(context.phase==='listening')activity='listening';
   else if(context.phase==='thinking')activity='thinking';
+  else if(context.typing&&context.phase!=='error')activity='typing';
+  else if(context.room==='home'&&context.resting&&['idle','reading'].includes(context.phase))activity='sitting';
   else if(context.phase==='reading')activity='reading';
   else if(['waiting','starting','preparing','speaking'].includes(context.phase)||context.hasMessages||context.typing)activity='waiting';
   const placement=context.room==='away'?'away':voice?'voice':context.room==='profile'||context.hasMessages||context.keyboardOpen?'avatar':'welcome';
@@ -25,7 +28,7 @@ export function gestureForContext(previous, next) {
   if (next.phase === 'error' && (previous.room !== next.room || previous.phase !== 'error')) return 'reassure';
   if (previous.room === next.room && previous.phase === 'thinking' && next.phase === 'reading') return 'acknowledge';
   if (next.room === 'home' && previous.room === 'home' && previous.revealing && !next.revealing && next.phase === 'reading') return 'present-card';
-  if (['home', 'ask'].includes(next.room) && previous.room !== next.room && next.phase === 'idle' && !next.hasMessages) return 'welcome-back';
+  if (previous.room !== next.room && next.phase === 'idle' && !next.hasMessages) return 'welcome-back';
   return null;
 }
 
@@ -44,7 +47,7 @@ export function createHintSceneDirector(options={}) {
   let description=describeHintContext(context),clock=0,manualPaused=false,reduced=false,visible=true,speed=1,destroyed=false;
   let activity={id:description.activity,start:0},gesture=null,reaction=null,nextWink='wink-left',poseTransition=null,queuedGesture=null;
   let placement=description.placement,actorFrom={x:1.24,y:.22,width:.58},actorVelocity={x:0,y:0,width:0},actorAt=0,actorDuration=.95;
-  let actorTarget={...sceneTargets[placement]},aspect=.5,look={x:0,y:0,targetX:0,targetY:0};
+  let actorTarget={...sceneTargets[placement]},anchored=false,aspect=.5,look={x:0,y:0,targetX:0,targetY:0};
   let accentsVisible=true,entry=true;
   let introduction=null,introExit=null,introduced=false,letter='delivered';
   let delivery=null,pawTransition=null;
@@ -145,6 +148,9 @@ export function createHintSceneDirector(options={}) {
   }
   function changePlacement(next){
     if(placement===next)return;
+    // Once the app supplies a slot, its measured position owns the destination.
+    // Keyboard and voice state changes must not detour through a library default.
+    if(anchored&&next!=='away'&&placement!=='away'){placement=next;return;}
     const current=actorAtTime(clock),previous=actorAtTime(Math.max(0,clock-.001));
     if(introduction||Math.abs(clock-actorAt)>1e-8)actorVelocity=Object.fromEntries(Object.keys(current).map(key=>[key,clock>0?(current[key]-previous[key])/.001:0]));
     actorFrom=current;actorTarget={...sceneTargets[next]};actorAt=clock;actorDuration=next==='away'?.55:.85;placement=next;
@@ -216,13 +222,16 @@ export function createHintSceneDirector(options={}) {
     },
     setAnchor(anchor,{followLayout=false}={}){
       if(destroyed||!anchor||!['x','y','width'].every(key=>Number.isFinite(anchor[key]))||anchor.width<=0)return false;
+      anchored=true;
       if(['x','y','width'].every(key=>Math.abs(anchor[key]-actorTarget[key])<1e-7))return false;
       if(followLayout){
         for(const key of ['x','y','width']){actorFrom[key]+=anchor[key]-actorTarget[key];actorTarget[key]=anchor[key];}
       }else{
         const current=actorAtTime(clock),previous=actorAtTime(Math.max(0,clock-.001));
         if(introduction||Math.abs(clock-actorAt)>1e-8)actorVelocity=Object.fromEntries(Object.keys(current).map(key=>[key,clock>0?(current[key]-previous[key])/.001:0]));
-        actorFrom=current;actorTarget={...anchor};actorAt=clock;actorDuration=.85;
+        const distance=Math.hypot(anchor.x-current.x,(anchor.y-current.y)/aspect);
+        actorFrom=current;actorTarget={...anchor};actorAt=clock;
+        actorDuration=clamp(.38+distance*.45+Math.abs(anchor.width-current.width)*.25,.38,.72);
       }
       if(reduced){actorFrom={...actorTarget};actorVelocity={x:0,y:0,width:0};actorAt=clock-actorDuration;}
       return true;
@@ -236,12 +245,16 @@ export function createHintSceneDirector(options={}) {
       const roomChanged=context.room!==merged.room,phaseChanged=context.phase!==merged.phase;
       const cue=gestureForContext(context,merged);
       if(roomChanged||phaseChanged)queuedGesture=null;
+      // A greeting yields to composing; explicit save/reading feedback can finish.
+      if(merged.typing&&queuedGesture?.id==='welcome-back')queuedGesture=null;
       if(introduction&&merged.room!=='welcome')leaveIntroduction();
-      changeActivity(target.activity,target.activity==='thinking'?.9:target.activity==='listening'?.8:.6,roomChanged);
+      if(!roomChanged&&!phaseChanged&&gesture&&!(merged.typing&&gesture.id==='welcome-back')){
+        if(activity.id!==target.activity)activity={id:target.activity,start:clock};
+      }else changeActivity(target.activity,target.activity==='thinking'?.9:target.activity==='listening'?.8:.6,roomChanged);
       context=merged;description=target;changePlacement(target.placement);
       if(context.room==='welcome')beginIntroduction();
       if(!['welcome','profile'].includes(context.room))letter='delivered';
-      if(cue&&!reduced&&visible)queuedGesture={id:cue,after:clock+(roomChanged?.9:.2),expires:clock+4};
+      if(cue&&!reduced&&visible&&!(cue==='welcome-back'&&merged.typing))queuedGesture={id:cue,after:clock+(roomChanged?.9:.2),expires:clock+4};
       return true;
     },
     playGesture(id,{interrupt=false}={}){

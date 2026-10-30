@@ -1,4 +1,4 @@
-export type ActivityId = 'idle' | 'listening' | 'thinking' | 'reading' | 'speaking' | 'waiting';
+export type ActivityId = 'idle' | 'listening' | 'thinking' | 'reading' | 'speaking' | 'waiting' | 'sitting' | 'typing';
 export type GestureId = ActivityId | 'welcome' | 'welcome-back' | 'acknowledge' | 'reassure' | 'present-card' | 'offer-letter' | 'wink-left' | 'wink-right' | 'nod' | 'shake-head' | 'celebration' | 'curious' | 'surprised' | 'shy' | 'comfort' | 'disappointed' | 'frustrated' | 'sleepy';
 export type MotionId = GestureId | 'deliver-letter';
 export type LetterState = 'held' | 'offered' | 'delivered';
@@ -63,7 +63,8 @@ export const activities: ActivityId[];
 export const gestures: Record<MotionId, {label: string; title: string; duration: number; tracks: Record<string, [number, number][]>}>;
 
 export interface HintSceneContext {
-  room: 'ask' | 'voice' | 'away' | 'welcome' | 'profile' | 'home';
+  room: 'ask' | 'voice' | 'away' | 'welcome' | 'profile' | 'home' | 'tarot' | 'astrology' | 'collection' | 'journal' | 'history' | 'personality' | 'daily' | 'settings';
+  resting?: boolean;
   introduction?: boolean;
   revealing?: boolean;
   phase: 'idle' | 'waiting' | 'starting' | 'listening' | 'thinking' | 'preparing' | 'speaking' | 'reading' | 'paused' | 'error';

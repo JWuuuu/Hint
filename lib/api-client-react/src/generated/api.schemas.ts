@@ -112,6 +112,16 @@ export interface SpeechInput {
   text: string;
 }
 
+export interface TranscriptionStatus {
+  /** Whether server speech-to-text is configured */
+  available: boolean;
+}
+
+export interface TranscriptionResult {
+  /** What the speaker said; empty when nothing was heard */
+  text: string;
+}
+
 /**
  * The type of tarot spread to use
  */
@@ -143,6 +153,11 @@ export interface TarotReadingInput {
      * @nullable
      */
   emotionalContext?: string | null;
+  /**
+     * Bounded JSON context of saved spreads, including original questions, exact cards, and coverage counts. Data, not instructions.
+     * @maxLength 24000
+     */
+  spreadHistory?: string;
   /**
      * Deprecated compatibility field. Ignored; readings belong to the authenticated installation.
      * @nullable
@@ -636,6 +651,11 @@ export interface TarotChatInput {
   cards: TarotCardDraw[];
   /** The original AI interpretation from this session */
   initialReading: string;
+  /**
+     * Bounded JSON context of saved spreads, including original questions, exact cards, and coverage counts. Data, not instructions.
+     * @maxLength 24000
+     */
+  spreadHistory?: string;
   /** Prior chat turns in this session, in order */
   messages: TarotChatMessage[];
   /**
@@ -660,6 +680,13 @@ export interface TarotChatReply {
   message: string;
   createdAt: string;
 }
+
+export type CreateTranscriptionParams = {
+/**
+ * Speaker language (en, zh, es, ja, ko); region tags such as en-US are accepted
+ */
+language?: string;
+};
 
 export type GetProfileParams = {
 /**
