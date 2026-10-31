@@ -1,9 +1,16 @@
 import { test as base, expect } from "@playwright/test";
+import { quarantineReason } from "./quarantine";
 export { expect };
 export type { Page, Route, Locator, TestInfo } from "@playwright/test";
 
 /** Every browser context is fictional; no test may reach a live API. */
-export const test = base.extend({
+export const test = base.extend<{ quarantine: void }>({
+  // Reported as skipped (fixme) with its reason; see quarantine.ts.
+  quarantine: [async ({}, use, testInfo) => {
+    const reason = quarantineReason(testInfo.file, testInfo.title);
+    testInfo.fixme(Boolean(reason), reason);
+    await use();
+  }, { auto: true }],
   page: async ({ page }, use) => {
     const prefix = (process.env.HINT_E2E_BASE_PATH ?? "").replace(/\/$/, "");
     if (prefix) {

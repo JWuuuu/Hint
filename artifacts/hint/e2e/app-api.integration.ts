@@ -32,7 +32,7 @@ async function saveProfile(page: Page, name: string) {
   await page.getByTestId("input-birthtime").fill("");
   await page.getByTestId("input-birthplace").fill("");
   await page.getByTestId("button-save-profile").click();
-  await expect(page.locator(".me-save-status")).toHaveAttribute("data-status", "synced");
+  await expect(page.locator('[data-testid="button-open-storage"] [role="status"]')).toHaveAttribute("data-status", "synced");
   return credentials(page);
 }
 async function rows(sql: string, owner: string) { return (await pool.query(sql, [owner])).rows; }
@@ -79,8 +79,8 @@ test("real API: profile, same daily card, note reload, failed clear rollback and
   await expect.poll(async () => (await rows("SELECT owner_id FROM history_clears WHERE owner_id=$1", ownerId)).length).toBe(1);
   // Reload reads the canonical local profile, so the truthful label is local.
   // The SQL assertion independently proves the server profile was preserved.
-  await expect(page.locator(".me-save-status")).toHaveAttribute("data-status", "local");
-  await expect(page.locator(".me-identity-name")).toHaveText(profile.name);
+  await expect(page.locator('[data-testid="button-open-storage"] [role="status"]')).toHaveAttribute("data-status", "local");
+  await expect(page.locator("#me-envelope-name")).toHaveText(profile.name);
   expect((await rows("SELECT name, birth_date, birth_time, latitude, longitude FROM profiles WHERE anon_id=$1", ownerId))[0]).toEqual(profile);
   expect(await page.evaluate(() => localStorage.getItem("hint_anon_id"))).toBe(localOwner);
   await expect(page.locator("html")).toHaveAttribute("data-hint-theme", "dark");
