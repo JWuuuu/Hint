@@ -1,8 +1,8 @@
 # Home / Daily ZIP fidelity review — 2026-09-30
 
-The owner reported that Daily no longer looked like `Hint-App-codex-latest-hint-20260928.zip` and explicitly excluded Tarot from changes. This is a bounded follow-up to checkpoint `45796ff`; the expanded iPhone release Goal remains paused.
+The owner reported that Daily no longer looked like the September 28 latest-Hint reference ZIP and explicitly excluded Tarot from changes. This is a bounded follow-up to checkpoint `45796ff`; the expanded iPhone release Goal remains paused.
 
-Implementation: `69d32dccfc4e9cb6acb1b05313ca17a6dae4ac80`, on `codex/merge-home-daily-receipt`. Neither `main`, the original Windows branch, nor the named September 30 checkpoint was replaced.
+Implementation: `69d32dccfc4e9cb6acb1b05313ca17a6dae4ac80`, on `merge-home-daily-receipt`. Neither `main`, the original Windows branch, nor the named September 30 checkpoint was replaced.
 
 ## Findings and corrections
 

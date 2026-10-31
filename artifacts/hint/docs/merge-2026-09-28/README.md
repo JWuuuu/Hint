@@ -10,7 +10,7 @@
 
 | 來源 | 採用內容 | 識別 |
 |---|---|---|
-| 功能版 | Tarot、Astrology、身份隔離、保存、追問、歷史與錯誤恢復 | 原交接分支 `codex/windows-handoff-2026-09-12` |
+| 功能版 | Tarot、Astrology、身份隔離、保存、追問、歷史與錯誤恢復 | 原交接分支 `windows-handoff-2026-09-12` |
 | 小宇 `latest-hint` | 首頁字級與留白、日牌、分數、房間格狀入口、Daily 日期橫列與分數柱、導航外觀 | ZIP SHA-256 `ffef50e609c0f5265cb881e7979fcb85c26092f33e69041493673b6c71c4c31f` |
 | 甜甜 `receipt-printer-polish` | 原始機器、紙張素材、送紙與列印效果 | ZIP SHA-256 `45372b60426823d48cb9d647507b43c215885ccc9c560be0b5741fa8dea728ae` |
 
