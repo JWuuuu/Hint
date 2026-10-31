@@ -1,0 +1,222 @@
+[
+  {
+    "gesture": "idle",
+    "appearance": "Quiet breathing and natural blink are retained as the resting baseline.",
+    "normalPlayback": "idle-normal.png",
+    "halfSpeedPlayback": "idle-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "welcome",
+    "appearance": "The approved rounded-paw wave timing and drawings are retained.",
+    "normalPlayback": "welcome-normal.png",
+    "halfSpeedPlayback": "welcome-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "offer-letter",
+    "appearance": "The envelope gradually tilts into perspective; both wrists turn at the same contact points, and the waiting pose is held.",
+    "normalPlayback": "offer-letter-normal.png",
+    "halfSpeedPlayback": "offer-letter-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "listening",
+    "appearance": "The head cants toward a raised rounded paw, with open eyes and a quiet mouth.",
+    "normalPlayback": "listening-normal.png",
+    "halfSpeedPlayback": "listening-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "thinking",
+    "appearance": "The head leans near the opposite paw; the eyes look upward, one brow rises, and the mouth purses. Reviewed with the question mark hidden.",
+    "normalPlayback": "thinking-normal.png",
+    "halfSpeedPlayback": "thinking-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "reading",
+    "appearance": "A bowed head and downward eye movements track successive lines; the expression stays quiet.",
+    "normalPlayback": "reading-normal.png",
+    "halfSpeedPlayback": "reading-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "speaking",
+    "appearance": "Opening and closing mouth shapes accompany head emphasis and a short paw gesture; pauses occur between phrases.",
+    "normalPlayback": "speaking-normal.png",
+    "halfSpeedPlayback": "speaking-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "waiting",
+    "appearance": "Alternating head glances and tucked paws distinguish it from quiet idle.",
+    "normalPlayback": "waiting-normal.png",
+    "halfSpeedPlayback": "waiting-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "wink-left",
+    "appearance": "One eye closes as the head and body dip toward that side.",
+    "normalPlayback": "wink-left-normal.png",
+    "halfSpeedPlayback": "wink-left-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "wink-right",
+    "appearance": "The opposite eye closes with its own timing and opposite head tilt.",
+    "normalPlayback": "wink-right-normal.png",
+    "halfSpeedPlayback": "wink-right-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "nod",
+    "appearance": "The head lifts in anticipation, bows forward, and returns with a small settling movement.",
+    "normalPlayback": "nod-normal.png",
+    "halfSpeedPlayback": "nod-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "shake-head",
+    "appearance": "The head rotates in alternating arcs around the neck, with the lower body nearly still.",
+    "normalPlayback": "shake-head-normal.png",
+    "halfSpeedPlayback": "shake-head-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "celebration",
+    "appearance": "Closed happy eyes, an open smile, a paw lift, and a buoyant body rise. Reviewed without sparkles.",
+    "normalPlayback": "celebration-normal.png",
+    "halfSpeedPlayback": "celebration-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "curious",
+    "appearance": "Wide eyes and a pronounced outward head cant accompany a forward lean.",
+    "normalPlayback": "curious-normal.png",
+    "halfSpeedPlayback": "curious-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "surprised",
+    "appearance": "Wide eyes, a round open mouth, tucked paws, and a brief backward recoil.",
+    "normalPlayback": "surprised-normal.png",
+    "halfSpeedPlayback": "surprised-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "shy",
+    "appearance": "Lowered eyes, visible blush, tucked paws, and two small head and body shivers.",
+    "normalPlayback": "shy-normal.png",
+    "halfSpeedPlayback": "shy-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "comfort",
+    "appearance": "A soft expression, a head cant toward the reader, and one gently extended paw.",
+    "normalPlayback": "comfort-normal.png",
+    "halfSpeedPlayback": "comfort-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "disappointed",
+    "appearance": "Raised inner brows, a downturned mouth, a bowed head, and a body slump; empty paws relax downward.",
+    "normalPlayback": "disappointed-normal.png",
+    "halfSpeedPlayback": "disappointed-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "frustrated",
+    "appearance": "Pinched brows and a clear pout accompany tucked paws and a head turn away.",
+    "normalPlayback": "frustrated-normal.png",
+    "halfSpeedPlayback": "frustrated-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  },
+  {
+    "gesture": "sleepy",
+    "appearance": "A visible yawn is followed by a head droop and recovery.",
+    "normalPlayback": "sleepy-normal.png",
+    "halfSpeedPlayback": "sleepy-slow.png",
+    "smallSizes": [
+      96,
+      160
+    ],
+    "heldAndEmptyPawsReviewed": true
+  }
+]

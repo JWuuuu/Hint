@@ -1,0 +1,26 @@
+[
+  {
+    "gesture": "deliver-letter",
+    "letter": "held",
+    "speed": 1,
+    "elapsed": 1835.699999988079,
+    "frames": 108,
+    "medianFrameMs": 16.69999999999891,
+    "p95FrameMs": 16.799999999999272,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  },
+  {
+    "gesture": "deliver-letter",
+    "letter": "held",
+    "speed": 0.5,
+    "elapsed": 3627.100000023842,
+    "frames": 216,
+    "medianFrameMs": 16.69999999999891,
+    "p95FrameMs": 16.700000000000728,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  }
+]

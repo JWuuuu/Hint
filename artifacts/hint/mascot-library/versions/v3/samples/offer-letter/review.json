@@ -1,0 +1,103 @@
+{
+  "gesture": "offer-letter",
+  "seconds": 5.903,
+  "sampleTimes": [
+    0.00010000002384185791,
+    0.611400000011921,
+    1.211300000011921,
+    1.811200000011921,
+    2.411300000011921,
+    3.011300000011921,
+    3.611300000011921,
+    4.211200000011921,
+    4.811200000011921,
+    5.411100000011921
+  ],
+  "sampleStates": [
+    {
+      "gesture": "idle",
+      "time": 0,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "offer-letter",
+      "time": 0.3998999999999999,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "offer-letter",
+      "time": 1.0000000000000004,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "offer-letter",
+      "time": 1.5998999999999988,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "offer-letter",
+      "time": 2.1998999999999986,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "offer-letter",
+      "time": 2.4,
+      "letter": "offered",
+      "phase": "offered"
+    },
+    {
+      "gesture": "deliver-letter",
+      "time": 0.06670000000000027,
+      "letter": "offered",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "deliver-letter",
+      "time": 0.6666000000000001,
+      "letter": "delivered",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "deliver-letter",
+      "time": 1.2666000000000004,
+      "letter": "delivered",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "deliver-letter",
+      "time": 1.8,
+      "letter": "delivered",
+      "phase": "settled"
+    }
+  ],
+  "medianFrameMs": 16.699999999999818,
+  "p95FrameMs": 16.80000000000001,
+  "decorativeAccents": false,
+  "errors": [],
+  "video": {
+    "duration": 5.9059,
+    "codec": "h264",
+    "width": 640,
+    "height": 640
+  },
+  "keyframeTimes": [
+    0,
+    0.4921583333333333,
+    0.9843166666666666,
+    1.476475,
+    1.9686333333333332,
+    2.4607916666666663,
+    2.95295,
+    3.445108333333333,
+    3.9372666666666665,
+    4.429424999999999,
+    4.9215833333333325,
+    5.413741666666666
+  ],
+  "keyframesFromVideo": true
+}

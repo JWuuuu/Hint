@@ -82,6 +82,7 @@ const readingInputSchema = z.object({
   spreadType: spreadTypeSchema,
   emotionalContext: z.string().max(2000).nullish(),
   anonId: z.string().max(200).nullish(),
+  spreadHistory: z.string().max(24000).optional(),
 });
 
 /* ─── POST /tarot/spread-recommendation ───────────────────────── */
@@ -119,7 +120,7 @@ router.post("/tarot/reading", async (req, res) => {
     return;
   }
 
-  const { question, spreadType, emotionalContext, anonId } = parsed.data;
+  const { question, spreadType, emotionalContext, anonId, spreadHistory } = parsed.data;
 
   // Cards are predetermined server-side — before user interaction
   const drawnCards = drawCards(spreadType);
@@ -137,6 +138,7 @@ router.post("/tarot/reading", async (req, res) => {
       emotionalContext,
       drawnCards,
       spreadType,
+      spreadHistory,
     }));
   } catch (err) {
     logger.error({ err }, "Failed to generate tarot reading");
@@ -213,6 +215,7 @@ const structuredReadingInputSchema = z.object({
   depth: z.enum(["brief", "detailed"]).default("brief"),
   originalReading: structuredTarotReadingSchema.optional(),
   additionalContext: z.string().max(600).optional(),
+  spreadHistory: z.string().max(24000).optional(),
   question: z.string().min(1).max(1000),
   spreadType: z.enum([
     "single",
@@ -291,6 +294,7 @@ router.post("/tarot/structured-reading", async (req, res) => {
       depth: data.depth,
       originalReading: data.originalReading,
       additionalContext: data.additionalContext,
+      spreadHistory: data.spreadHistory,
     });
     if (!res.destroyed) res.json({ ...reading, source: "api" });
   } catch (err) {
@@ -351,6 +355,7 @@ const chatInputSchema = z.object({
   initialReading: z.string().min(1).max(8000),
   messages: z.array(chatMessageSchema).max(40),
   followUp: z.string().min(1).max(2000),
+  spreadHistory: z.string().max(24000).optional(),
 });
 
 function buildLocalTarotChatReply(data: z.infer<typeof chatInputSchema>): string {
@@ -437,6 +442,7 @@ router.post("/tarot/chat", async (req, res) => {
       initialReading: data.initialReading,
       messages: data.messages,
       followUp: data.followUp,
+      spreadHistory: data.spreadHistory,
       signal: controller.signal,
     });
   } catch (err) {

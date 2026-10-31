@@ -1,0 +1,367 @@
+{
+  "frames": [
+    {
+      "phase": "offer",
+      "time": 0,
+      "filename": "offer-0.png",
+      "state": {
+        "phase": "offer",
+        "time": 0,
+        "clock": 0,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "held",
+        "accepted": false,
+        "handoff": false,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "offering"
+      }
+    },
+    {
+      "phase": "offer",
+      "time": 0.42,
+      "filename": "offer-0_42.png",
+      "state": {
+        "phase": "offer",
+        "time": 0.42,
+        "clock": 0.42,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "held",
+        "accepted": false,
+        "handoff": false,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "offering"
+      }
+    },
+    {
+      "phase": "offer",
+      "time": 1,
+      "filename": "offer-1.png",
+      "state": {
+        "phase": "offer",
+        "time": 1,
+        "clock": 1,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "held",
+        "accepted": false,
+        "handoff": false,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "offering"
+      }
+    },
+    {
+      "phase": "offer",
+      "time": 1.65,
+      "filename": "offer-1_65.png",
+      "state": {
+        "phase": "offer",
+        "time": 1.65,
+        "clock": 1.65,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "held",
+        "accepted": false,
+        "handoff": false,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "offering"
+      }
+    },
+    {
+      "phase": "offer",
+      "time": 2.4,
+      "filename": "offer-2_4.png",
+      "state": {
+        "phase": "offer",
+        "time": 2.4,
+        "clock": 2.4,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "offered",
+        "accepted": false,
+        "handoff": false,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "offered"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 0,
+      "filename": "delivery-0.png",
+      "state": {
+        "phase": "delivery",
+        "time": 0,
+        "clock": 2.4,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "offered",
+        "accepted": true,
+        "handoff": false,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "gripping"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 0.479,
+      "filename": "delivery-0_479.png",
+      "state": {
+        "phase": "delivery",
+        "time": 0.479,
+        "clock": 2.879,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "offered",
+        "accepted": true,
+        "handoff": false,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "gripping"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 0.481,
+      "filename": "delivery-0_481.png",
+      "state": {
+        "phase": "delivery",
+        "time": 0.481,
+        "clock": 2.881,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "approaching"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 0.7,
+      "filename": "delivery-0_7.png",
+      "state": {
+        "phase": "delivery",
+        "time": 0.7,
+        "clock": 3.0999999999999996,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "approaching"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 1.1,
+      "filename": "delivery-1_1.png",
+      "state": {
+        "phase": "delivery",
+        "time": 1.1,
+        "clock": 3.5,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "approaching"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 1.62,
+      "filename": "delivery-1_62.png",
+      "state": {
+        "phase": "delivery",
+        "time": 1.62,
+        "clock": 4.02,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "opening"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 1.9,
+      "filename": "delivery-1_9.png",
+      "state": {
+        "phase": "delivery",
+        "time": 1.9,
+        "clock": 4.3,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "opening"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 2.24,
+      "filename": "delivery-2_24.png",
+      "state": {
+        "phase": "delivery",
+        "time": 2.24,
+        "clock": 4.640000000000001,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "taking-card"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 2.6,
+      "filename": "delivery-2_6.png",
+      "state": {
+        "phase": "delivery",
+        "time": 2.6,
+        "clock": 5,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "taking-card"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 2.95,
+      "filename": "delivery-2_95.png",
+      "state": {
+        "phase": "delivery",
+        "time": 2.95,
+        "clock": 5.35,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "taking-card"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 3.18,
+      "filename": "delivery-3_18.png",
+      "state": {
+        "phase": "delivery",
+        "time": 3.18,
+        "clock": 5.58,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "card-ready"
+      }
+    },
+    {
+      "phase": "delivery",
+      "time": 3.6,
+      "filename": "delivery-3_6.png",
+      "state": {
+        "phase": "delivery",
+        "time": 3.6,
+        "clock": 6,
+        "speed": 1,
+        "paused": true,
+        "reduced": false,
+        "visible": true,
+        "ready": true,
+        "letter": "delivered",
+        "accepted": true,
+        "handoff": true,
+        "flipped": false,
+        "flipTime": 0,
+        "actingPhase": "card-ready"
+      }
+    },
+    {
+      "phase": "reading",
+      "time": 1,
+      "filename": "reading.png"
+    }
+  ],
+  "errors": []
+}

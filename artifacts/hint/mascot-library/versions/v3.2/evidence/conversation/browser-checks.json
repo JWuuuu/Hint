@@ -1,0 +1,30 @@
+[
+  {
+    "engine": "chromium",
+    "passed": true,
+    "checks": [
+      "text focus moves Hint away from the keyboard; sending, thinking and reading retain one canvas",
+      "voice preparation is waiting; speaking requires playback; interruption returns to listening; paused conversation stops the clock",
+      "background visibility and manual pause remain independent",
+      "320/390/430 layouts and thinking/listening with names and accents hidden",
+      "half-speed playback and continuous exit/reentry",
+      "reduced motion has immediate static states",
+      "WebGL context loss shows the static fallback and restores the current activity without restarting its clock"
+    ],
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "passed": true,
+    "checks": [
+      "text focus moves Hint away from the keyboard; sending, thinking and reading retain one canvas",
+      "voice preparation is waiting; speaking requires playback; interruption returns to listening; paused conversation stops the clock",
+      "background visibility and manual pause remain independent",
+      "320/390/430 layouts and thinking/listening with names and accents hidden",
+      "half-speed playback and continuous exit/reentry",
+      "reduced motion has immediate static states",
+      "WebGL context loss shows the static fallback and restores the current activity without restarting its clock"
+    ],
+    "errors": []
+  }
+]

@@ -1,0 +1,90 @@
+[
+  {
+    "gesture": "wink-left",
+    "speed": 0.5,
+    "elapsedMilliseconds": 3826,
+    "expectedMilliseconds": 3800,
+    "frames": 230,
+    "medianFrameMilliseconds": 16.699999999999818,
+    "p95FrameMilliseconds": 16.700000000000273,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "wink-right",
+    "speed": 0.5,
+    "elapsedMilliseconds": 4124,
+    "expectedMilliseconds": 4100,
+    "frames": 248,
+    "medianFrameMilliseconds": 16.699999999999818,
+    "p95FrameMilliseconds": 16.800000000000182,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "nod",
+    "speed": 0.5,
+    "elapsedMilliseconds": 4613,
+    "expectedMilliseconds": 4600,
+    "frames": 278,
+    "medianFrameMilliseconds": 16.69999999999891,
+    "p95FrameMilliseconds": 16.700000000000728,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "listening",
+    "speed": 0.5,
+    "elapsedMilliseconds": 8814,
+    "expectedMilliseconds": 8800,
+    "frames": 530,
+    "medianFrameMilliseconds": 16.69999999999891,
+    "p95FrameMilliseconds": 16.700000000000728,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "thinking",
+    "speed": 0.5,
+    "elapsedMilliseconds": 9218,
+    "expectedMilliseconds": 9200,
+    "frames": 554,
+    "medianFrameMilliseconds": 16.700000000000728,
+    "p95FrameMilliseconds": 16.700000000000728,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "celebration",
+    "speed": 0.5,
+    "elapsedMilliseconds": 5811,
+    "expectedMilliseconds": 5800,
+    "frames": 350,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.700000000004366,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "offer-letter",
+    "speed": 0.5,
+    "elapsedMilliseconds": 4410,
+    "expectedMilliseconds": 4400,
+    "frames": 266,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.700000000004366,
+    "monotonic": true,
+    "endsPaused": true
+  },
+  {
+    "gesture": "deliver-letter",
+    "speed": 0.5,
+    "elapsedMilliseconds": 5217,
+    "expectedMilliseconds": 5200,
+    "frames": 314,
+    "medianFrameMilliseconds": 16.69999999999709,
+    "p95FrameMilliseconds": 16.700000000004366,
+    "monotonic": true,
+    "endsPaused": true
+  }
+]

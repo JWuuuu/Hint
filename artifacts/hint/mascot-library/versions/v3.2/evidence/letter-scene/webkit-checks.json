@@ -1,0 +1,12 @@
+{
+  "engine": "webkit",
+  "passed": true,
+  "checks": [
+    "normal-speed offer, tap acceptance, connected handoff, envelope opening, card extraction and keyboard flip",
+    "accept, handoff and scene completion fire once; repeat taps do not restart movement",
+    "pause and visibility preserve time and letter ownership; 320/390/430 layouts fit",
+    "reduced motion retains the same interactive steps without travel animations",
+    "full half-speed offer, handoff, opening, extraction and flip"
+  ],
+  "errors": []
+}

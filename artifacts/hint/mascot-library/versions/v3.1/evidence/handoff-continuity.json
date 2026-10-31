@@ -1,0 +1,20 @@
+[
+  {
+    "engine": "chromium",
+    "sampleTimes": [
+      0.4799,
+      0.4801
+    ],
+    "pixelsOver40": 0,
+    "maxDelta": 13.52156862745099
+  },
+  {
+    "engine": "webkit",
+    "sampleTimes": [
+      0.4799,
+      0.4801
+    ],
+    "pixelsOver40": 0,
+    "maxDelta": 13.52156862745099
+  }
+]

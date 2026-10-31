@@ -15,6 +15,13 @@ export const openaiTtsModel =
 
 export const openaiTtsVoice = process.env.OPENAI_TTS_VOICE ?? "coral";
 
+/** Server speech-to-text for devices without working on-device recognition. */
+export const openaiTranscriptionModel =
+  process.env.OPENAI_TRANSCRIPTION_MODEL ||
+  // Name used by the d1fbcf8 deployment config.
+  process.env.OPENAI_TRANSCRIBE_MODEL ||
+  "gpt-4o-mini-transcribe";
+
 export function requireOpenAIKey(): string {
   if (!openaiApiKey) {
     throw new Error("Missing OpenAI credentials. Set OPENAI_API_KEY.");

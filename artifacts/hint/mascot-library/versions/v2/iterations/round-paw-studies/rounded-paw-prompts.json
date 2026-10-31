@@ -1,0 +1,8 @@
+[
+  {
+    "editTarget": "assets/reference.png",
+    "output": "assets/inputs/thinking-rounded.png",
+    "transparentBackground": true,
+    "prompt": "Use case: precise-object-edit.\nAsset type: one key drawing for an animated plush mascot.\nImage 1 is the edit target and exact identity reference: Hint, a cream plush star wearing a dusty lavender scarf and holding a sealed cream envelope.\nChange ONLY the viewer-left paw into a compact, rounded thinking pose. The paw rests gently against the lower left cheek, beside the scarf. It is a broad, soft oval mitten, roughly as wide as it is tall, with a short thick connected wrist emerging from the left torso just below the scarf. Think of a teddy bear resting its cheek on a little round paw. The end of the paw faces slightly inward against the cheek. Do not make a pointing finger, narrow vertical sausage, human hand, thumb, thin arm, hook, or long forearm. The silhouette must read as one soft broad rounded paw, without any finger-like projection.\nKeep the paw close against the body and cheek, with absolutely no floating gap. The paw's top sits only a little above the scarf and below the eye. Keep the viewer-right paw supporting the envelope.\nPreserve the original upright head, facial features, eyes, tiny smile, blush, curled top star point, proportions, body, scarf, envelope, wax seal, lighting, plush texture, color palette, original camera angle, framing and transparent background exactly. No letters, symbols, extra props, new ears, or text. One complete character, not a sheet or collage."
+  }
+]

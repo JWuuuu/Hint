@@ -272,6 +272,10 @@ export function RibbonSpread({
   const nextPositionLabel = allSelected
     ? ""
     : getSpreadPositionLabel(spread, Math.min(selectedCards.length, maxCards - 1));
+  const pageOverlay = theme?.chamberOverlay ??
+    "radial-gradient(circle_at_50%_40%,rgba(116,89,255,0.18),transparent_28%),radial-gradient(circle_at_50%_56%,rgba(10,16,34,0.88),rgba(3,5,12,0.98)_64%,#010207_100%)";
+  const starClassName = theme?.starClassName ??
+    "opacity-35 [background-image:radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.65)_0_1px,transparent_1px),radial-gradient(circle_at_74%_19%,rgba(239,205,139,0.55)_0_1px,transparent_1px),radial-gradient(circle_at_68%_76%,rgba(255,255,255,0.34)_0_1px,transparent_1px)] [background-size:132px_148px]";
   const cardBackImageUrl = getTarotCardBackImage(cardBackId ?? getDefaultTarotCardBackForStyle(backStyle));
   const mapPoints = constellationPoints(spread, maxCards);
   const constellationLine = mapPoints.map((point) => `${point.x},${point.y}`).join(" ");
@@ -500,6 +504,9 @@ export function RibbonSpread({
 
   return (
     <section className="relative h-full w-full overflow-hidden px-4 pb-[calc(var(--hint-safe-bottom)+1.25rem)] pt-[calc(var(--hint-safe-top)+1rem)] text-center">
+      <div className="pointer-events-none absolute inset-0" style={{ background: pageOverlay }} />
+      <div className={`pointer-events-none absolute inset-0 ${starClassName}`} />
+      <div className="pointer-events-none absolute inset-x-[-16%] bottom-[-10%] h-[58%] bg-[radial-gradient(ellipse_at_50%_64%,rgba(116,89,255,0.20),rgba(8,18,34,0.18)_38%,transparent_72%)]" />
 
       <div className="relative z-30 mx-auto mt-2 flex w-full max-w-[18rem] items-center justify-center gap-2">
         {[0, 1, 2, 3].map((step) => (
@@ -525,10 +532,10 @@ export function RibbonSpread({
         >
           <div className="pointer-events-none absolute inset-x-5 top-[calc(var(--hint-safe-top)+5.15rem)] z-30">
             <p className="mx-auto w-fit rounded-full border border-[#f1b8c9]/22 bg-white/[0.07] px-3 py-1 font-sans text-[9px] font-black uppercase tracking-[0.24em] text-[#f1b8c9]/86 shadow-[0_12px_32px_rgba(31,20,64,0.18)] backdrop-blur-md"><LocalizedText text={" Signal path "} /></p>
-            <p className="mt-3 font-serif text-[24px] leading-tight text-[color:var(--tarot-page-ink,#332d45)] md:text-[34px]">
+            <p className="mt-3 font-serif text-[24px] leading-tight text-[#fff2df] drop-shadow-[0_12px_28px_rgba(22,12,32,0.38)] md:text-[34px]">
               {allSelected ? "The field is sealed" : `Open the ${ordinalWord(nextCardNumber)} lens`}
             </p>
-            <div className="mx-auto mt-2 flex max-w-[22rem] flex-wrap items-center justify-center gap-1.5 font-sans text-[11px] font-black uppercase tracking-[0.12em] text-[color:var(--tarot-page-muted,#746276)]">
+            <div className="mx-auto mt-2 flex max-w-[22rem] flex-wrap items-center justify-center gap-1.5 font-sans text-[11px] font-black uppercase tracking-[0.12em] text-[#f7ddaf]/88">
               {allSelected ? (
                 <span><LocalizedText text={"Reveal is opening"} /></span>
               ) : (
@@ -659,7 +666,7 @@ export function RibbonSpread({
                       </span>
                       <span className="truncate">{label}</span>
                     </p>
-                    <p className="mt-1 hidden font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-[color:var(--tarot-page-muted,#746276)] sm:block">
+                    <p className="mt-1 hidden font-sans text-[8px] font-bold uppercase tracking-[0.14em] text-[#f1b8c9]/54 sm:block">
                       {guide}
                     </p>
                   </div>
@@ -762,6 +769,9 @@ export function RibbonSpread({
           transition={{ duration: 0.34, ease: "easeOut" }}
           className="absolute inset-0 z-20 overflow-hidden"
         >
+          <div className="pointer-events-none absolute inset-0" style={{ background: pageOverlay }} />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_58%_30%,rgba(255,255,255,0.48),transparent_32%),linear-gradient(160deg,rgba(251,247,255,0.74)_0%,rgba(238,233,251,0.52)_50%,rgba(247,242,255,0.42)_100%)]" />
+          <div className={`pointer-events-none absolute inset-0 ${starClassName}`} />
           <motion.div
             className="absolute inset-x-4 top-[calc(var(--hint-safe-top)+5.75rem)] z-40"
             animate={{ opacity: zoomed ? 0 : 1, y: zoomed ? -8 : 0 }}
@@ -772,10 +782,10 @@ export function RibbonSpread({
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32, ease: "easeOut" }}
-              className="font-serif text-[24px] leading-tight text-[color:var(--tarot-page-ink,#332d45)] md:text-[34px]"
+              className="font-serif text-[24px] leading-tight text-[#332d45] md:text-[34px]"
             ><LocalizedText text={" Lens "} />{nextCardNumber}
             </motion.p>
-            <p className="mx-auto mt-2 max-w-[20rem] font-sans text-[12px] font-black uppercase tracking-[0.12em] text-[color:var(--tarot-page-muted,#746276)]">
+            <p className="mx-auto mt-2 max-w-[20rem] font-sans text-[12px] font-black uppercase tracking-[0.12em] text-[#6b5c86]/72">
               {nextPositionLabel}
             </p>
           </motion.div>
@@ -847,7 +857,7 @@ export function RibbonSpread({
                 <span
                   key={`number-${card.visualId}`}
                   aria-hidden
-                  className="pointer-events-none absolute h-[14px] w-[26px] text-center font-sans text-[13px] font-bold text-[color:var(--tarot-page-muted,#746276)]"
+                  className="pointer-events-none absolute h-[14px] w-[26px] text-center font-sans text-[13px] font-bold text-[#a59db8]"
                   style={{
                     left: numberLayout.x,
                     top: numberLayout.y,

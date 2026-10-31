@@ -33,17 +33,17 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
-it("keeps the retired room background pulse stopped across native app transitions", async () => {
+it("pauses the decorative wash pulse on native background while the document remains visible", async () => {
   const { unmount } = render(<MotionPolicyProvider><CardWashRitual stage="washing" ritualCards={[]} onBeginWash={() => {}} onWash={() => {}} onWashRelease={() => {}} /></MotionPolicyProvider>);
   await act(async () => {});
-  expect(screen.getAllByTestId("wash-motion").every(el => el.getAttribute("data-repeat") === "0")).toBe(true);
+  expect(screen.getAllByTestId("wash-motion").some(el => el.getAttribute("data-repeat") === "Infinity")).toBe(true);
   act(() => lifecycle.changed(false));
   expect(document.visibilityState).toBe("visible");
   expect(document.documentElement.dataset.hintMotionPaused).toBe("true");
   expect(screen.getAllByTestId("wash-motion").every(el => el.getAttribute("data-repeat") === "0")).toBe(true);
   act(() => lifecycle.changed(true));
   expect(document.documentElement.dataset.hintMotionPaused).toBe("false");
-  expect(screen.getAllByTestId("wash-motion").every(el => el.getAttribute("data-repeat") === "0")).toBe(true);
+  expect(screen.getAllByTestId("wash-motion").some(el => el.getAttribute("data-repeat") === "Infinity")).toBe(true);
   unmount();
   expect(lifecycle.remove).toHaveBeenCalledOnce();
 });

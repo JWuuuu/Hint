@@ -459,8 +459,35 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
     <section
       data-ritual-stage={stage}
       data-intro-step={isFullDeckStage ? introStep : ""}
-      className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden px-4 pb-[calc(var(--hint-safe-bottom)+4.5rem)] pt-[calc(var(--hint-safe-top)+1rem)] [@media(max-height:740px)]:pt-[calc(var(--hint-safe-top)+5rem)] text-[color:var(--tarot-page-ink,#332d45)]"
+      className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden px-4 pb-[calc(var(--hint-safe-bottom)+4.5rem)] pt-[calc(var(--hint-safe-top)+1rem)] [@media(max-height:740px)]:pt-[calc(var(--hint-safe-top)+5rem)] ${lightSurface ? "text-[#332d45]" : "text-[#f7ead0]"}`}
     >
+      <div className="pointer-events-none absolute inset-0" style={{ background: theme.chamberOverlay }} />
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        animate={{
+          opacity: reduceMotion
+            ? lightSurface
+              ? 0.28
+              : 0.62
+            : lightSurface
+              ? [0.22, 0.34, 0.24]
+              : [0.52, 0.74, 0.58],
+        }}
+        transition={{
+          duration: reduceMotion ? 0.01 : 6.5,
+          repeat: reduceMotion ? 0 : Infinity,
+          repeatType: "mirror",
+          ease: "easeInOut",
+        }}
+        style={{
+          background:
+            lightSurface
+              ? "linear-gradient(135deg, rgba(255,255,255,0.48), transparent 32%, rgba(203,184,229,0.18) 62%, rgba(216,185,110,0.12))"
+              : "linear-gradient(135deg, rgba(255,220,233,0.10), transparent 30%, rgba(222,203,255,0.08) 58%, rgba(255,228,170,0.08))",
+        }}
+      />
+      <div className={`pointer-events-none absolute inset-0 ${theme.starClassName}`} />
       <div
         className="pointer-events-none absolute left-1/2 top-[50%] h-[min(112vw,560px)] w-[min(112vw,560px)] -translate-x-1/2 -translate-y-1/2 rounded-full border"
         style={{
@@ -480,7 +507,7 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
           initial={stage === "cutting" || reduceMotion ? false : { opacity: 0, y: 3 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduceMotion ? 0.01 : 0.22, ease: [0.2, 0.76, 0.2, 1] }}
-          className="font-serif text-[26px] leading-tight text-[color:var(--tarot-page-ink,#332d45)] md:text-[34px]"
+          className={`font-serif text-[26px] leading-tight md:text-[34px] ${lightSurface ? "text-[#332d45]" : "text-[#fff0df] drop-shadow-[0_10px_24px_rgba(25,12,25,0.34)]"}`}
         >
           {title}
         </motion.h1>
@@ -490,7 +517,7 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
             initial={stage === "cutting" || reduceMotion ? false : { opacity: 0, y: 3 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0.01 : 0.22, ease: [0.2, 0.76, 0.2, 1] }}
-            className="mx-auto mt-2 max-w-[22rem] px-3 font-sans text-[12px] font-semibold leading-snug text-[color:var(--tarot-page-muted,#756777)]"
+            className={`mx-auto mt-2 max-w-[22rem] px-3 font-sans text-[12px] font-semibold leading-snug ${lightSurface ? "text-[#756777]" : "text-[#ead7dc]/82"}`}
           >
             {helperCopy}
           </motion.p>

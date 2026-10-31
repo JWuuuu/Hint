@@ -158,6 +158,14 @@ function RoomArrivalMotion({ container, entrance, reduced, onDone }: { container
       content.removeAttribute("data-room-arrival-id");
       content.style.willChange = previousWillChange;
     };
+    // Persistent layers outside the room, such as the Hint guide, follow the
+    // moving content only while this entrance runs and measure its final place.
+    let announced = false;
+    const announce = (active: boolean) => {
+      if (announced === active) return;
+      announced = active;
+      window.dispatchEvent(new CustomEvent("hint:room-motion", { detail: { id, active } }));
+    };
     const settle = () => {
       if (disposed || completed) return;
       completed = true;
@@ -166,6 +174,7 @@ function RoomArrivalMotion({ container, entrance, reduced, onDone }: { container
       window.clearTimeout(motionDeadline);
       animation?.cancel();
       restore();
+      announce(false);
       done.current();
     };
     const begin = () => {
@@ -187,6 +196,7 @@ function RoomArrivalMotion({ container, entrance, reduced, onDone }: { container
         });
         animation.finished.then(settle, settle);
         motionDeadline = window.setTimeout(settle, duration + 80);
+        announce(true);
       } catch { settle(); }
     };
     // Reading and controls stay available throughout. Engaging with the room
@@ -209,6 +219,7 @@ function RoomArrivalMotion({ container, entrance, reduced, onDone }: { container
       events.forEach(name => content.removeEventListener(name, settle, true));
       if (!completed) animation?.cancel();
       restore();
+      announce(false);
     };
   }, [container, entrance, reduced]);
   return null;

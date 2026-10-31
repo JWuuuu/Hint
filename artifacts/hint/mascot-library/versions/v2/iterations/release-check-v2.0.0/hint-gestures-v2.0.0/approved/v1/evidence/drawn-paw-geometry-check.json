@@ -1,0 +1,10 @@
+{
+  "sampledFrames": 271,
+  "finitePoses": true,
+  "matchingRest": true,
+  "flippedTriangles": 0,
+  "minTriangleArea": 12.254400000000004,
+  "minArea": 3705.4413505809325,
+  "maxArea": 5919.885571245946,
+  "maxVelocityJump": 0.011960784362941011
+}

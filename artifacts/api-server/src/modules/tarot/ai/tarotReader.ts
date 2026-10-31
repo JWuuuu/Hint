@@ -19,6 +19,7 @@ export async function generateTarotReading(params: {
   emotionalContext: string | null | undefined;
   drawnCards: DrawnCard[];
   spreadType: string;
+  spreadHistory?: string;
 }): Promise<TarotInterpretation> {
   const userPrompt = buildReadingPrompt(params);
 

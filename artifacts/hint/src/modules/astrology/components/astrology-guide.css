@@ -27,36 +27,27 @@
   color: var(--astro-text);
   font-family: var(--font-sans);
 }
+/* Night: muted plum materials on the shared sky. */
 [data-hint-theme="dark"] :is(.astro-theme, .astro-guide) {
   --astro-text: #f6eaf3;
   --astro-muted: #c7b2c5;
   --astro-faint: #c0a9bd;
   --astro-gold: #d1b282;
   --astro-gold-bright: #e3c795;
-  --astro-aqua: #aac9c8;
+  --astro-aqua: #b4c4c8;
   --astro-rose: #dc9fbb;
   --astro-lavender: #b9a4d1;
-  --astro-border: #5b4059;
-  --astro-pearl: #2c2031;
-  --astro-inner: #36253a;
-  --astro-selected: #67445e;
-  --astro-surface: linear-gradient(145deg, #342638, #302134 64%, #392941);
-  --astro-input: #302335;
+  --astro-border: rgba(236, 222, 238, .17);
+  --astro-pearl: #2a2030;
+  --astro-inner: rgba(246, 236, 246, .07);
+  --astro-selected: rgba(199, 160, 196, .24);
+  --astro-surface: linear-gradient(145deg, rgba(255, 246, 252, .08), rgba(230, 220, 236, .04)), rgba(38, 29, 44, .62);
+  --astro-input: rgba(246, 236, 246, .07);
   --astro-button: #e6c9da;
   --astro-button-text: #35283a;
-  --astro-tile: #402b43;
-  --astro-tile-border: #71566b;
+  --astro-tile: rgba(246, 236, 246, .08);
+  --astro-tile-border: rgba(236, 222, 238, .22);
   color-scheme: dark;
-}
-.hint-cream-route:has(.astro-guide) {
-  --hint-page-bg: linear-gradient(160deg, #fcf7f3, #f4eaf0 50%, #f5eef8);
-}
-[data-hint-theme="dark"] .hint-cream-route:has(.astro-guide) {
-  --hint-page-bg: linear-gradient(160deg, #251b2c, #2d1e31 50%, #302137);
-}
-.hint-cream-route:has(.astro-guide)::before,
-.hint-cream-route:has(.astro-guide)::after {
-  opacity: 0.25;
 }
 .astro-guide {
   padding: 0 3px 16px;

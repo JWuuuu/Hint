@@ -70,7 +70,7 @@ export default defineConfig({
     hmr: isTarotE2E ? false : undefined,
     watch: isTarotE2E ? null : {
       // Capacitor copies and test evidence are outputs, not live web source.
-      ignored: ["**/ios/**", "**/android/**", "**/test-results/**", "**/e2e/__screenshots__/**"],
+      ignored: ["**/ios/**", "**/android/**", "**/test-results/**", "**/e2e/__screenshots__/**", "**/mascot-library/**/evidence/**", "**/mascot-library/**/iterations/**", "**/mascot-library/**/releases/**"],
     },
     proxy: {
       "/api": {

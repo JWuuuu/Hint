@@ -1,0 +1,34 @@
+[
+  {
+    "engine": "chromium",
+    "passed": true,
+    "buildFlag": "VITE_HINT_GUIDE_V32=1",
+    "assets": [
+      {
+        "url": "/assets/hint-assets-BkywHPQ6.js",
+        "bytes": 1395571
+      }
+    ],
+    "checks": [
+      "Ask invitation and compact typing position",
+      "first welcome, wink and form transition"
+    ],
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "passed": true,
+    "buildFlag": "VITE_HINT_GUIDE_V32=1",
+    "assets": [
+      {
+        "url": "/assets/hint-assets-BkywHPQ6.js",
+        "bytes": 1395571
+      }
+    ],
+    "checks": [
+      "Ask invitation and compact typing position",
+      "first welcome, wink and form transition"
+    ],
+    "errors": []
+  }
+]

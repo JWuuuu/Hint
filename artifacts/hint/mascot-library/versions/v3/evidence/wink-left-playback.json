@@ -1,0 +1,26 @@
+[
+  {
+    "gesture": "wink-left",
+    "letter": "held",
+    "speed": 1,
+    "elapsed": 1922,
+    "frames": 114,
+    "medianFrameMs": 16.69999999999999,
+    "p95FrameMs": 16.799999999999955,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  },
+  {
+    "gesture": "wink-left",
+    "letter": "held",
+    "speed": 0.5,
+    "elapsed": 3824.699999988079,
+    "frames": 228,
+    "medianFrameMs": 16.699999999999818,
+    "p95FrameMs": 16.700000000000728,
+    "monotonic": true,
+    "accents": false,
+    "errors": []
+  }
+]

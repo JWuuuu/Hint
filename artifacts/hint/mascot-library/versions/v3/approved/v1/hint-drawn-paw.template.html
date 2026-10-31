@@ -1,0 +1,46 @@
+<div id="hint-drawn-paw" class="viz-dotted-background" aria-label="Hint greeting preview">
+  <div class="hint-card">
+    <div class="hint-brand">HINT</div>
+    <h2>Hey, welcome to Hint.</h2>
+    <div class="hint-stage">
+      <span class="hint-shadow" aria-hidden="true"></span>
+      <button class="hint-character cursor-interaction" type="button" aria-label="Wave to Hint"><canvas width="768" height="768" role="img" aria-label="Hint lifts its small rounded paw from the letter, gives a gentle wave, then returns to holding the letter."></canvas></button>
+    </div>
+    <div class="hint-controls">
+      <button type="button" class="hint-primary cursor-interaction" data-wave>Wave to Hint</button>
+      <button type="button" class="hint-secondary cursor-interaction" data-pause>Pause</button>
+    </div>
+    <details>
+      <summary class="cursor-interaction">Inspect the movement</summary>
+      <div class="hint-timeline-label"><label for="hint-drawn-paw-timeline">Gesture</label><output>Rest</output></div>
+      <input id="hint-drawn-paw-timeline" type="range" min="0" max="4500" value="0" step="1" aria-label="Inspect the greeting" class="cursor-interaction">
+    </details>
+    <p class="hint-status" aria-live="polite"></p>
+  </div>
+</div>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Hanken+Grotesk:wght@400;500&display=swap');
+#hint-drawn-paw { padding:20px 0;  }
+#hint-drawn-paw * { box-sizing:border-box; }
+#hint-drawn-paw .hint-card { max-width:430px; margin:0 auto; padding:30px 22px 16px; border:1px solid #e7dbe3; border-radius:30px; background:#faf7f2; color:#51384a; text-align:center; font-family:'Hanken Grotesk',sans-serif; }
+#hint-drawn-paw .hint-brand { font-size:12px; letter-spacing:.29em; color:#86717f; font-weight:500; margin-bottom:14px; }
+#hint-drawn-paw h2 { font:400 32px/1.12 'Cormorant Garamond',serif; margin:0; letter-spacing:-.01em; }
+#hint-drawn-paw .hint-stage { position:relative; width:100%; max-width:344px; aspect-ratio:1; display:grid; place-items:center; margin:8px auto 12px; }
+#hint-drawn-paw .hint-character { position:relative; z-index:1; border:0; background:transparent; border-radius:35%; width:100%; aspect-ratio:1; padding:0; }
+#hint-drawn-paw canvas { display:block; width:100%; height:auto; }
+#hint-drawn-paw .hint-shadow { position:absolute; width:92px; height:12px; bottom:12px; border-radius:50%; background:radial-gradient(ellipse,#927b8d22,transparent 72%); }
+#hint-drawn-paw .hint-controls { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; }
+#hint-drawn-paw button { font-family:inherit; font-size:14px; font-weight:500; min-height:44px; }
+#hint-drawn-paw .hint-primary, #hint-drawn-paw .hint-secondary { border:0; padding:11px 20px; border-radius:999px; }
+#hint-drawn-paw .hint-primary { background:#6c445f; color:#fff9f4; }
+#hint-drawn-paw .hint-secondary { background:#eee7e9; color:#604b5a; }
+#hint-drawn-paw details { max-width:300px; margin:16px auto 0; text-align:left; color:#796574; font-size:12px; }
+#hint-drawn-paw summary { text-align:center; padding:10px; min-height:44px; }
+#hint-drawn-paw .hint-timeline-label { display:flex; justify-content:space-between; gap:10px; margin:10px 0 0; }
+#hint-drawn-paw input { width:100%; min-height:44px; accent-color:#6c445f; margin:0; }
+#hint-drawn-paw .hint-status { font-size:12px; min-height:16px; margin:3px 0 0; }
+@media(max-width:360px) { #hint-drawn-paw .hint-card { padding:25px 12px 12px; } #hint-drawn-paw h2 { font-size:29px; } }
+</style>
+<script>
+__ENGINE__
+</script>

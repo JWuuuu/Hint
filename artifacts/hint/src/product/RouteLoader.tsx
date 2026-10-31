@@ -29,14 +29,14 @@ export function RouteLoader({ children, route }: { children: ReactNode; route: s
     await Promise.allSettled(resources.map(url => fetch(url.href, { cache: "reload", credentials: "omit", signal: AbortSignal.timeout(8000) })));
     window.location.reload();
   }
-  const error = <section data-room-load-error role="alert" className="hint-app-scroll h-full px-6 pb-[calc(8rem+var(--hint-safe-bottom))] pt-[calc(3rem+var(--hint-safe-top))]" style={{ color: "var(--hint-text)", background: "transparent" }}>
+  const error = <section data-room-load-error role="alert" className="hint-app-scroll h-full px-6 pb-[calc(8rem+var(--hint-safe-bottom))] pt-[calc(3rem+var(--hint-safe-top))]" style={{ color: "var(--hint-text)", background: "var(--hint-surface)" }}>
     <h1 className="font-serif text-2xl">{copy[1]}</h1>
     <p className="mt-3 text-sm">{copy[2]}</p>
     <button className="mt-5 min-h-11 rounded-full border px-5 disabled:opacity-60" disabled={reloading} onClick={() => void reloadRoom()}>{copy[3]}</button>
     <Link className="mt-4 flex min-h-11 items-center" href="/app">{t("common.home")}</Link>
   </section>;
   return <ChunkBoundary key={route} fallback={error}>
-    <Suspense fallback={<div data-room-loading role="status" className="grid h-full place-items-center px-6 text-center font-serif text-lg" style={{ color: "var(--hint-text)", background: "transparent" }}>{copy[0]}</div>}>
+    <Suspense fallback={<div data-room-loading role="status" className="grid h-full place-items-center px-6 text-center font-serif text-lg" style={{ color: "var(--hint-text)", background: "var(--hint-surface)" }}>{copy[0]}</div>}>
       {children}
     </Suspense>
   </ChunkBoundary>;

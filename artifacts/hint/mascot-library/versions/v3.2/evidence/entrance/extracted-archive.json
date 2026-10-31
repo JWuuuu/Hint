@@ -1,0 +1,21 @@
+{
+  "archive": "iterations/welcome-study-01/hint-welcome-study-01.zip",
+  "sha256": "45c13da11d21b861ba2958ee797ae8ff7ec38c6c6fa26504d568bf014d21a8e2",
+  "htmlSha256": "b5645e2267b0531fea922ed74a2270d51ec6cc207cebd657953a967b86a875e4",
+  "extractedPath": "/var/folders/ch/kj981q1j5g3g3w6p5mctdd580000gn/T/hint-v32-welcome-check-yubdvade/journey.html",
+  "archiveVerified": true,
+  "browsers": [
+    {
+      "engine": "chromium",
+      "standalone": true,
+      "errors": [],
+      "networkRequests": []
+    },
+    {
+      "engine": "webkit",
+      "standalone": true,
+      "errors": [],
+      "networkRequests": []
+    }
+  ]
+}

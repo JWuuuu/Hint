@@ -566,3 +566,8 @@ Your chart & transits|星盘与行运|Tu carta y tránsitos|星盤とトラン�
 Saved cards & readings|已保存的牌卡与阅读|Cartas y lecturas guardadas|保存したカードとリーディング|저장한 카드와 리딩
 Types & patterns|性格类型与模式|Tipos y patrones|タイプとパターン|유형과 패턴
 `);
+add(`
+Hint has a letter for you.|Hint 给你带来了一封信。|Hint tiene una carta para ti.|Hint からあなたへの手紙があります。|Hint가 편지를 가져왔어요.
+A little pause for today’s message.|为今天的讯息稍作停留。|Una pequeña pausa para el mensaje de hoy.|今日のメッセージの前に、少しだけひと息。|오늘의 메시지를 위한 잠깐의 쉼.
+Show my card|显示我的牌|Mostrar mi carta|カードを見る|내 카드 보기
+`);

@@ -1,4 +1,5 @@
 import { isNativeShell } from "./mobile/runtime";
+import { canRecordSpeech, startRecordedSpeech } from "./recordedSpeech";
 
 type BrowserSpeechResult = {
   isFinal: boolean;
@@ -10,6 +11,7 @@ type BrowserSpeechRecognition = {
   interimResults: boolean;
   lang: string;
   maxAlternatives: number;
+  onstart: (() => void) | null;
   onresult: ((event: {
     resultIndex?: number;
     results: { length: number; [index: number]: BrowserSpeechResult | undefined };
@@ -30,10 +32,12 @@ export type HintSpeechSession = {
 
 export type HintSpeechOptions = {
   language: string;
+  continuous?: boolean;
   signal?: AbortSignal;
   onStart?: () => void;
+  onProcessing?: () => void;
   onTranscript: (transcript: string) => void;
-  onError: (reason: "unavailable" | "permission" | "network" | "no-speech" | "failed") => void;
+  onError: (reason: "unavailable" | "permission" | "micMissing" | "network" | "no-speech" | "failed" | "backend" | "limit") => void;
   onEnd: () => void;
 };
 
@@ -47,7 +51,9 @@ function browserSpeechConstructor(): BrowserSpeechConstructor | null {
 }
 
 function browserError(error?: string): Parameters<HintSpeechOptions["onError"]>[0] {
-  if (error === "not-allowed" || error === "service-not-allowed") return "permission";
+  if (error === "not-allowed") return "permission";
+  if (error === "service-not-allowed" || error === "language-not-supported") return "unavailable";
+  if (error === "audio-capture") return "micMissing";
   if (error === "network") return "network";
   if (error === "no-speech") return "no-speech";
   return "failed";
@@ -115,9 +121,17 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
   let result: { matches?: string[] };
   try {
     checkCancelled();
-    const availability = await SpeechRecognition.available({ language: options.language });
+    let availability: { available: boolean };
+    try {
+      availability = await SpeechRecognition.available({ language: options.language });
+    } catch (error) {
+      // Shells without the native recogniser (or a broken bridge) can still record a turn.
+      if (!options.signal?.aborted && canRecordSpeech()) return startRecordedSpeech(options);
+      throw error;
+    }
     checkCancelled();
     if (!availability.available) {
+      if (canRecordSpeech()) return startRecordedSpeech(options);
       reportError("unavailable");
       throw new Error("Speech recognition unavailable");
     }
@@ -163,9 +177,9 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
     });
     checkCancelled();
   } catch (error) {
+    if (!options.signal?.aborted) reportError("failed");
     if (startRequested) await cleanup(true);
     await removeListeners();
-    if (!options.signal?.aborted) reportError("failed");
     finish();
     throw error;
   }
@@ -186,30 +200,39 @@ function startBrowserSpeech(options: HintSpeechOptions): HintSpeechSession {
   const Recognition = browserSpeechConstructor();
   if (!Recognition) {
     options.onError("unavailable");
+    options.onEnd();
     throw new Error("Speech recognition unavailable");
   }
   const recognition = new Recognition();
-  recognition.continuous = true;
+  recognition.continuous = options.continuous ?? true;
   recognition.interimResults = true;
   recognition.lang = options.language;
   recognition.maxAlternatives = 1;
   let finalText = "";
   let ended = false;
+  let stopping = false;
+  let stopTimeout: ReturnType<typeof setTimeout> | undefined;
+  let resolveStop!: () => void;
+  const stopped = new Promise<void>(resolve => { resolveStop = resolve; });
   let errorReported = false;
   const finish = () => {
     if (ended) return;
     ended = true;
+    clearTimeout(stopTimeout);
+    recognition.onstart = null;
     recognition.onresult = null;
     recognition.onerror = null;
     recognition.onend = null;
     options.signal?.removeEventListener("abort", onAbort);
     options.onEnd();
+    resolveStop();
   };
   const reportError = (reason: Parameters<HintSpeechOptions["onError"]>[0]) => {
     if (errorReported) return;
     errorReported = true;
     options.onError(reason);
   };
+  recognition.onstart = () => { if (!ended) options.onStart?.(); };
   recognition.onresult = (event) => {
     if (ended) return;
     finalText = "";
@@ -231,20 +254,26 @@ function startBrowserSpeech(options: HintSpeechOptions): HintSpeechSession {
   const onAbort = () => { close(true); };
   const close = (cancel: boolean) => {
     if (ended) return;
-    // Detach callbacks first: abort can emit an expected "aborted" error synchronously.
-    finish();
+    if (cancel) finish();
+    else if (stopping) return;
+    else {
+      stopping = true;
+      options.onProcessing?.();
+      // stop() flushes a final result before onend; abort() discards it.
+      stopTimeout = setTimeout(() => { finish(); try { recognition.abort(); } catch { /* Already closed. */ } }, 2500);
+    }
     try {
       if (cancel) recognition.abort();
       else recognition.stop();
     } catch {
       if (!cancel) reportError("failed");
+      finish();
     }
   };
   try {
     recognition.start();
     if (!ended) {
       options.signal?.addEventListener("abort", onAbort, { once: true });
-      options.onStart?.();
     }
   } catch (error) {
     reportError("failed");
@@ -252,14 +281,43 @@ function startBrowserSpeech(options: HintSpeechOptions): HintSpeechSession {
     throw error;
   }
   return {
-    stop: async () => close(false),
+    stop: async () => { close(false); await stopped; },
     cancel: async () => close(true),
   };
 }
 
+let useRecordingService = false;
 export async function startHintSpeechRecognition(
   options: HintSpeechOptions,
 ): Promise<HintSpeechSession> {
   if (isNativeShell()) return startNativeSpeech(options);
-  return startBrowserSpeech(options);
+  if ((!browserSpeechConstructor() || useRecordingService) && canRecordSpeech()) return startRecordedSpeech(options);
+  let fallback = false, receivedText = false;
+  let active: HintSpeechSession | undefined;
+  let pending: Promise<HintSpeechSession> | undefined;
+  const abort = new AbortController();
+  const cancel = () => { abort.abort(); void active?.cancel(); };
+  options.signal?.throwIfAborted();
+  options.signal?.addEventListener("abort", cancel, { once: true });
+  const finish = () => { options.signal?.removeEventListener("abort", cancel); options.onEnd(); };
+  const shared = { ...options, signal: abort.signal, onEnd: finish };
+  try {
+    const browser = startBrowserSpeech({ ...shared,
+      onTranscript: text => { receivedText ||= Boolean(text.trim()); options.onTranscript(text); },
+      onError: reason => {
+        if (!receivedText && ["network", "unavailable"].includes(reason) && canRecordSpeech() && !abort.signal.aborted) {
+          fallback = true; useRecordingService = true;
+          options.onProcessing?.();
+          pending = startRecordedSpeech(shared).then(session => { active = session; return session; });
+          void pending.catch(() => { if (!abort.signal.aborted) { options.onError("backend"); finish(); } });
+        } else options.onError(reason);
+      },
+      onEnd: () => { if (!fallback) finish(); },
+    });
+    if (!fallback) active = browser;
+  } catch (error) {
+    options.signal?.removeEventListener("abort", cancel);
+    throw error;
+  }
+  return { stop: async () => { await (pending ? await pending : active)?.stop(); }, cancel: async () => { cancel(); } };
 }

@@ -1,0 +1,120 @@
+{
+  "engine": "webkit",
+  "results": {
+    "repeated": [
+      false,
+      false
+    ],
+    "t": 0.3340000000000002,
+    "afterRepeat": 0.3340000000000002,
+    "pauseStable": true,
+    "seeksSilent": true,
+    "accepted": true,
+    "duplicate": false,
+    "delivered": {
+      "gesture": "thinking",
+      "activity": "thinking",
+      "mode": "activity",
+      "time": 0.3920000000000001,
+      "activityTime": 0.3920000000000001,
+      "clock": 2.5269999999999953,
+      "active": false,
+      "paused": false,
+      "letter": "delivered",
+      "speed": 1,
+      "accentsVisible": true,
+      "duration": 4.6,
+      "phase": "entering",
+      "transitioning": true,
+      "queuedActivity": null,
+      "reducedMotion": false,
+      "visible": true,
+      "letterOwner": "reader",
+      "letterTarget": {
+        "x": 0.49,
+        "y": 0.89,
+        "scale": 1.18,
+        "angle": -0.169
+      },
+      "handoffFired": true
+    },
+    "deliveries": 1,
+    "completions": 1,
+    "heldActivity": {
+      "gesture": "thinking",
+      "activity": "thinking",
+      "mode": "activity",
+      "time": 1.3059999999999996,
+      "activityTime": 1.3059999999999996,
+      "clock": 3.4409999999999923,
+      "active": false,
+      "paused": false,
+      "letter": "delivered",
+      "speed": 1,
+      "accentsVisible": true,
+      "duration": 4.6,
+      "phase": "holding",
+      "transitioning": false,
+      "queuedActivity": null,
+      "reducedMotion": false,
+      "visible": true,
+      "letterOwner": "reader",
+      "letterTarget": {
+        "x": 0.49,
+        "y": 0.89,
+        "scale": 1.18,
+        "angle": -0.169
+      },
+      "handoffFired": true
+    },
+    "sameActivity": false,
+    "repeatedActivityContinues": true,
+    "transitionJump": 0,
+    "letterPreserved": true,
+    "reset": {
+      "gesture": "idle",
+      "activity": "idle",
+      "mode": "activity",
+      "time": 0,
+      "activityTime": 0,
+      "clock": 0,
+      "active": false,
+      "paused": false,
+      "letter": "held",
+      "speed": 1,
+      "accentsVisible": true,
+      "duration": 6,
+      "phase": "holding",
+      "transitioning": false,
+      "queuedActivity": null,
+      "reducedMotion": false,
+      "visible": true,
+      "letterOwner": "mascot",
+      "letterTarget": {
+        "x": 0.49,
+        "y": 0.89,
+        "scale": 1.18,
+        "angle": -0.169
+      },
+      "handoffFired": false
+    },
+    "events": [
+      {
+        "type": "handoff",
+        "letter": "delivered",
+        "target": {
+          "x": 0.49,
+          "y": 0.89,
+          "scale": 1.18,
+          "angle": -0.169
+        }
+      },
+      {
+        "type": "complete",
+        "gesture": "deliver-letter",
+        "letter": "delivered"
+      }
+    ]
+  },
+  "errors": []
+}

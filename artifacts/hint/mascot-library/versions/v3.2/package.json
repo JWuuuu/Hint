@@ -1,0 +1,40 @@
+{
+  "name": "hint-mascot-library",
+  "version": "3.2.0-dev.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs && node scripts/build-journey.mjs && node scripts/build-letter-study.mjs && node scripts/build-conversation.mjs",
+    "verify": "node scripts/verify-approved.mjs",
+    "rebuild:approved": "node scripts/rebuild-approved.mjs",
+    "package": "python3 scripts/package-release.py",
+    "test": "node --test scripts/*.test.mjs",
+    "prepare:expressions": "node scripts/prepare-expressions.mjs",
+    "prepare:paws": "node scripts/prepare-connected-paws.mjs",
+    "test:browsers": "node scripts/check-browsers.mjs",
+    "review:faces": "node scripts/inspect-expressions.mjs",
+    "review:frames": "node scripts/audit-frames.mjs",
+    "test:controller": "node scripts/check-controller.mjs --all",
+    "test:scenes": "node scripts/check-scenes.mjs",
+    "review:activity": "node scripts/review-activity.mjs",
+    "review:transitions": "node scripts/review-transitions.mjs",
+    "export:samples": "node scripts/export-samples.mjs && node scripts/finalize-samples.mjs",
+    "test:entrance": "node scripts/check-entrance-browsers.mjs",
+    "test:greeting": "node scripts/check-greeting-reactions.mjs",
+    "export:greeting": "node scripts/export-greeting-reaction.mjs",
+    "review:entrance": "node scripts/review-entrance.mjs",
+    "prepare:offer": "node scripts/prepare-offer-front.mjs",
+    "prepare:letter-scene": "node scripts/prepare-letter-scene.mjs",
+    "review:letter": "node scripts/review-letter-study.mjs",
+    "test:letter": "node scripts/check-letter-study.mjs",
+    "test:conversation": "node scripts/check-conversation.mjs",
+    "review:conversation": "node scripts/review-conversation-holds.mjs",
+    "test:app-guide": "node scripts/check-app-guide.mjs",
+    "test:app-build": "node scripts/check-app-build.mjs",
+    "test:app-onboarding": "node scripts/check-app-onboarding.mjs && node scripts/check-onboarding-recovery.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "sharp": "0.35.4"
+  }
+}

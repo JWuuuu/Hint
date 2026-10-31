@@ -1,0 +1,13 @@
+{
+  "name": "hint-mascot-library",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "verify": "node scripts/verify-approved.mjs",
+    "rebuild:approved": "node scripts/rebuild-approved.mjs",
+    "package": "python3 scripts/package-release.py",
+    "test": "node --test scripts/motion.test.mjs"
+  }
+}

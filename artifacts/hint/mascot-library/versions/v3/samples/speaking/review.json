@@ -1,0 +1,117 @@
+{
+  "gesture": "speaking",
+  "seconds": 7.197600000023842,
+  "sampleTimes": [
+    0,
+    0.6138000000357643,
+    1.2138000000357643,
+    1.8138000000357641,
+    2.4137000000357656,
+    3.013800000035764,
+    3.613800000035764,
+    4.213700000035765,
+    4.813700000035766,
+    5.413700000035766,
+    6.01360000003576,
+    6.61360000003576
+  ],
+  "sampleStates": [
+    {
+      "gesture": "idle",
+      "time": 0,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 0.3998999999999943,
+      "letter": "held",
+      "phase": "entering"
+    },
+    {
+      "gesture": "speaking",
+      "time": 0.9999999999999996,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 1.5998999999999943,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 2.199899999999994,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 2.799899999999992,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 3.399899999999991,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 3.9997999999999907,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 4.599899999999995,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 5.199800000000004,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "speaking",
+      "time": 5.799800000000012,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "idle",
+      "time": 0.4000000000000002,
+      "letter": "held",
+      "phase": "exiting"
+    }
+  ],
+  "medianFrameMs": 16.69999999999709,
+  "p95FrameMs": 16.700000000004366,
+  "decorativeAccents": false,
+  "errors": [],
+  "video": {
+    "duration": 7.2072,
+    "codec": "h264",
+    "width": 640,
+    "height": 640
+  },
+  "keyframeTimes": [
+    0,
+    0.6006,
+    1.2012,
+    1.8018,
+    2.4024,
+    3.003,
+    3.6036,
+    4.2042,
+    4.8048,
+    5.4054,
+    6.006,
+    6.6066
+  ],
+  "keyframesFromVideo": true
+}

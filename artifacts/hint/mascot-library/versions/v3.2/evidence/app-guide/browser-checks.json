@@ -1,0 +1,34 @@
+[
+  {
+    "engine": "chromium",
+    "passed": true,
+    "checks": [
+      "actual Ask page: invitation, tap, compact typing position, request thinking, response reading, one canvas",
+      "Ask layouts at 320, 390 and 430 CSS pixels",
+      "actual voice component with simulated microphone/audio: listening, thinking, preparing, playback, interruption, transcript resize, keyboard wink",
+      "voice pause freezes motion; reduced motion stays static; ending voice returns to the reading"
+    ],
+    "errors": [],
+    "unmocked": [],
+    "api": "isolated fixtures",
+    "microphone": "simulated",
+    "audio": "simulated",
+    "nativeDevice": false
+  },
+  {
+    "engine": "webkit",
+    "passed": true,
+    "checks": [
+      "actual Ask page: invitation, tap, compact typing position, request thinking, response reading, one canvas",
+      "Ask layouts at 320, 390 and 430 CSS pixels",
+      "actual voice component with simulated microphone/audio: listening, thinking, preparing, playback, interruption, transcript resize, keyboard wink",
+      "voice pause freezes motion; reduced motion stays static; ending voice returns to the reading"
+    ],
+    "errors": [],
+    "unmocked": [],
+    "api": "isolated fixtures",
+    "microphone": "simulated",
+    "audio": "simulated",
+    "nativeDevice": false
+  }
+]

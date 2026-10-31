@@ -1,7 +1,7 @@
 import { validBirthDate } from "../../lib/birthDetails";
 import { LocalizedText } from "../../lib/LocalizedText";
 import { useLanguage } from "../../lib/i18n";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation } from "wouter";
 import {
   ArrowLeft,
@@ -21,8 +21,10 @@ import { saveLocalAccount, useLocalAccount } from "../../lib/auth";
 import { saveBirthProfileFromAccountProfile } from "../../lib/astro/userBirthProfile";
 import { useProfile } from "../../lib/useProfile";
 import { LocalProfileSwitcher } from "./LocalProfileSwitcher";
+import { HintGuideSlot, useHintGuideEnabled, useHintGuideGesture, useHintGuideFrames } from "../mascot/HintGuide";
+import { HintOnboardingBackdrop, HintOnboardingWelcome, onboardingGuideContext } from "../mascot/HintOnboarding";
+import { markOnboardingComplete, onboardingIsComplete, useOnboardingResetRequested, withoutOnboardingReset } from "./onboardingState";
 
-const ONBOARDING_COMPLETE_KEY = "hint_onboarding_complete_v3";
 const ONBOARDING_PREFERENCES_KEY = "hint_onboarding_preferences_v1";
 
 type OnboardingStep = "welcome" | "profile" | "focus" | "account";
@@ -36,14 +38,6 @@ const FOCUS_OPTIONS: Array<{ id: FocusChoice; label: string; detail: string; ico
   { id: "decision", label: "A decision", detail: "See the situation from a clearer angle", icon: BookOpen },
 ];
 
-function onboardingIsComplete() {
-  try {
-    return window.localStorage.getItem(ONBOARDING_COMPLETE_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
 const isValidBirthDate = validBirthDate;
 
 function emailIsValid(value: string) {
@@ -51,11 +45,33 @@ function emailIsValid(value: string) {
 }
 
 export function OnboardingGate({ children }: { children: ReactNode }) {
+  const guideEnabled = useHintGuideEnabled(), playGesture = useHintGuideGesture();
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const guideHasFrame = useRef(false);
+  const [leavingWelcome, setLeavingWelcome] = useState(false);
+  const formArrival = useRef<{ at: number | null } | null>(null);
+  useHintGuideFrames(frame => {
+    guideHasFrame.current = true;
+    const arrival = formArrival.current;
+    if (!arrival || !root.current) return;
+    arrival.at ??= frame.state.clock;
+    const elapsed = frame.state.clock - arrival.at;
+    const smooth = (value: number) => { const t = Math.max(0, Math.min(1, value));return t * t * (3 - 2 * t); };
+    const show = frame.state.reducedMotion ? 1 : smooth((elapsed - .40) / .42);
+    root.current.style.setProperty("--form-opacity", String(show));
+    root.current.style.setProperty("--form-offset", `${(1 - show) * 8}px`);
+    root.current.style.setProperty("--welcome-exit", String(frame.state.reducedMotion ? 0 : 1 - smooth(elapsed / .18)));
+    if (frame.state.reducedMotion || elapsed >= .85) { formArrival.current = null;setLeavingWelcome(false); }
+  });
+  useEffect(() => {
+    if (!guideEnabled) { guideHasFrame.current = false;formArrival.current = null;setLeavingWelcome(false); }
+  }, [guideEnabled]);
   const { t } = useLanguage();
   const [location, navigate] = useLocation();
   const account = useLocalAccount();
   const { anonId, profile, saveProfile, isSaving } = useProfile();
-  const forceReset = useMemo(() => new URLSearchParams(window.location.search).get("onboarding") === "reset", [location]);
+  const forceReset = useOnboardingResetRequested();
   const pathname = location.split(/[?#]/, 1)[0] ?? "";
   const isStandaloneAuth = pathname.endsWith("/login") || pathname.endsWith("/signup");
   const localAstrologyJourney = /^(?:\/app)?\/(?:astrology|compatibility)(?:\/|$)/.test(pathname);
@@ -78,6 +94,17 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
   const shouldShow = !isStandaloneAuth && !finished && (forceReset || !localAstrologyJourney && !onboardingIsComplete());
 
   useEffect(() => {
+    // A replay requested after an earlier finish in this session starts over.
+    if (!forceReset) return;
+    setFinished(false);
+    setStep("welcome");
+  }, [forceReset]);
+
+  useEffect(() => {
+    if (guideEnabled && step !== "welcome") root.current?.querySelector<HTMLElement>(".hint-onboarding-step h1")?.focus({ preventScroll: true });
+  }, [guideEnabled, step]);
+
+  useEffect(() => {
     if (!profile) return;
     setName((current) => current || profile.name || "");
     const [year = "", month = "", day = ""] = (profile.birthDate || "").split("-");
@@ -94,11 +121,22 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
 
   function goBack() {
     if (savingIdentity.current) return;
+    formArrival.current = null;setLeavingWelcome(false);
     setError(null);
     setPendingCode(null);
     setCode("");
     const index = STEPS.indexOf(step);
     setStep(STEPS[Math.max(0, index - 1)] ?? "welcome");
+  }
+
+  function continueFromWelcome() {
+    if (guideEnabled && guideHasFrame.current) {
+      formArrival.current = { at: null };setLeavingWelcome(true);
+      root.current?.style.setProperty("--form-opacity", "0");
+      root.current?.style.setProperty("--form-offset", "8px");
+      root.current?.style.setProperty("--welcome-exit", "1");
+    }
+    setStep("profile");
   }
 
   async function saveIdentity() {
@@ -122,6 +160,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
       birthTime: birthTime || undefined,
       birthPlace: birthPlace.trim() || undefined,
     });
+    playGesture?.("nod");
     setStep("focus");
     } catch {
       setError("Your profile could not be saved. Keep your details here and try again.");
@@ -166,13 +205,16 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
         verifiedAt: new Date().toISOString(),
       });
     }
-      window.localStorage.setItem(ONBOARDING_COMPLETE_KEY, "1");
+      markOnboardingComplete();
     } catch {
       setError(t("quality.accountSaveFailed"));
       return;
     }
     setFinished(true);
-    navigate(window.location.pathname.startsWith("/app") ? `${window.location.pathname}${window.location.search}${window.location.hash}` : "/app", { replace: true });
+    // Consume a replay's `onboarding=reset` so app chrome stops treating the screen
+    // as onboarding. `pathname` is router-relative, so the app base is preserved.
+    const target = pathname.startsWith("/app") ? pathname : "/app";
+    navigate(`${target}${withoutOnboardingReset(window.location.search)}${window.location.hash}`, { replace: true });
   }
 
   function verifyCode() {
@@ -187,11 +229,14 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
   const stepIndex = STEPS.indexOf(step);
 
   return (
-    <div className="hint-onboarding fixed inset-0 z-[80] overflow-hidden" data-testid="onboarding-flow">
+    <div ref={root} className={`hint-onboarding fixed inset-0 z-[80] overflow-hidden${leavingWelcome ? " hint-guide-form-arrival" : ""}`} data-testid="onboarding-flow"
+      onFocusCapture={event => { if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement) setKeyboardOpen(true); }}
+      onBlurCapture={event => { if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement) setKeyboardOpen(false); }}>
       <div className="hint-onboarding-spotlight" aria-hidden />
       <div className="hint-onboarding-stars" aria-hidden>
         {Array.from({ length: 18 }, (_, index) => <i key={index} />)}
       </div>
+      {guideEnabled && <HintOnboardingBackdrop />}
 
       <main className="hint-onboarding-scroll hint-app-scroll relative z-10 mx-auto h-full w-full max-w-[430px] overflow-y-auto">
         {step !== "welcome" ? (
@@ -201,14 +246,15 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
             </button>
             <div className="flex items-center gap-1.5" aria-label={t("quality.onboardingStep").replace("{step}", String(stepIndex))}>
               {[1, 2, 3].map((item) => (
-                <span key={item} className="h-1 rounded-full transition-all" style={{ width: item === stepIndex ? 28 : 7, background: item <= stepIndex ? "#7d596f" : "rgba(74,54,68,0.16)" }} />
+                <span key={item} className="h-1 rounded-full transition-all" style={{ width: item === stepIndex ? 28 : 7, background: item <= stepIndex ? "var(--hint-onboarding-progress-on, #7d596f)" : "var(--hint-onboarding-progress-off, rgba(74,54,68,0.16))" }} />
               ))}
             </div>
-            <span className="grid size-10 place-items-center font-serif text-[15px] text-[#785c6e]">H</span>
+            <HintGuideSlot priority={110} context={onboardingGuideContext(step, keyboardOpen)} className={keyboardOpen ? "h-16 w-16 shrink-0" : "h-20 w-20 shrink-0"}
+              fallback={<span className="grid size-10 place-items-center font-serif text-[15px] text-[#785c6e]">H</span>} />
           </header>
         ) : null}
 
-        {step === "welcome" ? (
+        {(step === "welcome" || leavingWelcome) && guideEnabled ? <HintOnboardingWelcome leaving={leavingWelcome} replayIntro={forceReset} onContinue={continueFromWelcome} /> : step === "welcome" ? (
           <section className="flex min-h-full flex-col px-6 pb-[calc(var(--hint-safe-bottom)+1.5rem)] pt-[calc(var(--hint-safe-top)+1.4rem)]">
             <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.22em] text-[#7a6673]">
               <span><LocalizedText text={"Hint"} /></span>
@@ -360,7 +406,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
 }
 
 function StepHeading({ eyebrow, title, body }: { eyebrow: string; title: string; body: string }) {
-  return <div><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9a7189]"><LocalizedText text={eyebrow} /></p><h1 className="mt-3 max-w-[350px] font-serif text-[38px] leading-[1.02] text-[#30252f]"><LocalizedText text={title} /></h1><p className="mt-4 max-w-[355px] text-[13.5px] leading-6 text-[#7e7179]"><LocalizedText text={body} /></p></div>;
+  return <div><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9a7189]"><LocalizedText text={eyebrow} /></p><h1 tabIndex={-1} className="mt-3 max-w-[350px] font-serif text-[38px] leading-[1.02] text-[#30252f] outline-none"><LocalizedText text={title} /></h1><p className="mt-4 max-w-[355px] text-[13.5px] leading-6 text-[#7e7179]"><LocalizedText text={body} /></p></div>;
 }
 
 function OnboardingField({ label, detail, icon: Icon, children }: { label: string; detail?: string; icon: typeof UserRound; children: ReactNode }) {

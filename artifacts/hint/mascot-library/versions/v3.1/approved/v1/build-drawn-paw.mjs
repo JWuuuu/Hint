@@ -1,0 +1,10 @@
+import {readFile,writeFile} from 'node:fs/promises';
+const dir=new URL('./',import.meta.url).pathname;
+let html=await readFile(dir+'hint-drawn-paw.template.html','utf8');
+let engine=await readFile(dir+'drawn-paw-engine.js','utf8');
+const assets=[];for(const name of ['body',...Array.from({length:6},(_,i)=>'paw-'+i)])assets.push('data:image/webp;base64,'+(await readFile(dir+`paw-poses/${name}.webp`)).toString('base64'));
+engine=engine.replace('__GEOMETRY__',await readFile(dir+'paw-poses/geometry.json','utf8')).replace('__ASSETS__',JSON.stringify(assets));
+const review=process.argv.includes('--review');
+if(review)engine=engine.replace('const t=state.clock,g=state.gesture','const t=window.reviewClock??state.clock,g=state.gesture').replace('draw(bodyMesh,0,0,0,0);','if(window.reviewLayer!==1)draw(bodyMesh,0,0,0,0);').replace('draw(pawMesh,keys[p.i][1]+1,keys[p.i+1][1]+1,p.u,1);','if(window.reviewLayer!==0)draw(pawMesh,keys[p.i][1]+1,keys[p.i+1][1]+1,p.u,1);');
+html=html.replace('__ENGINE__',engine);
+await writeFile(dir+`hint-drawn-paw${review?'-review':''}.html`,html);console.log(JSON.stringify({bytes:Buffer.byteLength(html),review}));

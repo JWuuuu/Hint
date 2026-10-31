@@ -1,4 +1,5 @@
 .hint-preview-workspace {
+  box-sizing: border-box;
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -13,6 +14,24 @@
     #09090b;
   color: #f7f2f6;
   font-family: var(--app-font-sans, system-ui, sans-serif);
+}
+
+.hint-preview-workspace *,
+.hint-preview-workspace *::before,
+.hint-preview-workspace *::after {
+  box-sizing: border-box;
+}
+
+.hint-preview-device-field .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .hint-preview-toolbar {

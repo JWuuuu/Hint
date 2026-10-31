@@ -1,18 +1,30 @@
+import { TarotVoiceConversation } from "./TarotVoiceConversation";
+import { HintGuideSlot } from "../../../components/mascot/HintGuide";
+import { askGuideContext } from "../../../components/mascot/hintGuideContext";
+import { useHintTyping } from "../../../components/mascot/useHintTyping";
+import { TarotMessageActions } from "./TarotMessageActions";
+import { useTarotSpeechPlayback } from "../logic/useTarotSpeechPlayback";
+import "./tarot-reading-layout.css";
+import { useReadingDictation } from "../logic/useReadingDictation";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "../../../components/ui/dropdown-menu";
 import { ReceiptShareDialog } from "../../receipt-printer/ReceiptShareDialog";
-import { LocalizedText } from "../../../lib/LocalizedText";
 import { useManagedRoomVisit } from "../../../components/app/RoomVisitBoundary";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion";
 import {
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   History,
   Home,
-  Maximize2,
+  Ellipsis,
+  Mic,
+  Square,
+  BookOpen,
   Printer,
   RotateCcw,
-  SendHorizontal,
+  ArrowUp,
+  ArrowDown,
+  AudioLines,
   X,
 } from "lucide-react";
 import { useLocation } from "wouter";
@@ -42,6 +54,7 @@ import type { WashRitualTheme } from "./CardWashRitual";
 import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
 import { requestTarotFollowUp } from "../logic/requestTarotFollowUp";
 import { buildTarotChatContext } from "../logic/buildTarotChatContext";
+import { getTarotSpreadHistory } from "../logic/buildTarotSpreadHistory";
 import { useLanguage, type HintLanguage } from "../../../lib/i18n";
 import { Dialog, DialogSurface, DialogTitle } from "../../../components/ui/dialog";
 
@@ -78,9 +91,7 @@ type StructuredCardMeaning = {
 
 type StructuredTarotReading = LocalStructuredTarotReading;
 
-const FOLLOW_UP_KEYS = ["next", "release", "truth"] as const;
 const MIN_READING_REVEAL_MS = 650;
-const CARD_PREVIEW_HINT_SESSION_KEY = "hint_tarot_card_preview_hint_v1";
 
 function useModalReturnFocus() {
   const opener = useRef(typeof document !== "undefined" && document.activeElement instanceof HTMLElement ? document.activeElement : null);
@@ -126,24 +137,6 @@ function localizeFallbackReading(
     follow_up_invitation: t("tarot.flow.chat.local.invitation"),
   };
 }
-
-function buildLocalizedFollowUpReply(
-  followUp: string,
-  cards: RitualCard[],
-  language: HintLanguage,
-  t: (key: string) => string,
-) {
-  if (language !== "zh") return buildFollowUpReply(followUp, cards);
-  const focal = cards[0];
-  return formatChatCopy(t("tarot.flow.chat.local.followUpReply"), {
-    followUp,
-    card: focal?.name ?? t("tarot.flow.chat.cards"),
-    orientation: focal
-      ? t(`tarot.flow.chat.${focal.orientation}`)
-      : t("tarot.flow.chat.upright"),
-  });
-}
-
 
 function newMessageId() {
   return `hint-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -370,12 +363,6 @@ function normalizeStructuredReading(reading: StructuredTarotReading): Structured
     final_action_advice: cleanReadingCopy(reading.final_action_advice),
     follow_up_invitation: cleanReadingCopy(reading.follow_up_invitation),
   };
-}
-
-function buildFollowUpReply(question: string, cards: RitualCard[]) {
-  const anchor = cards[0];
-  const cleanQuestion = question.replace(/\s+/g, " ").trim();
-  return `For "${cleanQuestion}", the cards are still pointing back to the whole pattern, not only one card. ${anchor ? getReadableCardMeaning(anchor).sentence : "Name what is true, then choose the smallest action that matches it."} Tell me the part that feels hardest to read, and I can stay with that thread.`;
 }
 
 function toApiCardDraw(card: RitualCard, index: number, spread: SpreadChoice): TarotCardDraw {
@@ -638,7 +625,6 @@ export function TarotHintReadingChat({
   existingReadingCreatedAt,
   onArchived,
   onNewReading,
-  onBack,
 }: TarotHintReadingChatProps) {
   const [, navigate] = useLocation();
   const managedRoomVisit = useManagedRoomVisit();
@@ -648,7 +634,8 @@ export function TarotHintReadingChat({
   const [messages, setMessages] = useState<LocalChatMessage[]>(
     () => archivedReading?.chatMessages ?? [],
   );
-  const [error, setError] = useState<string | null>(null);
+  const [replyState, setReplyState] = useState<"failed" | "stopped" | null>(null);
+  const [showLatest, setShowLatest] = useState(false);
   const [structuredReading, setStructuredReading] = useState<StructuredTarotReading | null>(
     null,
   );
@@ -664,14 +651,42 @@ export function TarotHintReadingChat({
   const [detailedContext, setDetailedContext] = useState(archivedReading?.detailedContext ?? "");
   const [detailedFeedback, setDetailedFeedback] = useState(archivedReading?.detailedFeedback);
   const [cardPreviewIndex, setCardPreviewIndex] = useState<number | null>(null);
-  const [showCardPreviewHint, setShowCardPreviewHint] = useState(false);
-  const acknowledgedCardHintRef = useRef<string | null>(null);
+  const [showDeepReading, setShowDeepReading] = useState(false);
+  const deepReadingRef = useRef<HTMLElement | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const receiptFromMenuRef = useRef(false);
   const [receiptOpen, setReceiptOpen] = useState(false);
   const [hasSavedReading, setHasSavedReading] = useState(Boolean(archivedReading));
   const [saveFailed, setSaveFailed] = useState(false);
   const [saveNotice, setSaveNotice] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const dictation = useReadingDictation({ draft, onDraft: setDraft, onComplete: text => { void send(text); }, language, t });
+  const voiceActive = dictation.status !== "idle";
+  const typing = useHintTyping(draft);
+  const [composerFocused, setComposerFocused] = useState(false);
+  const [voiceConversationOpen, setVoiceConversationOpen] = useState(false);
+  const playback = useTarotSpeechPlayback();
+  useEffect(() => {
+    if (!showDeepReading) return;
+    const frame = requestAnimationFrame(() => {
+      deepReadingRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      deepReadingRef.current?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [showDeepReading, reduceMotion]);
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    input.style.height = "auto";
+    input.style.height = `${Math.min(128, Math.max(44, input.scrollHeight))}px`;
+  }, [draft]);
+  useEffect(() => {
+    if (menuOpen || cardPreviewIndex !== null || receiptOpen) { dictation.stop(); playback.stop(); }
+  }, [menuOpen, cardPreviewIndex, receiptOpen, dictation.stop, playback.stop]);
+  const previousMessageCount = useRef(messages.length);
+  const followingConversation = useRef(true);
   const savedReadingKeyRef = useRef<string | null>(null);
   const savedReadingRef = useRef<LocalTarotReading | null>(archivedReading ?? null);
   const questionArchivedRef = useRef(Boolean(archivedReading));
@@ -729,38 +744,25 @@ export function TarotHintReadingChat({
   }, [selectedCards]);
 
   useEffect(() => {
-    if (readingStatus === "loading" || selectedCards.length === 0) return undefined;
-    if (acknowledgedCardHintRef.current === selectedCardKey) return undefined;
-    try {
-      if (window.sessionStorage.getItem(CARD_PREVIEW_HINT_SESSION_KEY) === selectedCardKey) return undefined;
-    } catch {
-      // The hint can still appear when storage is unavailable.
+    const newMessage = messages.length > previousMessageCount.current;
+    previousMessageCount.current = messages.length;
+    const lastMessage = messages.at(-1);
+    const feed = scrollRef.current;
+    if (!feed) return;
+    if ((newMessage && lastMessage?.role === "user") || (followingConversation.current && (newMessage || chatMutation.isPending))) {
+      feed.scrollTo({ top: feed.scrollHeight, behavior: "auto" });
+      followingConversation.current = true;
+      setShowLatest(false);
+    } else {
+      setShowLatest(messages.length > 0 && feed.scrollHeight - feed.scrollTop - feed.clientHeight > 96);
     }
+  }, [messages, chatMutation.isPending]);
 
-    let hideTimer: number | null = null;
-    const showTimer = window.setTimeout(() => {
-      if (acknowledgedCardHintRef.current === selectedCardKey) return;
-      setShowCardPreviewHint(true);
-      hideTimer = window.setTimeout(
-        () => setShowCardPreviewHint(false),
-        8_000, // Reading time should not shrink with reduced-motion settings.
-      );
-    }, reduceMotion ? 20 : 520);
-
-    return () => {
-      window.clearTimeout(showTimer);
-      if (hideTimer !== null) window.clearTimeout(hideTimer);
-    };
-  }, [readingStatus, reduceMotion, selectedCardKey, selectedCards.length]);
-
-  function dismissCardPreviewHint() {
-    acknowledgedCardHintRef.current = selectedCardKey;
-    setShowCardPreviewHint(false);
-    try {
-      window.sessionStorage.setItem(CARD_PREVIEW_HINT_SESSION_KEY, selectedCardKey);
-    } catch {
-      // Dismissal still works in memory when session storage is unavailable.
-    }
+  function jumpToLatest() {
+    const feed = scrollRef.current;
+    feed?.scrollTo({ top: feed.scrollHeight, behavior: "auto" });
+    followingConversation.current = true;
+    setShowLatest(false);
   }
 
   useEffect(() => {
@@ -800,13 +802,13 @@ export function TarotHintReadingChat({
     let revealTimer: number | null = null;
     setStructuredReading(null);
     setReadingStatus("loading");
-    setError(null);
+    setReplyState(null);
     let settled = false;
     const timeout = window.setTimeout(() => {
       settled = true;
       controller.abort();
       setReadingStatus("local");
-    }, 8_000);
+    }, 15_000);
 
     const requestBody = {
       question:
@@ -817,6 +819,7 @@ export function TarotHintReadingChat({
       emotionalContext: story?.trim() || null,
       focusLabel: focusLabel?.trim() || null,
       requiredCardCount: selectedCards.length,
+      spreadHistory: getTarotSpreadHistory({ activeReadingId: savedReadingRef.current?.id ?? existingReadingId, question }),
       cards: selectedCards.map((card, index) => {
         const meaning = getReadableCardMeaning(card);
         const isMajor = /^\d+-/.test(card.cardId);
@@ -972,23 +975,25 @@ export function TarotHintReadingChat({
     persistReading({ chatMessages: nextMessages });
   }
 
-  async function send(text: string) {
+  async function send(text: string, retryMessageId?: string) {
     const trimmed = text.trim();
     if (!trimmed || chatMutation.isPending || sendInFlightRef.current) return;
+    const retryMessage = retryMessageId ? messages.at(-1) : null;
+    if (retryMessageId && (retryMessage?.id !== retryMessageId || retryMessage.role !== "user")) return;
     sendInFlightRef.current = true;
     const controller = new AbortController();
     chatAbortRef.current = controller;
-    setError(null);
-    const userMessage: LocalChatMessage = {
+    setReplyState(null);
+    const userMessage: LocalChatMessage = retryMessage ?? {
       id: newMessageId(),
       role: "user",
       content: trimmed,
     };
-    const priorMessages = messages;
-    const withUser = [...priorMessages, userMessage];
+    const priorMessages = retryMessage ? messages.slice(0, -1) : messages;
+    const withUser = retryMessage ? messages : [...priorMessages, userMessage];
     setMessages(withUser);
     persistMessages(withUser);
-    setDraft("");
+    if (!retryMessage) setDraft("");
 
     try {
       const reply = await chatMutation.mutateAsync({
@@ -1002,6 +1007,7 @@ export function TarotHintReadingChat({
             toApiCardDraw(card, index, displaySpread),
           ),
           initialReading: initialReadingText,
+          spreadHistory: getTarotSpreadHistory({ activeReadingId: savedReadingRef.current?.id ?? existingReadingId, question }),
           messages: priorMessages.slice(-12).map((message) => ({
             role: message.role,
             content: message.content,
@@ -1021,24 +1027,11 @@ export function TarotHintReadingChat({
       ];
       setMessages(completedMessages);
       persistMessages(completedMessages);
+      return reply.message;
     } catch {
       if (controller.signal.aborted) return;
-      setError(t("tarot.flow.chat.networkFallback"));
-      const completedMessages = [
-        ...withUser,
-        {
-          id: newMessageId(),
-          role: "assistant" as const,
-          content: buildLocalizedFollowUpReply(
-            trimmed,
-            selectedCards,
-            language,
-            t,
-          ),
-        },
-      ];
-      setMessages(completedMessages);
-      persistMessages(completedMessages);
+      setReplyState("failed");
+      return null;
     } finally {
       if (chatAbortRef.current === controller) {
         chatAbortRef.current = null;
@@ -1048,12 +1041,16 @@ export function TarotHintReadingChat({
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (voiceActive || chatMutation.isPending) return;
     if (event.nativeEvent.isComposing || event.keyCode === 229) return;
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
+      playback.stop();
       void send(draft);
     }
   }
+
+  const unansweredMessage = !chatMutation.isPending && messages.at(-1)?.role === "user" ? messages.at(-1)! : null;
 
   function confirmLeave() {
     return !saveFailed || window.confirm(t("tarot.flow.chat.unsavedLeave"));
@@ -1084,8 +1081,9 @@ export function TarotHintReadingChat({
   return (
     <section
       data-room-background={roomDesign?.backgroundId ?? "stars"}
-      className="relative flex h-full w-full flex-col overflow-hidden text-[#332d45]"
+      className="tarot-reading-theme relative flex h-full w-full flex-col overflow-hidden bg-transparent text-[var(--reading-ink)]"
     >
+      {/* The shell's shared sky shows through; this room paints no backdrop. */}
       <div
         data-tarot-chat-content
         className="contents"
@@ -1115,186 +1113,111 @@ export function TarotHintReadingChat({
         )}
       </AnimatePresence>
 
-      <header className="relative z-10 border-b border-[#7b5b91]/10 px-5 pb-3 pl-16 pt-[calc(var(--hint-safe-top)+0.75rem)] sm:px-7 sm:pb-3.5 sm:pl-20">
-        {onBack ? (
-          <button
-            type="button"
-            onClick={() => { if (confirmLeave()) onBack(); }}
-            className="absolute left-4 top-[calc(var(--hint-safe-top)+0.8rem)] grid h-11 w-11 place-items-center rounded-full border border-white/72 bg-white/66 text-[#65556d] shadow-[0_10px_26px_rgba(91,65,100,0.12)] backdrop-blur-xl"
-            aria-label={t("common.back")}
-          >
-            <ArrowLeft size={18} strokeWidth={1.8} />
-          </button>
-        ) : null}
-        <p className="font-sans text-[10px] uppercase tracking-[0.28em] text-[color:var(--tarot-page-muted,#9c7891)]">{t("tarot.room")}</p>
-        <h1 className="mt-1 font-serif text-[26px] leading-tight text-[color:var(--tarot-page-ink,#332d45)] sm:text-[34px]">
-          {t("tarot.flow.chat.title")}
-        </h1>
-        <p className="mt-1.5 max-w-2xl font-sans text-[12px] leading-relaxed text-[color:var(--tarot-page-muted,#746276)] sm:text-[13px]">
-          {t("tarot.flow.chat.subtitle")}
-        </p>
-        {(question || focusLabel) && (
-          <p className="mt-2 max-w-2xl truncate font-sans text-xs leading-relaxed text-[color:var(--tarot-page-muted,#8b7a88)]">
-            {[focusLabel?.trim(), question?.trim()].filter(Boolean).join(" · ")}
-          </p>
-        )}
-        <div className="absolute right-4 top-[calc(var(--hint-safe-top)+0.75rem)] flex items-center gap-2 sm:right-6">
-          <button
-            type="button"
-            onClick={() => leaveTo("/app/readings")}
-            data-room-target="/app/readings"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/72 bg-white/58 text-[#6d5d72] shadow-[0_8px_22px_rgba(91,65,100,0.10)] transition-colors hover:border-[#d8b96e]/48 hover:text-[#7b5b91]"
-            aria-label={t("tarot.flow.chat.openHistory")}
-          >
-            <History size={16} />
-          </button>
-          <button
-            type="button"
-            onClick={() => leaveTo("/app")}
-            data-room-target="/app"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/72 bg-white/58 text-[#6d5d72] shadow-[0_8px_22px_rgba(91,65,100,0.10)] transition-colors hover:border-[#d8b96e]/48 hover:text-[#7b5b91]"
-            aria-label={t("tarot.flow.chat.returnHome")}
-          >
-            <Home size={16} />
-          </button>
+      <header data-testid="tarot-reading-header" className="relative z-20 flex shrink-0 items-center gap-1 border-b border-[#7b5b91]/8 bg-[var(--reading-header)] px-3 pb-2 pt-[calc(var(--hint-safe-top)+0.5rem)] backdrop-blur-xl">
+        <button type="button" onClick={() => leaveTo("/app")} data-room-target="/app"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[var(--reading-accent)] hover:bg-[var(--reading-hover)]" aria-label={t("tarot.flow.chat.returnHome")}>
+          <Home size={19} strokeWidth={1.7} />
+        </button>
+        <div className="flex min-w-0 flex-1 items-center justify-center">
+          <HintGuideSlot priority={55} className="-my-3 h-20 w-20 shrink-0" context={{
+            ...askGuideContext({ messageCount: messages.length, thinking: chatMutation.isPending || readingStatus === "loading",
+              lastRole: messages.at(-1)?.role, typing: typing && !voiceActive, keyboardOpen: composerFocused,
+              playbackStatus: playback.status, error: dictation.notice }),
+            room: "tarot", ...(voiceActive ? { phase: dictation.status === "listening" ? "listening" : "preparing" } : {}),
+          }} />
+          <h1 className="truncate font-serif text-[22px] text-[var(--reading-ink)]">Hint</h1>
         </div>
+        <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+          <DropdownMenuTrigger asChild>
+            <button ref={menuTriggerRef} type="button" aria-label={t("tarot.flow.chat.readingOptions")}
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-[var(--reading-accent)] hover:bg-[var(--reading-hover)]"><Ellipsis size={21} /></button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" sideOffset={8} className="w-56 rounded-[18px] border-[#7b5b91]/12 bg-[#fffaf7] p-2 text-[#62506d] shadow-[0_12px_36px_rgba(91,65,100,0.14)]"
+            onCloseAutoFocus={(event) => {
+              if (!receiptFromMenuRef.current) return;
+              event.preventDefault();
+              receiptFromMenuRef.current = false;
+              menuTriggerRef.current?.focus({ preventScroll: true });
+              openReceipt();
+            }}>
+            <DropdownMenuItem className="min-h-11 rounded-xl px-3" onSelect={() => leaveTo("/app/readings")}><History size={16} />{t("tarot.flow.chat.history")}</DropdownMenuItem>
+            {onNewReading && <DropdownMenuItem className="min-h-11 rounded-xl px-3" onSelect={() => { if (confirmLeave()) onNewReading(); }}><RotateCcw size={16} />{t("tarot.flow.chat.newReading")}</DropdownMenuItem>}
+            <DropdownMenuItem className="min-h-11 rounded-xl px-3" disabled={!savedReadingRef.current} onSelect={() => { receiptFromMenuRef.current = true; }}><Printer size={16} />{t("tarot.flow.chat.receive")}</DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-[#7b5b91]/10" />
+            <DropdownMenuItem className="min-h-11 rounded-xl px-3" onSelect={() => setShowDeepReading(true)}><BookOpen size={16} />{t("tarot.flow.chat.exploreReading")}</DropdownMenuItem>
+            {readingStatus === "local" && <DropdownMenuItem className="min-h-11 rounded-xl px-3" onSelect={() => setReadingAttempt(attempt => attempt + 1)}><RotateCcw size={16} />{t("tarot.flow.chat.retryReading")}</DropdownMenuItem>}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
 
-      <AnimatePresence>
-        {showCardPreviewHint && cardPreviewIndex === null && !receiptOpen ? (
-          <motion.div
-            role="status"
-            data-testid="tarot-card-tip"
-            className="absolute left-1/2 top-[calc(var(--hint-safe-top)+6.9rem)] z-[60] flex w-[min(calc(100%-2rem),320px)] -translate-x-1/2 items-center gap-3 rounded-[16px] border border-white/78 bg-[#fffaf6]/92 px-3 py-2.5 shadow-[0_14px_36px_rgba(91,65,100,0.16)] backdrop-blur-md"
-            initial={{ opacity: 0, y: reduceMotion ? 0 : -8, scale: reduceMotion ? 1 : 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: reduceMotion ? 0 : -6, scale: reduceMotion ? 1 : 0.98 }}
-            transition={{ duration: reduceMotion ? 0.01 : 0.2, ease: [0.22, 0.8, 0.22, 1] }}
-          >
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#b997c9]/14 text-[#7b5b91]">
-              <Maximize2 size={15} strokeWidth={1.7} />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block font-sans text-[12px] font-semibold text-[#44374d]">
-                {t("tarot.flow.chat.cardHintTitle")}
-              </span>
-              <span className="mt-0.5 block font-sans text-[11px] leading-4 text-[#756777]">
-                {t("tarot.flow.chat.cardHintBody")}
-              </span>
-            </span>
-            <button
-              type="button"
-              onClick={dismissCardPreviewHint}
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-[#8b7a88]"
-              aria-label={t("tarot.flow.chat.dismissCardHint")}
-            >
-              <X size={15} strokeWidth={1.8} />
-            </button>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <div ref={scrollRef} onScroll={(event) => {
+        const feed = event.currentTarget;
+        followingConversation.current = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 96;
+        setShowLatest(messages.length > 0 && !followingConversation.current);
+      }} data-testid="tarot-reading-feed" className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-7">
+        <div className="mx-auto flex w-full max-w-2xl flex-col gap-5 pb-3">
+          <main className="flex min-w-0 flex-col gap-5">
+            {(question || focusLabel) && (
+              <div data-testid="tarot-reading-question" className="ml-auto max-w-[88%] rounded-[20px] rounded-tr-md border border-[#7b5b91]/10 bg-[var(--reading-bubble)] px-4 py-3">
+                <p className="font-sans text-[15px] leading-6 text-[var(--reading-ink)]">{question || focusLabel}</p>
+              </div>
+            )}
+            <p className="sr-only">{displaySpread.label}</p>
 
-      <div ref={scrollRef} className="relative z-10 flex-1 overflow-y-auto px-4 py-4 sm:px-7">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-3 pb-6">
-          <main className="flex min-w-0 flex-col gap-3">
             <motion.article
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: reduceMotion ? 0.01 : 0.2, ease: [0.22, 0.8, 0.22, 1] }}
-              className="transform-gpu rounded-[18px] border border-white/78 bg-white/58 px-4 py-4 shadow-[0_18px_46px_rgba(91,65,100,0.09)] backdrop-blur-xl will-change-[opacity,transform] sm:px-5 sm:py-5"
+              className="min-w-0 transform-gpu will-change-[opacity,transform]"
             >
-              <div className="flex items-center justify-between gap-3">
-                <p className="font-sans text-[10px] uppercase tracking-[0.24em] text-[#9c7891]">
-                  {t("tarot.flow.chat.reading")}
-                </p>
-                <p className="font-sans text-[9px] uppercase tracking-[0.18em] text-[#9a7557]">
-                  {formatChatCopy(t("tarot.flow.chat.cardCount"), { count: selectedCards.length })}
-                </p>
-              </div>
               <AnimatePresence initial={false} mode="wait">
               {readingStatus === "loading" ? (
                 <motion.div key="reading-pending" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduceMotion ? 0.01 : 0.12 }} className="mt-4 space-y-3" role="status" aria-live="polite">
                   <div className="h-3 w-28 animate-pulse rounded-full bg-[#b997c9]/24" />
                   <div className="h-3 w-full animate-pulse rounded-full bg-[#b997c9]/16" />
                   <div className="h-3 w-[86%] animate-pulse rounded-full bg-[#d8a6be]/18" />
-                  <p className="pt-2 font-serif text-[16px] italic text-[#6f5b73]">{t("tarot.flow.chat.generating")}</p>
+                  <p className="tarot-reading-copy pt-2 font-serif text-[16px] italic text-[var(--reading-body)]">{t("tarot.flow.chat.generating")}</p>
                 </motion.div>
               ) : (
-              <motion.div key="reading-ready" initial={{ opacity: 0, y: reduceMotion ? 0 : 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.8, 0.22, 1] }} className="mt-4 space-y-5">
-                <section data-testid="tarot-short-answer" tabIndex={-1} className="border-l border-[#d8b96e]/56 pl-3.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#735583]">
-                  <h3 className="font-sans text-[11px] uppercase tracking-[0.18em] text-[#8b7a88]">{t("tarot.flow.chat.answer")}</h3>
-                  <p className="mt-2 font-serif text-[17px] leading-[1.55] text-[#3b3045] sm:text-[18px]">{reading.overall_summary}</p>
+              <motion.div key="reading-ready" initial={{ opacity: 0, y: reduceMotion ? 0 : 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.8, 0.22, 1] }} className="space-y-5">
+                <section data-testid="tarot-short-answer" tabIndex={-1} className="rounded-2xl border border-[#b997c9]/40 bg-[var(--reading-answer)] px-4 py-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#735583]">
+                  <h3 className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--reading-accent)]">{t("tarot.flow.chat.answer")}</h3>
+                  <p className="font-sans text-[16px] font-bold leading-7 text-[var(--reading-ink)]">{reading.overall_summary}</p>
                 </section>
-                <section>
-                  <div className="flex items-end justify-between gap-3">
-                    <h3 className="font-sans text-[11px] uppercase tracking-[0.18em] text-[#8b7a88]">
-                      {t("tarot.flow.chat.cards")}
-                    </h3>
-                    <span className="font-serif text-[12px] italic text-[#9a8194]">{displaySpread.label}</span>
-                  </div>
-                  <div className="mt-2 divide-y divide-[#7b5b91]/10 border-y border-[#7b5b91]/10">
-                    {reading.cards.map((card, index) => {
-                      const visualCard = selectedCards[index];
-                      return (
-                        <div
-                          key={`${visualCard?.visualId ?? index}-meaning`}
-                          className="grid grid-cols-[72px_minmax(0,1fr)] gap-3.5 py-4 sm:grid-cols-[82px_minmax(0,1fr)] sm:gap-4"
-                        >
-                          {visualCard ? (
-                            <div className="w-fit">
-                              <TarotCardVisual
-                                card={visualCard}
-                                faceDown={false}
-                                revealed
-                                instantReveal
-                                compact
-                                backStyle={backStyle}
-                                cardBackId={cardBackId}
-                                cardArtId={cardArtId}
-                                positionLabel={card.position}
-                                ariaLabel={formatChatCopy(t("tarot.flow.chat.previewCardAria"), {
-                                  position: card.position,
-                                  card: card.card_name,
-                                  orientation: t(`tarot.flow.chat.${card.orientation}`),
-                                })}
-                                showFrontCaption={false}
-                                onClick={() => {
-                                  dismissCardPreviewHint();
-                                  setCardPreviewIndex(index);
-                                }}
-                                className="!h-[114px] !w-[72px] sm:!h-[130px] sm:!w-[82px]"
-                              />
-                            </div>
-                          ) : (
-                            <div className="h-[114px] w-[72px] rounded-[10px] border border-[#d8b96e]/30 bg-[#b997c9]/10" />
-                          )}
-                          <div className="min-w-0 self-center">
-                            <p className="font-sans text-[9px] uppercase tracking-[0.18em] text-[#9a7557]">
-                              {card.position}
-                            </p>
-                            <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                              <p className="font-serif text-[16px] leading-tight text-[#3b3045] sm:text-[17px]">
-                                {card.card_name}
-                              </p>
-                              {card.orientation === "reversed" ? (
-                                <span className="font-sans text-[8px] uppercase tracking-[0.14em] text-[#a17b93]">
-                                  {t("tarot.flow.chat.reversed")}
-                                </span>
-                              ) : null}
-                            </div>
-                            <p className="mt-2 font-sans text-[12.5px] leading-[1.62] text-[#625467] sm:text-[13px]">
-                              {card.meaning}
-                            </p>
-                          </div>
+                <ol aria-label={t("tarot.flow.chat.cards")} className="list-none space-y-6">
+                  {reading.cards.map((card, index) => {
+                    const visualCard = selectedCards[index];
+                    return (
+                      <li key={`meaning-${index}`} id={`tarot-card-meaning-${index}`}
+                        className="grid grid-cols-[76px_minmax(0,1fr)] items-start gap-4 min-[400px]:grid-cols-[88px_minmax(0,1fr)]">
+                        {visualCard ? <TarotCardVisual card={visualCard} faceDown={false} revealed instantReveal compact
+                          backStyle={backStyle} cardBackId={cardBackId} cardArtId={cardArtId} positionLabel={card.position}
+                          ariaLabel={formatChatCopy(t("tarot.flow.chat.previewCardAria"), {
+                            position: card.position, card: card.card_name, orientation: t(`tarot.flow.chat.${card.orientation}`),
+                          })}
+                          showFrontCaption={false}
+                          onClick={() => setCardPreviewIndex(index)}
+                          className="!h-[122px] !w-[76px] min-[400px]:!h-[141px] min-[400px]:!w-[88px] !shadow-[0_5px_14px_rgba(68,55,77,0.16)] focus-visible:ring-2 focus-visible:ring-[#796582] focus-visible:ring-offset-4" /> : <span />}
+                        <div className="tarot-reading-copy min-w-0">
+                          <h3 className="font-sans text-[15px] font-semibold leading-6 text-[var(--reading-ink)]">{index + 1}. {card.card_name}</h3>
+                          <p className="mt-0.5 font-sans text-[11px] leading-4 text-[var(--reading-muted)]">{card.position} · {t(`tarot.flow.chat.${card.orientation}`)}</p>
+                          <p className="mt-2 font-sans text-[15px] leading-6 text-[var(--reading-body)] [overflow-wrap:anywhere]">{card.meaning}</p>
                         </div>
-                      );
-                    })}
-                  </div>
-                </section>
-                <section className="border-t border-[#d8b96e]/28 pt-4">
-                  <h3 className="font-sans text-[11px] uppercase tracking-[0.18em] text-[#8b7a88]">{t("tarot.flow.chat.nextStep")}</h3>
-                  <p className="mt-2 font-sans text-[13.5px] leading-6 text-[#55475e] sm:text-sm">{reading.final_action_advice}</p>
-                </section>
+                      </li>
+                    );
+                  })}
+                </ol>
+                {reading.cards_connection && <section data-testid="tarot-cards-synthesis" className="tarot-reading-copy">
+                  <h3 className="sr-only">{t("tarot.flow.chat.deepConnection")}</h3>
+                  <p className="font-sans text-[15px] leading-7 text-[var(--reading-body)]">{reading.cards_connection}</p>
+                </section>}
+                <p data-testid="tarot-next-step" className="tarot-reading-copy font-sans text-[15px] leading-7 text-[var(--reading-ink)]">{reading.final_action_advice}</p>
+                <TarotMessageActions id="initial-reading" text={[reading.overall_summary, ...reading.cards.map(card => `${card.card_name}. ${card.meaning}`), reading.cards_connection, reading.final_action_advice].filter(Boolean).join("\n\n")}
+                  playback={playback} beforePlay={dictation.stop} />
+                {showDeepReading && <section ref={deepReadingRef} tabIndex={-1} className="relative scroll-mt-5">
+                  <button type="button" aria-label={t("tarot.flow.chat.closeDeep")}
+                    onClick={() => setShowDeepReading(false)} className="absolute right-0 top-0 grid h-11 w-11 place-items-center rounded-full text-[var(--reading-accent)]"><X size={16} /></button>
+                  <div className="pt-6">
                 <DetailedTarotReading
                   request={{
                     question: question?.trim() || focusLabel?.trim() || t("tarot.flow.chat.defaultQuestion"),
@@ -1305,6 +1228,7 @@ export function TarotHintReadingChat({
                       position: getSpreadPositionLabel(displaySpread, index),
                     })),
                     originalReading: reading,
+                    activeReadingId: savedReadingRef.current?.id ?? existingReadingId,
                   }}
                   saved={detailedReading}
                   savedContext={detailedContext}
@@ -1316,20 +1240,29 @@ export function TarotHintReadingChat({
                     persistReading({ detailedReading: detail });
                   }}
                 />
-                {readingStatus === "local" ? (
-                  <button
-                    type="button"
-                    onClick={() => setReadingAttempt((attempt) => attempt + 1)}
-                    className="min-h-11 rounded-full border border-[#7b5b91]/18 bg-white/58 px-4 font-sans text-[12px] font-semibold text-[#6d5775]"
-                  >
-                    {t("tarot.flow.chat.retryReading")}
-                  </button>
-                ) : null}
+                  </div>
+                </section>}
+
               </motion.div>
               )}
               </AnimatePresence>
             </motion.article>
 
+            <section className={saveFailed ? "-mt-2" : "sr-only"}>
+              <p role={saveFailed ? "alert" : "status"} className="tarot-reading-copy font-sans text-[11px] leading-5 text-[var(--reading-muted)]">
+                {t(hasSavedReading ? "tarot.flow.chat.saved" : saveFailed ? "tarot.flow.chat.saveFailed" : "tarot.flow.chat.notSaved")}
+              </p>
+              {saveFailed && (
+                <button
+                  type="button"
+                  onClick={() => persistReading()}
+                  className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-full border border-[#7b5b91]/18 px-3 text-[12px] font-semibold text-[var(--reading-accent)]"
+                >
+                  <RotateCcw size={14} />
+                  {t("tarot.flow.chat.retrySave")}
+                </button>
+              )}
+            </section>
             {messages.map((message) => (
               <motion.div
                 key={message.id}
@@ -1339,114 +1272,74 @@ export function TarotHintReadingChat({
                 className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[88%] rounded-[14px] border px-4 py-3 ${
+                  className={`min-w-0 rounded-[20px] px-4 py-3 ${
                     message.role === "user"
-                      ? "border-[#7b5b91]/16 bg-[#b997c9]/16"
-                      : "border-white/72 bg-white/54"
+                      ? "max-w-[88%] rounded-tr-md bg-[var(--reading-bubble)]"
+                      : "w-full !px-0"
                   }`}
                 >
-                  <p className="font-sans text-[15px] leading-7 text-[#44374d]">{message.content}</p>
+                  <p className={`${message.role === "assistant" ? "tarot-reading-copy " : ""}whitespace-pre-wrap font-sans text-[15px] leading-7 text-[var(--reading-ink)] [overflow-wrap:anywhere]`}>{message.content}</p>
+                  {message.role === "assistant" && <TarotMessageActions id={message.id} text={message.content} playback={playback} beforePlay={dictation.stop} />}
                 </div>
               </motion.div>
             ))}
+            {chatMutation.isPending && <div role="status" aria-live="polite" data-testid="tarot-response-pending" className="tarot-reading-copy flex min-h-11 items-center gap-3 font-sans text-[13px] text-[var(--reading-muted)]">
+              <span aria-hidden="true" className="hint-reply-dots flex gap-1" data-reduced-motion={reduceMotion}><i /><i /><i /></span>
+              {t("tarot.flow.chat.pending")}
+            </div>}
+            {unansweredMessage && <div className="tarot-reading-copy flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-[13px] text-[var(--reading-muted)]">
+              <p role={replyState === "failed" ? "alert" : "status"}>{t(`tarot.flow.chat.${replyState === "failed" ? "replyFailed" : replyState === "stopped" ? "replyStopped" : "replyMissing"}`)}</p>
+              <button type="button" onClick={() => { playback.stop(); void send(unansweredMessage.content, unansweredMessage.id); }}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[var(--reading-accent)] hover:bg-[#796582]/8"><RotateCcw size={14} />{t("tarot.flow.chat.retryReply")}</button>
+            </div>}
 
-            <section className="rounded-[18px] border border-white/74 bg-white/54 p-3 shadow-[0_12px_30px_rgba(91,65,100,0.08)] backdrop-blur-xl">
-              <p role={saveFailed ? "alert" : "status"} className="font-sans text-[11px] leading-5 text-[#817382]">
-                {t(hasSavedReading ? "tarot.flow.chat.saved" : saveFailed ? "tarot.flow.chat.saveFailed" : "tarot.flow.chat.notSaved")}
-              </p>
-              {saveFailed && (
-                <button
-                  type="button"
-                  onClick={() => persistReading()}
-                  className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-full border border-[#7b5b91]/18 px-3 text-[12px] font-semibold text-[#6d5775]"
-                >
-                  <RotateCcw size={14} />
-                  {t("tarot.flow.chat.retrySave")}
-                </button>
-              )}
-              <div className={`mt-3 grid gap-1.5 sm:gap-2 ${onNewReading ? "grid-cols-3" : "grid-cols-2"}`}>
-                  <button
-                    type="button"
-                    onClick={event => { event.currentTarget.focus({ preventScroll: true }); openReceipt(); }}
-                    disabled={!savedReadingRef.current}
-                    className="inline-flex h-11 min-w-0 items-center justify-center gap-1.5 rounded-full bg-[#6f527f] px-2 font-sans text-[10px] font-semibold text-[#fff9f4] shadow-[0_8px_20px_rgba(91,65,100,0.18),inset_0_1px_0_rgba(255,255,255,0.20)] disabled:opacity-45 sm:px-3 sm:text-[11px]"
-                  >
-                    <Printer size={13} strokeWidth={1.7} />
-                    <span className="whitespace-nowrap">{t("tarot.flow.chat.receive")}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => leaveTo("/app/readings")}
-                    data-room-target="/app/readings"
-                    className="inline-flex h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-[#7b5b91]/14 bg-white/66 px-2 font-sans text-[10px] font-semibold text-[#6d5d72] transition-colors hover:border-[#7b5b91]/30 sm:px-3 sm:text-[11px]"
-                  >
-                    <History size={13} />
-                    <span className="whitespace-nowrap">{t("tarot.flow.chat.history")}</span>
-                  </button>
-                  {onNewReading ? (
-                    <button
-                      type="button"
-                      onClick={() => { if (confirmLeave()) onNewReading(); }}
-                      className="inline-flex h-11 min-w-0 items-center justify-center gap-1.5 rounded-full border border-[#7b5b91]/14 bg-white/66 px-2 font-sans text-[10px] font-semibold text-[#6d5d72] transition-colors hover:border-[#7b5b91]/30 sm:px-3 sm:text-[11px]"
-                    >
-                      <RotateCcw size={13} />
-                      <span className="whitespace-nowrap">{t("tarot.flow.chat.newReading")}</span>
-                    </button>
-                  ) : null}
-              </div>
-            </section>
           </main>
         </div>
       </div>
 
-      <div className="relative z-20 border-t border-white/72 bg-[#fff9f4]/82 px-4 pb-[calc(var(--hint-safe-bottom)+0.5rem)] pt-2.5 shadow-[0_-12px_32px_rgba(91,65,100,0.07)] backdrop-blur-xl sm:px-7">
-        <div className="mx-auto max-w-4xl">
-          <div className="mb-2 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]">
-            {FOLLOW_UP_KEYS.map((key) => {
-              const followUp = t(`tarot.flow.chat.followUp.${key}`);
-              return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => void send(followUp)}
-                disabled={chatMutation.isPending}
-                className="min-h-11 shrink-0 rounded-full border border-[#7b5b91]/14 bg-white/58 px-3.5 py-2 font-serif text-[13px] italic text-[#6d5d72] transition-colors hover:border-[#7b5b91]/30 disabled:cursor-wait disabled:opacity-55"
-              >
-                {followUp}
-              </button>
-              );
-            })}
-          </div>
-          {error && (
-            <p className="mb-2 font-sans text-xs text-[#8a6878]">
-              {error}
+      <div data-testid="tarot-reading-composer" className="relative z-20 shrink-0 bg-[var(--reading-composer)] px-3 pb-[calc(var(--hint-safe-bottom)+0.5rem)] pt-2 backdrop-blur-xl sm:px-7">
+        {showLatest && <button type="button" onClick={jumpToLatest} aria-label={t("tarot.flow.chat.jumpLatest")} title={t("tarot.flow.chat.jumpLatest")}
+          className="absolute -top-14 left-1/2 grid h-11 w-11 -translate-x-1/2 place-items-center rounded-full border border-[#7b5b91]/15 bg-[var(--reading-control)] text-[var(--reading-accent)] shadow-[0_4px_16px_rgba(68,55,77,0.12)] hover:bg-[var(--reading-hover)]"><ArrowDown size={19} /></button>}
+        <div className="mx-auto max-w-2xl">
+          {(dictation.notice || voiceActive) && (
+            <p role={dictation.notice ? "alert" : "status"} className="mb-2 px-2 font-sans text-xs text-[var(--reading-muted)]">
+              {dictation.notice || t(dictation.status === "starting" ? "tarot.flow.question.voiceStarting" : dictation.status === "processing" ? "tarot.voice.processing" : "tarot.chatVoice.autoSend")}
             </p>
           )}
-          <div className="flex items-end gap-3 rounded-[18px] border border-white/86 bg-white/72 px-4 py-3 shadow-[0_12px_32px_rgba(91,65,100,0.10)]">
+          <div className="flex items-end gap-1 rounded-[26px] border border-[#7b5b91]/16 bg-[var(--reading-input)] px-3 py-2 shadow-[0_4px_18px_rgba(91,65,100,0.06)]">
             <textarea
               ref={inputRef}
               data-testid="tarot-follow-up-composer"
               rows={1}
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
+              onFocus={() => setComposerFocused(true)}
+              onBlur={() => setComposerFocused(false)}
               onKeyDown={onKeyDown}
-              placeholder={
-                chatMutation.isPending
-                  ? t("tarot.flow.chat.pending")
-                  : t("tarot.flow.chat.placeholder")
-              }
-              disabled={chatMutation.isPending}
-              className="min-h-11 max-h-32 flex-1 resize-none bg-transparent py-2 font-sans text-[16px] leading-relaxed text-[#3f3348] outline-none placeholder:text-[#8b7a88]/70"
+              placeholder={t("tarot.flow.chat.placeholder")}
+              aria-label={t("tarot.flow.chat.placeholder")}
+              readOnly={voiceActive}
+              className="min-h-11 min-w-0 max-h-32 flex-1 resize-none bg-transparent py-2 font-sans text-[16px] leading-relaxed text-[var(--reading-ink)] outline-none placeholder:text-[var(--reading-muted)]/70 placeholder-shown:overflow-hidden placeholder-shown:text-ellipsis placeholder-shown:whitespace-nowrap"
             />
-            <button
-              type="button"
-              onClick={() => void send(draft)}
-              disabled={!draft.trim() || chatMutation.isPending}
-              aria-label={t("tarot.flow.chat.send")}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#7b5b91] text-[#fff9f4] shadow-[0_9px_20px_rgba(91,65,113,0.20)] transition-colors hover:bg-[#6d4e84] disabled:cursor-default disabled:bg-[#b9adb9]/42 disabled:text-white/72"
-            >
-              <SendHorizontal size={16} />
+            <button type="button" aria-label={t(voiceActive ? "tarot.voice.stop" : "tarot.voice.start")}
+              aria-pressed={voiceActive} disabled={chatMutation.isPending} onClick={() => { playback.stop(); void dictation.start(); }}
+              className={`grid h-11 w-11 shrink-0 place-items-center rounded-full transition-colors disabled:opacity-40 ${voiceActive ? "bg-[var(--reading-control)] text-[var(--reading-accent)]" : "text-[var(--reading-accent)] hover:bg-[#796582]/8"}`}>
+              {voiceActive ? <Square size={16} fill="currentColor" /> : <Mic size={19} strokeWidth={1.7} />}
             </button>
+            {!draft.trim() && !chatMutation.isPending && !voiceActive ? (
+              <button type="button" aria-label={t("tarot.chatVoice.open")} title={t("tarot.chatVoice.open")}
+                onClick={() => { dictation.stop(); playback.stop(); setVoiceConversationOpen(true); }}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full tarot-action-primary"><AudioLines size={21} /></button>
+            ) : (
+              <button type="button" onClick={() => {
+                if (chatMutation.isPending) { setReplyState("stopped"); chatAbortRef.current?.abort(); }
+                else { playback.stop(); void send(draft); }
+              }} disabled={voiceActive || (!draft.trim() && !chatMutation.isPending)}
+                aria-label={t(chatMutation.isPending ? "tarot.chatVoice.stopResponse" : "tarot.flow.chat.send")}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full tarot-action-primary disabled:cursor-default">
+                {chatMutation.isPending ? <Square size={16} fill="currentColor" /> : <ArrowUp size={20} />}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -1469,6 +1362,9 @@ export function TarotHintReadingChat({
           />
         ) : null}
       </AnimatePresence>
+
+      {voiceConversationOpen && <TarotVoiceConversation onSend={send} busy={chatMutation.isPending} playback={playback}
+        onClose={() => { playback.stop(); setVoiceConversationOpen(false); }} />}
 
       <AnimatePresence>
         {receiptOpen ? (

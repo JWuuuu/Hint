@@ -1,0 +1,68 @@
+{
+  "gesture": "wink-right",
+  "seconds": 2.825899999976158,
+  "sampleTimes": [
+    0,
+    0.6038000000000029,
+    1.2038000000000029,
+    1.803800000000003,
+    2.403699999999997
+  ],
+  "sampleStates": [
+    {
+      "gesture": "idle",
+      "time": 0,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "wink-right",
+      "time": 0.38339999999999436,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "wink-right",
+      "time": 0.9832999999999952,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "wink-right",
+      "time": 1.5832999999999955,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "wink-right",
+      "time": 2.05,
+      "letter": "held",
+      "phase": "settled"
+    }
+  ],
+  "medianFrameMs": 16.69999999999709,
+  "p95FrameMs": 16.799999999995634,
+  "decorativeAccents": false,
+  "errors": [],
+  "video": {
+    "duration": 2.786117,
+    "codec": "h264",
+    "width": 640,
+    "height": 640
+  },
+  "keyframeTimes": [
+    0,
+    0.2321764166666667,
+    0.4643528333333334,
+    0.69652925,
+    0.9287056666666668,
+    1.1608820833333333,
+    1.3930585,
+    1.6252349166666669,
+    1.8574113333333335,
+    2.08958775,
+    2.3217641666666666,
+    2.5539405833333335
+  ],
+  "keyframesFromVideo": true
+}

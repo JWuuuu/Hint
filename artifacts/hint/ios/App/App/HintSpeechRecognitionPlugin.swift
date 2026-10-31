@@ -20,6 +20,8 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
     private var recognitionTask: SFSpeechRecognitionTask?
     private var tapInstalled = false
     private var activeRecognitionId: UUID?
+    /// The app's audio category before dictation switched it to record-only.
+    private var previousAudioCategory: (category: AVAudioSession.Category, mode: AVAudioSession.Mode, options: AVAudioSession.CategoryOptions)?
 
     public override func load() {
         super.load()
@@ -91,6 +93,9 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
 
         do {
             let session = AVAudioSession.sharedInstance()
+            if previousAudioCategory == nil {
+                previousAudioCategory = (session.category, session.mode, session.categoryOptions)
+            }
             try session.setCategory(.record, mode: .measurement, options: [.duckOthers])
             try session.setActive(true, options: .notifyOthersOnDeactivation)
 
@@ -184,8 +189,22 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
         recognitionTask = nil
         recognitionRequest = nil
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        restoreAudioCategory()
         if notify {
             notifyListeners("listeningState", data: ["status": "stopped"])
+        }
+    }
+
+    /// The web view plays Hint's spoken reply through this app's audio session, so the
+    /// record-only category must not outlive dictation or the voice reply stays silent.
+    private func restoreAudioCategory() {
+        guard let previous = previousAudioCategory else { return }
+        previousAudioCategory = nil
+        let session = AVAudioSession.sharedInstance()
+        if previous.category == .record {
+            try? session.setCategory(.playback, mode: .spokenAudio, options: [])
+        } else {
+            try? session.setCategory(previous.category, mode: previous.mode, options: previous.options)
         }
     }
 }

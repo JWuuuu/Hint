@@ -360,8 +360,12 @@ export function TarotRitualChamber({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1.1, ease: "easeOut" }}
-      className="absolute inset-0 overflow-hidden text-[color:var(--tarot-page-ink,#332d45)]"
+      className="absolute inset-0 overflow-hidden text-[#f7ead0]"
     >
+      <div className="pointer-events-none absolute inset-0" style={{ background: theme.chamberOverlay }} />
+      <div className={`pointer-events-none absolute inset-0 ${theme.starClassName}`} />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_50%_65%,rgba(222,178,95,0.12),transparent_48%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent_22%,rgba(255,255,255,0.028))] opacity-60" />
 
       <Link
         href="/app"

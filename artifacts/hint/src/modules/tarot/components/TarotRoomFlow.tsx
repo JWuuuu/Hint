@@ -1,6 +1,9 @@
 import { LocalizedText } from "../../../lib/LocalizedText";
 import { useRoomVisit } from "../../../components/app/RoomVisitBoundary";
 import { markRoomVisitStarted, roomVisitWasClosed } from "../../../components/app/roomVisits";
+import { HintGuideSlot } from "../../../components/mascot/HintGuide";
+import { useHintTyping } from "../../../components/mascot/useHintTyping";
+import { voiceGuideContext } from "../../../components/mascot/hintGuideContext";
 import {
   useEffect,
   useReducer,
@@ -114,7 +117,6 @@ import type { RitualCard } from "../types/ritual.types";
 import {
   CardWashRitual,
   RitualBackCard,
-  WASH_CARD_SIZE,
   type CardWashRitualHandle,
   type WashRitualTheme,
 } from "./CardWashRitual";
@@ -1215,11 +1217,26 @@ function RoomBackground({
 }: {
   design?: RoomDesign;
 }) {
+  const reduceMotion = useTarotReducedMotion();
   return (
     <div
       data-room-background={design.backgroundId}
       className="pointer-events-none absolute inset-0 overflow-hidden"
-    />
+    >
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={design.backgroundId}
+          className="absolute inset-0"
+          style={{ background: getTarotRoomSurfaceBackground(design.backgroundId) }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduceMotion ? 0.01 : 0.48, ease: "easeOut" }}
+        />
+      </AnimatePresence>
+      <div className="absolute inset-0 opacity-42 [background-image:radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.86)_0_1px,transparent_1px),radial-gradient(circle_at_78%_16%,rgba(205,158,82,0.44)_0_1px,transparent_1px),radial-gradient(circle_at_68%_76%,rgba(148,111,188,0.34)_0_1px,transparent_1px)] [background-size:118px_138px]" />
+      <div className="absolute inset-x-[-20%] bottom-[-16%] h-[46%] rounded-[50%] bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,255,255,0.62),rgba(239,215,224,0.22)_42%,transparent_70%)]" />
+    </div>
   );
 }
 
@@ -1251,7 +1268,7 @@ function PrimaryButton({
   );
 }
 
-function StepShell({ children, className = "" }: { children: ReactNode; className?: string }) {
+function StepShell({ children, className = "", composing = false }: { children: ReactNode; className?: string; composing?: boolean }) {
   const reduceMotion = useTarotReducedMotion();
   return (
     <motion.section
@@ -1261,6 +1278,7 @@ function StepShell({ children, className = "" }: { children: ReactNode; classNam
       transition={{ duration: reduceMotion ? 0.01 : 0.28, ease: [0.22, 0.8, 0.22, 1] }}
       className={`hint-app-scroll absolute inset-0 z-10 flex w-full transform-gpu flex-col px-5 pb-[calc(var(--hint-safe-bottom)+1.25rem)] pt-[calc(var(--hint-safe-top)+4rem)] will-change-[opacity,transform] ${className}`}
     >
+      <HintGuideSlot priority={35} className="-mb-3 -mt-4 ml-auto h-20 w-20 shrink-0" context={{ room: "tarot", phase: "idle", typing: composing, keyboardOpen: composing, hasMessages: false, audioPlaying: false }} />
       {children}
     </motion.section>
   );
@@ -1315,6 +1333,7 @@ function VoicePanel({
   notice,
   listening,
   starting,
+  onStop,
   onUse,
   onCancel,
 }: {
@@ -1322,16 +1341,17 @@ function VoicePanel({
   notice?: string | null;
   listening: boolean;
   starting: boolean;
+  onStop: () => void;
   onUse: () => void;
   onCancel: () => void;
 }) {
   const { t } = useLanguage();
   const reduceMotion = useTarotReducedMotion();
   const animateWave = listening && !reduceMotion;
-  const title = notice
-    ? t("tarot.voice.stopped")
-    : starting
+  const title = starting
       ? t("tarot.flow.question.voiceStarting")
+    : notice
+      ? t("tarot.voice.stopped")
       : listening
       ? t("tarot.flow.question.voiceListening")
       : transcript
@@ -1351,7 +1371,8 @@ function VoicePanel({
     >
       <div className="absolute inset-x-4 bottom-[calc(var(--hint-safe-bottom)+1rem)] mx-auto max-w-[440px] rounded-[32px] border border-white/70 bg-[#fff9f4]/98 p-5 text-center shadow-[0_24px_70px_rgba(61,40,74,0.28)]">
         <p role="status" className="font-serif text-[28px] text-[#382f45]">{title}</p>
-        <div aria-hidden="true" className="relative mx-auto mt-5 h-20 max-w-[260px]">
+        <HintGuideSlot priority={100} className="mx-auto h-28 w-28" context={voiceGuideContext(starting ? "starting" : listening ? "listening" : notice ? "error" : "paused", "idle")}
+          fallback={<div aria-hidden="true" className="relative mx-auto mt-5 h-20 max-w-[260px]">
           {[0, 1, 2, 3, 4].map((line) => {
             const width = 112 - line * 9;
             return (
@@ -1385,11 +1406,12 @@ function VoicePanel({
             />
             );
           })}
-        </div>
+        </div>} />
         <p className="mx-auto min-h-12 max-w-[20rem] font-sans text-[14px] font-semibold leading-relaxed text-[#6b586d]">
           {notice || transcript || t("tarot.flow.question.voiceHint")}
         </p>
         <div className="mt-5 flex gap-2">
+          {listening && <button type="button" onClick={onStop} className="min-h-11 flex-1 rounded-full border border-[#d9c9d6] text-[12px] font-bold text-[#6f6072]">{t("tarot.voice.stop")}</button>}
           <button
             type="button"
             onClick={onCancel}
@@ -1433,6 +1455,8 @@ function QuestionStep({
   const [voiceNotice, setVoiceNotice] = useState<string | null>(null);
   const [voiceListening, setVoiceListening] = useState(false);
   const [voiceStarting, setVoiceStarting] = useState(false);
+  const typing = useHintTyping(question);
+  const transcriptRef = useRef("");
   const speechSessionRef = useRef<HintSpeechSession | null>(null);
   const speechStartRef = useRef<Promise<HintSpeechSession> | null>(null);
   const speechAbortRef = useRef<AbortController | null>(null);
@@ -1441,15 +1465,18 @@ function QuestionStep({
   const canContinue = Boolean(cleanQuestion(question));
 
   async function stopVoice(cancel = false) {
-    voiceRequestRef.current += 1;
-    if (cancel) speechAbortRef.current?.abort();
-    speechAbortRef.current = null;
+    if (cancel) {
+      voiceRequestRef.current += 1;
+      speechAbortRef.current?.abort();
+      speechAbortRef.current = null;
+    }
     const session = speechSessionRef.current;
     const pending = speechStartRef.current;
-    speechSessionRef.current = null;
+    if (cancel) speechSessionRef.current = null;
     const startedSession = session ?? await pending?.catch(() => null);
     if (!startedSession) return;
     await (cancel ? startedSession.cancel() : startedSession.stop()).catch(() => undefined);
+    if (speechSessionRef.current === startedSession) speechSessionRef.current = null;
   }
 
   useEffect(() => {
@@ -1469,6 +1496,7 @@ function QuestionStep({
     const isCurrent = () => voiceRequestRef.current === requestId && !controller.signal.aborted;
     let sessionEnded = false;
     setTranscript("");
+    transcriptRef.current = "";
     setVoiceNotice(null);
     setVoiceListening(false);
     setVoiceStarting(true);
@@ -1495,7 +1523,14 @@ function QuestionStep({
         onTranscript: (nextTranscript) => {
           if (!isCurrent()) return;
           setVoiceNotice(null);
+          transcriptRef.current = nextTranscript;
           setTranscript(nextTranscript);
+        },
+        onProcessing: () => {
+          if (!isCurrent()) return;
+          setVoiceListening(false);
+          setVoiceStarting(true);
+          setVoiceNotice(t("tarot.voice.processing"));
         },
         onEnd: () => {
           sessionEnded = true;
@@ -1508,16 +1543,7 @@ function QuestionStep({
           if (!isCurrent()) return;
           setVoiceStarting(false);
           setVoiceListening(false);
-          const key =
-            reason === "permission"
-              ? "tarot.voice.permission"
-              : reason === "network"
-                ? "tarot.voice.network"
-                : reason === "no-speech"
-                  ? "tarot.voice.noSpeech"
-                  : reason === "unavailable"
-                    ? "tarot.voice.unavailable"
-                    : "tarot.voice.failed";
+          const key = `tarot.voice.${reason === "no-speech" ? "noSpeech" : reason}`;
           setVoiceNotice(t(key));
         },
       });
@@ -1540,15 +1566,15 @@ function QuestionStep({
 
   return (
     <>
-      <StepShell>
+      <StepShell composing={typing}>
         <div className="pb-[calc(var(--hint-safe-bottom)+7.5rem)]">
-          <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[color:var(--tarot-page-muted,#9c7d92)]">
+          <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[#9c7d92]">
             {t("tarot.flow.question.eyebrow")}
           </p>
-          <h1 className="mt-2.5 font-serif text-[32px] leading-[0.98] text-[color:var(--tarot-page-ink,#332d45)]">
+          <h1 className="mt-2.5 font-serif text-[32px] leading-[0.98] text-[#332d45]">
             {questionPromptTitle(t, intent)}
           </h1>
-          <p className="mt-3 max-w-[24rem] text-[13px] font-semibold leading-relaxed text-[color:var(--tarot-page-muted,#746276)]">
+          <p className="mt-3 max-w-[24rem] text-[13px] font-semibold leading-relaxed text-[#746276]">
             {questionPromptBody(t, intent)}
           </p>
 
@@ -1564,7 +1590,7 @@ function QuestionStep({
           ) : null}
 
           <div className="mt-5 flex items-center justify-between gap-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[color:var(--tarot-page-muted,#9c7d92)]">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#9c7d92]">
               {t("tarot.flow.question.suggested")}
             </p>
             <p className="rounded-full border border-white/56 bg-white/42 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-[#8a7888] shadow-[0_8px_22px_rgba(96,72,104,0.08)] backdrop-blur-xl">
@@ -1671,14 +1697,17 @@ function QuestionStep({
             notice={voiceNotice}
             listening={voiceListening}
             starting={voiceStarting}
+            onStop={() => { void stopVoice(); }}
             onCancel={() => {
               void stopVoice(true);
               closeVoice();
             }}
-            onUse={() => {
+            onUse={async () => {
               hapticTick(8);
-              void stopVoice();
-              setQuestion(transcript);
+              const requestId = voiceRequestRef.current;
+              await stopVoice();
+              if (voiceRequestRef.current !== requestId) return;
+              setQuestion(transcriptRef.current);
               closeVoice();
             }}
           />
@@ -1829,7 +1858,7 @@ function SpotlightSelectorStep({
   return (
     <StepShell>
       <div className="flex flex-1 flex-col justify-center overflow-hidden">
-        <h1 className="font-serif text-[34px] leading-none text-[color:var(--tarot-page-ink,#332d45)]"><LocalizedText text={" Choose the shape of the reading. "} /></h1>
+        <h1 className="font-serif text-[34px] leading-none text-[#332d45]"><LocalizedText text={" Choose the shape of the reading. "} /></h1>
         <div className="relative mt-9 h-[420px]">
           <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,244,218,0.78),rgba(247,205,224,0.42)_38%,transparent_70%)]" />
           {[-1, 0, 1].map((offset) => {
@@ -1894,7 +1923,7 @@ function SpotlightSelectorStep({
           onClick={onChoose}
           className="mx-auto w-full max-w-[300px]"
         ><LocalizedText text={" Choose this spread "} /></PrimaryButton>
-        <p className="mt-4 text-center text-[12px] font-semibold text-[color:var(--tarot-page-muted,#826f82)]">
+        <p className="mt-4 text-center text-[12px] font-semibold text-[#826f82]">
           {center.bestFor}
         </p>
       </div>
@@ -2011,18 +2040,18 @@ function RoomDesignStudioStep({
   return (
     <StepShell>
       <div className="flex min-h-0 flex-1 flex-col">
-        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.22em] text-[color:var(--tarot-page-muted,#9c7d92)]">
+        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.22em] text-[#9c7d92]">
           <Palette size={15} />
           {settingsMode
             ? t("tarot.flow.design.settingsEyebrow")
             : t("tarot.flow.design.setupEyebrow")}
         </div>
-        <h1 className="mt-2.5 font-serif text-[32px] leading-[1.02] text-[color:var(--tarot-page-ink,#332d45)]">
+        <h1 className="mt-2.5 font-serif text-[32px] leading-[1.02] text-[#332d45]">
           {settingsMode
             ? t("tarot.flow.design.settingsTitle")
             : t("tarot.flow.design.setupTitle")}
         </h1>
-        <p className="mt-2.5 max-w-[22rem] text-[13px] font-semibold leading-relaxed text-[color:var(--tarot-page-muted,#746276)]">
+        <p className="mt-2.5 max-w-[22rem] text-[13px] font-semibold leading-relaxed text-[#746276]">
           {settingsMode
             ? t("tarot.flow.design.settingsBody")
             : t("tarot.flow.design.setupBody")}
@@ -2424,10 +2453,10 @@ function PrepareStep({
         >
           <TarotBack cardBackId={design.cardBackId} className="h-28 w-[72px]" />
         </motion.div>
-        <h1 className="mt-10 font-serif text-[34px] leading-none text-[color:var(--tarot-page-ink,#332d45)]">
+        <h1 className="mt-10 font-serif text-[34px] leading-none text-[#332d45]">
           {t("tarot.flow.prepare.title")}
         </h1>
-        <p className="mt-4 max-w-[20rem] text-[15px] font-semibold leading-relaxed text-[color:var(--tarot-page-muted,#746276)]">
+        <p className="mt-4 max-w-[20rem] text-[15px] font-semibold leading-relaxed text-[#746276]">
           {t("tarot.flow.prepare.body")}
         </p>
         <div className="mt-8 w-full max-w-[340px] rounded-[24px] border border-white/62 bg-white/38 p-4 text-left backdrop-blur-xl">
@@ -2454,7 +2483,7 @@ function RitualShuffleStep({
 }) {
   const reduceMotion = useTarotReducedMotion();
   const { pageVisible } = useMotionPolicy();
-  const washProxyCount = Math.min(deck.length, 48);
+  const washProxyCount = deck.length;
   const [deckState, setDeckState] = useState<FlowDeckState>(() =>
     ({
       hiddenDeckOrder: deck,
@@ -2734,57 +2763,172 @@ function RitualShuffleStep({
 }
 
 
-const POST_CUT_SHUFFLE_SECONDS = 2.8;
+const CUT_TWO_WAY_SPLIT_SECONDS = 0.56;
+const CUT_TWO_WAY_HOLD_SECONDS = 0.52;
+const CUT_MERGE_TRAVEL_SECONDS = 0.72;
+const CUT_CARD_SIZE = "h-[134px] w-[84px] min-[430px]:h-[150px] min-[430px]:w-[94px]";
+
+function getCardMergeDuration() {
+  return CUT_MERGE_TRAVEL_SECONDS;
+}
+
+function getCutMergeDuration() {
+  return (
+    CUT_TWO_WAY_SPLIT_SECONDS +
+    CUT_TWO_WAY_HOLD_SECONDS +
+    getCardMergeDuration()
+  );
+}
 
 function RitualDeckInterleave({
   cardBackId,
+  cardCount,
   settled,
   reduceMotion,
   onComplete,
 }: {
   cardBackId: TarotCardBackId;
+  cardCount: number;
   settled: boolean;
   reduceMotion: boolean;
   onComplete: () => void;
 }) {
-  // These face-down proxies only describe the motion. CutStep owns the hidden
-  // 78-card order and advances once the last card has joined the deck.
-  const count = reduceMotion ? 1 : 12;
-  return Array.from({ length: count }, (_, index) => {
-    const side = index % 2 === 0 ? -1 : 1;
-    const depth = Math.floor((count - 1 - index) / 2) * 1.1;
-    const releaseAt = 0.48 + index * 0.023;
-    const landAt = 0.61 + index * 0.026;
-    return (
-      <div key={index} aria-hidden="true"
-        className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2"
-        style={{ zIndex: index }}>
-        <motion.div
-          data-shuffle-card={index}
-          className={`relative ${WASH_CARD_SIZE} transform-gpu will-change-transform`}
-          initial={{ x: 0, y: 1.2 + depth * 0.2, rotate: 0 }}
-          animate={settled || reduceMotion
-            ? { x: 0, y: 1.2 + depth * 0.2, rotate: 0 }
-            : {
-                x: [0, side * 62, side * 62, side * 18, side * 18, 0, 0],
-                y: [1.2 + depth * 0.2, -14 + depth, -14 + depth, -5 + depth, -5 + depth, 1.2 + depth * 0.2, 1.2 + depth * 0.2],
-                rotate: [0, side * 11, side * 11, side * 7, side * 7, side * 0.4, 0],
-              }}
-          transition={settled || reduceMotion
-            ? { duration: reduceMotion ? 0.05 : 0.12 }
-            : {
-                duration: POST_CUT_SHUFFLE_SECONDS,
-                times: [0, 0.18, 0.28, 0.43, releaseAt, landAt, 1],
-                ease: [0.4, 0, 0.2, 1],
-              }}
-          onAnimationComplete={() => {
-            if (!settled && index === count - 1) onComplete();
-          }}>
-          <RitualBackCard cardBackId={cardBackId} className="h-full w-full" />
-        </motion.div>
-      </div>
+  // CutStep owns the hidden order. The full set of visible cards mirrors that
+  // order so a 78-card deck really is shown as two 39-card halves before every
+  // card crosses the gap and joins the final stack.
+  const count = reduceMotion ? 1 : Math.max(1, cardCount);
+  const cardsPerHalf = Math.ceil(count / 2);
+  const lastIndex = count - 1;
+  const mergeDuration = getCardMergeDuration();
+  const [mergeStage, setMergeStage] = useState<"split" | "hold" | "merge">(
+    reduceMotion ? "merge" : "split",
+  );
+
+  useEffect(() => {
+    if (settled || reduceMotion) {
+      setMergeStage("merge");
+      return undefined;
+    }
+
+    setMergeStage("split");
+    const holdTimer = window.setTimeout(
+      () => setMergeStage("hold"),
+      CUT_TWO_WAY_SPLIT_SECONDS * 1000,
     );
-  });
+    const mergeTimer = window.setTimeout(
+      () => setMergeStage("merge"),
+      (CUT_TWO_WAY_SPLIT_SECONDS + CUT_TWO_WAY_HOLD_SECONDS) * 1000,
+    );
+    return () => {
+      window.clearTimeout(holdTimer);
+      window.clearTimeout(mergeTimer);
+    };
+  }, [reduceMotion, settled]);
+
+  return (
+    <>
+      {!reduceMotion && !settled ? (
+        <>
+          {([-1, 1] as const).map((side) => (
+            <motion.div
+              key={side}
+              aria-hidden="true"
+              data-cut-half={side === -1 ? "left" : "right"}
+              className="absolute left-1/2 top-[52%] h-[190px] w-[124px] -translate-x-1/2 -translate-y-1/2 rounded-[42px] bg-[radial-gradient(ellipse_at_center,rgba(255,239,210,0.28),rgba(192,154,224,0.12)_48%,transparent_72%)] blur-[2px]"
+              initial={{ x: 0, opacity: 0, scale: 0.82 }}
+              animate={mergeStage === "merge"
+                ? {
+                    x: side * 112,
+                    opacity: [0.58, 0.52, 0.26, 0],
+                    scale: [1.04, 1, 0.9, 0.82],
+                  }
+                : { x: side * 112, opacity: 0.58, scale: 1.04 }}
+              transition={mergeStage === "merge"
+                ? {
+                    duration: mergeDuration,
+                    times: [0, 0.28, 0.76, 1],
+                    ease: "easeInOut",
+                  }
+                : {
+                    duration: mergeStage === "split" ? CUT_TWO_WAY_SPLIT_SECONDS : 0.08,
+                    ease: [0.22, 0.76, 0.16, 1],
+                  }}
+              style={{ zIndex: 1 }}
+            />
+          ))}
+          <motion.div
+            aria-hidden="true"
+            data-cut-merge-glow
+            className="absolute left-1/2 top-[52%] h-[190px] w-[118px] -translate-x-1/2 -translate-y-1/2 rounded-[42px] border border-[#f6dfaa]/35 bg-[radial-gradient(ellipse_at_center,rgba(255,245,224,0.48),rgba(215,189,124,0.14)_48%,transparent_74%)] blur-[1px]"
+            initial={{ opacity: 0, scale: 0.72 }}
+            animate={mergeStage === "merge"
+              ? {
+                  opacity: [0, 0.18, 0.72, 0.38],
+                  scale: [0.72, 0.9, 1.08, 1],
+                }
+              : { opacity: 0, scale: 0.72 }}
+            transition={mergeStage === "merge"
+              ? {
+                  duration: mergeDuration,
+                  times: [0, 0.28, 0.82, 1],
+                  ease: "easeInOut",
+                }
+              : { duration: 0.12 }}
+            style={{ zIndex: 2 }}
+          />
+        </>
+      ) : null}
+      {Array.from({ length: count }, (_, index) => {
+        const side = index % 2 === 0 ? -1 : 1;
+        const sourceDepth = Math.floor(index / 2);
+        const depthFromTop = Math.max(0, cardsPerHalf - 1 - sourceDepth);
+        const sourceX = side * (112 + depthFromTop * 0.06);
+        const sourceY = depthFromTop * 0.18;
+        const restingY = Math.max(0, lastIndex - index) * 0.075;
+        return (
+          <div key={index} aria-hidden="true"
+            className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2"
+            style={{ zIndex: 20 + index }}>
+            <motion.div
+              data-shuffle-card={index}
+              className={`relative ${CUT_CARD_SIZE} transform-gpu will-change-transform`}
+              initial={settled || reduceMotion
+                ? { x: 0, y: restingY, rotate: 0, scale: 1, opacity: 1 }
+                : { x: 0, y: restingY, rotate: 0, scale: 1, opacity: 1 }}
+              animate={settled || reduceMotion
+                ? { x: 0, y: restingY, rotate: 0, scale: 1, opacity: 1 }
+                : mergeStage === "merge"
+                  ? {
+                      // Both 39-card halves travel straight inward together.
+                      // There is no stagger, arc, wave, or dropping motion.
+                      x: 0,
+                      y: restingY,
+                      rotate: 0,
+                      scale: 1,
+                      opacity: 1,
+                    }
+                  : { x: sourceX, y: sourceY, rotate: side * 6, scale: 1, opacity: 1 }}
+              transition={settled || reduceMotion
+                ? { duration: reduceMotion ? 0.05 : 0.16 }
+                : mergeStage === "merge"
+                  ? {
+                    duration: mergeDuration,
+                    ease: [0.22, 0.76, 0.16, 1],
+                  }
+                  : {
+                      duration: mergeStage === "split" ? CUT_TWO_WAY_SPLIT_SECONDS : 0.08,
+                      ease: [0.22, 0.76, 0.16, 1],
+                    }}
+              onAnimationComplete={() => {
+                if (!settled && mergeStage === "merge" && index === count - 1) onComplete();
+              }}>
+              <RitualBackCard cardBackId={cardBackId} className="h-full w-full" />
+            </motion.div>
+          </div>
+        );
+      })}
+    </>
+  );
 }
 
 function CutStep({
@@ -2808,15 +2952,15 @@ function CutStep({
     };
   });
   const [phase, setPhase] = useState<
-    "splitting" | "stacking" | "squared" | "shuffling" | "settled"
+    "splitting" | "showing" | "stacking" | "shuffling" | "settled"
   >("splitting");
   const onDoneRef = useRef(onDone);
   const completedRef = useRef(false);
   const phaseRef = useRef(phase);
   const pilePositions: Record<TarotPileId, { x: number; y: number; rotate: number }> = {
-    A: { x: -90, y: 14, rotate: -4 },
-    B: { x: 0, y: -18, rotate: 1 },
-    C: { x: 90, y: 14, rotate: 4 },
+    A: { x: -108, y: 30, rotate: -7 },
+    B: { x: 0, y: -42, rotate: 0 },
+    C: { x: 108, y: 30, rotate: 7 },
   };
 
   useEffect(() => {
@@ -2846,7 +2990,7 @@ function CutStep({
 
   useEffect(() => {
     hapticPulse([8, 28, 9]);
-    const watchdog = window.setTimeout(finishCut, reduceMotion ? 900 : 7_000);
+    const watchdog = window.setTimeout(finishCut, reduceMotion ? 700 : 8_000);
     return () => window.clearTimeout(watchdog);
   }, [finalDeck, reduceMotion]);
 
@@ -2854,19 +2998,19 @@ function CutStep({
     const phaseRecoveryMs = reduceMotion
       ? 70
       : {
-          splitting: 900,
-          stacking: 820,
-          squared: 620,
-          shuffling: POST_CUT_SHUFFLE_SECONDS * 1000 + 240,
-          settled: 760,
+          splitting: 620,
+          showing: 260,
+          stacking: 720,
+          shuffling: getCutMergeDuration() * 1000 + 360,
+          settled: 360,
         }[phase];
     const recovery = window.setTimeout(() => {
       if (phase === "splitting") {
-        moveToPhase("splitting", "stacking", [5, 20, 5]);
+        moveToPhase("splitting", "showing", [5, 20, 5]);
+      } else if (phase === "showing") {
+        moveToPhase("showing", "stacking", [5, 20, 5]);
       } else if (phase === "stacking") {
-        moveToPhase("stacking", "squared", [6, 20, 5, 34, 8]);
-      } else if (phase === "squared") {
-        moveToPhase("squared", "shuffling", [5, 18, 4, 18, 5]);
+        moveToPhase("stacking", "shuffling", [6, 20, 5, 34, 8]);
       } else if (phase === "shuffling") {
         moveToPhase("shuffling", "settled", [7, 26, 9]);
       } else {
@@ -2874,18 +3018,16 @@ function CutStep({
       }
     }, phaseRecoveryMs);
     return () => window.clearTimeout(recovery);
-  }, [phase, reduceMotion]);
+  }, [deck.length, phase, reduceMotion]);
 
   const instruction =
-    phase === "splitting"
+    phase === "splitting" || phase === "showing"
       ? t("tarot.flow.cut.cutting")
       : phase === "stacking"
         ? t("tarot.flow.cut.stack")
-        : phase === "squared"
-          ? t("tarot.flow.cut.squared")
-          : phase === "shuffling"
-            ? t("tarot.flow.cut.shuffle")
-            : t("tarot.flow.cut.ready");
+        : phase === "shuffling"
+          ? t("tarot.flow.cut.shuffle")
+          : t("tarot.flow.cut.ready");
   const heading =
     phase === "shuffling"
       ? t("tarot.flow.cut.shuffleTitle")
@@ -2909,6 +3051,7 @@ function CutStep({
         {phase === "shuffling" || phase === "settled" ? (
           <RitualDeckInterleave
             cardBackId={design.cardBackId}
+            cardCount={deck.length}
             settled={phase === "settled"}
             reduceMotion={reduceMotion}
             onComplete={() => moveToPhase("shuffling", "settled", [7, 26, 9])}
@@ -2916,31 +3059,43 @@ function CutStep({
         ) : (["A", "B", "C"] as const).map((pileId, pileIndex) => {
           const selectedIndex = pileOrder.indexOf(pileId);
           const target = pilePositions[pileId];
-          const pose = phase === "splitting"
+          const spreadOut = phase === "splitting" || phase === "showing";
+          const pose = spreadOut
             ? { x: target.x, y: target.y, rotate: target.rotate }
-            : { x: 0, y: phase === "stacking" ? selectedIndex * 2 : selectedIndex * 0.6, rotate: 0 };
-          const duration = reduceMotion ? 0.05 : phase === "splitting" ? 0.6
-            : phase === "stacking" ? 0.54 : 0.4;
+            : { x: 0, y: selectedIndex * 1.2, rotate: 0 };
+          const duration = reduceMotion ? 0.05 : phase === "splitting" ? 0.38
+            : phase === "showing" ? 0 : 0.36;
           return (
             <div key={pileId} aria-hidden="true"
               className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2"
-              style={{ zIndex: phase === "splitting" ? pileIndex : selectedIndex }}>
+              style={{ zIndex: spreadOut ? pileIndex : selectedIndex }}>
               <motion.div
                 data-cut-packet={pileId}
-                className={`relative ${WASH_CARD_SIZE} transform-gpu will-change-transform`}
+                className={`relative ${CUT_CARD_SIZE} transform-gpu will-change-transform drop-shadow-[0_14px_12px_rgba(24,18,40,0.3)]`}
                 initial={{ x: 0, y: 0, rotate: 0 }}
                 animate={pose}
-                transition={{ duration, ease: [0.22, 0.72, 0.18, 1],
-                  delay: reduceMotion ? 0 : phase === "splitting" ? pileIndex * 0.07 : phase === "stacking" ? selectedIndex * 0.07 : 0 }}
+                transition={{
+                  duration,
+                  ease: [0.22, 0.72, 0.18, 1],
+                  delay: reduceMotion
+                    ? 0
+                    : phase === "splitting"
+                      ? pileIndex * 0.04
+                      : phase === "stacking"
+                        ? selectedIndex * 0.06
+                        : 0,
+                }}
                 onAnimationComplete={() => {
-                  if (phase === "splitting" && pileIndex === 2) moveToPhase("splitting", "stacking", [5, 20, 5]);
+                  if (phase === "splitting" && pileIndex === 2) {
+                    moveToPhase("splitting", "showing", [5, 20, 5]);
+                    return;
+                  }
                   if (selectedIndex !== 2) return;
-                  if (phase === "stacking") moveToPhase("stacking", "squared", [6, 20, 5]);
-                  else if (phase === "squared") moveToPhase("squared", "shuffling", [5, 18, 5]);
+                  if (phase === "stacking") moveToPhase("stacking", "shuffling", [6, 20, 5]);
                 }}>
                 {Array.from({ length: 5 }, (_, edge) => (
                   <span key={edge} className="absolute inset-0 rounded-[10px] border border-[#d7bd7c]/55 bg-[#182139]"
-                    style={{ transform: `translate3d(${(4 - edge) * 0.24}px, ${(4 - edge) * 0.38}px, 0)` }} />
+                    style={{ transform: `translate3d(${(4 - edge) * 0.65}px, ${(4 - edge) * 1.4}px, 0)` }} />
                 ))}
                 <RitualBackCard cardBackId={design.cardBackId} className="h-full w-full" />
               </motion.div>
@@ -3491,10 +3646,10 @@ function PickStep({
             zoomed ? "-translate-y-4 opacity-0" : "translate-y-0 opacity-100"
           }`}
         >
-          <h1 className="font-serif text-[32px] leading-none text-[color:var(--tarot-page-ink,#332d45)]">
+          <h1 className="font-serif text-[32px] leading-none text-[#332d45]">
             {t("tarot.flow.pick.title")}
           </h1>
-          <p className="mt-2 text-[13px] font-bold text-[color:var(--tarot-page-muted,#746276)]">
+          <p className="mt-2 text-[13px] font-bold text-[#746276]">
             {formatCopy(t("tarot.flow.pick.chosen"), {
               spread: displaySpread.label,
               chosen: selectedCards.length,
@@ -3723,7 +3878,7 @@ function TarotPhoneFrame({ children }: { children: ReactNode }) {
   return (
     <div
       data-testid="tarot-phone-frame-shell"
-      className="absolute inset-0 flex justify-center overflow-hidden"
+      className="absolute inset-0 flex justify-center overflow-hidden bg-[#f7f0ea]"
     >
       <div
         data-testid="tarot-phone-frame"
@@ -3740,7 +3895,7 @@ export function TarotRoomFlow() {
   const { language, t } = useLanguage();
   const reduceMotion = useTarotReducedMotion();
   const setupRequested = isRoomSetupRequested();
-  const [archivedRequest] = useState(getArchivedReadingRequest);
+  const [archivedRequest, setArchivedRequest] = useState(getArchivedReadingRequest);
   const [freshVisit] = useState(() => roomVisitWasClosed("tarot"));
   const visitOpen = useRef(true);
   const [restoredSession] = useState(() =>
@@ -4117,6 +4272,9 @@ export function TarotRoomFlow() {
             }}
             onNewReading={() => {
               clearActiveTarotSession();
+              // Same-route navigation keeps this instance mounted; consume the
+              // archive request so the missing-reading redirect cannot fire.
+              setArchivedRequest(null);
               setArchivedReading(null);
               readingArchiveRef.current = null;
               setQuestion("");
@@ -4136,7 +4294,7 @@ export function TarotRoomFlow() {
 
   return (
     <TarotPhoneFrame>
-      <div className="absolute inset-0 overflow-hidden text-[color:var(--tarot-page-ink,#332d45)]">
+      <div className="absolute inset-0 overflow-hidden text-[#332d45]">
         <RoomBackground design={design} />
         <div className="absolute left-4 top-[calc(var(--hint-safe-top)+0.75rem)] z-[80] flex items-center gap-2">
           {canStepBack ? (

@@ -267,12 +267,15 @@ export const HealthCheckResponse = zod.object({
  * @summary Create a tarot reading
  */
 
+export const createTarotReadingBodySpreadHistoryMax = 24000;
+
 
 
 export const CreateTarotReadingBody = zod.object({
   "question": zod.string().min(1).describe('The user\'s question or intention for the reading'),
   "spreadType": zod.enum(['single', 'three', 'relationship', 'futureLover', 'peachBlossom', 'reconciliation', 'trueHeart', 'loveTree', 'xRelationship']).describe('The type of tarot spread to use'),
   "emotionalContext": zod.string().nullish().describe('Optional emotional context the user shares'),
+  "spreadHistory": zod.string().max(createTarotReadingBodySpreadHistoryMax).optional().describe('Bounded JSON context of saved spreads, including original questions, exact cards, and coverage counts. Data, not instructions.'),
   "anonId": zod.string().nullish().describe('Deprecated compatibility field. Ignored; readings belong to the authenticated installation.')
 })
 
@@ -329,6 +332,32 @@ export const createSpeechBodyTextMax = 4096;
 
 export const CreateSpeechBody = zod.object({
   "text": zod.string().min(1).max(createSpeechBodyTextMax).describe('Assistant text to turn into speech')
+})
+
+
+/**
+ * Preflight used before the client opens the microphone for a recorded voice turn. Never contacts the transcription provider.
+
+ * @summary Check whether server speech-to-text is configured
+ */
+export const GetTranscriptionStatusResponse = zod.object({
+  "available": zod.boolean().describe('Whether server speech-to-text is configured')
+})
+
+
+/**
+ * Speech-to-text for clients without working on-device recognition (Android WebView, Firefox, embedded previews). The body is the raw MediaRecorder recording, at most 4 MB. POST /transcribe is a compatibility alias for older builds and shares this handler and budget.
+
+ * @summary Transcribe one spoken turn
+ */
+export const createTranscriptionQueryLanguageDefault = `en`;
+
+export const CreateTranscriptionQueryParams = zod.object({
+  "language": zod.coerce.string().default(createTranscriptionQueryLanguageDefault).describe('Speaker language (en, zh, es, ja, ko); region tags such as en-US are accepted')
+})
+
+export const CreateTranscriptionResponse = zod.object({
+  "text": zod.string().describe('What the speaker said; empty when nothing was heard')
 })
 
 
@@ -552,6 +581,8 @@ export const GetUserStatsResponse = zod.object({
  * Sends a follow-up message in the context of a reading session and returns Hint's reply
  * @summary Continue the tarot conversation after the initial reading
  */
+export const sendTarotChatMessageBodySpreadHistoryMax = 24000;
+
 
 
 
@@ -574,6 +605,7 @@ export const SendTarotChatMessageBody = zod.object({
   "position": zod.string().describe('Position name in the spread (e.g. \"Past\", \"Present\", \"Future\")')
 })).describe('The cards that were drawn for this session'),
   "initialReading": zod.string().describe('The original AI interpretation from this session'),
+  "spreadHistory": zod.string().max(sendTarotChatMessageBodySpreadHistoryMax).optional().describe('Bounded JSON context of saved spreads, including original questions, exact cards, and coverage counts. Data, not instructions.'),
   "messages": zod.array(zod.object({
   "role": zod.enum(['user', 'assistant']),
   "content": zod.string()

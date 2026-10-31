@@ -1,15 +1,14 @@
 import { SavedLetters } from "../astrology/components/CelestialReports";
 import { rt } from "../astrology/reportCopy";
 import "../astrology/components/astrology-guide.css";
+import "./readings.css";
 import { LocalizedText, translateText } from "../../lib/LocalizedText";
 import { DAILY_TAROT_DECK, getDailyPullById } from "../home/data/dailyPulls";
 import { listAskHistory, subscribeToAskHistory } from "../ask/askHistory";
-﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { BookOpen, CalendarDays, HelpCircle } from "lucide-react";
-import { ACCENT, GLASS } from "../hold/atmosphere";
-import { AppScreen, ScreenHeader, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
+import { ArrowUpRight, BookOpen, CalendarDays, HelpCircle, MessageCircle, Orbit, Sparkles } from "lucide-react";
+import { AppScreen, ScreenHeader } from "../../components/app/AppChrome";
 import { useListReadings } from "@workspace/api-client-react";
 import type { ReadingSummary } from "@workspace/api-client-react";
 import { getAnonId } from "../../lib/identity";
@@ -30,30 +29,51 @@ import {
   subscribeToLocalTarotReadings,
   type LocalTarotReading,
 } from "./localTarotReadings";
+import {
+  getTarotRoomStarClassName,
+  getTarotRoomSurfaceBackground,
+} from "../tarot/logic/roomVisuals";
 import type { SpreadType } from "../hold/chat/types";
 import { getTarotCardImage } from "../tarot/logic/cardImageMap";
 import { readBirthProfile } from "../../lib/astro/userBirthProfile";
 import type { BirthProfile } from "../../types/astrology";
-import { HISTORY_COPY } from "./historyCopy";
+import { HISTORY_COPY, HISTORY_LOCALES } from "./historyCopy";
 
 /**
- * ReadingsView — the room's memory. A real archive of every tarot reading the
- * user has sat with, newest first, scoped to their anonymous id.
+ * ReadingsView — the room's memory. A real archive of every reading the user
+ * has sat with, newest first, scoped to their anonymous id.
+ *
+ * Layout: a single count ledger, one filter row, then dated archive entries.
+ * Each entry carries a date stamp, a type cue and the original saved words.
  */
 
 type HistoryTab = "all" | "tarot" | "daily" | "astrology" | "questions";
+type EntryKind = "tarot" | "daily" | "question" | "ask";
 
-function fmt(iso: string, todayLabel: string): string {
-  const d = new Date(iso);
+function isToday(date: Date) {
   const today = new Date();
-  if (
-    d.getFullYear() === today.getFullYear() &&
-    d.getMonth() === today.getMonth() &&
-    d.getDate() === today.getDate()
-  ) {
-    return todayLabel;
-  }
-  return d.toLocaleDateString(document.documentElement.lang || "en", { month: "short", day: "numeric" });
+  return date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
+}
+
+/** A calendar stamp: day number over short month, or the localized "Today". */
+function DateStamp({ iso, todayLabel, language }: { iso: string; todayLabel: string; language: HintLanguage }) {
+  const date = new Date(iso);
+  const valid = !Number.isNaN(date.getTime());
+  const locale = HISTORY_LOCALES[language];
+  return (
+    <time className="hr-stamp" dateTime={valid ? date.toISOString() : undefined} data-today={valid && isToday(date) ? "true" : undefined}>
+      {!valid ? null : isToday(date) ? <span className="hr-stamp-today">{todayLabel}</span> : <>
+        <span className="hr-stamp-day">{new Intl.DateTimeFormat(locale, { day: "numeric" }).format(date)}</span>
+        <span className="hr-stamp-month">{new Intl.DateTimeFormat(locale, { month: "short" }).format(date)}</span>
+      </>}
+    </time>
+  );
+}
+
+const KIND_ICONS: Record<EntryKind, typeof BookOpen> = { tarot: Sparkles, daily: CalendarDays, question: HelpCircle, ask: MessageCircle };
+
+function readingKind(reading: ReadingSummary): EntryKind {
+  return reading.spreadType === "daily-pull" ? "daily" : "tarot";
 }
 
 function displayReading(reading: ReadingSummary, language: HintLanguage) {
@@ -62,6 +82,11 @@ function displayReading(reading: ReadingSummary, language: HintLanguage) {
   const cardName = cardId ? getDailyPullById(cardId, language).cardName : translateText(reading.cardName, language);
   // Preserve the original saved reading; changing locale must not rewrite its meaning.
   return { cardName, whisper: reading.whisper };
+}
+
+function KindCue({ kind, label }: { kind: EntryKind; label: ReactNode }) {
+  const Icon = KIND_ICONS[kind];
+  return <span className="hr-kind" data-kind={kind}><Icon size={12} strokeWidth={1.7} aria-hidden="true" />{label}</span>;
 }
 
 function ReadingCard({
@@ -77,52 +102,23 @@ function ReadingCard({
 }) {
   const { t } = useLanguage();
   const displayed = displayReading(reading, language);
+  const kind = readingKind(reading);
+  const spread = SPREAD_LABELS[reading.spreadType as SpreadType] ?? (reading.spreadType === "daily-pull" ? "Daily" : reading.spreadType);
 
   return (
-    <Link
-      href={`/app/readings/${reading.id}`}
-      className={`hint-liquid-panel min-w-0 flex gap-3.5 rounded-[22px] [overflow-wrap:anywhere] ${featured ? "px-4 py-4" : "px-3.5 py-3.5"}`}
-      style={{ borderColor: GLASS.border }}
-    >
-      <span
-        className="shrink-0 font-serif text-[10px] uppercase tracking-[0.22em] w-14 pt-0.5"
-        style={{ color: GLASS.faint }}
-      >
-        {fmt(reading.createdAt, todayLabel)}
+    <Link href={`/app/readings/${reading.id}`} className="hr-entry" data-kind={kind} data-featured={featured ? "true" : undefined}>
+      <DateStamp iso={reading.createdAt} todayLabel={todayLabel} language={language} />
+      <span className="hr-entry-body">
+        <span className="hr-entry-meta">
+          <KindCue kind={kind} label={t(kind === "daily" ? "readings.tab.daily" : "readings.tab.tarot")} />
+          {kind === "tarot" && <span className="hr-entry-spread"><LocalizedText text={spread} /></span>}
+        </span>
+        <span className="hr-entry-title">{displayed.cardName}</span>
+        {reading.question && <span className="hr-entry-question"><LocalizedText text={reading.question} /></span>}
+        {displayed.whisper && <span className="hr-entry-text">{displayed.whisper}</span>}
+        {language !== "en" && displayed.whisper && <span className="hr-entry-note">{t("quality.originalText")}</span>}
       </span>
-      <span
-        className="shrink-0 w-px self-stretch"
-        style={{ background: GLASS.border }}
-        aria-hidden
-      />
-      <div className="flex-1 min-w-0 flex flex-col gap-1">
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-          <p
-            className={`font-serif ${featured ? "text-[18px]" : "text-[14.5px]"}`}
-            style={{ color: GLASS.text }}
-          >
-            {displayed.cardName}
-          </p>
-          <p
-            className="font-sans text-[10px] uppercase tracking-[0.14em]"
-            style={{ color: GLASS.faint }}
-          >
-            <LocalizedText text={SPREAD_LABELS[reading.spreadType as SpreadType] ?? (reading.spreadType === "daily-pull" ? "Daily" : reading.spreadType)} />
-          </p>
-        </div>
-        {reading.question && (
-          <p className="font-sans text-[12px] leading-snug" style={{ color: GLASS.faint }}>
-            <LocalizedText text={reading.question} />
-          </p>
-        )}
-        <p
-          className={`font-sans leading-relaxed ${featured ? "text-[13px]" : "text-[12px]"}`}
-          style={{ color: GLASS.muted }}
-        >
-          {displayed.whisper}
-        </p>
-        {language !== "en" && displayed.whisper && <span className="text-[11px]" style={{ color: GLASS.faint }}>{t("quality.originalText")}</span>}
-      </div>
+      <ArrowUpRight size={16} className="hr-entry-arrow" aria-hidden="true" />
     </Link>
   );
 }
@@ -198,107 +194,28 @@ function QuestionCard({
   item: QuestionHistoryItem;
   todayLabel: string;
 }) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   return (
-    <div
-      className="hint-liquid-panel min-w-0 rounded-[22px] px-4 py-4 [overflow-wrap:anywhere]"
-      style={{ borderColor: GLASS.border }}
-    >
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <span
-          className="font-serif text-[10px] uppercase tracking-[0.22em]"
-          style={{ color: GLASS.faint }}
-        >
-          {fmt(item.createdAt, todayLabel)}
+    <article className="hr-entry hr-entry-question-card" data-kind="question">
+      <DateStamp iso={item.createdAt} todayLabel={todayLabel} language={language} />
+      <div className="hr-entry-body">
+        <span className="hr-entry-meta">
+          <KindCue kind="question" label={t("readings.tab.questions")} />
+          <span className="hr-entry-spread"><LocalizedText text={SPREAD_LABELS[item.spreadType] ?? item.spreadType} /></span>
         </span>
-        <span
-          className="rounded-full border px-2.5 py-1 font-sans text-[10px] font-semibold uppercase tracking-[0.12em]"
-          style={{
-            color: ACCENT.gold,
-            borderColor: "rgba(206,178,110,0.26)",
-            background: "color-mix(in srgb, var(--hint-gold) 10%, var(--hint-surface-soft))",
-          }}
-        >
-          <LocalizedText text={SPREAD_LABELS[item.spreadType] ?? item.spreadType} />
-        </span>
+        <p className="hr-entry-title">{item.question}</p>
+        <p className="hr-entry-text"><LocalizedText text={item.focus} /></p>
+        <Link href={`/app/readings/${item.readingId ?? item.id}`} className="hr-open-link">{HISTORY_COPY[language].openReading}</Link>
       </div>
-      <p className="font-serif text-[17px] leading-snug" style={{ color: GLASS.text }}>
-        {item.question}
-      </p>
-      <p className="mt-2 font-sans text-[12px] leading-relaxed" style={{ color: GLASS.faint }}>
-        <LocalizedText text={item.focus} />
-      </p>
-      <Link
-        href={`/app/readings/${item.readingId ?? item.id}`}
-        className="hint-soft-button mt-4 inline-flex min-h-11 min-w-11 max-w-full items-center justify-center rounded-full px-4 py-2 font-sans text-[12px] leading-relaxed font-bold"
-        style={{
-          color: "var(--hint-special-action-text)",
-        }}
-      >{HISTORY_COPY[language].openReading}</Link>
-    </div>
+    </article>
   );
 }
 
 function EmptyPanel({ children }: { children: ReactNode }) {
-  return (
-    <div
-      className="rounded-[22px] px-4 py-5 text-center font-sans text-[13px] leading-relaxed"
-      style={{
-        background: "color-mix(in srgb, var(--hint-surface-soft) 82%, transparent)",
-        border: `1px dashed ${GLASS.border}`,
-        color: GLASS.muted,
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div className="hr-empty"><span aria-hidden="true">✧</span><p>{children}</p></div>;
 }
 
-function MemoryStat({
-  icon: Icon,
-  value,
-  label,
-  tone,
-}: {
-  icon: typeof BookOpen;
-  value: number;
-  label: string;
-  tone: string;
-}) {
-  return (
-    <div
-      className="min-w-0 rounded-[14px] border px-2 py-2"
-      style={{
-        background: "color-mix(in srgb, var(--hint-surface-soft) 78%, transparent)",
-        borderColor: "var(--hint-border)",
-      }}
-    >
-      <div className="flex flex-col items-center text-center">
-        <span
-          className="grid size-7 place-items-center rounded-full border"
-          style={{
-            color: tone,
-            background: `color-mix(in srgb, ${tone} 12%, var(--hint-surface-soft))`,
-            borderColor: `color-mix(in srgb, ${tone} 30%, var(--hint-border))`,
-          }}
-        >
-          <Icon size={13} />
-        </span>
-        <div className="mt-1.5 min-w-0">
-          <p className="font-serif text-[18px] leading-none tabular-nums" style={{ color: "var(--hint-text)" }}>
-            {value}
-          </p>
-          <p className="mt-1 font-sans text-[11px] leading-snug font-semibold [overflow-wrap:anywhere]" style={{ color: "var(--hint-muted)" }}>
-            {label}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HistoryMemoryPanel({
+function HistoryLedger({
   readingCount,
   dailyCount,
   questionCount,
@@ -309,28 +226,18 @@ function HistoryMemoryPanel({
 }) {
   const { language } = useLanguage();
   const copy = HISTORY_COPY[language];
+  const stats = [
+    { id: "readings", icon: BookOpen, value: readingCount, label: copy.readings },
+    { id: "daily", icon: CalendarDays, value: dailyCount, label: copy.daily },
+    { id: "questions", icon: HelpCircle, value: questionCount, label: copy.questions },
+  ];
   return (
-    <GlassPanel padded={false} className="mb-5 hint-shimmer-border p-4">
-      <div className="mb-3 flex items-start justify-between gap-3">
-        <div>
-          <SectionLabel><LocalizedText text={"Memory"} /></SectionLabel>
-          <h2 className="mt-1.5 font-serif text-[21px] leading-none" style={{ color: "var(--hint-text)" }}><LocalizedText text={" Your Hint memory "} /></h2>
-        </div>
-        <span
-          className="rounded-full border px-2.5 py-1 font-sans text-[9px] font-black uppercase tracking-[0.1em]"
-          style={{
-            color: "var(--hint-gold)",
-            borderColor: "var(--hint-border)",
-            background: "color-mix(in srgb, var(--hint-surface-soft) 72%, transparent)",
-          }}
-        ><LocalizedText text={" History "} /></span>
-      </div>
-      <div className="grid grid-cols-3 gap-2">
-        <MemoryStat icon={BookOpen} value={readingCount} label={copy.readings} tone="#d98aaa" />
-        <MemoryStat icon={CalendarDays} value={dailyCount} label={copy.daily} tone="#cda866" />
-        <MemoryStat icon={HelpCircle} value={questionCount} label={copy.questions} tone="#9b98c9" />
-      </div>
-    </GlassPanel>
+    <dl className="hr-ledger">
+      {stats.map(({ id, icon: Icon, value, label }) => <div key={id} data-stat={id}>
+        <dt><Icon size={13} strokeWidth={1.6} aria-hidden="true" />{label}</dt>
+        <dd>{value}</dd>
+      </div>)}
+    </dl>
   );
 }
 
@@ -393,23 +300,13 @@ function ReadingList({
   if (!rows.length) return <EmptyPanel>{empty}</EmptyPanel>;
 
   return (
-    <div className="flex flex-col gap-3">
-      {rows.map((reading, i) => (
-        <motion.div
-          key={reading.id}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: Math.min(i, 6) * 0.05 }}
-        >
-          <ReadingCard
-            reading={reading}
-            language={language}
-            todayLabel={todayLabel}
-          />
-        </motion.div>
+    <ol className="hr-list">
+      {rows.map((reading) => (
+        <li key={reading.id}>
+          <ReadingCard reading={reading} language={language} todayLabel={todayLabel} />
+        </li>
       ))}
-    </div>
+    </ol>
   );
 }
 
@@ -428,20 +325,11 @@ function QuestionList({
   if (!rows.length) return <EmptyPanel>{empty}</EmptyPanel>;
 
   return (
-    <div className="grid min-w-0 gap-3 md:grid-cols-2">
-      {rows.map((item, i) => (
-        <motion.div
-          key={item.id}
-          className="min-w-0"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: Math.min(i, 6) * 0.05 }}
-        >
-          <QuestionCard item={item} todayLabel={todayLabel} />
-        </motion.div>
+    <ol className="hr-list">
+      {rows.map((item) => (
+        <li key={item.id}><QuestionCard item={item} todayLabel={todayLabel} /></li>
       ))}
-    </div>
+    </ol>
   );
 }
 
@@ -449,38 +337,34 @@ function AstrologyArchiveGrid({ profile }: { profile: BirthProfile | null }) {
   const { language } = useLanguage();
   const items = buildAstrologyArchive(profile, language);
   return (
-    <div className="grid gap-3 md:grid-cols-2">
-      <div className="astro-theme md:col-span-2"><SavedLetters /></div>
-      <p className="text-sm leading-relaxed md:col-span-2" style={{ color: GLASS.muted }}><LocalizedText text={"These are shortcuts to Astrology tools. They are not saved reading records."} /></p>
-      {items.map((item, index) => (
-        <motion.div
-          key={item.id}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.56, ease: "easeOut", delay: Math.min(index, 6) * 0.04 }}
-        >
-          <Link
-            href={item.href}
-            className="hint-liquid-panel block rounded-[22px] p-4 transition-[transform,opacity] duration-200 hover:-translate-y-0.5"
-            style={{ borderColor: GLASS.border }}
-          >
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <span className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Astrology "} /></span>
-              <span className="rounded-full border px-2.5 py-1 font-sans text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: GLASS.faint, borderColor: GLASS.border, background: "color-mix(in srgb, var(--hint-surface-soft) 78%, transparent)" }}>
-                <LocalizedText text={item.label} />
+    <div className="hr-astro">
+      <div className="astro-theme"><SavedLetters /></div>
+      <p className="hr-note"><LocalizedText text={"These are shortcuts to Astrology tools. They are not saved reading records."} /></p>
+      <ul className="hr-shortcuts">
+        {items.map((item) => (
+          <li key={item.id}>
+            <Link href={item.href} className="hr-shortcut">
+              <Orbit size={16} strokeWidth={1.4} className="hr-shortcut-icon" aria-hidden="true" />
+              <span className="hr-shortcut-copy">
+                <strong><LocalizedText text={item.title} /></strong>
+                <span className="hr-shortcut-label"><LocalizedText text={item.label} /></span>
+                <span className="hr-shortcut-body"><LocalizedText text={item.body} /></span>
               </span>
-            </div>
-            <p className="font-serif text-[20px] leading-tight" style={{ color: GLASS.text }}>
-              <LocalizedText text={item.title} />
-            </p>
-            <p className="mt-2 font-sans text-[12.5px] leading-relaxed" style={{ color: GLASS.muted }}>
-              <LocalizedText text={item.body} />
-            </p>
-          </Link>
-        </motion.div>
-      ))}
+              <ArrowUpRight size={15} className="hr-entry-arrow" aria-hidden="true" />
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
+  );
+}
+
+function ArchiveSection({ title, children, id }: { title: ReactNode; children: ReactNode; id: string }) {
+  return (
+    <section className="hr-section" aria-labelledby={`hr-${id}`}>
+      <h2 id={`hr-${id}`} className="hr-section-title">{title}</h2>
+      {children}
+    </section>
   );
 }
 
@@ -530,18 +414,23 @@ export function ReadingsView() {
     () => mergeQuestionHistory(questionHistory, tarotReadings),
     [questionHistory, tarotReadings],
   );
+  // Filters derive from the merged, id-deduplicated collection so server-only
+  // records appear under Tarot/Daily too; All shows each reading exactly once.
+  const tarotEntries = useMemo(() => readings.filter((reading) => readingKind(reading) === "tarot"), [readings]);
+  const dailyEntries = useMemo(() => readings.filter((reading) => readingKind(reading) === "daily"), [readings]);
   const lastReading = readings[0];
-  const recentHistory = readings.slice(1, 7);
+  const earlierReadings = readings.slice(1);
   const historyTabs = useMemo(
     () => [
       { key: "all" as const, label: t("readings.tab.all"), count: readings.length + displayedQuestionHistory.length + askHistory.length },
-      { key: "tarot" as const, label: t("readings.tab.tarot"), count: tarotHistory.length },
-      { key: "daily" as const, label: t("readings.tab.daily"), count: dailyHistory.length },
+      { key: "tarot" as const, label: t("readings.tab.tarot"), count: tarotEntries.length },
+      { key: "daily" as const, label: t("readings.tab.daily"), count: dailyEntries.length },
       { key: "astrology" as const, label: t("readings.tab.astrology"), count: null },
       { key: "questions" as const, label: t("readings.tab.questions"), count: displayedQuestionHistory.length + askHistory.length },
     ],
-    [birthProfile, dailyHistory.length, displayedQuestionHistory.length, readings.length, t, tarotHistory.length, askHistory.length],
+    [dailyEntries.length, displayedQuestionHistory.length, readings.length, t, tarotEntries.length, askHistory.length],
   );
+  const todayLabel = t("readings.today");
 
   useEffect(() => {
     return subscribeToLocalDailyReadings(() => {
@@ -571,8 +460,11 @@ export function ReadingsView() {
     };
   }, []);
 
+  const nothingLoaded = readings.length === 0 && displayedQuestionHistory.length === 0 && askHistory.length === 0;
+
   return (
     <AppScreen>
+      <div className="hr-page">
       <ScreenHeader
         eyebrow={t("readings.eyebrow")}
         title={t("readings.title")}
@@ -580,152 +472,86 @@ export function ReadingsView() {
         backHref="/app"
       />
 
-      {isError && <div role="status" className="mb-4 rounded-xl border p-4 text-sm">
+      {isError && <div role="status" className="hr-error">
         <p>{t("quality.historyError")}</p>
-        <button type="button" onClick={() => void refetch()} className="min-h-11 underline">{t("quality.retry")}</button>
+        <button type="button" onClick={() => void refetch()}>{t("quality.retry")}</button>
       </div>}
-      <HistoryMemoryPanel
+      <HistoryLedger
         readingCount={readings.length}
-        dailyCount={dailyHistory.length}
+        dailyCount={dailyEntries.length}
         questionCount={displayedQuestionHistory.length}
       />
 
-      <div
-        className="mb-7 flex gap-2 overflow-x-auto rounded-[14px] border p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        style={{
-          background: "color-mix(in srgb, var(--hint-surface-soft) 82%, transparent)",
-          borderColor: GLASS.border,
-        }}
-      >
+      <div className="hr-filters" role="group" aria-label={HISTORY_COPY[language].filter}>
         {historyTabs.map((tab) => (
-          <TabButton key={tab.key} active={activeTab === tab.key} onClick={() => setActiveTab(tab.key)}>
+          <button key={tab.key} type="button" className="hr-filter" aria-pressed={activeTab === tab.key} onClick={() => setActiveTab(tab.key)}>
             <span>{tab.label}</span>
-            {tab.count !== null && <span
-              className="ml-2 rounded-full px-2 py-0.5 text-[10px]"
-              style={{ background: activeTab === tab.key ? "color-mix(in srgb, var(--hint-gold) 16%, transparent)" : "color-mix(in srgb, var(--hint-surface-soft) 72%, transparent)" }}
-            >
-              {tab.count}
-            </span>}
-          </TabButton>
+            {tab.count !== null && <span className="hr-filter-count">{tab.count}</span>}
+          </button>
         ))}
       </div>
 
-      {(activeTab === "all" || activeTab === "questions") && askHistory.length > 0 && <section className="mb-8">
-        <SectionLabel>{t("quality.askHistory")}</SectionLabel>
-        <div className="grid min-w-0 gap-3">{askHistory.map(conversation => <Link key={conversation.id} href={`/app/ask?conversation=${encodeURIComponent(conversation.id)}`} className="hint-liquid-panel min-w-0 block rounded-2xl p-4 [overflow-wrap:anywhere]">
-          <time className="text-xs" dateTime={conversation.updatedAt}>{fmt(conversation.updatedAt, t("readings.today"))}</time>
-          <p className="mt-2 break-words font-serif text-lg">{conversation.messages.find(message => message.role === "user")?.content}</p>
-          <p className="mt-2 text-sm underline">{t("quality.askResume")}</p>
-        </Link>)}</div>
-      </section>}
-      {isLoading && readings.length === 0 && displayedQuestionHistory.length === 0 && askHistory.length === 0 ? (
-        <p className="font-serif italic text-[13px] py-8 text-center" style={{ color: GLASS.muted }}>
-          {t("readings.loading")}
-        </p>
-      ) : isError && readings.length === 0 && displayedQuestionHistory.length === 0 && askHistory.length === 0 && activeTab !== "astrology" ? null : activeTab === "questions" ? (
-        <section className="mb-10">
-          <SectionLabel>{t("readings.questions")}</SectionLabel>
+      {(activeTab === "all" || activeTab === "questions") && askHistory.length > 0 && <ArchiveSection id="ask" title={t("quality.askHistory")}>
+        <ol className="hr-list">{askHistory.map(conversation => <li key={conversation.id}>
+          <Link href={`/app/ask?conversation=${encodeURIComponent(conversation.id)}`} className="hr-entry" data-kind="ask">
+            <DateStamp iso={conversation.updatedAt} todayLabel={todayLabel} language={language} />
+            <span className="hr-entry-body">
+              <span className="hr-entry-meta"><KindCue kind="ask" label={t("nav.ask")} /></span>
+              <span className="hr-entry-title">{conversation.messages.find(message => message.role === "user")?.content}</span>
+              <span className="hr-open-link">{t("quality.askResume")}</span>
+            </span>
+            <ArrowUpRight size={16} className="hr-entry-arrow" aria-hidden="true" />
+          </Link>
+        </li>)}</ol>
+      </ArchiveSection>}
+      {isLoading && nothingLoaded ? (
+        <p className="hr-loading" role="status">{t("readings.loading")}</p>
+      ) : isError && nothingLoaded && activeTab !== "astrology" ? null : activeTab === "questions" ? (
+        <ArchiveSection id="questions" title={t("readings.questions")}>
           {(displayedQuestionHistory.length > 0 || askHistory.length === 0) && <QuestionList
             items={displayedQuestionHistory}
-            todayLabel={t("readings.today")}
+            todayLabel={todayLabel}
             empty={t("readings.questionsEmpty")}
           />}
-        </section>
+        </ArchiveSection>
       ) : activeTab === "astrology" ? (
-        <section className="mb-10">
-          <SectionLabel>{t("readings.astrologyHistory")}</SectionLabel>
+        <ArchiveSection id="astrology" title={t("readings.astrologyHistory")}>
           <AstrologyArchiveGrid profile={birthProfile} />
-        </section>
+        </ArchiveSection>
       ) : activeTab === "daily" ? (
-        <section className="mb-10">
-          <SectionLabel>{t("readings.dailyCalendarHistory")}</SectionLabel>
-          <ReadingList
-            readings={dailyHistory}
-            language={language}
-            todayLabel={t("readings.today")}
-            empty={t("readings.dailyEmpty")}
-          />
-        </section>
+        <ArchiveSection id="daily" title={t("readings.dailyCalendarHistory")}>
+          <ReadingList readings={dailyEntries} language={language} todayLabel={todayLabel} empty={t("readings.dailyEmpty")} />
+        </ArchiveSection>
       ) : activeTab === "tarot" ? (
-        <section className="mb-10">
-          <SectionLabel>{t("readings.tarotHistory")}</SectionLabel>
-          <ReadingList
-            readings={tarotHistory}
-            language={language}
-            todayLabel={t("readings.today")}
-            empty={t("readings.tarotEmpty")}
-          />
-        </section>
+        <ArchiveSection id="tarot" title={t("readings.tarotHistory")}>
+          <ReadingList readings={tarotEntries} language={language} todayLabel={todayLabel} empty={t("readings.tarotEmpty")} />
+        </ArchiveSection>
       ) : (
         <>
-          <section className="mb-9">
-            <SectionLabel>{t("readings.last")}</SectionLabel>
+          <ArchiveSection id="last" title={t("readings.last")}>
             {lastReading ? (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              >
-                <ReadingCard
-                  reading={lastReading}
-                  language={language}
-                  todayLabel={t("readings.today")}
-                  featured
-                />
-              </motion.div>
+              <ReadingCard reading={lastReading} language={language} todayLabel={todayLabel} featured />
             ) : (
               <EmptyPanel>{t("readings.empty")}</EmptyPanel>
             )}
-          </section>
+          </ArchiveSection>
 
-          <section className="mb-9">
-            <SectionLabel>{t("readings.tab.astrology")}</SectionLabel>
+          {/* Every remaining reading once, newest first; type cues tell tarot from daily. */}
+          {lastReading && <ArchiveSection id="recent" title={t("readings.recent")}>
+            <ReadingList readings={earlierReadings} language={language} todayLabel={todayLabel} empty={t("readings.recentEmpty")} />
+          </ArchiveSection>}
+
+          <ArchiveSection id="questions" title={t("readings.questions")}>
+            <QuestionList items={displayedQuestionHistory} todayLabel={todayLabel} empty={t("readings.questionsEmpty")} limit={4} />
+          </ArchiveSection>
+
+          {/* Astrology tools and saved letters close the archive: they are references, not entries. */}
+          <ArchiveSection id="astrology" title={t("readings.tab.astrology")}>
             <AstrologyArchiveGrid profile={birthProfile} />
-          </section>
-
-          <section className="mb-9">
-            <SectionLabel>{t("readings.tab.tarot")}</SectionLabel>
-            <ReadingList
-              readings={tarotHistory}
-              language={language}
-              todayLabel={t("readings.today")}
-              empty={t("readings.tarotEmpty")}
-              limit={4}
-            />
-          </section>
-
-          <section className="mb-9">
-            <SectionLabel>{t("readings.dailyCalendar")}</SectionLabel>
-            <ReadingList
-              readings={dailyHistory}
-              language={language}
-              todayLabel={t("readings.today")}
-              empty={t("readings.dailyEmpty")}
-              limit={4}
-            />
-          </section>
-
-          <section className="mb-9">
-            <SectionLabel>{t("readings.recent")}</SectionLabel>
-            <ReadingList
-              readings={recentHistory}
-              language={language}
-              todayLabel={t("readings.today")}
-              empty={t("readings.recentEmpty")}
-            />
-          </section>
-
-          <section className="mb-10">
-            <SectionLabel>{t("readings.questions")}</SectionLabel>
-            <QuestionList
-              items={displayedQuestionHistory}
-              todayLabel={t("readings.today")}
-              empty={t("readings.questionsEmpty")}
-              limit={4}
-            />
-          </section>
+          </ArchiveSection>
         </>
       )}
+      </div>
     </AppScreen>
   );
 }
@@ -754,105 +580,90 @@ export function ReadingDetailView() {
   const fallbackReading = dailyReading ?? apiReading;
 
   if (tarotReading) {
+    // The tarot room design chosen for this reading is content, so it stays.
     const backgroundId = tarotReading.roomDesign?.backgroundId ?? "stars";
     return (
       <div
         data-testid="tarot-history-detail"
         data-room-background={backgroundId}
         className="relative h-full w-full overflow-hidden"
+        style={{ background: getTarotRoomSurfaceBackground(backgroundId) }}
       >
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 ${getTarotRoomStarClassName(backgroundId)}`}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_30%,rgba(255,249,244,0.16))]"
+        />
         <div className="relative z-10 h-full">
           <AppScreen>
-        <ScreenHeader
-          eyebrow={t("readings.detail")}
-          title={tarotReading.spreadLabel}
-          subtitle={tarotReading.focusLabel ?? t("readings.savedTarot")}
-          backHref="/app/readings"
-          backLabel={t("nav.history")}
-          backClassName="min-h-11"
-        />
-        <ReadingDetailMeta
-          spreadType={tarotReading.spreadLabel}
-          createdAt={tarotReading.createdAt}
-          question={tarotReading.question}
-        />
-        <div className="mb-6">
-          <button
-            type="button"
-            onClick={() =>
-              navigate(
-                `/app/tarot?reading=${encodeURIComponent(tarotReading.id)}&returnTo=detail`,
-              )
-            }
-            className="inline-flex h-11 items-center justify-center rounded-[999px] px-5 font-sans text-[14px] font-medium"
-            style={{
-              color: "#08070B",
-              background: "linear-gradient(145deg, rgba(255,239,199,0.98), rgba(244,175,203,0.88))",
-              boxShadow: "0 14px 30px rgba(150,92,126,0.18)",
-            }}
-          >
-            {t("readings.returnToChat")}
-          </button>
-        </div>
-        <section className="mb-6">
-          <SectionLabel>{t("readings.cardsDrawn")}</SectionLabel>
-          <GlassPanel>
-            <div className="overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none]">
-              <div className={`flex gap-3 ${tarotReading.cards.length <= 3 ? "justify-center" : "justify-start"}`}>
-              {tarotReading.cards.map((card, index) => {
-                const image = getTarotCardImage(card.cardId, tarotReading.cardArtId ?? "original");
-                return (
-                  <div key={`${card.cardId}-${index}`} className="w-[86px] shrink-0 text-center">
-                    <div
-                      className="mx-auto h-[132px] w-[82px] overflow-hidden rounded-[8px] border"
-                      style={{
-                        borderColor: "rgba(206,178,110,0.42)",
-                        background: "rgba(255,255,255,0.42)",
-                      }}
-                    >
-                      {image ? (
-                        <img
-                          src={image}
-                          alt={card.name}
-                          className={`h-full w-full object-cover ${card.orientation === "reversed" ? "rotate-180" : ""}`}
-                        />
-                      ) : null}
-                    </div>
-                    <p className="mt-2 font-sans text-[9px] uppercase tracking-[0.16em]" style={{ color: ACCENT.gold }}>
-                      {card.positionLabel}
-                    </p>
-                    <p className="break-words font-serif text-[12px] leading-tight" style={{ color: GLASS.text }}>
-                      {card.name}
-                    </p>
+            <div className="hr-page hr-detail">
+            <ScreenHeader
+              eyebrow={t("readings.detail")}
+              title={tarotReading.spreadLabel}
+              subtitle={tarotReading.focusLabel ?? t("readings.savedTarot")}
+              backHref="/app/readings"
+              backLabel={t("nav.history")}
+              backClassName="min-h-11"
+            />
+            <ReadingDetailMeta
+              spreadType={tarotReading.spreadLabel}
+              createdAt={tarotReading.createdAt}
+              question={tarotReading.question}
+            />
+            <div className="hr-detail-actions">
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(
+                    `/app/tarot?reading=${encodeURIComponent(tarotReading.id)}&returnTo=detail`,
+                  )
+                }
+                className="hr-primary"
+              >
+                {t("readings.returnToChat")}
+              </button>
+            </div>
+            <ArchiveSection id="cards" title={t("readings.cardsDrawn")}>
+              <div className="hr-panel">
+                <div className="overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none]">
+                  <div className={`flex gap-3 ${tarotReading.cards.length <= 3 ? "justify-center" : "justify-start"}`}>
+                  {tarotReading.cards.map((card, index) => {
+                    const image = getTarotCardImage(card.cardId, tarotReading.cardArtId ?? "original");
+                    return (
+                      <div key={`${card.cardId}-${index}`} className="hr-drawn-card">
+                        <div className="hr-drawn-card-face">
+                          {image ? (
+                            <img
+                              src={image}
+                              alt={card.name}
+                              className={`h-full w-full object-cover ${card.orientation === "reversed" ? "rotate-180" : ""}`}
+                            />
+                          ) : null}
+                        </div>
+                        <p className="hr-drawn-card-position">{card.positionLabel}</p>
+                        <p className="hr-drawn-card-name">{card.name}</p>
+                      </div>
+                    );
+                  })}
                   </div>
-                );
-              })}
+                </div>
               </div>
+            </ArchiveSection>
+            <ArchiveSection id="answer" title={t("readings.answer")}>
+              <div className="hr-panel">
+                <p className="hr-answer">{tarotReading.shortAnswer}</p>
+                <div className="hr-meanings">
+                  {tarotReading.cardMeanings.map((meaning, index) => (
+                    <p key={`${tarotReading.id}-meaning-${index}`}>{meaning}</p>
+                  ))}
+                </div>
+                <p className="hr-detail-text">{displayQuestionMeaning(tarotReading)}</p>
+              </div>
+            </ArchiveSection>
             </div>
-          </GlassPanel>
-        </section>
-        <section className="mb-6">
-          <SectionLabel>{t("readings.answer")}</SectionLabel>
-          <GlassPanel>
-            <p className="font-serif text-[18px] leading-relaxed [overflow-wrap:anywhere]" style={{ color: GLASS.text }}>
-              {tarotReading.shortAnswer}
-            </p>
-            <div className="mt-4 grid gap-2 md:grid-cols-2">
-              {tarotReading.cardMeanings.map((meaning, index) => (
-                <p
-                  key={`${tarotReading.id}-meaning-${index}`}
-                  className="min-w-0 rounded-[8px] border px-3 py-2.5 font-sans text-[13px] leading-relaxed [overflow-wrap:anywhere]"
-                  style={{ borderColor: GLASS.border, color: GLASS.muted }}
-                >
-                  {meaning}
-                </p>
-              ))}
-            </div>
-            <p className="mt-4 font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}>
-              {displayQuestionMeaning(tarotReading)}
-            </p>
-          </GlassPanel>
-        </section>
           </AppScreen>
         </div>
       </div>
@@ -862,6 +673,7 @@ export function ReadingDetailView() {
   if (fallbackReading) {
     return (
       <AppScreen>
+        <div className="hr-page hr-detail">
         <ScreenHeader
           eyebrow={t("readings.detail")}
           title={fallbackReading.cardName}
@@ -874,11 +686,10 @@ export function ReadingDetailView() {
           createdAt={fallbackReading.createdAt}
           question={fallbackReading.question ?? undefined}
         />
-        <GlassPanel hero>
-          <p className="font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}>
-            {fallbackReading.whisper}
-          </p>
-        </GlassPanel>
+        <div className="hr-panel" data-hero="true">
+          <p className="hr-answer">{fallbackReading.whisper}</p>
+        </div>
+        </div>
       </AppScreen>
     );
   }
@@ -886,6 +697,7 @@ export function ReadingDetailView() {
   if (question) {
     return (
       <AppScreen>
+        <div className="hr-page hr-detail">
         <ScreenHeader
           eyebrow={t("readings.questionDetail")}
           title={SPREAD_LABELS[question.spreadType] ?? question.spreadType}
@@ -898,17 +710,17 @@ export function ReadingDetailView() {
           createdAt={question.createdAt}
           question={question.question}
         />
-        <GlassPanel hero>
-          <p className="font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}>
-            {question.focus}
-          </p>
-        </GlassPanel>
+        <div className="hr-panel" data-hero="true">
+          <p className="hr-detail-text">{question.focus}</p>
+        </div>
+        </div>
       </AppScreen>
     );
   }
 
   return (
     <AppScreen>
+      <div className="hr-page hr-detail">
       <ScreenHeader
         eyebrow={t("nav.history")}
         title={t("readings.notFound")}
@@ -917,10 +729,12 @@ export function ReadingDetailView() {
         backLabel={t("nav.history")}
       />
       <EmptyPanel>{t("readings.notFoundHint")}</EmptyPanel>
+      </div>
     </AppScreen>
   );
 }
 
+/** Detail summary uses the same ledger language as the archive counts. */
 function ReadingDetailMeta({
   spreadType,
   createdAt,
@@ -933,56 +747,14 @@ function ReadingDetailMeta({
   const { t, language } = useLanguage();
 
   return (
-    <section className="mb-6">
-      <SectionLabel>{t("readings.summary")}</SectionLabel>
-      {language !== "en" && <p className="mb-2 text-xs" style={{ color: GLASS.faint }}>{t("quality.originalText")}</p>}
-      <GlassPanel>
-        <div className="grid min-w-0 gap-3 font-sans text-[13px] [overflow-wrap:anywhere] sm:grid-cols-3" style={{ color: GLASS.muted }}>
-          <p>
-            <span className="block text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
-              {t("readings.meta.spread")}
-            </span>
-            <LocalizedText text={spreadType} />
-          </p>
-          <p>
-            <span className="block text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
-              {t("readings.meta.time")}
-            </span>
-            {new Date(createdAt).toLocaleString(language)}
-          </p>
-          <p>
-            <span className="block text-[10px] uppercase tracking-[0.18em]" style={{ color: GLASS.faint }}>
-              {t("readings.meta.question")}
-            </span>
-            {question || t("readings.meta.noQuestion")}
-          </p>
-        </div>
-      </GlassPanel>
+    <section className="hr-section" aria-labelledby="hr-summary">
+      <h2 id="hr-summary" className="hr-section-title">{t("readings.summary")}</h2>
+      {language !== "en" && <p className="hr-note">{t("quality.originalText")}</p>}
+      <dl className="hr-detail-meta">
+        <div><dt>{t("readings.meta.spread")}</dt><dd><LocalizedText text={spreadType} /></dd></div>
+        <div><dt>{t("readings.meta.time")}</dt><dd>{new Date(createdAt).toLocaleString(language)}</dd></div>
+        <div data-wide="true"><dt>{t("readings.meta.question")}</dt><dd>{question || t("readings.meta.noQuestion")}</dd></div>
+      </dl>
     </section>
-  );
-}
-
-function TabButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="inline-flex h-11 shrink-0 items-center rounded-full px-3.5 font-sans text-[13px] font-bold transition active:scale-[0.98]"
-      style={{
-        color: active ? "var(--hint-special-action-text)" : GLASS.muted,
-        background: active ? "var(--hint-special-action-bg)" : "color-mix(in srgb, var(--hint-surface-soft) 54%, transparent)",
-        boxShadow: active ? "0 10px 22px color-mix(in srgb, var(--hint-rose) 14%, transparent), inset 0 1px 0 rgba(255,255,255,0.48)" : "inset 0 1px 0 rgba(255,255,255,0.12)",
-      }}
-    >
-      {children}
-    </button>
   );
 }

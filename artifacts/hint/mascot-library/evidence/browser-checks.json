@@ -1,0 +1,97 @@
+[
+  {
+    "browser": "chromium",
+    "passed": true,
+    "timings": [
+      {
+        "gesture": "wink-right",
+        "milliseconds": 2066
+      },
+      {
+        "gesture": "nod",
+        "milliseconds": 2332
+      },
+      {
+        "gesture": "listening",
+        "milliseconds": 4433
+      },
+      {
+        "gesture": "thinking",
+        "milliseconds": 4630
+      },
+      {
+        "gesture": "celebration",
+        "milliseconds": 2931
+      }
+    ],
+    "checks": [
+      "autoplay",
+      "repeat taps",
+      "pause/resume",
+      "six expressions",
+      "offer waits",
+      "single acceptance",
+      "delivery scrub",
+      "empty-paw reactions",
+      "scrub continuation",
+      "simulated background suspension",
+      "offscreen suspension",
+      "320/390/430/736 layout",
+      "44px controls",
+      "untouched comparison",
+      "keyboard",
+      "completion callbacks",
+      "reduced motion",
+      "relocated offline preview"
+    ],
+    "errors": [],
+    "followUp": "44px picker height rechecked in Chrome and WebKit after the WebKit-only sizing correction."
+  },
+  {
+    "browser": "webkit",
+    "passed": true,
+    "timings": [
+      {
+        "gesture": "wink-right",
+        "milliseconds": 2083
+      },
+      {
+        "gesture": "nod",
+        "milliseconds": 2316
+      },
+      {
+        "gesture": "listening",
+        "milliseconds": 4434
+      },
+      {
+        "gesture": "thinking",
+        "milliseconds": 4631
+      },
+      {
+        "gesture": "celebration",
+        "milliseconds": 2930
+      }
+    ],
+    "checks": [
+      "autoplay",
+      "repeat taps",
+      "pause/resume",
+      "six expressions",
+      "offer waits",
+      "single acceptance",
+      "delivery scrub",
+      "empty-paw reactions",
+      "scrub continuation",
+      "simulated background suspension",
+      "offscreen suspension",
+      "320/390/430/736 layout",
+      "44px controls",
+      "untouched comparison",
+      "keyboard",
+      "completion callbacks",
+      "reduced motion",
+      "relocated offline preview"
+    ],
+    "errors": []
+  }
+]

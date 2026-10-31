@@ -10,6 +10,9 @@ import { motion } from "../../lib/quietMotion";
 import { Link } from "wouter";
 import { ArrowLeft, House } from "lucide-react";
 import { useLanguage } from "../../lib/i18n";
+import { useState } from "react";
+import { RoomCompanion, RoomComposition } from "../mascot/RoomCompanion";
+import { useHintTyping } from "../mascot/useHintTyping";
 
 /**
  * AppChrome — shared mobile-app primitives for the app-shell pages.
@@ -22,15 +25,23 @@ export function AppScreen({ children, allowHorizontalPan = false, contentStyle }
   allowHorizontalPan?: boolean;
   contentStyle?: CSSProperties;
 }) {
+  const [composition, setComposition] = useState("");
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const typing = useHintTyping(composition);
   return (
+    <RoomComposition.Provider value={{ typing, keyboardOpen }}>
     <div
       className="hint-app-scroll h-full w-full flex flex-col items-center pb-[calc(7.75rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))] scroll-pt-[calc(1.25rem+var(--hint-safe-top))]"
+      onInputCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setComposition(event.target.value); }}
+      onFocusCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setKeyboardOpen(true); }}
+      onBlurCapture={() => { setKeyboardOpen(false); setComposition(""); }}
       style={{ background: "transparent", touchAction: allowHorizontalPan ? "pan-x pan-y" : undefined }}
     >
       <div className="w-full max-w-[var(--hint-app-width)] px-3.5 pt-[calc(1rem+var(--hint-safe-top))] sm:px-4" style={contentStyle}>
         {children}
       </div>
     </div>
+    </RoomComposition.Provider>
   );
 }
 
@@ -81,6 +92,7 @@ export function SpaceNavigation({
   return <div data-space-navigation className="mb-3 flex min-w-0 flex-wrap items-center gap-2">
     {hasParent && <BackLink href={backHref} label={backLabel ?? t("common.back")} className={backClassName} />}
     <BackLink href="/app" label={hasParent ? undefined : backLabel} className={hasParent ? undefined : backClassName} />
+    <RoomCompanion />
   </div>;
 }
 

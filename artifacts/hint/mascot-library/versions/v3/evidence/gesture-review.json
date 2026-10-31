@@ -1,0 +1,216 @@
+{
+  "version": "3.0.0",
+  "reviewedAt": "2026-10-12T15:52:15.181301+00:00",
+  "gestures": [
+    {
+      "gesture": "idle",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Quiet breathing and natural blinks; no repeated entrance.",
+      "continuousReviewSeconds": 60
+    },
+    {
+      "gesture": "welcome",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Approved wave timing; short rounded paw stays attached, including the empty-paw transition."
+    },
+    {
+      "gesture": "offer-letter",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Breath and forward offer; the receiver reaches the envelope before release. The letter stays opaque."
+    },
+    {
+      "gesture": "listening",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Whole-body side lean, attentive eyes, and one rounded paw near the head.",
+      "continuousReviewSeconds": 60
+    },
+    {
+      "gesture": "thinking",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Upward gaze, pursed mouth, and a short paw near the cheek; readable with the question mark hidden.",
+      "continuousReviewSeconds": 60
+    },
+    {
+      "gesture": "reading",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Downward eye scan and small nods, with a quiet mouth.",
+      "continuousReviewSeconds": 60
+    },
+    {
+      "gesture": "speaking",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Irregular mouth openings and small paw emphasis; separate from quiet reading.",
+      "continuousReviewSeconds": 60
+    },
+    {
+      "gesture": "waiting",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Relaxed paws, slow glances, and small weight shifts.",
+      "continuousReviewSeconds": 60
+    },
+    {
+      "gesture": "wink-left",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Hint\u2019s left eye closes independently with a cheek lift and body dip."
+    },
+    {
+      "gesture": "wink-right",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "The opposite eye closes with separate timing and the opposite dip."
+    },
+    {
+      "gesture": "nod",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "A deliberate dip with closed eyes and inward paws."
+    },
+    {
+      "gesture": "shake-head",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "A gentle side-to-side head turn with a restrained expression."
+    },
+    {
+      "gesture": "celebration",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Crescent eyes, a wider smile, a short paw lift, and a soft landing; readable without sparkles."
+    },
+    {
+      "gesture": "curious",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Wide eyes and an outward-looking forward lean, distinct from thinking."
+    },
+    {
+      "gesture": "surprised",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Round mouth and brief backward lean; the mouth contour stays rounded."
+    },
+    {
+      "gesture": "shy",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Warm cheeks, lowered averted gaze, and close paws."
+    },
+    {
+      "gesture": "comfort",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Soft eyes and a short offered paw rotating from the shoulder."
+    },
+    {
+      "gesture": "disappointed",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Lowered eyes, a small frown, and a slow exhale."
+    },
+    {
+      "gesture": "frustrated",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Small pout, sideways gaze, and a brief turn away before relaxing."
+    },
+    {
+      "gesture": "sleepy",
+      "normalSpeed": true,
+      "halfSpeed": true,
+      "keyframes": 12,
+      "labelsAndAccentsHidden": true,
+      "visualReview": "passed",
+      "notes": "Slow eyelids, a small oval yawn, a head droop, and a gentle return."
+    }
+  ],
+  "sourceSha256": {
+    "src/controller.js": "ac4bf0cbe195d84cf290ee8567ba8fee7a84e049b2b05b0ac8c443ec3c214e6e",
+    "src/face.js": "4d553614481c3c32294f06b7c5cd9e3140c3d9545c063d462c0cabe8e23926a7",
+    "src/index.d.ts": "1a3f50ab552fb404184609b46227492b9a2c32b25db376af6725eb93c4ed5637",
+    "src/index.js": "c5bac15e7deaaf01e97c569e717c5a7556f94a60ebd1abbfced91b3578c7084f",
+    "src/motion.js": "00676c645d54be677084b238e307971df7ac9896b9a37e348404c9135c43fd66",
+    "src/preview.js": "2d1a7ef2a3ebab5ea1559fd951d16b7d7a7070f22810401839200124d08754ca",
+    "src/preview.template.html": "56648254e280cea95d4362af39a73ae15c806e948644a3173bb921c19ce185bf",
+    "src/renderer.js": "2e17aa5ed076974ad0be1cd21cd2d3b296738f93fc1e42aac069d2ead2070e2a"
+  },
+  "sizes": [
+    96,
+    160
+  ],
+  "phoneWidths": [
+    320,
+    390,
+    430
+  ],
+  "engines": [
+    "Chrome",
+    "WebKit"
+  ],
+  "visualReviewBasis": "Normal and half-speed browser playback, sampled frames, unlabeled poses, and continuous activity recordings."
+}

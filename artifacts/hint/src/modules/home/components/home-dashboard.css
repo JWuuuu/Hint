@@ -1,43 +1,51 @@
 .hint-home-page {
   --hint-home-section-gap: 12px;
   color: #35303a;
-  background: transparent;
   padding-bottom: calc(6.5rem + var(--hint-safe-bottom) + var(--hint-nav-extra-height, 0px));
+  /* Home scrolls itself; like every app page it shows no permanent track. */
+  scrollbar-width: none;
 }
+.hint-home-page::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
 .hint-home-content {
   max-width: 430px;
-  padding: calc(8px + var(--hint-safe-top)) 23px 0;
+  padding: calc(1.7rem + var(--hint-safe-top)) 23px 0;
 }
 
 .hint-home-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 16px;
-  min-height: 44px;
-  margin-bottom: 12px;
+  min-height: 54px;
+  margin-bottom: 3px;
 }
 
-.hint-home-header .receipt-share-trigger--compact {
+.hint-home-header > a { width: 52px; height: 52px; flex-shrink: 0; }
+.hint-home-share-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-right: auto;
+}
+/* The share action sits beside the revealed reading's own action. */
+.hint-home-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; max-width: 100%; }
+.hint-home-hero-actions .hint-home-reveal { margin-top: 0; }
+.hint-home-hero-copy .hint-home-sync-status { margin-top: 8px; max-width: 220px; }
+.hint-home-hero-actions .receipt-share-trigger--compact {
   flex: 0 0 44px;
   width: 44px;
   height: 44px;
   padding: 0;
 }
-.hint-home-header-space { flex: 1; }
-.hint-home-profile-circle {
-  display: grid;
-  place-items: center;
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--hint-border);
-  border-radius: 50%;
-  color: var(--hint-text);
-  background: var(--hint-surface-soft);
-  font-size: 16px;
-  line-height: 1;
+.hint-home-sync-status {
+  min-width: 0;
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--hint-muted);
+  overflow-wrap: anywhere;
 }
 .hint-home-eyebrow {
   font-family: var(--app-font-sans);
@@ -48,16 +56,15 @@
   text-transform: uppercase;
   color: #68616e;
 }
-.hint-home-sections { display: grid; gap: 4px; }
+.hint-home-sections { display: grid; gap: var(--hint-home-section-gap); }
 /* Let the parent own section spacing so individual panels cannot double it. */
 .hint-home-sections > section { margin-block: 0; padding-block: 0; }
-/* Retain the Tarot-to-energy gap; keep the explanation close to its neighbors. */
-.hint-home-sections > .hint-home-energy { margin-block-start: 24px; }
-/* Balance the visible glyph spacing around the larger serif explanation title. */
-.hint-home-sections > .hint-home-spaces { margin-block-start: 6px; }
 
 .hint-home-hero {
   --hint-home-card-inset: 22px;
+  --hint-home-revealed-card-width: 106px;
+  --hint-home-revealed-card-right: calc(16px + var(--hint-home-card-inset));
+  --hint-home-revealed-card-gap: 12px;
   position: relative;
   isolation: isolate;
   min-width: 0;
@@ -71,7 +78,11 @@
   inset: -20px -18px -14px 36%;
   background: radial-gradient(ellipse, rgba(189, 160, 208, .2), transparent 70%);
 }
-.hint-home-hero-copy { position: relative; z-index: 20; width: 59%; padding-top: 0; }
+.hint-home-hero-copy { position: relative; z-index: 20; width: 59%; padding-top: 10px; }
+.hint-home-hero[data-revealed="true"] .hint-home-hero-copy {
+  max-width: calc(100% - var(--hint-home-revealed-card-width) - var(--hint-home-revealed-card-right) - var(--hint-home-revealed-card-gap));
+}
+.hint-home-hero[data-revealed="true"] .hint-home-card-title { overflow-wrap: anywhere; }
 .hint-home-tarot-label { color: #9173a5; margin-bottom: 9px; }
 .hint-home-card-title { font-size: 34px; font-weight: 500; line-height: 1.02; letter-spacing: -.025em; }
 .hint-home-card-title em { color: #9574a9; font-weight: 400; }
@@ -126,9 +137,9 @@
 }
 .hint-home-hero-art > svg { pointer-events: none; }
 .hint-home-revealed-card {
-  right: calc(16px + var(--hint-home-card-inset));
+  right: var(--hint-home-revealed-card-right);
   top: 13px;
-  width: 106px;
+  width: var(--hint-home-revealed-card-width);
   height: 183px;
   padding: 0;
   border: 0;
@@ -177,7 +188,6 @@
   width: 100%;
   min-height: 44px;
   margin-top: 3px;
-  padding-top: 20px;
   color: #6f6376;
   font-size: 14px;
   background: none;
@@ -195,12 +205,16 @@
 .hint-home-page .hint-home-details-link::before { margin-right: 5px; }
 .hint-home-page .hint-home-details-link::after { margin-left: 5px; }
 .hint-home-detail-content { padding: 0; margin-top: var(--hint-home-section-gap); color: #64596b; }
+.hint-home-energy-details > p { color: #46414b; font-size: 16px; line-height: 1.4; }
+.hint-home-energy-details dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; row-gap: 6px; margin-top: 8px; }
+.hint-home-energy-details dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.hint-home-energy-details dt { font-size: 12px; }
+.hint-home-energy-details dd { font-size: 18px; font-variant-numeric: lining-nums tabular-nums; }
 
 .hint-home-evidence-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .hint-home-evidence-header h3 { font-size: 24px; line-height: 1.1; font-weight: 500; }
 .hint-home-sky-toggle { display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px; min-height: 44px; font-size: 15px; color: #9574a9; background: none; white-space: nowrap; }
 .hint-home-evidence-signals { display: grid; gap: 1px; margin-top: 5px; }
-.hint-home-evidence-signals:empty { display: none; }
 .hint-home-evidence-signal { display: flex; align-items: center; gap: 10px; min-height: 44px; width: 100%; padding: 2px 0; color: #6f6475; font-family: var(--app-font-serif); font-size: 14px; line-height: 1.25; text-align: left; background: none; }
 .hint-home-evidence-signal[data-selected="true"] { color: #806190; }
 .hint-home-signal-symbol { flex: 0 0 20px; text-align: center; font-size: 21px; line-height: 1; color: #987cac; }
@@ -208,39 +222,38 @@
 .hint-home-spaces-header { display: flex; align-items: center; gap: var(--hint-home-section-gap); margin-bottom: var(--hint-home-section-gap); }
 .hint-home-rule { height: 1px; flex: 1; background: rgba(178,154,142,.2); }
 .hint-home-space-star { color: #cbb087; font-size: 17px; line-height: 1; }
-.hint-home-spaces-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.hint-home-spaces-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hint-home-section-gap); }
 .hint-home-space {
   display: flex;
   align-items: center;
   gap: 9px;
   height: 100%;
-  min-height: 80px;
-  padding: 14px 9px;
+  min-height: 60px;
+  padding: 10px 9px;
   border-radius: 17px;
   background: rgba(255,253,250,.8);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 24px rgba(94,66,103,.025);
 }
-.hint-home-space-icon { display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 50%; box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
-.hint-home-space-icon svg { width: 23px; height: 23px; }
+.hint-home-space-icon { display: grid; place-items: center; flex: 0 0 35px; width: 35px; height: 35px; border-radius: 50%; box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
 .hint-home-space-copy { min-width: 0; }
-.hint-home-space-title { display: block; font-size: 17px; line-height: 1.1; font-weight: 500; }
-.hint-home-space-description { display: block; margin-top: 4px; color: #79717c; font-size: 11px; line-height: 1.25; }
+.hint-home-space-title { display: block; font-size: 16px; line-height: 1.1; font-weight: 500; }
+.hint-home-space-description { display: block; margin-top: 4px; color: #79717c; font-size: 10px; line-height: 1.25; }
 .hint-home-space-chevron { flex-shrink: 0; margin-left: auto; transform: rotate(-90deg); color: #8b7e94; }
 
 .hint-home-page button:focus-visible,
 .hint-home-page a:focus-visible { outline: 2px solid #a78bbb; outline-offset: 4px; }
 
-@media (max-width: 430px) {
-  .hint-home-space-chevron { display: none; }
-}
-
 @media (max-width: 374px) {
-  .hint-home-hero { --hint-home-card-inset: 14px; }
+  .hint-home-hero {
+    --hint-home-card-inset: 14px;
+    --hint-home-revealed-card-width: 88px;
+    --hint-home-revealed-card-right: calc(6px + var(--hint-home-card-inset));
+  }
   .hint-home-content { padding-left: 18px; padding-right: 18px; }
   .hint-home-card-title { font-size: 30px; }
   .hint-home-hero-copy { width: 57%; }
   .hint-home-hero-art > button { right: 6px !important; width: 88px !important; height: 168px !important; }
-  .hint-home-revealed-card { right: calc(6px + var(--hint-home-card-inset)); width: 88px; height: 158px; }
+  .hint-home-revealed-card { height: 158px; }
   .hint-home-card-copy { font-size: 14px; }
   .hint-home-reveal { padding: 8px 10px; font-size: 11px; gap: 5px; }
   .hint-home-eyebrow { font-size: 9px; letter-spacing: .13em; }
@@ -249,19 +262,27 @@
   .hint-home-score-label svg { width: 13px; }
   .hint-home-evidence-header h3 { font-size: 22px; }
   .hint-home-sky-toggle { font-size: 13px; }
-  .hint-home-space { padding: 14px 8px; gap: 7px; }
-  .hint-home-space-icon { flex-basis: 35px; width: 35px; height: 35px; }
-  .hint-home-space-title { font-size: 15px; }
+  .hint-home-space { padding: 10px 8px; gap: 7px; }
+  .hint-home-space-icon { flex-basis: 29px; width: 29px; height: 29px; }
+  .hint-home-space-title { font-size: 14px; }
   .hint-home-space-chevron { display: none; }
 }
 
 .hint-home-page button:focus-visible, .hint-home-page a:focus-visible { outline: 2px solid #825770; outline-offset: 3px; }
 .hint-home-page .receipt-share-trigger { justify-self: start; }
+.hint-daily-reveal-scroll { scrollbar-width: none; }
+.hint-daily-reveal-scroll::-webkit-scrollbar { display: none; width: 0; height: 0; }
+/* The fixed review toolbar remains reachable without covering the last reading
+   action at the end of the small-phone scroll range. Production has no toolbar. */
+.hint-daily-reveal-scroll[data-review-controls="true"] {
+  padding-bottom: calc(100px + var(--hint-safe-bottom));
+  scroll-padding-bottom: calc(100px + var(--hint-safe-bottom));
+}
 .hint-home-score-label { flex-wrap: wrap; overflow-wrap: anywhere; }
 .hint-home-details-link { min-height: 44px; }
 .hint-home-space-copy { overflow-wrap: anywhere; }
 
-/* Both themes share the same constellation artwork and animation. */
+/* The donor paper composition also uses the app's existing night palette. */
 [data-hint-theme="dark"] .hint-home-page {
   color: var(--hint-text);
   background: transparent;
@@ -277,11 +298,46 @@
   .hint-home-card-title em, .hint-home-signal-symbol,
   .hint-home-evidence-signal[data-selected="true"]
 ) { color: var(--hint-lavender); }
+[data-hint-theme="dark"] .hint-home-energy-details > p { color: var(--hint-text); }
+/* Night counterparts of the paper composition: same layout and roles, with
+   smoked surfaces, hairlines and one lavender accent instead of cream. */
+[data-hint-theme="dark"] .hint-home-page :is(.hint-home-tarot-label, .hint-home-card-title em, .hint-home-sky-toggle) { color: var(--hint-night-lavender); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-card-copy { color: var(--hint-night-body); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-eyebrow { color: var(--hint-night-faint); }
+[data-hint-theme="dark"] .hint-home-hero::before {
+  background: radial-gradient(ellipse, rgba(134, 122, 190, .16), transparent 70%);
+}
+[data-hint-theme="dark"] .hint-home-card-face {
+  border-color: rgba(232, 208, 160, .72);
+  box-shadow: 0 18px 34px rgba(2, 2, 10, .46), 0 0 20px rgba(232, 200, 140, .16);
+}
+/* Mirrors the paper theme's soft lilac pill rather than the global prism action. */
 [data-hint-theme="dark"] .hint-home-reveal {
-  color: var(--hint-special-action-text);
-  background: var(--hint-special-action-bg);
+  color: #ebe4f6;
+  background: linear-gradient(135deg, rgba(188, 178, 226, .22), rgba(134, 122, 190, .14));
+  box-shadow: inset 0 0 0 1px rgba(205, 196, 236, .2), inset 0 1px 0 rgba(255, 255, 255, .1);
 }
+[data-hint-theme="dark"] .hint-home-page :is(.hint-home-score-label, .hint-home-energy-total) { color: var(--hint-night-faint); }
+[data-hint-theme="dark"] .hint-home-page :is(.hint-home-theme-copy, .hint-home-details-link) { color: var(--hint-night-body); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-details-link::before,
+[data-hint-theme="dark"] .hint-home-page .hint-home-details-link::after,
+[data-hint-theme="dark"] .hint-home-rule { background: var(--hint-night-line); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-evidence-card {
+  padding: 12px 14px;
+  border: 1px solid var(--hint-night-line);
+  border-radius: 14px;
+}
+[data-hint-theme="dark"] .hint-home-page .hint-home-evidence-signal { color: var(--hint-night-body); }
+[data-hint-theme="dark"] .hint-home-space-star { color: var(--hint-night-candle); }
 [data-hint-theme="dark"] .hint-home-space {
-  background: var(--hint-card-inner);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+  background: var(--hint-night-surface);
+  box-shadow: inset 0 0 0 1px var(--hint-night-line), inset 0 1px 0 rgba(255,255,255,.05);
 }
+/* Each room keeps its paper hue; a night wash sinks the pastel disc into the surface. */
+[data-hint-theme="dark"] .hint-home-space-icon {
+  box-shadow: inset 0 0 0 40px rgba(46, 37, 60, .5), inset 0 0 0 1px rgba(232, 222, 238, .12);
+}
+[data-hint-theme="dark"] .hint-home-space-icon svg { filter: brightness(1.28) saturate(.9); }
+[data-hint-theme="dark"] .hint-home-page .hint-home-space-description { color: var(--hint-night-faint); }
+[data-hint-theme="dark"] .hint-home-page button:focus-visible,
+[data-hint-theme="dark"] .hint-home-page a:focus-visible { outline-color: var(--hint-night-lavender); }

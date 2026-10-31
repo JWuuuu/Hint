@@ -1,0 +1,211 @@
+{
+  "frames": [
+    {
+      "name": "frame-0.00",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "0.000",
+        "introduction": "flight",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-2.95",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "2.950",
+        "introduction": "peek",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-3.27",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "3.270",
+        "introduction": "peek",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-3.60",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "3.600",
+        "introduction": "jump",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-4.04",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "4.040",
+        "introduction": "jump",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-4.60",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "4.600",
+        "introduction": "welcome",
+        "reaction": "none",
+        "gesture": "welcome",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-5.10",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "5.100",
+        "introduction": "welcome",
+        "reaction": "none",
+        "gesture": "welcome",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-wave-wink",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "5.700",
+        "introduction": "welcome",
+        "reaction": "wink-left",
+        "gesture": "welcome",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "frame-rest",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "9.050",
+        "introduction": "none",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "form-0.10",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "9.133",
+        "introduction": "none",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "form-0.30",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "9.333",
+        "introduction": "none",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "form-0.50",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "9.533",
+        "introduction": "none",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "form-0.70",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "9.733",
+        "introduction": "none",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    },
+    {
+      "name": "form-0.95",
+      "state": {
+        "testid": "hint-guide-layer",
+        "phase": "idle",
+        "activity": "idle",
+        "paused": "false",
+        "clock": "9.983",
+        "introduction": "none",
+        "reaction": "none",
+        "gesture": "idle",
+        "letter": "held"
+      }
+    }
+  ],
+  "shortViewport": {
+    "width": 320,
+    "height": 568,
+    "begin": {
+      "x": 24,
+      "y": 418,
+      "width": 272,
+      "height": 54
+    }
+  },
+  "deviceFrame": true
+}

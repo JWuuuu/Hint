@@ -1,0 +1,89 @@
+{
+  "gesture": "frustrated",
+  "seconds": 4.274900000035763,
+  "sampleTimes": [
+    0,
+    0.6031000000357599,
+    1.20310000003576,
+    1.80310000003576,
+    2.4030000000357687,
+    3.002900000035763,
+    3.602900000035763,
+    4.203000000035769
+  ],
+  "sampleStates": [
+    {
+      "gesture": "idle",
+      "time": 0,
+      "letter": "held",
+      "phase": "holding"
+    },
+    {
+      "gesture": "frustrated",
+      "time": 0.3834000000000088,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "frustrated",
+      "time": 0.9833000000000024,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "frustrated",
+      "time": 1.5831999999999946,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "frustrated",
+      "time": 2.183299999999999,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "frustrated",
+      "time": 2.7832999999999974,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "frustrated",
+      "time": 3.38319999999999,
+      "letter": "held",
+      "phase": "gesture"
+    },
+    {
+      "gesture": "frustrated",
+      "time": 3.5,
+      "letter": "held",
+      "phase": "settled"
+    }
+  ],
+  "medianFrameMs": 16.69999999999709,
+  "p95FrameMs": 16.70000000001164,
+  "decorativeAccents": false,
+  "errors": [],
+  "video": {
+    "duration": 4.270933,
+    "codec": "h264",
+    "width": 640,
+    "height": 640
+  },
+  "keyframeTimes": [
+    0,
+    0.3559110833333333,
+    0.7118221666666666,
+    1.06773325,
+    1.4236443333333333,
+    1.7795554166666667,
+    2.1354665,
+    2.491377583333333,
+    2.8472886666666666,
+    3.20319975,
+    3.5591108333333334,
+    3.915021916666667
+  ],
+  "keyframesFromVideo": true
+}

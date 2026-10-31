@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hint · Motion review</title>
+  <style id="review-styles">
+    *{box-sizing:border-box}html,body{height:100%;overflow:hidden}body{margin:0;background:#efe9e6;color:#51434e;font:14px/1.5 system-ui,sans-serif}
+    main{--review-stage-height:clamp(220px,34dvh,340px);height:100dvh;min-height:0;margin:auto;padding:calc(var(--hint-safe-top,20px) + 12px) 20px calc(var(--hint-safe-bottom,0px) + 12px);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--review-stage-height) minmax(0,1fr);gap:14px;overflow:hidden}
+    .stage{position:relative;height:var(--review-stage-height);min-height:0;border-radius:36px;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#fffbf5,#f4ece7 65%,#e8dce5);box-shadow:0 18px 60px #6143531a}
+    canvas{width:min(100%,calc(var(--review-stage-height) - 100px));height:calc(100% - 100px);display:block;margin:70px auto 30px}.caption{position:absolute;inset:12px 20px auto;text-align:center;pointer-events:none}
+    .caption span{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:#927c8e}.caption h1{font:20px Georgia,serif;font-weight:400;margin:6px 0}
+    .state{position:absolute;bottom:12px;left:16px;right:16px;text-align:center;font-size:12px;color:#8a7587}
+    aside{min-height:0;min-width:0;align-self:stretch;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;padding:0 2px 12px}h2{font:32px Georgia,serif;margin:0 0 12px}p{color:#897682}fieldset{border:0;padding:0;margin:18px 0}legend{margin-bottom:8px;font-size:11px;letter-spacing:.13em;text-transform:uppercase}
+    select,button{font:inherit;color:inherit;background:#faf5f1;border:1px solid #cbbac8;border-radius:12px;padding:11px 14px;min-height:44px}select{width:100%}button{cursor:pointer}button:hover{background:#e3d6e1}button:focus-visible,select:focus-visible{outline:2px solid #916e91;outline-offset:3px}
+    .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}output{font-variant-numeric:tabular-nums}input[type=range]{width:100%;accent-color:#9e7d99}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+  </style>
+</head>
+<body data-review="inspector"><main>
+  <section class="stage" aria-label="Mascot motion preview">
+    <canvas aria-label="Animated Hint mascot"></canvas>
+    <div class="caption"><span>HINT / MOTION STUDY</span><h1 id="caption">Here with you.</h1></div>
+    <div class="state" id="status" aria-live="off">Loading Hint…</div>
+  </section>
+  <aside><h2>Motion studio</h2><p>Try Hint’s movements and app moments.</p>
+    <fieldset><legend>App state · continuous</legend><select aria-label="App moment" id="scene">
+      <option value="home:idle">Home · ready</option><option value="home:waiting">Home · preparing card</option><option value="home:reading">Home · card revealed</option>
+      <option value="ask:idle">Ask Hint · greeting</option><option value="ask:thinking">Ask Hint · thinking</option><option value="ask:reading">Ask Hint · response received</option><option value="ask:error">Ask Hint · request failed</option>
+      <option value="voice:listening">Voice · listening</option><option value="voice:speaking">Voice · playing speech</option><option value="voice:paused">Voice · paused</option>
+    </select><div class="row"><button id="watch">Watch app state</button></div></fieldset>
+    <fieldset><legend>Gesture · one shot</legend><select aria-label="Gesture" id="gesture"></select><div class="row"><button id="play">Play gesture</button><button id="react">Tap to wink</button><button id="inspect">Inspect key pose</button></div></fieldset>
+    <fieldset><legend>Playback</legend><select aria-label="Playback speed" id="speed"><option value="1">Normal speed</option><option value=".5">Half speed</option></select><div class="row"><button id="pause">Pause</button><button id="settle">Idle context</button></div></fieldset>
+    <label><input type="checkbox" id="reduced"> Reduced motion</label>
+    <p id="result" role="status"></p><p><a href="./daily-motion-review.html">Review letter delivery</a> · <a href="./motion-catalogue.html">See the gesture catalogue</a></p><p>This view uses empty paws for app reactions.</p>
+  </aside>
+</main>
+<script type="module" src="./src/components/dev/MotionReviewFrame.tsx"></script>
+</body></html>
+

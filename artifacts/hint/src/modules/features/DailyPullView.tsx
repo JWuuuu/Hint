@@ -12,6 +12,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { AppScreen, SectionLabel } from "../../components/app/AppChrome";
+import { RoomCompanion } from "../../components/mascot/RoomCompanion";
 import { DailyReportCard } from "../home/components/DailyReportCard";
 import { getSyncedDailyCard } from "../home/data/dailyCardSync";
 import { getDailyReport } from "../home/data/dailyReport";
@@ -931,7 +932,10 @@ export function DailyPullView() {
       contentStyle={{ paddingTop: "max(56px, calc(var(--hint-safe-top) + 16px))" }}
     >
       <div className="hint-daily-page grid min-w-0 grid-cols-1 gap-6">
-        <h1 className="sr-only">{t("dailyPull.title")}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="font-serif text-[26px]" style={{ color: GLASS.text }}>{t("dailyPull.title")}</h1>
+          <RoomCompanion />
+        </div>
 
         <section className="relative min-w-0">
           <div className="grid min-w-0 grid-cols-1 gap-3">

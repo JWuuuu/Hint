@@ -1,0 +1,58 @@
+{
+  "version": "3.0.0",
+  "archive": "hint-gestures-v3.0.0.zip",
+  "archiveSha256": "3a9df2fdcce8ac929ee8199f935a1b49012e5e56e994ac2be6da87fbaf63a2ee",
+  "verifiedFiles": 692,
+  "gesturesReviewed": 20,
+  "clips": 20,
+  "videoKeyframes": 240,
+  "independentExtraction": {
+    "version": "3.0.0",
+    "verifiedFiles": 692,
+    "readOnlyApprovedFiles": 35,
+    "independentBuild": true,
+    "builtInTestsPassed": 12,
+    "browsers": [
+      {
+        "browser": "Chrome",
+        "offline": true,
+        "widths": [
+          320,
+          390,
+          430
+        ],
+        "gestures": 20,
+        "clips": 20,
+        "delivery": true,
+        "comparisons": true,
+        "errors": []
+      },
+      {
+        "browser": "WebKit",
+        "offline": true,
+        "widths": [
+          320,
+          390,
+          430
+        ],
+        "gestures": 20,
+        "clips": 20,
+        "delivery": true,
+        "comparisons": true,
+        "errors": []
+      }
+    ],
+    "build": {
+      "output": "preview/hint-gestures.html",
+      "bytes": 1914439
+    }
+  },
+  "protectedOriginals": {
+    "files": 35,
+    "protectedV1Files": 99,
+    "protectedV2Files": 641,
+    "greetingSha256": "fbda0c5e0722a0a9f706b1323336f3d4a704d2cb91252e28e5eca42725200191",
+    "collectionV1Sha256": "087ae13cd100d7b9e2f001a07674a547ee50adf7c656292a23445e72f421d82d",
+    "collectionV2Sha256": "bd0063fc1a722fedfb8a0569c8471001b7f9ba547256da0551d82f1331ae62f6"
+  }
+}

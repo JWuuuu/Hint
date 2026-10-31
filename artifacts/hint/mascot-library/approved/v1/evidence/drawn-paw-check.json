@@ -1,0 +1,38 @@
+[
+  {
+    "browser": "chromium",
+    "autoplay": true,
+    "pause": true,
+    "noRestartOnTap": true,
+    "resume": true,
+    "scrub": true,
+    "seamlessRest": true,
+    "oneShot": true,
+    "runMilliseconds": 4894,
+    "widths": [
+      320,
+      390,
+      736
+    ],
+    "reducedMotion": true,
+    "errors": []
+  },
+  {
+    "browser": "webkit",
+    "autoplay": true,
+    "pause": true,
+    "noRestartOnTap": true,
+    "resume": true,
+    "scrub": true,
+    "seamlessRest": true,
+    "oneShot": true,
+    "runMilliseconds": 4817,
+    "widths": [
+      320,
+      390,
+      736
+    ],
+    "reducedMotion": true,
+    "errors": []
+  }
+]

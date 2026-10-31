@@ -1,0 +1,115 @@
+<div id="hint-gestures-v3" class="viz-dotted-background" aria-label="Hint gesture collection">
+  <section class="hint-studio">
+    <div class="hint-wordmark">HINT</div>
+    <p class="hint-version">Gesture collection · v3.1</p>
+    <label class="hint-label" for="hint-scene-choice">Preview</label>
+    <select id="hint-scene-choice" data-scene><option value="library">20 gestures</option><option value="letter">A letter for you</option><option value="voice">A conversation</option></select>
+    <h2 data-title>This is for you.</h2>
+    <div class="hint-stage">
+      <div class="hint-receiver" data-receiver><span>Your letter</span></div>
+      <span class="hint-shadow" aria-hidden="true"></span>
+      <button class="hint-character cursor-interaction" type="button" aria-label="Play Hint’s gesture">
+        <canvas width="768" height="768" role="img" aria-label="Hint, a cream star with rounded paws, a lilac scarf, and a sealed letter"></canvas>
+      </button>
+    </div>
+    <div class="hint-scene-panel" data-scene-panel hidden>
+      <p class="hint-scene-copy" data-scene-copy></p>
+      <div class="hint-scene-actions"><button type="button" class="hint-secondary" data-scene-next hidden>Continue</button><button type="button" class="hint-secondary" data-interrupt hidden>Interrupt</button></div>
+      <p class="hint-prototype" data-simulation hidden>Conversation preview · no microphone or audio</p>
+    </div>
+    <article class="hint-reading-card" data-reading-card hidden aria-label="A letter from the universe"><p class="hint-letter-caption">A letter from the universe</p><p>You don’t need to have everything figured out today. Let one small thing be enough.</p></article>
+    <div data-library-controls>
+    <label class="hint-label" for="hint-gesture-choice">Gesture</label>
+    <select id="hint-gesture-choice" class="cursor-interaction" data-gesture>
+      <option value="wink-left">Left wink</option>
+      <option value="wink-right">Right wink</option>
+      <option value="nod">Nod</option>
+      <option value="listening">Listening</option>
+      <option value="thinking">Thinking</option>
+      <option value="celebration">Celebration</option>
+      <option value="offer-letter">Offer a letter</option>
+    </select>
+    <label class="hint-check"><input type="checkbox" data-hold checked>Keep activities running</label>
+    </div>
+    <div class="hint-actions">
+      <button type="button" class="hint-primary cursor-interaction" data-play>Play gesture</button>
+      <button type="button" class="hint-secondary cursor-interaction" data-pause>Pause</button>
+    </div>
+    <p class="hint-status" role="status" aria-live="polite" data-status></p>
+    <button type="button" class="hint-reset" data-main-pose>Hold the expression</button>
+    <details class="hint-inspect">
+      <summary class="cursor-interaction">Inspect the movement</summary>
+      <div class="hint-inspect-row"><label for="hint-gesture-time">Timeline</label><output data-time>0.00 s</output></div>
+      <input id="hint-gesture-time" type="range" min="0" max="1900" step="1" value="0" data-timeline aria-label="Gesture timeline" class="cursor-interaction">
+      <div class="hint-inspect-row"><label for="hint-gesture-speed">Playback</label><select id="hint-gesture-speed" data-speed class="cursor-interaction"><option value="1">Normal</option><option value="0.5">Half speed</option><option value="0.25">Quarter speed</option></select></div>
+      <div class="hint-inspect-row"><label for="hint-v3-size">Character size</label><select id="hint-v3-size" data-size class="cursor-interaction"><option value="344">App preview</option><option value="160">Small · 160 px</option><option value="96">Avatar · 96 px</option></select></div>
+      <label class="hint-check cursor-interaction"><input type="checkbox" data-hide-labels>Hide gesture names</label>
+      <label class="hint-check cursor-interaction"><input type="checkbox" data-accents checked>Show question mark and sparkles</label>
+      <button type="button" class="hint-reset cursor-interaction" data-reset>Reset scene</button>
+    </details>
+  </section>
+  <p class="hint-samples-link"><a href="../samples/index.html">Compare all 20 movements</a></p>
+  <details class="hint-reference" data-v3-reference><summary class="cursor-interaction">Compare with v3</summary><iframe title="Hint gesture collection v3" data-v3></iframe></details>
+  <details class="hint-reference" data-v2-reference><summary class="cursor-interaction">Compare with v2</summary><iframe title="Hint gesture collection v2" data-v2></iframe></details>
+  <details class="hint-reference" data-v1-reference>
+    <summary class="cursor-interaction">Compare with the v1 collection</summary>
+    <iframe title="Hint gesture collection v1" data-v1></iframe>
+    <p role="status" data-comparison-status></p>
+  </details>
+  <details class="hint-reference" data-reference>
+    <summary class="cursor-interaction">Compare with the approved greeting</summary>
+    <iframe title="Approved Hint greeting" data-approved></iframe>
+  </details>
+</div>
+<style>
+#hint-gestures-v3 { padding:20px 0; color:#51384a; font-family:'Hanken Grotesk',sans-serif; }
+#hint-gestures-v3 * { box-sizing:border-box; }
+#hint-gestures-v3 [hidden] { display:none!important; }
+#hint-gestures-v3 [data-scene] { width:100%; margin-bottom:20px; }
+#hint-gestures-v3 .hint-scene-copy { font-size:14px; line-height:1.5; margin:0 0 10px; }
+#hint-gestures-v3 .hint-scene-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; }
+#hint-gestures-v3 .hint-prototype { color:#86717f; font-size:11px; line-height:1.5; margin:12px 0 0; }
+#hint-gestures-v3 .hint-reading-card { text-align:left; border:1px solid #e5d9df; border-radius:18px; background:#fffaf6; padding:18px 20px; margin:6px 0 16px; font:400 20px/1.45 Georgia,serif; }
+#hint-gestures-v3 .hint-reading-card p { margin:0; }
+#hint-gestures-v3 .hint-letter-caption { color:#86717f; font:400 11px/1.4 sans-serif; letter-spacing:.07em; margin-bottom:10px!important; }
+#hint-gestures-v3 .hint-studio { max-width:430px; margin:0 auto; padding:28px 24px 12px; border:1px solid #e7dbe3; border-radius:30px; background:#faf7f2; text-align:center; }
+#hint-gestures-v3 .hint-wordmark { font-size:12px; letter-spacing:.29em; color:#86717f; font-weight:500; margin-bottom:14px; }
+#hint-gestures-v3 .hint-version { font-size:12px; color:#86717f; margin:-7px 0 14px; }
+#hint-gestures-v3 h2 { font:400 28px/1.2 Georgia,serif; margin:0; min-height:36px; }
+#hint-gestures-v3 .hint-stage { position:relative; width:100%; max-width:344px; aspect-ratio:1; display:grid; place-items:center; margin:6px auto 6px; }
+#hint-gestures-v3 .hint-character { position:relative; z-index:1; border:0; background:transparent; border-radius:35%; width:min(100%,var(--hint-character-size,344px)); aspect-ratio:1; padding:0; }
+#hint-gestures-v3 canvas { display:block; width:100%; height:auto; }
+#hint-gestures-v3 .hint-receiver {position:absolute;bottom:calc((100% - min(100%,var(--hint-character-size,344px))) / 2);width:min(66%,calc(var(--hint-character-size,344px) * .66));height:min(23%,calc(var(--hint-character-size,344px) * .23));border:1px solid #deccd5;border-radius:18px;background:#f0e5e9;opacity:0;transform:translateY(8px);pointer-events:none;}
+#hint-gestures-v3 .hint-receiver span {position:absolute;top:-20px;left:0;right:0;font-size:12px;color:#806777;}
+#hint-gestures-v3 .hint-shadow { position:absolute; width:min(92px,calc(var(--hint-character-size,344px) * .3)); height:12px; bottom:calc((100% - min(100%,var(--hint-character-size,344px))) / 2 + 12px); border-radius:50%; background:radial-gradient(ellipse,#927b8d22,transparent 72%); }
+#hint-gestures-v3 .hint-label { display:block; text-align:left; font-size:12px; color:#796574; margin:4px 0 5px; }
+#hint-gestures-v3 select { height:44px; min-height:44px; border:1px solid #e3d7df; background:#fffaf7; border-radius:12px; padding:10px 12px; color:#51384a; font:400 16px 'Hanken Grotesk',sans-serif; }
+#hint-gestures-v3 [data-gesture] { width:100%; }
+#hint-gestures-v3 .hint-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:13px; }
+#hint-gestures-v3 button { font:500 14px 'Hanken Grotesk',sans-serif; min-height:44px; }
+#hint-gestures-v3 .hint-primary,#hint-gestures-v3 .hint-secondary { border:0; padding:11px 20px; border-radius:999px; }
+#hint-gestures-v3 .hint-primary { background:#6c445f; color:#fff9f4; min-width:142px; }
+#hint-gestures-v3 .hint-secondary { background:#eee7e9; color:#604b5a; }
+#hint-gestures-v3 button:disabled { opacity:.6; }
+#hint-gestures-v3 select:disabled { opacity:.8; }
+#hint-gestures-v3 .hint-status { min-height:18px; font-size:12px; color:#796574; margin:10px 0 0; }
+#hint-gestures-v3 .hint-inspect { text-align:left; color:#796574; font-size:12px; }
+#hint-gestures-v3 summary { text-align:center; padding:12px 4px; min-height:44px; font-size:12px; }
+#hint-gestures-v3 .hint-inspect-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+#hint-gestures-v3 .hint-inspect-row { margin:6px 0; }
+#hint-gestures-v3 .hint-check { display:flex; align-items:center; gap:10px; min-height:44px; }
+#hint-gestures-v3 .hint-check input { width:18px; height:18px; min-height:18px; flex:none; }
+#hint-gestures-v3[data-labels-hidden="true"] [data-title] { visibility:hidden; }
+#hint-gestures-v3[data-labels-hidden="true"] .hint-scene-copy { visibility:hidden; }
+#hint-gestures-v3 output { font-variant-numeric:tabular-nums; }
+#hint-gestures-v3 input { display:block; width:100%; min-height:44px; accent-color:#6c445f; margin:0; }
+#hint-gestures-v3 .hint-reset { display:block; margin:8px auto 0; border:0; background:transparent; color:#6c445f; padding:8px 14px; }
+#hint-gestures-v3 .hint-reference { max-width:430px; margin:6px auto 0; color:#796574; }
+#hint-gestures-v3 .hint-samples-link { text-align:center; margin:8px auto; font-size:12px; }
+#hint-gestures-v3 .hint-samples-link a { display:inline-block; padding:12px; min-height:44px; color:#6c445f; }
+#hint-gestures-v3 iframe { display:block; border:0; width:100%; height:750px; }
+@media(max-width:360px) { #hint-gestures-v3 .hint-studio { padding:24px 14px 10px; } #hint-gestures-v3 h2 { font-size:28px; } }
+</style>
+<script>
+__LIBRARY_SCRIPT__
+</script>
