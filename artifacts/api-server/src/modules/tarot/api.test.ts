@@ -8,7 +8,7 @@ import { structuredTarotReadingSchema } from "./ai/structuredTarotReader.js";
 const ai = vi.hoisted(() => ({ reading: vi.fn(), chat: vi.fn(), narrative: vi.fn() }));
 vi.mock("@workspace/db", () => ({ db: {}, readingsTable: {} }));
 vi.mock("../../lib/logger.js", () => ({ logger: { error: vi.fn() } }));
-vi.mock("../../lib/aiCostGuards.js", () => ({ consumeAiBudget: () => true }));
+vi.mock("../../lib/aiCostGuards.js", async (original) => ({ ...await original<object>(), consumeAiBudget: () => true }));
 vi.mock("./ai/structuredTarotReader.js", async (original) => ({ ...await original<object>(), generateStructuredTarotReading: ai.reading }));
 vi.mock("./chat/chatReader.js", () => ({ generateTarotChatReply: ai.chat }));
 vi.mock("./ai/tarotReader.js", () => ({ generateTarotReading: ai.narrative }));

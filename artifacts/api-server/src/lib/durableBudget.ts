@@ -34,7 +34,7 @@ export async function takeBudget(rules: BudgetRule[], leaseOwner?: string): Prom
       const active = Number((await client.query("SELECT count(*) AS count FROM provider_leases")).rows[0].count);
       if (active >= positiveLimit("HINT_PROVIDER_MAX_CONCURRENT", 8)) throw new BudgetExceeded(30);
       lease = crypto.randomUUID();
-      // All provider calls have bounded timeouts. Aborted requests retain this conservative lease until expiry.
+      // Crash/release-failure safety net. Request scopes normally release after provider work settles.
       await client.query("INSERT INTO provider_leases(id,owner_id,expires_at) VALUES ($1,$2,now()+interval '10 minutes')", [lease, leaseOwner]);
     }
     await client.query("COMMIT");

@@ -6,7 +6,7 @@
 import { Router } from "express";
 import * as z from "zod";
 import { generateAmbientChatReply } from "../modules/hint/chat/ambientReader.js";
-import { consumeAiBudget } from "../lib/aiCostGuards.js";
+import { aiRequestSignal, consumeAiBudget, withAiLease } from "../lib/aiCostGuards.js";
 import { logger } from "../lib/logger.js";
 
 const router = Router();
@@ -43,7 +43,7 @@ function buildLocalAmbientReply({
   ].join("\n\n");
 }
 
-router.post("/hint/chat", async (req, res) => {
+router.post("/hint/chat", withAiLease(async (req, res) => {
   const parsed = ambientChatInputSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid input" });
@@ -60,8 +60,10 @@ router.post("/hint/chat", async (req, res) => {
     message = await generateAmbientChatReply({
       messages: parsed.data.messages,
       followUp: parsed.data.followUp,
+      signal: aiRequestSignal(req),
     });
   } catch (err) {
+    if (aiRequestSignal(req).aborted) return;
     logger.error({ err }, "Failed to generate ambient chat reply");
     if (!isQuotaError(err)) {
       res.status(502).json({
@@ -77,6 +79,6 @@ router.post("/hint/chat", async (req, res) => {
     message,
     createdAt: new Date().toISOString(),
   });
-});
+}));
 
 export default router;

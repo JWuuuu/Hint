@@ -141,7 +141,7 @@ Rules:
 - Keep the reason grounded and app-friendly.`;
 }
 
-export async function generateSpreadRecommendation(question: string): Promise<SpreadRecommendation> {
+export async function generateSpreadRecommendation(question: string, signal?: AbortSignal): Promise<SpreadRecommendation> {
   const response = await getOpenAIClient().chat.completions.create({
     model: openaiModel,
     max_completion_tokens: 220,
@@ -150,7 +150,7 @@ export async function generateSpreadRecommendation(question: string): Promise<Sp
       { role: "system", content: HINT_SYSTEM_PROMPT },
       { role: "user", content: buildSpreadRecommendationPrompt(question) },
     ],
-  });
+  }, { signal });
 
   const content = response.choices[0]?.message?.content ?? "";
   return spreadRecommendationSchema.parse(parseJsonObject(content));

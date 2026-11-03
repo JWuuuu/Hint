@@ -8,7 +8,7 @@ import {
   openaiApiKey,
   openaiTranscriptionModel,
 } from "../lib/openaiConfig.js";
-import { consumeAiBudget } from "../lib/aiCostGuards.js";
+import { aiRequestSignal, consumeAiBudget, withAiLease } from "../lib/aiCostGuards.js";
 
 const router = Router();
 
@@ -22,7 +22,7 @@ const audioTypes: Record<string, string> = {
 };
 const audioType = (req: Request) => req.get("content-type")?.split(";")[0]?.trim().toLowerCase() ?? "";
 const supportedAudio = (mime: string) => Object.hasOwn(audioTypes, mime);
-const transcription: RequestHandler[] = [raw({ type: req => supportedAudio(audioType(req as Request)), limit: "4mb" }), async (req, res) => {
+const transcription: RequestHandler[] = [raw({ type: req => supportedAudio(audioType(req as Request)), limit: "4mb" }), withAiLease(async (req, res) => {
   const mime = audioType(req);
   if (!supportedAudio(mime)) { res.status(415).json({ error: "Unsupported audio format.", code: "UNSUPPORTED_AUDIO" }); return; }
   if (!Buffer.isBuffer(req.body) || !req.body.length) { res.status(400).json({ error: "The recording was empty.", code: "EMPTY_AUDIO" }); return; }
@@ -31,22 +31,20 @@ const transcription: RequestHandler[] = [raw({ type: req => supportedAudio(audio
   if (!["en", "zh", "es", "ja", "ko"].includes(language)) { res.status(400).json({ error: "Unsupported language.", code: "UNSUPPORTED_LANGUAGE" }); return; }
   if (!openaiApiKey) { res.status(503).json({ error: "Voice transcription is not configured.", code: "SPEECH_UNAVAILABLE" }); return; }
   if (!await consumeAiBudget(req, res, { feature: "transcription", dailyLimit: 30 })) return;
-  const abort = new AbortController();
-  const disconnect = () => { if (!res.writableEnded) abort.abort(); };
-  res.once("close", disconnect);
+  const signal = aiRequestSignal(req);
   try {
     const result = await getOpenAIClient().audio.transcriptions.create({
       model: openaiTranscriptionModel,
       file: await toFile(req.body, `voice.${audioTypes[mime]}`, { type: mime }),
       language, response_format: "json",
-    }, { signal: abort.signal });
-    if (!abort.signal.aborted && !res.destroyed) res.set("Cache-Control", "no-store").json({ text: result.text.trim() });
+    }, { signal: signal });
+    if (!signal.aborted && !res.destroyed) res.set("Cache-Control", "no-store").json({ text: result.text.trim() });
   } catch (error) {
     // A disconnected client needs no reply; provider failures go to the shared errorHandler (502/429).
-    if (abort.signal.aborted || res.destroyed) return;
+    if (signal.aborted || res.destroyed) return;
     throw error;
-  } finally { res.off("close", disconnect); }
-}];
+  }
+})];
 router.post("/speech/transcription", ...transcription);
 // Compatibility alias for builds from d1fbcf8, which upload to /api/transcribe; same handler and budget.
 router.post("/transcribe", ...transcription);
@@ -55,7 +53,7 @@ const speechInputSchema = z.object({
   text: z.string().trim().min(1).max(4096),
 });
 
-router.post("/speech", async (req, res) => {
+router.post("/speech", withAiLease(async (req, res) => {
   const parsed = speechInputSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid input" });
@@ -73,7 +71,7 @@ router.post("/speech", async (req, res) => {
     instructions:
       "Speak in a calm, intimate, grounded tone. Keep the delivery warm and unhurried.",
     response_format: "mp3",
-  });
+  }, { signal: aiRequestSignal(req) });
 
   const audio = Buffer.from(await speech.arrayBuffer());
 
@@ -85,6 +83,6 @@ router.post("/speech", async (req, res) => {
       "Cache-Control": "no-store",
     })
     .send(audio);
-});
+}));
 
 export default router;
