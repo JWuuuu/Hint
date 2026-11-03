@@ -20,6 +20,7 @@ export async function generateTarotReading(params: {
   drawnCards: DrawnCard[];
   spreadType: string;
   spreadHistory?: string;
+  signal?: AbortSignal;
 }): Promise<TarotInterpretation> {
   const userPrompt = buildReadingPrompt(params);
 
@@ -30,7 +31,7 @@ export async function generateTarotReading(params: {
       { role: "system", content: HINT_SYSTEM_PROMPT },
       { role: "user", content: userPrompt },
     ],
-  });
+  }, { signal: params.signal });
 
   const fullText = response.choices[0]?.message?.content ?? "";
 

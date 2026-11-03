@@ -21,7 +21,7 @@ import {
 import { generateTarotChatReply } from "../modules/tarot/chat/chatReader.js";
 import { deck as TAROT_DECK } from "../modules/tarot/data/deck.js";
 import { logger } from "../lib/logger.js";
-import { consumeAiBudget } from "../lib/aiCostGuards.js";
+import { aiRequestSignal, consumeAiBudget, withAiLease } from "../lib/aiCostGuards.js";
 import { db, readingsTable } from "@workspace/db";
 
 const router = Router();
@@ -92,7 +92,7 @@ const spreadRecommendationInputSchema = z.object({
   anonId: z.string().max(200).nullish(),
 });
 
-router.post("/tarot/spread-recommendation", async (req, res) => {
+router.post("/tarot/spread-recommendation", withAiLease(async (req, res) => {
   const parsed = spreadRecommendationInputSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid input" });
@@ -104,16 +104,17 @@ router.post("/tarot/spread-recommendation", async (req, res) => {
   }
 
   try {
-    const recommendation = await generateSpreadRecommendation(parsed.data.question);
+    const recommendation = await generateSpreadRecommendation(parsed.data.question, aiRequestSignal(req));
     res.json({ ...recommendation, source: "api" });
   } catch (err) {
+    if (aiRequestSignal(req).aborted) return;
     logger.error({ err }, "Failed to generate tarot spread recommendation");
     const recommendation = spreadRecommendationSchema.parse(buildLocalSpreadRecommendation(parsed.data.question));
     res.json({ ...recommendation, source: "local" });
   }
-});
+}));
 
-router.post("/tarot/reading", async (req, res) => {
+router.post("/tarot/reading", withAiLease(async (req, res) => {
   const parsed = readingInputSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid input" });
@@ -139,8 +140,10 @@ router.post("/tarot/reading", async (req, res) => {
       drawnCards,
       spreadType,
       spreadHistory,
+      signal: aiRequestSignal(req),
     }));
   } catch (err) {
+    if (aiRequestSignal(req).aborted) return;
     logger.error({ err }, "Failed to generate tarot reading");
     if (!isQuotaError(err)) {
       res.status(502).json({
@@ -195,7 +198,7 @@ router.post("/tarot/reading", async (req, res) => {
   };
 
   res.json(reading);
-});
+}));
 
 /* ─── POST /tarot/structured-reading ───────────────────────────── */
 
@@ -253,7 +256,7 @@ function rehydrateStructuredCards(cards: z.infer<typeof structuredReadingCardInp
   });
 }
 
-router.post("/tarot/structured-reading", async (req, res) => {
+router.post("/tarot/structured-reading", withAiLease(async (req, res) => {
   const parsed = structuredReadingInputSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid input" });
@@ -280,9 +283,7 @@ router.post("/tarot/structured-reading", async (req, res) => {
   }
 
   const drawnCards = rehydrateStructuredCards(data.cards);
-  const controller = new AbortController();
-  const cancel = () => { if (!res.writableEnded) controller.abort(); };
-  res.once("close", cancel);
+  const signal = aiRequestSignal(req);
 
   try {
     const reading = await generateStructuredTarotReading({
@@ -290,7 +291,7 @@ router.post("/tarot/structured-reading", async (req, res) => {
       emotionalContext: data.emotionalContext,
       drawnCards,
       spreadType: data.spreadType,
-      signal: controller.signal,
+      signal,
       depth: data.depth,
       originalReading: data.originalReading,
       additionalContext: data.additionalContext,
@@ -298,7 +299,7 @@ router.post("/tarot/structured-reading", async (req, res) => {
     });
     if (!res.destroyed) res.json({ ...reading, source: "api" });
   } catch (err) {
-    if (controller.signal.aborted || res.destroyed) return;
+    if (signal.aborted || res.destroyed) return;
     logger.error({ err }, "Failed to generate structured tarot reading");
     if (data.depth === "detailed") {
       res.status(503).json({ error: "Detailed reading is unavailable. Your original reading is unchanged." });
@@ -310,10 +311,8 @@ router.post("/tarot/structured-reading", async (req, res) => {
       drawnCards,
       spreadType: data.spreadType,
     }), source: "local" });
-  } finally {
-    res.off("close", cancel);
   }
-});
+}));
 
 /* ─── POST /tarot/chat ─────────────────────────────────────────── */
 
@@ -394,7 +393,7 @@ function buildLocalTarotChatReply(data: z.infer<typeof chatInputSchema>): string
   ].join("\n\n");
 }
 
-router.post("/tarot/chat", async (req, res) => {
+router.post("/tarot/chat", withAiLease(async (req, res) => {
   const parsed = chatInputSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid input" });
@@ -428,9 +427,7 @@ router.post("/tarot/chat", async (req, res) => {
 
   let message: string;
   let source: "api" | "local" = "api";
-  const controller = new AbortController();
-  const cancel = () => { if (!res.writableEnded) controller.abort(); };
-  res.once("close", cancel);
+  const signal = aiRequestSignal(req);
 
   try {
     message = await generateTarotChatReply({
@@ -443,10 +440,10 @@ router.post("/tarot/chat", async (req, res) => {
       messages: data.messages,
       followUp: data.followUp,
       spreadHistory: data.spreadHistory,
-      signal: controller.signal,
+      signal,
     });
   } catch (err) {
-    if (controller.signal.aborted || res.destroyed) return;
+    if (signal.aborted || res.destroyed) return;
     logger.error({ err }, "Failed to generate tarot chat reply");
     if (!isQuotaError(err)) {
       res.status(502).json({
@@ -457,8 +454,6 @@ router.post("/tarot/chat", async (req, res) => {
 
     message = buildLocalTarotChatReply(data);
     source = "local";
-  } finally {
-    res.off("close", cancel);
   }
 
   if (res.destroyed) return;
@@ -467,6 +462,6 @@ router.post("/tarot/chat", async (req, res) => {
     source,
     createdAt: new Date().toISOString(),
   });
-});
+}));
 
 export default router;

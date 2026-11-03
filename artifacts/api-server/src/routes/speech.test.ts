@@ -7,7 +7,7 @@ vi.mock("../lib/openaiConfig.js", () => ({
   get openaiApiKey() { return provider.key; }, openaiTtsModel: "test", openaiTtsVoice: "test", openaiTranscriptionModel: "test-transcribe",
   getOpenAIClient: () => ({ audio: { transcriptions: { create: provider.transcribe } } }),
 }));
-vi.mock("../lib/aiCostGuards.js", () => ({ consumeAiBudget: provider.budget }));
+vi.mock("../lib/aiCostGuards.js", async (original) => ({ ...await original<object>(), consumeAiBudget: provider.budget }));
 vi.mock("@workspace/db", () => ({ pool: {} }));
 vi.mock("../lib/logger", () => ({ logger: { error: provider.log } }));
 import { errorHandler } from "../lib/errorHandler";

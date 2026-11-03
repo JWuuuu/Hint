@@ -1,9 +1,9 @@
 import { InviteError, createCompatibilityInvite, findCompatibilityInvite, publicCompatibilityInvite, completeCompatibilityInvite, readCompatibilityResult } from "../modules/astrology/compatibilityStore.js";
 import { birthDetailsError } from "@workspace/api-zod";
 import { authenticatedOwner } from "../lib/deviceSession";
-import { consumeAiBudget } from "../lib/aiCostGuards";
+import { consumeAiBudget, withAiLease } from "../lib/aiCostGuards";
 import crypto from "node:crypto";
-import { Router } from "express";
+import { Router, type RequestHandler } from "express";
 import * as z from "zod";
 import {
   getAstroInterpretationProxy,
@@ -24,10 +24,11 @@ import {
 } from "../modules/astrology/astrologyApiClient.js";
 
 const router = Router();
-router.use(async (req, res, next) => {
-  const isProviderRoute = req.method === "POST" && ["/astro/geo-details", "/astro/timezone", "/astro/natal", "/astro/transits", "/astro/synastry", "/astrology/birth-chart", "/astrology/recalculate-chart", "/ai/astro-interpretation"].includes(req.path) || req.method === "GET" && req.path === "/visual/nasa/apod";
-  if (isProviderRoute && !await consumeAiBudget(req, res, { feature: "astrology", dailyLimit: 30, maxRequestsPerWindow: 15 })) return;
-  next();
+const withAstrologyBudget = (handler: RequestHandler) => withAiLease(async (req, res, next) => {
+  if (!await consumeAiBudget(req, res, { feature: "astrology", dailyLimit: 30, maxRequestsPerWindow: 15 })) return;
+  // Nested provider calls receive this request's cancellation signal. Await
+  // their settlement before releasing the slot after a disconnect.
+  await handler(req, res, next);
 });
 
 const birthProfileSchema = z.object({
@@ -106,7 +107,7 @@ router.get("/astro/status", (_req, res) => {
   res.json(getAstroProxyStatus());
 });
 
-router.post("/astro/geo-details", async (req, res) => {
+router.post("/astro/geo-details", withAstrologyBudget(async (req, res) => {
   const parsed = geoDetailsSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid location search." });
@@ -114,9 +115,9 @@ router.post("/astro/geo-details", async (req, res) => {
   }
 
   res.json(await getGeoDetailsProxy(parsed.data.place, parsed.data.maxRows));
-});
+}));
 
-router.post("/astro/timezone", async (req, res) => {
+router.post("/astro/timezone", withAstrologyBudget(async (req, res) => {
   const parsed = timezoneSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid timezone request." });
@@ -124,9 +125,9 @@ router.post("/astro/timezone", async (req, res) => {
   }
 
   res.json(await getTimezoneProxy(parsed.data.latitude, parsed.data.longitude, parsed.data.dateISO ?? parsed.data.date));
-});
+}));
 
-router.post("/astro/natal", async (req, res) => {
+router.post("/astro/natal", withAstrologyBudget(async (req, res) => {
   const parsed = natalProxySchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid birth profile." });
@@ -138,9 +139,9 @@ router.post("/astro/natal", async (req, res) => {
   } catch {
     res.status(503).json({ error: "Natal chart calculation is unavailable right now." });
   }
-});
+}));
 
-router.post("/astro/transits", async (req, res) => {
+router.post("/astro/transits", withAstrologyBudget(async (req, res) => {
   const parsed = transitsProxySchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid transit request." });
@@ -153,9 +154,9 @@ router.post("/astro/transits", async (req, res) => {
   } catch {
     res.status(503).json({ error: "Transit calculation is unavailable right now." });
   }
-});
+}));
 
-router.post("/astro/synastry", async (req, res) => {
+router.post("/astro/synastry", withAstrologyBudget(async (req, res) => {
   const parsed = synastryProxySchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid synastry request." });
@@ -167,14 +168,14 @@ router.post("/astro/synastry", async (req, res) => {
   } catch {
     res.status(503).json({ error: "Synastry calculation is unavailable right now." });
   }
-});
+}));
 
-router.get("/visual/nasa/apod", async (req, res) => {
+router.get("/visual/nasa/apod", withAstrologyBudget(async (req, res) => {
   const date = typeof req.query.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(req.query.date) ? req.query.date : undefined;
   res.json(await getNasaApodProxy(date));
-});
+}));
 
-router.post("/ai/astro-interpretation", async (req, res) => {
+router.post("/ai/astro-interpretation", withAstrologyBudget(async (req, res) => {
   const parsed = interpretationSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid interpretation request." });
@@ -182,9 +183,9 @@ router.post("/ai/astro-interpretation", async (req, res) => {
   }
 
   res.json(await getAstroInterpretationProxy(parsed.data));
-});
+}));
 
-router.post("/astrology/birth-chart", async (req, res) => {
+router.post("/astrology/birth-chart", withAstrologyBudget(async (req, res) => {
   const parsed = birthProfileSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid birth profile." });
@@ -197,9 +198,9 @@ router.post("/astrology/birth-chart", async (req, res) => {
   } catch {
     res.status(503).json({ error: "Chart calculation is unavailable right now." });
   }
-});
+}));
 
-router.post("/astrology/recalculate-chart", async (req, res) => {
+router.post("/astrology/recalculate-chart", withAstrologyBudget(async (req, res) => {
   const parsed = birthProfileSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid birth profile." });
@@ -212,7 +213,7 @@ router.post("/astrology/recalculate-chart", async (req, res) => {
   } catch {
     res.status(503).json({ error: "Chart calculation is unavailable right now." });
   }
-});
+}));
 
 router.post("/compatibility/invite", async (req, res) => {
   const parsed = inviteSchema.safeParse(req.body);
@@ -224,11 +225,11 @@ router.get("/compatibility/invite/:token", async (req, res) => {
   try { res.json(publicCompatibilityInvite(await findCompatibilityInvite(req.params.token), authenticatedOwner(req))); }
   catch (error) { res.status(error instanceof InviteError ? error.status : 503).json({ error: error instanceof InviteError ? error.message : "Invite service unavailable." }); }
 });
-router.post("/compatibility/invite/:token/complete", async (req, res) => {
+router.post("/compatibility/invite/:token/complete", withAiLease(async (req, res) => {
   const parsed = inviteCompletionSchema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: "Invalid compatibility response." }); return; }
   try {
-    const outcome = await completeCompatibilityInvite(req.params.token, { ...parsed.data.friendBirthProfile, name: parsed.data.friendName ?? parsed.data.friendBirthProfile.name }, parsed.data.consent,
+    const outcome = await completeCompatibilityInvite(String(req.params.token), { ...parsed.data.friendBirthProfile, name: parsed.data.friendName ?? parsed.data.friendBirthProfile.name }, parsed.data.consent,
       async (creator, friend) => {
         if (!await consumeAiBudget(req, res, { feature: "compatibility", dailyLimit: 5 })) throw new InviteError(429, "Calculation limit reached. Please retry later.");
         const userChart = await calculateBirthChart(creator);
@@ -243,7 +244,7 @@ router.post("/compatibility/invite/:token/complete", async (req, res) => {
       }, authenticatedOwner(req));
     if (!res.headersSent) res.status(outcome.status).json(outcome);
   } catch (error) { if (!res.headersSent) res.status(error instanceof InviteError ? error.status : 503).json({ error: error instanceof InviteError ? error.message : "Compatibility unavailable." }); }
-});
+}));
 router.get("/compatibility/:id", async (req, res) => {
   if (!z.string().uuid().safeParse(req.params.id).success) { res.status(404).json({ error: "Compatibility result not found." }); return; }
   try { res.json(await readCompatibilityResult(req.params.id, authenticatedOwner(req))); }

@@ -18,6 +18,7 @@ export interface AmbientChatTurn {
 export async function generateAmbientChatReply(params: {
   messages: AmbientChatTurn[];
   followUp: string;
+  signal?: AbortSignal;
 }): Promise<string> {
   // Cap prior history to the last 16 turns
   const trimmed = params.messages.slice(-16);
@@ -35,7 +36,7 @@ export async function generateAmbientChatReply(params: {
     model: openaiModel,
     max_completion_tokens: 600,
     messages,
-  });
+  }, { signal: params.signal });
 
   const reply = response.choices[0]?.message?.content?.trim() ?? "";
   return reply || "I'm here. Say it again, a little differently?";
