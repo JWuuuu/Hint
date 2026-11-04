@@ -92,6 +92,8 @@ export function PrivacyPolicyView() {
             items={[
               t("legal.privacy.item1"),
               t("legal.privacy.item2"),
+              t("legal.privacy.item5"),
+              t("legal.privacy.item6"),
               t("legal.privacy.item3"),
               t("legal.privacy.item4"),
             ]}
