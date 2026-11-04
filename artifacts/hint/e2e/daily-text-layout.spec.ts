@@ -1,4 +1,4 @@
-import { test, expect } from "./fixtures";
+import { test, expect, appHref } from "./fixtures";
 
 const copy = {
   zh: ["贝壳项链", "满天星", "正位", "更深的讯息"],
@@ -37,7 +37,7 @@ for (const locale of ["zh", "es", "ja", "ko"] as const) for (const theme of ["br
     for (const [label, path] of [[jewelry, "/lucky/jewelry/shell-necklace.png"], [flower, "/lucky/flower/babys-breath.png"]]) {
       const artwork = page.getByRole("img", { name: label, exact: true });
       await expect(artwork).toBeAttached();
-      expect(await artwork.locator("img").evaluate(image => new URL((image as HTMLImageElement).src).pathname)).toBe(path);
+      expect(await artwork.locator("img").evaluate(image => new URL((image as HTMLImageElement).src).pathname)).toBe(appHref(path));
       await expect(artwork.locator("img")).toHaveAttribute("alt", "");
     }
     await expect(page.locator("body")).not.toContainText(/Upright|Bigger message|Shell Necklace|Good for a softer pace|Baby's Breath/);
