@@ -1008,6 +1008,9 @@ for (const motionMode of ["normal", "system", "hint"] as const) {
 }
 
 test("completes and restores the full Tarot Room journey", async ({ page }) => {
+  // The whole journey (ritual, reading, follow-up, receipt print, share, restore) runs well past
+  // the suite's 60 s default under software rendering.
+  test.setTimeout(120_000);
   const consoleErrors: string[] = [];
   let structuredReadingRequests = 0;
   page.on("console", (message) => {
@@ -1110,7 +1113,8 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await chooseReadingOption(page, "Receive");
   const receipt = page.getByRole("dialog", { name: "A letter to keep" });
   await expect(receipt).toBeVisible();
-  await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
+  // Sharing unlocks after the printer finishes (up to 5 s by design) and the PNG is ready.
+  await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled({ timeout: 20_000 });
   await expect(receipt.getByRole("checkbox")).not.toBeChecked();
   const [receiptDownload] = await Promise.all([
     page.waitForEvent("download"),

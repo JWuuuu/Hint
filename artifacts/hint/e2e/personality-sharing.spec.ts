@@ -190,10 +190,10 @@ test("Leaving Personality cancels a pending export without reopening a preview o
 });
 
 const receiptLocales = [
-  { code: "zh", orientation: "逆位", receive: "收下解读", share: "分享小票", card: "愚者", heading: "你的解读", original: "牌卡反思 · 英文原文" },
-  { code: "es", orientation: "Invertida", receive: "Recibir", share: "Compartir recibo", card: "El Loco", heading: "TU LECTURA", original: "Reflexión de las cartas · original en inglés" },
-  { code: "ja", orientation: "逆位置", receive: "受け取る", share: "レシートを共有", card: "愚者", heading: "あなたのリーディング", original: "カードの振り返り・英語の原文" },
-  { code: "ko", orientation: "역방향", receive: "받기", share: "영수증 공유", card: "바보", heading: "나의 리딩", original: "카드 성찰 · 영어 원문" },
+  { code: "zh", options: "阅读选项", orientation: "逆位", receive: "收下解读", share: "分享小票", card: "愚者", heading: "你的解读", original: "牌卡反思 · 英文原文" },
+  { code: "es", options: "Opciones de lectura", orientation: "Invertida", receive: "Recibir", share: "Compartir recibo", card: "El Loco", heading: "TU LECTURA", original: "Reflexión de las cartas · original en inglés" },
+  { code: "ja", options: "リーディングのオプション", orientation: "逆位置", receive: "受け取る", share: "レシートを共有", card: "愚者", heading: "あなたのリーディング", original: "カードの振り返り・英語の原文" },
+  { code: "ko", options: "리딩 옵션", orientation: "역방향", receive: "받기", share: "영수증 공유", card: "바보", heading: "나의 리딩", original: "카드 성찰 · 영어 원문" },
 ];
 for (const locale of receiptLocales) test(`${locale.code} Tarot printer exports a localized public PNG with the original reversed card`, async ({ page }, info) => {
   await seed(page, locale.code);
@@ -223,7 +223,9 @@ for (const locale of receiptLocales) test(`${locale.code} Tarot printer exports 
       rotate.call(this, angle);
     };
   });
-  await page.getByRole("button", { name: locale.receive, exact: true }).click();
+  // Since the Oct 15 snapshot, Receive lives in the reading's options menu.
+  await page.getByRole("button", { name: locale.options, exact: true }).click();
+  await page.getByRole("menuitem", { name: locale.receive, exact: true }).click();
   const receipt = page.getByRole("dialog");
   await expect(receipt.getByRole("button", { name: locale.share, exact: true })).toBeEnabled();
   await expect(receipt).toContainText(locale.card); await expect(receipt).toContainText(locale.original);

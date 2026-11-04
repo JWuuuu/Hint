@@ -22,7 +22,11 @@ for (const [app, system] of [[false, false], [true, false], [false, true], [true
     try {
       const reveal = page.getByRole("button", { name: "Reveal today's Hint card" });
       await reveal.click();
-      await expect(page.getByRole("link", { name: "Read interpretation" })).toBeVisible({ timeout: 3000 });
+      // With motion on, the Oct 27-30 Today redesign first plays the mascot's letter delivery.
+      const motion = !app && !system;
+      if (motion) await page.getByRole("button", { name: "Show my card", exact: true }).click({ timeout: 15000 });
+      // The card then turns (about 1.9 s by design) before the interpretation link appears.
+      await expect(page.getByRole("link", { name: "Read interpretation" })).toBeVisible({ timeout: motion ? 10000 : 3000 });
       await expect(page.locator("html")).toHaveAttribute("data-hint-reduce-motion", String(app || system));
       if (app || system) await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === "running" && animation.effect?.getTiming().iterations === Infinity).length)).toBe(0);
       await page.keyboard.press("Tab");
