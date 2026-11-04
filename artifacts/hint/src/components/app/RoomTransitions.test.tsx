@@ -1,5 +1,6 @@
 /** @vitest-environment jsdom */
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { Router } from "wouter";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -16,7 +17,7 @@ function Content() {
   useEffect(() => { mountCount++; }, []);
   return <input aria-label="Question" defaultValue="Keep my question" />;
 }
-function Harness({ base = "", cancelled = false, initial = "/app", buttonTarget = "/app/tarot", buttonDisabled = false, loading = false, loadError = false }: { loading?: boolean; loadError?: boolean; base?: string; cancelled?: boolean; initial?: string; buttonTarget?: string; buttonDisabled?: boolean }) {
+function Harness({ portalMenu = false, base = "", cancelled = false, initial = "/app", buttonTarget = "/app/tarot", buttonDisabled = false, loading = false, loadError = false }: { portalMenu?: boolean; loading?: boolean; loadError?: boolean; base?: string; cancelled?: boolean; initial?: string; buttonTarget?: string; buttonDisabled?: boolean }) {
   const [path, setPath] = useState(initial);
   return <Router base={base}>
     <RoomTransitions location={path}>
@@ -31,6 +32,8 @@ function Harness({ base = "", cancelled = false, initial = "/app", buttonTarget 
       {loading && <p data-room-loading>Opening the room…</p>}
       {loadError && <p data-room-load-error>Unable to open this room.</p>}
       <Content />
+      {/* Radix menus portal their items to <body>; clicks still bubble through React. */}
+      {portalMenu && createPortal(<div role="menuitem" tabIndex={-1} data-room-target="/app/tarot" onClick={() => setPath("/app/tarot")}>Tarot from menu</div>, document.body)}
       </div>
     </RoomTransitions>
     <button onClick={() => {
@@ -150,6 +153,13 @@ it("warms an explicit programmatic button without taking over its navigation", (
   fireEvent.click(button);
   expect(screen.getByRole("status").textContent).toBe("/app/collection");
   expect(arriving()).toBeNull();
+});
+
+it("plays the destination entrance for a portalled menu item that names its room", () => {
+  render(<Harness portalMenu initial="/app/collection" />);
+  fireEvent.click(screen.getByRole("menuitem", { name: "Tarot from menu" }));
+  expect(screen.getByRole("status").textContent).toBe("/app/tarot");
+  expect(arriving()?.getAttribute("data-room-entrance")).toBe("tarot");
 });
 
 it("uses the original programmatic button geometry after a delayed scoped approval", () => {

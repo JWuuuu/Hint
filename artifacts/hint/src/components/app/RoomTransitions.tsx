@@ -8,9 +8,15 @@ import "./room-transitions.css";
 type Intent = { from: string; to: string; room: EntranceRoom; rect: EntranceRect; createdAt: number };
 type Entrance = Intent & { id: number };
 
+/** Portalled menus render outside the root's DOM, but their clicks still bubble through React. */
+function ownedByRoot(root: HTMLElement | null, element: Element) {
+  return Boolean(root?.contains(element) || element.matches("[role='menuitem'][data-room-target]"));
+}
+
 function navigationTarget(target: EventTarget | null, base: string) {
-  const element = target instanceof Element ? target.closest<HTMLAnchorElement | HTMLButtonElement>("a[href],button[data-room-target]") : null;
-  if (!element || element.getAttribute("aria-disabled") === "true") return null;
+  // Menu items (e.g. Radix DropdownMenuItem) opt in with data-room-target like buttons do.
+  const element = target instanceof Element ? target.closest<HTMLAnchorElement | HTMLButtonElement>("a[href],button[data-room-target],[role='menuitem'][data-room-target]") : null;
+  if (!element || element.getAttribute("aria-disabled") === "true" || element.hasAttribute("data-disabled")) return null;
   const isLink = element instanceof HTMLAnchorElement;
   if (isLink ? element.hasAttribute("download") || (element.target && element.target !== "_self") : element.disabled) return null;
   const value = isLink ? element.href : element.dataset.roomTarget?.trim();
@@ -48,7 +54,7 @@ export function RoomTransitions({ location, children, ...props }: HTMLAttributes
   function warmLink(target: EventTarget | null) {
     if (!pageVisible || !isEntranceOrigin(location) || !(target instanceof Element)) return;
     const destination = navigationTarget(target, base);
-    if (!destination || !root.current?.contains(destination.element)) return;
+    if (!destination || !ownedByRoot(root.current, destination.element)) return;
     const { url } = destination;
     preloadRoom(base && url.pathname.startsWith(`${base}/`) ? url.pathname.slice(base.length) : url.pathname);
   }
@@ -58,7 +64,7 @@ export function RoomTransitions({ location, children, ...props }: HTMLAttributes
     pending.current = null;
     if (!pageVisible || !isEntranceOrigin(location) || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const destination = navigationTarget(event.target, base);
-    if (!destination || !root.current?.contains(destination.element)) return;
+    if (!destination || !ownedByRoot(root.current, destination.element)) return;
     const { element, url, isLink } = destination;
     const from = entrancePath(location);
     const relativePath = base && url.pathname.startsWith(`${base}/`) ? url.pathname.slice(base.length) : url.pathname;
