@@ -1,0 +1,49 @@
+# Diagnosis only, never merged: what makes the motion-on receipt matrix hang or crash in WebKit?
+# Round 4: the RC with the sky and mascot paused behind Share receipt (Decision 7).
+# Same 15 dark 200% motion-on cases as rounds 2-3b (x3, no retries), quarantine
+# bypassed, then every motion-on receipt case once.
+name: RC bisect
+on:
+  push:
+    branches: ['rc-bisect/**']
+permissions:
+  contents: read
+jobs:
+  receipt:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: rc-with-pause
+            css: ''
+    env:
+      API_PROXY_TARGET: http://127.0.0.1:1
+      HINT_E2E_PORT: '5188'
+      HINT_E2E_RUN_QUARANTINED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:web
+      - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+      - name: Receipt matrix, motion on, dark, 200% text, x3
+        run: |
+          (while true; do free -m | awk '/Mem:/{print $3}' >> /tmp/mem.txt; sleep 2; done) &
+          pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=iphone-se --retries=0 --repeat-each=3 e2e/merge-visual-matrix.spec.ts -g "dark app=false system=false text=200" || true
+          echo "peak used memory (MB): $(sort -n /tmp/mem.txt | tail -1), samples: $(wc -l < /tmp/mem.txt)"
+          node artifacts/hint/scripts/e2e-summary.mjs artifacts/hint/test-results/production-results.json "Round 4 dark 200% x3" || true
+      - name: Every motion-on receipt case once
+        run: |
+          pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=iphone-se --retries=0 e2e/merge-visual-matrix.spec.ts e2e/merge-receipt.spec.ts -g "app=false system=false" || true
+      - name: Summarize
+        if: always()
+        run: |
+          node artifacts/hint/scripts/e2e-summary.mjs artifacts/hint/test-results/production-results.json "Receipt dark 200% (${{ matrix.variant }})" || true
+          echo "crash files: $(grep -rl 'Target crashed' artifacts/hint/test-results 2>/dev/null | wc -l)"
