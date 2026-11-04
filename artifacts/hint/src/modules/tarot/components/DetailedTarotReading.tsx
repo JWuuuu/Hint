@@ -95,7 +95,7 @@ export function DetailedTarotReading({ request, saved, savedContext = "", feedba
           {detail && <div className="tarot-detail-content space-y-5 pt-3">
             <section>
               <h4 className={headingClass}>{t("tarot.flow.chat.deepWhy")}</h4>
-              {context.trim() && <p className="mt-2 border-l border-[#d8b96e]/50 pl-3 font-serif text-[13px] italic leading-5 text-[#817382]">{context.trim()}</p>}
+              {context.trim() && <p className="mt-2 border-l border-[#d8b96e]/50 pl-3 font-serif text-[13px] italic leading-5 text-[#735f70]">{context.trim()}</p>}
               <p className="mt-2 font-serif text-[16px] leading-7 text-[#3b3045]">{detail.overall_summary}</p>
             </section>
             <section>
