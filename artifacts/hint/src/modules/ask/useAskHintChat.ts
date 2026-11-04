@@ -12,6 +12,7 @@ import { useLanguage } from "../../lib/i18n";
 import { getAnonId } from "../../lib/identity";
 import { readTextDraft, writeTextDraft, clearTextDraft, textDraftKey, type TextDraft } from "../../lib/textDraft";
 import { readActiveAskConversation, saveAskConversation, type AskConversation } from "./askHistory";
+import { ASK_FALLBACK_COOLDOWN_MS, ASK_FOLLOW_UP_MAX_CHARS, ASK_REPLY_TIMEOUT_MS, buildAskContext, mergeAskMessages, settleOnAbort } from "./askContext";
 import { historyClearVersion } from "../../lib/clearHistory";
 import { markRoomVisitStarted, roomVisitWasClosed } from "../../components/app/roomVisits";
 import { useRoomVisit } from "../../components/app/RoomVisitBoundary";
@@ -26,6 +27,8 @@ export interface UseAskHintChatResult {
   isThinking: boolean;
   isLimited: boolean;
   error: string | null;
+  /** False when sending the same text again cannot succeed (it is too long). */
+  canRetry: boolean;
   historySaved: boolean | null;
   retrySaveHistory: () => void;
   newConversation: () => void;
@@ -35,6 +38,20 @@ export interface UseAskHintChatResult {
 
 function readStatus(error: unknown): number | null {
   return typeof error === "object" && error ? (error as { status?: number }).status ?? null : null;
+}
+
+/** A reply that arrived but must not become part of the conversation. */
+class UnusableReplyError extends Error {
+  constructor(readonly kind: "empty" | "fallback") { super(`Ask reply was ${kind}`); }
+}
+
+/** The server marks its offline fallback `source: "local"`; older servers send no source. */
+function readReply(reply: unknown): { message: string; createdAt: string } {
+  const value = (reply ?? {}) as { message?: unknown; createdAt?: unknown; source?: unknown };
+  const message = typeof value.message === "string" ? value.message.trim() : "";
+  if (!message) throw new UnusableReplyError("empty");
+  if ("source" in value && value.source !== "api") throw new UnusableReplyError("fallback");
+  return { message, createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString() };
 }
 
 function readRetryAfter(error: unknown): number {
@@ -68,6 +85,7 @@ export function useAskHintChat(): UseAskHintChatResult {
   const [messages, setMessages] = useState<ChatMessage[]>(() => conversation.current?.messages ?? []);
   const [historySaved, setHistorySaved] = useState<boolean | null>(conversation.current ? true : null);
   const [error, setError] = useState<string | null>(null);
+  const [canRetry, setCanRetry] = useState(true);
   const [limitedUntil, setLimitedUntil] = useState(0);
   const inFlightRef = useRef(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -114,6 +132,18 @@ export function useAskHintChat(): UseAskHintChatResult {
   }, [draftKey]);
   useEffect(() => () => { generation.current++; controller.current?.abort(); }, []);
 
+  /** Save without overwriting turns another tab added to the same conversation since it loaded here. */
+  const persistConversation = useCallback((next: AskConversation) => {
+    const stored = readActiveAskConversation(owner, next.id);
+    const merged: AskConversation = stored
+      ? { ...next, createdAt: stored.createdAt, messages: mergeAskMessages(stored.messages, next.messages) }
+      : next;
+    conversation.current = merged;
+    setMessages(merged.messages);
+    setHistorySaved(saveAskConversation(merged));
+    return merged;
+  }, [owner]);
+
   useEffect(() => {
     if (limitedUntil <= Date.now()) return;
 
@@ -133,6 +163,13 @@ export function useAskHintChat(): UseAskHintChatResult {
 
       if (limitedUntil > Date.now()) {
         setError(t("ask.error.limit"));
+        setCanRetry(true);
+        return;
+      }
+
+      if (trimmed.length > ASK_FOLLOW_UP_MAX_CHARS) {
+        setError(t("ask.error.tooLong").replace("{count}", String(ASK_FOLLOW_UP_MAX_CHARS)));
+        setCanRetry(false);
         return;
       }
 
@@ -141,9 +178,16 @@ export function useAskHintChat(): UseAskHintChatResult {
       inFlightRef.current = true;
       setIsThinking(true);
       const requestGeneration = ++generation.current;
-      controller.current = new AbortController();
+      const request = new AbortController();
+      controller.current = request;
+      // A stalled connection must end in a retryable error, not an endless "thinking" state.
+      const timeout = window.setTimeout(
+        () => request.abort(new DOMException("Ask reply timed out", "TimeoutError")),
+        ASK_REPLY_TIMEOUT_MS,
+      );
       const submitted = draftRef.current?.text.trim() === trimmed ? draftRef.current : writeTextDraft(draftKey, trimmed).draft;
       setError(null);
+      setCanRetry(true);
 
       const userMessage: ChatMessage = {
         id: newMessageId(),
@@ -155,10 +199,11 @@ export function useAskHintChat(): UseAskHintChatResult {
       setMessages(withUser);
 
       try {
-        const reply = await sendAmbientChatMessage({
-          messages: messages.map((m) => ({ role: m.role, content: m.content })),
+        // Only a bounded recent window is sent; the server rejects unbounded history.
+        const reply = readReply(await settleOnAbort(sendAmbientChatMessage({
+          messages: buildAskContext(messages),
           followUp: trimmed,
-        }, { signal: controller.current.signal });
+        }, { signal: request.signal }), request.signal));
         if (requestGeneration !== generation.current) return;
         setDraftError(!clearTextDraft(draftKey, submitted));
         if (draftRef.current?.revision === submitted.revision) {
@@ -172,12 +217,10 @@ export function useAskHintChat(): UseAskHintChatResult {
           content: reply.message,
           createdAt: reply.createdAt,
         };
-        const confirmed = [...withUser, assistantMessage];
-        setMessages(confirmed);
-        conversation.current = { id: conversation.current?.id ?? crypto.randomUUID(), anonId: owner,
-          createdAt: conversation.current?.createdAt ?? userMessage.createdAt, updatedAt: assistantMessage.createdAt, messages: confirmed };
-        setHistorySaved(saveAskConversation(conversation.current));
-        setConversationLocation(conversation.current.id);
+        const saved = persistConversation({ id: conversation.current?.id ?? crypto.randomUUID(), anonId: owner,
+          createdAt: conversation.current?.createdAt ?? userMessage.createdAt, updatedAt: assistantMessage.createdAt,
+          messages: [...withUser, assistantMessage] });
+        setConversationLocation(saved.id);
       } catch (e) {
         if (requestGeneration !== generation.current) return;
         const status = readStatus(e);
@@ -185,6 +228,11 @@ export function useAskHintChat(): UseAskHintChatResult {
         if (status === 429) {
           setLimitedUntil(Date.now() + Math.max(readRetryAfter(e), 10_000));
           setError(t("ask.error.limit"));
+        } else if (e instanceof UnusableReplyError && e.kind === "fallback") {
+          setLimitedUntil(Date.now() + ASK_FALLBACK_COOLDOWN_MS);
+          setError(t("ask.error.quota"));
+        } else if (e instanceof UnusableReplyError) {
+          setError(t("ask.error.quiet"));
         } else {
           setError(
             /quota|billing|too many requests/i.test(msg)
@@ -195,13 +243,14 @@ export function useAskHintChat(): UseAskHintChatResult {
         // Roll the user message back out so the user can retry without a stranded turn
         setMessages(messages);
       } finally {
+        window.clearTimeout(timeout);
         if (requestGeneration === generation.current) {
           inFlightRef.current = false;
           setIsThinking(false);
         }
       }
     },
-    [limitedUntil, messages, draftKey, t, owner]
+    [limitedUntil, messages, draftKey, t, owner, persistConversation]
   );
 
   return {
@@ -215,7 +264,7 @@ export function useAskHintChat(): UseAskHintChatResult {
       setDraftText(latest?.text ?? ""); setRecoverableDraft(null); setDraftError(false);
     },
     historySaved,
-    retrySaveHistory: () => { if (conversation.current) setHistorySaved(saveAskConversation(conversation.current)); },
+    retrySaveHistory: () => { if (conversation.current) persistConversation(conversation.current); },
     openConversation: (id: string) => {
       if (inFlightRef.current || historySaved === false) return;
       const selected = readActiveAskConversation(owner, id);
@@ -233,6 +282,7 @@ export function useAskHintChat(): UseAskHintChatResult {
     isThinking,
     isLimited: limitedUntil > Date.now(),
     error,
+    canRetry,
     sendMessage,
   };
 }

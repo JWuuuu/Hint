@@ -16,10 +16,23 @@ export function readActiveAskConversation(owner: string, id?: string | null): As
     return listAskHistory(owner).find(row => row.id === requested) ?? null;
   } catch { return null; }
 }
+const MAX_SAVED_CONVERSATIONS = 30;
+function isStorageFull(error: unknown): boolean {
+  const { name, code } = (error ?? {}) as { name?: unknown; code?: unknown };
+  return name === "QuotaExceededError" || name === "NS_ERROR_DOM_QUOTA_REACHED" || code === 22 || code === 1014;
+}
 export function saveAskConversation(conversation: AskConversation): boolean {
   try {
-    const rows = listAskHistory(conversation.anonId).filter(row => row.id !== conversation.id);
-    localStorage.setItem(askHistoryKey(conversation.anonId), JSON.stringify([conversation, ...rows].slice(0, 30)));
+    let rows = [conversation, ...listAskHistory(conversation.anonId).filter(row => row.id !== conversation.id)].slice(0, MAX_SAVED_CONVERSATIONS);
+    for (;;) {
+      try { localStorage.setItem(askHistoryKey(conversation.anonId), JSON.stringify(rows)); break; }
+      catch (error) {
+        // Storage shared with the rest of the app is full: give up the oldest saved
+        // threads before the one the person is in. Other failures change nothing.
+        if (!isStorageFull(error) || rows.length <= 1) return false;
+        rows = rows.slice(0, -1);
+      }
+    }
     localStorage.setItem(askActiveKey(conversation.anonId), conversation.id);
     window.dispatchEvent(new Event(EVENT));
     return true;
