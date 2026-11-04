@@ -10,6 +10,7 @@ import { buildTarotReceiptModel, createTarotReceiptBlob, shareTarotReceipt, type
 import { ReceiptPrinter } from "./ReceiptPrinter";
 import { buildDailyReceiptModel } from "./receiptModel";
 import { receiptText } from "./receiptStrings";
+import { useCoverDecorations } from "../../lib/decorationCover";
 
 export type ReceiptSource = { kind: "tarot"; reading: LocalTarotReading } | { kind: "daily"; report: DailyReport };
 function Paper({ model }: { model: TarotReceiptModel }) {
@@ -31,6 +32,8 @@ function Paper({ model }: { model: TarotReceiptModel }) {
 
 export function ReceiptShareDialog({ source, onClose }: { source: ReceiptSource; onClose: () => void }) {
   const { language } = useLanguage();
+  // The receipt covers the whole app, so the sky and the guide pause behind it.
+  useCoverDecorations();
   const text = (key: Parameters<typeof receiptText>[1]) => receiptText(language, key);
   const [snapshot] = useState(() => structuredClone(source));
   const [identity] = useState(captureIdentityContext);

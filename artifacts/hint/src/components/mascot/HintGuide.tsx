@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { useMotionPolicy } from "../../lib/motionPolicy";
+import { useDecorationsCovered } from "../../lib/decorationCover";
 import type { GestureId, HintSceneContext, HintSceneFrame, HintScenePlayer } from "../../../mascot-library/versions/v3.2/src/index";
 import "./hint-guide.css";
 
@@ -45,7 +46,10 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
   const [enabledAtStart] = useState(hintGuideEnabled);
   const [unavailable, setUnavailable] = useState(false);
   const enabled = (enabledOverride ?? enabledAtStart) && !unavailable;
-  const policy = useMotionPolicy();
+  const motionPolicy = useMotionPolicy();
+  // A full-screen surface such as Share receipt hides the guide; treat it like a hidden page.
+  const covered = useDecorationsCovered();
+  const policy = covered ? { ...motionPolicy, pageVisible: false } : motionPolicy;
   const currentPolicy = useRef(policy);currentPolicy.current = policy;
   const currentReview = useRef(review);currentReview.current = review;
   const [heldForReview, setHeldForReview] = useState(false);

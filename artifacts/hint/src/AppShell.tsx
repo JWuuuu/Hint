@@ -13,6 +13,7 @@ import { PointerProvider } from "./modules/hold/atmosphere";
 import { AppLaunchIntro } from "./components/app/AppLaunchIntro";
 import type { LaunchIntroVariant } from "./components/app/AppLaunchIntro";
 import { ConstellationBackdrop } from "./components/app/ConstellationBackdrop";
+import { useDecorationsCovered } from "./lib/decorationCover";
 import { trackEvent } from "./lib/analytics";
 import {
   getInitialHintTheme,
@@ -63,6 +64,7 @@ function isCreamStyleRoute(location: string): boolean {
  * Children are placed above the atmosphere on z-20.
  */
 export function AppShell({ children }: { children: ReactNode }) {
+  const decorationsCovered = useDecorationsCovered();
   const guideEnabled = useHintGuideEnabled();
   const [location] = useLocation();
   const routePath = location.split(/[?#]/, 1)[0]?.replace(/\/+$/, "") || "/";
@@ -183,7 +185,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* The one sky. Mounted here, outside route content, so Today, Daily,
             Me, History and every other page share the same canvas, palette
             and uninterrupted motion. Pages keep transparent backgrounds. */}
-        <ConstellationBackdrop />
+        <ConstellationBackdrop paused={decorationsCovered} />
 
         {/* Route content sits above the atmosphere.
             Pages own their own scroll model — AppShell does not impose
