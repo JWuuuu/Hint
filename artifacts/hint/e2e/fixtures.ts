@@ -21,14 +21,14 @@ export const test = base.extend<{ quarantine: void }>({
     await use(page);
   },
   context: async ({ context }, use) => {
-    // Diagnosis only (rc-bisect): hide one canvas to measure its cost.
-    if (process.env.DIAG_HIDE) await context.addInitScript(selector => {
+    // Diagnosis only (rc-bisect): inject CSS to switch one cost off.
+    if (process.env.DIAG_CSS) await context.addInitScript(css => {
       document.addEventListener("DOMContentLoaded", () => {
         const style = document.createElement("style");
-        style.textContent = `${selector} { display: none !important; }`;
+        style.textContent = css;
         document.head.append(style);
       });
-    }, process.env.DIAG_HIDE);
+    }, process.env.DIAG_CSS);
     await context.route("**/api/**", route => route.fulfill({ status: 503, json: { error: "ISOLATED_TEST_UNMOCKED_API" } }));
     await context.addInitScript(() => {
       // Seed a fake persisted session for this test identity. Authentication itself

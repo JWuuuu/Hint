@@ -1,6 +1,6 @@
 # Diagnosis only, never merged: what makes the motion-on receipt matrix hang or crash in WebKit?
-# Round 2: the same build with one canvas hidden at a time, the four dark 200% cases
-# repeated three times each without retries, and the runner's memory sampled.
+# Round 3: hiding the mascot or constellation canvas did not help (round 2), so switch
+# off the glass blur instead. Dark 200% motion-on cases x3, no retries, memory sampled.
 name: RC bisect
 on:
   push:
@@ -15,15 +15,15 @@ jobs:
       matrix:
         include:
           - variant: as-shipped
-            hide: ''
-          - variant: hide-mascot-canvas
-            hide: '[data-testid="hint-guide-layer"] canvas'
-          - variant: hide-constellation-canvas
-            hide: '.hint-app-background canvas'
+            css: ''
+          - variant: no-backdrop-blur
+            css: '*, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }'
+          - variant: no-backdrop-or-filter
+            css: '*, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; filter: none !important; }'
     env:
       API_PROXY_TARGET: http://127.0.0.1:1
       HINT_E2E_PORT: '5188'
-      DIAG_HIDE: ${{ matrix.hide }}
+      DIAG_CSS: ${{ matrix.css }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
