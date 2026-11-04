@@ -364,6 +364,14 @@ async function chooseArcCard(page: Page) {
 }
 
 async function expectNoSeriousAccessibilityViolations(page: Page) {
+  // Check what the reader sees once entrances settle; mid-fade, axe reads a lower contrast
+  // (WebKit CI flagged a 0.24 s chat-bubble fade). Looping animations are not awaited.
+  await page.evaluate(() => Promise.race([
+    Promise.all(document.getAnimations()
+      .filter(animation => Number.isFinite(Number(animation.effect?.getTiming().iterations)))
+      .map(animation => animation.finished.catch(() => undefined))),
+    new Promise(resolve => setTimeout(resolve, 3000)),
+  ]));
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
