@@ -514,8 +514,12 @@ test("phone preview presents Personal Spread inside the selected phone", async (
 
   await page.getByLabel("Preview device").selectOption("iphone-se");
   await expect(screen.getByRole("heading", { name: "Three cards", exact: true })).toBeVisible();
-  await screen.locator(".hint-app-scroll").evaluate((element) => { element.scrollTop = element.scrollHeight; });
-  await expect(screen.getByRole("button", { name: "Use this spread" })).toBeInViewport();
+  // The switched frame keeps laying out (images, the mascot slot) after the heading appears, so
+  // keep scrolling to the bottom until the layout settles; the action must then be reachable.
+  await expect(async () => {
+    await screen.locator(".hint-app-scroll").evaluate((element) => { element.scrollTop = element.scrollHeight; });
+    await expect(screen.getByRole("button", { name: "Use this spread" })).toBeInViewport({ timeout: 1000 });
+  }).toPass({ timeout: 15_000 });
   await expect(page.locator(".hint-preview-island")).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("personal-spread-se-action.png") });
 });
