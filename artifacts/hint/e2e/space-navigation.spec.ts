@@ -16,7 +16,8 @@ test.beforeEach(async ({ page }) => {
 
 async function checkHome(page: Page, route: string, info: TestInfo) {
   await page.goto(`${route}${route.includes("?") ? "&" : "?"}hintPreview=embedded`);
-  const home = page.getByRole("link", { name: "Home", exact: true }).first();
+  // Spaces with the dock exit Home through its first tab, labelled "Today" since June.
+  const home = page.getByRole("link", { name: /^(Home|Today)$/ }).first();
   await expect(home).toBeVisible();
   await expect(home).toHaveAttribute("href", "/app");
   const bounds = await home.boundingBox();

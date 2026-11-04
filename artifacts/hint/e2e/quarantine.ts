@@ -29,7 +29,6 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "personality-sharing.spec.ts", title: "zh Tarot printer exports a localized public PNG with the original reversed card", reason: PRE_EXISTING },
   { file: "room-fresh-entry.spec.ts", title: "Ask reentry starts blank, manually restores draft, and keeps prior saved conversation readable", reason: PRE_EXISTING },
   { file: "room-visits.spec.ts", title: "a delayed approved departure from a saved Tarot reading keeps the destination entrance", reason: PRE_EXISTING },
-  { file: "space-navigation.spec.ts", title: "Every space has a visible direct Home exit: group 2", reason: PRE_EXISTING },
   { file: "tarot-room.spec.ts", title: "completes and restores the full Tarot Room journey", reason: PRE_EXISTING },
   { file: "tarot-room.spec.ts", title: "damaged saved interpretation and design recover without losing the selected cards", reason: PRE_EXISTING },
   { file: "tarot-room.spec.ts", title: "pick arc stays ordered on dawn", reason: PRE_EXISTING },
