@@ -2248,9 +2248,7 @@ for (const visualCase of VISUAL_CASES) {
     await seedReadingSession(page, visualCase);
     await page.goto("/app/tarot?hintPreview=embedded");
     await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
-    const dismissCardTip = page.getByRole("button", { name: "Dismiss card tip" });
-    await expect(dismissCardTip).toBeVisible();
-    await dismissCardTip.click();
+    // The card tip (and its "Dismiss card tip" button) was removed in the Oct 15 snapshot.
     await page.evaluate(() => document.fonts.ready);
 
     const frame = page.getByTestId("tarot-phone-frame");
