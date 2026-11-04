@@ -92,3 +92,17 @@ it("saves a tester link's invite and removes it from the address bar", async () 
   session.captureTesterInviteFromUrl();
   expect(session.readTesterInvite()).toBe("ABCD-EFGH");
 });
+
+it("does not ask the server again with a code it already refused", async () => {
+  const fetch = vi.fn(async () => new Response(JSON.stringify({ code: "INVITE_REQUIRED" }), { status: 403 }));
+  vi.stubGlobal("fetch", fetch);
+  const session = await import("./deviceSession");
+  await expect(session.getDeviceSessionToken()).rejects.toMatchObject({ reason: "invite" });
+  await expect(session.getDeviceSessionToken()).rejects.toMatchObject({ reason: "invite" });
+  await expect(session.getDeviceSessionToken()).rejects.toMatchObject({ reason: "invite" });
+  expect(fetch).toHaveBeenCalledTimes(1);
+  fetch.mockImplementation(async () => new Response(JSON.stringify({ token: "x".repeat(64), ownerId: "remote-fixture", expiresAt: "2030-01-01" }), { status: 201 }));
+  session.saveTesterInvite("ABCD-EFGH");
+  expect(await session.getDeviceSessionToken()).toBe("x".repeat(64));
+  expect(fetch).toHaveBeenCalledTimes(2);
+});
