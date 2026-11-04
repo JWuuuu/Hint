@@ -1439,6 +1439,7 @@ async function openCompletedVoiceSheet(page: Page) {
       interimResults = true;
       lang = "en-US";
       maxAlternatives = 1;
+      onstart: (() => void) | null = null;
       onresult: ((event: unknown) => void) | null = null;
       onerror: ((event: { error: string }) => void) | null = null;
       onend: (() => void) | null = null;
@@ -1449,7 +1450,11 @@ async function openCompletedVoiceSheet(page: Page) {
         });
         this.stop();
       };
-      start() { window.addEventListener("hint-test-speech", this.receive); }
+      start() {
+        window.addEventListener("hint-test-speech", this.receive);
+        // Browsers fire "start" asynchronously once audio capture begins; the sheet says "Opening microphone..." until then.
+        setTimeout(() => this.onstart?.(), 0);
+      }
       stop() {
         window.removeEventListener("hint-test-speech", this.receive);
         this.onend?.();
@@ -2097,6 +2102,9 @@ test("damaged saved interpretation and design recover without losing the selecte
   await page.goto(`/app/tarot?hintPreview=embedded&reading=${encodeURIComponent(original.id)}&returnTo=detail`);
   await openReadingMenu(page);
   await expect(page.getByRole("menuitem", { name: "Refresh the interpretation" })).toBeVisible();
+  // The open menu is modal and hides the reading from assistive tech, so close it before checking the cards.
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("menu", { name: "Reading options" })).toHaveCount(0);
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: /^Preview / })).toHaveCount(3);
   await expect(page.locator('[data-room-background="dawn"]')).toBeVisible();
