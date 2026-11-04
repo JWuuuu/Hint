@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "./fixtures";
+import { expectRitualStagesInOrder, watchRitualStages } from "./ritualStages";
 import { writeFile } from "node:fs/promises";
 
 // Independent expected positions: these are part of each spread's user contract.
@@ -80,11 +81,9 @@ for (const [spreadIndex, spread] of spreads.entries()) {
     await page.getByRole("button", { name: /^Customize/i }).click();
     await page.getByTestId(`tarot-room-background-${spread.room}`).click();
     await page.getByRole("button", { name: /Begin the ritual/i }).click();
+    await watchRitualStages(page);
     await page.getByRole("button", { name: "Auto Wash", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Pick Cards", exact: true })).toBeVisible();
+    await expectRitualStagesInOrder(page);
     await expect(page.getByLabel("Rotating tarot deck wheel")).toHaveAttribute("data-deck-size", "78");
     for (let index = 0; index < spread.positions.length; index++) {
       await chooseCard(page);

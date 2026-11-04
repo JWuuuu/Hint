@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "./fixtures";
+import { expectRitualStagesInOrder, watchRitualStages } from "./ritualStages";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -1021,11 +1022,9 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await enterWash(page);
   await expect(page.getByText("78 cards", { exact: true })).toBeVisible();
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
+  await watchRitualStages(page);
   await page.getByRole("button", { name: "Auto Wash" }).click();
-  await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expectRitualStagesInOrder(page);
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
   await page.reload();
   await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
@@ -1100,7 +1099,8 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await expect(page.getByText("Reading the cards...", { exact: true })).toBeVisible();
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
-  await expect(page.getByText("3 cards", { exact: true })).toBeVisible();
+  // The header no longer prints "{count} cards" (Oct 15); the reading lists each card instead.
+  await expect(page.getByRole("button", { name: /^Preview / })).toHaveCount(3);
   const followUp = "What should I do next?";
   const followUpReply =
     "Choose the smallest honest action, then leave enough space to notice what changes.";
@@ -1291,6 +1291,7 @@ test("a real manual wash release completes the automatic ritual", async ({ page 
       exact: true,
     }),
   ).toBeVisible();
+  await watchRitualStages(page);
   await table.dispatchEvent("pointerup", {
     pointerId,
     pointerType: "touch",
@@ -1298,10 +1299,7 @@ test("a real manual wash release completes the automatic ritual", async ({ page 
     clientY: points.at(-1)!.y,
   });
 
-  await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expectRitualStagesInOrder(page);
   await expect(page.getByLabel("Rotating tarot deck wheel")).toHaveAttribute(
     "data-deck-size",
     "78",
@@ -1310,15 +1308,14 @@ test("a real manual wash release completes the automatic ritual", async ({ page 
 
 test("rapid Auto Wash requests advance through one ordered ritual", async ({ page }) => {
   await enterWash(page);
+  await watchRitualStages(page);
   await page.getByRole("button", { name: "Auto Wash" }).evaluate((button) => {
     button.click();
     button.click();
     button.click();
   });
-  await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  // One ordered ritual: each stage appears once, in order.
+  await expectRitualStagesInOrder(page);
 });
 
 test("an interrupted automatic ritual restarts from its stable prepare stage", async ({ page }) => {

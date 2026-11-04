@@ -7,7 +7,8 @@ export type { Page, Route, Locator, TestInfo } from "@playwright/test";
 export const test = base.extend<{ quarantine: void }>({
   // Reported as skipped (fixme) with its reason; see quarantine.ts.
   quarantine: [async ({}, use, testInfo) => {
-    const reason = quarantineReason(testInfo.file, testInfo.title);
+    // HINT_E2E_RUN_QUARANTINED=1 runs quarantined tests anyway, to verify fixes before removing entries.
+    const reason = process.env.HINT_E2E_RUN_QUARANTINED ? undefined : quarantineReason(testInfo.file, testInfo.title);
     testInfo.fixme(Boolean(reason), reason);
     await use();
   }, { auto: true }],
