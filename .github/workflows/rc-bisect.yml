@@ -1,6 +1,7 @@
 # Diagnosis only, never merged: what makes the motion-on receipt matrix hang or crash in WebKit?
-# Round 3: hiding the mascot or constellation canvas did not help (round 2), so switch
-# off the glass blur instead. Dark 200% motion-on cases x3, no retries, memory sampled.
+# Round 3b: in Chromium, idle Home with motion on keeps the main thread 100% busy;
+# the mascot and constellation canvases each take about half, and hiding both drops it
+# to 3%. Round 2 hid only one at a time. Dark 200% motion-on cases x3, no retries.
 name: RC bisect
 on:
   push:
@@ -14,12 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - variant: as-shipped
-            css: ''
-          - variant: no-backdrop-blur
-            css: '*, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }'
-          - variant: no-backdrop-or-filter
-            css: '*, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; filter: none !important; }'
+          - variant: hide-both-canvases
+            css: '[data-testid="hint-guide-layer"] canvas, .hint-app-background canvas { display: none !important; }'
     env:
       API_PROXY_TARGET: http://127.0.0.1:1
       HINT_E2E_PORT: '5188'
