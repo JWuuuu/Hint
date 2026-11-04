@@ -2,6 +2,8 @@
 // Summarize a Playwright JSON report so retries never hide a failure:
 // clean first-attempt passes, tests that only passed on retry ("flaky"),
 // failures, and skipped tests with their stated reason.
+// It also prints each failing attempt's error and page snapshot to the job log,
+// which stays readable where downloading the evidence artifact is not possible.
 // Usage: node scripts/e2e-summary.mjs <report.json> [heading]
 import { appendFileSync, existsSync, readFileSync } from "node:fs";
 
@@ -14,17 +16,34 @@ if (!file || !existsSync(file)) {
 }
 
 const report = JSON.parse(readFileSync(file, "utf8"));
+const stripAnsi = text => text.replace(/\u001b\[[0-9;]*m/g, "");
 const rows = [];
+const details = [];
+// The "# Page snapshot" section of Playwright's error-context attachment, if the attempt has one.
+const pageSnapshot = result => {
+  const attachment = (result.attachments ?? []).find(item => item.name === "error-context" && item.path && existsSync(item.path));
+  if (!attachment) return "";
+  const text = readFileSync(attachment.path, "utf8");
+  const start = text.indexOf("# Page snapshot");
+  return (start >= 0 ? text.slice(start) : text).split("\n").slice(0, 160).join("\n");
+};
 const walk = suites => {
   for (const suite of suites ?? []) {
     for (const spec of suite.specs ?? []) for (const test of spec.tests ?? []) {
       const attempts = (test.results ?? []).map(result => result.status);
       const firstError = (test.results ?? []).find(result => result.error)?.error?.message ?? "";
       const reason = (test.annotations ?? []).find(note => note.type === "fixme" || note.type === "skip")?.description ?? "";
+      const title = `${spec.file} › ${spec.title}`;
       rows.push({
-        title: `${spec.file} › ${spec.title}`, project: test.projectName, status: test.status, attempts, reason,
-        error: firstError.replace(/\u001b\[[0-9;]*m/g, "").split("\n").find(line => line.trim())?.trim().slice(0, 160) ?? "",
+        title, project: test.projectName, status: test.status, attempts, reason,
+        error: stripAnsi(firstError).split("\n").find(line => line.trim())?.trim().slice(0, 160) ?? "",
       });
+      if (test.status === "unexpected" || test.status === "flaky") {
+        for (const result of test.results ?? []) if (result.status !== "passed" && result.status !== "skipped") {
+          details.push({ title, project: test.projectName, attempt: result.retry ?? 0,
+            error: stripAnsi(result.error?.message ?? result.status).split("\n").slice(0, 40).join("\n"), snapshot: pageSnapshot(result) });
+        }
+      }
     }
     walk(suite.suites);
   }
@@ -56,3 +75,11 @@ if (skipped.length) {
   for (const [reason, count] of reasons) out(`| ${cell(reason)} | ${count} |`);
   out("");
 }
+
+for (const detail of details.slice(0, 40)) {
+  console.log(`::group::${detail.project} attempt ${detail.attempt + 1}: ${detail.title}`);
+  console.log(detail.error);
+  if (detail.snapshot) console.log(`\n${detail.snapshot}`);
+  console.log("::endgroup::");
+}
+if (details.length > 40) console.log(`${details.length - 40} more failing attempts are in the evidence artifact.`);
