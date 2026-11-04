@@ -86,6 +86,8 @@ test("Personality exports a real PNG and cancelling its preview revokes the old 
   const reopenedSource = await dialog.locator("img").getAttribute("src");
   expect(reopenedSource).not.toBe(source);
   const close = dialog.getByRole("button", { name: "Close", exact: true });
+  // The dialog opens with a 200 ms zoom from 95%; measure the settled target, not its first frame.
+  await expect.poll(async () => { const box = await close.boundingBox(); return box ? Math.min(box.width, box.height) : 0; }).toBeGreaterThanOrEqual(44);
   const closeBox = await close.boundingBox();
   expect(closeBox).not.toBeNull();
   expect(closeBox!.width).toBeGreaterThanOrEqual(44);
