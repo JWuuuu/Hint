@@ -110,7 +110,9 @@ for (const [spreadIndex, spread] of spreads.entries()) {
     expect(saved.structuredReading.cards.map(card => card.position)).toEqual([...spread.positions]);
     await expect(page.getByRole("button", { name: /^Preview / })).toHaveCount(spread.positions.length);
 
-    await page.getByRole("button", { name: "Open reading history", exact: true }).click();
+    // History moved from the saved notice into the reading menu.
+    await page.getByRole("button", { name: "Reading options" }).click();
+    await page.getByRole("menuitem", { name: "History", exact: true }).click();
     const leaveDialog = page.getByRole("dialog", { name: "Leave this space?" });
     await expect(leaveDialog).toBeVisible();
     await expect(leaveDialog).toContainText("Saved readings, personal details and today’s cards are kept.");

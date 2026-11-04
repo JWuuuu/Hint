@@ -1152,7 +1152,8 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await expect(page.getByText(followUpReply, { exact: true })).toBeVisible();
   expect(structuredReadingRequests).toBe(1);
 
-  await page.getByRole("button", { name: "Open reading history" }).click();
+  // History moved from the saved notice into the reading menu.
+  await chooseReadingOption(page, "History");
   const leaveDialog = page.getByRole("dialog", { name: "Leave this space?" });
   await expect(leaveDialog).toBeVisible();
   await expect(leaveDialog).toContainText("Saved readings, personal details and today’s cards are kept.");
