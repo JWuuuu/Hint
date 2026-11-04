@@ -1,4 +1,4 @@
-import { expect, test, type Page, type TestInfo } from "./fixtures";
+import { appHref, expect, test, type Page, type TestInfo } from "./fixtures";
 
 type EntranceRecord = {
   feature: string | null;
@@ -256,18 +256,32 @@ for (const entry of roomsEntries) {
   });
 }
 
+// The Me redesign moved these entries: the chart opens from the profile envelope
+// (once birth details exist) and History/Collection open from what the person
+// has kept, so these journeys seed one fictional profile and one daily reading.
 const meEntries = [
-  { space: "chart", feature: "astrology", ready: (page: Page) => page.getByRole("button", { name: "Create my birth chart", exact: true }) },
-  { space: "history", feature: "readings", ready: (page: Page) => page.getByRole("heading", { name: "Readings", exact: true }) },
-  { space: "collection", feature: "collection", ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
+  { space: "chart", feature: "astrology", link: ".me-envelope-actions a[href$=\"/app/astrology?tab=chart\"]", ready: (page: Page) => page.getByRole("navigation", { name: "Astrology sections" }) },
+  { space: "history", feature: "readings", link: "a.me-see-all", ready: (page: Page) => page.locator(".hr-ledger") },
+  { space: "collection", feature: "collection", link: "a.me-tile[href$=\"/app/collection\"]", ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
 ] as const;
+
+const meOwner = "room-entrance-fictional-reader";
+const meProfile = {
+  anonId: meOwner, name: "Alexandra — fictional reader", birthDate: "1995-05-15", birthTime: "10:20",
+  birthPlace: "Chicago, Illinois, United States", latitude: 41.87, longitude: -87.62,
+  timezone: "America/Chicago", timezoneOffset: -5, createdAt: "2026-09-01T00:00:00Z", updatedAt: "2026-09-01T00:00:00Z",
+};
 
 for (const entry of meEntries) {
   test(`supplemental Me ${entry.space} entry preserves its destination`, async ({ page }, info) => {
     await seed(page);
+    await page.route("**/api/profile**", route => route.fulfill({ json: meProfile }));
+    await page.addInitScript(owner => localStorage.setItem("hint_local_daily_readings", JSON.stringify([
+      { id: "room-entrance-daily", anonId: owner, source: "daily-pull", cardId: "17-star", cardName: "The Star", whisper: "Fictional daily reflection.", spreadType: "daily-pull", createdAt: "2026-09-08T12:00:00.000Z" },
+    ])), meOwner);
     await page.goto("/app/profile?hintPreview=embedded");
     await expect(page.getByRole("heading", { name: "Your space", exact: true })).toBeVisible();
-    const link = page.locator(`.me-personal-links a[data-space="${entry.space}"]`);
+    const link = page.locator(entry.link);
     await link.scrollIntoViewIfNeeded();
     await installProbe(page);
     await link.click();
@@ -315,10 +329,10 @@ for (const entry of dockEntries) {
 }
 
 for (const entry of [
-  { from: "collection", feature: "tarot", link: 'a[href="/app/tarot"]', ready: (page: Page) => page.getByPlaceholder("Type your question...") },
-  { from: "animal-tarot", feature: "collection", link: '.animal-action-card[href="/app/collection"]', ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
-  { from: "compatibility", feature: "astrology", link: 'a[href="/app/astrology"]', ready: (page: Page) => page.getByTestId("astrology-screen") },
-  { from: "dream", feature: "journal", link: 'a[href="/app/journal"]', ready: (page: Page) => page.getByTestId("input-journal-body") },
+  { from: "collection", feature: "tarot", link: `a[href="${appHref("/app/tarot")}"]`, ready: (page: Page) => page.getByPlaceholder("Type your question...") },
+  { from: "animal-tarot", feature: "collection", link: `.animal-action-card[href="${appHref("/app/collection")}"]`, ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
+  { from: "compatibility", feature: "astrology", link: `a[href="${appHref("/app/astrology")}"]`, ready: (page: Page) => page.getByTestId("astrology-screen") },
+  { from: "dream", feature: "journal", link: `a[href="${appHref("/app/journal")}"]`, ready: (page: Page) => page.getByTestId("input-journal-body") },
 ]) {
   test(`cross-room ${entry.from} to ${entry.feature} keeps the entrance and direct navigation`, async ({ page }, info) => {
     await seed(page);

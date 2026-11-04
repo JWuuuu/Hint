@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "./fixtures";
+import { appHref, test, expect, type Page } from "./fixtures";
 import { getTarotCardImage } from "../src/modules/tarot/logic/cardImageMap";
 import { readFile } from "node:fs/promises";
 
@@ -56,7 +56,7 @@ for (const language of ["en", "zh", "es", "ja", "ko"] as const) {
       });
       const cards = dialog.locator(".receipt-printer__card-image");
       await expect(cards).toHaveCount(1);
-      await expect(cards).toHaveAttribute("src", getTarotCardImage(id!, "hint-classic")!);
+      await expect(cards).toHaveAttribute("src", appHref(getTarotCardImage(id!, "hint-classic")!));
       await page.keyboard.press("Tab");
       expect(await dialog.evaluate(element => element.contains(document.activeElement))).toBe(true);
       for (const button of await dialog.locator(".receipt-share-footer button").all()) {
@@ -88,7 +88,7 @@ test("Home, Daily and receipt keep the locked card after refresh and export an a
   await page.getByRole("button", { name: "Share receipt", exact: true }).click();
   const dialog = page.getByTestId("receipt-share-dialog");
   await expect(dialog.locator(".receipt-printer__card-block h2")).toHaveText(title);
-  await expect(dialog.locator(".receipt-printer__card-image")).toHaveAttribute("src", getTarotCardImage(id!, "hint-classic")!);
+  await expect(dialog.locator(".receipt-printer__card-image")).toHaveAttribute("src", appHref(getTarotCardImage(id!, "hint-classic")!));
   const download = page.waitForEvent("download");
   await dialog.getByRole("button", { name: "Share receipt", exact: true }).click();
   const file = await download; await file.saveAs(info.outputPath("daily-receipt.png"));

@@ -1,4 +1,4 @@
-import { test, expect, type Page, type TestInfo } from "./fixtures";
+import { appHref, test, expect, type Page, type TestInfo } from "./fixtures";
 import { getTarotCardImage } from "../src/modules/tarot/logic/cardImageMap";
 
 const labels = {
@@ -131,7 +131,7 @@ for (const scale of [100, 200]) {
       await dialog.getByRole("button", { name: skipLabel, exact: true }).click();
     }
     await expect(dialog.getByRole("button", { name: shareLabel, exact: true })).toBeEnabled();
-    await expect(dialog.locator(".receipt-printer__card-image")).toHaveAttribute("src", getTarotCardImage(id!, "hint-classic")!);
+    await expect(dialog.locator(".receipt-printer__card-image")).toHaveAttribute("src", appHref(getTarotCardImage(id!, "hint-classic")!));
     await enlarge(page, '[data-testid="receipt-share-dialog"]', scale);
     await inspectScroll(page, ".receipt-share-scroll", "receipt", info);
     await expect(dialog.locator(".receipt-printer__result-content footer")).toBeInViewport();
@@ -159,7 +159,7 @@ for (const scale of [100, 200]) {
     await inspectDock(page);
     await inspectScroll(page, ".hint-app-scroll", "daily", info);
     await page.getByRole("button", { name: shareLabel, exact: true }).click();
-    await expect(dialog.locator(".receipt-printer__card-image")).toHaveAttribute("src", getTarotCardImage(id!, "hint-classic")!);
+    await expect(dialog.locator(".receipt-printer__card-image")).toHaveAttribute("src", appHref(getTarotCardImage(id!, "hint-classic")!));
     await page.keyboard.press("Escape");
     await expect(dialog).toHaveCount(0);
     expect(errors).toEqual([]);
