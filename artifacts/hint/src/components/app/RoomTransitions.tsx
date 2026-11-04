@@ -9,8 +9,8 @@ type Intent = { from: string; to: string; room: EntranceRoom; rect: EntranceRect
 type Entrance = Intent & { id: number };
 
 /** Portalled menus render outside the root's DOM, but their clicks still bubble through React. */
-function ownedByRoot(root: HTMLElement | null, element: Element) {
-  return Boolean(root?.contains(element) || element.matches("[role='menuitem'][data-room-target]"));
+function ownedByRoot(root: HTMLElement, element: Element) {
+  return root.contains(element) || element.matches("[role='menuitem'][data-room-target]");
 }
 
 function navigationTarget(target: EventTarget | null, base: string) {
@@ -54,7 +54,7 @@ export function RoomTransitions({ location, children, ...props }: HTMLAttributes
   function warmLink(target: EventTarget | null) {
     if (!pageVisible || !isEntranceOrigin(location) || !(target instanceof Element)) return;
     const destination = navigationTarget(target, base);
-    if (!destination || !ownedByRoot(root.current, destination.element)) return;
+    if (!destination || !root.current || !ownedByRoot(root.current, destination.element)) return;
     const { url } = destination;
     preloadRoom(base && url.pathname.startsWith(`${base}/`) ? url.pathname.slice(base.length) : url.pathname);
   }
@@ -63,8 +63,9 @@ export function RoomTransitions({ location, children, ...props }: HTMLAttributes
     const priorIntent = pending.current;
     pending.current = null;
     if (!pageVisible || !isEntranceOrigin(location) || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const rootElement = root.current;
     const destination = navigationTarget(event.target, base);
-    if (!destination || !ownedByRoot(root.current, destination.element)) return;
+    if (!rootElement || !destination || !ownedByRoot(rootElement, destination.element)) return;
     const { element, url, isLink } = destination;
     const from = entrancePath(location);
     const relativePath = base && url.pathname.startsWith(`${base}/`) ? url.pathname.slice(base.length) : url.pathname;
@@ -81,7 +82,7 @@ export function RoomTransitions({ location, children, ...props }: HTMLAttributes
     // Details and query changes stay within the current room; a deliberate
     // link to a different room receives that destination's entrance.
     if (from === to || entranceRoom(from) === room) return;
-    const rect = entranceRect(element.getBoundingClientRect(), root.current.getBoundingClientRect());
+    const rect = entranceRect(element.getBoundingClientRect(), rootElement.getBoundingClientRect());
     if (rect) pending.current = { from, to, room, rect, createdAt: performance.now() };
   }
 
