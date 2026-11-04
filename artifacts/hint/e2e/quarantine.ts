@@ -11,14 +11,19 @@
 const FRAME_BUDGET = "Frame budget exceeded in headless WebKit; the full-viewport mascot WebGL canvas is the measured cost. Tracked as a performance follow-up.";
 const ASK_SE_FOLD = "Real layout bug on iPhone SE: with the draft-recovery notice, the Ask heading's second line sits under the composer (bottom 571 > 561). Ask files belong to T10; fix after it lands.";
 const PRO_MAX_A4 = "Approved Nov 4 (Decision 5): misses its timing budget on iPhone 17 Pro Max in CI's software-rendered WebKit even with the mascot antialias fix, and passes on SE. The cost is the full-viewport mascot WebGL canvas; remove once that canvas is sized to the mascot.";
-const CJK_200 = "WebKit CI closes the page before this check (slow rendering, A4). In Chromium the Home score row reports clipping only with substitute CJK fonts and reads intact; re-check in WebKit after the mascot fix.";
+
+const RECEIPT_MOTION = "Approved Nov 4 (Decision 6): with motion on, this receipt case hangs or crashes the page in CI's software-rendered WebKit in 15-45% of runs. Diagnosis (rc-bisect runs) found no single cause: glass blur, the mascot and sky canvases and 200% text stack up. The reduced-motion cases of the same screens still run. Re-enable once decorative motion pauses behind dialogs and the mascot canvas is sized to the mascot.";
+const LANGUAGES = ["en", "zh", "es", "ja", "ko"] as const;
+// Motion on means app=false and system=false; the other three motion settings stay active.
+const MOTION_ON_RECEIPTS = [
+  ...LANGUAGES.flatMap(language => (["bright", "dark"] as const).flatMap(theme => [100, 200].map(scale => ({ file: "merge-visual-matrix.spec.ts", title: `merge matrix ${language} ${theme} app=false system=false text=${scale}`, reason: RECEIPT_MOTION })))),
+  ...LANGUAGES.map(language => ({ file: "merge-receipt.spec.ts", title: `merged receipt ${language} bright app=false system=false text=100`, reason: RECEIPT_MOTION })),
+];
 
 type Project = "iphone-se" | "iphone-17-pro-max";
 export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: string; project?: Project }> = [
+  ...MOTION_ON_RECEIPTS,
   { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
-  { file: "merge-visual-matrix.spec.ts", title: "merge matrix ja dark app=false system=false text=200", reason: CJK_200 },
-  { file: "merge-visual-matrix.spec.ts", title: "merge matrix ko bright app=false system=false text=200", reason: CJK_200 },
-  { file: "merge-visual-matrix.spec.ts", title: "merge matrix ko dark app=false system=false text=200", reason: CJK_200 },
   { file: "motion-performance.spec.ts", title: "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "motion-performance.spec.ts", title: "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
