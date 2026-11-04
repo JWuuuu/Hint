@@ -10,6 +10,7 @@
 const FRAME_BUDGET = "Frame budget exceeded in headless WebKit; the full-viewport mascot WebGL canvas is the measured cost. Tracked as a performance follow-up.";
 const fixPending = (branch: string) => `App bug, fixed on ${branch}; remove this entry once that PR merges.`;
 const ASK_SE_FOLD = "Real layout bug on iPhone SE: with the draft-recovery notice, the Ask heading's second line sits under the composer (bottom 571 > 561). Ask files belong to T10; fix after it lands.";
+const BOTH_PHONES_A4 = "Approved Nov 4 (Decision 5, extended to SE): misses its timing budget in CI's software-rendered WebKit, on Pro Max in every run and on SE intermittently (1 of 3 RC preview runs), even with the mascot antialias fix. The cost is the full-viewport mascot WebGL canvas; remove once that canvas is sized to the mascot.";
 const PRO_MAX_A4 = "Approved Nov 4 (Decision 5): misses its timing budget on iPhone 17 Pro Max in CI's software-rendered WebKit even with the mascot antialias fix, and passes on SE. The cost is the full-viewport mascot WebGL canvas; remove once that canvas is sized to the mascot.";
 
 const RECEIPT_MOTION = "Approved Nov 4 (Decision 6): with motion on, this receipt case hangs or crashes the page in CI's software-rendered WebKit in 15-45% of runs. Diagnosis (rc-bisect runs) found no single cause: glass blur, the mascot and sky canvases and 200% text stack up. The reduced-motion cases of the same screens still run. Re-enable once decorative motion pauses behind dialogs and the mascot canvas is sized to the mascot.";
@@ -23,8 +24,7 @@ const MOTION_ON_RECEIPTS = [
 type Project = "iphone-se" | "iphone-17-pro-max";
 export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: string; project?: Project }> = [
   ...MOTION_ON_RECEIPTS,
-  { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", project: "iphone-se", reason: fixPending("perf/mascot-webgl-antialias") },
-  { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
+  { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", reason: BOTH_PHONES_A4 },
   { file: "motion-performance.spec.ts", title: "web frame regression app=false OS=false: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "motion-performance.spec.ts", title: "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
@@ -35,7 +35,7 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in en", reason: fixPending("fix/tarot-reading-halo-overflow") },
   { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in zh", reason: fixPending("fix/tarot-reading-halo-overflow") },
   { file: "tarot-room.spec.ts", title: "Auto Wash avoids sustained animation stalls", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
-  { file: "tarot-wash-refinement.spec.ts", title: "a stationary hand lets the cards rest and keeps only clockwise guidance", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
+  { file: "tarot-wash-refinement.spec.ts", title: "a stationary hand lets the cards rest and keeps only clockwise guidance", reason: BOTH_PHONES_A4 },
   { file: "tarot-wash-refinement.spec.ts", title: "wash and cut meet at the same opaque card without a size or position jump", reason: fixPending("fix/tarot-wash-cut-seam") },
 ];
 
