@@ -1,3 +1,4 @@
+import { providerSignal, trackProviderWork } from "../../lib/providerCancellation";
 import crypto from "node:crypto";
 
 export type ZodiacSign =
@@ -517,18 +518,21 @@ function providerHeaders(config: ReturnType<typeof providerConfig>) {
 }
 
 async function providerPost(endpoint: string, payload: Record<string, unknown>) {
-  const config = providerConfig();
-  const response = await fetch(`${config.baseUrl}/${endpoint.replace(/^\/+/, "")}`, {
-    method: "POST",
-    headers: providerHeaders(config),
-    body: JSON.stringify(payload),
+  return trackProviderWork(async () => {
+    const config = providerConfig();
+    const response = await fetch(`${config.baseUrl}/${endpoint.replace(/^\/+/, "")}`, {
+      method: "POST",
+      headers: providerHeaders(config),
+      body: JSON.stringify(payload),
+      signal: providerSignal(),
+    });
+
+    if (!response.ok) {
+      throw new Error(`ASTROLOGY_PROVIDER_${response.status}`);
+    }
+
+    return response.json() as Promise<unknown>;
   });
-
-  if (!response.ok) {
-    throw new Error(`ASTROLOGY_PROVIDER_${response.status}`);
-  }
-
-  return response.json() as Promise<unknown>;
 }
 
 export function buildProviderPayload(input: BirthProfileInput) {

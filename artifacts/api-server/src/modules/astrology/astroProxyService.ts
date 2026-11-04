@@ -1,3 +1,4 @@
+import { providerSignal, trackProviderWork } from "../../lib/providerCancellation";
 import crypto from "node:crypto";
 import { compareChartPositions, SYNASTRY_POLICY } from "./synastryGeometry.js";
 import { getOpenAIClient, openaiApiKey, openaiModel } from "../../lib/openaiConfig.js";
@@ -406,13 +407,16 @@ function normalizeTransitRows(payload: unknown, date: string) {
 }
 
 async function astrologyProviderPost(endpoint: string, payload: Record<string, unknown>) {
-  const response = await fetch(`${providerBaseUrl()}/${endpoint}`, {
-    method: "POST",
-    headers: providerHeaders(),
-    body: JSON.stringify(payload),
+  return trackProviderWork(async () => {
+    const response = await fetch(`${providerBaseUrl()}/${endpoint}`, {
+      method: "POST",
+      headers: providerHeaders(),
+      body: JSON.stringify(payload),
+      signal: providerSignal(),
+    });
+    if (!response.ok) throw new Error(`ASTROLOGYAPI_${response.status}`);
+    return response.json() as Promise<unknown>;
   });
-  if (!response.ok) throw new Error(`ASTROLOGYAPI_${response.status}`);
-  return response.json() as Promise<unknown>;
 }
 
 function normalizeGeoRows(payload: unknown, query: string, maxRows: number): GeoPlace[] {
@@ -653,7 +657,7 @@ export async function getSynastryProxy(userProfile: AstroProfile, partnerProfile
 async function fetchNasaApod(apiKey: string, date?: string) {
     const params = new URLSearchParams({ api_key: apiKey, thumbs: "true" });
     if (date) params.set("date", date);
-    const response = await fetch(`https://api.nasa.gov/planetary/apod?${params.toString()}`, { signal: AbortSignal.timeout(15000) });
+    const response = await fetch(`https://api.nasa.gov/planetary/apod?${params.toString()}`, { signal: providerSignal(15000) });
     if (!response.ok) throw new Error(`NASA_${response.status}`);
     const data = (await response.json()) as Record<string, unknown>;
     const mediaType = String(data.media_type ?? "image");
@@ -735,7 +739,7 @@ export async function getAstroInterpretationProxy(input: { kind: InterpretationK
           }),
         },
       ],
-    });
+    }, { signal: providerSignal() });
     const fallback = localInterpretation(input.kind);
     const text = response.choices[0]?.message?.content?.trim() || ("text" in fallback && typeof fallback.text === "string" ? fallback.text : (fallback.bullets ?? []).join("\n"));
     const normalized = { mode: "live", text, cached: false, fetchedAt: new Date().toISOString() };
