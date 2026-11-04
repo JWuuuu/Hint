@@ -8,6 +8,10 @@ const failures = new Map<string, DeviceSessionFailure | null>();
 const EVENT = "hint:device-connection";
 const base = () => (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
 const INVITE_KEY = "hint_tester_invite_v1";
+// The server refused this exact code (or the lack of one). Every refused attempt
+// counts against the shared per-IP enrollment limit, so do not ask again until the
+// saved code changes. A page reload asks again (for example after a cap is raised).
+let refused: { code: string | null; reason: "invite" | "inviteFull" } | null = null;
 
 /** The tester invite saved on this device, if any. It is only sent when connecting. */
 export function readTesterInvite() {
@@ -65,16 +69,18 @@ function manager() {
       },
       enroll: async () => {
         const inviteCode = readTesterInvite();
+        if (refused && refused.code === inviteCode) throw new DeviceSessionError(refused.reason);
         const response = await fetch(`${base()}/api/device-sessions`, {
           method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(inviteCode ? { inviteCode } : {}),
           credentials: "omit", redirect: "error", signal: AbortSignal.timeout(10000),
         });
         if (response.status === 403) {
           const code = await response.json().then((body: { code?: unknown }) => body?.code, () => undefined);
-          if (code === "INVITE_EXHAUSTED") throw new DeviceSessionError("inviteFull");
-          if (code === "INVITE_REQUIRED" || code === "INVITE_INVALID") throw new DeviceSessionError("invite");
+          const reason = code === "INVITE_EXHAUSTED" ? "inviteFull" : code === "INVITE_REQUIRED" || code === "INVITE_INVALID" ? "invite" : null;
+          if (reason) { refused = { code: inviteCode, reason }; throw new DeviceSessionError(reason); }
         }
         if (!response.ok) throw new DeviceSessionError("unavailable");
+        refused = null;
         return await response.json() as DeviceSession;
       },
       onFailure: (reason) => {
