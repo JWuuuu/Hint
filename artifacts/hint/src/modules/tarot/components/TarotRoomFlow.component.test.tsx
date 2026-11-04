@@ -581,6 +581,21 @@ describe("Tarot Room components", () => {
     expect(localStorage.getItem("hint_local_tarot_readings_v1")).toBe(archive);
   });
 
+  it("answers an explicit crisis follow-up with fixed resources and no model request", async () => {
+    const user = userEvent.setup();
+    const card = createHiddenDeck()[0]!;
+    const { reading: saved } = saveLocalTarotReading({ spreadType: "single", spreadLabel: "One card", shortAnswer: "Pause.", questionMeaning: "Reflect.", cardMeanings: ["Signal: Your card."], cards: [{ ...card, positionLabel: "Signal", keywords: [] }] });
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ source: "api", message: "A model reply." }));
+    vi.stubGlobal("fetch", fetchMock);
+    renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} />);
+    const composer = screen.getByTestId("tarot-follow-up-composer") as HTMLTextAreaElement;
+    await user.type(composer, "I want to kill myself");
+    await user.click(screen.getByRole("button", { name: "Send follow-up" }));
+    expect(await screen.findByText(/call or text 988/)).toBeTruthy();
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages?.map(message => message.role)).toEqual(["user", "assistant"]);
+  });
+
   it("retries a failed reply without duplicating the question or clearing the next draft", async () => {
     const user = userEvent.setup();
     const card = createHiddenDeck()[0]!;

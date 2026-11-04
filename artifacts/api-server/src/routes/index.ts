@@ -9,6 +9,7 @@ import dailyReceiptsRouter from "./dailyReceipts";
 import astrologyRouter from "./astrology";
 import deviceSessionsRouter from "./deviceSessions";
 import { requireDeviceSession, optionalDeviceSession } from "../lib/deviceSession";
+import { crisisGuard } from "../lib/crisisGuard";
 import { findCompatibilityInvite, publicCompatibilityInvite, InviteError } from "../modules/astrology/compatibilityStore";
 import { takeBudget, trustedIpKey } from "../lib/durableBudget";
 
@@ -30,6 +31,8 @@ router.use(async (req, _res, next) => {
   ]);
   next();
 });
+// Before any AI route: explicit crisis statements get fixed resources, not a model reply.
+router.use(crisisGuard);
 router.use(tarotRouter);
 router.use(hintRouter);
 router.use(speechRouter);

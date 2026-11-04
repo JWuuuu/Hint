@@ -28,6 +28,7 @@ import {
   X,
 } from "lucide-react";
 import { useLocation } from "wouter";
+import { CRISIS_COPY, detectCrisis } from "../../../lib/crisisSupport";
 import { useSendTarotChatMessage, type TarotCardDraw } from "@workspace/api-client-react";
 import { apiFetch, apiUrl } from "../../../lib/api";
 import type { SpreadChoice } from "../../hold/useHoldFlow";
@@ -994,6 +995,18 @@ export function TarotHintReadingChat({
     setMessages(withUser);
     persistMessages(withUser);
     if (!retryMessage) setDraft("");
+
+    // T19: an explicit crisis statement gets the fixed resources, without a model call.
+    const crisisLanguage = detectCrisis(trimmed);
+    if (crisisLanguage) {
+      const support = CRISIS_COPY[crisisLanguage].body;
+      const completedMessages = [...withUser, { id: newMessageId(), role: "assistant" as const, content: support }];
+      setMessages(completedMessages);
+      persistMessages(completedMessages);
+      chatAbortRef.current = null;
+      sendInFlightRef.current = false;
+      return support;
+    }
 
     try {
       const reply = await chatMutation.mutateAsync({
