@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type AnimationEvent, type CSSProperties, type ReactNode } from "react";
 import { useMotionPolicy } from "../../lib/motionPolicy";
 import { useLanguage } from "../../lib/i18n";
+import { publicAsset } from "../../lib/publicAsset";
 import { receiptText } from "./receiptStrings";
 import "./receipt-printer.css";
 
@@ -44,7 +45,7 @@ export function ReceiptPrinter({ children, skip = false, onPrintComplete }: Rece
     "--receipt-result-height": `${height}px`, "--receipt-print-duration": `${duration}ms`, "--receipt-print-steps": Math.max(1, height),
   } as CSSProperties}>
     <div className="receipt-printer__interaction"><div className="receipt-printer__reference-frame">
-      <img className="receipt-printer__reference-image" src="/receipt-printer/hint-printer-machine.png" alt="" draggable={false} />
+      <img className="receipt-printer__reference-image" src={publicAsset("receipt-printer/hint-printer-machine.png")} alt="" draggable={false} />
       <span className="receipt-printer__slot-frame" aria-hidden />
       <div className="receipt-printer__paper-window">
         <article className="receipt-printer__paper" onAnimationEnd={feedEnd}>
