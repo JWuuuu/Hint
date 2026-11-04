@@ -114,7 +114,7 @@ export function AskHint() {
                   boxShadow: "var(--hint-elevated-shadow)",
                 }}
               >
-                {!(guideEnabled && keyboardOpen) && <HintGuideSlot context={guideContext} className="mx-auto -my-4 h-60 w-60" fallback={<div
+                {!(guideEnabled && keyboardOpen) && <HintGuideSlot context={guideContext} className="mx-auto -my-4 h-60 w-60 [@media(max-height:700px)]:h-48 [@media(max-height:700px)]:w-48" fallback={<div
                   className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-[8px]"
                   style={{
                     color: GOLD.ink,
