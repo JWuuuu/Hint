@@ -1,4 +1,5 @@
 import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+import { testerInvitesTable } from "./testerInvites";
 export const deviceSessionsTable = pgTable("device_sessions", {
   id: uuid("id").primaryKey().defaultRandom(),
   ownerId: uuid("owner_id").notNull().unique(),
@@ -6,4 +7,5 @@ export const deviceSessionsTable = pgTable("device_sessions", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   revokedAt: timestamp("revoked_at", { withTimezone: true }),
+  inviteId: uuid("invite_id").references(() => testerInvitesTable.id),
 });
