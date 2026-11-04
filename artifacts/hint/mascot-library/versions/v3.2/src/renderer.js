@@ -15,7 +15,12 @@ export async function createRenderer(canvas, bundle) {
     await new Promise((resolve, reject) => { image.onload = resolve; image.onerror = () => reject(new Error(`Could not load ${name}`)); image.src = src; });
     return [name, image];
   }));
-  const gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: true, preserveDrawingBuffer: true });
+  // The canvas covers the whole viewport, so multisampling resolved every pixel of
+  // it on every frame. The mascot's silhouette already comes from soft texture
+  // alpha, so antialias adds nothing visible at phone pixel ratios but halved the
+  // frame rate under software rendering. preserveDrawingBuffer stays on so page
+  // captures always include the mascot.
+  const gl = canvas.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: true });
   if (!gl) throw new Error('Graphics support is unavailable.');
   const vertex = `precision highp float;
     attribute vec2 a_position,a_uv,a_uvB,a_uvC;
