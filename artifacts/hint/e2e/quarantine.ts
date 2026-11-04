@@ -9,7 +9,6 @@
  * An entry with `project` applies to that phone project only.
  */
 const FRAME_BUDGET = "Frame budget exceeded in headless WebKit; the full-viewport mascot WebGL canvas is the measured cost. Tracked as a performance follow-up.";
-const ASK_SE_FOLD = "Real layout bug on iPhone SE: with the draft-recovery notice, the Ask heading's second line sits under the composer (bottom 571 > 561). Ask files belong to T10; fix after it lands.";
 const BOTH_PHONES_A4 = "Approved Nov 4 (Decision 5, extended to SE): misses its timing budget in CI's software-rendered WebKit, on Pro Max in every run and on SE intermittently (1 of 3 RC preview runs), even with the mascot antialias fix. The cost is the full-viewport mascot WebGL canvas; remove once that canvas is sized to the mascot.";
 const PRO_MAX_A4 = "Approved Nov 4 (Decision 5): misses its timing budget on iPhone 17 Pro Max in CI's software-rendered WebKit even with the mascot antialias fix, and passes on SE. The cost is the full-viewport mascot WebGL canvas; remove once that canvas is sized to the mascot.";
 
@@ -30,7 +29,6 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "room-entrances.spec.ts", title: "the arriving Tarot question accepts pointer input within its first 300ms", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
-  { file: "room-fresh-entry.spec.ts", title: "Ask reentry starts blank, manually restores draft, and keeps prior saved conversation readable", reason: ASK_SE_FOLD },
   { file: "tarot-room.spec.ts", title: "Auto Wash avoids sustained animation stalls", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
   { file: "tarot-wash-refinement.spec.ts", title: "a stationary hand lets the cards rest and keeps only clockwise guidance", reason: BOTH_PHONES_A4 },
 ];
