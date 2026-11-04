@@ -5,14 +5,18 @@
  * Every entry is marked `fixme` (reported as skipped, never as passed) so the
  * suite can gate new changes again. Remove an entry in the same change that
  * fixes or rewrites its test. Do not add new entries without review.
+ * An entry with `project` applies to that phone project only.
  */
 const FRAME_BUDGET = "Frame budget exceeded in headless WebKit; the full-viewport mascot WebGL canvas is the measured cost. Tracked as a performance follow-up.";
 const fixPending = (branch: string) => `App bug, fixed on ${branch}; remove this entry once that PR merges.`;
 const ASK_SE_FOLD = "Real layout bug on iPhone SE: with the draft-recovery notice, the Ask heading's second line sits under the composer (bottom 571 > 561). Ask files belong to T10; fix after it lands.";
+const PRO_MAX_A4 = "Approved Nov 4 (Decision 5): misses its timing budget on iPhone 17 Pro Max in CI's software-rendered WebKit even with the mascot antialias fix, and passes on SE. The cost is the full-viewport mascot WebGL canvas; remove once that canvas is sized to the mascot.";
 const CJK_200 = "WebKit CI closes the page before this check (slow rendering, A4). In Chromium the Home score row reports clipping only with substitute CJK fonts and reads intact; re-check in WebKit after the mascot fix.";
 
-export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: string }> = [
-  { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", reason: FRAME_BUDGET },
+type Project = "iphone-se" | "iphone-17-pro-max";
+export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: string; project?: Project }> = [
+  { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", project: "iphone-se", reason: fixPending("perf/mascot-webgl-antialias") },
+  { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
   { file: "merge-visual-matrix.spec.ts", title: "merge matrix ja dark app=false system=false text=200", reason: CJK_200 },
   { file: "merge-visual-matrix.spec.ts", title: "merge matrix ko bright app=false system=false text=200", reason: CJK_200 },
   { file: "merge-visual-matrix.spec.ts", title: "merge matrix ko dark app=false system=false text=200", reason: CJK_200 },
@@ -20,14 +24,17 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "motion-performance.spec.ts", title: "web frame regression app=false OS=true: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=false: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
+  { file: "room-entrances.spec.ts", title: "the arriving Tarot question accepts pointer input within its first 300ms", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
   { file: "room-fresh-entry.spec.ts", title: "Ask reentry starts blank, manually restores draft, and keeps prior saved conversation readable", reason: ASK_SE_FOLD },
   { file: "room-visits.spec.ts", title: "a delayed approved departure from a saved Tarot reading keeps the destination entrance", reason: fixPending("fix/menu-exit-room-entrance") },
   { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in en", reason: fixPending("fix/tarot-reading-halo-overflow") },
   { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in zh", reason: fixPending("fix/tarot-reading-halo-overflow") },
+  { file: "tarot-room.spec.ts", title: "Auto Wash avoids sustained animation stalls", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
+  { file: "tarot-wash-refinement.spec.ts", title: "a stationary hand lets the cards rest and keeps only clockwise guidance", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
   { file: "tarot-wash-refinement.spec.ts", title: "wash and cut meet at the same opaque card without a size or position jump", reason: fixPending("fix/tarot-wash-cut-seam") },
 ];
 
-export function quarantineReason(file: string, title: string): string | undefined {
+export function quarantineReason(file: string, title: string, project?: string): string | undefined {
   const name = file.replace(/\\/g, "/").split("/").pop();
-  return QUARANTINED.find(entry => entry.file === name && entry.title === title)?.reason;
+  return QUARANTINED.find(entry => entry.file === name && entry.title === title && (!entry.project || entry.project === project))?.reason;
 }

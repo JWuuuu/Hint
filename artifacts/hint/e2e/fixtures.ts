@@ -13,7 +13,7 @@ export const test = base.extend<{ quarantine: void }>({
   // Reported as skipped (fixme) with its reason; see quarantine.ts.
   quarantine: [async ({}, use, testInfo) => {
     // HINT_E2E_RUN_QUARANTINED=1 runs quarantined tests anyway, to verify fixes before removing entries.
-    const reason = process.env.HINT_E2E_RUN_QUARANTINED ? undefined : quarantineReason(testInfo.file, testInfo.title);
+    const reason = process.env.HINT_E2E_RUN_QUARANTINED ? undefined : quarantineReason(testInfo.file, testInfo.title, testInfo.project.name);
     testInfo.fixme(Boolean(reason), reason);
     await use();
   }, { auto: true }],
