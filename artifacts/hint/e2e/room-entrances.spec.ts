@@ -1,4 +1,4 @@
-import { expect, test, type Page, type TestInfo } from "./fixtures";
+import { appHref, expect, test, type Page, type TestInfo } from "./fixtures";
 
 type EntranceRecord = {
   feature: string | null;
@@ -329,10 +329,10 @@ for (const entry of dockEntries) {
 }
 
 for (const entry of [
-  { from: "collection", feature: "tarot", link: 'a[href="/app/tarot"]', ready: (page: Page) => page.getByPlaceholder("Type your question...") },
-  { from: "animal-tarot", feature: "collection", link: '.animal-action-card[href="/app/collection"]', ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
-  { from: "compatibility", feature: "astrology", link: 'a[href="/app/astrology"]', ready: (page: Page) => page.getByTestId("astrology-screen") },
-  { from: "dream", feature: "journal", link: 'a[href="/app/journal"]', ready: (page: Page) => page.getByTestId("input-journal-body") },
+  { from: "collection", feature: "tarot", link: `a[href="${appHref("/app/tarot")}"]`, ready: (page: Page) => page.getByPlaceholder("Type your question...") },
+  { from: "animal-tarot", feature: "collection", link: `.animal-action-card[href="${appHref("/app/collection")}"]`, ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
+  { from: "compatibility", feature: "astrology", link: `a[href="${appHref("/app/astrology")}"]`, ready: (page: Page) => page.getByTestId("astrology-screen") },
+  { from: "dream", feature: "journal", link: `a[href="${appHref("/app/journal")}"]`, ready: (page: Page) => page.getByTestId("input-journal-body") },
 ]) {
   test(`cross-room ${entry.from} to ${entry.feature} keeps the entrance and direct navigation`, async ({ page }, info) => {
     await seed(page);

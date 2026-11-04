@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "./fixtures";
+import { appHref, expect, test, type Page } from "./fixtures";
 
 async function prepare(page: Page, app: boolean, system: boolean) {
   await page.addInitScript(app => {
@@ -115,7 +115,7 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) {
     await page.reload();
     await page.getByTestId("home-reveal-trigger").click();
     const dialog = page.getByTestId("home-daily-reveal");
-    const read = dialog.locator('a[href="/app/daily"]');
+    const read = dialog.locator(`a[href="${appHref("/app/daily")}"]`);
     await expect(read).toBeVisible();
     await dialog.evaluate(element => {
       const targets = [...element.querySelectorAll<HTMLElement>("h1,h2,p,button,a,span")].filter(node => !node.closest('[aria-hidden="true"],.sr-only') && node.getBoundingClientRect().height > 1);

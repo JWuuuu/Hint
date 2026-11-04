@@ -1,4 +1,4 @@
-import { test, expect, type Page, type TestInfo } from "./fixtures";
+import { test, expect, appHref, type Page, type TestInfo } from "./fixtures";
 
 test.use({ reducedMotion: "reduce" });
 test.beforeEach(async ({ page }) => {
@@ -19,7 +19,7 @@ async function checkHome(page: Page, route: string, info: TestInfo) {
   // Spaces with the dock exit Home through its first tab, labelled "Today" since June.
   const home = page.getByRole("link", { name: /^(Home|Today)$/ }).first();
   await expect(home).toBeVisible();
-  await expect(home).toHaveAttribute("href", "/app");
+  await expect(home).toHaveAttribute("href", appHref("/app"));
   const bounds = await home.boundingBox();
   expect(bounds?.width).toBeGreaterThanOrEqual(44);
   expect(bounds?.height).toBeGreaterThanOrEqual(44);
@@ -60,8 +60,8 @@ test("Nested spaces keep a named parent alongside Home after refresh", async ({ 
     await expect(page.locator("[data-space-navigation]")).toBeVisible();
     await page.reload();
     const nav = page.locator("[data-space-navigation]");
-    await expect(nav.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("href", "/app");
-    const back = nav.locator(`a[href="${parent}"]`);
+    await expect(nav.getByRole("link", { name: "Home", exact: true })).toHaveAttribute("href", appHref("/app"));
+    const back = nav.locator(`a[href="${appHref(parent)}"]`);
     await expect(back).toBeVisible();
     await back.click();
     await expect(page).toHaveURL(new RegExp(`${parent.replaceAll("/", "\\/")}$`));
