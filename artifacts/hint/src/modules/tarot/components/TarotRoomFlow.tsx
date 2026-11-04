@@ -16,6 +16,8 @@ import {
 } from "react";
 import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion";
 import "./spread-recommendation.css";
+import { CrisisSupportPanel } from "./CrisisSupportPanel";
+import { detectCrisis } from "../../../lib/crisisSupport";
 import {
   ArrowLeft,
   ArrowRight,
@@ -3959,6 +3961,7 @@ export function TarotRoomFlow() {
           }
         : null,
     );
+  const [crisisSupport, setCrisisSupport] = useState(false);
   const [spreadRecommendationPending, setSpreadRecommendationPending] =
     useState(false);
   const [design, setDesign] = useState<RoomDesign>(() =>
@@ -4103,6 +4106,13 @@ export function TarotRoomFlow() {
   async function submitQuestionValue(value: string) {
     const cleaned = cleanQuestion(value);
     if (!cleaned) return;
+    // T19: never draw a reading for an explicit crisis statement; show resources instead.
+    if (detectCrisis(cleaned)) {
+      spreadRecommendationControllerRef.current?.abort();
+      setQuestion(cleaned);
+      setCrisisSupport(true);
+      return;
+    }
     clearActiveTarotSession();
     readingArchiveRef.current = null;
     hapticPulse([8, 26, 8]);
@@ -4327,7 +4337,14 @@ export function TarotRoomFlow() {
         </button>
 
         <AnimatePresence initial={false} mode="wait">
-          {step === "question" && (
+          {step === "question" && crisisSupport && (
+            <CrisisSupportPanel
+              key="crisis-support"
+              language={language}
+              onBack={() => setCrisisSupport(false)}
+            />
+          )}
+          {step === "question" && !crisisSupport && (
             <QuestionStep
               key="question"
               question={question}
