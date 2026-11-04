@@ -1,0 +1,11 @@
+# Release-candidate preview only, never merged: runs the full Candidate verification gate
+# on rc-preview/* branches that combine the open PRs.
+name: RC preview
+on:
+  push:
+    branches: ['rc-preview/**']
+permissions:
+  contents: read
+jobs:
+  verify:
+    uses: ./.github/workflows/quality.yml
