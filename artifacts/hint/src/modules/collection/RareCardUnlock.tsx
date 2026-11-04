@@ -8,8 +8,9 @@ import { SafeImage } from "../../shared/ui/SafeImage";
 import "./rare-card-unlock.css";
 import { useMotionPolicy } from "../../lib/motionPolicy";
 import { useLanguage } from "../../lib/i18n";
+import { publicAsset } from "../../lib/publicAsset";
 
-const FALLBACK_IMAGE = "/brand/tarot/cards/19-TheSun.jpg";
+const FALLBACK_IMAGE = publicAsset("brand/tarot/cards/19-TheSun.jpg");
 const ANIMATION_DURATION_MS = 4300;
 
 function RareCardBack({ large = false }: { large?: boolean }) {

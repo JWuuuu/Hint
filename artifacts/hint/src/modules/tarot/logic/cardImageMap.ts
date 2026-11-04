@@ -1,9 +1,11 @@
+import { publicAsset } from "../../../lib/publicAsset";
+
 export type TarotCardArtId = "original" | "hint-classic" | "hint-card-2";
 
 const CARD_IMAGE_BASE_PATHS: Record<TarotCardArtId, string> = {
-  original: "/brand/tarot/cards",
-  "hint-classic": "/brand/tarot/decks/hint-classic/cards",
-  "hint-card-2": "/brand/tarot/decks/hint-card-2/cards",
+  original: publicAsset("brand/tarot/cards"),
+  "hint-classic": publicAsset("brand/tarot/decks/hint-classic/cards"),
+  "hint-card-2": publicAsset("brand/tarot/decks/hint-card-2/cards"),
 };
 
 const TAROT_CARD_ASSET_VERSION = "20260616";

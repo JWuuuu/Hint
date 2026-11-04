@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { DailyLuckyItem } from "../types/home.types";
+import { publicAsset } from "../../../lib/publicAsset";
 
 type LuckyIllustrationProps = {
   item: DailyLuckyItem;
@@ -56,133 +57,133 @@ export const LUCKY_COLOR_SWATCHES: Record<string, string> = {
 };
 
 const JEWELRY_ASSETS: Record<string, string> = {
-  "Gold Ring": "/lucky/jewelry/gold-ring.png?v=jewelry-clean-20260611",
-  "Silver Ring": "/lucky/jewelry/silver-ring.png?v=jewelry-clean-20260611",
-  "Pearl Earrings": "/lucky/jewelry/pearl-earrings.png?v=jewelry-clean-20260611",
-  "Gold Necklace": "/lucky/jewelry/gold-necklace.png?v=jewelry-clean-20260611",
-  "Silver Necklace": "/lucky/jewelry/silver-necklace.png?v=jewelry-clean-20260611",
-  "Rose Quartz": "/lucky/jewelry/rose-quartz.png?v=jewelry-clean-20260611",
-  Moonstone: "/lucky/jewelry/moonstone.png?v=jewelry-clean-20260611",
-  Amethyst: "/lucky/jewelry/amethyst.png?v=jewelry-clean-20260611",
-  "Pearl Bracelet": "/lucky/jewelry/pearl-bracelet.png?v=jewelry-clean-20260611",
-  "Hoop Earrings": "/lucky/jewelry/hoop-earrings.png?v=jewelry-clean-20260611",
-  "Star Necklace": "/lucky/jewelry/star-necklace.png?v=jewelry-clean-20260611",
-  "Heart Pendant": "/lucky/jewelry/heart-pendant.png?v=jewelry-clean-20260611",
-  "Crystal Earrings": "/lucky/jewelry/crystal-earrings.png?v=jewelry-clean-20260611",
-  "Sapphire Ring": "/lucky/jewelry/sapphire-ring.png?v=jewelry-clean-20260611",
-  "Emerald Pendant": "/lucky/jewelry/emerald-pendant.png?v=jewelry-clean-20260611",
-  "Opal Ring": "/lucky/jewelry/opal-ring.png?v=jewelry-clean-20260611",
-  "Silver Bangle": "/lucky/jewelry/silver-bangle.png?v=jewelry-clean-20260611",
-  "Charm Bracelet": "/lucky/jewelry/charm-bracelet.png?v=jewelry-clean-20260611",
-  "Butterfly Necklace": "/lucky/jewelry/butterfly-necklace.png?v=jewelry-clean-20260611",
-  "Sun Pendant": "/lucky/jewelry/sun-pendant.png?v=jewelry-clean-20260611",
-  "Moon Pendant": "/lucky/jewelry/moon-pendant.png?v=jewelry-clean-20260611",
-  "Diamond Studs": "/lucky/jewelry/diamond-studs.png?v=jewelry-clean-20260611",
-  "Rose Gold Ring": "/lucky/jewelry/rose-gold-ring.png?v=jewelry-clean-20260611",
-  "Quartz Bracelet": "/lucky/jewelry/quartz-bracelet.png?v=jewelry-clean-20260611",
-  "Zodiac Necklace": "/lucky/jewelry/zodiac-necklace.png?v=jewelry-clean-20260611",
-  "Clover Charm": "/lucky/jewelry/clover-charm.png?v=jewelry-clean-20260611",
-  "Shell Necklace": "/lucky/jewelry/shell-necklace.png?v=jewelry-clean-20260611",
-  "Birthstone Ring": "/lucky/jewelry/birthstone-ring.png?v=jewelry-clean-20260611",
-  "Gem Earrings": "/lucky/jewelry/gem-earrings.png?v=jewelry-clean-20260611",
-  "Infinity Bracelet": "/lucky/jewelry/infinity-bracelet.png?v=jewelry-clean-20260611",
+  "Gold Ring": "lucky/jewelry/gold-ring.png?v=jewelry-clean-20260611",
+  "Silver Ring": "lucky/jewelry/silver-ring.png?v=jewelry-clean-20260611",
+  "Pearl Earrings": "lucky/jewelry/pearl-earrings.png?v=jewelry-clean-20260611",
+  "Gold Necklace": "lucky/jewelry/gold-necklace.png?v=jewelry-clean-20260611",
+  "Silver Necklace": "lucky/jewelry/silver-necklace.png?v=jewelry-clean-20260611",
+  "Rose Quartz": "lucky/jewelry/rose-quartz.png?v=jewelry-clean-20260611",
+  Moonstone: "lucky/jewelry/moonstone.png?v=jewelry-clean-20260611",
+  Amethyst: "lucky/jewelry/amethyst.png?v=jewelry-clean-20260611",
+  "Pearl Bracelet": "lucky/jewelry/pearl-bracelet.png?v=jewelry-clean-20260611",
+  "Hoop Earrings": "lucky/jewelry/hoop-earrings.png?v=jewelry-clean-20260611",
+  "Star Necklace": "lucky/jewelry/star-necklace.png?v=jewelry-clean-20260611",
+  "Heart Pendant": "lucky/jewelry/heart-pendant.png?v=jewelry-clean-20260611",
+  "Crystal Earrings": "lucky/jewelry/crystal-earrings.png?v=jewelry-clean-20260611",
+  "Sapphire Ring": "lucky/jewelry/sapphire-ring.png?v=jewelry-clean-20260611",
+  "Emerald Pendant": "lucky/jewelry/emerald-pendant.png?v=jewelry-clean-20260611",
+  "Opal Ring": "lucky/jewelry/opal-ring.png?v=jewelry-clean-20260611",
+  "Silver Bangle": "lucky/jewelry/silver-bangle.png?v=jewelry-clean-20260611",
+  "Charm Bracelet": "lucky/jewelry/charm-bracelet.png?v=jewelry-clean-20260611",
+  "Butterfly Necklace": "lucky/jewelry/butterfly-necklace.png?v=jewelry-clean-20260611",
+  "Sun Pendant": "lucky/jewelry/sun-pendant.png?v=jewelry-clean-20260611",
+  "Moon Pendant": "lucky/jewelry/moon-pendant.png?v=jewelry-clean-20260611",
+  "Diamond Studs": "lucky/jewelry/diamond-studs.png?v=jewelry-clean-20260611",
+  "Rose Gold Ring": "lucky/jewelry/rose-gold-ring.png?v=jewelry-clean-20260611",
+  "Quartz Bracelet": "lucky/jewelry/quartz-bracelet.png?v=jewelry-clean-20260611",
+  "Zodiac Necklace": "lucky/jewelry/zodiac-necklace.png?v=jewelry-clean-20260611",
+  "Clover Charm": "lucky/jewelry/clover-charm.png?v=jewelry-clean-20260611",
+  "Shell Necklace": "lucky/jewelry/shell-necklace.png?v=jewelry-clean-20260611",
+  "Birthstone Ring": "lucky/jewelry/birthstone-ring.png?v=jewelry-clean-20260611",
+  "Gem Earrings": "lucky/jewelry/gem-earrings.png?v=jewelry-clean-20260611",
+  "Infinity Bracelet": "lucky/jewelry/infinity-bracelet.png?v=jewelry-clean-20260611",
 };
 
 const FOOD_ASSETS: Record<string, string> = {
-  "Bubble Tea": "/lucky/food/bubble-tea.png?v=food-cutout-20260610",
-  Avocado: "/lucky/food/avocado.png?v=food-cutout-20260610",
-  Strawberry: "/lucky/food/strawberry.png?v=food-cutout-20260610",
-  Matcha: "/lucky/food/matcha.png?v=food-cutout-20260610",
-  Croissant: "/lucky/food/croissant.png?v=food-cutout-20260610",
-  Ramen: "/lucky/food/ramen.png?v=food-cutout-20260610",
-  "Fried Rice": "/lucky/food/fried-rice.png?v=food-cutout-20260610",
-  Sushi: "/lucky/food/sushi.png?v=food-cutout-20260610",
-  Yogurt: "/lucky/food/yogurt.png?v=food-cutout-20260610",
-  Chocolate: "/lucky/food/chocolate.png?v=food-cutout-20260610",
-  Blueberries: "/lucky/food/blueberries.png?v=food-cutout-20260610",
-  Salmon: "/lucky/food/salmon.png?v=food-cutout-20260610",
-  "Iced Coffee": "/lucky/food/iced-coffee.png?v=food-cutout-20260610",
-  Macarons: "/lucky/food/macarons.png?v=food-cutout-20260610",
-  Donut: "/lucky/food/donut.png?v=food-cutout-20260610",
-  Dumplings: "/lucky/food/dumplings.png?v=food-cutout-20260610",
-  Mango: "/lucky/food/mango.png?v=food-cutout-20260610",
-  Pancakes: "/lucky/food/pancakes.png?v=food-cutout-20260610",
-  Tacos: "/lucky/food/tacos.png?v=food-cutout-20260610",
-  Salad: "/lucky/food/salad.png?v=food-cutout-20260610",
-  "Ice Cream": "/lucky/food/ice-cream.png?v=food-cutout-20260610",
-  Cheesecake: "/lucky/food/cheesecake.png?v=food-cutout-20260610",
-  "Acai Bowl": "/lucky/food/acai-bowl.png?v=food-cutout-20260610",
-  Apple: "/lucky/food/apple.png?v=food-cutout-20260610",
-  Grapes: "/lucky/food/grapes.png?v=food-cutout-20260610",
-  Pasta: "/lucky/food/pasta.png?v=food-cutout-20260610",
-  Waffles: "/lucky/food/waffles.png?v=food-cutout-20260610",
-  "Honey Toast": "/lucky/food/honey-toast.png?v=food-cutout-20260610",
+  "Bubble Tea": "lucky/food/bubble-tea.png?v=food-cutout-20260610",
+  Avocado: "lucky/food/avocado.png?v=food-cutout-20260610",
+  Strawberry: "lucky/food/strawberry.png?v=food-cutout-20260610",
+  Matcha: "lucky/food/matcha.png?v=food-cutout-20260610",
+  Croissant: "lucky/food/croissant.png?v=food-cutout-20260610",
+  Ramen: "lucky/food/ramen.png?v=food-cutout-20260610",
+  "Fried Rice": "lucky/food/fried-rice.png?v=food-cutout-20260610",
+  Sushi: "lucky/food/sushi.png?v=food-cutout-20260610",
+  Yogurt: "lucky/food/yogurt.png?v=food-cutout-20260610",
+  Chocolate: "lucky/food/chocolate.png?v=food-cutout-20260610",
+  Blueberries: "lucky/food/blueberries.png?v=food-cutout-20260610",
+  Salmon: "lucky/food/salmon.png?v=food-cutout-20260610",
+  "Iced Coffee": "lucky/food/iced-coffee.png?v=food-cutout-20260610",
+  Macarons: "lucky/food/macarons.png?v=food-cutout-20260610",
+  Donut: "lucky/food/donut.png?v=food-cutout-20260610",
+  Dumplings: "lucky/food/dumplings.png?v=food-cutout-20260610",
+  Mango: "lucky/food/mango.png?v=food-cutout-20260610",
+  Pancakes: "lucky/food/pancakes.png?v=food-cutout-20260610",
+  Tacos: "lucky/food/tacos.png?v=food-cutout-20260610",
+  Salad: "lucky/food/salad.png?v=food-cutout-20260610",
+  "Ice Cream": "lucky/food/ice-cream.png?v=food-cutout-20260610",
+  Cheesecake: "lucky/food/cheesecake.png?v=food-cutout-20260610",
+  "Acai Bowl": "lucky/food/acai-bowl.png?v=food-cutout-20260610",
+  Apple: "lucky/food/apple.png?v=food-cutout-20260610",
+  Grapes: "lucky/food/grapes.png?v=food-cutout-20260610",
+  Pasta: "lucky/food/pasta.png?v=food-cutout-20260610",
+  Waffles: "lucky/food/waffles.png?v=food-cutout-20260610",
+  "Honey Toast": "lucky/food/honey-toast.png?v=food-cutout-20260610",
 };
 
 const CARRY_ASSETS: Record<string, string> = {
-  "AirPods Case": "/lucky/carry/airpods-case.png?v=carry-safe-20260610",
-  "Lip Balm": "/lucky/carry/lip-balm.png?v=carry-safe-20260610",
-  "Hair Ties": "/lucky/carry/hair-ties.png?v=carry-safe-20260610",
-  Phone: "/lucky/carry/phone.png?v=carry-safe-20260610",
-  Sunglasses: "/lucky/carry/sunglasses.png?v=carry-safe-20260610",
-  "Water Bottle": "/lucky/carry/water-bottle.png?v=carry-safe-20260610",
-  Perfume: "/lucky/carry/perfume.png?v=carry-safe-20260610",
-  "Canvas Bag": "/lucky/carry/canvas-bag.png?v=carry-safe-20260610",
-  Notebook: "/lucky/carry/notebook.png?v=carry-safe-20260610",
-  Keychain: "/lucky/carry/keychain.png?v=carry-safe-20260610",
-  Lipstick: "/lucky/carry/lipstick.png?v=carry-safe-20260610",
-  "Hand Cream": "/lucky/carry/hand-cream.png?v=carry-safe-20260610",
-  Ring: "/lucky/carry/ring.png?v=carry-safe-20260610",
-  Bracelet: "/lucky/carry/bracelet.png?v=carry-safe-20260610",
-  Necklace: "/lucky/carry/necklace.png?v=carry-safe-20260610",
-  Mirror: "/lucky/carry/mirror.png?v=carry-safe-20260610",
-  Charger: "/lucky/carry/charger.png?v=carry-safe-20260610",
-  Wallet: "/lucky/carry/wallet.png?v=carry-safe-20260610",
-  Scrunchie: "/lucky/carry/scrunchie.png?v=carry-safe-20260610",
-  "Claw Clip": "/lucky/carry/claw-clip.png?v=carry-safe-20260610",
-  Camera: "/lucky/carry/camera.png?v=carry-safe-20260610",
-  "Earbuds Case": "/lucky/carry/earbuds-case.png?v=carry-safe-20260610",
-  "Makeup Bag": "/lucky/carry/makeup-bag.png?v=carry-safe-20260610",
-  "Crystal Charm": "/lucky/carry/crystal-charm.png?v=carry-safe-20260610",
-  "Coin Purse": "/lucky/carry/coin-purse.png?v=carry-safe-20260610",
-  Pen: "/lucky/carry/pen.png?v=carry-safe-20260610",
-  "Mini Plush": "/lucky/carry/mini-plush.png?v=carry-safe-20260610",
-  "Travel Mug": "/lucky/carry/travel-mug.png?v=carry-safe-20260610",
-  Glasses: "/lucky/carry/glasses.png?v=carry-safe-20260610",
-  Headphones: "/lucky/carry/headphones.png?v=carry-safe-20260610",
+  "AirPods Case": "lucky/carry/airpods-case.png?v=carry-safe-20260610",
+  "Lip Balm": "lucky/carry/lip-balm.png?v=carry-safe-20260610",
+  "Hair Ties": "lucky/carry/hair-ties.png?v=carry-safe-20260610",
+  Phone: "lucky/carry/phone.png?v=carry-safe-20260610",
+  Sunglasses: "lucky/carry/sunglasses.png?v=carry-safe-20260610",
+  "Water Bottle": "lucky/carry/water-bottle.png?v=carry-safe-20260610",
+  Perfume: "lucky/carry/perfume.png?v=carry-safe-20260610",
+  "Canvas Bag": "lucky/carry/canvas-bag.png?v=carry-safe-20260610",
+  Notebook: "lucky/carry/notebook.png?v=carry-safe-20260610",
+  Keychain: "lucky/carry/keychain.png?v=carry-safe-20260610",
+  Lipstick: "lucky/carry/lipstick.png?v=carry-safe-20260610",
+  "Hand Cream": "lucky/carry/hand-cream.png?v=carry-safe-20260610",
+  Ring: "lucky/carry/ring.png?v=carry-safe-20260610",
+  Bracelet: "lucky/carry/bracelet.png?v=carry-safe-20260610",
+  Necklace: "lucky/carry/necklace.png?v=carry-safe-20260610",
+  Mirror: "lucky/carry/mirror.png?v=carry-safe-20260610",
+  Charger: "lucky/carry/charger.png?v=carry-safe-20260610",
+  Wallet: "lucky/carry/wallet.png?v=carry-safe-20260610",
+  Scrunchie: "lucky/carry/scrunchie.png?v=carry-safe-20260610",
+  "Claw Clip": "lucky/carry/claw-clip.png?v=carry-safe-20260610",
+  Camera: "lucky/carry/camera.png?v=carry-safe-20260610",
+  "Earbuds Case": "lucky/carry/earbuds-case.png?v=carry-safe-20260610",
+  "Makeup Bag": "lucky/carry/makeup-bag.png?v=carry-safe-20260610",
+  "Crystal Charm": "lucky/carry/crystal-charm.png?v=carry-safe-20260610",
+  "Coin Purse": "lucky/carry/coin-purse.png?v=carry-safe-20260610",
+  Pen: "lucky/carry/pen.png?v=carry-safe-20260610",
+  "Mini Plush": "lucky/carry/mini-plush.png?v=carry-safe-20260610",
+  "Travel Mug": "lucky/carry/travel-mug.png?v=carry-safe-20260610",
+  Glasses: "lucky/carry/glasses.png?v=carry-safe-20260610",
+  Headphones: "lucky/carry/headphones.png?v=carry-safe-20260610",
 };
 
 const FLOWER_ASSETS: Record<string, string> = {
-  Sunflower: "/lucky/flower/sunflower.png?v=flower-fit-20260611b",
-  Rose: "/lucky/flower/rose.png?v=flower-fit-20260611b",
-  Tulip: "/lucky/flower/tulip.png?v=flower-fit-20260611b",
-  Daisy: "/lucky/flower/daisy.png?v=flower-fit-20260611b",
-  Lavender: "/lucky/flower/lavender.png?v=flower-fit-20260611b",
-  Peony: "/lucky/flower/peony.png?v=flower-fit-20260611b",
-  Lily: "/lucky/flower/lily.png?v=flower-fit-20260611b",
-  "Cherry Blossom": "/lucky/flower/cherry-blossom.png?v=flower-fit-20260611b",
-  Hydrangea: "/lucky/flower/hydrangea.png?v=flower-fit-20260611b",
-  Orchid: "/lucky/flower/orchid.png?v=flower-fit-20260611b",
-  Jasmine: "/lucky/flower/jasmine.png?v=flower-fit-20260611b",
-  Camellia: "/lucky/flower/camellia.png?v=flower-fit-20260611b",
-  Iris: "/lucky/flower/iris.png?v=flower-fit-20260611b",
-  Magnolia: "/lucky/flower/magnolia.png?v=flower-fit-20260611b",
-  Dandelion: "/lucky/flower/dandelion.png?v=flower-fit-20260611b",
-  Marigold: "/lucky/flower/marigold.png?v=flower-fit-20260611b",
-  "Baby's Breath": "/lucky/flower/babys-breath.png?v=flower-fit-20260611b",
-  Gardenia: "/lucky/flower/gardenia.png?v=flower-fit-20260611b",
-  Lotus: "/lucky/flower/lotus.png?v=flower-fit-20260611b",
-  "Poppy Seed": "/lucky/flower/poppy-seed.png?v=flower-fit-20260611b",
-  "Pink Camellia": "/lucky/flower/pink-camellia.png?v=flower-fit-20260611b",
-  "Forget-Me-Not": "/lucky/flower/forget-me-not.png?v=flower-fit-20260611b",
-  Hibiscus: "/lucky/flower/hibiscus.png?v=flower-fit-20260611b",
-  Ranunculus: "/lucky/flower/ranunculus.png?v=flower-fit-20260611c",
-  Anemone: "/lucky/flower/anemone.png?v=flower-fit-20260611b",
-  "Sweet Pea": "/lucky/flower/sweet-pea.png?v=flower-fit-20260611b",
-  Cosmos: "/lucky/flower/cosmos.png?v=flower-fit-20260611b",
-  Snapdragon: "/lucky/flower/snapdragon.png?v=flower-fit-20260611b",
-  "Morning Glory": "/lucky/flower/morning-glory.png?v=flower-fit-20260611b",
-  Freesia: "/lucky/flower/freesia.png?v=flower-fit-20260611b",
+  Sunflower: "lucky/flower/sunflower.png?v=flower-fit-20260611b",
+  Rose: "lucky/flower/rose.png?v=flower-fit-20260611b",
+  Tulip: "lucky/flower/tulip.png?v=flower-fit-20260611b",
+  Daisy: "lucky/flower/daisy.png?v=flower-fit-20260611b",
+  Lavender: "lucky/flower/lavender.png?v=flower-fit-20260611b",
+  Peony: "lucky/flower/peony.png?v=flower-fit-20260611b",
+  Lily: "lucky/flower/lily.png?v=flower-fit-20260611b",
+  "Cherry Blossom": "lucky/flower/cherry-blossom.png?v=flower-fit-20260611b",
+  Hydrangea: "lucky/flower/hydrangea.png?v=flower-fit-20260611b",
+  Orchid: "lucky/flower/orchid.png?v=flower-fit-20260611b",
+  Jasmine: "lucky/flower/jasmine.png?v=flower-fit-20260611b",
+  Camellia: "lucky/flower/camellia.png?v=flower-fit-20260611b",
+  Iris: "lucky/flower/iris.png?v=flower-fit-20260611b",
+  Magnolia: "lucky/flower/magnolia.png?v=flower-fit-20260611b",
+  Dandelion: "lucky/flower/dandelion.png?v=flower-fit-20260611b",
+  Marigold: "lucky/flower/marigold.png?v=flower-fit-20260611b",
+  "Baby's Breath": "lucky/flower/babys-breath.png?v=flower-fit-20260611b",
+  Gardenia: "lucky/flower/gardenia.png?v=flower-fit-20260611b",
+  Lotus: "lucky/flower/lotus.png?v=flower-fit-20260611b",
+  "Poppy Seed": "lucky/flower/poppy-seed.png?v=flower-fit-20260611b",
+  "Pink Camellia": "lucky/flower/pink-camellia.png?v=flower-fit-20260611b",
+  "Forget-Me-Not": "lucky/flower/forget-me-not.png?v=flower-fit-20260611b",
+  Hibiscus: "lucky/flower/hibiscus.png?v=flower-fit-20260611b",
+  Ranunculus: "lucky/flower/ranunculus.png?v=flower-fit-20260611c",
+  Anemone: "lucky/flower/anemone.png?v=flower-fit-20260611b",
+  "Sweet Pea": "lucky/flower/sweet-pea.png?v=flower-fit-20260611b",
+  Cosmos: "lucky/flower/cosmos.png?v=flower-fit-20260611b",
+  Snapdragon: "lucky/flower/snapdragon.png?v=flower-fit-20260611b",
+  "Morning Glory": "lucky/flower/morning-glory.png?v=flower-fit-20260611b",
+  Freesia: "lucky/flower/freesia.png?v=flower-fit-20260611b",
 };
 
 function hexToRgb(hex: string) {
@@ -306,7 +307,8 @@ function LuckyNumber({ value, size }: { value: string; size: number }) {
 }
 
 function JewelryImage({ value, size }: { value: string; size: number }) {
-  const src = JEWELRY_ASSETS[value];
+  const asset = JEWELRY_ASSETS[value];
+  const src = asset && publicAsset(asset);
   const imageSize = Math.round(size * 0.92);
 
   if (!src) return <Jewelry value={value} size={size} />;
@@ -330,7 +332,8 @@ function JewelryImage({ value, size }: { value: string; size: number }) {
 }
 
 function FoodImage({ value, size }: { value: string; size: number }) {
-  const src = FOOD_ASSETS[value];
+  const asset = FOOD_ASSETS[value];
+  const src = asset && publicAsset(asset);
   const imageSize = Math.round(size * 0.92);
 
   if (!src) return <Food value={value} size={size} />;
@@ -354,7 +357,8 @@ function FoodImage({ value, size }: { value: string; size: number }) {
 }
 
 function CarryImage({ value, size }: { value: string; size: number }) {
-  const src = CARRY_ASSETS[value];
+  const asset = CARRY_ASSETS[value];
+  const src = asset && publicAsset(asset);
   const imageSize = Math.round(size * 0.92);
 
   if (!src) return <Carry value={value} size={size} />;
@@ -378,7 +382,8 @@ function CarryImage({ value, size }: { value: string; size: number }) {
 }
 
 function FlowerImage({ value, size }: { value: string; size: number }) {
-  const src = FLOWER_ASSETS[value];
+  const asset = FLOWER_ASSETS[value];
+  const src = asset && publicAsset(asset);
   const imageSize = Math.round(size * 0.82);
 
   if (!src) return <Flower value={value} size={size} />;

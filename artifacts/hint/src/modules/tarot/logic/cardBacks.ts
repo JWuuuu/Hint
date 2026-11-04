@@ -1,6 +1,8 @@
+import { publicAsset } from "../../../lib/publicAsset";
+
 export type TarotCardBackStyle = "nocturne" | "ivory" | "rose";
 
-const TAROT_CARD_BACK_BASE_PATH = "/brand/tarot/card-backs";
+const TAROT_CARD_BACK_BASE_PATH = publicAsset("brand/tarot/card-backs");
 const TAROT_CARD_BACK_ASSET_VERSION = "20260625-sky-deck-borderless";
 
 export const TAROT_CARD_BACK_FILES = [

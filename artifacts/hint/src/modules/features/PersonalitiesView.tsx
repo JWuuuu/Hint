@@ -6,6 +6,7 @@ import { useLanguage, type HintLanguage } from "../../lib/i18n";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getAnonId } from "../../lib/identity";
 import { publicAppUrl } from "../../lib/publicUrls";
+import { publicAsset } from "../../lib/publicAsset";
 import { historyClearVersion } from "../../lib/clearHistory";
 import { readPersonalityProgress, readPersonalityResults, writePersonalityProgress, emptyPersonalityProgress, type PersonalityProgress, type QuizAxis } from "./personalityProgress";
 import { markRoomVisitStarted, roomVisitWasClosed } from "../../components/app/roomVisits";
@@ -488,7 +489,7 @@ async function drawPersonalityIcon(
   y: number,
   size: number,
 ) {
-  const image = await loadImage("/personalities/personality-icons-simple.png");
+  const image = await loadImage(publicAsset("personalities/personality-icons-simple.png"));
   const index = PERSONALITY_ICON_INDEX[resultName];
   const col = index % 6;
   const row = Math.floor(index / 6);
@@ -798,7 +799,7 @@ export function PersonalitiesView() {
               aria-label={t("quality.character").replace("{name}", personalityCopy(resultName, RESULT_COPY[resultName], language).name)}
               className="absolute right-0 top-0 h-24 w-24 rounded-[22px] border sm:h-28 sm:w-28"
               style={{
-                backgroundImage: "url('/personalities/personality-icons-simple.png')",
+                backgroundImage: `url('${publicAsset("personalities/personality-icons-simple.png")}')`,
                 backgroundPosition: personalityIconPosition(resultName),
                 backgroundSize: "600% 300%",
                 backgroundRepeat: "no-repeat",
