@@ -87,6 +87,11 @@ function providerLabel(provider: LocalAccount["provider"]) {
   return provider.charAt(0).toUpperCase() + provider.slice(1);
 }
 
+// The tester account loads a fixed birth profile for live astrology checks. Beta
+// testers should use their own details, so production builds leave it out entirely
+// unless VITE_HINT_SHOW_TESTER_ACCOUNT=1 is set for an internal build.
+const SHOW_TESTER_ACCOUNT = import.meta.env.DEV || import.meta.env.VITE_HINT_SHOW_TESTER_ACCOUNT === "1";
+
 export function LoginView() {
   const { t } = useLanguage();
   const [, navigate] = useLocation();
@@ -510,7 +515,7 @@ export function LoginView() {
           </form>
 
           <div className="mt-5 grid gap-4 border-t pt-5" style={{ borderColor: GLASS.border }}>
-            <button
+            {SHOW_TESTER_ACCOUNT && <button
               type="button"
               onClick={() => void handleUseTesterAccount()}
               disabled={submitting}
@@ -524,7 +529,7 @@ export function LoginView() {
             >
               <ShieldCheck size={14} />
               {t("login.useTester")}
-            </button>
+            </button>}
 
             <section>
               <p className="font-serif text-[10px] uppercase tracking-[0.28em]" style={{ color: GLASS.muted }}>
@@ -562,7 +567,7 @@ export function LoginView() {
                 t("login.saves.item1"),
                 t("login.saves.item2"),
                 t("login.saves.item3"),
-                t("login.saves.item4"),
+                ...(SHOW_TESTER_ACCOUNT ? [t("login.saves.item4")] : []),
               ].map((item) => (
                 <div key={item} className="flex gap-3">
                   <Check size={16} color={ACCENT.aqua} className="mt-0.5 shrink-0" />
