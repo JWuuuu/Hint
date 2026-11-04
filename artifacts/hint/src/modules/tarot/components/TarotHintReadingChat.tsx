@@ -1140,7 +1140,7 @@ export function TarotHintReadingChat({
               menuTriggerRef.current?.focus({ preventScroll: true });
               openReceipt();
             }}>
-            <DropdownMenuItem className="min-h-11 rounded-xl px-3" onSelect={() => leaveTo("/app/readings")}><History size={16} />{t("tarot.flow.chat.history")}</DropdownMenuItem>
+            <DropdownMenuItem className="min-h-11 rounded-xl px-3" data-room-target="/app/readings" onSelect={() => leaveTo("/app/readings")}><History size={16} />{t("tarot.flow.chat.history")}</DropdownMenuItem>
             {onNewReading && <DropdownMenuItem className="min-h-11 rounded-xl px-3" onSelect={() => { if (confirmLeave()) onNewReading(); }}><RotateCcw size={16} />{t("tarot.flow.chat.newReading")}</DropdownMenuItem>}
             <DropdownMenuItem className="min-h-11 rounded-xl px-3" disabled={!savedReadingRef.current} onSelect={() => { receiptFromMenuRef.current = true; }}><Printer size={16} />{t("tarot.flow.chat.receive")}</DropdownMenuItem>
             <DropdownMenuSeparator className="bg-[#7b5b91]/10" />
