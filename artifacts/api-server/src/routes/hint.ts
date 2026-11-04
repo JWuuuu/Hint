@@ -5,7 +5,7 @@
 
 import { Router } from "express";
 import * as z from "zod";
-import { generateAmbientChatReply } from "../modules/hint/chat/ambientReader.js";
+import { EmptyAmbientReplyError, generateAmbientChatReply } from "../modules/hint/chat/ambientReader.js";
 import { aiRequestSignal, consumeAiBudget, withAiLease } from "../lib/aiCostGuards.js";
 import { logger } from "../lib/logger.js";
 
@@ -20,9 +20,17 @@ const chatMessageSchema = z.object({
   content: z.string().min(1).max(4000),
 });
 
+/** Turns validated per request. Older turns are dropped, not rejected: clients
+ * that send a whole long conversation keep working, and the reader selects a
+ * smaller context window from what remains. */
+const MAX_VALIDATED_TURNS = 40;
+
 const ambientChatInputSchema = z.object({
-  messages: z.array(chatMessageSchema).max(40),
-  followUp: z.string().min(1).max(2000),
+  messages: z.preprocess(
+    (value) => (Array.isArray(value) ? value.slice(-MAX_VALIDATED_TURNS) : value),
+    z.array(chatMessageSchema).max(MAX_VALIDATED_TURNS),
+  ),
+  followUp: z.string().trim().min(1).max(2000),
 });
 
 function buildLocalAmbientReply({
@@ -55,6 +63,9 @@ router.post("/hint/chat", withAiLease(async (req, res) => {
   }
 
   let message: string;
+  // "local" marks the offline fallback below. Clients must show it as a
+  // service problem and keep the question for retry, never save it as Hint's answer.
+  let source: "api" | "local" = "api";
 
   try {
     message = await generateAmbientChatReply({
@@ -65,18 +76,22 @@ router.post("/hint/chat", withAiLease(async (req, res) => {
   } catch (err) {
     if (aiRequestSignal(req).aborted) return;
     logger.error({ err }, "Failed to generate ambient chat reply");
-    if (!isQuotaError(err)) {
+    if (err instanceof EmptyAmbientReplyError || !isQuotaError(err)) {
       res.status(502).json({
         error: "The AI room could not answer right now.",
+        code: "PROVIDER_UNAVAILABLE",
       });
       return;
     }
 
     message = buildLocalAmbientReply(parsed.data);
+    source = "local";
   }
 
+  if (res.destroyed) return;
   res.json({
     message,
+    source,
     createdAt: new Date().toISOString(),
   });
 }));

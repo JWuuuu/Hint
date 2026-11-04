@@ -200,7 +200,7 @@ export function AskHint() {
               style={{ color: IVORY.mute }}
             >
               {chat.error}
-              <button type="button" className="ml-3 min-h-11 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>
+              {chat.canRetry !== false && <button type="button" className="ml-3 min-h-11 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>}
             </p>
           )}
         </div>

@@ -134,3 +134,175 @@ it("invalidates a reply immediately on confirmed departure before React unmounts
   await act(async () => finish({ message: "Too late", createdAt: "2026-09-10" }));
   expect(listAskHistory("fixture")).toEqual([]); expect(view.result.current.draft).toBe("Leave while sending"); view.unmount();
 });
+
+const longConversation = (id: string, exchanges: number, size = 300) => ({
+  id, anonId: "fixture", createdAt: "2026-09-10", updatedAt: "2026-09-10",
+  messages: Array.from({ length: exchanges * 2 }, (_, index) => ({
+    id: `${id}-${index}`, role: index % 2 ? "assistant" as const : "user" as const,
+    content: `${index % 2 ? "Answer" : "Question"} ${index} `.padEnd(size, "~"), createdAt: "2026-09-10",
+  })),
+});
+const sentTurns = (call = 0) => send.mock.calls[call][0].messages as { role: string; content: string }[];
+
+it("keeps a long restored conversation working by sending only a bounded recent context", async () => {
+  const saved = longConversation("long", 25);
+  saveAskConversation(saved);
+  window.history.replaceState(null, "", "/app/ask?conversation=long");
+  send.mockResolvedValue({ message: "Still with you", source: "api", createdAt: "2026-09-11T00:00:00Z" });
+  const view = renderHook(() => useAskHintChat());
+  act(() => view.result.current.setDraft("Exchange twenty-six"));
+  await act(() => view.result.current.sendMessage("Exchange twenty-six"));
+  const turns = sentTurns();
+  expect(turns.length).toBeGreaterThan(0); expect(turns.length).toBeLessThanOrEqual(16);
+  expect(turns.reduce((sum, turn) => sum + turn.content.length, 0)).toBeLessThanOrEqual(12_000);
+  expect(turns).toEqual(saved.messages.slice(-turns.length).map(({ role, content }) => ({ role, content })));
+  expect(view.result.current.messages).toHaveLength(52);
+  expect(listAskHistory("fixture")[0]?.messages).toHaveLength(52);
+  view.unmount();
+});
+
+it("clips a stored turn that is longer than the server accepts", async () => {
+  saveAskConversation({ ...longConversation("oversized", 1), messages: [{ id: "big", role: "assistant", content: "x".repeat(5_000), createdAt: "2026-09-10" }] });
+  window.history.replaceState(null, "", "/app/ask?conversation=oversized");
+  send.mockResolvedValue({ message: "Reply", createdAt: "2026-09-11T00:00:00Z" });
+  const view = renderHook(() => useAskHintChat());
+  await act(() => view.result.current.sendMessage("Next"));
+  expect(sentTurns()[0]?.content.length).toBeLessThanOrEqual(4_000);
+  view.unmount();
+});
+
+it("does not save the service's offline fallback as Hint's answer, keeps the question, and pauses retries briefly", async () => {
+  vi.useFakeTimers();
+  try {
+    send.mockResolvedValueOnce({ message: "The live AI room is unavailable right now.", source: "local", createdAt: "2026-09-11T00:00:00Z" });
+    const view = renderHook(() => useAskHintChat());
+    act(() => view.result.current.setDraft("Are you there?"));
+    await act(() => view.result.current.sendMessage("Are you there?"));
+    expect(view.result.current.messages).toEqual([]);
+    expect(view.result.current.error).toBe("ask.error.quota");
+    expect(view.result.current.draft).toBe("Are you there?");
+    expect(listAskHistory("fixture")).toEqual([]);
+    // Each attempt counts toward the daily allowance, so an immediate retry is held back.
+    expect(view.result.current.isLimited).toBe(true);
+    await act(() => view.result.current.sendMessage(view.result.current.draft));
+    expect(send).toHaveBeenCalledTimes(1);
+    await act(async () => { await vi.advanceTimersByTimeAsync(60_000); });
+    expect(view.result.current.isLimited).toBe(false);
+    send.mockResolvedValueOnce({ message: "A real answer", source: "api", createdAt: "2026-09-11T00:01:00Z" });
+    await act(() => view.result.current.sendMessage(view.result.current.draft));
+    expect(view.result.current.messages.map(message => message.content)).toEqual(["Are you there?", "A real answer"]);
+    expect(view.result.current.error).toBeNull();
+    view.unmount();
+  } finally { vi.useRealTimers(); }
+});
+
+it("shows and saves the server's fixed safety reply like any real answer", async () => {
+  send.mockResolvedValueOnce({ message: "Please call your local emergency number now.", source: "safety", safety: "crisis", createdAt: "2026-09-11T00:00:00Z" });
+  const view = renderHook(() => useAskHintChat());
+  await act(() => view.result.current.sendMessage("I want to end my life"));
+  expect(view.result.current.messages.map(message => message.content)).toEqual(["I want to end my life", "Please call your local emergency number now."]);
+  expect(view.result.current.error).toBeNull(); expect(view.result.current.isLimited).toBe(false);
+  expect(listAskHistory("fixture")[0]?.messages).toHaveLength(2); view.unmount();
+});
+
+it("treats an empty reply as a failed request", async () => {
+  send.mockResolvedValueOnce({ message: "   ", createdAt: "2026-09-11T00:00:00Z" });
+  const view = renderHook(() => useAskHintChat());
+  await act(() => view.result.current.sendMessage("Hello?"));
+  expect(view.result.current.messages).toEqual([]); expect(view.result.current.error).toBe("ask.error.quiet");
+  expect(listAskHistory("fixture")).toEqual([]); view.unmount();
+});
+
+it("ends a stalled request, keeps the question, and lets the retry succeed", async () => {
+  vi.useFakeTimers();
+  try {
+    send.mockImplementationOnce((_body: unknown, { signal }: { signal: AbortSignal }) => new Promise((_resolve, reject) => {
+      signal.addEventListener("abort", () => reject(signal.reason), { once: true });
+    }));
+    const view = renderHook(() => useAskHintChat());
+    act(() => view.result.current.setDraft("Slow network question"));
+    act(() => { void view.result.current.sendMessage("Slow network question"); });
+    expect(view.result.current.isThinking).toBe(true);
+    await act(async () => { await vi.advanceTimersByTimeAsync(29_000); });
+    expect(view.result.current.isThinking).toBe(true);
+    await act(async () => { await vi.advanceTimersByTimeAsync(1_000); });
+    expect(view.result.current.isThinking).toBe(false);
+    expect(send.mock.calls[0][1].signal.aborted).toBe(true);
+    expect(view.result.current.error).toBe("ask.error.quiet");
+    expect(view.result.current.messages).toEqual([]);
+    expect(view.result.current.draft).toBe("Slow network question");
+    send.mockResolvedValueOnce({ message: "Here now", source: "api", createdAt: "2026-09-11T00:00:00Z" });
+    await act(() => view.result.current.sendMessage(view.result.current.draft));
+    expect(view.result.current.messages.map(message => message.content)).toEqual(["Slow network question", "Here now"]);
+    expect(send).toHaveBeenCalledTimes(2);
+    view.unmount();
+  } finally { vi.useRealTimers(); }
+});
+
+it("does not send a question longer than the service accepts", async () => {
+  const view = renderHook(() => useAskHintChat());
+  const long = "a".repeat(2_001);
+  act(() => view.result.current.setDraft(long));
+  await act(() => view.result.current.sendMessage(long));
+  expect(send).not.toHaveBeenCalled();
+  expect(view.result.current.error).toBe("ask.error.tooLong");
+  expect(view.result.current.canRetry).toBe(false);
+  expect(view.result.current.draft).toBe(long);
+  view.unmount();
+});
+
+it("keeps turns another tab saved to the same conversation instead of overwriting them", async () => {
+  const base = longConversation("shared", 1, 20);
+  saveAskConversation(base);
+  window.history.replaceState(null, "", "/app/ask?conversation=shared");
+  const view = renderHook(() => useAskHintChat());
+  const other = [...base.messages,
+    { id: "other-q", role: "user" as const, content: "Asked in another tab", createdAt: "2026-09-10T01:00:00Z" },
+    { id: "other-a", role: "assistant" as const, content: "Answered in another tab", createdAt: "2026-09-10T01:00:05Z" }];
+  saveAskConversation({ ...base, updatedAt: "2026-09-10T01:00:05Z", messages: other });
+  send.mockResolvedValueOnce({ message: "Answered here", source: "api", createdAt: "2026-09-10T02:00:00Z" });
+  await act(() => view.result.current.sendMessage("Asked here"));
+  const stored = listAskHistory("fixture").find(row => row.id === "shared")!;
+  expect(stored.messages.map(message => message.content)).toEqual([
+    ...base.messages.map(message => message.content), "Asked in another tab", "Answered in another tab", "Asked here", "Answered here"]);
+  expect(new Set(stored.messages.map(message => message.id)).size).toBe(stored.messages.length);
+  expect(view.result.current.messages).toEqual(stored.messages);
+  view.unmount();
+});
+
+it("ends the wait even when the request never starts, for example while the session lock is held", async () => {
+  vi.useFakeTimers();
+  try {
+    send.mockImplementationOnce(() => new Promise(() => undefined));
+    const view = renderHook(() => useAskHintChat());
+    act(() => view.result.current.setDraft("Waiting on a lock"));
+    act(() => { void view.result.current.sendMessage("Waiting on a lock"); });
+    await act(async () => { await vi.advanceTimersByTimeAsync(30_000); });
+    expect(view.result.current.isThinking).toBe(false);
+    expect(view.result.current.error).toBe("ask.error.quiet");
+    expect(view.result.current.draft).toBe("Waiting on a lock");
+    view.unmount();
+  } finally { vi.useRealTimers(); }
+});
+
+it("retrying a failed save keeps turns another tab saved in the meantime", async () => {
+  send.mockResolvedValueOnce({ message: "Answer here", source: "api", createdAt: "2026-09-10T02:00:00Z" });
+  const view = renderHook(() => useAskHintChat());
+  const write = Storage.prototype.setItem;
+  const denied = vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (this: Storage, key, value) {
+    if (key.startsWith("hint_ask_history")) throw new Error("Unavailable");
+    return write.call(this, key, value);
+  });
+  await act(() => view.result.current.sendMessage("Question here"));
+  expect(view.result.current.historySaved).toBe(false);
+  denied.mockRestore();
+  const id = new URL(window.location.href).searchParams.get("conversation")!;
+  saveAskConversation({ id, anonId: "fixture", createdAt: "2026-09-10T01:00:00Z", updatedAt: "2026-09-10T03:00:00Z",
+    messages: [{ id: "other-q", role: "user", content: "Other tab question", createdAt: "2026-09-10T03:00:00Z" },
+      { id: "other-a", role: "assistant", content: "Other tab answer", createdAt: "2026-09-10T03:00:05Z" }] });
+  act(() => view.result.current.retrySaveHistory());
+  expect(view.result.current.historySaved).toBe(true);
+  expect(listAskHistory("fixture").find(row => row.id === id)!.messages.map(message => message.content))
+    .toEqual(["Other tab question", "Other tab answer", "Question here", "Answer here"]);
+  view.unmount();
+});

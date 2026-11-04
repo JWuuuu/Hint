@@ -5,7 +5,9 @@ import { AskHint } from "./AskHint";
 
 const state = vi.hoisted(() => ({
   reduced: false,
-  chat: { messages: [] as { id: string; role: "user" | "assistant"; content: string }[], isThinking: false },
+  chat: { messages: [] as { id: string; role: "user" | "assistant"; content: string }[], isThinking: false } as {
+    messages: { id: string; role: "user" | "assistant"; content: string }[]; isThinking: boolean; error?: string; canRetry?: boolean;
+  },
   speech: { id: null as string | null, status: "idle", play: vi.fn(), stop: vi.fn() },
 }));
 vi.mock("./useAskHintChat", () => ({ useAskHintChat: () => state.chat }));
@@ -74,4 +76,14 @@ it("connects the active response's actual audio and stops it for a new request o
   view.rerender(<AskHint />);
   expect(context()).toMatchObject({ phase: "reading", audioPlaying: false });
   expect(state.speech.stop).toHaveBeenCalledTimes(1);
+});
+
+it("offers Retry for a failed request but not for a question that is too long to send", () => {
+  state.chat = { messages: [], isThinking: false, error: "ask.error.quiet", canRetry: true };
+  const view = render(<AskHint />);
+  expect(view.getByRole("button", { name: "quality.retry" })).toBeTruthy();
+  state.chat = { messages: [], isThinking: false, error: "ask.error.tooLong", canRetry: false };
+  view.rerender(<AskHint />);
+  expect(view.getByText("ask.error.tooLong")).toBeTruthy();
+  expect(view.queryByRole("button", { name: "quality.retry" })).toBeNull();
 });
