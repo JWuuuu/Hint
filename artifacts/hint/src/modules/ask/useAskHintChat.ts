@@ -45,12 +45,17 @@ class UnusableReplyError extends Error {
   constructor(readonly kind: "empty" | "fallback") { super(`Ask reply was ${kind}`); }
 }
 
-/** The server marks its offline fallback `source: "local"`; older servers send no source. */
+/**
+ * The server marks its offline fallback `source: "local"`; older servers send no source.
+ * `source: "safety"` is the server's fixed crisis-support reply: a real answer that must be shown.
+ */
+const ANSWER_SOURCES: ReadonlySet<unknown> = new Set(["api", "safety"]);
+
 function readReply(reply: unknown): { message: string; createdAt: string } {
   const value = (reply ?? {}) as { message?: unknown; createdAt?: unknown; source?: unknown };
   const message = typeof value.message === "string" ? value.message.trim() : "";
   if (!message) throw new UnusableReplyError("empty");
-  if ("source" in value && value.source !== "api") throw new UnusableReplyError("fallback");
+  if ("source" in value && !ANSWER_SOURCES.has(value.source)) throw new UnusableReplyError("fallback");
   return { message, createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString() };
 }
 

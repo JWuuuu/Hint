@@ -196,6 +196,15 @@ it("does not save the service's offline fallback as Hint's answer, keeps the que
   } finally { vi.useRealTimers(); }
 });
 
+it("shows and saves the server's fixed safety reply like any real answer", async () => {
+  send.mockResolvedValueOnce({ message: "Please call your local emergency number now.", source: "safety", safety: "crisis", createdAt: "2026-09-11T00:00:00Z" });
+  const view = renderHook(() => useAskHintChat());
+  await act(() => view.result.current.sendMessage("I want to end my life"));
+  expect(view.result.current.messages.map(message => message.content)).toEqual(["I want to end my life", "Please call your local emergency number now."]);
+  expect(view.result.current.error).toBeNull(); expect(view.result.current.isLimited).toBe(false);
+  expect(listAskHistory("fixture")[0]?.messages).toHaveLength(2); view.unmount();
+});
+
 it("treats an empty reply as a failed request", async () => {
   send.mockResolvedValueOnce({ message: "   ", createdAt: "2026-09-11T00:00:00Z" });
   const view = renderHook(() => useAskHintChat());
