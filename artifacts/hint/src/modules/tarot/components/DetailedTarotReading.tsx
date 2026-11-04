@@ -53,7 +53,7 @@ export function DetailedTarotReading({ request, saved, savedContext = "", feedba
     }
   }
 
-  const headingClass = "font-sans text-[11px] uppercase tracking-[0.16em] text-[#8b7a88]";
+  const headingClass = "font-sans text-[11px] uppercase tracking-[0.16em] text-[#735f70]";
   const label = t(status === "loading" ? "tarot.flow.chat.deepLoading" : detail
     ? expanded ? "tarot.flow.chat.deepHide" : "tarot.flow.chat.deepShow"
     : status === "error" ? "tarot.flow.chat.deepRetry" : "tarot.flow.chat.deepOpen");
@@ -79,7 +79,7 @@ export function DetailedTarotReading({ request, saved, savedContext = "", feedba
         {status === "loading" && <LoaderCircle aria-hidden="true" size={15} className="tarot-reading-spinner" />}{label}
       </button>
       <div className="min-h-10 pt-2">
-        <p role={status === "error" ? "alert" : "status"} className={`font-sans text-[11px] leading-5 ${status === "error" ? "text-[#8b5167]" : "text-center text-[#817382]"}`}>
+        <p role={status === "error" ? "alert" : "status"} className={`font-sans text-[11px] leading-5 ${status === "error" ? "text-[#8b5167]" : "text-center text-[#735f70]"}`}>
           {t(status === "loading" ? "tarot.flow.chat.deepLoadingBody" : status === "error" ? "tarot.flow.chat.deepError" : "tarot.flow.chat.deepDemo")}
         </p>
       </div>
@@ -127,7 +127,7 @@ export function DetailedTarotReading({ request, saved, savedContext = "", feedba
                   {t(`tarot.flow.chat.deepFeedback.${value}`)}
                 </button>)}
               </div>
-              <p role="status" className="mt-2 min-h-5 font-sans text-[11px] leading-5 text-[#817382]">{feedback ? t("tarot.flow.chat.deepFeedbackThanks") : t("tarot.flow.chat.deepFeedbackPrivacy")}</p>
+              <p role="status" className="mt-2 min-h-5 font-sans text-[11px] leading-5 text-[#735f70]">{feedback ? t("tarot.flow.chat.deepFeedbackThanks") : t("tarot.flow.chat.deepFeedbackPrivacy")}</p>
             </fieldset>}
             <button type="button" className="tarot-reading-press min-h-11 w-full rounded-[12px] border border-[#7b5b91]/20 bg-white/60 px-3 py-2 font-sans text-[13px] text-[#625467]"
               onClick={() => {
