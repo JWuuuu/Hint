@@ -40,7 +40,9 @@
 .tarot-reading-copy::before {
   content: "";
   position: absolute;
-  inset: -3px;
+  /* No horizontal reach: a wider box made the reading scroll sideways by 3px.
+     The 8px shadow spread still softens the stars at the sides. */
+  inset: -3px 0;
   z-index: -1;
   border-radius: 8px;
   background: var(--reading-base);
