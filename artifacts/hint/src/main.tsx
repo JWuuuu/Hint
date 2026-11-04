@@ -6,9 +6,11 @@ import { configureNativeDeepLinks } from "./lib/mobile/deepLinks";
 import { initializeLocalIdentity } from "./lib/identity";
 import { DevicePreview, shouldShowDevicePreview } from "./components/dev/DevicePreview";
 import { IdentityRecovery } from "./components/app/IdentityRecovery";
+import { captureTesterInviteFromUrl } from "./lib/deviceSession";
 import "./index.css";
 
 configureMobileRuntime();
+captureTesterInviteFromUrl();
 void initializeLocalIdentity().then(() => {
   configureApiClient();
   void configureNativeDeepLinks().catch(() => {

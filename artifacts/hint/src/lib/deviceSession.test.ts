@@ -62,3 +62,33 @@ it("finishes durable enrollment before a queued profile switch can copy its name
   expect(localStorage.getItem(`hint_device_session_v1::${next}`)).toBeNull();
   expect(enroll).toHaveBeenCalledOnce();
 });
+
+it("sends a saved tester invite, reports invite failures and connects after a new code", async () => {
+  const bodies: unknown[] = [];
+  const responses = [
+    new Response(JSON.stringify({ error: "needs invite", code: "INVITE_REQUIRED" }), { status: 403 }),
+    new Response(JSON.stringify({ error: "full", code: "INVITE_EXHAUSTED" }), { status: 403 }),
+    new Response(JSON.stringify({ token: "x".repeat(64), ownerId: "remote-fixture", expiresAt: "2030-01-01" }), { status: 201 }),
+  ];
+  vi.stubGlobal("fetch", vi.fn(async (_url: string, init: RequestInit) => { bodies.push(JSON.parse(String(init.body))); return responses.shift()!; }));
+  const session = await import("./deviceSession");
+  await expect(session.getDeviceSessionToken()).rejects.toMatchObject({ reason: "invite" });
+  expect(session.getDeviceSessionFailure()).toBe("invite");
+  session.saveTesterInvite("  ABCD-EFGH ");
+  await expect(session.getDeviceSessionToken()).rejects.toMatchObject({ reason: "inviteFull" });
+  session.saveTesterInvite("WXYZ-2345");
+  expect(await session.getDeviceSessionToken()).toBe("x".repeat(64));
+  expect(session.getDeviceSessionFailure()).toBeNull();
+  expect(bodies).toEqual([{}, { inviteCode: "ABCD-EFGH" }, { inviteCode: "WXYZ-2345" }]);
+});
+
+it("saves a tester link's invite and removes it from the address bar", async () => {
+  window.history.replaceState(null, "", "/app/today?tester=ABCD-EFGH&lang=es#top");
+  const session = await import("./deviceSession");
+  session.captureTesterInviteFromUrl();
+  expect(session.readTesterInvite()).toBe("ABCD-EFGH");
+  expect(`${window.location.pathname}${window.location.search}${window.location.hash}`).toBe("/app/today?lang=es#top");
+  window.history.replaceState(null, "", "/app");
+  session.captureTesterInviteFromUrl();
+  expect(session.readTesterInvite()).toBe("ABCD-EFGH");
+});

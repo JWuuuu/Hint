@@ -14,6 +14,10 @@ the ledger. Never use schema push against an existing database.
    request budgets/leases. Only token hashes are retained. Old identity strings are
    never ownership proof; old rows remain quarantined and old invites expire.
 
+`20261104_01` adds tester invitations for the private beta. Only code hashes are
+stored, and device sessions record the invitation that enrolled them, so revoking
+an invitation ends its sessions.
+
 Migration 00 bootstraps the previous core schema on a fresh database and preserves
 existing tables. Keep previously reviewed numbered SQL immutable. New changes use
 the next additive migration. Set `DATABASE_URL` explicitly in the deployment secret

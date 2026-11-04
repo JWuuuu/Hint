@@ -6,5 +6,6 @@ export * from "./readings";
 
 export * from "./compatibilityInvites";
 export * from "./historyClears";
+export * from "./testerInvites";
 export * from "./deviceSessions";
 export * from "./requestBudgets";

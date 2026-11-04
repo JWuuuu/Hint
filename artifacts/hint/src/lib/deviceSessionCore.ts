@@ -1,5 +1,6 @@
 export type DeviceSession = { token: string; ownerId: string; expiresAt: string };
-export type DeviceSessionFailure = "unavailable" | "storage" | "expired" | "revoked";
+// "invite": the private beta needs a (valid) tester invite; "inviteFull": that invite is on its maximum devices.
+export type DeviceSessionFailure = "unavailable" | "storage" | "expired" | "revoked" | "invite" | "inviteFull";
 export class DeviceSessionError extends Error {
   constructor(public readonly reason: DeviceSessionFailure) { super(`Device connection: ${reason}`); }
 }

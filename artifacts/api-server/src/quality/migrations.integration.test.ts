@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 const run = promisify(execFile);
 const enabled = process.env.HINT_ISOLATED_DB === "1";
@@ -39,7 +39,8 @@ describe.skipIf(!enabled)("isolated migration rehearsal", () => {
     expect((await database.query("SELECT * FROM hint_schema_migrations WHERE name='20260909_01_history_locks.sql'")).rows).toHaveLength(0);
     await database.query("DROP TRIGGER reject_migration_fixture ON hint_schema_migrations");
     await Promise.all([migrate(), migrate()]);
-    expect((await database.query("SELECT * FROM hint_schema_migrations")).rows).toHaveLength(6);
+    const migrationFiles = (await readdir(new URL("../../../../lib/db/migrations/", import.meta.url))).filter(name => /^\d.*\.sql$/.test(name));
+    expect((await database.query("SELECT * FROM hint_schema_migrations")).rows).toHaveLength(migrationFiles.length);
     expect((await database.query("SELECT name,birth_date,latitude FROM profiles WHERE anon_id='legacy-owner'")).rows).toEqual([{ name: "Preserved profile", birth_date: "2000-01-01", latitude: null }]);
     const old = (await database.query("SELECT creator_input,expires_at<=now() AS expired FROM compatibility_invites WHERE token='old-token'")).rows[0];
     expect(old).toEqual({ creator_input: { name: "Preserved snapshot" }, expired: true });

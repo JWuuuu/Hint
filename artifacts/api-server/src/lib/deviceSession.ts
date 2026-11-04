@@ -1,21 +1,27 @@
 import crypto from "node:crypto";
 import type { Request, RequestHandler } from "express";
 import { pool } from "@workspace/db";
+import { invitesRequired } from "./testerInvites";
 
 export type DeviceSession = { id: string; ownerId: string; expiresAt: Date };
 declare global { namespace Express { interface Request { deviceSession?: DeviceSession } } }
 export function tokenHash(token: string) { return crypto.createHash("sha256").update(token).digest("hex"); }
 
-export async function issueDeviceSession() {
+export async function issueDeviceSession(inviteId: string | null = null, client: Pick<typeof pool, "query"> = pool) {
   const token = `hint_ds_${crypto.randomBytes(32).toString("hex")}`;
   const ownerId = crypto.randomUUID();
   const expiresAt = new Date(Date.now() + 365 * 86400000);
-  await pool.query("INSERT INTO device_sessions(owner_id,token_hash,expires_at) VALUES ($1,$2,$3)", [ownerId, tokenHash(token), expiresAt]);
+  await client.query("INSERT INTO device_sessions(owner_id,token_hash,expires_at,invite_id) VALUES ($1,$2,$3,$4)", [ownerId, tokenHash(token), expiresAt, inviteId]);
   return { token, ownerId, expiresAt: expiresAt.toISOString() };
 }
 export async function readDeviceSession(token: string): Promise<DeviceSession | null> {
   if (!/^hint_ds_[a-f0-9]{64}$/.test(token)) return null;
-  const result = await pool.query("SELECT id,owner_id,expires_at FROM device_sessions WHERE token_hash=$1 AND revoked_at IS NULL AND expires_at > now()", [tokenHash(token)]);
+  // A revoked invitation ends the sessions it enrolled. While invites are
+  // required, a session enrolled without one is not accepted either.
+  const result = await pool.query(`SELECT s.id,s.owner_id,s.expires_at FROM device_sessions s
+    LEFT JOIN tester_invites i ON i.id=s.invite_id
+    WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at > now()
+      AND (i.id IS NULL OR i.revoked_at IS NULL) AND ($2::boolean = false OR s.invite_id IS NOT NULL)`, [tokenHash(token), invitesRequired()]);
   const row = result.rows[0];
   return row ? { id: row.id, ownerId: row.owner_id, expiresAt: row.expires_at } : null;
 }

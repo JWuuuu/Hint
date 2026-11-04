@@ -7,6 +7,25 @@ const managers = new Map<string, ReturnType<typeof createDeviceSessionManager>>(
 const failures = new Map<string, DeviceSessionFailure | null>();
 const EVENT = "hint:device-connection";
 const base = () => (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/+$/, "");
+const INVITE_KEY = "hint_tester_invite_v1";
+
+/** The tester invite saved on this device, if any. It is only sent when connecting. */
+export function readTesterInvite() {
+  try { return localStorage.getItem(INVITE_KEY); } catch { return null; }
+}
+export function saveTesterInvite(code: string) {
+  const trimmed = code.trim();
+  try { if (trimmed) localStorage.setItem(INVITE_KEY, trimmed); else localStorage.removeItem(INVITE_KEY); } catch { /* storage failures surface on connect */ }
+}
+/** A tester link (?tester=XXXX-XXXX) saves its invite and leaves the address bar clean. */
+export function captureTesterInviteFromUrl() {
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get("tester");
+  if (code === null) return;
+  saveTesterInvite(code);
+  url.searchParams.delete("tester");
+  window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
 const key = () => `hint_device_session_v1:${encodeURIComponent(base())}:${encodeURIComponent(getAnonId())}`;
 
 async function nativeStore() {
@@ -45,10 +64,16 @@ function manager() {
         }
       },
       enroll: async () => {
+        const inviteCode = readTesterInvite();
         const response = await fetch(`${base()}/api/device-sessions`, {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: "{}",
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(inviteCode ? { inviteCode } : {}),
           credentials: "omit", redirect: "error", signal: AbortSignal.timeout(10000),
         });
+        if (response.status === 403) {
+          const code = await response.json().then((body: { code?: unknown }) => body?.code, () => undefined);
+          if (code === "INVITE_EXHAUSTED") throw new DeviceSessionError("inviteFull");
+          if (code === "INVITE_REQUIRED" || code === "INVITE_INVALID") throw new DeviceSessionError("invite");
+        }
         if (!response.ok) throw new DeviceSessionError("unavailable");
         return await response.json() as DeviceSession;
       },
