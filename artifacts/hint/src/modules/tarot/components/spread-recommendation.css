@@ -11,7 +11,10 @@
   width: 100%;
   max-width: 440px;
   margin: 0 auto;
-  padding: 22px 6px 12px;
+  /* The room header's mascot slot already adds air above the story, so the
+     page keeps its own top padding small and "Use this spread" stays above the
+     fold on tall phones (Oct 30 mascot slot pushed it 13 px past). */
+  padding: 12px 6px 12px;
   letter-spacing: 0;
 }
 
@@ -63,7 +66,7 @@
 }
 
 .tarot-spread-preview {
-  margin-top: 28px;
+  margin-top: 22px;
   border-top: 1px solid var(--spread-rule);
   padding-top: 16px;
 }
@@ -283,7 +286,7 @@
 }
 
 .tarot-spread-reason {
-  margin-top: 28px;
+  margin-top: 24px;
   border-top: 1px solid var(--spread-rule);
   padding-top: 18px;
 }
