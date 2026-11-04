@@ -2767,6 +2767,13 @@ const CUT_TWO_WAY_SPLIT_SECONDS = 0.56;
 const CUT_TWO_WAY_HOLD_SECONDS = 0.52;
 const CUT_MERGE_TRAVEL_SECONDS = 0.72;
 const CUT_CARD_SIZE = "h-[134px] w-[84px] min-[430px]:h-[150px] min-[430px]:w-[94px]";
+// Cut packets are larger than the gathered wash card they replace. Each packet
+// starts at that card's scale (WASH_CARD_SIZE / CUT_CARD_SIZE, same centre) and
+// grows while the deck splits, so the wash-to-cut handoff has no size jump.
+function washToCutScale() {
+  const wide = typeof window !== "undefined" && window.matchMedia?.("(min-width: 430px)").matches;
+  return wide ? 92 / 150 : 86 / 134;
+}
 
 function getCardMergeDuration() {
   return CUT_MERGE_TRAVEL_SECONDS;
@@ -2954,6 +2961,7 @@ function CutStep({
   const [phase, setPhase] = useState<
     "splitting" | "showing" | "stacking" | "shuffling" | "settled"
   >("splitting");
+  const [handoffScale] = useState(washToCutScale);
   const onDoneRef = useRef(onDone);
   const completedRef = useRef(false);
   const phaseRef = useRef(phase);
@@ -3061,8 +3069,8 @@ function CutStep({
           const target = pilePositions[pileId];
           const spreadOut = phase === "splitting" || phase === "showing";
           const pose = spreadOut
-            ? { x: target.x, y: target.y, rotate: target.rotate }
-            : { x: 0, y: selectedIndex * 1.2, rotate: 0 };
+            ? { x: target.x, y: target.y, rotate: target.rotate, scale: 1 }
+            : { x: 0, y: selectedIndex * 1.2, rotate: 0, scale: 1 };
           const duration = reduceMotion ? 0.05 : phase === "splitting" ? 0.38
             : phase === "showing" ? 0 : 0.36;
           return (
@@ -3072,7 +3080,7 @@ function CutStep({
               <motion.div
                 data-cut-packet={pileId}
                 className={`relative ${CUT_CARD_SIZE} transform-gpu will-change-transform drop-shadow-[0_14px_12px_rgba(24,18,40,0.3)]`}
-                initial={{ x: 0, y: 0, rotate: 0 }}
+                initial={{ x: 0, y: 0, rotate: 0, scale: handoffScale }}
                 animate={pose}
                 transition={{
                   duration,
