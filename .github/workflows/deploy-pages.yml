@@ -48,6 +48,9 @@ jobs:
         env:
           HINT_E2E_PORT: '5188'
           HINT_E2E_BASE_PATH: /Hint
+          # The preview server reads the base from the same variable as the build;
+          # without it, it serves /assets/ while the page asks for /Hint/assets/.
+          BASE_PATH: /Hint/
         run: |
           pnpm --filter @workspace/hint exec playwright install --with-deps webkit
           pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts
