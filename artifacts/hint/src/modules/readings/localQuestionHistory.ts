@@ -15,13 +15,53 @@ export interface QuestionHistoryItem {
   createdAt: string;
 }
 
-function readAll(): QuestionHistoryItem[] {
+const UNREADABLE_KEY = `${STORAGE_KEY}:unreadable`;
+const SPREAD_TYPES = new Set<string>(["single", "three", "relationship", "futureLover", "peachBlossom", "reconciliation", "trueHeart", "loveTree", "xRelationship"] satisfies SpreadType[]);
+
+/** One malformed row (null, half-written, edited by hand) must not take down History. */
+function toQuestionItem(value: unknown): QuestionHistoryItem | null {
+  if (!value || typeof value !== "object") return null;
+  const row = value as Record<string, unknown>;
+  if (typeof row.id !== "string" || typeof row.anonId !== "string") return null;
+  if (typeof row.question !== "string" || !row.question.trim()) return null;
+  if (typeof row.createdAt !== "string" || Number.isNaN(Date.parse(row.createdAt))) return null;
+  if (typeof row.spreadType !== "string" || !SPREAD_TYPES.has(row.spreadType)) return null;
+  return {
+    id: row.id,
+    anonId: row.anonId,
+    question: row.question,
+    focus: typeof row.focus === "string" ? row.focus : "",
+    spreadType: row.spreadType as SpreadType,
+    readingId: typeof row.readingId === "string" ? row.readingId : undefined,
+    createdAt: row.createdAt,
+  };
+}
+
+/** Keep one copy of unreadable history before the next save replaces it. */
+function preserveUnreadable(raw: string) {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (localStorage.getItem(UNREADABLE_KEY) === null) localStorage.setItem(UNREADABLE_KEY, raw);
   } catch {
+    // Best effort only; storage may be full or unavailable.
+  }
+}
+
+function readAll(): QuestionHistoryItem[] {
+  let raw: string | null = null;
+  try {
+    raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
+      preserveUnreadable(raw);
+      return [];
+    }
+    return parsed.flatMap((value) => {
+      const item = toQuestionItem(value);
+      return item ? [item] : [];
+    });
+  } catch {
+    if (raw) preserveUnreadable(raw);
     return [];
   }
 }
