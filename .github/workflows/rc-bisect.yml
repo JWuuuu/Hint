@@ -1,6 +1,6 @@
-# Diagnosis only, never merged: which RC branch makes WebKit crash in the receipt matrix?
-# Each variant reverts one branch's commits in the runner (nothing is pushed), builds,
-# and runs only the receipt specs on iPhone SE.
+# Diagnosis only, never merged: what makes the motion-on receipt matrix hang or crash in WebKit?
+# Round 2: the same build with one canvas hidden at a time, the four dark 200% cases
+# repeated three times each without retries, and the runner's memory sampled.
 name: RC bisect
 on:
   push:
@@ -14,28 +14,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - variant: rc
-            revert: ''
-          - variant: without-mascot-antialias
-            revert: cd30fc5
-          - variant: without-tester-invites
-            revert: 04ec8fd
-          - variant: without-menu-exit
-            revert: cbccb8d ef1d3cc
+          - variant: as-shipped
+            hide: ''
+          - variant: hide-mascot-canvas
+            hide: '[data-testid="hint-guide-layer"] canvas'
+          - variant: hide-constellation-canvas
+            hide: '.hint-app-background canvas'
     env:
       API_PROXY_TARGET: http://127.0.0.1:1
       HINT_E2E_PORT: '5188'
+      DIAG_HIDE: ${{ matrix.hide }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Revert ${{ matrix.variant }}
-        if: ${{ matrix.revert != '' }}
-        run: |
-          for sha in ${{ matrix.revert }}; do
-            git -c user.name=bisect -c user.email=bisect@example.invalid revert --no-edit "$sha"
-          done
-          git log --oneline -3
       - uses: pnpm/action-setup@v4
         with:
           version: 11.5.0
@@ -46,9 +36,13 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build:web
       - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
-      - run: pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=iphone-se e2e/merge-visual-matrix.spec.ts e2e/merge-receipt.spec.ts
-      - name: Summarize first attempts, retries and skips
+      - name: Receipt matrix, motion on, dark, 200% text, x3
+        run: |
+          (while true; do free -m | awk '/Mem:/{print $3}' >> /tmp/mem.txt; sleep 2; done) &
+          pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=iphone-se --retries=0 --repeat-each=3 e2e/merge-visual-matrix.spec.ts -g "dark app=false system=false text=200" || true
+          echo "peak used memory (MB): $(sort -n /tmp/mem.txt | tail -1), samples: $(wc -l < /tmp/mem.txt)"
+      - name: Summarize
         if: always()
         run: |
-          node artifacts/hint/scripts/e2e-summary.mjs artifacts/hint/test-results/production-results.json "Receipt specs (${{ matrix.variant }})"
-          echo "crashes: $(grep -rl 'Target crashed' artifacts/hint/test-results 2>/dev/null | wc -l)"
+          node artifacts/hint/scripts/e2e-summary.mjs artifacts/hint/test-results/production-results.json "Receipt dark 200% (${{ matrix.variant }})" || true
+          echo "crash files: $(grep -rl 'Target crashed' artifacts/hint/test-results 2>/dev/null | wc -l)"
