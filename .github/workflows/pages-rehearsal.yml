@@ -1,0 +1,93 @@
+# Rehearsal only, never merged: runs the Pages build and its per-phone /Hint/ verification
+# from deploy-pages.yml on pages-rehearsal/* branches, without the Pages permissions or deploy.
+name: Pages rehearsal
+on:
+  push:
+    branches: ['pages-rehearsal/**']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        env:
+          BASE_PATH: /Hint/
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+          VITE_HINT_PUBLIC_URL: ${{ vars.VITE_HINT_PUBLIC_URL }}
+          VITE_HINT_DOWNLOAD_URL: ${{ vars.VITE_HINT_DOWNLOAD_URL }}
+        run: pnpm run build:web
+
+      # The exact build both phone checks test; the same files become the Pages artifact.
+      - name: Keep the Pages build for verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-build-${{ github.sha }}
+          path: artifacts/hint/dist/
+          if-no-files-found: error
+          retention-days: 3
+
+  # One WebKit job per phone against the exact /Hint/ build, in parallel. Deploy waits for both.
+  verify-pages:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [iphone-17-pro-max, iphone-se]
+    env:
+      HINT_E2E_PORT: '5188'
+      HINT_E2E_BASE_PATH: /Hint
+      # The preview server reads the base from the same variable as the build;
+      # without it, it serves /assets/ while the page asks for /Hint/assets/.
+      BASE_PATH: /Hint/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download the Pages build
+        uses: actions/download-artifact@v4
+        with:
+          name: pages-build-${{ github.sha }}
+          path: artifacts/hint/dist/
+
+      - name: Verify the exact Pages build (${{ matrix.project }})
+        run: |
+          pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+          pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=${{ matrix.project }}
+
+      - name: Summarize first attempts, retries and skips
+        if: always()
+        run: node artifacts/hint/scripts/e2e-summary.mjs artifacts/hint/test-results/production-results.json "Pages rehearsal /Hint/ (${{ matrix.project }})"
+
