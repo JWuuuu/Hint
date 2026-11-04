@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "./fixtures";
+import { expectRitualStagesInOrder, watchRitualStages } from "./ritualStages";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -513,8 +514,12 @@ test("phone preview presents Personal Spread inside the selected phone", async (
 
   await page.getByLabel("Preview device").selectOption("iphone-se");
   await expect(screen.getByRole("heading", { name: "Three cards", exact: true })).toBeVisible();
-  await screen.locator(".hint-app-scroll").evaluate((element) => { element.scrollTop = element.scrollHeight; });
-  await expect(screen.getByRole("button", { name: "Use this spread" })).toBeInViewport();
+  // The switched frame keeps laying out (images, the mascot slot) after the heading appears, so
+  // keep scrolling to the bottom until the layout settles; the action must then be reachable.
+  await expect(async () => {
+    await screen.locator(".hint-app-scroll").evaluate((element) => { element.scrollTop = element.scrollHeight; });
+    await expect(screen.getByRole("button", { name: "Use this spread" })).toBeInViewport({ timeout: 1000 });
+  }).toPass({ timeout: 15_000 });
   await expect(page.locator(".hint-preview-island")).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("personal-spread-se-action.png") });
 });
@@ -1007,6 +1012,9 @@ for (const motionMode of ["normal", "system", "hint"] as const) {
 }
 
 test("completes and restores the full Tarot Room journey", async ({ page }) => {
+  // The whole journey (ritual, reading, follow-up, receipt print, share, restore) runs well past
+  // the suite's 60 s default under software rendering.
+  test.setTimeout(120_000);
   const consoleErrors: string[] = [];
   let structuredReadingRequests = 0;
   page.on("console", (message) => {
@@ -1021,11 +1029,9 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await enterWash(page);
   await expect(page.getByText("78 cards", { exact: true })).toBeVisible();
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
+  await watchRitualStages(page);
   await page.getByRole("button", { name: "Auto Wash" }).click();
-  await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expectRitualStagesInOrder(page);
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
   await page.reload();
   await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
@@ -1100,7 +1106,8 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await expect(page.getByText("Reading the cards...", { exact: true })).toBeVisible();
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
-  await expect(page.getByText("3 cards", { exact: true })).toBeVisible();
+  // The header no longer prints "{count} cards" (Oct 15); the reading lists each card instead.
+  await expect(page.getByRole("button", { name: /^Preview / })).toHaveCount(3);
   const followUp = "What should I do next?";
   const followUpReply =
     "Choose the smallest honest action, then leave enough space to notice what changes.";
@@ -1110,7 +1117,8 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await chooseReadingOption(page, "Receive");
   const receipt = page.getByRole("dialog", { name: "A letter to keep" });
   await expect(receipt).toBeVisible();
-  await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
+  // Sharing unlocks after the printer finishes (up to 5 s by design) and the PNG is ready.
+  await expect(receipt.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled({ timeout: 20_000 });
   await expect(receipt.getByRole("checkbox")).not.toBeChecked();
   const [receiptDownload] = await Promise.all([
     page.waitForEvent("download"),
@@ -1152,7 +1160,8 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await expect(page.getByText(followUpReply, { exact: true })).toBeVisible();
   expect(structuredReadingRequests).toBe(1);
 
-  await page.getByRole("button", { name: "Open reading history" }).click();
+  // History moved from the saved notice into the reading menu.
+  await chooseReadingOption(page, "History");
   const leaveDialog = page.getByRole("dialog", { name: "Leave this space?" });
   await expect(leaveDialog).toBeVisible();
   await expect(leaveDialog).toContainText("Saved readings, personal details and today’s cards are kept.");
@@ -1290,6 +1299,7 @@ test("a real manual wash release completes the automatic ritual", async ({ page 
       exact: true,
     }),
   ).toBeVisible();
+  await watchRitualStages(page);
   await table.dispatchEvent("pointerup", {
     pointerId,
     pointerType: "touch",
@@ -1297,10 +1307,7 @@ test("a real manual wash release completes the automatic ritual", async ({ page 
     clientY: points.at(-1)!.y,
   });
 
-  await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expectRitualStagesInOrder(page);
   await expect(page.getByLabel("Rotating tarot deck wheel")).toHaveAttribute(
     "data-deck-size",
     "78",
@@ -1309,15 +1316,14 @@ test("a real manual wash release completes the automatic ritual", async ({ page 
 
 test("rapid Auto Wash requests advance through one ordered ritual", async ({ page }) => {
   await enterWash(page);
+  await watchRitualStages(page);
   await page.getByRole("button", { name: "Auto Wash" }).evaluate((button) => {
     button.click();
     button.click();
     button.click();
   });
-  await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  // One ordered ritual: each stage appears once, in order.
+  await expectRitualStagesInOrder(page);
 });
 
 test("an interrupted automatic ritual restarts from its stable prepare stage", async ({ page }) => {
@@ -1441,6 +1447,7 @@ async function openCompletedVoiceSheet(page: Page) {
       interimResults = true;
       lang = "en-US";
       maxAlternatives = 1;
+      onstart: (() => void) | null = null;
       onresult: ((event: unknown) => void) | null = null;
       onerror: ((event: { error: string }) => void) | null = null;
       onend: (() => void) | null = null;
@@ -1451,7 +1458,11 @@ async function openCompletedVoiceSheet(page: Page) {
         });
         this.stop();
       };
-      start() { window.addEventListener("hint-test-speech", this.receive); }
+      start() {
+        window.addEventListener("hint-test-speech", this.receive);
+        // Browsers fire "start" asynchronously once audio capture begins; the sheet says "Opening microphone..." until then.
+        setTimeout(() => this.onstart?.(), 0);
+      }
       stop() {
         window.removeEventListener("hint-test-speech", this.receive);
         this.onend?.();
@@ -2099,6 +2110,9 @@ test("damaged saved interpretation and design recover without losing the selecte
   await page.goto(`/app/tarot?hintPreview=embedded&reading=${encodeURIComponent(original.id)}&returnTo=detail`);
   await openReadingMenu(page);
   await expect(page.getByRole("menuitem", { name: "Refresh the interpretation" })).toBeVisible();
+  // The open menu is modal and hides the reading from assistive tech, so close it before checking the cards.
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("menu", { name: "Reading options" })).toHaveCount(0);
   await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: /^Preview / })).toHaveCount(3);
   await expect(page.locator('[data-room-background="dawn"]')).toBeVisible();
@@ -2250,9 +2264,7 @@ for (const visualCase of VISUAL_CASES) {
     await seedReadingSession(page, visualCase);
     await page.goto("/app/tarot?hintPreview=embedded");
     await expect(page.getByText(READING_SUMMARY, { exact: true })).toBeVisible();
-    const dismissCardTip = page.getByRole("button", { name: "Dismiss card tip" });
-    await expect(dismissCardTip).toBeVisible();
-    await dismissCardTip.click();
+    // The card tip (and its "Dismiss card tip" button) was removed in the Oct 15 snapshot.
     await page.evaluate(() => document.fonts.ready);
 
     const frame = page.getByTestId("tarot-phone-frame");

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "./fixtures";
+import { expectRitualStagesInOrder, watchRitualStages } from "./ritualStages";
 import { writeFile } from "node:fs/promises";
 
 // Independent expected positions: these are part of each spread's user contract.
@@ -80,11 +81,9 @@ for (const [spreadIndex, spread] of spreads.entries()) {
     await page.getByRole("button", { name: /^Customize/i }).click();
     await page.getByTestId(`tarot-room-background-${spread.room}`).click();
     await page.getByRole("button", { name: /Begin the ritual/i }).click();
+    await watchRitualStages(page);
     await page.getByRole("button", { name: "Auto Wash", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Cutting the deck." })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Shuffling the deck." })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "The deck is ready." })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Pick Cards", exact: true })).toBeVisible();
+    await expectRitualStagesInOrder(page);
     await expect(page.getByLabel("Rotating tarot deck wheel")).toHaveAttribute("data-deck-size", "78");
     for (let index = 0; index < spread.positions.length; index++) {
       await chooseCard(page);
@@ -110,7 +109,9 @@ for (const [spreadIndex, spread] of spreads.entries()) {
     expect(saved.structuredReading.cards.map(card => card.position)).toEqual([...spread.positions]);
     await expect(page.getByRole("button", { name: /^Preview / })).toHaveCount(spread.positions.length);
 
-    await page.getByRole("button", { name: "Open reading history", exact: true }).click();
+    // History moved from the saved notice into the reading menu.
+    await page.getByRole("button", { name: "Reading options" }).click();
+    await page.getByRole("menuitem", { name: "History", exact: true }).click();
     const leaveDialog = page.getByRole("dialog", { name: "Leave this space?" });
     await expect(leaveDialog).toBeVisible();
     await expect(leaveDialog).toContainText("Saved readings, personal details and today’s cards are kept.");

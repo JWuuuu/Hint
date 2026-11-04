@@ -209,7 +209,9 @@ test("a delayed approved departure from a saved Tarot reading keeps the destinat
     });
     observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-room-entrance", "data-room-arrival-id"] });
   });
-  const history = page.getByRole("button", { name: "Open reading history", exact: true });
+  // History moved from the saved notice into the reading menu.
+  await page.getByRole("button", { name: "Reading options" }).click();
+  const history = page.getByRole("menuitem", { name: "History", exact: true });
   await history.focus(); await history.click();
   await expect(exitDialog(page)).toBeVisible();
   // The reviewed choice must survive longer than the normal 800ms click-intent lifetime.
