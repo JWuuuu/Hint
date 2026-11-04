@@ -6,7 +6,6 @@
  * suite can gate new changes again. Remove an entry in the same change that
  * fixes or rewrites its test. Do not add new entries without review.
  */
-const GOLDEN_REVIEW = "Pixel golden predates the current design (Oct 15 and Oct 27-30 visual work); re-baseline only after visual approval.";
 const FRAME_BUDGET = "Frame budget exceeded in headless WebKit; the full-viewport mascot WebGL canvas is the measured cost. Tracked as a performance follow-up.";
 const fixPending = (branch: string) => `App bug, fixed on ${branch}; remove this entry once that PR merges.`;
 const ASK_SE_FOLD = "Real layout bug on iPhone SE: with the draft-recovery notice, the Ask heading's second line sits under the composer (bottom 571 > 561). Ask files belong to T10; fix after it lands.";
@@ -23,17 +22,8 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "room-fresh-entry.spec.ts", title: "Ask reentry starts blank, manually restores draft, and keeps prior saved conversation readable", reason: ASK_SE_FOLD },
   { file: "room-visits.spec.ts", title: "a delayed approved departure from a saved Tarot reading keeps the destination entrance", reason: fixPending("fix/menu-exit-room-entrance") },
-  { file: "tarot-room.spec.ts", title: "pick arc stays ordered on dawn", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "pick arc stays ordered on sea", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "pick arc stays ordered on stars", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "reading layout 1 cards on stars", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "reading layout 3 cards on dawn", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "reading layout 5 cards on sea", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "reading layout 7 cards on stars", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "reading layout 9 cards on dawn", reason: GOLDEN_REVIEW },
   { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in en", reason: fixPending("fix/tarot-reading-halo-overflow") },
   { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in zh", reason: fixPending("fix/tarot-reading-halo-overflow") },
-  { file: "tarot-room.spec.ts", title: "voice completion sheet matches its pixel golden", reason: GOLDEN_REVIEW },
   { file: "tarot-wash-refinement.spec.ts", title: "wash and cut meet at the same opaque card without a size or position jump", reason: fixPending("fix/tarot-wash-cut-seam") },
 ];
 
