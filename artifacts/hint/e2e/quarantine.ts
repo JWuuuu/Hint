@@ -7,8 +7,9 @@
  * fixes or rewrites its test. Do not add new entries without review.
  */
 const PRE_EXISTING = "Failed before the Oct 30 integration too (also fails on 7e763a3); needs a fix or a rewrite for the current flow.";
-const GOLDEN_REVIEW = "Pixel golden changed with the Oct 27-30 visual work; re-baseline only after visual approval.";
-const FRAME_BUDGET = "Frame budget exceeded since the shared constellation background; tracked as a performance follow-up.";
+const GOLDEN_REVIEW = "Pixel golden predates the current design (Oct 15 and Oct 27-30 visual work); re-baseline only after visual approval.";
+const FRAME_BUDGET = "Frame budget exceeded in headless WebKit; the full-viewport mascot WebGL canvas is the measured cost. Tracked as a performance follow-up.";
+const fixPending = (branch: string) => `App bug, fixed on ${branch}; remove this entry once that PR merges.`;
 
 export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: string }> = [
   { file: "astrology-quality.spec.ts", title: "Astrology host frame samples during chart, detail and scrolling", reason: FRAME_BUDGET },
@@ -28,7 +29,7 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "personality-sharing.spec.ts", title: "ko Tarot printer exports a localized public PNG with the original reversed card", reason: PRE_EXISTING },
   { file: "personality-sharing.spec.ts", title: "zh Tarot printer exports a localized public PNG with the original reversed card", reason: PRE_EXISTING },
   { file: "room-fresh-entry.spec.ts", title: "Ask reentry starts blank, manually restores draft, and keeps prior saved conversation readable", reason: PRE_EXISTING },
-  { file: "room-visits.spec.ts", title: "a delayed approved departure from a saved Tarot reading keeps the destination entrance", reason: PRE_EXISTING },
+  { file: "room-visits.spec.ts", title: "a delayed approved departure from a saved Tarot reading keeps the destination entrance", reason: fixPending("fix/menu-exit-room-entrance") },
   { file: "tarot-room.spec.ts", title: "completes and restores the full Tarot Room journey", reason: PRE_EXISTING },
   { file: "tarot-room.spec.ts", title: "pick arc stays ordered on dawn", reason: GOLDEN_REVIEW },
   { file: "tarot-room.spec.ts", title: "pick arc stays ordered on sea", reason: GOLDEN_REVIEW },
@@ -38,11 +39,10 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "tarot-room.spec.ts", title: "reading layout 5 cards on sea", reason: GOLDEN_REVIEW },
   { file: "tarot-room.spec.ts", title: "reading layout 7 cards on stars", reason: GOLDEN_REVIEW },
   { file: "tarot-room.spec.ts", title: "reading layout 9 cards on dawn", reason: GOLDEN_REVIEW },
-  { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in en", reason: PRE_EXISTING },
-  { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in zh", reason: PRE_EXISTING },
+  { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in en", reason: fixPending("fix/tarot-reading-halo-overflow") },
+  { file: "tarot-room.spec.ts", title: "reading template answers first, explains numbered cards, then connects them in zh", reason: fixPending("fix/tarot-reading-halo-overflow") },
   { file: "tarot-room.spec.ts", title: "voice completion sheet matches its pixel golden", reason: GOLDEN_REVIEW },
-  { file: "tarot-wash-refinement.spec.ts", title: "the post-cut shuffle visibly separates two packets and interleaves cards before picking", reason: PRE_EXISTING },
-  { file: "tarot-wash-refinement.spec.ts", title: "wash and cut meet at the same opaque card without a size or position jump", reason: PRE_EXISTING },
+  { file: "tarot-wash-refinement.spec.ts", title: "wash and cut meet at the same opaque card without a size or position jump", reason: fixPending("fix/tarot-wash-cut-seam") },
 ];
 
 export function quarantineReason(file: string, title: string): string | undefined {
