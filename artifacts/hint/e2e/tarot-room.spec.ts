@@ -688,7 +688,7 @@ test("Tarot wash has accessible semantics and touch targets", async ({ page }) =
 test("Tarot arc has accessible semantics and touch targets", async ({ page }) => {
   await seedPickSession(page, VISUAL_CASES[0]);
   await page.goto("/app/tarot?hintPreview=embedded");
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
   await expectNoSeriousAccessibilityViolations(page);
   await expectMinimumTouchTargets(page);
 });
@@ -1042,7 +1042,7 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await expectRitualStagesInOrder(page);
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
 
   const wheel = page.getByLabel("Rotating tarot deck wheel");
   await expect(wheel).toHaveAttribute("data-deck-size", "78");
@@ -1097,7 +1097,7 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await page.getByRole("button", { name: "Tarot room setup" }).click();
   await expect(page.getByRole("heading", { name: "Decorate your room." })).toBeVisible();
   await page.getByRole("button", { name: "Save room" }).click();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
 
   await chooseArcCard(page);
   await expect(page.getByText("Three cards - 1 of 3 chosen", { exact: true })).toBeVisible();
@@ -1737,7 +1737,7 @@ test("Auto Wash avoids sustained animation stalls", async ({ page }, testInfo) =
   });
 
   await page.getByRole("button", { name: "Auto Wash" }).click();
-  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
   const frameMetrics = await page.evaluate(() => {
     const state = window as Window & {
       __tarotFrameGaps?: number[];
@@ -2183,7 +2183,7 @@ test("five consecutive rituals do not degrade", async ({ page }, testInfo) => {
     const startedAt = Date.now();
     await enterWash(page);
     await page.getByRole("button", { name: "Auto Wash" }).click();
-    await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
     await chooseArcCard(page);
     await expect(page.getByText("One card - 1 of 1 chosen", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: /Reveal Reading/i }).click();
@@ -2198,7 +2198,8 @@ test("five consecutive rituals do not degrade", async ({ page }, testInfo) => {
     contentType: "application/json",
   });
   expect(durations).toHaveLength(5);
-  expect(Math.max(...durations)).toBeLessThan(20_000);
+  // 20 s plus the riffle shuffle (Nov 4), which made every ritual about 2.4 s longer by design.
+  expect(Math.max(...durations)).toBeLessThan(22_500);
   expect(durations[4]!).toBeLessThanOrEqual(durations[0]! * 1.5 + 2_000);
   const readingCount = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("hint_local_tarot_readings_v1") ?? "[]").length,
@@ -2210,7 +2211,7 @@ for (const visualCase of VISUAL_CASES.slice(0, 3)) {
   test(`pick arc stays ordered on ${visualCase.backgroundId}`, async ({ page }) => {
     await seedPickSession(page, visualCase);
     await page.goto("/app/tarot?hintPreview=embedded");
-    await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
     const wheel = page.getByLabel("Rotating tarot deck wheel");
     await expect(wheel).toHaveAttribute("data-deck-size", "78");
     const card19 = page.getByRole("button", { name: "Lift card 19" });

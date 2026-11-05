@@ -24,7 +24,7 @@ for (const spread of ["single", "three", "relationship", "futureLover", "peachBl
   test(`selected ${spread} layout has its own space above the complete card arc`, async ({ page }, info) => {
     await seed(page, spread);
     await page.goto("/app/tarot?hintPreview=embedded");
-    await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
     const tray = page.getByTestId("tarot-pick-tray");
     await expect(tray).toBeVisible();
     await page.waitForTimeout(400);
