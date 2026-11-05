@@ -4,7 +4,7 @@ import { useLanguage } from "../../../lib/i18n";
 import { useCardCollection } from "../../../shared/hooks/useCardCollection";
 import { PERSONALITY_TRANSLATIONS } from "../../features/personalityCopy";
 import { ME_COPY, ME_LOCALES } from "../meCopy";
-import { practiceRhythm, type PracticeEntry } from "../utils";
+import type { PracticeEntry } from "../utils";
 
 /** The newest thing the person kept: a tarot reading or a daily pull. */
 export type KeptLetter = {
@@ -20,19 +20,20 @@ const fill = (template: string, values: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key: string) => String(values[key] ?? ""));
 
 /**
- * What the person has kept, shown as what it is: the latest letter with its
- * own cards, the nights they came back, and the deck they are filling. A new
- * person sees one invitation instead of a column of zeros.
+ * What the person has kept, shown as what it is: a small stack of letters,
+ * the newest on top with its own cards and the edges of older ones beneath.
+ * A new person sees one invitation instead of an empty stack. The days they
+ * came back are the postmark on the envelope above.
  */
-export function PracticeLedger({ entries, latest, personality }: {
+export function PracticeLedger({ entries, letters, personality }: {
   entries: PracticeEntry[];
-  latest: KeptLetter | null;
+  letters: KeptLetter[];
   personality: string | null;
 }) {
   const { language } = useLanguage();
   const copy = ME_COPY[language];
   const collection = useCardCollection();
-  const rhythm = practiceRhythm(entries);
+  const latest = letters[0] ?? null;
   const images = new Map(collection.cards.map(card => [card.cardId, card.image]));
   const personalityName = personality ? PERSONALITY_TRANSLATIONS[personality]?.[language]?.name ?? personality : null;
   const kept = entries.length > 0;
@@ -50,7 +51,7 @@ export function PracticeLedger({ entries, latest, personality }: {
       {kept && <Link href="/app/readings" className="me-see-all"><span>{fill(copy.seeAll, { count: entries.length })}</span><ChevronRight size={15} aria-hidden="true" /></Link>}
     </div>
 
-    {latest ? <Link href="/app/readings" className="me-letter">
+    {latest ? <div className="me-letter-stack" data-depth={Math.min(letters.length, 3)}><Link href="/app/readings" className="me-letter">
       <span className="me-letter-fan" data-count={fan.length} aria-hidden="true">
         {fan.map((card, index) => {
           const image = card.cardId ? images.get(card.cardId) : null;
@@ -64,7 +65,7 @@ export function PracticeLedger({ entries, latest, personality }: {
         <span className="me-letter-title" data-question={latest.question?.trim() ? "true" : undefined}>{title}</span>
         {latest.cards.length > 0 && <span className="me-letter-cards">{latest.cards.map(card => card.name).join(", ")}</span>}
       </span>
-    </Link> : <div className="me-invite">
+    </Link></div> : <div className="me-invite">
       <svg className="me-invite-art" viewBox="0 0 72 52" aria-hidden="true" focusable="false">
         <rect x="1" y="1" width="70" height="50" rx="6" />
         <polyline points="1.5,2 36,30 70.5,2" />
@@ -73,23 +74,6 @@ export function PracticeLedger({ entries, latest, personality }: {
       <p className="me-invite-title">{copy.firstLetterTitle}</p>
       <p className="me-invite-body">{copy.firstLetterBody}</p>
       <Link href="/app/daily" className="me-primary">{copy.firstLetterAction}</Link>
-    </div>}
-
-    {kept && <div className="me-tiles">
-      <Link href="/app/daily" className="me-tile">
-        <strong>{copy.rhythm}</strong>
-        <span className="me-rhythm-stars" aria-hidden="true">
-          {rhythm.active.map((on, index) => <svg key={index} viewBox="0 0 16 16" data-on={on || undefined}><path d={STAR} /></svg>)}
-        </span>
-        <span className="me-tile-value">{fill(copy.rhythmSummary, { count: rhythm.count })}</span>
-      </Link>
-      <Link href="/app/collection" className="me-tile">
-        <strong>{copy.deck}</strong>
-        <span className="me-deck-grid" aria-hidden="true">
-          {collection.cards.map(card => <i key={card.cardId} data-on={card.unlocked || undefined} />)}
-        </span>
-        <span className="me-tile-value">{fill(copy.collectionSummary, { unlocked: collection.unlocked, total: collection.total })}</span>
-      </Link>
     </div>}
 
     <Link href="/app/personalities" className="me-type-row">

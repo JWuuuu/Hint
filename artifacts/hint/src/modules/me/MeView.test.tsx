@@ -42,12 +42,14 @@ it("invites a first reading and birth details instead of showing empty counts", 
   expect(screen.getByRole("link", { name: ME_COPY.en.firstLetterAction }).getAttribute("href")).toBe("/app/daily");
   expect(screen.getByTestId("button-edit-profile").textContent).toBe(ME_COPY.en.addBirth);
   expect(screen.queryByText(/\b0 of\b/)).toBeNull();
+  // Nothing kept yet, so the envelope carries no postmark.
+  expect(document.querySelector(".me-postmark")).toBeNull();
   expect(screen.queryByRole("link", { name: /See all/ })).toBeNull();
   expect(screen.getByRole("link", { name: /Find your type/ }).getAttribute("href")).toBe("/app/personalities");
   expect(screen.queryByRole("textbox", { name: /email/i })).toBeNull();
 });
 
-it("shows the newest kept reading as a letter and opens history, rhythm and deck", () => {
+it("shows the newest kept reading on a stack of letters, opens history and postmarks the days kept", () => {
   const card = (cardId: string, name: string, orientation: "upright" | "reversed") => ({ cardId, name, orientation, positionLabel: "Now", keywords: [] });
   const reading = (id: string, question: string, createdAt: string) => ({
     schemaVersion: 2, id, anonId: "fictional-me-owner", source: "tarot", spreadType: "three", spreadLabel: "Three cards", question,
@@ -64,8 +66,14 @@ it("shows the newest kept reading as a letter and opens history, rhythm and deck
   expect(screen.queryByText("“An older fictional question?”")).toBeNull();
   expect(screen.getByText("The Star, Two of Cups, Page of Pentacles")).toBeTruthy();
   expect(screen.getByRole("link", { name: "See all 2" }).getAttribute("href")).toBe("/app/readings");
-  expect(screen.getByRole("link", { name: new RegExp(ME_COPY.en.rhythm) }).getAttribute("href")).toBe("/app/daily");
-  expect(screen.getByRole("link", { name: new RegExp(ME_COPY.en.deck) }).getAttribute("href")).toBe("/app/collection");
+  // Two letters kept: the newest on top with one older edge beneath it.
+  expect(document.querySelector(".me-letter-stack")?.getAttribute("data-depth")).toBe("2");
+  // Both readings fall inside the last 14 days, on two different days.
+  expect(screen.getByRole("img", { name: `${ME_COPY.en.rhythm}: 2 of the last 14 days` })).toBeTruthy();
+  expect(document.querySelectorAll(".me-postmark-day")).toHaveLength(14);
+  expect(document.querySelectorAll(".me-postmark-day[data-on]")).toHaveLength(2);
+  // The rhythm and deck tiles are gone: rhythm moved to the postmark, and the deck led to Collection.
+  expect(screen.queryByRole("link", { name: new RegExp(ME_COPY.en.deck) })).toBeNull();
   expect(screen.queryByText(ME_COPY.en.firstLetterTitle)).toBeNull();
 });
 

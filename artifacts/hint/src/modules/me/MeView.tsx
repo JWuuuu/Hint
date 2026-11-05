@@ -11,7 +11,7 @@ import { useLanguage } from "../../lib/i18n";
 import { useMotionPolicy } from "../../lib/motionPolicy";
 import { ME_COPY } from "./meCopy";
 import { PracticeLedger, type KeptLetter } from "./components/PracticeLedger";
-import type { PracticeEntry } from "./utils";
+import { practiceRhythm, type PracticeEntry } from "./utils";
 import { getAnonId } from "../../lib/identity";
 import { verifiedBirthProfile } from "../../lib/astro/verifiedBirthChart";
 import { readChart } from "../astrology/chartState";
@@ -20,15 +20,16 @@ import { listLocalDailyReadings, subscribeToLocalDailyReadings } from "../readin
 import { readPersonalityResults } from "../features/personalityProgress";
 import "./me.css";
 
-type Practice = { entries: PracticeEntry[]; latest: KeptLetter | null; personality: string | null };
+type Practice = { entries: PracticeEntry[]; letters: KeptLetter[]; personality: string | null };
 type View = "home" | "edit" | "storage";
 
 function attempt<T>(read: () => T, fallback: T): T {
   try { return read(); } catch { return fallback; }
 }
 
-const newest = <T extends { createdAt: string }>(items: T[]): T | null =>
-  items.reduce<T | null>((best, item) => !best || Date.parse(item.createdAt) > Date.parse(best.createdAt) ? item : best, null);
+/** The newest letters first; the page shows the top one and the edges of two more. */
+const newestFirst = <T extends { createdAt: string }>(items: T[], limit: number): T[] =>
+  [...items].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, limit);
 
 /** Everything the page summarises, read from this device's saved history. */
 function readPractice(): Practice {
@@ -50,7 +51,7 @@ function readPractice(): Practice {
     })),
   ].filter(letter => Number.isFinite(Date.parse(letter.createdAt)));
   const personality = attempt(() => readPersonalityResults(owner).at(-1)?.result ?? null, null);
-  return { entries, latest: newest(letters), personality };
+  return { entries, letters: newestFirst(letters, 3), personality };
 }
 
 /** Sun, Moon and Rising only from a chart the app already calculated and cached. */
@@ -67,8 +68,9 @@ function readSigns(profile: Profile | null): SkySigns | null {
 }
 
 /**
- * A personal page: the envelope (who you are), what you have kept, then the
- * everyday choices. Device plumbing lives one step away.
+ * A personal page: the envelope addressed to you, postmarked with the days you
+ * came back; the letters you kept; then the everyday choices. Device plumbing
+ * lives one step away.
  */
 export function MeView() {
   const { profile, saveProfile, isSaving, storageStatus } = useProfile();
@@ -82,6 +84,7 @@ export function MeView() {
   const editRevision = useRef(0);
   const [practice, setPractice] = useState(readPractice);
   const signs = useMemo(() => attempt(() => readSigns(profile), null), [profile, practice]);
+  const rhythm = useMemo(() => practiceRhythm(practice.entries), [practice]);
 
   useEffect(() => {
     const sync = () => setPractice(readPractice());
@@ -131,8 +134,8 @@ export function MeView() {
       </section> : view === "storage" ? <StoragePanel onBack={() => setView("home")} /> : <>
         <SpaceNavigation />
         <header className="me-heading"><h1>{copy.title}</h1></header>
-        <ProfileCard profile={profile} onEdit={beginEditing} signs={signs} />
-        <PracticeLedger entries={practice.entries} latest={practice.latest} personality={practice.personality} />
+        <ProfileCard profile={profile} onEdit={beginEditing} signs={signs} rhythm={practice.entries.length ? rhythm : null} />
+        <PracticeLedger entries={practice.entries} letters={practice.letters} personality={practice.personality} />
         <div id="me-settings" className="scroll-mt-6"><SettingsList onOpenStorage={() => setView("storage")} storageStatus={storageStatus} /></div>
         <footer className="me-footer"><span aria-hidden="true">✧</span><p>{copy.footer}</p></footer>
       </>}

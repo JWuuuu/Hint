@@ -257,12 +257,12 @@ for (const entry of roomsEntries) {
 }
 
 // The Me redesign moved these entries: the chart opens from the profile envelope
-// (once birth details exist) and History/Collection open from what the person
-// has kept, so these journeys seed one fictional profile and one daily reading.
+// (once birth details exist) and History opens from what the person has kept,
+// so these journeys seed one fictional profile and one daily reading. Me no
+// longer links to Collection (Nov 4 redesign): the deck tile was removed.
 const meEntries = [
   { space: "chart", feature: "astrology", link: ".me-envelope-actions a[href$=\"/app/astrology?tab=chart\"]", ready: (page: Page) => page.getByRole("navigation", { name: "Astrology sections" }) },
   { space: "history", feature: "readings", link: "a.me-see-all", ready: (page: Page) => page.locator(".hr-ledger") },
-  { space: "collection", feature: "collection", link: "a.me-tile[href$=\"/app/collection\"]", ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
 ] as const;
 
 const meOwner = "room-entrance-fictional-reader";

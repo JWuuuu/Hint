@@ -25,15 +25,47 @@ function birthTimeLabel(time: string, locale: string): string {
     .format(new Date(Date.UTC(2000, 0, 1, Number(match[1]), Number(match[2]))));
 }
 
+/** The last 14 days, oldest first, and how many of them had a reading. */
+export type Rhythm = { active: boolean[]; count: number };
+
+/**
+ * The postmark: today's date in the cancel ring, and one mark around the ring
+ * for each of the last 14 days, starting at the top and running clockwise to
+ * today. A day the person came back is inked in.
+ */
+function Postmark({ rhythm, label, locale }: { rhythm: Rhythm; label: string; locale: string }) {
+  const today = new Date();
+  const month = new Intl.DateTimeFormat(locale, { month: "short" }).format(today);
+  const day = new Intl.DateTimeFormat(locale, { day: "numeric" }).format(today);
+  const days = rhythm.active.length;
+  return <svg className="me-postmark" viewBox="0 0 172 96" role="img" aria-label={label} focusable="false">
+    {/* Cancellation waves run off the stamp, over the flap. */}
+    <g className="me-postmark-waves" aria-hidden="true">
+      {[30, 42, 54, 66].map(y => <path key={y} d={`M2 ${y} q 9 -5 18 0 t 18 0 t 18 0 t 18 0 t 16 0`} />)}
+    </g>
+    <circle className="me-postmark-ring" cx="124" cy="48" r="44" />
+    <circle className="me-postmark-ring me-postmark-inner" cx="124" cy="48" r="29" />
+    {rhythm.active.map((on, index) => {
+      const angle = (index / days) * Math.PI * 2 - Math.PI / 2;
+      return <circle key={index} className="me-postmark-day" data-on={on || undefined}
+        cx={124 + Math.cos(angle) * 36.5} cy={48 + Math.sin(angle) * 36.5} r={on ? 2.9 : 2} />;
+    })}
+    <text className="me-postmark-month" x="124" y="42" textAnchor="middle">{month}</text>
+    <text className="me-postmark-date" x="124" y="62" textAnchor="middle">{day}</text>
+  </svg>;
+}
+
 /**
  * The envelope the universe addresses to this person: a wax seal where the
  * flap meets (their Sun glyph once a real chart exists, their initial before
- * that), their name, and their birth details set like an address.
+ * that), their name, their birth details set like an address, and once they
+ * have kept a reading, a postmark of the days they came back.
  */
-export function ProfileCard({ profile, onEdit, signs }: {
+export function ProfileCard({ profile, onEdit, signs, rhythm = null }: {
   profile: Profile | null;
   onEdit: () => void;
   signs: SkySigns | null;
+  rhythm?: Rhythm | null;
 }) {
   const { language, t } = useLanguage();
   const copy = ME_COPY[language];
@@ -55,7 +87,10 @@ export function ProfileCard({ profile, onEdit, signs }: {
     if (signs.rising) placements.push({ key: "rising", sign: signs.rising });
   }
 
-  return <section className="me-envelope" aria-labelledby="me-envelope-name" data-empty={hasBirth ? undefined : "true"}>
+  const rhythmLabel = rhythm ? `${copy.rhythm}: ${fill(copy.rhythmSummary, { count: String(rhythm.count) })}` : "";
+
+  return <section className="me-envelope" aria-labelledby="me-envelope-name" data-empty={hasBirth ? undefined : "true"} data-postmarked={rhythm ? "true" : undefined}>
+    {rhythm && <Postmark rhythm={rhythm} label={rhythmLabel} locale={locale} />}
     <svg className="me-envelope-flap" viewBox="0 0 400 104" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <polygon points="0,0 400,0 200,94" />
       <polyline points="0,0 200,94 400,0" />

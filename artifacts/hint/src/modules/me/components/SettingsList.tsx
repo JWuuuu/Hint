@@ -50,12 +50,15 @@ export function SettingsList({ onOpenStorage, storageStatus }: { onOpenStorage: 
   return <div className="me-settings-stack">
     <section className="me-section" aria-labelledby="me-preferences-heading">
       <div className="me-section-heading"><h2 id="me-preferences-heading">{copy.preferences}</h2></div>
-      {/* Appearance is a choice between two skies, so it is shown as two previews. */}
-      <div className="me-theme-options" role="group" aria-label={copy.appearance}>
-        <ThemeButton theme="bright" active={theme === "bright"} icon={Sun} label={copy.bright} onClick={() => setHintThemePreference("bright")} />
-        <ThemeButton theme="dark" active={theme === "dark"} icon={Moon} label={copy.dark} onClick={() => setHintThemePreference("dark")} />
-      </div>
       <div className="me-group me-preferences">
+        {/* Appearance is one choice between two skies: a two-way switch, not two cards. */}
+        <div className="me-mood">
+          <span className="me-mood-label" id="me-appearance-label">{copy.appearance}</span>
+          <div className="me-theme-options" role="group" aria-labelledby="me-appearance-label">
+            <ThemeButton theme="bright" active={theme === "bright"} icon={Sun} label={copy.bright} onClick={() => setHintThemePreference("bright")} />
+            <ThemeButton theme="dark" active={theme === "dark"} icon={Moon} label={copy.dark} onClick={() => setHintThemePreference("dark")} />
+          </div>
+        </div>
         <ControlRow icon={Globe2} label={t("language.switch")} control={<LanguageToggle menuPlacement="bottom" menuClassName="me-language-menu" />} />
         <ControlRow icon={Wind} label={t("me.reduceMotion")} detail={copy.motionDetail} control={<ToggleSwitch label={t("me.reduceMotion")} checked={preferences.reduceMotion} onChange={checked => setPreference("reduceMotion", checked)} />} />
         <ControlRow icon={Vibrate} label={copy.feedback} detail={copy.feedbackDetail} control={<ToggleSwitch label={copy.feedback} checked={preferences.soundAndHaptics} onChange={checked => setPreference("soundAndHaptics", checked)} />} />
@@ -103,8 +106,8 @@ function ControlRow({ icon, label, detail, control }: { icon: LucideIcon; label:
 
 function ThemeButton({ active, theme, icon: Icon, label, onClick }: { active: boolean; theme: HintTheme; icon: LucideIcon; label: string; onClick: () => void }) {
   return <button type="button" onClick={onClick} aria-pressed={active} className="me-theme-button" data-theme={theme}>
-    <span className="me-theme-swatch" aria-hidden="true"><Icon size={19} strokeWidth={1.2} /><i /><i /></span>
-    <span>{label}</span><span className="me-theme-check" aria-hidden="true">{active ? "✓" : ""}</span>
+    <span className="me-theme-swatch" aria-hidden="true"><Icon size={15} strokeWidth={1.5} /></span>
+    <span>{label}</span>
   </button>;
 }
 

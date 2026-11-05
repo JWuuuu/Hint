@@ -1,10 +1,10 @@
 /* Me — a personal space on the shared sky.
    Composition: the envelope (wax seal, name, birth details set like an
-   address, Sun/Moon/Rising from a calculated chart) → letters you kept (the
-   newest reading with its cards, rhythm, deck, type) → two-sky appearance
-   choice and controls → your data → help. Letter surfaces carry a gilt
-   hairline; settings surfaces keep the plain line. Surfaces are translucent so
-   the shell's constellation background stays continuous behind every section. */
+   address, Sun/Moon/Rising from a calculated chart, and a postmark of the last
+   14 days) → letters you kept (a small stack, newest on top) → your type →
+   preferences in one group, appearance first → your data → help. Paper (the
+   envelope and letters) carries a gilt hairline; settings keep the plain line.
+   Surfaces are translucent so the shell's sky stays continuous behind them. */
 /* Paper ink for Me in the bright theme only; dark keeps the shared night ink
    so the Home link and dock stay legible. */
 .hint-cream-route:not([data-hint-theme="dark"]):has(.me-page) {
@@ -30,6 +30,7 @@
   --me-vellum: linear-gradient(165deg, rgba(255, 253, 248, .97), rgba(253, 248, 244, .9) 55%, rgba(247, 238, 242, .92));
   --me-card-back: linear-gradient(160deg, #fbf4ec, #efe3e8);
   --me-seal-shadow: 0 0 0 5px rgba(196, 160, 110, .14), 0 10px 20px rgba(110, 74, 40, .2);
+  --me-postmark: rgba(112, 72, 101, .58);
   color: var(--me-ink);
   font-family: var(--font-sans);
   padding: .3rem .15rem 0;
@@ -54,6 +55,7 @@
   --me-vellum: linear-gradient(165deg, rgba(255, 244, 238, .14), rgba(255, 236, 232, .07) 55%, rgba(255, 232, 232, .09));
   --me-card-back: linear-gradient(160deg, #50445f, #362d48);
   --me-seal-shadow: 0 0 0 5px rgba(230, 203, 157, .13), 0 12px 24px rgba(12, 8, 18, .45);
+  --me-postmark: rgba(232, 204, 164, .62);
 }
 .me-page :is(button, a, summary) { -webkit-tap-highlight-color: transparent; }
 .me-page :is(button, a, summary):focus-visible { outline: 2px solid var(--me-accent); outline-offset: 4px; }
@@ -71,8 +73,6 @@
 /* Shared glass material for every plate on the page. */
 .me-surface,
 .me-group,
-.me-theme-button,
-.me-tile,
 .me-type-row {
   background: var(--me-surface);
   border: 1px solid var(--me-line);
@@ -106,6 +106,16 @@
   font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 2.15rem; line-height: 1;
 }
 .me-seal[data-glyph] > span { font-family: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", "Noto Sans Symbols 2", serif; font-style: normal; font-weight: 400; font-size: 1.7rem; }
+/* The postmark: ink stamped over the envelope's corner, never a control. */
+.me-postmark { position: absolute; z-index: 1; top: .7rem; right: .55rem; width: 8.6rem; height: auto; overflow: visible; pointer-events: none; transform: rotate(-8deg); }
+.me-postmark-waves path, .me-postmark-ring { fill: none; stroke: var(--me-postmark); }
+.me-postmark-waves path { stroke-width: 1.3; stroke-linecap: round; opacity: .75; }
+.me-postmark-ring { stroke-width: 1.5; }
+.me-postmark-inner { stroke-width: .9; }
+.me-postmark-day { fill: none; stroke: var(--me-postmark); stroke-width: 1; }
+.me-postmark-day[data-on] { fill: var(--me-star); stroke: var(--me-star); }
+.me-postmark-month { fill: var(--me-postmark); font-family: var(--font-sans); font-size: 10.5px; font-weight: 600; letter-spacing: .04em; }
+.me-postmark-date { fill: var(--me-postmark); font-family: var(--font-serif); font-size: 21px; font-weight: 500; }
 .me-envelope-name { margin: 1.05rem 0 0; padding: 0 1.5rem; font-family: var(--font-serif); font-size: 2.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
 .me-address { margin: .55rem 0 0; padding: 0 1.5rem; font-family: var(--font-serif); font-style: italic; font-size: 1.25rem; line-height: 1.45; }
 .me-address-note { margin: .4rem 0 0; color: var(--me-muted); font-size: .8125rem; line-height: 1.5; }
@@ -146,7 +156,22 @@
 /* Letters you kept */
 .me-kept-head { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; padding: 0 .35rem; margin-bottom: .45rem; }
 .me-see-all { display: inline-flex; align-items: center; gap: .15rem; min-height: 44px; flex-shrink: 0; color: var(--me-accent); font-size: .875rem; font-weight: 500; }
+/* Older letters show as paper edges beneath the newest one. */
+.me-letter-stack { position: relative; isolation: isolate; }
+.me-letter-stack[data-depth="2"] { padding-bottom: .45rem; }
+.me-letter-stack[data-depth="3"] { padding-bottom: .9rem; }
+/* Each edge is drawn only where it shows below the letter above it, so the
+   translucent paper never doubles up behind the newest letter's text. */
+.me-letter-stack::before, .me-letter-stack::after {
+  content: ""; position: absolute; z-index: -1; display: none; border-radius: 1.15rem; height: 2.4rem;
+  border: 1px solid var(--me-gilt); background: var(--me-vellum), var(--me-surface);
+  clip-path: inset(1.9rem -2px -2px -2px);
+}
+.me-letter-stack[data-depth="2"]::before, .me-letter-stack[data-depth="3"]::before { display: block; left: .7rem; right: .7rem; bottom: 0; opacity: .78; }
+.me-letter-stack[data-depth="3"]::before { bottom: .45rem; }
+.me-letter-stack[data-depth="3"]::after { display: block; left: 1.4rem; right: 1.4rem; bottom: 0; opacity: .55; z-index: -2; }
 .me-letter {
+  position: relative;
   display: flex; align-items: center; gap: 1.1rem; padding: 1.1rem 1.1rem 1.1rem .9rem; border-radius: 1.15rem; color: var(--me-ink);
   border: 1px solid var(--me-gilt); background: var(--me-vellum), var(--me-surface); box-shadow: var(--me-shadow);
 }
@@ -183,21 +208,7 @@
 .me-invite-body { margin: .5rem 0 0; max-width: 18.5rem; color: var(--me-muted); font-size: .9rem; line-height: 1.55; }
 .me-invite .me-primary { margin-top: 1.25rem; align-self: stretch; }
 
-.me-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin-top: .75rem; }
-/* Title, picture, count: pictures start on one line under the titles and the
-   counts share the bottom edge, so side-by-side tiles read as a pair. */
-.me-tile { display: flex; flex-direction: column; gap: .9rem; min-width: 0; padding: 1rem; border-radius: 1.15rem; color: var(--me-ink); }
-.me-tile:active, .me-type-row:active { opacity: .85; }
-.me-tile > strong { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 500; line-height: 1.1; }
-.me-tile-value { margin-top: auto; color: var(--me-muted); font-size: .84rem; line-height: 1.35; }
-.me-rhythm-stars { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .85rem .2rem; justify-items: center; }
-.me-rhythm-stars svg { width: 1.2rem; height: 1.2rem; overflow: visible; }
-.me-rhythm-stars path { fill: none; stroke: color-mix(in srgb, var(--me-star) 70%, transparent); stroke-width: .9; }
-.me-rhythm-stars [data-on] path { fill: var(--me-star); stroke: var(--me-star); }
-.me-deck-grid { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 3px; width: 100%; max-width: 8.9rem; margin-inline: auto; }
-.me-deck-grid i { display: block; height: .75rem; border-radius: 2px; border: 1px solid color-mix(in srgb, var(--me-star) 55%, transparent); }
-.me-deck-grid i[data-on] { background: var(--me-star); border-color: var(--me-star); }
-
+.me-type-row:active { opacity: .85; }
 .me-type-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-height: 68px; margin-top: .75rem; padding: .7rem 1rem; border-radius: 1.15rem; color: var(--me-ink); }
 .me-type-row > svg { flex-shrink: 0; color: var(--me-muted); }
 .me-type-copy { display: grid; gap: .1rem; min-width: 0; }
@@ -210,16 +221,13 @@
 .me-setting-icon { display: grid; place-items: center; flex-shrink: 0; width: 1.5rem; min-height: 1.5rem; color: var(--me-accent); }
 .me-setting-label strong, .me-row-copy strong, .me-disclosure-summary strong { display: block; font-weight: 500; font-size: .875rem; line-height: 1.5; }
 .me-setting-label > span > span, .me-row-copy > span, .me-disclosure-summary > span > span { display: block; color: var(--me-muted); font-size: .75rem; line-height: 1.6; margin-top: .1rem; }
-.me-theme-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
-.me-theme-button { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .6rem .3rem; min-height: 44px; padding: .45rem .45rem .65rem; border-radius: 1.15rem; color: var(--me-ink); }
-.me-theme-button[aria-pressed="true"] { border-color: var(--me-gilt-strong); box-shadow: var(--me-shadow), 0 0 0 1px var(--me-gilt-strong); }
-.me-theme-button > span:nth-child(2) { font-size: .84rem; font-weight: 500; line-height: 1.4; padding-left: .25rem; text-align: left; }
-.me-theme-swatch { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 64px; border-radius: .8rem; grid-column: 1 / -1; overflow: hidden; background: radial-gradient(circle at 85% 12%, rgba(229, 215, 234, .9), transparent 55%), linear-gradient(160deg, #fffcf6, #f6eef2 62%, #ece3ef); color: #8b6f78; }
-.me-theme-button[data-theme="dark"] .me-theme-swatch { background: radial-gradient(circle at 85% 10%, rgba(137, 114, 168, .85), transparent 58%), radial-gradient(circle at 10% 100%, rgba(196, 142, 112, .36), transparent 60%), #2e253c; color: #ddc7b5; }
-.me-theme-swatch i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .55; left: 22%; top: 28%; }
-.me-theme-swatch i + i { left: 70%; top: 66%; width: 2px; height: 2px; }
-.me-theme-check { display: grid; place-items: center; width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--me-line); color: #3a2d22; font-size: 10px; font-weight: 700; }
-.me-theme-button[aria-pressed="true"] .me-theme-check { border-color: var(--me-star); background: var(--me-star); }
+/* Appearance: a two-way switch at the top of the preferences group. */
+.me-mood { display: grid; gap: .55rem; padding: .85rem 1rem .9rem; }
+.me-mood-label { font-weight: 500; font-size: .875rem; line-height: 1.5; }
+.me-theme-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .25rem; padding: .25rem; border-radius: 999px; background: var(--me-soft); border: 1px solid var(--me-line); }
+.me-theme-button { display: flex; align-items: center; justify-content: center; gap: .45rem; min-width: 0; min-height: 44px; padding: .45rem .7rem; border-radius: 999px; color: var(--me-muted); font-size: .84rem; font-weight: 500; line-height: 1.3; text-align: center; }
+.me-theme-button[aria-pressed="true"] { color: var(--me-ink); background: var(--me-surface-raised); box-shadow: 0 1px 0 rgba(255, 255, 255, .18) inset, 0 4px 12px rgba(40, 24, 44, .12), 0 0 0 1px var(--me-gilt-strong); }
+.me-theme-swatch { display: grid; place-items: center; flex-shrink: 0; color: var(--me-star); }
 
 /* Grouped rows */
 .me-group { margin-top: .75rem; border-radius: 1.15rem; overflow: hidden; }
@@ -292,7 +300,8 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
 }
 /* Narrow phones and large text: tiles and links stack. */
 @container (max-width: 21rem) {
-  .me-tiles, .me-help-links { grid-template-columns: minmax(0, 1fr); }
+  .me-help-links { grid-template-columns: minmax(0, 1fr); }
+  .me-postmark { width: 7rem; top: .55rem; right: .35rem; }
   .me-sky-signs { margin-inline: 1rem; }
   .me-envelope-actions { grid-template-columns: minmax(0, 1fr); }
   .me-envelope-actions > * + * { border-left: 0; border-top: 1px solid var(--me-gilt); }
