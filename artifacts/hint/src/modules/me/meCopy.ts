@@ -29,7 +29,7 @@ const en = {
   openChart: "Open my chart", sun: "Sun", moon: "Moon", rising: "Rising",
   keptHeading: "Letters you kept", seeAll: "See all {count}", quoted: "“{text}”", dailyCard: "Daily card", deck: "Your deck",
   firstLetterTitle: "Your first letter is waiting", firstLetterBody: "Draw today’s card. Readings you keep will be here whenever you come back.",
-  firstLetterAction: "Draw today’s card", dataHeading: "Your data",
+  firstLetterAction: "Draw today’s card", dataHeading: "Your data", ps: "P.S.", psLead: "Where your letters are kept, and where to find help.",
 } as const;
 
 export type MeCopy = { [K in keyof typeof en]: string };
@@ -51,7 +51,7 @@ export const ME_COPY: Record<HintLanguage, MeCopy> = {
     openChart: "打开我的星盘", sun: "太阳", moon: "月亮", rising: "上升",
     keptHeading: "你珍藏的信", seeAll: "全部 {count} 封", quoted: "“{text}”", dailyCard: "每日一牌", deck: "你的牌组",
     firstLetterTitle: "你的第一封信正在等你", firstLetterBody: "抽一张今日的牌。你保存的解读，无论何时回来都在这里。",
-    firstLetterAction: "抽今日的牌", dataHeading: "你的数据",
+    firstLetterAction: "抽今日的牌", dataHeading: "你的数据", ps: "附言", psLead: "你的信件存放在哪里，以及需要时去哪里求助。",
   },
   es: {
     title: "Tu espacio", subtitle: "Lo que guardas. Lo que te hace sentir en casa.", localProfile: "Tu perfil local",
@@ -68,7 +68,7 @@ export const ME_COPY: Record<HintLanguage, MeCopy> = {
     openChart: "Abrir mi carta", sun: "Sol", moon: "Luna", rising: "Ascendente",
     keptHeading: "Cartas que guardaste", seeAll: "Ver las {count}", quoted: "«{text}»", dailyCard: "Carta del día", deck: "Tu baraja",
     firstLetterTitle: "Tu primera carta te espera", firstLetterBody: "Saca la carta de hoy. Las lecturas que guardes estarán aquí cuando vuelvas.",
-    firstLetterAction: "Sacar la carta de hoy", dataHeading: "Tus datos",
+    firstLetterAction: "Sacar la carta de hoy", dataHeading: "Tus datos", ps: "P. D.", psLead: "Dónde se guardan tus cartas y dónde encontrar ayuda.",
   },
   ja: {
     title: "あなたの空間", subtitle: "大切にしたいもの。心地よく過ごせる場所。", localProfile: "端末内のプロフィール",
@@ -85,7 +85,7 @@ export const ME_COPY: Record<HintLanguage, MeCopy> = {
     openChart: "私のチャートを開く", sun: "太陽", moon: "月", rising: "アセンダント",
     keptHeading: "とっておいた手紙", seeAll: "{count}件すべて", quoted: "「{text}」", dailyCard: "今日のカード", deck: "あなたのデッキ",
     firstLetterTitle: "最初の手紙が待っています", firstLetterBody: "今日のカードを引いてみましょう。保存したリーディングは、いつ戻ってきてもここにあります。",
-    firstLetterAction: "今日のカードを引く", dataHeading: "あなたのデータ",
+    firstLetterAction: "今日のカードを引く", dataHeading: "あなたのデータ", ps: "追伸", psLead: "手紙の保管場所と、困ったときの窓口。",
   },
   ko: {
     title: "나만의 공간", subtitle: "간직하고 싶은 것들. 편안히 머무는 방식.", localProfile: "기기에 저장된 프로필",
@@ -102,7 +102,7 @@ export const ME_COPY: Record<HintLanguage, MeCopy> = {
     openChart: "내 차트 열기", sun: "태양", moon: "달", rising: "상승궁",
     keptHeading: "간직한 편지", seeAll: "{count}개 모두 보기", quoted: "“{text}”", dailyCard: "오늘의 카드", deck: "나의 덱",
     firstLetterTitle: "첫 편지가 기다리고 있어요", firstLetterBody: "오늘의 카드를 뽑아 보세요. 보관한 리딩은 언제 돌아와도 여기에 있어요.",
-    firstLetterAction: "오늘의 카드 뽑기", dataHeading: "나의 데이터",
+    firstLetterAction: "오늘의 카드 뽑기", dataHeading: "나의 데이터", ps: "추신", psLead: "편지가 보관되는 곳과 도움을 받을 수 있는 곳.",
   },
 };
 

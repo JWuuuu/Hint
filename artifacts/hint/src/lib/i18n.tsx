@@ -627,7 +627,7 @@ const COPY: Record<HintLanguage, Partial<Record<string, string>>> = {
     "me.more.appearance": "Appearance",
     "me.more.privacy": "Privacy",
     "me.more.support": "Support",
-    "me.reduceMotion": "Reduce Motion",
+    "me.reduceMotion": "Reduce motion",
     "me.sound": "Sound & Haptics",
     "me.clearHistory": "Clear Local History",
     "me.about": "About Hint",

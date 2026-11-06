@@ -34,8 +34,11 @@
   /* The envelope and its letter are paper objects: opaque, warm, gilt-edged. */
   --me-paper: linear-gradient(172deg, #fffdf9, #fbf3ee 70%, #f8eef0);
   --me-pocket: #f2e6e2;
-  --me-envelope-back: #e8dad8;
-  --me-flap-open: linear-gradient(180deg, #efe3e0, #e6d7d5);
+  --me-flap-apex: #f3e9e5;
+  --me-flap-base: #e4d4d1;
+  --me-pocket-h: 7.25rem;
+  --me-pocket-overlap: 3.2rem;
+  --me-star-glow: rgba(206, 158, 82, .5);
   --me-gilt-ink: #82602e;
   color: var(--me-ink);
   font-family: var(--font-sans);
@@ -64,8 +67,9 @@
   --me-postmark: rgba(232, 204, 164, .62);
   --me-paper: linear-gradient(172deg, #3f3556, #362e4b 70%, #33294a);
   --me-pocket: #4a3f62;
-  --me-envelope-back: #2d2640;
-  --me-flap-open: linear-gradient(180deg, #3e3554, #342c48);
+  --me-flap-apex: #463c5f;
+  --me-flap-base: #31293f;
+  --me-star-glow: rgba(246, 214, 150, .62);
   --me-gilt-ink: #e4cb9f;
 }
 .me-page :is(button, a, summary) { -webkit-tap-highlight-color: transparent; }
@@ -93,20 +97,22 @@
 }
 .me-surface { border-radius: 1.5rem; }
 
-/* The envelope, opened: its back and raised flap behind, the letter rising
-   out of it, and the pocket in front holding the wax seal and the postmark.
+/* The envelope, opened: its flap standing up behind, the letter rising out
+   of it, and the pocket in front holding the wax seal and the postmark.
    This is the page's one object; everything below it stays quiet. */
 .me-envelope { position: relative; isolation: isolate; text-align: center; padding-top: .3rem; }
-.me-envelope-back {
-  position: absolute; z-index: 0; inset: 9.5rem 0 0; border-radius: 1.5rem;
-  border: 1px solid var(--me-gilt); background: var(--me-envelope-back); box-shadow: var(--me-shadow);
+.me-envelope-body { position: relative; isolation: isolate; }
+/* The flap's base is the pocket's mouth; its apex stays hidden just under the
+   top of the letter, so only its two gilt edges show beside the paper. */
+.me-flap {
+  position: absolute; z-index: 0; left: 0; top: 2.5rem; display: block; width: 100%;
+  height: calc(100% - 2.5rem - var(--me-pocket-h)); overflow: visible;
 }
-.me-envelope-back::before {
-  content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 5.75rem;
-  background: var(--me-flap-open); clip-path: polygon(0 100%, 50% 0, 100% 100%);
-}
+.me-flap-stop-apex { stop-color: var(--me-flap-apex); }
+.me-flap-stop-base { stop-color: var(--me-flap-base); }
+.me-flap-edge { fill: none; stroke: var(--me-gilt-strong); stroke-width: 1; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .me-letter-sheet {
-  position: relative; z-index: 1; margin: 0 .8rem; padding: 1.25rem 1.2rem 3.9rem;
+  position: relative; z-index: 1; margin: 0 8%; padding: 1.25rem .9rem calc(var(--me-pocket-overlap) + .7rem);
   border-radius: 1.1rem 1.1rem .4rem .4rem; border: 1px solid var(--me-gilt);
   background: var(--me-paper); box-shadow: 0 -8px 26px rgba(40, 24, 44, .1);
 }
@@ -115,10 +121,14 @@
 @keyframes me-letter-rise { from { transform: translateY(3.4rem); } to { transform: none; } }
 
 /* The Sun constellation: gold hairlines and stars, drawn in once on arrival. */
-.me-constellation { display: block; width: min(100%, 15rem); height: auto; margin: 0 auto; overflow: visible; }
-.me-constellation-line { stroke: var(--me-star); stroke-width: 1; stroke-linecap: round; opacity: .72; vector-effect: non-scaling-stroke; }
+.me-constellation {
+  display: block; width: min(100% + 1rem, 19.5rem); height: auto; margin: 0 auto; overflow: visible;
+  margin-inline: max(-.5rem, calc((100% - 19.5rem) / 2));
+  filter: drop-shadow(0 0 4px var(--me-star-glow)) drop-shadow(0 0 12px var(--me-star-glow));
+}
+.me-constellation-line { stroke: var(--me-star); stroke-width: 1.3; stroke-linecap: round; opacity: .95; vector-effect: non-scaling-stroke; }
 .me-constellation-star { fill: var(--me-star); transform-box: fill-box; transform-origin: center; }
-.me-constellation-glow { opacity: .16; }
+.me-constellation-glow { opacity: .3; }
 .me-constellation:not([data-sign]) .me-constellation-star { opacity: .55; }
 .me-constellation[data-reveal] .me-constellation-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: me-line-draw 650ms ease-out forwards; animation-delay: calc(1250ms + var(--i) * 120ms); }
 .me-constellation[data-reveal] .me-constellation-star { opacity: 0; animation: me-star-in 520ms ease-out forwards; animation-delay: calc(950ms + var(--i) * 85ms); }
@@ -129,7 +139,10 @@
 .me-constellation-name { margin: .2rem 0 0; color: var(--me-gilt-ink); font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; line-height: 1.35; }
 
 /* The pocket the letter rose from: two folds meeting under the seal. */
-.me-pocket { position: relative; z-index: 2; height: 7.25rem; margin-top: -3.2rem; border-inline: 1px solid var(--me-gilt); }
+.me-pocket {
+  position: relative; z-index: 2; height: var(--me-pocket-h); margin-top: calc(-1 * var(--me-pocket-overlap));
+  border-inline: 1px solid var(--me-gilt-strong); border-top: 1px solid var(--me-gilt-strong);
+}
 .me-pocket-folds { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .me-pocket-folds polygon { fill: var(--me-pocket); }
 .me-pocket-folds polyline { fill: none; stroke: var(--me-gilt-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
@@ -316,14 +329,28 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
 .me-error { padding: 0 1rem 1rem; font-size: .8125rem; line-height: 1.6; }
 .me-error > button { min-height: 44px; text-decoration: underline; }
 
+/* The close: a sign-off, then the P.S. with your data and help, set in a
+   hanging indent under its mark like a note added at the foot of a letter. */
+.me-footer { padding: 2.6rem .35rem .6rem; color: var(--me-muted); }
+.me-signoff { text-align: center; }
+.me-signoff > span { font-size: 1.25rem; color: var(--me-star); }
+.me-signoff p { font-family: var(--font-serif); font-size: 1.05rem; font-style: italic; line-height: 1.6; margin: .55rem 0 0; }
+.me-ps { --me-ps-indent: 3.25rem; margin-top: 2.2rem; padding-top: 1.4rem; border-top: 1px solid var(--me-gilt); text-align: left; }
+.me-ps-heading { display: flex; align-items: baseline; gap: .25rem; margin: 0; font-weight: 400; }
+.me-ps-mark { flex-shrink: 0; min-width: var(--me-ps-indent); color: var(--me-gilt-ink); font-family: var(--font-serif); font-style: italic; font-size: 1.6rem; font-weight: 500; line-height: 1.2; }
+.me-ps-lead { min-width: 0; color: var(--me-ink); font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; line-height: 1.45; }
+.me-ps-body { margin-top: .7rem; padding-left: calc(var(--me-ps-indent) + .25rem); }
+.me-ps-rows { border-block: 1px solid var(--me-line); }
+.me-ps-rows > * + * { border-top: 1px solid var(--me-line); }
+.me-ps .me-settings-row, .me-ps .me-disclosure-summary { padding-inline: 0; }
 /* Help: plain links, the quietest thing on the page. */
-.me-help-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: .75rem; padding: 0 .35rem; }
-.me-help-link { display: flex; align-items: center; min-height: 44px; color: var(--me-muted); font-size: .875rem; line-height: 1.4; }
+/* Each link carries its dot in front; the dot that would start a line falls
+   into the clipped gutter, so no line ever begins or ends with a separator. */
+.me-help-links { display: flex; flex-wrap: wrap; align-items: center; margin: .1rem 0 0 -1.25rem; padding: .4rem .5rem .4rem 0; overflow: hidden; }
+.me-help-item { display: inline-flex; align-items: center; min-width: 0; }
+.me-help-item::before { content: "·"; content: "·" / ""; display: inline-block; flex-shrink: 0; width: 1.25rem; text-align: center; color: var(--me-gilt-strong); font-size: .9rem; }
+.me-help-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--me-muted); font-size: .84rem; line-height: 1.4; }
 .me-help-link:active { color: var(--me-ink); }
-
-.me-footer { text-align: center; color: var(--me-muted); padding: 2.4rem 1rem .6rem; }
-.me-footer > span { font-size: 1.25rem; color: var(--me-star); }
-.me-footer p { font-family: var(--font-serif); font-size: 1.05rem; font-style: italic; line-height: 1.6; margin: .55rem 0 0; }
 
 /* Edit and storage pages */
 .me-back { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-size: .8125rem; margin: 0 .35rem 1rem; color: var(--me-ink); }
@@ -341,11 +368,28 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
   .me-envelope-name { font-size: 2.2rem; }
   .me-address { font-size: 1.15rem; }
 }
+/* Short phones (iPhone SE): a tighter envelope, so Edit details and Open my
+   chart sit above the dock on the first screen. */
+@media (max-height: 700px) {
+  .me-page { --me-pocket-h: 5.1rem; --me-pocket-overlap: 2.4rem; }
+  .me-page > .me-heading { padding-bottom: .55rem; }
+  .me-page > .me-heading h1 { font-size: 2.15rem; }
+  .me-letter-sheet { padding-top: .8rem; }
+  .me-constellation { width: min(100% + 1rem, 16.5rem); margin-inline: max(-.5rem, calc((100% - 16.5rem) / 2)); }
+  .me-envelope-name { margin-top: .3rem; font-size: 2rem; }
+  .me-address { margin-top: .25rem; }
+  .me-address-note { margin-top: .2rem; }
+  .me-seal { width: 3.6rem; height: 3.6rem; }
+  .me-seal > span { width: 2.65rem; height: 2.65rem; font-size: 1.6rem; }
+  .me-seal[data-glyph] > span { font-size: 1.3rem; }
+  .me-postmark { width: 6.2rem; top: .1rem; }
+  .me-envelope-actions > * { min-height: 48px; }
+}
 /* Narrow phones and large text: tiles and links stack. */
 @container (max-width: 21rem) {
-  .me-help-links { grid-template-columns: minmax(0, 1fr); }
+  .me-ps-body { padding-left: 0; }
   .me-postmark { width: 6.4rem; top: .35rem; right: .2rem; }
-  .me-constellation { width: min(100%, 12.5rem); }
+  .me-constellation { width: min(100%, 14rem); margin-inline: auto; }
   .me-sky-signs { margin-inline: 1rem; }
   .me-envelope-actions { grid-template-columns: minmax(0, 1fr); }
   .me-envelope-actions > * + * { border-left: 0; border-top: 1px solid var(--me-gilt); }

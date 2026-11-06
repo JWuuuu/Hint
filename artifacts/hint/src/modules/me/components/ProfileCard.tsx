@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { ChevronRight, Pencil } from "lucide-react";
 import { Link } from "wouter";
 import type { Profile } from "@workspace/api-client-react";
@@ -57,6 +58,25 @@ function Postmark({ rhythm, label, locale }: { rhythm: Rhythm; label: string; lo
 }
 
 /**
+ * The envelope's open flap, standing up behind the letter. It always ends
+ * just under the top of the letter, so its two gilt edges are what show on
+ * either side of the paper: one clear triangle, never a box.
+ */
+function OpenFlap() {
+  const gradient = `me-flap-${useId().replace(/:/g, "")}`;
+  return <svg className="me-flap" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id={gradient} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" className="me-flap-stop-apex" />
+        <stop offset="1" className="me-flap-stop-base" />
+      </linearGradient>
+    </defs>
+    <polygon points="0,300 200,0 400,300" fill={`url(#${gradient})`} />
+    <polyline className="me-flap-edge" points="0,300 200,0 400,300" />
+  </svg>;
+}
+
+/**
  * The letter the universe wrote to this person, rising out of its envelope.
  * The letter carries their Sun constellation drawn in gold, their name, and
  * their birth details set like an address; the envelope keeps the wax seal
@@ -96,38 +116,39 @@ export function ProfileCard({ profile, onEdit, signs, rhythm = null, reveal = fa
 
   return <section className="me-envelope" aria-labelledby="me-envelope-name" data-empty={hasBirth ? undefined : "true"}
     data-postmarked={rhythm ? "true" : undefined} data-reveal={reveal || undefined}>
-    {/* The open envelope behind the letter: its back and the raised flap. */}
-    <div className="me-envelope-back" aria-hidden="true" />
+    <div className="me-envelope-body">
+      <OpenFlap />
 
-    <div className="me-letter-sheet">
-      <Constellation sign={sun} reveal={reveal}
-        label={sun ? fill(copy.constellationOf, { sign: signName(sun, language) }) : copy.unwrittenSky} />
-      <p className="me-constellation-name" aria-hidden="true">{sun ? signName(sun, language) : copy.unwrittenSky}</p>
-      <h2 id="me-envelope-name" className="me-envelope-name">{name}</h2>
-      {hasBirth ? <>
-        <p className="me-address">
-          <span>{time ? fill(copy.atTime, { date, time }) : date}</span>
-          {place && <><br /><span>{place}</span></>}
-        </p>
-        {!time && <p className="me-address-note">{copy.unknownTime}</p>}
-        {placements.length > 0 && <dl className="me-sky-signs">
-          {placements.map(({ key, sign }) => <div key={key}>
-            <dt>{copy[key]}</dt>
-            <dd><span className="me-sign-glyph" aria-hidden="true">{glyph(sign)}</span>{signName(sign, language)}</dd>
-          </div>)}
-        </dl>}
-      </> : <p className="me-envelope-prompt">{copy.birthPrompt}</p>}
-    </div>
+      <div className="me-letter-sheet">
+        <Constellation sign={sun} reveal={reveal}
+          label={sun ? fill(copy.constellationOf, { sign: signName(sun, language) }) : copy.unwrittenSky} />
+        <p className="me-constellation-name" aria-hidden="true">{sun ? signName(sun, language) : copy.unwrittenSky}</p>
+        <h2 id="me-envelope-name" className="me-envelope-name">{name}</h2>
+        {hasBirth ? <>
+          <p className="me-address">
+            <span>{time ? fill(copy.atTime, { date, time }) : date}</span>
+            {place && <><br /><span>{place}</span></>}
+          </p>
+          {!time && <p className="me-address-note">{copy.unknownTime}</p>}
+          {placements.length > 0 && <dl className="me-sky-signs">
+            {placements.map(({ key, sign }) => <div key={key}>
+              <dt>{copy[key]}</dt>
+              <dd><span className="me-sign-glyph" aria-hidden="true">{glyph(sign)}</span>{signName(sign, language)}</dd>
+            </div>)}
+          </dl>}
+        </> : <p className="me-envelope-prompt">{copy.birthPrompt}</p>}
+      </div>
 
-    {/* The envelope's front: the pocket the letter rose from. */}
-    <div className="me-pocket">
-      <svg className="me-pocket-folds" viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <polygon points="0,0 400,0 400,100 0,100" />
-        <polyline points="0,0 200,62 400,0" />
-        <polyline points="0,100 200,62 400,100" />
-      </svg>
-      <span className="me-seal" data-glyph={signs ? "true" : undefined} aria-hidden="true"><span>{signs ? glyph(signs.sun) : initial}</span></span>
-      {rhythm && <Postmark rhythm={rhythm} label={rhythmLabel} locale={locale} />}
+      {/* The envelope's front: the pocket the letter rose from. */}
+      <div className="me-pocket">
+        <svg className="me-pocket-folds" viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <polygon points="0,0 400,0 400,100 0,100" />
+          <polyline points="0,0 200,62 400,0" />
+          <polyline points="0,100 200,62 400,100" />
+        </svg>
+        <span className="me-seal" data-glyph={signs ? "true" : undefined} aria-hidden="true"><span>{signs ? glyph(signs.sun) : initial}</span></span>
+        {rhythm && <Postmark rhythm={rhythm} label={rhythmLabel} locale={locale} />}
+      </div>
     </div>
 
     {hasBirth ? <div className="me-envelope-actions">

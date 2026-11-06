@@ -258,3 +258,29 @@ it("cancelling history confirmation never sends a request", () => {
   fireEvent.click(screen.getByTestId("button-clear-history"));
   expect(state.deleteHistory).not.toHaveBeenCalled();
 });
+
+for (const language of ["en", "zh", "es", "ja", "ko"] as const) {
+  it(`${language} closes the page with a sign-off and a P.S. holding the data rows and help`, () => {
+    state.language = language;
+    render(<MeView />);
+    const footer = document.querySelector(".me-footer")!;
+    // The P.S. is the last thing on the page, after the sign-off.
+    expect(footer.nextElementSibling).toBeNull();
+    expect(footer.querySelector(".me-signoff")?.textContent).toContain(ME_COPY[language].footer);
+    const ps = screen.getByRole("heading", { level: 2, name: `${ME_COPY[language].ps} ${ME_COPY[language].psLead}` });
+    const section = ps.closest("section")!;
+    expect(section.querySelector('[data-testid="button-open-storage"]')).toBeTruthy();
+    expect(section.querySelector(".me-data-disclosure summary")?.textContent).toContain(ME_COPY[language].clearLabel);
+    const links = [...section.querySelectorAll<HTMLAnchorElement>("nav a")].map(link => link.getAttribute("href"));
+    expect(links).toEqual(["/about", "/contact", "/privacy", "/terms", "/disclaimer"]);
+    // The old separate data and help headings are gone.
+    expect(screen.queryByRole("heading", { name: ME_COPY[language].dataHeading })).toBeNull();
+    expect(screen.queryByRole("heading", { name: ME_COPY[language].help })).toBeNull();
+    expect(screen.getByRole("navigation", { name: ME_COPY[language].help })).toBeTruthy();
+  });
+}
+
+it("labels the motion switch in sentence case", () => {
+  render(<MeView />);
+  expect(screen.getByRole("switch", { name: "Reduce motion" })).toBeTruthy();
+});

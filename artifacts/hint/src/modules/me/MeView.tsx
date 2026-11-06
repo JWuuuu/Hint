@@ -6,6 +6,7 @@ import { useProfile } from "../../lib/useProfile";
 import { ProfileForm } from "../../components/app/ProfileForm";
 import { ProfileCard, type SkySigns } from "./components/ProfileCard";
 import { SettingsList } from "./components/SettingsList";
+import { LetterClose } from "./components/Postscript";
 import { StoragePanel } from "./components/StoragePanel";
 import { useLanguage } from "../../lib/i18n";
 import { useMotionPolicy } from "../../lib/motionPolicy";
@@ -71,8 +72,8 @@ function readSigns(profile: Profile | null): SkySigns | null {
 
 /**
  * A personal page: the envelope addressed to you, postmarked with the days you
- * came back; the letters you kept; then the everyday choices. Device plumbing
- * lives one step away.
+ * came back; the letters you kept; then the everyday choices, signed off with a
+ * P.S. for your data and help. Device plumbing lives one step away.
  */
 export function MeView() {
   const { profile, saveProfile, isSaving, storageStatus } = useProfile();
@@ -141,8 +142,8 @@ export function MeView() {
         <header className="me-heading"><h1>{copy.title}</h1></header>
         <ProfileCard profile={profile} onEdit={beginEditing} signs={signs} rhythm={practice.entries.length ? rhythm : null} reveal={reveal} />
         <PracticeLedger entries={practice.entries} letters={practice.letters} personality={practice.personality} />
-        <div id="me-settings" className="scroll-mt-6"><SettingsList onOpenStorage={() => setView("storage")} storageStatus={storageStatus} /></div>
-        <footer className="me-footer"><span aria-hidden="true">✧</span><p>{copy.footer}</p></footer>
+        <div id="me-settings" className="scroll-mt-6"><SettingsList /></div>
+        <LetterClose onOpenStorage={() => setView("storage")} storageStatus={storageStatus} />
       </>}
     </div>
   </AppScreen>;
