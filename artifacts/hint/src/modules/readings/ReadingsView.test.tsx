@@ -4,14 +4,14 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { ReadingsView } from "./ReadingsView";
 import type { HintLanguage } from "../../lib/i18n";
 
-const state = vi.hoisted(() => ({ language: "es" as HintLanguage, readings: [] as Array<Record<string, unknown>> }));
-vi.mock("@workspace/api-client-react", () => ({ useListReadings: () => ({ data: state.readings, isLoading: false, isError: false }) }));
+const state = vi.hoisted(() => ({ language: "es" as HintLanguage, readings: [] as Array<Record<string, unknown>>, isError: false }));
+vi.mock("@workspace/api-client-react", () => ({ useListReadings: () => ({ data: state.isError ? undefined : state.readings, isLoading: false, isError: state.isError, refetch: () => undefined }) }));
 vi.mock("../../lib/i18n", async importOriginal => {
   const original = await importOriginal<typeof import("../../lib/i18n")>();
   return { ...original, useLanguage: () => ({ language: state.language, t: (key: string) => original.TRANSLATIONS[state.language][key] ?? key }) };
 });
 beforeEach(() => {
-  state.readings = [];
+  state.readings = []; state.isError = false;
   vi.stubGlobal("IntersectionObserver", class { observe() {} unobserve() {} disconnect() {} });
   localStorage.clear(); sessionStorage.clear(); localStorage.setItem("hint_anon_id", "history-copy-fixture");
   localStorage.setItem("hint_local_question_history_v1", JSON.stringify([{
@@ -52,4 +52,13 @@ it("lists each reading once in All and keeps server-only records in their own fi
 
   fireEvent.click(screen.getByRole("button", { name: /^Daily/ }));
   expect(readingLinks()).toEqual(["/app/readings/server-daily"]);
+});
+
+it("a new reader with the server down sees the error and the empty History, not a blank page", () => {
+  state.language = "en"; state.isError = true;
+  localStorage.removeItem("hint_local_question_history_v1");
+  render(<ReadingsView />);
+  expect(screen.getByText("History could not be loaded. Available local records are shown below.")).toBeTruthy();
+  // The tabs still render their content below the error, here the empty states.
+  expect(document.querySelectorAll(".hr-empty").length).toBeGreaterThan(0);
 });

@@ -504,9 +504,11 @@ export function ReadingsView() {
           </Link>
         </li>)}</ol>
       </ArchiveSection>}
+      {/* When the server can't be reached, the error above says local records are
+          shown below, so the tabs still show them, or their empty states. */}
       {isLoading && nothingLoaded ? (
         <p className="hr-loading" role="status">{t("readings.loading")}</p>
-      ) : isError && nothingLoaded && activeTab !== "astrology" ? null : activeTab === "questions" ? (
+      ) : activeTab === "questions" ? (
         <ArchiveSection id="questions" title={t("readings.questions")}>
           {(displayedQuestionHistory.length > 0 || askHistory.length === 0) && <QuestionList
             items={displayedQuestionHistory}
