@@ -1,5 +1,6 @@
 import { LocalizedText } from "../../lib/LocalizedText";
 import { Link } from "wouter";
+import { PenLine } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { AppScreen, ScreenHeader, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
 import { DreamSigil } from "../home/data/sigils";
@@ -51,14 +52,20 @@ export function DreamView() {
         <p className="font-serif text-[13px] mb-3" style={{ color: GLASS.muted }}>
           {t("dream.question")}
         </p>
-        <div
-          className="w-full rounded-[8px] px-4 py-4 mb-4"
+        {/* Dream notes are written in the journal. This looks like a field, so it
+            opens the journal when tapped instead of silently doing nothing. */}
+        <Link
+          href="/app/journal"
+          className="flex w-full items-start gap-3 rounded-[8px] px-4 py-4 mb-4 text-left"
           style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}` }}
+          data-testid="link-dream-write"
         >
-          <p className="font-serif italic text-[14px]" style={{ color: GLASS.faint }}>
+          <span className="min-w-0 flex-1 font-serif italic text-[14px]" style={{ color: GLASS.faint }}>
             {t("dream.placeholder")}
-          </p>
-        </div>
+            <span className="sr-only"> <LocalizedText text={"Write in my journal"} /></span>
+          </span>
+          <PenLine size={16} aria-hidden="true" className="mt-0.5 shrink-0" style={{ color: GLASS.muted }} />
+        </Link>
         <Link href="/app/journal"
           className="inline-flex items-center justify-center w-full h-11 rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em]"
           style={{
