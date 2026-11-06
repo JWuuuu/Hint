@@ -15,7 +15,8 @@
 .me-page {
   --me-ink: #473542;
   --me-muted: #75616e;
-  --me-accent: #94765e;
+  /* Text on the envelope pocket (#f2e6e2) and the page needs 4.5:1: this is 5.3:1. */
+  --me-accent: #76593f;
   --me-accent-soft: rgba(148, 118, 94, .12);
   --me-line: rgba(131, 98, 119, .16);
   --me-surface: rgba(255, 252, 248, .78);
