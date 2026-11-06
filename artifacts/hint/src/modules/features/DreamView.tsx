@@ -53,7 +53,7 @@ export function DreamView() {
         </p>
         <div
           className="w-full rounded-[8px] px-4 py-4 mb-4"
-          style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}` }}
+          style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}` }}
         >
           <p className="font-serif italic text-[14px]" style={{ color: GLASS.faint }}>
             {t("dream.placeholder")}

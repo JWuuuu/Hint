@@ -356,7 +356,7 @@ export function LoginView() {
                   autoComplete="name"
                   aria-invalid={error === t("login.error.name")}
                   className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
-                  style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                  style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-name"
                 />
               </label>
@@ -379,7 +379,7 @@ export function LoginView() {
                     pattern="\d{4}-\d{2}-\d{2}"
                     aria-invalid={error === t("login.error.birthDate")}
                     className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
-                    style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                    style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                     data-testid="input-login-birthdate"
                   />
                 </label>
@@ -392,7 +392,7 @@ export function LoginView() {
                     onChange={(event) => setBirthTime(event.target.value)}
                     type="time"
                     className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
-                    style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                    style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                     data-testid="input-login-birthtime"
                   />
                 </label>
@@ -407,7 +407,7 @@ export function LoginView() {
                     placeholder={t("login.birthPlacePlaceholder")}
                     autoComplete="address-level2"
                     className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
-                    style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                    style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                     data-testid="input-login-birthplace"
                   />
                   <p className="mt-2 font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}>
@@ -434,7 +434,7 @@ export function LoginView() {
                   inputMode="email"
                   aria-invalid={error === t("login.error.email")}
                   className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
-                  style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                  style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-email"
                 />
               </label>
@@ -455,7 +455,7 @@ export function LoginView() {
                   inputMode="tel"
                   aria-invalid={error === t("login.error.phone")}
                   className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
-                  style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                  style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-phone"
                 />
               </label>
@@ -476,7 +476,7 @@ export function LoginView() {
                   maxLength={6}
                   aria-invalid={error === t("login.error.codeMismatch")}
                   className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
-                  style={{ background: "rgba(0,0,0,0.25)", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                  style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-code"
                 />
                 <p className="mt-2 font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}>

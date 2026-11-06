@@ -227,9 +227,9 @@ export function ContactView() {
             href={`mailto:${CONTACT_EMAIL}`}
             className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em] transition-opacity hover:opacity-90"
             style={{
-              background: "rgba(100,156,158,0.16)",
-              border: "1px solid rgba(100,156,158,0.32)",
-              color: "rgba(150,206,208,0.95)",
+              background: "var(--hint-teal-action-bg, rgba(100,156,158,0.16))",
+              border: "1px solid var(--hint-teal-action-border, rgba(100,156,158,0.32))",
+              color: "var(--hint-teal-action-text, rgba(150,206,208,0.95))",
             }}
           >
             {t("legal.emailSupport")}
