@@ -1461,8 +1461,19 @@ function QuestionStep({
   const speechStartRef = useRef<Promise<HintSpeechSession> | null>(null);
   const speechAbortRef = useRef<AbortController | null>(null);
   const voiceRequestRef = useRef(0);
+  const questionFieldRef = useRef<HTMLTextAreaElement | null>(null);
   const intent = getQuestionIntent(question);
   const canContinue = Boolean(cleanQuestion(question));
+
+  // Grow the question box with its text up to five lines, then scroll, like the Ask composer.
+  useEffect(() => {
+    const field = questionFieldRef.current;
+    if (!field) return;
+    const style = getComputedStyle(field);
+    const fiveLines = parseFloat(style.lineHeight) * 5 + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    field.style.height = "auto";
+    field.style.height = `${Math.min(field.scrollHeight, fiveLines)}px`;
+  }, [question]);
 
   async function stopVoice(cancel = false) {
     if (cancel) {
@@ -1665,11 +1676,12 @@ function QuestionStep({
       <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(var(--hint-safe-bottom)+0.8rem)]">
         <div className="mx-auto flex max-w-[520px] items-end gap-2 rounded-[28px] border border-white/68 bg-white/76 p-2 shadow-[0_18px_54px_rgba(83,61,93,0.20)] backdrop-blur-xl">
           <textarea
+            ref={questionFieldRef}
             value={question}
             rows={1}
             onChange={(event) => setQuestion(event.target.value)}
             placeholder={t("tarot.flow.question.placeholder")}
-            className="max-h-24 min-h-11 flex-1 resize-none rounded-[22px] bg-transparent px-3 py-3 text-[14px] font-bold leading-snug text-[#382f45] outline-none placeholder:text-[#9b8c9e]"
+            className="min-h-11 flex-1 resize-none rounded-[22px] bg-transparent px-3 py-3 text-[14px] font-bold leading-snug text-[#382f45] outline-none placeholder:text-[#9b8c9e]"
           />
           <button
             type="button"
