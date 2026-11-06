@@ -344,12 +344,14 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
 .me-ps-rows > * + * { border-top: 1px solid var(--me-line); }
 .me-ps .me-settings-row, .me-ps .me-disclosure-summary { padding-inline: 0; }
 /* Help: plain links, the quietest thing on the page. */
-/* Each link carries its dot in front; the dot that would start a line falls
-   into the clipped gutter, so no line ever begins or ends with a separator. */
-.me-help-links { display: flex; flex-wrap: wrap; align-items: center; margin: .1rem 0 0 -1.25rem; padding: .4rem .5rem .4rem 0; overflow: hidden; }
+/* Each link carries its dot in front. The row starts one dot to the left of
+   the clipping nav, so the dot that would start a line is hidden: no line
+   ever begins or ends with a separator. */
+.me-help-links { margin-top: .1rem; padding: .4rem .5rem .4rem 0; overflow: hidden; }
+.me-help-row { display: flex; flex-wrap: wrap; align-items: center; margin-left: -1.25rem; }
 .me-help-item { display: inline-flex; align-items: center; min-width: 0; }
 .me-help-item::before { content: "·"; content: "·" / ""; display: inline-block; flex-shrink: 0; width: 1.25rem; text-align: center; color: var(--me-gilt-strong); font-size: .9rem; }
-.me-help-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--me-muted); font-size: .84rem; line-height: 1.4; }
+.me-help-link { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; color: var(--me-muted); font-size: .84rem; line-height: 1.4; }
 .me-help-link:active { color: var(--me-ink); }
 
 /* Edit and storage pages */

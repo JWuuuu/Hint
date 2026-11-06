@@ -62,9 +62,11 @@ export function LetterClose({ onOpenStorage, storageStatus }: { onOpenStorage: (
           </details>
         </div>
         <nav className="me-help me-help-links" aria-label={copy.help}>
-          {helpLinks.map(link => <span key={link.id} className="me-help-item">
-            <Link href={link.href} className="me-help-link">{link.label}</Link>
-          </span>)}
+          <div className="me-help-row">
+            {helpLinks.map(link => <span key={link.id} className="me-help-item">
+              <Link href={link.href} className="me-help-link">{link.label}</Link>
+            </span>)}
+          </div>
         </nav>
       </div>
     </section>
