@@ -3898,9 +3898,15 @@ export function TarotRoomFlow() {
   const [archivedRequest, setArchivedRequest] = useState(getArchivedReadingRequest);
   const [freshVisit] = useState(() => roomVisitWasClosed("tarot"));
   const visitOpen = useRef(true);
-  const [restoredSession] = useState(() =>
-    setupRequested || archivedRequest || freshVisit ? null : loadActiveTarotSession(),
-  );
+  const [restoredSession] = useState(() => {
+    const session = setupRequested || archivedRequest || freshVisit ? null : loadActiveTarotSession();
+    // Every step after the question needs one. A session saved without a
+    // question (older builds saved Room settings opened from the question step
+    // as the ritual's design step) restarts at the question, so a reload never
+    // produces a reading of nothing.
+    if (session && session.phase !== "question" && !session.question?.trim()) return { ...session, phase: "question" as const };
+    return session;
+  });
   const [archivedReading, setArchivedReading] = useState(() => {
     if (archivedRequest) {
       return getLocalTarotReading(archivedRequest.readingId);
@@ -4082,7 +4088,9 @@ export function TarotRoomFlow() {
     if (!visitOpen.current || archivedReading || (settingsMode && !settingsReturnStep)) return;
     // A new empty entrance must not replace another tab's durable recovery copy.
     if (freshVisit && step === "question" && !question) return;
-    const stablePhase = getTarotStableRecoveryStep(step);
+    // Room settings opened over another step are an overlay: recover the step
+    // underneath, not the settings' design screen.
+    const stablePhase = getTarotStableRecoveryStep(settingsMode && settingsReturnStep ? settingsReturnStep : step);
     saveActiveTarotSession({
       phase: stablePhase,
       question,
