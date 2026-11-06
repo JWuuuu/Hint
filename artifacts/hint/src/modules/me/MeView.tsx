@@ -27,6 +27,8 @@ function attempt<T>(read: () => T, fallback: T): T {
   try { return read(); } catch { return fallback; }
 }
 
+const REVEAL_KEY = "hint.me.letterRevealed";
+
 /** The newest letters first; the page shows the top one and the edges of two more. */
 const newestFirst = <T extends { createdAt: string }>(items: T[], limit: number): T[] =>
   [...items].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, limit);
@@ -85,6 +87,9 @@ export function MeView() {
   const [practice, setPractice] = useState(readPractice);
   const signs = useMemo(() => attempt(() => readSigns(profile), null), [profile, practice]);
   const rhythm = useMemo(() => practiceRhythm(practice.entries), [practice]);
+  // The letter rises and its constellation draws in once per app session.
+  const [reveal] = useState(() => !reduced && !attempt(() => sessionStorage.getItem(REVEAL_KEY) === "1", true));
+  useEffect(() => { if (reveal) attempt(() => sessionStorage.setItem(REVEAL_KEY, "1"), undefined); }, [reveal]);
 
   useEffect(() => {
     const sync = () => setPractice(readPractice());
@@ -134,7 +139,7 @@ export function MeView() {
       </section> : view === "storage" ? <StoragePanel onBack={() => setView("home")} /> : <>
         <SpaceNavigation />
         <header className="me-heading"><h1>{copy.title}</h1></header>
-        <ProfileCard profile={profile} onEdit={beginEditing} signs={signs} rhythm={practice.entries.length ? rhythm : null} />
+        <ProfileCard profile={profile} onEdit={beginEditing} signs={signs} rhythm={practice.entries.length ? rhythm : null} reveal={reveal} />
         <PracticeLedger entries={practice.entries} letters={practice.letters} personality={practice.personality} />
         <div id="me-settings" className="scroll-mt-6"><SettingsList onOpenStorage={() => setView("storage")} storageStatus={storageStatus} /></div>
         <footer className="me-footer"><span aria-hidden="true">✧</span><p>{copy.footer}</p></footer>

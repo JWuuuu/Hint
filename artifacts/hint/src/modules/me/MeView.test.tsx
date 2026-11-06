@@ -189,9 +189,31 @@ for (const language of ["en", "zh", "es", "ja", "ko"] as const) {
     expect(screen.getByText("Fictional City")).toBeTruthy();
     expect(screen.getByRole("link", { name: ME_COPY[language].openChart }).getAttribute("href")).toBe("/app/astrology?tab=chart");
     expect(screen.getByRole("status").textContent).not.toMatch(/undefined|quality\./);
-    expect(screen.queryByText(/Pisces|双鱼座|魚座|물고기자리/)).toBeNull();
+    // No calculated chart: no Sun/Moon/Rising placements are shown. February 29
+    // is far from a sign change, so the letter shows the Sun constellation the
+    // date alone decides.
+    expect(document.querySelector(".me-sky-signs")).toBeNull();
+    expect(screen.queryByText(ME_COPY[language].moon)).toBeNull();
+    expect(screen.queryByText(ME_COPY[language].rising)).toBeNull();
+    expect(document.querySelector(".me-constellation")?.getAttribute("data-sign")).toBe("pisces");
   });
 }
+
+it("leaves the constellation unwritten on the days around a sign change until a chart decides", () => {
+  for (const birthDate of ["1997-03-20", "1997-03-21", "2001-12-21", "2001-12-22", "2000-01-19"]) {
+    state.profile = { anonId: "fictional-me-owner", name: "Fictional Reader", birthDate, birthTime: null, birthPlace: null, createdAt: "2026-01-01" };
+    const view = render(<MeView />);
+    expect(document.querySelector(".me-constellation")?.hasAttribute("data-sign")).toBe(false);
+    expect(screen.getAllByText(ME_COPY.en.unwrittenSky).length).toBeGreaterThan(0);
+    view.unmount();
+  }
+  for (const [birthDate, sign] of [["1997-03-22", "aries"], ["1990-08-02", "leo"], ["2001-12-23", "capricorn"]] as const) {
+    state.profile = { anonId: "fictional-me-owner", name: "Fictional Reader", birthDate, birthTime: null, birthPlace: null, createdAt: "2026-01-01" };
+    const view = render(<MeView />);
+    expect(document.querySelector(".me-constellation")?.getAttribute("data-sign")).toBe(sign);
+    view.unmount();
+  }
+});
 
 it("connects appearance and accessible preference controls to the existing settings", () => {
   render(<MeView />);

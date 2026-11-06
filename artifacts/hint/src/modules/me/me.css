@@ -31,6 +31,12 @@
   --me-card-back: linear-gradient(160deg, #fbf4ec, #efe3e8);
   --me-seal-shadow: 0 0 0 5px rgba(196, 160, 110, .14), 0 10px 20px rgba(110, 74, 40, .2);
   --me-postmark: rgba(112, 72, 101, .58);
+  /* The envelope and its letter are paper objects: opaque, warm, gilt-edged. */
+  --me-paper: linear-gradient(172deg, #fffdf9, #fbf3ee 70%, #f8eef0);
+  --me-pocket: #f2e6e2;
+  --me-envelope-back: #e8dad8;
+  --me-flap-open: linear-gradient(180deg, #efe3e0, #e6d7d5);
+  --me-gilt-ink: #82602e;
   color: var(--me-ink);
   font-family: var(--font-sans);
   padding: .3rem .15rem 0;
@@ -56,6 +62,11 @@
   --me-card-back: linear-gradient(160deg, #50445f, #362d48);
   --me-seal-shadow: 0 0 0 5px rgba(230, 203, 157, .13), 0 12px 24px rgba(12, 8, 18, .45);
   --me-postmark: rgba(232, 204, 164, .62);
+  --me-paper: linear-gradient(172deg, #3f3556, #362e4b 70%, #33294a);
+  --me-pocket: #4a3f62;
+  --me-envelope-back: #2d2640;
+  --me-flap-open: linear-gradient(180deg, #3e3554, #342c48);
+  --me-gilt-ink: #e4cb9f;
 }
 .me-page :is(button, a, summary) { -webkit-tap-highlight-color: transparent; }
 .me-page :is(button, a, summary):focus-visible { outline: 2px solid var(--me-accent); outline-offset: 4px; }
@@ -82,32 +93,60 @@
 }
 .me-surface { border-radius: 1.5rem; }
 
-/* The envelope: vellum on the sky, a gilt flap, a wax seal where it meets. */
-.me-envelope {
-  position: relative; isolation: isolate; overflow: hidden; text-align: center;
-  border-radius: 1.65rem; border: 1px solid var(--me-gilt);
-  background: var(--me-vellum), var(--me-surface);
-  box-shadow: var(--me-shadow);
-  -webkit-backdrop-filter: blur(18px) saturate(1.15);
-  backdrop-filter: blur(18px) saturate(1.15);
+/* The envelope, opened: its back and raised flap behind, the letter rising
+   out of it, and the pocket in front holding the wax seal and the postmark.
+   This is the page's one object; everything below it stays quiet. */
+.me-envelope { position: relative; isolation: isolate; text-align: center; padding-top: .3rem; }
+.me-envelope-back {
+  position: absolute; z-index: 0; inset: 9.5rem 0 0; border-radius: 1.5rem;
+  border: 1px solid var(--me-gilt); background: var(--me-envelope-back); box-shadow: var(--me-shadow);
 }
-.me-envelope[data-empty] { padding-bottom: 1.7rem; }
-.me-envelope-flap { position: absolute; z-index: -1; inset: 0 0 auto; width: 100%; height: 6.5rem; display: block; }
-.me-envelope-flap polygon { fill: var(--me-flap); }
-.me-envelope-flap polyline { fill: none; stroke: var(--me-gilt-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.me-envelope-back::before {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 5.75rem;
+  background: var(--me-flap-open); clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+.me-letter-sheet {
+  position: relative; z-index: 1; margin: 0 .8rem; padding: 1.25rem 1.2rem 3.9rem;
+  border-radius: 1.1rem 1.1rem .4rem .4rem; border: 1px solid var(--me-gilt);
+  background: var(--me-paper); box-shadow: 0 -8px 26px rgba(40, 24, 44, .1);
+}
+/* Starts after the room has faded in, so the rise itself is seen. */
+.me-envelope[data-reveal] .me-letter-sheet { animation: me-letter-rise 1300ms cubic-bezier(.4, 0, .15, 1) 350ms both; }
+@keyframes me-letter-rise { from { transform: translateY(3.4rem); } to { transform: none; } }
+
+/* The Sun constellation: gold hairlines and stars, drawn in once on arrival. */
+.me-constellation { display: block; width: min(100%, 15rem); height: auto; margin: 0 auto; overflow: visible; }
+.me-constellation-line { stroke: var(--me-star); stroke-width: 1; stroke-linecap: round; opacity: .72; vector-effect: non-scaling-stroke; }
+.me-constellation-star { fill: var(--me-star); transform-box: fill-box; transform-origin: center; }
+.me-constellation-glow { opacity: .16; }
+.me-constellation:not([data-sign]) .me-constellation-star { opacity: .55; }
+.me-constellation[data-reveal] .me-constellation-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: me-line-draw 650ms ease-out forwards; animation-delay: calc(1250ms + var(--i) * 120ms); }
+.me-constellation[data-reveal] .me-constellation-star { opacity: 0; animation: me-star-in 520ms ease-out forwards; animation-delay: calc(950ms + var(--i) * 85ms); }
+.me-constellation[data-reveal]:not([data-sign]) .me-constellation-star { animation-name: me-star-in-faint; }
+@keyframes me-line-draw { to { stroke-dashoffset: 0; } }
+@keyframes me-star-in { from { opacity: 0; transform: scale(.35); } to { opacity: 1; transform: none; } }
+@keyframes me-star-in-faint { from { opacity: 0; transform: scale(.35); } to { opacity: .55; transform: none; } }
+.me-constellation-name { margin: .2rem 0 0; color: var(--me-gilt-ink); font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; line-height: 1.35; }
+
+/* The pocket the letter rose from: two folds meeting under the seal. */
+.me-pocket { position: relative; z-index: 2; height: 7.25rem; margin-top: -3.2rem; border-inline: 1px solid var(--me-gilt); }
+.me-pocket-folds { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.me-pocket-folds polygon { fill: var(--me-pocket); }
+.me-pocket-folds polyline { fill: none; stroke: var(--me-gilt-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .me-seal {
-  display: grid; place-items: center; width: 4.75rem; height: 4.75rem; margin: 3.5rem auto 0; border-radius: 50%;
+  position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%);
+  display: grid; place-items: center; width: 4.5rem; height: 4.5rem; border-radius: 50%;
   background: radial-gradient(circle at 34% 28%, #fbecce 0%, #ead0a2 34%, #cfab73 74%, #b48d58 100%);
   box-shadow: var(--me-seal-shadow), inset 0 -4px 7px rgba(112, 76, 36, .36), inset 0 2px 3px rgba(255, 250, 236, .65);
 }
 .me-seal > span {
-  display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%;
+  display: grid; place-items: center; width: 3.3rem; height: 3.3rem; border-radius: 50%;
   border: 1px solid rgba(106, 74, 38, .4); color: #5a3d20; text-shadow: 0 1px 0 rgba(255, 244, 222, .6);
-  font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 2.15rem; line-height: 1;
+  font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 2rem; line-height: 1;
 }
-.me-seal[data-glyph] > span { font-family: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", "Noto Sans Symbols 2", serif; font-style: normal; font-weight: 400; font-size: 1.7rem; }
-/* The postmark: ink stamped over the envelope's corner, never a control. */
-.me-postmark { position: absolute; z-index: 1; top: .7rem; right: .55rem; width: 8.6rem; height: auto; overflow: visible; pointer-events: none; transform: rotate(-8deg); }
+.me-seal[data-glyph] > span { font-family: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", "Noto Sans Symbols 2", serif; font-style: normal; font-weight: 400; font-size: 1.6rem; }
+/* The postmark: ink stamped over the pocket's corner, never a control. */
+.me-postmark { position: absolute; z-index: 1; top: .3rem; right: .4rem; width: 7.8rem; height: auto; overflow: visible; pointer-events: none; transform: rotate(-8deg); }
 .me-postmark-waves path, .me-postmark-ring { fill: none; stroke: var(--me-postmark); }
 .me-postmark-waves path { stroke-width: 1.3; stroke-linecap: round; opacity: .75; }
 .me-postmark-ring { stroke-width: 1.5; }
@@ -116,17 +155,21 @@
 .me-postmark-day[data-on] { fill: var(--me-star); stroke: var(--me-star); }
 .me-postmark-month { fill: var(--me-postmark); font-family: var(--font-sans); font-size: 10.5px; font-weight: 600; letter-spacing: .04em; }
 .me-postmark-date { fill: var(--me-postmark); font-family: var(--font-serif); font-size: 21px; font-weight: 500; }
-.me-envelope-name { margin: 1.05rem 0 0; padding: 0 1.5rem; font-family: var(--font-serif); font-size: 2.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
-.me-address { margin: .55rem 0 0; padding: 0 1.5rem; font-family: var(--font-serif); font-style: italic; font-size: 1.25rem; line-height: 1.45; }
+.me-envelope-name { margin: .55rem 0 0; padding: 0 .5rem; font-family: var(--font-serif); font-size: 2.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+.me-address { margin: .45rem 0 0; padding: 0 .5rem; font-family: var(--font-serif); font-style: italic; font-size: 1.25rem; line-height: 1.45; }
 .me-address-note { margin: .4rem 0 0; color: var(--me-muted); font-size: .8125rem; line-height: 1.5; }
 .me-envelope-prompt { margin: .65rem auto 0; padding: 0 1.5rem; max-width: 19rem; color: var(--me-muted); font-size: .9375rem; line-height: 1.55; }
-.me-envelope .me-secondary { margin-top: 1.25rem; }
-.me-sky-signs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: 1.4rem 1.5rem 0; padding-top: 1.1rem; border-top: 1px solid var(--me-gilt); }
+.me-sky-signs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: 1.2rem .25rem 0; padding-top: 1.1rem; border-top: 1px solid var(--me-gilt); }
 .me-sky-signs > div { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .me-sky-signs dt { order: 2; margin-top: .1rem; color: var(--me-muted); font-size: .78rem; line-height: 1.4; }
 .me-sky-signs dd { order: 1; display: flex; flex-direction: column; align-items: center; margin: 0; font-family: var(--font-serif); font-size: 1.375rem; font-weight: 500; line-height: 1.15; }
 .me-sign-glyph { margin-bottom: .2rem; color: var(--me-star); font-family: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", "Noto Sans Symbols 2", serif; font-size: 1.15rem; font-weight: 400; line-height: 1.2; }
-.me-envelope-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.3rem; border-top: 1px solid var(--me-gilt); }
+.me-envelope-actions {
+  position: relative; z-index: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--me-gilt); border-radius: 0 0 1.5rem 1.5rem; background: var(--me-pocket); overflow: hidden;
+}
+.me-envelope-actions[data-single] { grid-template-columns: minmax(0, 1fr); }
+.me-envelope-actions > .me-envelope-add { color: var(--me-accent); }
 .me-envelope-actions > * { display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 54px; padding: .5rem .75rem; color: var(--me-ink); font-size: .875rem; font-weight: 500; line-height: 1.3; }
 .me-envelope-actions > * + * { border-left: 1px solid var(--me-gilt); color: var(--me-accent); }
 .me-envelope-actions > *:active { background: var(--me-accent-soft); }
@@ -301,7 +344,8 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
 /* Narrow phones and large text: tiles and links stack. */
 @container (max-width: 21rem) {
   .me-help-links { grid-template-columns: minmax(0, 1fr); }
-  .me-postmark { width: 7rem; top: .55rem; right: .35rem; }
+  .me-postmark { width: 6.4rem; top: .35rem; right: .2rem; }
+  .me-constellation { width: min(100%, 12.5rem); }
   .me-sky-signs { margin-inline: 1rem; }
   .me-envelope-actions { grid-template-columns: minmax(0, 1fr); }
   .me-envelope-actions > * + * { border-left: 0; border-top: 1px solid var(--me-gilt); }

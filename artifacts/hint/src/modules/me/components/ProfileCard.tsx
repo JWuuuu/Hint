@@ -8,6 +8,7 @@ import type { ZodiacSign } from "../../../types/astrology";
 import { SIGN_ORDER, SIGN_SYMBOLS, signName } from "../../astrology/astrologyLibrary";
 import { ME_COPY, ME_LOCALES } from "../meCopy";
 import { initialsFrom } from "../utils";
+import { Constellation, sunSignFromDate } from "./Constellation";
 
 /** Signs taken from a chart the app actually calculated; never inferred here. */
 export type SkySigns = { sun: ZodiacSign; moon?: ZodiacSign; rising?: ZodiacSign };
@@ -56,16 +57,19 @@ function Postmark({ rhythm, label, locale }: { rhythm: Rhythm; label: string; lo
 }
 
 /**
- * The envelope the universe addresses to this person: a wax seal where the
- * flap meets (their Sun glyph once a real chart exists, their initial before
- * that), their name, their birth details set like an address, and once they
- * have kept a reading, a postmark of the days they came back.
+ * The letter the universe wrote to this person, rising out of its envelope.
+ * The letter carries their Sun constellation drawn in gold, their name, and
+ * their birth details set like an address; the envelope keeps the wax seal
+ * (their Sun glyph once a real chart exists, their initial before that) and,
+ * once they have kept a reading, a postmark of the days they came back.
  */
-export function ProfileCard({ profile, onEdit, signs, rhythm = null }: {
+export function ProfileCard({ profile, onEdit, signs, rhythm = null, reveal = false }: {
   profile: Profile | null;
   onEdit: () => void;
   signs: SkySigns | null;
   rhythm?: Rhythm | null;
+  /** Play the one arrival moment: the letter rises and the constellation draws in. */
+  reveal?: boolean;
 }) {
   const { language, t } = useLanguage();
   const copy = ME_COPY[language];
@@ -80,6 +84,7 @@ export function ProfileCard({ profile, onEdit, signs, rhythm = null }: {
     : "";
   const time = hasBirth && profile?.birthTime ? birthTimeLabel(profile.birthTime, locale) : null;
   const place = profile?.birthPlace?.trim() || null;
+  const sun = signs?.sun ?? (hasBirth ? sunSignFromDate(profile!.birthDate) : null);
   const placements: { key: "sun" | "moon" | "rising"; sign: ZodiacSign }[] = [];
   if (signs) {
     placements.push({ key: "sun", sign: signs.sun });
@@ -89,36 +94,49 @@ export function ProfileCard({ profile, onEdit, signs, rhythm = null }: {
 
   const rhythmLabel = rhythm ? `${copy.rhythm}: ${fill(copy.rhythmSummary, { count: String(rhythm.count) })}` : "";
 
-  return <section className="me-envelope" aria-labelledby="me-envelope-name" data-empty={hasBirth ? undefined : "true"} data-postmarked={rhythm ? "true" : undefined}>
-    {rhythm && <Postmark rhythm={rhythm} label={rhythmLabel} locale={locale} />}
-    <svg className="me-envelope-flap" viewBox="0 0 400 104" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-      <polygon points="0,0 400,0 200,94" />
-      <polyline points="0,0 200,94 400,0" />
-    </svg>
-    <span className="me-seal" data-glyph={signs ? "true" : undefined} aria-hidden="true"><span>{signs ? glyph(signs.sun) : initial}</span></span>
-    <h2 id="me-envelope-name" className="me-envelope-name">{name}</h2>
+  return <section className="me-envelope" aria-labelledby="me-envelope-name" data-empty={hasBirth ? undefined : "true"}
+    data-postmarked={rhythm ? "true" : undefined} data-reveal={reveal || undefined}>
+    {/* The open envelope behind the letter: its back and the raised flap. */}
+    <div className="me-envelope-back" aria-hidden="true" />
 
-    {hasBirth ? <>
-      <p className="me-address">
-        <span>{time ? fill(copy.atTime, { date, time }) : date}</span>
-        {place && <><br /><span>{place}</span></>}
-      </p>
-      {!time && <p className="me-address-note">{copy.unknownTime}</p>}
-      {placements.length > 0 && <dl className="me-sky-signs">
-        {placements.map(({ key, sign }) => <div key={key}>
-          <dt>{copy[key]}</dt>
-          <dd><span className="me-sign-glyph" aria-hidden="true">{glyph(sign)}</span>{signName(sign, language)}</dd>
-        </div>)}
-      </dl>}
-      <div className="me-envelope-actions">
-        <button type="button" onClick={onEdit} aria-label={t("me.editProfile")} data-testid="button-edit-profile">
-          <Pencil size={15} aria-hidden="true" /><span>{copy.edit}</span>
-        </button>
-        <Link href="/app/astrology?tab=chart"><span>{copy.openChart}</span><ChevronRight size={16} aria-hidden="true" /></Link>
-      </div>
-    </> : <>
-      <p className="me-envelope-prompt">{copy.birthPrompt}</p>
-      <button type="button" className="me-secondary" onClick={onEdit} data-testid="button-edit-profile">{copy.addBirth}</button>
-    </>}
+    <div className="me-letter-sheet">
+      <Constellation sign={sun} reveal={reveal}
+        label={sun ? fill(copy.constellationOf, { sign: signName(sun, language) }) : copy.unwrittenSky} />
+      <p className="me-constellation-name" aria-hidden="true">{sun ? signName(sun, language) : copy.unwrittenSky}</p>
+      <h2 id="me-envelope-name" className="me-envelope-name">{name}</h2>
+      {hasBirth ? <>
+        <p className="me-address">
+          <span>{time ? fill(copy.atTime, { date, time }) : date}</span>
+          {place && <><br /><span>{place}</span></>}
+        </p>
+        {!time && <p className="me-address-note">{copy.unknownTime}</p>}
+        {placements.length > 0 && <dl className="me-sky-signs">
+          {placements.map(({ key, sign }) => <div key={key}>
+            <dt>{copy[key]}</dt>
+            <dd><span className="me-sign-glyph" aria-hidden="true">{glyph(sign)}</span>{signName(sign, language)}</dd>
+          </div>)}
+        </dl>}
+      </> : <p className="me-envelope-prompt">{copy.birthPrompt}</p>}
+    </div>
+
+    {/* The envelope's front: the pocket the letter rose from. */}
+    <div className="me-pocket">
+      <svg className="me-pocket-folds" viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <polygon points="0,0 400,0 400,100 0,100" />
+        <polyline points="0,0 200,62 400,0" />
+        <polyline points="0,100 200,62 400,100" />
+      </svg>
+      <span className="me-seal" data-glyph={signs ? "true" : undefined} aria-hidden="true"><span>{signs ? glyph(signs.sun) : initial}</span></span>
+      {rhythm && <Postmark rhythm={rhythm} label={rhythmLabel} locale={locale} />}
+    </div>
+
+    {hasBirth ? <div className="me-envelope-actions">
+      <button type="button" onClick={onEdit} aria-label={t("me.editProfile")} data-testid="button-edit-profile">
+        <Pencil size={15} aria-hidden="true" /><span>{copy.edit}</span>
+      </button>
+      <Link href="/app/astrology?tab=chart"><span>{copy.openChart}</span><ChevronRight size={16} aria-hidden="true" /></Link>
+    </div> : <div className="me-envelope-actions" data-single="true">
+      <button type="button" className="me-envelope-add" onClick={onEdit} data-testid="button-edit-profile">{copy.addBirth}</button>
+    </div>}
   </section>;
 }
