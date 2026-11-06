@@ -223,6 +223,7 @@
 .hint-home-rule { height: 1px; flex: 1; background: rgba(178,154,142,.2); }
 .hint-home-space-star { color: #cbb087; font-size: 17px; line-height: 1; }
 .hint-home-spaces-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--hint-home-section-gap); }
+.hint-home-spaces-grid > * { container-type: inline-size; }
 .hint-home-space {
   display: flex;
   align-items: center;
@@ -236,9 +237,19 @@
 }
 .hint-home-space-icon { display: grid; place-items: center; flex: 0 0 35px; width: 35px; height: 35px; border-radius: 50%; box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
 .hint-home-space-copy { min-width: 0; }
-.hint-home-space-title { display: block; font-size: 16px; line-height: 1.1; font-weight: 500; }
+.hint-home-space-title { display: block; font-size: 16px; line-height: 1.1; font-weight: 500; overflow-wrap: break-word; hyphens: auto; }
 .hint-home-space-description { display: block; margin-top: 4px; color: #79717c; font-size: 10px; line-height: 1.25; }
 .hint-home-space-chevron { flex-shrink: 0; margin-left: auto; transform: rotate(-90deg); color: #8b7e94; }
+/* A tile narrower than 181px (phones up to about 414px wide) cannot hold the
+   icon, a one-word title such as "Personalidades" or "パーソナリティ" and the
+   chevron in one row, so it uses the compact small-phone tile instead of
+   splitting the title mid-word. */
+@container (max-width: 180px) {
+  .hint-home-space { padding: 10px 8px; gap: 7px; }
+  .hint-home-space-icon { flex-basis: 29px; width: 29px; height: 29px; }
+  .hint-home-space-title { font-size: 14px; }
+  .hint-home-space-chevron { display: none; }
+}
 
 .hint-home-page button:focus-visible,
 .hint-home-page a:focus-visible { outline: 2px solid #a78bbb; outline-offset: 4px; }
@@ -262,10 +273,6 @@
   .hint-home-score-label svg { width: 13px; }
   .hint-home-evidence-header h3 { font-size: 22px; }
   .hint-home-sky-toggle { font-size: 13px; }
-  .hint-home-space { padding: 10px 8px; gap: 7px; }
-  .hint-home-space-icon { flex-basis: 29px; width: 29px; height: 29px; }
-  .hint-home-space-title { font-size: 14px; }
-  .hint-home-space-chevron { display: none; }
 }
 
 .hint-home-page button:focus-visible, .hint-home-page a:focus-visible { outline: 2px solid #825770; outline-offset: 3px; }
