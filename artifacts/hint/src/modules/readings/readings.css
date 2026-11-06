@@ -145,3 +145,12 @@ a.hr-entry:active { opacity: .7; }
   .hr-detail-meta { grid-template-columns: minmax(0, 1fr); }
   .hr-detail-meta > div + div:not([data-wide]) { border-left: 0; border-top: 1px solid var(--hr-line); }
 }
+/* Large text: three side-by-side counters cannot hold whole words like
+   "Questions", so the ledger stacks them as label-and-count rows. */
+@container (max-width: 16rem) {
+  .hr-ledger { grid-template-columns: minmax(0, 1fr); padding: .2rem 0; }
+  .hr-ledger > div { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .45rem 1rem; text-align: left; }
+  .hr-ledger > div + div { border-left: 0; border-top: 1px solid var(--hr-line); }
+  .hr-ledger dt { justify-content: flex-start; min-width: 0; }
+  .hr-ledger dd { flex-shrink: 0; margin: 0; }
+}

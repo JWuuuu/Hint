@@ -79,7 +79,7 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
           }}
         />
         <div
-          className="flex items-end gap-3 rounded-[12px] border backdrop-blur-[3px] px-4 py-3 transition-colors duration-500"
+          className="flex flex-wrap items-end justify-end gap-3 rounded-[12px] border backdrop-blur-[3px] px-4 py-3 transition-colors duration-500"
           style={{
             background: "var(--hint-chat-input-bg)",
             borderColor: focused
@@ -101,7 +101,7 @@ export const FollowUpInput = forwardRef<FollowUpInputHandle, Props>(
             placeholder={isThinking ? t("chat.placeholderThinking") : t("chat.placeholder")}
             disabled={isThinking || disabled}
             readOnly={voiceActive}
-            className="hint-chat-input min-h-11 min-w-0 flex-1 resize-none bg-transparent font-sans text-[16px] leading-relaxed focus:outline-none"
+            className="hint-chat-input min-h-11 min-w-[min(100%,8rem)] flex-1 resize-none bg-transparent font-sans text-[16px] leading-relaxed focus:outline-none"
             style={{
               color: IVORY.primary,
               maxHeight: 140,
