@@ -181,6 +181,7 @@ function SpiritCard({
   revealed: boolean;
   compact?: boolean;
 }) {
+  const { t } = useLanguage();
   const Icon = animal.icon;
   return (
     <div className={`animal-spirit-card ${revealed ? "is-revealed" : ""} ${compact ? "is-compact" : ""}`}>
@@ -197,7 +198,7 @@ function SpiritCard({
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
             fallbackClassName="absolute inset-0 h-full w-full rounded-[20px]"
-            fallbackLabel="Spirit"
+            fallbackLabel={t("animalTarot.imageFallback")}
           />
         )}
         <div className="animal-card-veils" />
@@ -332,13 +333,13 @@ export function AnimalTarotView() {
           <h1 className="mt-2 font-serif text-[34px] leading-none sm:text-[42px]" style={{ color: GLASS.text }}><LocalizedText text={" Animal Terrace "} /></h1>
           <p className="mt-3 max-w-2xl font-sans text-[13px] leading-relaxed sm:text-[14px]" style={{ color: GLASS.muted }}>{roomResumeText(language, "sameAnimal")}</p>
           <div className="mt-5 flex flex-wrap gap-2">
-            {["Instinct", "Emotion", "Today"].map((item) => (
+            {["animalTarot.chip.instinct", "animalTarot.chip.emotion", "animalTarot.chip.today"].map((item) => (
               <span
                 key={item}
                 className="rounded-full border px-3 py-1.5 font-sans text-[10px] font-black uppercase tracking-[0.14em]"
                 style={{ color: GLASS.text, borderColor: GLASS.border, background: "color-mix(in srgb, var(--hint-surface-soft) 78%, transparent)" }}
               >
-                {item}
+                {t(item)}
               </span>
             ))}
           </div>
@@ -364,7 +365,7 @@ export function AnimalTarotView() {
                 </p>
               </div>
             )}
-            <SectionLabel>{revealed ? animal.title : "Mystical animal ritual"}</SectionLabel>
+            <SectionLabel>{revealed ? animal.title : t("animalTarot.ritual")}</SectionLabel>
             {loading && (
               <div className="py-6">
                 <h2 className="font-serif text-[34px] leading-tight" style={{ color: GLASS.text }}><LocalizedText text={" Finding today’s animal. "} /></h2>
@@ -378,9 +379,9 @@ export function AnimalTarotView() {
                 <p className="mt-4 max-w-lg font-sans text-[14px] leading-relaxed" style={{ color: GLASS.muted }}><LocalizedText text={" This is not a childish animal picker. Treat it like an instinct card: one animal, one companion tarot card, one clean message for today. "} /></p>
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {[
-                    ["1", "Hold the question loosely"],
-                    ["2", "Draw one animal"],
-                    ["3", "Use the prompt today"],
+                    ["1", t("animalTarot.step.hold")],
+                    ["2", t("animalTarot.step.draw")],
+                    ["3", t("animalTarot.step.use")],
                   ].map(([step, copy]) => (
                     <div key={step} className="hint-card-lift rounded-[16px] border px-3 py-3" style={{ borderColor: GLASS.border, background: "color-mix(in srgb, var(--hint-surface-soft) 76%, transparent)" }}>
                       <span className="font-serif text-[22px]" style={{ color: ACCENT.gold }}>{step}</span>
@@ -412,10 +413,10 @@ export function AnimalTarotView() {
                 </div>
 
                 <div className="mt-5 grid gap-3">
-                  <ReadingBlock label="Emotional meaning">{animal.emotionalMeaning}</ReadingBlock>
-                  <ReadingBlock label="Today's message">{animal.todaysMessage}</ReadingBlock>
-                  <ReadingBlock label="Reflection prompt">{animal.reflectionPrompt}</ReadingBlock>
-                  <ReadingBlock label="Energy task">{animal.task}</ReadingBlock>
+                  <ReadingBlock label={t("animalTarot.emotionalMeaning")}>{animal.emotionalMeaning}</ReadingBlock>
+                  <ReadingBlock label={t("animalTarot.todaysMessage")}>{animal.todaysMessage}</ReadingBlock>
+                  <ReadingBlock label={t("animalTarot.reflectionPrompt")}>{animal.reflectionPrompt}</ReadingBlock>
+                  <ReadingBlock label={t("animalTarot.energyTask")}>{animal.task}</ReadingBlock>
                 </div>
               </div>
             )}

@@ -70,7 +70,7 @@ it("token changes discard an older completion even when its response body resolv
   fireEvent.change(screen.getByLabelText("birthProfile.name"), { target: { value: "Fixture" } });
   fireEvent.change(screen.getByLabelText("birthProfile.birthDate"), { target: { value: "2000-02-29" } });
   fireEvent.change(screen.getByLabelText("birthProfile.birthPlace"), { target: { value: "Chicago" } });
-  fireEvent.click(screen.getByRole("button", { name: "Open shared chart" }));
+  fireEvent.click(screen.getByRole("button", { name: "compatibility.openSharedChart" }));
   await waitFor(() => expect(finishBody).toBeTypeOf("function"));
   const signal = mocks.fetch.mock.calls.find(call => String(call[0]).endsWith("/complete"))![1].signal as AbortSignal;
   mocks.token = "second"; view.rerender(<CompatibilityView />);
@@ -172,7 +172,7 @@ it.each(["history", "owner"])("does not cache or navigate from invitation comple
   fireEvent.change(screen.getByLabelText("birthProfile.name"), { target: { value: "Fixture" } });
   fireEvent.change(screen.getByLabelText("birthProfile.birthDate"), { target: { value: "2000-02-29" } });
   fireEvent.change(screen.getByLabelText("birthProfile.birthPlace"), { target: { value: "Chicago" } });
-  fireEvent.click(screen.getByRole("button", { name: "Open shared chart" }));
+  fireEvent.click(screen.getByRole("button", { name: "compatibility.openSharedChart" }));
   await waitFor(() => expect(finishBody).toBeTypeOf("function"));
   if (change === "owner") mocks.owner = "other";
   else localStorage.setItem("hint_history_clear_version_v1:fixture", "cleared");
