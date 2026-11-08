@@ -1,0 +1,45 @@
+# Review-only workflow, never merged. It lives on golden-review/* branches and records
+# WebKit images for the Tarot goldens on rc-preview/2026-11-07 (82e8174 plus the six Nov 4-7
+# branches and PR #4's latest test fixes), printing them into the job log so they can be
+# reviewed where artifacts can't be downloaded. Expected: the reading layouts change (the
+# dark-theme reading now shows the night sky); pick and voice images stay identical.
+name: Golden review
+on:
+  push:
+    branches: ['golden-review/**']
+permissions:
+  contents: read
+jobs:
+  goldens:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [iphone-17-pro-max, iphone-se]
+    env:
+      API_PROXY_TARGET: http://127.0.0.1:1
+      HINT_E2E_PORT: '5188'
+      HINT_E2E_RUN_QUARANTINED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:web
+      - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+      - name: Record WebKit images for the goldens waiting on review
+        run: pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=${{ matrix.project }} --update-snapshots=all --retries=0 -g "pick arc stays ordered on|reading layout [0-9] cards on|voice completion sheet matches its pixel golden"
+      - name: Print the recorded images
+        if: always()
+        working-directory: artifacts/hint/e2e/__screenshots__/${{ matrix.project }}
+        run: |
+          for file in pick-*.png reading-*.png voice-ready.png; do
+            echo "GOLDEN-BEGIN ${{ matrix.project }}/$file $(sha256sum "$file" | cut -c1-64)"
+            base64 -w 120 "$file"
+            echo "GOLDEN-END"
+          done
