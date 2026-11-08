@@ -1,5 +1,5 @@
 import { LocalizedText } from "../../lib/LocalizedText";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { PenLine } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { AppScreen, ScreenHeader, GlassPanel, SectionLabel } from "../../components/app/AppChrome";
@@ -30,6 +30,7 @@ const FRAGMENTS = [
 
 export function DreamView() {
   const { t } = useLanguage();
+  const [, navigate] = useLocation();
 
   return (
     <AppScreen>
@@ -52,20 +53,23 @@ export function DreamView() {
         <p className="font-serif text-[13px] mb-3" style={{ color: GLASS.muted }}>
           {t("dream.question")}
         </p>
-        {/* Dream notes are written in the journal. This looks like a field, so it
-            opens the journal when tapped instead of silently doing nothing. */}
-        <Link
-          href="/app/journal"
-          className="flex w-full items-start gap-3 rounded-[8px] px-4 py-4 mb-4 text-left"
+        {/* Dream notes are written in the journal. This looks like a field, so a
+            tap on it opens the journal instead of silently doing nothing. It is a
+            pointer shortcut only: the "Write in my journal" link right below is
+            the one link for keyboards and screen readers, so they don't meet two
+            links to the same page. */}
+        <div
+          onClick={() => navigate("/app/journal")}
+          aria-hidden="true"
+          className="flex w-full cursor-text items-start gap-3 rounded-[8px] px-4 py-4 mb-4 text-left"
           style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}` }}
-          data-testid="link-dream-write"
+          data-testid="dream-write-field"
         >
           <span className="min-w-0 flex-1 font-serif italic text-[14px]" style={{ color: GLASS.faint }}>
             {t("dream.placeholder")}
-            <span className="sr-only"> <LocalizedText text={"Write in my journal"} /></span>
           </span>
           <PenLine size={16} aria-hidden="true" className="mt-0.5 shrink-0" style={{ color: GLASS.muted }} />
-        </Link>
+        </div>
         <Link href="/app/journal"
           className="inline-flex items-center justify-center w-full h-11 rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em]"
           style={{

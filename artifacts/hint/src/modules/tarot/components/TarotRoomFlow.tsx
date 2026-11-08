@@ -2089,7 +2089,7 @@ function RoomDesignStudioStep({
                   </p>
                   <p
                     className={`mt-1 font-serif leading-tight text-[#342e43] ${
-                      settingsMode ? "text-[24px]" : "text-[29px] [overflow-wrap:anywhere]"
+                      settingsMode ? "text-[24px]" : "text-[29px] text-balance [overflow-wrap:anywhere]"
                     }`}
                   >
                     {settingsMode
@@ -2116,7 +2116,7 @@ function RoomDesignStudioStep({
                       <span className="text-[8px] font-black uppercase tracking-[0.15em] text-[#9b7a8d]">
                         {item.label}
                       </span>
-                      <span className="min-w-0 text-right text-[12px] font-black leading-tight text-[#43394a] [overflow-wrap:anywhere]">
+                      <span className="min-w-0 text-right text-[12px] font-black leading-tight text-[#43394a] text-balance [overflow-wrap:anywhere]">
                         {item.value}
                       </span>
                     </div>
