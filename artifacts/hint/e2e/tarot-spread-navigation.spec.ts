@@ -19,12 +19,24 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("spread arrows have generous lateral targets beside the cards", async ({ page }, info) => {
-  const stage = page.getByTestId("spread-preview-stage");
-  const box = (await stage.boundingBox())!;
   const arrows = [page.getByRole("button", { name: "Previous spread" }), page.getByRole("button", { name: "Next spread" })];
-  const diagram = (await page.locator(".tarot-spread-diagram").boundingBox())!;
-  for (const [index, arrow] of arrows.entries()) {
-    const button = (await arrow.boundingBox())!;
+  // Read every box in one frame once entrances settle: on slow CI renderers the page is
+  // still moving, and separate reads a frame apart skewed the 2 px alignment check.
+  const { box, diagram, buttons } = await page.evaluate(async () => {
+    await Promise.race([
+      Promise.all(document.getAnimations()
+        .filter(animation => Number.isFinite(Number(animation.effect?.getTiming().iterations)))
+        .map(animation => animation.finished.catch(() => undefined))),
+      new Promise(resolve => setTimeout(resolve, 3000)),
+    ]);
+    const rect = (element: Element | null) => { const r = element!.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height }; };
+    return {
+      box: rect(document.querySelector('[data-testid="spread-preview-stage"]')),
+      diagram: rect(document.querySelector(".tarot-spread-diagram")),
+      buttons: ["Previous spread", "Next spread"].map(name => rect(document.querySelector(`button[aria-label="${name}"]`))),
+    };
+  });
+  for (const [index, button] of buttons.entries()) {
     expect(button.width).toBeGreaterThanOrEqual(48);
     expect(button.height).toBeGreaterThanOrEqual(48);
     expect(Math.abs(button.y + button.height / 2 - (box.y + box.height / 2))).toBeLessThan(2);

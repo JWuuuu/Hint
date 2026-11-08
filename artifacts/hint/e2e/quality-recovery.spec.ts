@@ -49,6 +49,8 @@ test("the offline daily card stays identical through Daily, Home and Collection"
   await page.goto("/app/daily?hintPreview=embedded");
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("hint_daily_receipt_fallbacks_v1") ?? "[]").find((r: any) => r.featureType === "daily-card")?.openedAt)).toBeTruthy();
   const original = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_daily_receipt_fallbacks_v1")!)[0].assignedCardId);
+  // The receipt and the local reading are written separately; wait for the reading too.
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("hint_local_daily_readings") ?? "[]")[0]?.cardName)).toBeTruthy();
   const title = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_local_daily_readings")!)[0].cardName);
   await page.goto("/app?hintPreview=embedded");
   await expect(page.getByText(title, { exact: true }).first()).toBeVisible();
@@ -164,16 +166,23 @@ test("history deletion failure preserves data and successful retry keeps prefere
   page.on("dialog", dialog => dialog.accept());
   await page.goto("/app/me?hintPreview=embedded");
   await page.evaluate(() => localStorage.setItem("hint_text_draft_v1:fixture:ask:", "keep-other-owner"));
+  // The app creates the identity after the first render; wait for it before keeping a copy.
+  await expect.poll(() => page.evaluate(() => localStorage.getItem("hint_anon_id"))).toBeTruthy();
   const identity = await page.evaluate(() => localStorage.getItem("hint_anon_id"));
   await page.locator("summary").filter({ hasText: "Manage saved history" }).click();
   await page.getByTestId("button-clear-history").click();
   await expect(page.getByRole("alert")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("hint_anon_id"))).toBe(identity);
   fail = false;
+  // A successful clear reloads the page; wait for that reload before reading storage,
+  // and detach the route so the test never ends mid-navigation.
+  const reloaded = page.waitForEvent("load");
   await page.getByRole("button", { name: "Retry", exact: true }).click();
+  await reloaded;
   await expect(page.getByRole("alert")).not.toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("hint-language"))).toBe("en");
   expect(await page.evaluate(() => localStorage.getItem("hint_text_draft_v1:fixture:ask:"))).toBe("keep-other-owner");
+  await page.unrouteAll({ behavior: "ignoreErrors" });
 });
 
 test("Daily late save responses cannot clear a newer draft", async ({ page }) => {
