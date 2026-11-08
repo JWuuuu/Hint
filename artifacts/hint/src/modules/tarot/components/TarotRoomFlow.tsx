@@ -3888,7 +3888,7 @@ function TarotPhoneFrame({ children }: { children: ReactNode }) {
   return (
     <div
       data-testid="tarot-phone-frame-shell"
-      className="absolute inset-0 flex justify-center overflow-hidden bg-[#f7f0ea]"
+      className="absolute inset-0 flex justify-center overflow-hidden bg-[#f7f0ea] dark:bg-transparent"
     >
       <div
         data-testid="tarot-phone-frame"

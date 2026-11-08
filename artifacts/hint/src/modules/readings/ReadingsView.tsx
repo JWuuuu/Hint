@@ -587,15 +587,22 @@ export function ReadingDetailView() {
         data-testid="tarot-history-detail"
         data-room-background={backgroundId}
         className="relative h-full w-full overflow-hidden"
-        style={{ background: getTarotRoomSurfaceBackground(backgroundId) }}
       >
+        {/* The room's paper surface is a light-theme material. In the dark theme the
+            shared night sky shows through instead, as it does in the reading chat,
+            so the page's light ink stays readable. */}
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 ${getTarotRoomStarClassName(backgroundId)}`}
+          className="pointer-events-none absolute inset-0 dark:hidden"
+          style={{ background: getTarotRoomSurfaceBackground(backgroundId) }}
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_30%,rgba(255,249,244,0.16))]"
+          className={`pointer-events-none absolute inset-0 dark:hidden ${getTarotRoomStarClassName(backgroundId)}`}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_30%,rgba(255,249,244,0.16))] dark:hidden"
         />
         <div className="relative z-10 h-full">
           <AppScreen>
