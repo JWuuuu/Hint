@@ -644,6 +644,26 @@ describe("Tarot Room components", () => {
     expect(getLocalTarotReading(saved.id, saved.anonId)?.chatMessages).toHaveLength(1);
   });
 
+  it("never restores into the ritual without a question, and keeps Room settings as an overlay", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => jsonResponse({ error: "Offline test" }, 503)));
+    window.history.replaceState({}, "", "/app/tarot");
+    markRoomVisitStarted("tarot");
+    // What older builds saved after opening Room settings from the question step.
+    saveActiveTarotSession({
+      phase: "design", question: "", spreadId: "three", focusLabel: "Tarot room",
+      design: { id: "deep-sea", label: "Deep Sea", mood: "quiet", deckStyleId: "nocturne", backStyle: "nocturne", cardBackId: "moon-tide", cardArtId: "original", backgroundId: "sea", background: "sea", glow: "#fff" },
+      selectedCards: [], revealedIds: [],
+    });
+    const first = renderWithProviders(<TarotRoomFlow />);
+    expect(await screen.findByRole("heading", { name: "What do you need help seeing clearly?" })).toBeTruthy();
+    expect(screen.queryByText(/Your reading is ready/)).toBeNull();
+
+    // Opening Room settings from the question step saves the question step underneath.
+    await userEvent.setup().click(screen.getByRole("button", { name: /Tarot room/i }));
+    await waitFor(() => expect(loadActiveTarotSession()?.phase).toBe("question"));
+    first.unmount();
+  });
+
   it("restores an unanswered question with an explicit retry", async () => {
     const user = userEvent.setup();
     const card = createHiddenDeck()[0]!;

@@ -468,6 +468,13 @@
   --hint-surface: rgba(255, 255, 255, 0.56);
   --hint-surface-soft: rgba(255, 255, 255, 0.36);
   --hint-input-bg: rgba(255, 255, 255, 0.52);
+  /* The dark theme keeps its built-in fallbacks (a deep field, pale teal text).
+     In the bright theme those read as disabled, so fields are light and the
+     teal action carries a deep teal ink (over 5:1 on its fill). */
+  --hint-form-field-bg: rgba(255, 255, 255, 0.72);
+  --hint-teal-action-bg: rgba(100, 156, 158, 0.14);
+  --hint-teal-action-border: rgba(64, 120, 123, 0.38);
+  --hint-teal-action-text: #2f6366;
   --hint-score-ink: #79586f;
   --hint-score-shadow: 0 1px 0 rgba(255, 255, 255, 0.48), 0 0 22px rgba(202, 93, 141, 0.12);
   --hint-deck-card-bg: linear-gradient(160deg, #30283d 0%, #1a2033 56%, #15373d 100%);

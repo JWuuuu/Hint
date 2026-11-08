@@ -52,7 +52,7 @@ const inputClass =
   "min-w-0 w-full min-h-12 rounded-[8px] px-4 py-3 font-serif text-[16px] leading-normal bg-transparent focus:outline-none transition-colors";
 
 const inputStyle = {
-  background: "rgba(0,0,0,0.25)",
+  background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))",
   border: `1px solid ${GLASS.border}`,
   color: GLASS.text,
 } as const;
