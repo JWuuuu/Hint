@@ -88,13 +88,17 @@ a.hr-entry:active { opacity: .7; }
 .hr-entry-question-card { grid-template-columns: 3.5rem minmax(0, 1fr); }
 .hr-open-link { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; margin-top: .1rem; color: var(--hr-accent); font-size: .8125rem; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 
+/* Polish, Nov 7: entry titles wrap into even lines; notes and messages avoid a lone last word. */
+.hr-entry-title { text-wrap: balance; }
+.hr-entry-text, .hr-entry-note, .hr-empty p, .hr-error p { text-wrap: pretty; }
+
 /* States */
 .hr-empty { display: flex; align-items: center; gap: .7rem; padding: 1.05rem 1.1rem; border-style: dashed; border-radius: 1.2rem; box-shadow: none; color: var(--hint-muted); font-size: .8125rem; line-height: 1.6; }
 .hr-empty > span { flex-shrink: 0; color: var(--hr-gold); font-size: 1.05rem; }
 .hr-empty p { margin: 0; }
 .hr-error { margin: .25rem 0 1rem; padding: .9rem 1rem; border: 1px solid color-mix(in srgb, #c0607a 40%, var(--hr-line)); border-radius: 1rem; background: var(--hr-surface); font-size: .8125rem; line-height: 1.6; }
 .hr-error p { margin: 0; }
-.hr-error button { min-height: 44px; color: var(--hr-accent); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.hr-error button { min-height: 44px; min-width: 44px; color: var(--hr-accent); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .hr-loading { padding: 2rem 0; color: var(--hint-muted); font-family: var(--font-serif); font-size: .875rem; font-style: italic; text-align: center; }
 .hr-note { margin: 0 .25rem .6rem; color: var(--hint-muted); font-size: .75rem; line-height: 1.65; }
 
