@@ -87,11 +87,13 @@ async function capturePositions(page: Page, info: TestInfo, label: string) {
     await settle(page);
     await page.screenshot({ path: info.outputPath(`${label}-${position}.png`) });
   }
-  const footer = await page.locator(".me-footer").boundingBox();
+  // The page closes with the sign-off and a P.S.; the P.S.'s help links are the
+  // last content, so that final row must be fully reachable above the dock.
+  const last = await page.locator(".me-footer .me-help-links").boundingBox();
   const dock = await page.locator("[data-app-tabbar]").boundingBox();
-  expect(footer, "Last page content exists").not.toBeNull();
-  expect(footer!.y, "Footer is inside the reachable scroll viewport").toBeGreaterThanOrEqual(0);
-  expect(footer!.y + footer!.height, "The complete footer clears the navigation").toBeLessThanOrEqual(dock?.y ?? page.viewportSize()!.height);
+  expect(last, "Last page content exists").not.toBeNull();
+  expect(last!.y, "The final row is inside the reachable scroll viewport").toBeGreaterThanOrEqual(0);
+  expect(last!.y + last!.height, "The complete final row clears the navigation").toBeLessThanOrEqual(dock?.y ?? page.viewportSize()!.height);
 }
 
 async function expandDeviceAndHelp(page: Page, language: Language) {

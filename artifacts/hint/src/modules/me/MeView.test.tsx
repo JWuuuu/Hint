@@ -42,12 +42,14 @@ it("invites a first reading and birth details instead of showing empty counts", 
   expect(screen.getByRole("link", { name: ME_COPY.en.firstLetterAction }).getAttribute("href")).toBe("/app/daily");
   expect(screen.getByTestId("button-edit-profile").textContent).toBe(ME_COPY.en.addBirth);
   expect(screen.queryByText(/\b0 of\b/)).toBeNull();
+  // Nothing kept yet, so the envelope carries no postmark.
+  expect(document.querySelector(".me-postmark")).toBeNull();
   expect(screen.queryByRole("link", { name: /See all/ })).toBeNull();
   expect(screen.getByRole("link", { name: /Find your type/ }).getAttribute("href")).toBe("/app/personalities");
   expect(screen.queryByRole("textbox", { name: /email/i })).toBeNull();
 });
 
-it("shows the newest kept reading as a letter and opens history, rhythm and deck", () => {
+it("shows the newest kept reading on a stack of letters, opens history and postmarks the days kept", () => {
   const card = (cardId: string, name: string, orientation: "upright" | "reversed") => ({ cardId, name, orientation, positionLabel: "Now", keywords: [] });
   const reading = (id: string, question: string, createdAt: string) => ({
     schemaVersion: 2, id, anonId: "fictional-me-owner", source: "tarot", spreadType: "three", spreadLabel: "Three cards", question,
@@ -64,8 +66,14 @@ it("shows the newest kept reading as a letter and opens history, rhythm and deck
   expect(screen.queryByText("“An older fictional question?”")).toBeNull();
   expect(screen.getByText("The Star, Two of Cups, Page of Pentacles")).toBeTruthy();
   expect(screen.getByRole("link", { name: "See all 2" }).getAttribute("href")).toBe("/app/readings");
-  expect(screen.getByRole("link", { name: new RegExp(ME_COPY.en.rhythm) }).getAttribute("href")).toBe("/app/daily");
-  expect(screen.getByRole("link", { name: new RegExp(ME_COPY.en.deck) }).getAttribute("href")).toBe("/app/collection");
+  // Two letters kept: the newest on top with one older edge beneath it.
+  expect(document.querySelector(".me-letter-stack")?.getAttribute("data-depth")).toBe("2");
+  // Both readings fall inside the last 14 days, on two different days.
+  expect(screen.getByRole("img", { name: `${ME_COPY.en.rhythm}: 2 of the last 14 days` })).toBeTruthy();
+  expect(document.querySelectorAll(".me-postmark-day")).toHaveLength(14);
+  expect(document.querySelectorAll(".me-postmark-day[data-on]")).toHaveLength(2);
+  // The rhythm and deck tiles are gone: rhythm moved to the postmark, and the deck led to Collection.
+  expect(screen.queryByRole("link", { name: new RegExp(ME_COPY.en.deck) })).toBeNull();
   expect(screen.queryByText(ME_COPY.en.firstLetterTitle)).toBeNull();
 });
 
@@ -181,9 +189,31 @@ for (const language of ["en", "zh", "es", "ja", "ko"] as const) {
     expect(screen.getByText("Fictional City")).toBeTruthy();
     expect(screen.getByRole("link", { name: ME_COPY[language].openChart }).getAttribute("href")).toBe("/app/astrology?tab=chart");
     expect(screen.getByRole("status").textContent).not.toMatch(/undefined|quality\./);
-    expect(screen.queryByText(/Pisces|双鱼座|魚座|물고기자리/)).toBeNull();
+    // No calculated chart: no Sun/Moon/Rising placements are shown. February 29
+    // is far from a sign change, so the letter shows the Sun constellation the
+    // date alone decides.
+    expect(document.querySelector(".me-sky-signs")).toBeNull();
+    expect(screen.queryByText(ME_COPY[language].moon)).toBeNull();
+    expect(screen.queryByText(ME_COPY[language].rising)).toBeNull();
+    expect(document.querySelector(".me-constellation")?.getAttribute("data-sign")).toBe("pisces");
   });
 }
+
+it("leaves the constellation unwritten on the days around a sign change until a chart decides", () => {
+  for (const birthDate of ["1997-03-20", "1997-03-21", "2001-12-21", "2001-12-22", "2000-01-19"]) {
+    state.profile = { anonId: "fictional-me-owner", name: "Fictional Reader", birthDate, birthTime: null, birthPlace: null, createdAt: "2026-01-01" };
+    const view = render(<MeView />);
+    expect(document.querySelector(".me-constellation")?.hasAttribute("data-sign")).toBe(false);
+    expect(screen.getAllByText(ME_COPY.en.unwrittenSky).length).toBeGreaterThan(0);
+    view.unmount();
+  }
+  for (const [birthDate, sign] of [["1997-03-22", "aries"], ["1990-08-02", "leo"], ["2001-12-23", "capricorn"]] as const) {
+    state.profile = { anonId: "fictional-me-owner", name: "Fictional Reader", birthDate, birthTime: null, birthPlace: null, createdAt: "2026-01-01" };
+    const view = render(<MeView />);
+    expect(document.querySelector(".me-constellation")?.getAttribute("data-sign")).toBe(sign);
+    view.unmount();
+  }
+});
 
 it("connects appearance and accessible preference controls to the existing settings", () => {
   render(<MeView />);
@@ -227,4 +257,30 @@ it("cancelling history confirmation never sends a request", () => {
   fireEvent.click(screen.getByText(ME_COPY.en.clearLabel));
   fireEvent.click(screen.getByTestId("button-clear-history"));
   expect(state.deleteHistory).not.toHaveBeenCalled();
+});
+
+for (const language of ["en", "zh", "es", "ja", "ko"] as const) {
+  it(`${language} closes the page with a sign-off and a P.S. holding the data rows and help`, () => {
+    state.language = language;
+    render(<MeView />);
+    const footer = document.querySelector(".me-footer")!;
+    // The P.S. is the last thing on the page, after the sign-off.
+    expect(footer.nextElementSibling).toBeNull();
+    expect(footer.querySelector(".me-signoff")?.textContent).toContain(ME_COPY[language].footer);
+    const ps = screen.getByRole("heading", { level: 2, name: `${ME_COPY[language].ps} ${ME_COPY[language].psLead}` });
+    const section = ps.closest("section")!;
+    expect(section.querySelector('[data-testid="button-open-storage"]')).toBeTruthy();
+    expect(section.querySelector(".me-data-disclosure summary")?.textContent).toContain(ME_COPY[language].clearLabel);
+    const links = [...section.querySelectorAll<HTMLAnchorElement>("nav a")].map(link => link.getAttribute("href"));
+    expect(links).toEqual(["/about", "/contact", "/privacy", "/terms", "/disclaimer"]);
+    // The old separate data and help headings are gone.
+    expect(screen.queryByRole("heading", { name: ME_COPY[language].dataHeading })).toBeNull();
+    expect(screen.queryByRole("heading", { name: ME_COPY[language].help })).toBeNull();
+    expect(screen.getByRole("navigation", { name: ME_COPY[language].help })).toBeTruthy();
+  });
+}
+
+it("labels the motion switch in sentence case", () => {
+  render(<MeView />);
+  expect(screen.getByRole("switch", { name: "Reduce motion" })).toBeTruthy();
 });

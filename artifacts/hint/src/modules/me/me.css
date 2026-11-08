@@ -1,10 +1,10 @@
 /* Me — a personal space on the shared sky.
    Composition: the envelope (wax seal, name, birth details set like an
-   address, Sun/Moon/Rising from a calculated chart) → letters you kept (the
-   newest reading with its cards, rhythm, deck, type) → two-sky appearance
-   choice and controls → your data → help. Letter surfaces carry a gilt
-   hairline; settings surfaces keep the plain line. Surfaces are translucent so
-   the shell's constellation background stays continuous behind every section. */
+   address, Sun/Moon/Rising from a calculated chart, and a postmark of the last
+   14 days) → letters you kept (a small stack, newest on top) → your type →
+   preferences in one group, appearance first → your data → help. Paper (the
+   envelope and letters) carries a gilt hairline; settings keep the plain line.
+   Surfaces are translucent so the shell's sky stays continuous behind them. */
 /* Paper ink for Me in the bright theme only; dark keeps the shared night ink
    so the Home link and dock stay legible. */
 .hint-cream-route:not([data-hint-theme="dark"]):has(.me-page) {
@@ -15,7 +15,8 @@
 .me-page {
   --me-ink: #473542;
   --me-muted: #75616e;
-  --me-accent: #94765e;
+  /* Text on the envelope pocket (#f2e6e2) and the page needs 4.5:1: this is 5.3:1. */
+  --me-accent: #76593f;
   --me-accent-soft: rgba(148, 118, 94, .12);
   --me-line: rgba(131, 98, 119, .16);
   --me-surface: rgba(255, 252, 248, .78);
@@ -30,6 +31,16 @@
   --me-vellum: linear-gradient(165deg, rgba(255, 253, 248, .97), rgba(253, 248, 244, .9) 55%, rgba(247, 238, 242, .92));
   --me-card-back: linear-gradient(160deg, #fbf4ec, #efe3e8);
   --me-seal-shadow: 0 0 0 5px rgba(196, 160, 110, .14), 0 10px 20px rgba(110, 74, 40, .2);
+  --me-postmark: rgba(112, 72, 101, .58);
+  /* The envelope and its letter are paper objects: opaque, warm, gilt-edged. */
+  --me-paper: linear-gradient(172deg, #fffdf9, #fbf3ee 70%, #f8eef0);
+  --me-pocket: #f2e6e2;
+  --me-flap-apex: #f3e9e5;
+  --me-flap-base: #e4d4d1;
+  --me-pocket-h: 7.25rem;
+  --me-pocket-overlap: 3.2rem;
+  --me-star-glow: rgba(206, 158, 82, .5);
+  --me-gilt-ink: #82602e;
   color: var(--me-ink);
   font-family: var(--font-sans);
   padding: .3rem .15rem 0;
@@ -54,6 +65,13 @@
   --me-vellum: linear-gradient(165deg, rgba(255, 244, 238, .14), rgba(255, 236, 232, .07) 55%, rgba(255, 232, 232, .09));
   --me-card-back: linear-gradient(160deg, #50445f, #362d48);
   --me-seal-shadow: 0 0 0 5px rgba(230, 203, 157, .13), 0 12px 24px rgba(12, 8, 18, .45);
+  --me-postmark: rgba(232, 204, 164, .62);
+  --me-paper: linear-gradient(172deg, #3f3556, #362e4b 70%, #33294a);
+  --me-pocket: #4a3f62;
+  --me-flap-apex: #463c5f;
+  --me-flap-base: #31293f;
+  --me-star-glow: rgba(246, 214, 150, .62);
+  --me-gilt-ink: #e4cb9f;
 }
 .me-page :is(button, a, summary) { -webkit-tap-highlight-color: transparent; }
 .me-page :is(button, a, summary):focus-visible { outline: 2px solid var(--me-accent); outline-offset: 4px; }
@@ -71,8 +89,6 @@
 /* Shared glass material for every plate on the page. */
 .me-surface,
 .me-group,
-.me-theme-button,
-.me-tile,
 .me-type-row {
   background: var(--me-surface);
   border: 1px solid var(--me-line);
@@ -82,41 +98,92 @@
 }
 .me-surface { border-radius: 1.5rem; }
 
-/* The envelope: vellum on the sky, a gilt flap, a wax seal where it meets. */
-.me-envelope {
-  position: relative; isolation: isolate; overflow: hidden; text-align: center;
-  border-radius: 1.65rem; border: 1px solid var(--me-gilt);
-  background: var(--me-vellum), var(--me-surface);
-  box-shadow: var(--me-shadow);
-  -webkit-backdrop-filter: blur(18px) saturate(1.15);
-  backdrop-filter: blur(18px) saturate(1.15);
+/* The envelope, opened: its flap standing up behind, the letter rising out
+   of it, and the pocket in front holding the wax seal and the postmark.
+   This is the page's one object; everything below it stays quiet. */
+.me-envelope { position: relative; isolation: isolate; text-align: center; padding-top: .3rem; }
+.me-envelope-body { position: relative; isolation: isolate; }
+/* The flap's base is the pocket's mouth; its apex stays hidden just under the
+   top of the letter, so only its two gilt edges show beside the paper. */
+.me-flap {
+  position: absolute; z-index: 0; left: 0; top: 2.5rem; display: block; width: 100%;
+  height: calc(100% - 2.5rem - var(--me-pocket-h)); overflow: visible;
 }
-.me-envelope[data-empty] { padding-bottom: 1.7rem; }
-.me-envelope-flap { position: absolute; z-index: -1; inset: 0 0 auto; width: 100%; height: 6.5rem; display: block; }
-.me-envelope-flap polygon { fill: var(--me-flap); }
-.me-envelope-flap polyline { fill: none; stroke: var(--me-gilt-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.me-flap-stop-apex { stop-color: var(--me-flap-apex); }
+.me-flap-stop-base { stop-color: var(--me-flap-base); }
+.me-flap-edge { fill: none; stroke: var(--me-gilt-strong); stroke-width: 1; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.me-letter-sheet {
+  position: relative; z-index: 1; margin: 0 8%; padding: 1.25rem .9rem calc(var(--me-pocket-overlap) + .7rem);
+  border-radius: 1.1rem 1.1rem .4rem .4rem; border: 1px solid var(--me-gilt);
+  background: var(--me-paper); box-shadow: 0 -8px 26px rgba(40, 24, 44, .1);
+}
+/* Starts after the room has faded in, so the rise itself is seen. */
+.me-envelope[data-reveal] .me-letter-sheet { animation: me-letter-rise 1300ms cubic-bezier(.4, 0, .15, 1) 350ms both; }
+@keyframes me-letter-rise { from { transform: translateY(3.4rem); } to { transform: none; } }
+
+/* The Sun constellation: gold hairlines and stars, drawn in once on arrival. */
+.me-constellation {
+  display: block; width: min(100% + 1rem, 19.5rem); height: auto; margin: 0 auto; overflow: visible;
+  margin-inline: max(-.5rem, calc((100% - 19.5rem) / 2));
+  filter: drop-shadow(0 0 4px var(--me-star-glow)) drop-shadow(0 0 12px var(--me-star-glow));
+}
+.me-constellation-line { stroke: var(--me-star); stroke-width: 1.3; stroke-linecap: round; opacity: .95; vector-effect: non-scaling-stroke; }
+.me-constellation-star { fill: var(--me-star); transform-box: fill-box; transform-origin: center; }
+.me-constellation-glow { opacity: .3; }
+.me-constellation:not([data-sign]) .me-constellation-star { opacity: .55; }
+.me-constellation[data-reveal] .me-constellation-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: me-line-draw 650ms ease-out forwards; animation-delay: calc(1250ms + var(--i) * 120ms); }
+.me-constellation[data-reveal] .me-constellation-star { opacity: 0; animation: me-star-in 520ms ease-out forwards; animation-delay: calc(950ms + var(--i) * 85ms); }
+.me-constellation[data-reveal]:not([data-sign]) .me-constellation-star { animation-name: me-star-in-faint; }
+@keyframes me-line-draw { to { stroke-dashoffset: 0; } }
+@keyframes me-star-in { from { opacity: 0; transform: scale(.35); } to { opacity: 1; transform: none; } }
+@keyframes me-star-in-faint { from { opacity: 0; transform: scale(.35); } to { opacity: .55; transform: none; } }
+.me-constellation-name { margin: .2rem 0 0; color: var(--me-gilt-ink); font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; line-height: 1.35; }
+
+/* The pocket the letter rose from: two folds meeting under the seal. */
+.me-pocket {
+  position: relative; z-index: 2; height: var(--me-pocket-h); margin-top: calc(-1 * var(--me-pocket-overlap));
+  border-inline: 1px solid var(--me-gilt-strong); border-top: 1px solid var(--me-gilt-strong);
+}
+.me-pocket-folds { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.me-pocket-folds polygon { fill: var(--me-pocket); }
+.me-pocket-folds polyline { fill: none; stroke: var(--me-gilt-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .me-seal {
-  display: grid; place-items: center; width: 4.75rem; height: 4.75rem; margin: 3.5rem auto 0; border-radius: 50%;
+  position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%);
+  display: grid; place-items: center; width: 4.5rem; height: 4.5rem; border-radius: 50%;
   background: radial-gradient(circle at 34% 28%, #fbecce 0%, #ead0a2 34%, #cfab73 74%, #b48d58 100%);
   box-shadow: var(--me-seal-shadow), inset 0 -4px 7px rgba(112, 76, 36, .36), inset 0 2px 3px rgba(255, 250, 236, .65);
 }
 .me-seal > span {
-  display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%;
+  display: grid; place-items: center; width: 3.3rem; height: 3.3rem; border-radius: 50%;
   border: 1px solid rgba(106, 74, 38, .4); color: #5a3d20; text-shadow: 0 1px 0 rgba(255, 244, 222, .6);
-  font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 2.15rem; line-height: 1;
+  font-family: var(--font-serif); font-style: italic; font-weight: 500; font-size: 2rem; line-height: 1;
 }
-.me-seal[data-glyph] > span { font-family: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", "Noto Sans Symbols 2", serif; font-style: normal; font-weight: 400; font-size: 1.7rem; }
-.me-envelope-name { margin: 1.05rem 0 0; padding: 0 1.5rem; font-family: var(--font-serif); font-size: 2.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
-.me-address { margin: .55rem 0 0; padding: 0 1.5rem; font-family: var(--font-serif); font-style: italic; font-size: 1.25rem; line-height: 1.45; }
+.me-seal[data-glyph] > span { font-family: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", "Noto Sans Symbols 2", serif; font-style: normal; font-weight: 400; font-size: 1.6rem; }
+/* The postmark: ink stamped over the pocket's corner, never a control. */
+.me-postmark { position: absolute; z-index: 1; top: .3rem; right: .4rem; width: 7.8rem; height: auto; overflow: visible; pointer-events: none; transform: rotate(-8deg); }
+.me-postmark-waves path, .me-postmark-ring { fill: none; stroke: var(--me-postmark); }
+.me-postmark-waves path { stroke-width: 1.3; stroke-linecap: round; opacity: .75; }
+.me-postmark-ring { stroke-width: 1.5; }
+.me-postmark-inner { stroke-width: .9; }
+.me-postmark-day { fill: none; stroke: var(--me-postmark); stroke-width: 1; }
+.me-postmark-day[data-on] { fill: var(--me-star); stroke: var(--me-star); }
+.me-postmark-month { fill: var(--me-postmark); font-family: var(--font-sans); font-size: 10.5px; font-weight: 600; letter-spacing: .04em; }
+.me-postmark-date { fill: var(--me-postmark); font-family: var(--font-serif); font-size: 21px; font-weight: 500; }
+.me-envelope-name { margin: .55rem 0 0; padding: 0 .5rem; font-family: var(--font-serif); font-size: 2.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+.me-address { margin: .45rem 0 0; padding: 0 .5rem; font-family: var(--font-serif); font-style: italic; font-size: 1.25rem; line-height: 1.45; }
 .me-address-note { margin: .4rem 0 0; color: var(--me-muted); font-size: .8125rem; line-height: 1.5; }
 .me-envelope-prompt { margin: .65rem auto 0; padding: 0 1.5rem; max-width: 19rem; color: var(--me-muted); font-size: .9375rem; line-height: 1.55; }
-.me-envelope .me-secondary { margin-top: 1.25rem; }
-.me-sky-signs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: 1.4rem 1.5rem 0; padding-top: 1.1rem; border-top: 1px solid var(--me-gilt); }
+.me-sky-signs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: 1.2rem .25rem 0; padding-top: 1.1rem; border-top: 1px solid var(--me-gilt); }
 .me-sky-signs > div { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .me-sky-signs dt { order: 2; margin-top: .1rem; color: var(--me-muted); font-size: .78rem; line-height: 1.4; }
 .me-sky-signs dd { order: 1; display: flex; flex-direction: column; align-items: center; margin: 0; font-family: var(--font-serif); font-size: 1.375rem; font-weight: 500; line-height: 1.15; }
 .me-sign-glyph { margin-bottom: .2rem; color: var(--me-star); font-family: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", "Noto Sans Symbols 2", serif; font-size: 1.15rem; font-weight: 400; line-height: 1.2; }
-.me-envelope-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.3rem; border-top: 1px solid var(--me-gilt); }
+.me-envelope-actions {
+  position: relative; z-index: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--me-gilt); border-radius: 0 0 1.5rem 1.5rem; background: var(--me-pocket); overflow: hidden;
+}
+.me-envelope-actions[data-single] { grid-template-columns: minmax(0, 1fr); }
+.me-envelope-actions > .me-envelope-add { color: var(--me-accent); }
 .me-envelope-actions > * { display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 54px; padding: .5rem .75rem; color: var(--me-ink); font-size: .875rem; font-weight: 500; line-height: 1.3; }
 .me-envelope-actions > * + * { border-left: 1px solid var(--me-gilt); color: var(--me-accent); }
 .me-envelope-actions > *:active { background: var(--me-accent-soft); }
@@ -146,7 +213,22 @@
 /* Letters you kept */
 .me-kept-head { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; padding: 0 .35rem; margin-bottom: .45rem; }
 .me-see-all { display: inline-flex; align-items: center; gap: .15rem; min-height: 44px; flex-shrink: 0; color: var(--me-accent); font-size: .875rem; font-weight: 500; }
+/* Older letters show as paper edges beneath the newest one. */
+.me-letter-stack { position: relative; isolation: isolate; }
+.me-letter-stack[data-depth="2"] { padding-bottom: .45rem; }
+.me-letter-stack[data-depth="3"] { padding-bottom: .9rem; }
+/* Each edge is drawn only where it shows below the letter above it, so the
+   translucent paper never doubles up behind the newest letter's text. */
+.me-letter-stack::before, .me-letter-stack::after {
+  content: ""; position: absolute; z-index: -1; display: none; border-radius: 1.15rem; height: 2.4rem;
+  border: 1px solid var(--me-gilt); background: var(--me-vellum), var(--me-surface);
+  clip-path: inset(1.9rem -2px -2px -2px);
+}
+.me-letter-stack[data-depth="2"]::before, .me-letter-stack[data-depth="3"]::before { display: block; left: .7rem; right: .7rem; bottom: 0; opacity: .78; }
+.me-letter-stack[data-depth="3"]::before { bottom: .45rem; }
+.me-letter-stack[data-depth="3"]::after { display: block; left: 1.4rem; right: 1.4rem; bottom: 0; opacity: .55; z-index: -2; }
 .me-letter {
+  position: relative;
   display: flex; align-items: center; gap: 1.1rem; padding: 1.1rem 1.1rem 1.1rem .9rem; border-radius: 1.15rem; color: var(--me-ink);
   border: 1px solid var(--me-gilt); background: var(--me-vellum), var(--me-surface); box-shadow: var(--me-shadow);
 }
@@ -183,21 +265,7 @@
 .me-invite-body { margin: .5rem 0 0; max-width: 18.5rem; color: var(--me-muted); font-size: .9rem; line-height: 1.55; }
 .me-invite .me-primary { margin-top: 1.25rem; align-self: stretch; }
 
-.me-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin-top: .75rem; }
-/* Title, picture, count: pictures start on one line under the titles and the
-   counts share the bottom edge, so side-by-side tiles read as a pair. */
-.me-tile { display: flex; flex-direction: column; gap: .9rem; min-width: 0; padding: 1rem; border-radius: 1.15rem; color: var(--me-ink); }
-.me-tile:active, .me-type-row:active { opacity: .85; }
-.me-tile > strong { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 500; line-height: 1.1; }
-.me-tile-value { margin-top: auto; color: var(--me-muted); font-size: .84rem; line-height: 1.35; }
-.me-rhythm-stars { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .85rem .2rem; justify-items: center; }
-.me-rhythm-stars svg { width: 1.2rem; height: 1.2rem; overflow: visible; }
-.me-rhythm-stars path { fill: none; stroke: color-mix(in srgb, var(--me-star) 70%, transparent); stroke-width: .9; }
-.me-rhythm-stars [data-on] path { fill: var(--me-star); stroke: var(--me-star); }
-.me-deck-grid { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 3px; width: 100%; max-width: 8.9rem; margin-inline: auto; }
-.me-deck-grid i { display: block; height: .75rem; border-radius: 2px; border: 1px solid color-mix(in srgb, var(--me-star) 55%, transparent); }
-.me-deck-grid i[data-on] { background: var(--me-star); border-color: var(--me-star); }
-
+.me-type-row:active { opacity: .85; }
 .me-type-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-height: 68px; margin-top: .75rem; padding: .7rem 1rem; border-radius: 1.15rem; color: var(--me-ink); }
 .me-type-row > svg { flex-shrink: 0; color: var(--me-muted); }
 .me-type-copy { display: grid; gap: .1rem; min-width: 0; }
@@ -210,16 +278,13 @@
 .me-setting-icon { display: grid; place-items: center; flex-shrink: 0; width: 1.5rem; min-height: 1.5rem; color: var(--me-accent); }
 .me-setting-label strong, .me-row-copy strong, .me-disclosure-summary strong { display: block; font-weight: 500; font-size: .875rem; line-height: 1.5; }
 .me-setting-label > span > span, .me-row-copy > span, .me-disclosure-summary > span > span { display: block; color: var(--me-muted); font-size: .75rem; line-height: 1.6; margin-top: .1rem; }
-.me-theme-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
-.me-theme-button { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .6rem .3rem; min-height: 44px; padding: .45rem .45rem .65rem; border-radius: 1.15rem; color: var(--me-ink); }
-.me-theme-button[aria-pressed="true"] { border-color: var(--me-gilt-strong); box-shadow: var(--me-shadow), 0 0 0 1px var(--me-gilt-strong); }
-.me-theme-button > span:nth-child(2) { font-size: .84rem; font-weight: 500; line-height: 1.4; padding-left: .25rem; text-align: left; }
-.me-theme-swatch { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 64px; border-radius: .8rem; grid-column: 1 / -1; overflow: hidden; background: radial-gradient(circle at 85% 12%, rgba(229, 215, 234, .9), transparent 55%), linear-gradient(160deg, #fffcf6, #f6eef2 62%, #ece3ef); color: #8b6f78; }
-.me-theme-button[data-theme="dark"] .me-theme-swatch { background: radial-gradient(circle at 85% 10%, rgba(137, 114, 168, .85), transparent 58%), radial-gradient(circle at 10% 100%, rgba(196, 142, 112, .36), transparent 60%), #2e253c; color: #ddc7b5; }
-.me-theme-swatch i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .55; left: 22%; top: 28%; }
-.me-theme-swatch i + i { left: 70%; top: 66%; width: 2px; height: 2px; }
-.me-theme-check { display: grid; place-items: center; width: 18px; height: 18px; flex-shrink: 0; border-radius: 50%; border: 1px solid var(--me-line); color: #3a2d22; font-size: 10px; font-weight: 700; }
-.me-theme-button[aria-pressed="true"] .me-theme-check { border-color: var(--me-star); background: var(--me-star); }
+/* Appearance: a two-way switch at the top of the preferences group. */
+.me-mood { display: grid; gap: .55rem; padding: .85rem 1rem .9rem; }
+.me-mood-label { font-weight: 500; font-size: .875rem; line-height: 1.5; }
+.me-theme-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .25rem; padding: .25rem; border-radius: 999px; background: var(--me-soft); border: 1px solid var(--me-line); }
+.me-theme-button { display: flex; align-items: center; justify-content: center; gap: .45rem; min-width: 0; min-height: 44px; padding: .45rem .7rem; border-radius: 999px; color: var(--me-muted); font-size: .84rem; font-weight: 500; line-height: 1.3; text-align: center; }
+.me-theme-button[aria-pressed="true"] { color: var(--me-ink); background: var(--me-surface-raised); box-shadow: 0 1px 0 rgba(255, 255, 255, .18) inset, 0 4px 12px rgba(40, 24, 44, .12), 0 0 0 1px var(--me-gilt-strong); }
+.me-theme-swatch { display: grid; place-items: center; flex-shrink: 0; color: var(--me-star); }
 
 /* Grouped rows */
 .me-group { margin-top: .75rem; border-radius: 1.15rem; overflow: hidden; }
@@ -265,14 +330,30 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
 .me-error { padding: 0 1rem 1rem; font-size: .8125rem; line-height: 1.6; }
 .me-error > button { min-height: 44px; text-decoration: underline; }
 
+/* The close: a sign-off, then the P.S. with your data and help, set in a
+   hanging indent under its mark like a note added at the foot of a letter. */
+.me-footer { padding: 2.6rem .35rem .6rem; color: var(--me-muted); }
+.me-signoff { text-align: center; }
+.me-signoff > span { font-size: 1.25rem; color: var(--me-star); }
+.me-signoff p { font-family: var(--font-serif); font-size: 1.05rem; font-style: italic; line-height: 1.6; margin: .55rem 0 0; }
+.me-ps { --me-ps-indent: 3.25rem; margin-top: 2.2rem; padding-top: 1.4rem; border-top: 1px solid var(--me-gilt); text-align: left; }
+.me-ps-heading { display: flex; align-items: baseline; gap: .25rem; margin: 0; font-weight: 400; }
+.me-ps-mark { flex-shrink: 0; min-width: var(--me-ps-indent); color: var(--me-gilt-ink); font-family: var(--font-serif); font-style: italic; font-size: 1.6rem; font-weight: 500; line-height: 1.2; }
+.me-ps-lead { min-width: 0; color: var(--me-ink); font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; line-height: 1.45; }
+.me-ps-body { margin-top: .7rem; padding-left: calc(var(--me-ps-indent) + .25rem); }
+.me-ps-rows { border-block: 1px solid var(--me-line); }
+.me-ps-rows > * + * { border-top: 1px solid var(--me-line); }
+.me-ps .me-settings-row, .me-ps .me-disclosure-summary { padding-inline: 0; }
 /* Help: plain links, the quietest thing on the page. */
-.me-help-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: .75rem; padding: 0 .35rem; }
-.me-help-link { display: flex; align-items: center; min-height: 44px; color: var(--me-muted); font-size: .875rem; line-height: 1.4; }
+/* Each link carries its dot in front. The row starts one dot to the left of
+   the clipping nav, so the dot that would start a line is hidden: no line
+   ever begins or ends with a separator. */
+.me-help-links { margin-top: .1rem; padding: .4rem .5rem .4rem 0; overflow: hidden; }
+.me-help-row { display: flex; flex-wrap: wrap; align-items: center; margin-left: -1.25rem; }
+.me-help-item { display: inline-flex; align-items: center; min-width: 0; }
+.me-help-item::before { content: "·"; content: "·" / ""; display: inline-block; flex-shrink: 0; width: 1.25rem; text-align: center; color: var(--me-gilt-strong); font-size: .9rem; }
+.me-help-link { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; color: var(--me-muted); font-size: .84rem; line-height: 1.4; }
 .me-help-link:active { color: var(--me-ink); }
-
-.me-footer { text-align: center; color: var(--me-muted); padding: 2.4rem 1rem .6rem; }
-.me-footer > span { font-size: 1.25rem; color: var(--me-star); }
-.me-footer p { font-family: var(--font-serif); font-size: 1.05rem; font-style: italic; line-height: 1.6; margin: .55rem 0 0; }
 
 /* Edit and storage pages */
 .me-back { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-size: .8125rem; margin: 0 .35rem 1rem; color: var(--me-ink); }
@@ -290,9 +371,28 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
   .me-envelope-name { font-size: 2.2rem; }
   .me-address { font-size: 1.15rem; }
 }
+/* Short phones (iPhone SE): a tighter envelope, so Edit details and Open my
+   chart sit above the dock on the first screen. */
+@media (max-height: 700px) {
+  .me-page { --me-pocket-h: 5.1rem; --me-pocket-overlap: 2.4rem; }
+  .me-page > .me-heading { padding-bottom: .55rem; }
+  .me-page > .me-heading h1 { font-size: 2.15rem; }
+  .me-letter-sheet { padding-top: .8rem; }
+  .me-constellation { width: min(100% + 1rem, 16.5rem); margin-inline: max(-.5rem, calc((100% - 16.5rem) / 2)); }
+  .me-envelope-name { margin-top: .3rem; font-size: 2rem; }
+  .me-address { margin-top: .25rem; }
+  .me-address-note { margin-top: .2rem; }
+  .me-seal { width: 3.6rem; height: 3.6rem; }
+  .me-seal > span { width: 2.65rem; height: 2.65rem; font-size: 1.6rem; }
+  .me-seal[data-glyph] > span { font-size: 1.3rem; }
+  .me-postmark { width: 6.2rem; top: .1rem; }
+  .me-envelope-actions > * { min-height: 48px; }
+}
 /* Narrow phones and large text: tiles and links stack. */
 @container (max-width: 21rem) {
-  .me-tiles, .me-help-links { grid-template-columns: minmax(0, 1fr); }
+  .me-ps-body { padding-left: 0; }
+  .me-postmark { width: 6.4rem; top: .35rem; right: .2rem; }
+  .me-constellation { width: min(100%, 14rem); margin-inline: auto; }
   .me-sky-signs { margin-inline: 1rem; }
   .me-envelope-actions { grid-template-columns: minmax(0, 1fr); }
   .me-envelope-actions > * + * { border-left: 0; border-top: 1px solid var(--me-gilt); }
