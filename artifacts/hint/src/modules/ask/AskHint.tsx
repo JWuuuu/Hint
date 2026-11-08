@@ -205,8 +205,8 @@ export function AskHint() {
               className="flex flex-wrap items-center gap-x-3 rounded-2xl border px-4 py-2.5 font-sans text-sm leading-snug"
               style={{ color: IVORY.body, borderColor: "var(--hint-border)", background: "var(--hint-card-surface)" }}
             >
-              <span className="min-w-0 flex-1 py-1">{chat.error}</span>
-              {chat.canRetry !== false && <button type="button" className="min-h-11 shrink-0 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>}
+              <span className="min-w-0 flex-1 py-1 text-pretty">{chat.error}</span>
+              {chat.canRetry !== false && <button type="button" className="min-h-11 min-w-11 shrink-0 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>}
             </p>
           </div>
         )}
