@@ -1,0 +1,42 @@
+# Review-only workflow, never merged. It lives on golden-review/* branches. On 82e8174 it runs
+# one Tarot receipt export in WebKit and prints the exported PNG into the job log, to see why
+# WebKit CI now exports ~20 KB receipts (the test expects over 50 KB) where artifacts can't be
+# downloaded.
+name: Golden review
+on:
+  push:
+    branches: ['golden-review/**']
+permissions:
+  contents: read
+jobs:
+  receipt:
+    runs-on: ubuntu-latest
+    env:
+      API_PROXY_TARGET: http://127.0.0.1:1
+      HINT_E2E_PORT: '5188'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:web
+      - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+      - name: Export one receipt in WebKit
+        continue-on-error: true
+        run: pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=iphone-se --retries=0 -g "receipt exports complete 1-card en"
+      - name: Print the exported receipt
+        if: always()
+        working-directory: artifacts/hint
+        run: |
+          for file in $(find test-results -name 'receipt.png'); do
+            echo "GOLDEN-BEGIN receipt/$(basename $(dirname $file)).png $(sha256sum "$file" | cut -c1-64)"
+            base64 -w 120 "$file"
+            echo "GOLDEN-END"
+          done
+          npx --yes playwright --version || true
+          cat /etc/os-release | head -3
