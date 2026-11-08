@@ -114,7 +114,7 @@ export function AskHint() {
                   boxShadow: "var(--hint-elevated-shadow)",
                 }}
               >
-                {!(guideEnabled && keyboardOpen) && <HintGuideSlot context={guideContext} className="mx-auto -my-4 h-60 w-60 [@media(max-height:700px)]:h-48 [@media(max-height:700px)]:w-48" fallback={<div
+                {!(guideEnabled && keyboardOpen) && <HintGuideSlot context={guideContext} className="mx-auto -my-4 aspect-square w-60 max-w-full [@media(max-height:700px)]:w-48" fallback={<div
                   className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-[8px]"
                   style={{
                     color: GOLD.ink,
@@ -193,17 +193,23 @@ export function AskHint() {
             </motion.div>
           )}
 
-          {chat.error && (
+        </div>
+
+        {/* Pinned above the composer, outside the thread, so a failed send is
+            explained where the returned question is, whatever the scroll. */}
+        {chat.error && (
+          <div className="shrink-0 px-5 pb-2">
             <p
               role="status"
-              className="font-sans text-xs"
-              style={{ color: IVORY.mute }}
+              data-testid="ask-error"
+              className="flex flex-wrap items-center gap-x-3 rounded-2xl border px-4 py-2.5 font-sans text-sm leading-snug"
+              style={{ color: IVORY.body, borderColor: "var(--hint-border)", background: "var(--hint-card-surface)" }}
             >
-              {chat.error}
-              {chat.canRetry !== false && <button type="button" className="ml-3 min-h-11 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>}
+              <span className="min-w-0 flex-1 py-1">{chat.error}</span>
+              {chat.canRetry !== false && <button type="button" className="min-h-11 shrink-0 underline" disabled={chat.isThinking || chat.isLimited} onClick={() => void chat.sendMessage(chat.draft)}>{t("quality.retry")}</button>}
             </p>
-          )}
-        </div>
+          </div>
+        )}
 
         {chat.draftError && <p role="status" className="px-5 text-sm">{t("quality.draftFailed")}</p>}
         {/* Input */}

@@ -80,3 +80,17 @@ test("Ask shows a service fallback as an error, keeps the question, and saves on
   await expect(page.getByText("A fictional offline fallback that must not be saved.", { exact: true })).toHaveCount(0);
   expect(calls).toBe(2);
 });
+
+test("Ask says when it can't reach the server, keeps the question, and shows why above the composer", async ({ page }) => {
+  await seed(page);
+  // The isolated fixture answers every unmocked API call with 503, as a server that is down would.
+  await page.goto("/app/ask?hintPreview=embedded");
+  await send(page, "A fictional question while the server is down");
+  const error = page.getByTestId("ask-error");
+  await expect(error).toContainText("Hint can't reach its server right now.");
+  await expect(error).toBeInViewport();
+  await expect(page.locator("textarea")).toHaveValue("A fictional question while the server is down");
+  const [box, composer] = await Promise.all([error.boundingBox(), page.locator("textarea").boundingBox()]);
+  expect(box!.y + box!.height).toBeLessThanOrEqual(composer!.y);
+  await expect(page.getByRole("button", { name: "Retry", exact: true })).toBeVisible();
+});

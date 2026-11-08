@@ -8,6 +8,7 @@ import { sendAmbientChatMessage } from "@workspace/api-client-react";
 import type { ChatMessage } from "../hold/chat/types";
 import { newMessageId } from "../hold/chat/types";
 import { useLanguage } from "../../lib/i18n";
+import { DeviceSessionError } from "../../lib/deviceSessionCore";
 
 import { getAnonId } from "../../lib/identity";
 import { readTextDraft, writeTextDraft, clearTextDraft, textDraftKey, type TextDraft } from "../../lib/textDraft";
@@ -38,6 +39,17 @@ export interface UseAskHintChatResult {
 
 function readStatus(error: unknown): number | null {
   return typeof error === "object" && error ? (error as { status?: number }).status ?? null : null;
+}
+
+/**
+ * Hint could not reach its server at all: the device connection failed, the
+ * network request never completed, or the server answered that it is down.
+ * A 502 is not here: the server uses it when the AI provider sent nothing.
+ */
+function serverUnreachable(error: unknown, status: number | null): boolean {
+  if (error instanceof DeviceSessionError) return error.reason === "unavailable";
+  if (status === 503 || status === 504) return true;
+  return error instanceof TypeError && /fetch|network|load failed/i.test(error.message);
 }
 
 /** A reply that arrived but must not become part of the conversation. */
@@ -238,6 +250,8 @@ export function useAskHintChat(): UseAskHintChatResult {
           setError(t("ask.error.quota"));
         } else if (e instanceof UnusableReplyError) {
           setError(t("ask.error.quiet"));
+        } else if (serverUnreachable(e, status)) {
+          setError(t("ask.error.offline"));
         } else {
           setError(
             /quota|billing|too many requests/i.test(msg)

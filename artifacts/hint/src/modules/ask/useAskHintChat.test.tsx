@@ -2,6 +2,7 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { useAskHintChat } from "./useAskHintChat";
+import { DeviceSessionError } from "../../lib/deviceSessionCore";
 import { saveAskConversation, listAskHistory } from "./askHistory";
 import { writeTextDraft, readTextDraft, textDraftKey } from "../../lib/textDraft";
 const { send, visit } = vi.hoisted(() => ({ send: vi.fn(), visit: { closed: false, onLeave: undefined as (() => void) | undefined } }));
@@ -203,6 +204,25 @@ it("shows and saves the server's fixed safety reply like any real answer", async
   expect(view.result.current.messages.map(message => message.content)).toEqual(["I want to end my life", "Please call your local emergency number now."]);
   expect(view.result.current.error).toBeNull(); expect(view.result.current.isLimited).toBe(false);
   expect(listAskHistory("fixture")[0]?.messages).toHaveLength(2); view.unmount();
+});
+
+it("says when Hint can't reach its server and keeps the question, but keeps a 502 as a quiet line", async () => {
+  const cases: Array<[unknown, string]> = [
+    [new DeviceSessionError("unavailable"), "ask.error.offline"],
+    [Object.assign(new Error("Service Unavailable"), { status: 503 }), "ask.error.offline"],
+    [new TypeError("Failed to fetch"), "ask.error.offline"],
+    [Object.assign(new Error("Bad Gateway"), { status: 502 }), "ask.error.quiet"],
+  ];
+  for (const [failure, expected] of cases) {
+    send.mockReset(); send.mockRejectedValueOnce(failure);
+    const view = renderHook(() => useAskHintChat());
+    act(() => view.result.current.setDraft("Are you there?"));
+    await act(() => view.result.current.sendMessage("Are you there?"));
+    expect(view.result.current.error).toBe(expected);
+    expect(view.result.current.messages).toEqual([]);
+    expect(view.result.current.draft).toBe("Are you there?");
+    view.unmount(); localStorage.clear();
+  }
 });
 
 it("treats an empty reply as a failed request", async () => {
