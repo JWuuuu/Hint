@@ -928,7 +928,7 @@ export function PersonalitiesView() {
           })}
         </div>
         <p className="mt-3 font-sans text-[11.5px] leading-relaxed" style={{ color: GLASS.muted }}>
-          {sign ? `Sun sign used: ${sign}.` : "No birth date found yet; astrology weighting will unlock after Astrology is filled in."}
+          {sign ? t("personalities.sunSignUsed").replace("{sign}", tx(sign)) : t("personalities.noBirthDate")}
         </p>
       </GlassPanel>
     </AppScreen>

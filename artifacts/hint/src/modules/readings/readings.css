@@ -63,13 +63,14 @@
 .hr-list { display: grid; gap: .55rem; margin: 0; padding: 0; list-style: none; }
 
 /* Entries */
-.hr-entry { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; align-items: start; gap: .85rem; padding: .95rem 1rem; border-radius: 1.2rem; color: inherit; text-decoration: none; }
+.hr-entry { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr) auto; align-items: start; gap: .85rem; padding: .95rem 1rem; border-radius: 1.2rem; color: inherit; text-decoration: none; }
 a.hr-entry:active { opacity: .7; }
 .hr-entry[data-featured="true"] { padding: 1.2rem 1.1rem; background: var(--hr-surface-strong); border-color: color-mix(in srgb, var(--hr-accent) 30%, var(--hr-line)); }
 .hr-stamp { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 2.8rem; padding-right: .75rem; border-right: 1px solid var(--hr-line); color: var(--hint-text); text-align: center; }
 .hr-stamp-day { font-family: var(--font-serif); font-size: 1.45rem; line-height: 1.05; font-variant-numeric: lining-nums; }
 .hr-stamp-month { margin-top: .15rem; color: var(--hint-muted); font-size: .625rem; line-height: 1.3; }
-.hr-stamp-today { padding-top: .15rem; font-family: var(--font-serif); font-size: .8125rem; line-height: 1.25; color: var(--hr-accent); }
+/* The column fits the longest one-word label ("Tonight"); labels wrap only between words. */
+.hr-stamp-today { padding-top: .15rem; font-family: var(--font-serif); font-size: .8125rem; line-height: 1.25; color: var(--hr-accent); overflow-wrap: normal; }
 .hr-entry-body { display: flex; flex-direction: column; gap: .3rem; min-width: 0; }
 .hr-entry-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; }
 .hr-kind { display: inline-flex; align-items: center; gap: .3rem; font-size: .6875rem; font-weight: 600; line-height: 1.4; color: var(--hr-accent); }
@@ -84,7 +85,7 @@ a.hr-entry:active { opacity: .7; }
 .hr-entry[data-featured="true"] .hr-entry-text { -webkit-line-clamp: 5; font-size: .84rem; }
 .hr-entry-note { color: var(--hint-faint); font-size: .6875rem; line-height: 1.5; }
 .hr-entry-arrow { flex-shrink: 0; margin-top: .2rem; color: var(--hr-accent); }
-.hr-entry-question-card { grid-template-columns: 3rem minmax(0, 1fr); }
+.hr-entry-question-card { grid-template-columns: 3.5rem minmax(0, 1fr); }
 .hr-open-link { display: inline-flex; align-items: center; align-self: flex-start; min-height: 44px; margin-top: .1rem; color: var(--hr-accent); font-size: .8125rem; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 
 /* States */
@@ -135,12 +136,21 @@ a.hr-entry:active { opacity: .7; }
 
 /* Narrow phones and large text */
 @container (max-width: 21rem) {
-  .hr-entry { grid-template-columns: 2.6rem minmax(0, 1fr); gap: .7rem; padding: .85rem .85rem; }
+  .hr-entry { grid-template-columns: 3.2rem minmax(0, 1fr); gap: .7rem; padding: .85rem .85rem; }
   .hr-entry-arrow { display: none; }
-  .hr-entry-question-card { grid-template-columns: 2.6rem minmax(0, 1fr); }
-  .hr-stamp { padding-right: .55rem; }
+  .hr-entry-question-card { grid-template-columns: 3.2rem minmax(0, 1fr); }
+  .hr-stamp { padding-right: .5rem; }
   .hr-ledger > div { padding: 0 .4rem; }
   .hr-ledger dd { font-size: 1.5rem; }
   .hr-detail-meta { grid-template-columns: minmax(0, 1fr); }
   .hr-detail-meta > div + div:not([data-wide]) { border-left: 0; border-top: 1px solid var(--hr-line); }
+}
+/* Large text: three side-by-side counters cannot hold whole words like
+   "Questions", so the ledger stacks them as label-and-count rows. */
+@container (max-width: 16rem) {
+  .hr-ledger { grid-template-columns: minmax(0, 1fr); padding: .2rem 0; }
+  .hr-ledger > div { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .45rem 1rem; text-align: left; }
+  .hr-ledger > div + div { border-left: 0; border-top: 1px solid var(--hr-line); }
+  .hr-ledger dt { justify-content: flex-start; min-width: 0; }
+  .hr-ledger dd { flex-shrink: 0; margin: 0; }
 }

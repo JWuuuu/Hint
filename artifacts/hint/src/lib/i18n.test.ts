@@ -74,3 +74,20 @@ it("authored JSX translations and conditional labels have registered resources",
   scan(resolve(process.cwd(), "src"));
   expect([...missing].sort()).toEqual([]);
 });
+
+it("Today space titles are translated in every non-English locale", () => {
+  for (const { code } of LANGUAGE_OPTIONS) {
+    if (code === "en") continue;
+    const untranslated = Object.keys(TRANSLATIONS.en).filter(key => key.startsWith("module.") && /[A-Za-z]{3}/.test(TRANSLATIONS.en[key]) && TRANSLATIONS[code][key] === TRANSLATIONS.en[key]);
+    expect(untranslated, `${code} module titles left in English`).toEqual([]);
+  }
+});
+
+it("room copy moved out of Compatibility, Animal Tarot and Personalities is translated in every locale", () => {
+  const keys = Object.keys(TRANSLATIONS.en).filter(key => /^(compatibility|animalTarot|personalities)\./.test(key));
+  expect(keys.length).toBeGreaterThan(0);
+  for (const { code } of LANGUAGE_OPTIONS) {
+    if (code === "en") continue;
+    for (const key of keys) expect(TRANSLATIONS[code][key], `${code}:${key}`).not.toBe(TRANSLATIONS.en[key]);
+  }
+});

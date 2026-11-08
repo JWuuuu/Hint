@@ -341,7 +341,7 @@ function InviteView({ token }: { token: string }) {
       <BirthDetailsForm
         title="Your birth details"
         subtitle="These details are used only for this shared comparison. Review them before continuing."
-        submitLabel="Open shared chart"
+        submitLabel={t("compatibility.openSharedChart")}
         saving={isSubmitting}
         requireConsent
         onSubmit={completeInvite}
@@ -495,8 +495,8 @@ function DefaultCompatibilityView() {
   return (
     <PanelShell
       eyebrow="Together"
-      title="Shared chart room"
-      subtitle="Invite-based compatibility. Your chart starts the room; their chart is added only after they consent."
+      title={t("compatibility.roomTitle")}
+      subtitle={t("compatibility.roomSubtitle")}
     >
       <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="rounded-[34px] border p-5 shadow-[var(--hint-elevated-shadow)]" style={{ background: "var(--hint-hero-surface)", borderColor: "var(--hint-border)" }}>
@@ -543,7 +543,7 @@ function DefaultCompatibilityView() {
               {signLabel(chart.venusSign, language)}<LocalizedText text={" Venus and "} />{signLabel(chart.marsSign, language)}<LocalizedText text={" Mars help shape the relationship preview. "} /></p>
           </div>
         ) : (
-          <BirthDetailsForm initial={selfDetails} title={selfDetails ? at(language, "edit") : "Save your birth details"} subtitle={at(language, "setupCopy")} submitLabel="Save profile" saving={isSaving} onSubmit={saveSelf} />
+          <BirthDetailsForm initial={selfDetails} title={selfDetails ? at(language, "edit") : t("compatibility.saveBirthDetails")} subtitle={at(language, "setupCopy")} submitLabel="Save profile" saving={isSaving} onSubmit={saveSelf} />
         )}
       </section>
     </PanelShell>

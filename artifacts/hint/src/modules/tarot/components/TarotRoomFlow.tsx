@@ -1463,8 +1463,19 @@ function QuestionStep({
   const speechStartRef = useRef<Promise<HintSpeechSession> | null>(null);
   const speechAbortRef = useRef<AbortController | null>(null);
   const voiceRequestRef = useRef(0);
+  const questionFieldRef = useRef<HTMLTextAreaElement | null>(null);
   const intent = getQuestionIntent(question);
   const canContinue = Boolean(cleanQuestion(question));
+
+  // Grow the question box with its text up to five lines, then scroll, like the Ask composer.
+  useEffect(() => {
+    const field = questionFieldRef.current;
+    if (!field) return;
+    const style = getComputedStyle(field);
+    const fiveLines = parseFloat(style.lineHeight) * 5 + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    field.style.height = "auto";
+    field.style.height = `${Math.min(field.scrollHeight, fiveLines)}px`;
+  }, [question]);
 
   async function stopVoice(cancel = false) {
     if (cancel) {
@@ -1622,7 +1633,7 @@ function QuestionStep({
                     setQuestion(localizedQuestion);
                     onPromptSelect(localizedQuestion);
                   }}
-                  className={`relative h-[96px] overflow-hidden rounded-[18px] border bg-white/48 p-3 text-left shadow-[0_12px_28px_rgba(104,82,111,0.08)] backdrop-blur-xl transition duration-200 active:scale-[0.98] ${
+                  className={`relative min-h-[96px] overflow-hidden rounded-[18px] border bg-white/48 px-3 pb-0.5 pt-3 text-left shadow-[0_12px_28px_rgba(104,82,111,0.08)] backdrop-blur-xl transition duration-200 active:scale-[0.98] ${
                     pickedPrompt === card.category
                       ? "border-[#b997c9] bg-white/68 shadow-[0_16px_36px_rgba(123,91,145,0.16)]"
                       : "border-white/68"
@@ -1639,7 +1650,7 @@ function QuestionStep({
                       />
                     </span>
                   ) : null}
-                  <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative z-10 flex flex-wrap items-center gap-2">
                     <span className="grid h-7 w-7 place-items-center rounded-full border border-[#b997c9]/20 bg-[#fff9f4]/72 text-[#6f5878]">
                       <QuestionIcon icon={card.icon} />
                     </span>
@@ -1648,11 +1659,13 @@ function QuestionStep({
                     </span>
                   </span>
                   <span
-                    className="relative z-10 mt-2.5 block h-[2.6rem] max-w-[calc(100%-2rem)] overflow-hidden text-[11.5px] font-bold leading-[1.2] text-[#3e3448]"
+                    className="relative z-10 mt-2.5 block min-h-[2.6rem] max-w-[calc(100%-32px)] overflow-hidden text-[11.5px] font-bold leading-[1.2] text-[#3e3448]"
                     style={{
                       display: "-webkit-box",
                       WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 3,
+                      // The prompts take up to three lines at normal text size; with large text
+                      // the narrower column needs more, so the card grows instead of hiding them.
+                      WebkitLineClamp: 6,
                     }}
                   >
                     {localizedQuestion}
@@ -1665,13 +1678,14 @@ function QuestionStep({
       </StepShell>
 
       <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(var(--hint-safe-bottom)+0.8rem)]">
-        <div className="mx-auto flex max-w-[520px] items-end gap-2 rounded-[28px] border border-white/68 bg-white/76 p-2 shadow-[0_18px_54px_rgba(83,61,93,0.20)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[520px] flex-wrap items-end justify-end gap-2 rounded-[28px] border border-white/68 bg-white/76 p-2 shadow-[0_18px_54px_rgba(83,61,93,0.20)] backdrop-blur-xl">
           <textarea
+            ref={questionFieldRef}
             value={question}
             rows={1}
             onChange={(event) => setQuestion(event.target.value)}
             placeholder={t("tarot.flow.question.placeholder")}
-            className="max-h-24 min-h-11 flex-1 resize-none rounded-[22px] bg-transparent px-3 py-3 text-[14px] font-bold leading-snug text-[#382f45] outline-none placeholder:text-[#9b8c9e]"
+            className="min-h-11 min-w-[min(100%,8rem)] flex-1 resize-none rounded-[22px] bg-transparent px-3 py-3 text-[14px] font-bold leading-snug text-[#382f45] outline-none placeholder:text-[#9b8c9e]"
           />
           <button
             type="button"

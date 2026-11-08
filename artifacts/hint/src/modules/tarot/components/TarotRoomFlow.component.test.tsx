@@ -828,6 +828,32 @@ describe("Tarot Room components", () => {
     expect(records[0].structuredReading.cards).toHaveLength(1);
   });
 
+  it("grows the question box with a long question up to five lines, then scrolls", () => {
+    const realStyle = window.getComputedStyle.bind(window);
+    vi.spyOn(window, "getComputedStyle").mockImplementation((element, pseudo) =>
+      element instanceof HTMLTextAreaElement
+        ? ({ lineHeight: "20px", paddingTop: "12px", paddingBottom: "12px" } as CSSStyleDeclaration)
+        : realStyle(element, pseudo));
+    // Forty characters per 20px line inside 24px of padding.
+    Object.defineProperty(HTMLTextAreaElement.prototype, "scrollHeight", {
+      configurable: true,
+      get(this: HTMLTextAreaElement) { return 24 + 20 * Math.max(1, Math.ceil(this.value.length / 40)); },
+    });
+    try {
+      renderWithProviders(<TarotRoomFlow />);
+      const question = screen.getByPlaceholderText("Type your question...") as HTMLTextAreaElement;
+      expect(question.style.height).toBe("44px");
+      fireEvent.change(question, { target: { value: "x".repeat(100) } });
+      expect(question.style.height).toBe("84px");
+      fireEvent.change(question, { target: { value: "x".repeat(400) } });
+      expect(question.style.height).toBe("124px");
+      fireEvent.change(question, { target: { value: "" } });
+      expect(question.style.height).toBe("44px");
+    } finally {
+      delete (HTMLTextAreaElement.prototype as { scrollHeight?: number }).scrollHeight;
+    }
+  });
+
   it("keeps typed input available when voice recognition is unavailable", async () => {
     const user = userEvent.setup();
     renderWithProviders(<TarotRoomFlow />);
