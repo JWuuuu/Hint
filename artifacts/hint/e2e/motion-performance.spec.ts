@@ -76,7 +76,7 @@ for (const [app, os] of [[false, false], [true, false], [false, true], [true, tr
     await expect(page.getByRole("button", { name: "Auto Wash" })).toBeVisible();
     await sample(page, info, "tarot-auto-wash", async () => {
       await page.getByRole("button", { name: "Auto Wash" }).click();
-      await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Pick Cards" })).toBeVisible({ timeout: 20_000 });
     }, baseline);
   });
 }

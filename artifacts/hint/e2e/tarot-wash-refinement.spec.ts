@@ -104,7 +104,7 @@ test("release reaches cutting promptly even if the WebView drops transition even
   expect(Date.now() - startedAt).toBeLessThan(1500);
 });
 
-test("the post-cut shuffle opens the deck into two halves and merges every card back before picking", async ({ page }, info) => {
+test("the post-cut shuffle opens the deck into two halves and riffles every card back one at a time before picking", async ({ page }, info) => {
   await enterWash(page);
   await page.getByRole('button', { name: 'Auto Wash', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Cutting the deck.', exact: true })).toBeVisible();
@@ -124,15 +124,21 @@ test("the post-cut shuffle opens the deck into two halves and merges every card 
     };
     requestAnimationFrame(sample);
   });
-  await expect(page.getByRole('heading', { name: 'The deck is ready.', exact: true })).toBeVisible();
+  // "The deck is ready." shows for about 0.36 s, which a busy page can finish before a visibility
+  // poll sees it. The sampler records every frame, so wait for it to log the end of the shuffle.
+  await expect.poll(() => page.evaluate(() => {
+    const frames = (window as Window & { shuffleFrames?: Array<{ shuffling: boolean }> }).shuffleFrames ?? [];
+    const start = frames.findIndex(frame => frame.shuffling);
+    return start >= 0 && frames.slice(start).some(frame => !frame.shuffling);
+  }), { timeout: 12_000, message: 'The shuffle finished' }).toBe(true);
   const rows = await page.evaluate(() => (window as Window & {
     shuffleFrames?: Array<{ time: number; shuffling: boolean; cards: number[] }>;
   }).shuffleFrames!);
   const moving = rows.filter(row => row.shuffling);
   expect(moving.length).toBeGreaterThan(0);
-  // Since the Oct 15 snapshot the shuffle is a two-way merge (RitualDeckInterleave): the deck splits into
-  // two halves, holds, and both halves travel straight inward together. Split 0.56 s + hold 0.52 s +
-  // merge 0.72 s = 1.8 s. It replaced the Sep 12 staggered interleave this test used to describe.
+  // Since Nov 4 the shuffle is a riffle (RitualDeckInterleave): the deck splits into two halves, holds,
+  // then the cards drop into one stack one at a time, alternating halves from the bottom, and the deck
+  // is squared. Split 0.56 s + hold 0.36 s + riffle 3 s + square 0.24 s = 4.16 s.
   const duration = moving.at(-1)!.time - moving[0]!.time;
   const cardCount = moving[0]!.cards.length;
   const separations = moving.map(row => Math.max(...row.cards) - Math.min(...row.cards));
@@ -142,27 +148,35 @@ test("the post-cut shuffle opens the deck into two halves and merges every card 
   const arrivedAt = new Map<number, number>();
   moving.forEach((row, rowIndex) => row.cards.forEach((x, index) => {
     if (Math.abs(x) > 45 && !departedAt.has(index)) departedAt.set(index, rowIndex);
-    if (departedAt.has(index) && Math.abs(x) < 8 && !arrivedAt.has(index)) arrivedAt.set(index, rowIndex);
+    if (departedAt.has(index) && Math.abs(x) < 8 && !arrivedAt.has(index)) arrivedAt.set(index, row.time);
   }));
   const spread = (rows: Map<number, number>) => Math.max(...rows.values()) - Math.min(...rows.values());
   const halves = { left: peak.cards.filter(x => x < -45).length, right: peak.cards.filter(x => x > 45).length };
+  const arrivals = [...arrivedAt.entries()].sort((a, b) => a[1] - b[1]).map(([index]) => index);
   await info.attach('visible-shuffle-motion', { body: JSON.stringify({ duration, cardCount, widestSeparation, halves,
-    departureSpread: spread(departedAt), arrivalSpread: spread(arrivedAt) }), contentType: 'application/json' });
-  expect(duration).toBeGreaterThanOrEqual(1600);
-  expect(duration).toBeLessThan(2600);
+    departureSpread: spread(departedAt), arrivalSpreadMs: spread(arrivedAt), firstArrivals: arrivals.slice(0, 6), lastArrivals: arrivals.slice(-6) }), contentType: 'application/json' });
+  expect(duration).toBeGreaterThanOrEqual(3600);
+  expect(duration).toBeLessThan(5600);
   expect(cardCount).toBe(78);
   // At its widest, every card sits in one of two equal halves, more than two card widths apart.
   expect(halves.left + halves.right).toBe(cardCount);
   expect(Math.abs(halves.left - halves.right)).toBeLessThanOrEqual(1);
   expect(widestSeparation).toBeGreaterThan(168);
-  // Every card leaves the centre and comes back, and the halves move together (no stagger).
+  // Every card leaves the centre together, then comes back one at a time over the riffle.
   expect(departedAt.size).toBe(cardCount);
-  expect(arrivedAt.size).toBe(cardCount);
   expect(spread(departedAt)).toBeLessThanOrEqual(1);
-  expect(spread(arrivedAt)).toBeLessThanOrEqual(1);
+  expect(arrivedAt.size).toBe(cardCount);
+  expect(spread(arrivedAt)).toBeGreaterThan(1800);
+  // Within each half, cards land bottom first: a card never lands before the one beneath it.
+  for (let index = 0; index + 2 < cardCount; index++) expect(arrivedAt.get(index + 2)!).toBeGreaterThanOrEqual(arrivedAt.get(index)!);
+  // Both halves feed the stack throughout: the first and last ten cards to land come from both sides.
+  for (const group of [arrivals.slice(0, 10), arrivals.slice(-10)]) {
+    expect(group.some(index => index % 2 === 0)).toBe(true);
+    expect(group.some(index => index % 2 === 1)).toBe(true);
+  }
   expect(Math.max(...moving.at(-1)!.cards.map(Math.abs))).toBeLessThan(8);
   await capture(page, info, 'shuffle-squared');
-  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible({ timeout: 20_000 });
   await expect(page.getByLabel('Rotating tarot deck wheel')).toHaveAttribute('data-deck-size', '78');
 });
 
@@ -184,7 +198,7 @@ test("wash explains the fixed deck in a dismissible dialog without starting the 
   await expect(note).toBeFocused();
   await expect(page.locator('[data-ritual-stage="washing"]')).toBeVisible();
   await page.getByRole("button", { name: "Auto Wash", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Pick Cards", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pick Cards", exact: true })).toBeVisible({ timeout: 20_000 });
 });
 
 for (const mode of ['system', 'app', 'both'] as const) {
@@ -246,7 +260,7 @@ test("wash and cut meet at the same opaque card without a size or position jump"
   for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(cut![key] - gathered![key])).toBeLessThan(2);
   expect(cut!.opacity).toBe(1);
   await info.attach('wash-cut-seam', { body: JSON.stringify({ gathered, cut }), contentType: 'application/json' });
-  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible({ timeout: 20_000 });
   await expect(page.getByLabel('Rotating tarot deck wheel')).toHaveAttribute('data-deck-size', '78');
 });
 
@@ -265,7 +279,7 @@ test("a stationary hand lets the cards rest and keeps only clockwise guidance", 
   const later = await sample();
   expect(Math.max(...later.map((p, i) => Math.hypot(p.x - resting[i]!.x, p.y - resting[i]!.y)))).toBeLessThan(0.5);
   await page.mouse.up();
-  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible({ timeout: 20_000 });
 });
 
 test("a delayed squaring timer recovers even when transition events are lost", async ({ page }) => {
@@ -280,5 +294,5 @@ test("a delayed squaring timer recovers even when transition events are lost", a
   await washByHand(page);
   await page.mouse.up();
   await expect(page.getByRole('heading', { name: 'Cutting the deck.', exact: true })).toBeVisible({ timeout: 2000 });
-  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Pick Cards', exact: true })).toBeVisible({ timeout: 20_000 });
 });

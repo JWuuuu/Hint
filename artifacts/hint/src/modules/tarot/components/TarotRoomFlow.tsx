@@ -2766,8 +2766,15 @@ function RitualShuffleStep({
 
 
 const CUT_TWO_WAY_SPLIT_SECONDS = 0.56;
-const CUT_TWO_WAY_HOLD_SECONDS = 0.52;
-const CUT_MERGE_TRAVEL_SECONDS = 0.72;
+const CUT_TWO_WAY_HOLD_SECONDS = 0.36;
+// The riffle: from the first card leaving a half to the last card landing.
+const CUT_RIFFLE_SECONDS = 3;
+// Each card's own flight from its half to the centre stack.
+const CUT_RIFFLE_CARD_SECONDS = 0.34;
+// Cards land a few pixels to their own side, so the interleave reads as a riffle
+// until the deck is squared.
+const CUT_RIFFLE_JOG_PX = 3;
+const CUT_SQUARE_SECONDS = 0.24;
 const CUT_CARD_SIZE = "h-[134px] w-[84px] min-[430px]:h-[150px] min-[430px]:w-[94px]";
 // Cut packets are larger than the gathered wash card they replace. Each packet
 // starts at that card's scale (WASH_CARD_SIZE / CUT_CARD_SIZE, same centre) and
@@ -2778,7 +2785,7 @@ function washToCutScale() {
 }
 
 function getCardMergeDuration() {
-  return CUT_MERGE_TRAVEL_SECONDS;
+  return CUT_RIFFLE_SECONDS + CUT_SQUARE_SECONDS;
 }
 
 function getCutMergeDuration() {
@@ -2787,6 +2794,11 @@ function getCutMergeDuration() {
     CUT_TWO_WAY_HOLD_SECONDS +
     getCardMergeDuration()
   );
+}
+
+/** Delay between one card's drop and the next, so 78 cards fill the riffle's time. */
+function riffleStagger(count: number) {
+  return count > 1 ? (CUT_RIFFLE_SECONDS - CUT_RIFFLE_CARD_SECONDS) / (count - 1) : 0;
 }
 
 function RitualDeckInterleave({
@@ -2803,36 +2815,45 @@ function RitualDeckInterleave({
   onComplete: () => void;
 }) {
   // CutStep owns the hidden order. The full set of visible cards mirrors that
-  // order so a 78-card deck really is shown as two 39-card halves before every
-  // card crosses the gap and joins the final stack.
+  // order: a 78-card deck is shown as two 39-card halves, then riffled back
+  // together one card at a time, alternating sides from the bottom of each half
+  // as a real riffle does, and finally squared into one deck.
   const count = reduceMotion ? 1 : Math.max(1, cardCount);
   const cardsPerHalf = Math.ceil(count / 2);
   const lastIndex = count - 1;
   const mergeDuration = getCardMergeDuration();
-  const [mergeStage, setMergeStage] = useState<"split" | "hold" | "merge">(
-    reduceMotion ? "merge" : "split",
+  const stagger = riffleStagger(count);
+  const [mergeStage, setMergeStage] = useState<"split" | "hold" | "riffle" | "square">(
+    reduceMotion ? "square" : "split",
   );
+  const merging = mergeStage === "riffle" || mergeStage === "square";
 
   useEffect(() => {
     if (settled || reduceMotion) {
-      setMergeStage("merge");
+      setMergeStage("square");
       return undefined;
     }
 
     setMergeStage("split");
-    const holdTimer = window.setTimeout(
-      () => setMergeStage("hold"),
-      CUT_TWO_WAY_SPLIT_SECONDS * 1000,
-    );
-    const mergeTimer = window.setTimeout(
-      () => setMergeStage("merge"),
-      (CUT_TWO_WAY_SPLIT_SECONDS + CUT_TWO_WAY_HOLD_SECONDS) * 1000,
-    );
-    return () => {
-      window.clearTimeout(holdTimer);
-      window.clearTimeout(mergeTimer);
-    };
+    const holdAt = CUT_TWO_WAY_SPLIT_SECONDS * 1000;
+    const riffleAt = holdAt + CUT_TWO_WAY_HOLD_SECONDS * 1000;
+    const timers = [
+      window.setTimeout(() => setMergeStage("hold"), holdAt),
+      window.setTimeout(() => setMergeStage("riffle"), riffleAt),
+    ];
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
   }, [reduceMotion, settled]);
+
+  // The last card's landing squares the deck. If its animation event is lost, the
+  // deck is squared shortly after the riffle should have ended.
+  useEffect(() => {
+    if (mergeStage !== "riffle") return undefined;
+    const fallback = window.setTimeout(
+      () => setMergeStage((stage) => (stage === "riffle" ? "square" : stage)),
+      CUT_RIFFLE_SECONDS * 1000 + 600,
+    );
+    return () => window.clearTimeout(fallback);
+  }, [mergeStage]);
 
   return (
     <>
@@ -2845,16 +2866,16 @@ function RitualDeckInterleave({
               data-cut-half={side === -1 ? "left" : "right"}
               className="absolute left-1/2 top-[52%] h-[190px] w-[124px] -translate-x-1/2 -translate-y-1/2 rounded-[42px] bg-[radial-gradient(ellipse_at_center,rgba(255,239,210,0.28),rgba(192,154,224,0.12)_48%,transparent_72%)] blur-[2px]"
               initial={{ x: 0, opacity: 0, scale: 0.82 }}
-              animate={mergeStage === "merge"
+              animate={merging
                 ? {
                     x: side * 112,
                     opacity: [0.58, 0.52, 0.26, 0],
                     scale: [1.04, 1, 0.9, 0.82],
                   }
                 : { x: side * 112, opacity: 0.58, scale: 1.04 }}
-              transition={mergeStage === "merge"
+              transition={merging
                 ? {
-                    duration: mergeDuration,
+                    duration: CUT_RIFFLE_SECONDS,
                     times: [0, 0.28, 0.76, 1],
                     ease: "easeInOut",
                   }
@@ -2870,13 +2891,13 @@ function RitualDeckInterleave({
             data-cut-merge-glow
             className="absolute left-1/2 top-[52%] h-[190px] w-[118px] -translate-x-1/2 -translate-y-1/2 rounded-[42px] border border-[#f6dfaa]/35 bg-[radial-gradient(ellipse_at_center,rgba(255,245,224,0.48),rgba(215,189,124,0.14)_48%,transparent_74%)] blur-[1px]"
             initial={{ opacity: 0, scale: 0.72 }}
-            animate={mergeStage === "merge"
+            animate={merging
               ? {
                   opacity: [0, 0.18, 0.72, 0.38],
                   scale: [0.72, 0.9, 1.08, 1],
                 }
               : { opacity: 0, scale: 0.72 }}
-            transition={mergeStage === "merge"
+            transition={merging
               ? {
                   duration: mergeDuration,
                   times: [0, 0.28, 0.82, 1],
@@ -2888,12 +2909,16 @@ function RitualDeckInterleave({
         </>
       ) : null}
       {Array.from({ length: count }, (_, index) => {
+        // Even indices come from the left half and odd ones from the right. Index 0
+        // is the bottom card of the left half, so the riffle drops bottom cards first
+        // and each new card lands on top of the growing stack.
         const side = index % 2 === 0 ? -1 : 1;
         const sourceDepth = Math.floor(index / 2);
         const depthFromTop = Math.max(0, cardsPerHalf - 1 - sourceDepth);
         const sourceX = side * (112 + depthFromTop * 0.06);
         const sourceY = depthFromTop * 0.18;
         const restingY = Math.max(0, lastIndex - index) * 0.075;
+        const rest = { x: 0, y: restingY, rotate: 0, scale: 1, opacity: 1 };
         return (
           <div key={index} aria-hidden="true"
             className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2"
@@ -2901,35 +2926,39 @@ function RitualDeckInterleave({
             <motion.div
               data-shuffle-card={index}
               className={`relative ${CUT_CARD_SIZE} transform-gpu will-change-transform`}
-              initial={settled || reduceMotion
-                ? { x: 0, y: restingY, rotate: 0, scale: 1, opacity: 1 }
-                : { x: 0, y: restingY, rotate: 0, scale: 1, opacity: 1 }}
-              animate={settled || reduceMotion
-                ? { x: 0, y: restingY, rotate: 0, scale: 1, opacity: 1 }
-                : mergeStage === "merge"
+              initial={rest}
+              animate={settled || reduceMotion || mergeStage === "square"
+                ? rest
+                : mergeStage === "riffle"
                   ? {
-                      // Both 39-card halves travel straight inward together.
-                      // There is no stagger, arc, wave, or dropping motion.
-                      x: 0,
-                      y: restingY,
-                      rotate: 0,
+                      // A short lift and a lean toward the centre, then the card
+                      // settles a few pixels to its own side of the stack.
+                      x: [sourceX, sourceX * 0.42, side * CUT_RIFFLE_JOG_PX],
+                      y: [sourceY, sourceY - 12, restingY],
+                      rotate: [side * 6, side * 3, side * 1.4],
                       scale: 1,
                       opacity: 1,
                     }
                   : { x: sourceX, y: sourceY, rotate: side * 6, scale: 1, opacity: 1 }}
               transition={settled || reduceMotion
                 ? { duration: reduceMotion ? 0.05 : 0.16 }
-                : mergeStage === "merge"
+                : mergeStage === "riffle"
                   ? {
-                    duration: mergeDuration,
-                    ease: [0.22, 0.76, 0.16, 1],
-                  }
-                  : {
-                      duration: mergeStage === "split" ? CUT_TWO_WAY_SPLIT_SECONDS : 0.08,
-                      ease: [0.22, 0.76, 0.16, 1],
-                    }}
+                      duration: CUT_RIFFLE_CARD_SECONDS,
+                      delay: index * stagger,
+                      times: [0, 0.4, 1],
+                      ease: "easeOut",
+                    }
+                  : mergeStage === "square"
+                    ? { duration: CUT_SQUARE_SECONDS, ease: [0.22, 0.76, 0.16, 1] }
+                    : {
+                        duration: mergeStage === "split" ? CUT_TWO_WAY_SPLIT_SECONDS : 0.08,
+                        ease: [0.22, 0.76, 0.16, 1],
+                      }}
               onAnimationComplete={() => {
-                if (!settled && mergeStage === "merge" && index === count - 1) onComplete();
+                if (settled || index !== count - 1) return;
+                if (mergeStage === "riffle") setMergeStage("square");
+                else if (mergeStage === "square") onComplete();
               }}>
               <RitualBackCard cardBackId={cardBackId} className="h-full w-full" />
             </motion.div>
@@ -3000,7 +3029,7 @@ function CutStep({
 
   useEffect(() => {
     hapticPulse([8, 28, 9]);
-    const watchdog = window.setTimeout(finishCut, reduceMotion ? 700 : 8_000);
+    const watchdog = window.setTimeout(finishCut, reduceMotion ? 700 : 11_000);
     return () => window.clearTimeout(watchdog);
   }, [finalDeck, reduceMotion]);
 
@@ -3011,7 +3040,9 @@ function CutStep({
           splitting: 620,
           showing: 260,
           stacking: 720,
-          shuffling: getCutMergeDuration() * 1000 + 360,
+          // Generous: the riffle squares on its last card's landing, which a busy
+          // frame can delay; this only recovers a shuffle whose events were lost.
+          shuffling: getCutMergeDuration() * 1000 + 1_400,
           settled: 360,
         }[phase];
     const recovery = window.setTimeout(() => {

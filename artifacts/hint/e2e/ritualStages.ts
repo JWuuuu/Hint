@@ -40,5 +40,5 @@ export async function watchRitualStages(page: Page) {
 export async function expectRitualStagesInOrder(page: Page) {
   await expect.poll(() => page.evaluate(() => (window as unknown as { __ritualStages?: string[] }).__ritualStages ?? []),
     { timeout: 20_000, message: "Ritual stages in the order they appeared" }).toEqual(STAGES);
-  await expect(page.getByRole("heading", { name: "Pick Cards", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pick Cards", exact: true })).toBeVisible({ timeout: 20_000 });
 }
