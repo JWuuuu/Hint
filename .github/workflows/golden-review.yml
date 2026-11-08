@@ -1,0 +1,42 @@
+# Review-only workflow, never merged. It lives on golden-review/* branches. It repeats the
+# merge-receipt "printer frame sample" test in WebKit, which failed twice on rc-preview/2026-11-07
+# (the Home daily reveal did not close on Escape) but passed on 82e8174, on three trees:
+# 82e8174, this branch (rc-preview a2ce865), and this branch without the Today tiles'
+# container-type rule (dfa3ef5).
+name: Golden review
+on:
+  push:
+    branches: ['golden-review/**']
+permissions:
+  contents: read
+jobs:
+  reveal:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tree: [base-82e8174, combined, combined-no-container]
+    env:
+      API_PROXY_TARGET: http://127.0.0.1:1
+      HINT_E2E_PORT: '5188'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.tree == 'base-82e8174' && '82e8174a15ca62d872b59fda834533b928417e7c' || github.sha }}
+      - name: Drop the Today tiles' container-type rule
+        if: matrix.tree == 'combined-no-container'
+        run: |
+          sed -i '/^\.hint-home-spaces-grid > \* { container-type: inline-size; }$/d' artifacts/hint/src/modules/home/components/home-dashboard.css
+          git diff --stat
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build:web
+      - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+      - name: Repeat the printer frame sample 5 times
+        run: pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=iphone-17-pro-max --retries=0 --repeat-each=5 -g "printer frame sample"
