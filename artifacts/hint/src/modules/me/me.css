@@ -364,6 +364,21 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
 .me-form input:focus-visible { outline: 2px solid var(--me-accent); outline-offset: 2px; }
 .me-form form > div:last-child > button { font-size: .8125rem; line-height: 1.6; letter-spacing: .04em; padding: .85rem 1rem; min-height: 48px; height: auto; }
 
+/* Polish, Nov 7: titles wrap into even lines, body text avoids a lone last
+   word, list dates line up, and pill buttons and letters give a small press. */
+.me-heading h1, .me-envelope-name, .me-constellation-name, .me-section-heading h2, .me-kept-head h2,
+.me-letter-title, .me-invite-title, .me-ps-lead { text-wrap: balance; }
+.me-address-note, .me-envelope-prompt, .me-letter-cards, .me-invite-body, .me-signoff p, .me-beta-note,
+.me-setting-label > span > span, .me-row-copy > span, .me-disclosure-summary > span > span, .me-error p { text-wrap: pretty; }
+.me-letter-date { font-variant-numeric: tabular-nums; }
+.me-page :is(.me-primary, .me-secondary, .me-theme-button, .me-letter) {
+  transition-property: background-color, border-color, opacity, transform; transition-duration: 120ms; transition-timing-function: ease-out;
+}
+.me-primary:active, .me-secondary:active, .me-theme-button:active { transform: scale(.97); }
+.me-letter:active { transform: scale(.985); }
+.me-page[data-reduced-motion="true"] :is(.me-primary, .me-secondary, .me-theme-button, .me-letter):active { transform: none; }
+@media (prefers-reduced-motion: reduce) { .me-page :is(.me-primary, .me-secondary, .me-theme-button, .me-letter):active { transform: none; } }
+
 .me-page[data-reduced-motion="true"] *, .me-page[data-motion-paused="true"] * { animation: none !important; transition: none !important; }
 @media (prefers-reduced-motion: reduce) { .me-page * { animation: none !important; transition: none !important; } }
 @container (max-width: 24rem) {
