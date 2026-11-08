@@ -271,11 +271,11 @@ export function ReadingReveal({
                 />
               </motion.div>
               <div className="grid justify-items-center gap-1.5">
-                <p className="max-w-[7rem] rounded-[14px] border border-[#7b5b91]/14 bg-white/52 px-3 py-1.5 text-center font-sans text-[10px] font-bold uppercase leading-tight tracking-[0.14em] text-[#6d5d70] shadow-[0_6px_18px_rgba(83,65,92,0.06)] [overflow-wrap:anywhere]">
+                <p className="max-w-[7rem] rounded-[14px] border border-[#7b5b91]/14 bg-white/52 px-3 py-1.5 text-center font-sans text-[10px] font-bold uppercase leading-tight tracking-[0.14em] text-[#6d5d70] text-balance shadow-[0_6px_18px_rgba(83,65,92,0.06)] [overflow-wrap:anywhere]">
                   {label}
                 </p>
                 {revealed && (
-                  <p className="max-w-[7rem] text-center font-serif text-[15px] leading-tight text-[#332d45] [overflow-wrap:anywhere]">
+                  <p className="max-w-[7rem] text-center font-serif text-[15px] leading-tight text-[#332d45] text-balance [overflow-wrap:anywhere]">
                     {card.name}
                   </p>
                 )}
