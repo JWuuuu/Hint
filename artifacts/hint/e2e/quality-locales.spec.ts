@@ -55,7 +55,8 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) for (const theme of ["brigh
       });
       expect(await page.locator(".hint-app-scroll").last().evaluate(element => element.scrollHeight - element.scrollTop - element.clientHeight)).toBeLessThanOrEqual(2);
       if (locale !== "en" && route.includes("astrology")) await expect(page.locator("body")).not.toContainText("A sign is one part of a chart");
-      await page.screenshot({ path: info.outputPath(`${route.split("/").pop()}-bottom.png`) });
+      // Artifact uploads reject "?" and other URL characters in file names.
+      await page.screenshot({ path: info.outputPath(`${route.split("/").pop()!.replace(/[^a-z0-9-]/gi, "-")}-bottom.png`) });
     }
     expect(errors).toEqual([]);
   });

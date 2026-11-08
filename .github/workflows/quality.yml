@@ -11,6 +11,11 @@ on:
         default: false
 permissions:
   contents: read
+# A new push to a pull request cancels that PR's superseded run. Every other run
+# (main, manual, and calls from deploy or iOS workflows) gets its own group.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -59,19 +64,66 @@ jobs:
         run: pnpm run build:web
       - if: ${{ inputs.mobile }}
         run: pnpm --filter @workspace/hint exec node scripts/prepare-universal-links.mjs
-      - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
-      - run: pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts
       - run: pnpm --filter @workspace/hint run check:ios:source
       - name: Record the verified source revision
         run: git rev-parse HEAD > artifacts/hint/dist/verified-source.txt
+      # The exact build the browser jobs test; republished as verified-web only if they all pass.
       - uses: actions/upload-artifact@v4
         with:
-          name: verified-web-${{ github.sha }}
+          name: candidate-web-${{ github.sha }}
           path: artifacts/hint/dist/
           if-no-files-found: error
           include-hidden-files: true
+          retention-days: 3
+
+  # One WebKit job per phone project, in parallel, against the build above.
+  e2e:
+    needs: verify
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [iphone-17-pro-max, iphone-se]
+    env:
+      API_PROXY_TARGET: http://127.0.0.1:1
+      HINT_E2E_PORT: '5188'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: candidate-web-${{ github.sha }}
+          path: artifacts/hint/dist/
+      - run: pnpm --filter @workspace/hint exec playwright install --with-deps webkit
+      - run: pnpm --filter @workspace/hint exec playwright test --config playwright.production.config.ts --project=${{ matrix.project }}
+      - name: Summarize first attempts, retries and skips
+        if: always()
+        run: node artifacts/hint/scripts/e2e-summary.mjs artifacts/hint/test-results/production-results.json "WebKit e2e (${{ matrix.project }})"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: candidate-test-evidence-${{ github.sha }}
+          name: candidate-test-evidence-${{ github.sha }}-${{ matrix.project }}
           path: artifacts/hint/test-results/
+
+  # Publish the tested build under the name downstream workflows expect.
+  publish:
+    needs: [verify, e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: candidate-web-${{ github.sha }}
+          path: dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-web-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          include-hidden-files: true

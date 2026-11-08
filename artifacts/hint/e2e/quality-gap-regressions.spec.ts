@@ -128,11 +128,12 @@ for (const [language, reads, daily, questions, open] of historyLocales) {
     }, { owner, longQuestion, timestamp });
     await page.goto("/app/readings?hintPreview=embedded");
     await page.evaluate(() => document.fonts.ready);
-    const stats = page.locator(".grid.grid-cols-3").filter({ has: page.getByText(reads, { exact: true }) });
+    // The History redesign shows the counters as one ledger: <dt> label, <dd> count.
+    const stats = page.locator(".hr-ledger");
     for (const label of [reads, daily, questions]) {
-      const caption = stats.getByText(label, { exact: true });
+      const caption = stats.locator("dt").filter({ hasText: label });
       await expect(caption).toBeVisible();
-      await expect(caption.locator("..").locator("p").first()).toHaveText("1");
+      await expect(caption.locator("..").locator("dd")).toHaveText("1");
       await containedText(caption);
     }
     expect(longQuestion.length).toBeGreaterThan(160);
@@ -148,7 +149,8 @@ for (const [language, reads, daily, questions, open] of historyLocales) {
     await aboveNavigation(page, action);
     await action.click();
     await expect(page).toHaveURL(/\/app\/readings\/long-quality-question$/);
-    const fullQuestion = page.locator("p").filter({ hasText: longQuestion });
+    // The redesigned detail page lists the question in its details (<dd>), not a paragraph.
+    const fullQuestion = page.getByText(longQuestion, { exact: true });
     await expect(fullQuestion).toContainText(longQuestion);
     await containedText(fullQuestion);
     if (language === "es") await capturePositions(page, info, "history-es-question-detail");

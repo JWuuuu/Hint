@@ -96,6 +96,10 @@ async function capturePositions(page: Page, info: TestInfo, label: string) {
 
 async function expandDeviceAndHelp(page: Page, language: Language) {
   const copy = ME_COPY[language];
+  // Device plumbing (local profiles, profile access, beta note) lives one step away from the personal page.
+  const storage = page.getByTestId("button-open-storage");
+  await reachable(storage); await storage.click();
+  await expect(page.locator("#me-storage-heading")).toHaveText(copy.device);
   const localProfiles = page.locator(".me-device-content > details").filter({ has: page.locator("summary").filter({ hasText: QUALITY_COPY[language]["quality.localProfiles"] }) });
   await reachable(localProfiles.locator("summary"));
   await localProfiles.locator("summary").click();
@@ -108,19 +112,26 @@ async function expandDeviceAndHelp(page: Page, language: Language) {
     const link = access.getByRole("link", { name });
     await reachable(link); await expect(link).toHaveAttribute("href", new RegExp(href.replace("?", "\\?") + "$"));
   }
+  const back = page.locator(".me-back");
+  await reachable(back); await back.click();
+  await expect(page.locator(".me-heading h1")).toHaveText(copy.title);
+
   const history = page.locator(".me-data-disclosure");
   await expect(history).not.toHaveAttribute("open", "");
   await reachable(history.locator("summary")); await history.locator("summary").click();
   const clear = page.getByTestId("button-clear-history");
   await reachable(clear); await expect(clear).toContainText(copy.clearDetail);
 
+  // Help links are always listed now; there is no disclosure to open.
   const help = page.locator(".me-help");
-  await reachable(help.locator("summary")); await help.locator("summary").click();
   for (const route of ["about", "contact", "privacy", "terms", "disclaimer"]) {
     const link = help.locator(`a[href$="/${route}"]`);
-    await reachable(link); await expect(link.locator("strong")).not.toBeEmpty();
+    await reachable(link); await expect(link).not.toBeEmpty();
   }
 }
+
+/** The profile's save state now sits on the device row in Settings. */
+const saveStatus = (page: Page) => page.locator('[data-testid="button-open-storage"] [role="status"]');
 
 // Ten locale/theme definitions run on both configured phone projects: 20 combinations.
 for (const language of languages) for (const theme of ["bright", "dark"]) {
@@ -132,13 +143,17 @@ for (const language of languages) for (const theme of ["bright", "dark"]) {
     await page.goto("/app/me?hintPreview=embedded");
     await expect(page).toHaveURL(/\/app\/profile/);
     await expect(page.locator(".me-heading h1")).toHaveText(copy.title);
-    await expect(page.locator(".me-identity-name")).toHaveText(profile.name);
-    await expect(page.locator(".me-birth-summary dd").last()).toHaveText(profile.birthPlace);
+    await expect(page.locator("#me-envelope-name")).toHaveText(profile.name);
+    await expect(page.locator(".me-address span").last()).toHaveText(profile.birthPlace);
     await settle(page);
     await capturePositions(page, info, `me-${language}-${theme}`);
     await reachable(page.getByTestId("button-edit-profile"));
-    for (const [space, href] of [["chart", "/app/astrology?tab=chart"], ["history", "/app/readings"], ["collection", "/app/collection"]]) {
-      const link = page.locator(`.me-personal-link[data-space="${space}"]`);
+    // The envelope opens the chart; with nothing kept yet, Me offers one invitation
+    // to the first daily card instead of empty History and Collection links.
+    for (const [link, href] of [
+      [page.locator(".me-envelope-actions a"), "/app/astrology?tab=chart"],
+      [page.locator(".me-invite a"), "/app/daily"],
+    ] as const) {
       await reachable(link); await expect(link).toHaveAttribute("href", new RegExp(href.replace("?", "\\?") + "$"));
     }
 
@@ -170,7 +185,7 @@ for (const language of languages) for (const theme of ["bright", "dark"]) {
     await capturePositions(page, info, `me-${language}-${theme}-expanded`);
     // These reversible settings survive a fresh mount without a profile/API mutation.
     await page.reload();
-    await expect(page.locator(".me-identity-name")).toHaveText(profile.name);
+    await expect(page.locator("#me-envelope-name")).toHaveText(profile.name);
     await expect(page.locator(".me-page")).toHaveAttribute("data-reduced-motion", "true");
     expect(await page.evaluate(() => localStorage.getItem("hint-language"))).toBe(language);
     expect(errors).toEqual([]);
@@ -215,17 +230,17 @@ test("Me editor retains failed local saves, retries, and returns focus on cancel
 
   await page.evaluate(() => (window as any).__restoreMeStorage());
   await save.click();
-  await expect(page.locator(".me-identity-name")).toHaveText("Mira — a retained fictional edit");
-  await expect(page.locator(".me-save-status")).toHaveAttribute("data-status", "synced");
+  await expect(page.locator("#me-envelope-name")).toHaveText("Mira — a retained fictional edit");
+  await expect(saveStatus(page)).toHaveAttribute("data-status", "synced");
   await expect(edit).toBeFocused(); expect(saves).toBe(1);
   const saved = await page.evaluate(owner => JSON.parse(localStorage.getItem(`hint_profile_v2_${owner}`)!), owner);
   expect(saved.birthTime).toBeNull(); expect(saved.latitude).toBeNull(); expect(saved.longitude).toBeNull(); expect(saved.timezone).toBeNull();
   await edit.click(); await name.fill("Discard this unsaved edit");
   const cancel = page.getByRole("button", { name: "Cancel", exact: true });
   await reachable(cancel); await cancel.click();
-  await expect(edit).toBeFocused(); await expect(page.locator(".me-identity-name")).toHaveText("Mira — a retained fictional edit");
+  await expect(edit).toBeFocused(); await expect(page.locator("#me-envelope-name")).toHaveText("Mira — a retained fictional edit");
   expect(saves).toBe(1);
-  await page.reload(); await expect(page.locator(".me-identity-name")).toHaveText("Mira — a retained fictional edit");
+  await page.reload(); await expect(page.locator("#me-envelope-name")).toHaveText("Mira — a retained fictional edit");
   await edit.click(); await expect(page.getByTestId("input-birthtime")).toHaveValue("");
   await page.getByRole("button", { name: ME_COPY.en.back, exact: true }).click(); await expect(edit).toBeFocused();
 });
@@ -237,12 +252,12 @@ test("Me editor identifies an offline save as local and keeps it after reload", 
   await page.getByTestId("button-edit-profile").click();
   await page.getByTestId("input-name").fill("Mira — locally saved fictional reader");
   await page.getByTestId("button-save-profile").click();
-  await expect(page.locator(".me-identity-name")).toHaveText("Mira — locally saved fictional reader");
-  await expect(page.locator(".me-save-status")).toHaveAttribute("data-status", "local");
-  await expect(page.locator(".me-save-status")).toHaveText(QUALITY_COPY.en["quality.savedLocal"]);
+  await expect(page.locator("#me-envelope-name")).toHaveText("Mira — locally saved fictional reader");
+  await expect(saveStatus(page)).toHaveAttribute("data-status", "local");
+  await expect(saveStatus(page)).toHaveText(QUALITY_COPY.en["quality.savedLocal"]);
   await page.reload();
-  await expect(page.locator(".me-identity-name")).toHaveText("Mira — locally saved fictional reader");
-  await expect(page.locator(".me-save-status")).toHaveAttribute("data-status", "local");
+  await expect(page.locator("#me-envelope-name")).toHaveText("Mira — locally saved fictional reader");
+  await expect(saveStatus(page)).toHaveAttribute("data-status", "local");
 });
 
 test("Me Spanish SE 200% text retains long names, places and expanded details", async ({ page }, info) => {
@@ -252,7 +267,7 @@ test("Me Spanish SE 200% text retains long names, places and expanded details", 
   const longPlace = "San Cristóbal de las Casas, Chiapas — https://fictional.example/" + "longbirthplace".repeat(6);
   await seed(page, "es", "bright", { ...profile, name: longName, birthPlace: longPlace });
   await page.goto("/app/profile?hintPreview=embedded");
-  await expect(page.locator(".me-identity-name")).toHaveText(longName); await settle(page);
+  await expect(page.locator("#me-envelope-name")).toHaveText(longName); await settle(page);
   // Text-only web reflow: this is not a substitute for physical iOS Dynamic Type.
   await page.locator(".me-page, [data-app-tabbar]").evaluateAll(roots => {
     const elements = roots.flatMap(root => [...root.querySelectorAll<HTMLElement>("p,h1,h2,h3,strong,span,summary,button,a,dt,dd,input")]).filter(element => !element.closest("svg"));
@@ -265,8 +280,8 @@ test("Me Spanish SE 200% text retains long names, places and expanded details", 
   await expandDeviceAndHelp(page, "es");
   await assertContentWidth(page);
   await capturePositions(page, info, "me-es-200text-expanded");
-  await expect(page.locator(".me-identity-name")).toHaveText(longName);
-  await expect(page.locator(".me-birth-summary dd").last()).toHaveText(longPlace);
+  await expect(page.locator("#me-envelope-name")).toHaveText(longName);
+  await expect(page.locator(".me-address span").last()).toHaveText(longPlace);
 });
 
 for (const reopen of [false, true]) {
@@ -292,7 +307,7 @@ for (const reopen of [false, true]) {
     await expect(save).toBeDisabled();
     if (reopen) {
       await page.getByRole("button", { name: ME_COPY.en.back, exact: true }).click();
-      await expect(page.locator(".me-identity-name")).toHaveText(firstName);
+      await expect(page.locator("#me-envelope-name")).toHaveText(firstName);
       await edit.click();
       await expect(page.locator("#me-edit-heading")).toBeFocused();
       await expect(name).toHaveValue(firstName);
@@ -307,10 +322,10 @@ for (const reopen of [false, true]) {
     expect(submittedNames).toEqual([firstName]);
     expect(await page.evaluate(owner => JSON.parse(localStorage.getItem(`hint_profile_v2_${owner}`)!).name, owner)).toBe(firstName);
     await save.click();
-    await expect(page.locator(".me-identity-name")).toHaveText(newerName);
-    await expect(page.locator(".me-save-status")).toHaveAttribute("data-status", "synced");
+    await expect(page.locator("#me-envelope-name")).toHaveText(newerName);
+    await expect(saveStatus(page)).toHaveAttribute("data-status", "synced");
     await expect(edit).toBeFocused();
     expect(submittedNames).toEqual([firstName, newerName]);
-    await page.reload(); await expect(page.locator(".me-identity-name")).toHaveText(newerName);
+    await page.reload(); await expect(page.locator("#me-envelope-name")).toHaveText(newerName);
   });
 }
