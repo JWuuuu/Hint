@@ -1623,6 +1623,9 @@ function QuestionStep({
               const image =
                 getTarotCardImage(card.imageCardId, "hint-card-2") ??
                 getTarotCardImage(card.imageCardId, "hint-classic");
+              // A top-aligned column: buttons centre their content vertically, so with a
+              // minimum height the prompt would sit a fraction of a pixel lower than it
+              // did in the fixed-height card. At large text the card still grows.
               return (
                 <button
                   key={card.category}
@@ -1633,7 +1636,7 @@ function QuestionStep({
                     setQuestion(localizedQuestion);
                     onPromptSelect(localizedQuestion);
                   }}
-                  className={`relative min-h-[96px] overflow-hidden rounded-[18px] border bg-white/48 px-3 pb-0.5 pt-3 text-left shadow-[0_12px_28px_rgba(104,82,111,0.08)] backdrop-blur-xl transition duration-200 active:scale-[0.98] ${
+                  className={`relative flex min-h-[96px] flex-col justify-start overflow-hidden rounded-[18px] border bg-white/48 px-3 pb-0.5 pt-3 text-left shadow-[0_12px_28px_rgba(104,82,111,0.08)] backdrop-blur-xl transition duration-200 active:scale-[0.98] ${
                     pickedPrompt === card.category
                       ? "border-[#b997c9] bg-white/68 shadow-[0_16px_36px_rgba(123,91,145,0.16)]"
                       : "border-white/68"
