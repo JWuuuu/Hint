@@ -17,8 +17,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
+  # Pinned to ubuntu-24.04: on ubuntu-26.04 (what ubuntu-latest became in Nov 2026) WebKit exports
+  # blank Tarot receipts, even on code that passed on 24.04. Move on once WebKit on 26.04 renders them.
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:18
@@ -79,7 +81,7 @@ jobs:
   # One WebKit job per phone project, in parallel, against the build above.
   e2e:
     needs: verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -115,7 +117,7 @@ jobs:
   # Publish the tested build under the name downstream workflows expect.
   publish:
     needs: [verify, e2e]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/download-artifact@v4
         with:
