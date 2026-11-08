@@ -282,9 +282,11 @@ function AppNavigationChrome({
           background: "var(--hint-dock-veil)",
         }}
       />
+      {/* The dock's icons and labels have fixed pixel sizes, so its spacing does too:
+          in rem it doubled at 200% text and left "History" too little room. */}
       <div
         ref={dockRef}
-        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid min-h-[64px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-1 overflow-visible rounded-[28px] border p-1.5"
+        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid min-h-[64px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-[4px] overflow-visible rounded-[28px] border p-[6px]"
         data-reference-home={referenceHome ? "true" : "false"}
         style={{
           background: chromeSurface,
@@ -367,7 +369,7 @@ function AppTab({
       data-featured={featured ? "true" : "false"}
       onPointerDown={() => triggerFeedback(featured ? "select" : "tap")}
       className={[
-        "hint-app-tab hint-pressable hint-tap-sparkle relative flex min-w-0 flex-col items-center justify-center px-1 text-center transition hover:-translate-y-0.5 active:scale-[0.98]",
+        "hint-app-tab hint-pressable hint-tap-sparkle relative flex min-w-0 flex-col items-center justify-center px-[4px] text-center transition hover:-translate-y-0.5 active:scale-[0.98]",
         featured ? "min-h-[50px] overflow-visible rounded-[26px]" : "min-h-[50px] gap-[3px] rounded-[26px] py-1",
       ].join(" ")}
       style={{
