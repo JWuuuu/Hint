@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   receipt:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       API_PROXY_TARGET: http://127.0.0.1:1
       HINT_E2E_PORT: '5188'
