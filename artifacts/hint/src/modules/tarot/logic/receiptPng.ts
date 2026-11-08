@@ -36,6 +36,8 @@ export function createReceiptPng(canvas: HTMLCanvasElement, signal?: AbortSignal
       };
       worker.onerror = event => { event.preventDefault(); finish(new Error("Receipt export failed")); };
       worker.onmessageerror = () => finish(new Error("Receipt export failed"));
+      // Experiment (review branch only): read one pixel first so pending drawing is flushed.
+      canvas.getContext("2d")?.getImageData(0, 0, 1, 1);
       void createImageBitmap(canvas).then(bitmap => {
         if (settled) { bitmap.close(); return; }
         try { worker!.postMessage({ bitmap }, [bitmap]); }
