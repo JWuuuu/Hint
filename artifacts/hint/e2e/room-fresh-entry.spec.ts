@@ -1,4 +1,4 @@
-import { expect, test, type Page, type Locator } from "./fixtures";
+import { appHref, expect, test, type Page, type Locator } from "./fixtures";
 
 async function seed(page: Page) {
   await page.addInitScript(() => {
@@ -19,7 +19,7 @@ async function seed(page: Page) {
 async function leaveHome(page: Page) {
   const home = new URL(page.url()).pathname.endsWith("/ask")
     ? page.getByRole("banner").getByRole("link", { name: "Home", exact: true })
-    : page.getByRole("navigation", { name: "App", exact: true }).locator('a[href="/app"]');
+    : page.getByRole("navigation", { name: "App", exact: true }).locator(`a[href="${appHref("/app")}"]`);
   await home.click();
   const prompt = page.getByRole("dialog", { name: "Leave this space?", exact: true });
   await expect(prompt).toContainText("Saved drafts can be reopened when you choose.");

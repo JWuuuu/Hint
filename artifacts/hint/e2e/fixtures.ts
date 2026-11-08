@@ -1,14 +1,26 @@
 import { test as base, expect } from "@playwright/test";
+import { quarantineReason } from "./quarantine";
 export { expect };
 export type { Page, Route, Locator, TestInfo } from "@playwright/test";
 
+/** The deployed base path (GitHub Pages serves the app under /Hint); empty for root builds. */
+const basePrefix = (process.env.HINT_E2E_BASE_PATH ?? "").replace(/\/$/, "");
+/** An app path as the built app writes it into links: "/app" becomes "/Hint/app" under a base path. */
+export const appHref = (path: string) => `${basePrefix}${path}`;
+
 /** Every browser context is fictional; no test may reach a live API. */
-export const test = base.extend({
+export const test = base.extend<{ quarantine: void }>({
+  // Reported as skipped (fixme) with its reason; see quarantine.ts.
+  quarantine: [async ({}, use, testInfo) => {
+    // HINT_E2E_RUN_QUARANTINED=1 runs quarantined tests anyway, to verify fixes before removing entries.
+    const reason = process.env.HINT_E2E_RUN_QUARANTINED ? undefined : quarantineReason(testInfo.file, testInfo.title, testInfo.project.name);
+    testInfo.fixme(Boolean(reason), reason);
+    await use();
+  }, { auto: true }],
   page: async ({ page }, use) => {
-    const prefix = (process.env.HINT_E2E_BASE_PATH ?? "").replace(/\/$/, "");
-    if (prefix) {
+    if (basePrefix) {
       const goto = page.goto.bind(page);
-      page.goto = (url, options) => goto(url.startsWith("/") && !url.startsWith(`${prefix}/`) ? `${prefix}${url}` : url, options);
+      page.goto = (url, options) => goto(url.startsWith("/") && !url.startsWith(`${basePrefix}/`) ? `${basePrefix}${url}` : url, options);
     }
     await use(page);
   },
