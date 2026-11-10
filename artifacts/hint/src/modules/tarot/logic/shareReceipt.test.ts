@@ -1,7 +1,7 @@
 /** @vitest-environment jsdom */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { buildTarotReceiptModel, shareTarotReceipt } from "./shareReceipt";
+import { buildTarotReceiptModel, shareTarotReceipt, saveTarotReceipt } from "./shareReceipt";
 import type { LocalTarotReading } from "../../readings/localTarotReadings";
 import { TRANSLATIONS, type HintLanguage } from "../../../lib/i18n";
 
@@ -10,7 +10,13 @@ const nativeMocks = vi.hoisted(() => ({
   getUri: vi.fn(),
   deleteFile: vi.fn(),
   share: vi.fn(),
+  requestSavePermission: vi.fn(),
+  saveImage: vi.fn(),
 }));
+vi.mock("../../../lib/mobile/photoLibrary", () => ({ photoLibrary: {
+  requestSavePermission: nativeMocks.requestSavePermission,
+  saveImage: nativeMocks.saveImage,
+} }));
 
 vi.mock("@capacitor/filesystem", () => ({
   Directory: { Cache: "CACHE" },
@@ -55,11 +61,52 @@ beforeEach(() => {
   nativeMocks.getUri.mockResolvedValue({ uri: "file:///receipt/hint-reading.png" });
   nativeMocks.deleteFile.mockResolvedValue(undefined);
   nativeMocks.share.mockResolvedValue(undefined);
+  nativeMocks.requestSavePermission.mockResolvedValue({ granted: true });
+  nativeMocks.saveImage.mockResolvedValue(undefined);
 });
 
 afterEach(() => {
   vi.useRealTimers();
   vi.restoreAllMocks();
+});
+
+describe("Receipt image saving", () => {
+  it("downloads the PNG in browsers without opening the share sheet", async () => {
+    const share = vi.fn(); setWebShare(share, () => true);
+    Object.defineProperty(URL, "createObjectURL", { configurable: true, value: vi.fn(() => "blob:save") });
+    Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
+    const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(function (this: HTMLAnchorElement) {
+      expect(this.download).toBe("receipt.png"); expect(this.href).toBe("blob:save");
+    });
+    vi.useFakeTimers();
+    await expect(saveTarotReceipt(new Blob(["image"]), "receipt.png")).resolves.toBe("downloaded");
+    expect(click).toHaveBeenCalledOnce(); expect(share).not.toHaveBeenCalled();
+    expect(nativeMocks.requestSavePermission).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(30_000); expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:save");
+    expect(document.querySelector('a[download]')).toBeNull();
+  });
+  it("writes the prepared image to Photos only after permission", async () => {
+    setCapacitor(true);
+    await expect(saveTarotReceipt(new Blob([new Uint8Array([1, 2, 3])]), "receipt.png")).resolves.toBe("photos");
+    expect(nativeMocks.requestSavePermission).toHaveBeenCalledOnce();
+    expect(nativeMocks.saveImage).toHaveBeenCalledWith({ base64: "AQID", fileName: "receipt.png" });
+    expect(nativeMocks.share).not.toHaveBeenCalled(); expect(nativeMocks.writeFile).not.toHaveBeenCalled();
+  });
+  it("reports permission denial without writing an image", async () => {
+    setCapacitor(true); nativeMocks.requestSavePermission.mockResolvedValueOnce({ granted: false });
+    await expect(saveTarotReceipt(new Blob(["image"]), "receipt.png")).rejects.toHaveProperty("code", "PHOTO_PERMISSION_DENIED");
+    expect(nativeMocks.saveImage).not.toHaveBeenCalled();
+  });
+  it("does not report a successful save when the native library rejects it", async () => {
+    setCapacitor(true); nativeMocks.saveImage.mockRejectedValueOnce(new Error("storage full"));
+    await expect(saveTarotReceipt(new Blob(["image"]), "receipt.png")).rejects.toThrow("storage full");
+  });
+  it("does not write an image when cancelled during the permission prompt", async () => {
+    setCapacitor(true); const controller = new AbortController();
+    nativeMocks.requestSavePermission.mockImplementationOnce(async () => { controller.abort(); return { granted: true }; });
+    await expect(saveTarotReceipt(new Blob(["image"]), "receipt.png", { signal: controller.signal })).rejects.toHaveProperty("name", "AbortError");
+    expect(nativeMocks.saveImage).not.toHaveBeenCalled();
+  });
 });
 
 describe("Tarot receipt sharing", () => {

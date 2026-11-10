@@ -96,6 +96,9 @@ function interruptTarotStorage() {
 
 beforeEach(() => {
   vi.spyOn(receiptSharing, "createTarotReceiptBlob").mockResolvedValue(new Blob(["fixture receipt"], { type: "image/png" }));
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+    font: "", measureText: (text: string) => ({ width: text.length * 10 }),
+  } as unknown as CanvasRenderingContext2D);
   Object.defineProperty(URL, "createObjectURL", { configurable: true, value: vi.fn(() => "blob:receipt-fixture") });
   Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   nativeLifecycle.listener = null;
@@ -233,7 +236,7 @@ describe("Tarot Room components", () => {
     expect(restored.spreadLabel).toBe("Original spread");
   });
 
-  it.each(["close", "unmount"] as const)("cancels pending receipt preparation on %s and resets privacy on reopening", async (departure) => {
+  it.each(["close", "unmount"] as const)("cancels pending receipt preparation on %s and reopens the public printer", async (departure) => {
     const user = userEvent.setup();
     const card = createHiddenDeck()[0]!;
     const { reading: saved } = saveLocalTarotReading({
@@ -249,6 +252,11 @@ describe("Tarot Room components", () => {
     const view = renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} question={saved.question} archivedReading={saved} archiveOnOpen={false} />);
     await user.click(screen.getByRole("button", { name: "Receive" }));
     const dialog = within(screen.getByRole("dialog", { name: "A letter to keep" }));
+    expect(dialog.queryByRole("checkbox")).toBeNull();
+    expect(dialog.queryByRole("button", { name: "Share receipt" })).toBeNull();
+    const reveal = dialog.getByRole("button", { name: "Tap to reveal" });
+    await waitFor(() => expect((reveal as HTMLButtonElement).disabled).toBe(false));
+    await user.click(reveal);
     const action = dialog.getByRole("button", { name: "Share receipt" });
     fireEvent.click(action);
     fireEvent.click(action);
@@ -269,7 +277,11 @@ describe("Tarot Room components", () => {
       create.mockResolvedValueOnce(new Blob(["new receipt"], { type: "image/png" }));
       await user.click(screen.getByRole("button", { name: "Receive" }));
       const reopened = within(screen.getByRole("dialog", { name: "A letter to keep" }));
-      expect((reopened.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
+      expect(reopened.queryByRole("checkbox")).toBeNull();
+      expect(reopened.queryByRole("button", { name: "Share receipt" })).toBeNull();
+      const invitation = reopened.getByRole("button", { name: "Tap to reveal" });
+      await waitFor(() => expect((invitation as HTMLButtonElement).disabled).toBe(false));
+      await user.click(invitation);
       await waitFor(() => expect((reopened.getByRole("button", { name: "Share receipt" }) as HTMLButtonElement).disabled).toBe(false));
       await user.click(reopened.getByRole("button", { name: "Share receipt" }));
       await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
@@ -383,7 +395,7 @@ describe("Tarot Room components", () => {
     expect(fetch).toHaveBeenCalledOnce();
   });
 
-  it("prints and exports the same private-by-default insight without changing the saved answer", async () => {
+  it("prints and exports public card reflections directly without changing the saved private answer", async () => {
     const user = userEvent.setup();
     const card = createHiddenDeck()[0]!;
     const question = "Should I accept the confidential Northstar offer?";
@@ -398,15 +410,23 @@ describe("Tarot Room components", () => {
     renderWithProviders(<TarotHintReadingChat selectedCards={[card]} spread={SINGLE_SPREAD} archivedReading={saved} archiveOnOpen={false} question={question} />);
     await user.click(screen.getByRole("button", { name: "Receive" }));
     const receipt = within(screen.getByRole("dialog", { name: "A letter to keep" }));
-    const insight = receipt.getByTestId("receipt-insight");
-    expect(insight.textContent).toBe(buildTarotReceiptModel(saved, false, "https://hint.example/download").insight);
+    expect(receipt.queryByRole("checkbox")).toBeNull();
+    const reveal = receipt.getByRole("button", { name: "Tap to reveal" });
+    await waitFor(() => expect((reveal as HTMLButtonElement).disabled).toBe(false));
+    await user.click(reveal);
+    await waitFor(() => expect(receiptSharing.createTarotReceiptBlob).toHaveBeenCalledOnce());
+    const exported = vi.mocked(receiptSharing.createTarotReceiptBlob).mock.calls[0]![0];
+    const expected = buildTarotReceiptModel(saved, false, "https://hint.example/download");
+    expect(exported.personal).toBe(false);
+    expect(exported.question).toBeUndefined();
+    expect(exported.cards).toEqual(expected.cards);
+    expect(exported.insight).toBe(expected.insight);
+    const printedMeaning = receipt.getByTestId("tarot-receipt-paper").querySelector('[data-card-text="meaning"]');
+    expect(printedMeaning?.textContent).toBe(exported.cards[0]!.meaning);
+    expect(receipt.queryByTestId("receipt-insight")).toBeNull();
     expect(receipt.queryByText(/Northstar/)).toBeNull();
     expect(receipt.queryByText(/salary/)).toBeNull();
-    await user.click(receipt.getByRole("checkbox"));
-    expect(receipt.getByTestId("receipt-insight").textContent).toBe(answer);
-    expect(receipt.queryByText(/salary/)).toBeNull();
-    await user.click(receipt.getByRole("checkbox"));
-    expect(receipt.queryByText(/Northstar/)).toBeNull();
+    expect(JSON.stringify(exported)).not.toMatch(/Northstar|salary/);
     expect(getLocalTarotReading(saved.id, saved.anonId)?.shortAnswer).toBe(answer);
   });
 
@@ -865,8 +885,9 @@ describe("Tarot Room components", () => {
 
     await user.click(screen.getByRole("button", { name: "Receive" }));
     expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
-    expect((screen.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
-    expect(screen.getByRole("button", { name: "Share receipt" })).toBeTruthy();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    expect(screen.getByRole("button", { name: "Tap to reveal" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Share receipt" })).toBeNull();
     expect(screen.getByRole("button", { name: "Back to reading" })).toBeTruthy();
     await user.click(screen.getByRole("button", { name: "Back to reading" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());

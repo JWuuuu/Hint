@@ -11,15 +11,20 @@ import * as sharing from "../tarot/logic/shareReceipt";
 import { ReceiptShareDialog, type ReceiptSource } from "./ReceiptShareDialog";
 import { buildDailyReceiptModel } from "./receiptModel";
 import { receiptText } from "./receiptStrings";
+import { setHintThemePreference } from "../../lib/preferences";
 
 beforeEach(() => {
   localStorage.clear(); localStorage.setItem("hint_anon_id", getAnonId());
   vi.stubGlobal("matchMedia", () => ({ matches: true, addEventListener() {}, removeEventListener() {} }));
   vi.stubGlobal("ResizeObserver", class { observe() {} disconnect() {} });
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+    font: "", measureText: (text: string) => ({ width: text.length * 10 }),
+  } as unknown as CanvasRenderingContext2D);
   Object.defineProperty(URL, "createObjectURL", { configurable: true, value: vi.fn(() => "blob:fixture") });
   Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: vi.fn() });
   vi.spyOn(sharing, "createTarotReceiptBlob").mockResolvedValue(new Blob(["png"]));
   vi.spyOn(sharing, "shareTarotReceipt").mockResolvedValue("cancelled");
+  vi.spyOn(sharing, "saveTarotReceipt").mockResolvedValue("downloaded");
 });
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 function source(): ReceiptSource {
@@ -29,38 +34,191 @@ function source(): ReceiptSource {
 function mount(value = source(), onClose = vi.fn()) {
   return render(<LanguageProvider><MotionPolicyProvider><ReceiptShareDialog source={value} onClose={onClose} /></MotionPolicyProvider></LanguageProvider>);
 }
-const shareButton = () => screen.getByRole("button", { name: "Share receipt" }) as HTMLButtonElement;
-const ready = () => waitFor(() => expect(shareButton().disabled).toBe(false));
+const shareButton = () => screen.getByText("Share receipt", { selector: "button" }) as HTMLButtonElement;
+const ready = async () => {
+  await waitFor(() => expect(document.querySelector('.receipt-printer')).toBeTruthy());
+  const invitation = screen.queryByRole("button", { name: "Tap to reveal" });
+  if (invitation) {
+    await waitFor(() => expect((invitation as HTMLButtonElement).disabled).toBe(false));
+    fireEvent.click(invitation);
+  }
+  await waitFor(() => expect(shareButton().disabled).toBe(false));
+};
 
-it("rejects a late public image after private consent changes, keeps all cards, and releases URLs", async () => {
+it("opens directly to the printer with public card reflections and waits for a paper tap", async () => {
+  const view = mount();
+  expect(screen.queryByRole("checkbox")).toBeNull();
+  expect(screen.queryByText("Make this letter yours")).toBeNull();
+  expect(document.querySelector('.receipt-printer')).toBeTruthy();
+  await waitFor(() => expect(sharing.createTarotReceiptBlob).toHaveBeenCalledOnce());
+  const model = vi.mocked(sharing.createTarotReceiptBlob).mock.calls[0][0];
+  expect(model.personal).toBe(false);
+  expect(model.question).toBeUndefined();
+  expect(model.insight).not.toContain("Private answer");
+  expect(JSON.stringify(model)).not.toContain("Private meaning");
+  expect(view.container.ownerDocument.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('idle');
+  expect(screen.getByRole("button", { name: "Tap to reveal" })).toBeTruthy();
+  expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Print again" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Show receipt" })).toBeNull();
+  expect(screen.queryByText("Printing your letter…")).toBeNull();
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-variant')).toBe('tarot');
+  expect(screen.getByTestId("tarot-receipt-paper").querySelectorAll("svg image")).toHaveLength(1);
+  expect(shareButton().disabled).toBe(true);
+  await ready();
+  expect(view.container.ownerDocument.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('complete');
+  expect(screen.queryByRole("button", { name: "Tap to reveal" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+});
+
+it("rejects a late image after appearance changes and keeps personal details out of the new image", async () => {
   let finish!: (value: Blob) => void;
   const create = vi.mocked(sharing.createTarotReceiptBlob).mockReturnValueOnce(new Promise(resolve => { finish = resolve; }));
   const view = mount();
   await waitFor(() => expect(create).toHaveBeenCalledOnce());
   const firstSignal = create.mock.calls[0][1]!.signal!;
-  fireEvent.click(screen.getByRole("checkbox"));
+  act(() => setHintThemePreference("bright"));
   await ready();
   expect(firstSignal.aborted).toBe(true);
-  const privateModel = create.mock.calls[1][0];
-  expect(privateModel.question).toBe("Private question");
-  expect(privateModel.insight).toBe("Private answer");
-  const privateBlob = await create.mock.results[1].value;
-  await act(async () => finish(new Blob(["late public"])));
+  const currentModel = create.mock.calls[1][0];
+  expect(currentModel.personal).toBe(false);
+  expect(currentModel.question).toBeUndefined();
+  expect(currentModel.insight).not.toContain("Private answer");
+  const currentBlob = await create.mock.results[1].value;
+  await act(async () => finish(new Blob(["late image"])));
   fireEvent.click(shareButton());
-  await waitFor(() => expect(sharing.shareTarotReceipt).toHaveBeenCalledWith(privateBlob, expect.any(String), expect.any(Object)));
-  view.unmount(); expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:fixture");
+  await waitFor(() => expect(sharing.shareTarotReceipt).toHaveBeenCalledWith(currentBlob, expect.any(String), expect.any(Object)));
+  view.unmount(); expect(URL.createObjectURL).not.toHaveBeenCalled();
 });
-it("blocks double share and freezes consent only during external sharing; cancellation permits retry", async () => {
+it.each(["tarot", "daily"] as const)("shows Skip only while %s is printing, including after replay", async kind => {
+  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener() {}, removeEventListener() {} }));
+  mount(kind === "daily" ? { kind, report: getDailyReport({ anonId: getAnonId(), language: "en" }) } : source());
+  expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+  await waitFor(() => expect((screen.getByRole("button", { name: "Tap to reveal" }) as HTMLButtonElement).disabled).toBe(false));
+  expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Tap to reveal" }));
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('warming');
+  fireEvent.click(screen.getByRole("button", { name: "Skip" }));
+  await waitFor(() => expect(shareButton().disabled).toBe(false));
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('complete');
+  expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Tap to reveal" })).toBeNull();
+  expect(sharing.shareTarotReceipt).not.toHaveBeenCalled();
+  expect(sharing.saveTarotReceipt).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Print again" }));
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('idle');
+  expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+  const invitation = screen.getByRole("button", { name: "Tap to reveal" }) as HTMLButtonElement;
+  await waitFor(() => expect(invitation.disabled).toBe(false));
+  fireEvent.click(invitation);
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('warming');
+  expect(screen.getByRole("button", { name: "Skip" })).toBeTruthy();
+  expect(shareButton().disabled).toBe(true);
+  expect(sharing.createTarotReceiptBlob).toHaveBeenCalledOnce();
+});
+it("keeps Save and Share disabled when Skip finishes before the export is ready", async () => {
+  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener() {}, removeEventListener() {} }));
+  let finish!: (value: Blob) => void;
+  vi.mocked(sharing.createTarotReceiptBlob).mockReturnValueOnce(new Promise(resolve => { finish = resolve; }));
+  mount();
+  const invitation = screen.getByRole("button", { name: "Tap to reveal" }) as HTMLButtonElement;
+  await waitFor(() => expect(invitation.disabled).toBe(false));
+  fireEvent.click(invitation);
+  fireEvent.click(screen.getByRole("button", { name: "Skip" }));
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('complete');
+  expect(shareButton().disabled).toBe(true);
+  expect((screen.getByRole("button", { name: "Save image" }) as HTMLButtonElement).disabled).toBe(true);
+  await act(async () => finish(new Blob(["png"])));
+  await waitFor(() => expect(shareButton().disabled).toBe(false));
+});
+it("blocks double share and permits retry after cancellation", async () => {
   let finish!: (outcome: "cancelled") => void;
   vi.mocked(sharing.shareTarotReceipt).mockReturnValueOnce(new Promise(resolve => { finish = resolve; }));
   mount(); await ready();
   fireEvent.click(shareButton()); fireEvent.click(shareButton());
   expect(sharing.shareTarotReceipt).toHaveBeenCalledOnce();
-  expect((screen.getByRole("checkbox") as HTMLInputElement).disabled).toBe(true);
+  expect(screen.queryByRole("checkbox")).toBeNull();
+  expect((screen.getByRole("button", { name: "Printer button" }) as HTMLButtonElement).disabled).toBe(true);
   await act(async () => finish("cancelled")); await ready();
   expect(screen.queryByRole("alert")).toBeNull();
   fireEvent.click(shareButton());
   expect(sharing.shareTarotReceipt).toHaveBeenCalledTimes(2);
+});
+it("keeps the completed receipt when the case or physical button is tapped", async () => {
+  mount(); await ready();
+  const machineButton = screen.getByRole("button", { name: "Printer button" }) as HTMLButtonElement;
+  expect(machineButton.disabled).toBe(false);
+  expect(document.querySelector('.receipt-printer__paper-window')?.closest('.receipt-printer__machine-layer')).toBeNull();
+  expect(machineButton.closest('.receipt-printer__machine-layer')).toBeTruthy();
+  fireEvent.click(machineButton);
+  fireEvent.click(screen.getByRole("button", { name: "Tap printer" }));
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('complete');
+  expect(screen.queryByRole("button", { name: "Tap to reveal" })).toBeNull();
+  expect(shareButton().disabled).toBe(false);
+  expect(sharing.createTarotReceiptBlob).toHaveBeenCalledOnce();
+  expect(sharing.shareTarotReceipt).not.toHaveBeenCalled();
+});
+it("returns Print again to the invitation and waits for a fresh tap, including after saving", async () => {
+  mount(); await ready();
+  for (const afterSave of [false, true]) {
+    if (afterSave) {
+      fireEvent.click(screen.getByRole("button", { name: "Save image" }));
+      await screen.findByRole("status");
+    }
+    const viewport = document.querySelector<HTMLElement>('.receipt-share-scroll')!;
+    viewport.scrollTop = 900;
+    fireEvent.click(screen.getByRole("button", { name: "Print again" }));
+    await waitFor(() => expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('idle'));
+    expect(viewport.scrollTop).toBe(0);
+    expect(document.activeElement).toBe(document.querySelector('.receipt-share-printer-stage'));
+    expect(screen.getByRole("button", { name: "Tap to reveal" })).toBeTruthy();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    expect(screen.queryByTestId("receipt-image-preview")).toBeNull();
+    expect(shareButton().disabled).toBe(true);
+    await ready();
+    expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('complete');
+  }
+  expect(sharing.createTarotReceiptBlob).toHaveBeenCalledOnce();
+  expect(sharing.shareTarotReceipt).not.toHaveBeenCalled();
+});
+it("follows appearance changes for both the machine and prepared receipt", async () => {
+  setHintThemePreference("bright");
+  mount(); await ready();
+  expect(screen.getByTestId("receipt-share-dialog").dataset.hintTheme).toBe("bright");
+  expect(document.querySelector('.receipt-printer__reference-image')?.getAttribute('src')).toContain("blush-soft-base.png");
+  expect(vi.mocked(sharing.createTarotReceiptBlob).mock.calls.at(-1)?.[0].theme).toBe("bright");
+  act(() => setHintThemePreference("dark"));
+  await ready();
+  expect(screen.getByTestId("receipt-share-dialog").dataset.hintTheme).toBe("dark");
+  expect(document.querySelector('.receipt-printer__reference-image')?.getAttribute('src')).toContain("midnight.png");
+  expect(vi.mocked(sharing.createTarotReceiptBlob).mock.calls.at(-1)?.[0].theme).toBe("dark");
+});
+it("saves the prepared image once and locks competing actions until Photos confirms", async () => {
+  let finish!: (value: "photos") => void;
+  vi.mocked(sharing.saveTarotReceipt).mockReturnValueOnce(new Promise(resolve => { finish = resolve; }));
+  mount(); await ready();
+  const save = screen.getByRole("button", { name: "Save image" });
+  fireEvent.click(save); fireEvent.click(save); fireEvent.click(shareButton());
+  expect(sharing.saveTarotReceipt).toHaveBeenCalledOnce();
+  expect(sharing.saveTarotReceipt).toHaveBeenCalledWith(await vi.mocked(sharing.createTarotReceiptBlob).mock.results[0].value, expect.stringMatching(/\.png$/), expect.objectContaining({ signal: expect.any(AbortSignal) }));
+  expect(sharing.shareTarotReceipt).not.toHaveBeenCalled();
+  expect((screen.getByRole("button", { name: "Print again" }) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.queryByRole("checkbox")).toBeNull();
+  expect(screen.queryByText("Saved to Photos")).toBeNull();
+  await act(async () => finish("photos"));
+  expect(screen.getByRole("status").textContent).toBe("Saved to Photos");
+  expect((save as HTMLButtonElement).disabled).toBe(false);
+});
+it("shows denied Photos permission and allows retry without regenerating the receipt", async () => {
+  vi.mocked(sharing.saveTarotReceipt).mockRejectedValueOnce(Object.assign(new Error("denied"), { code: "PHOTO_PERMISSION_DENIED" }));
+  mount(); await ready();
+  fireEvent.click(screen.getByRole("button", { name: "Save image" }));
+  expect(await screen.findByRole("alert")).toHaveProperty("textContent", expect.stringContaining("Settings"));
+  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+  await screen.findByRole("status");
+  expect(sharing.saveTarotReceipt).toHaveBeenCalledTimes(2);
+  expect(sharing.createTarotReceiptBlob).toHaveBeenCalledOnce();
+  expect(screen.queryByRole("alert")).toBeNull();
 });
 it("shows preparation failure, retries, and replays without generating a different image", async () => {
   vi.mocked(sharing.createTarotReceiptBlob).mockRejectedValueOnce(new Error("decode failed"));
@@ -71,14 +229,18 @@ it("shows preparation failure, retries, and replays without generating a differe
   expect(sharing.createTarotReceiptBlob).toHaveBeenCalledTimes(2);
   expect(sharing.shareTarotReceipt).not.toHaveBeenCalled();
 });
-it("requires an explicit public fallback for oversized private text", async () => {
-  mount(); await ready();
-  vi.mocked(sharing.createTarotReceiptBlob).mockRejectedValueOnce(new Error("Receipt text is too long"));
-  fireEvent.click(screen.getByRole("checkbox"));
-  expect(await screen.findByRole("alert")).toHaveProperty("textContent", expect.stringContaining("too long"));
-  expect(shareButton().disabled).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: "Use card reflection" })); await ready();
-  expect((screen.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
+it("prints card reflections without carrying over long private questions or interpretations", async () => {
+  const value = source();
+  if (value.kind !== "tarot") throw new Error("Expected a Tarot reading");
+  value.reading.question = "Private question ".repeat(1000);
+  value.reading.shortAnswer = "Private answer ".repeat(1000);
+  mount(value); await ready();
+  const model = vi.mocked(sharing.createTarotReceiptBlob).mock.calls[0][0];
+  expect(model.personal).toBe(false);
+  expect(model.question).toBeUndefined();
+  expect(JSON.stringify(model)).not.toContain("Private");
+  expect(screen.queryByRole("alert")).toBeNull();
+  expect(shareButton().disabled).toBe(false);
   expect(screen.queryByText("Private answer")).toBeNull();
 });
 it("closes when the owner's history generation changes and rejects the late image", async () => {
@@ -90,6 +252,25 @@ it("closes when the owner's history generation changes and rejects the late imag
   expect(close).toHaveBeenCalled(); view.unmount();
   await act(async () => finish(new Blob(["late"])));
   expect(URL.createObjectURL).not.toHaveBeenCalled();
+});
+it("opens a fresh printer invitation each time without a confirmation page", async () => {
+  const value = source();
+  const first = mount(value); await ready(); first.unmount();
+  mount(value);
+  expect(screen.queryByRole("checkbox")).toBeNull();
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-phase')).toBe('idle');
+  expect(screen.getByRole("button", { name: "Tap to reveal" })).toBeTruthy();
+  expect(shareButton().disabled).toBe(true);
+  await ready();
+  expect(vi.mocked(sharing.createTarotReceiptBlob).mock.calls.at(-1)?.[0].personal).toBe(false);
+});
+it("keeps Daily sharing on its existing immediate printer flow", async () => {
+  const report = getDailyReport({ anonId: getAnonId(), language: "en" });
+  mount({ kind: "daily", report });
+  expect(screen.queryByRole("checkbox")).toBeNull();
+  expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+  expect(document.querySelector('.receipt-printer')?.getAttribute('data-variant')).toBe('daily');
+  await ready();
 });
 it.each(["en", "zh", "es", "ja", "ko"] as const)("uses the canonical Daily card in %s and omits unrecorded historical scores", language => {
   const report = getDailyReport({ anonId: getAnonId(), date: new Date(2026, 8, 1), language });

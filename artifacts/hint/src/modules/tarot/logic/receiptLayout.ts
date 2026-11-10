@@ -2,7 +2,7 @@ export function getTarotReceiptCardLayout(cardCount: number) {
   if (!Number.isInteger(cardCount) || cardCount < 1 || cardCount > 9) {
     throw new Error("A receipt needs between one and nine cards.");
   }
-  const columns = Math.min(3, cardCount);
+  const columns = cardCount === 4 ? 2 : Math.min(3, cardCount);
   const cellWidth = 220;
   const gap = 24;
   const cardWidth = cardCount <= 3 ? 170 : 144;

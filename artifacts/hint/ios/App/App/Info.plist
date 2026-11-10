@@ -24,6 +24,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Hint adds the receipt images you choose to save to your photo library.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Hint uses the microphone only while you dictate a question for your private reading.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
