@@ -18,6 +18,7 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) {
     await page.evaluate(() => document.fonts.ready);
     const dock = nav.locator(".hint-mascot-dock");
     await expect(nav.locator(".hint-dock-label")).toHaveCount(5);
+    await expect(page.locator(".hint-guide-actor")).toHaveCSS("width", "64px");
     const scroll = page.locator(".hint-app-scroll").last();
     const baseline = await dock.evaluate(element => element.getBoundingClientRect().height);
     const padding = await scroll.evaluate(element => parseFloat(getComputedStyle(element).paddingBottom));
@@ -32,6 +33,11 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) {
     const magnified = await dock.evaluate(element => element.getBoundingClientRect().height);
     await expect.poll(async () => scroll.evaluate(element => parseFloat(getComputedStyle(element).paddingBottom))).toBeGreaterThanOrEqual(padding + magnified - baseline - 1);
     await expect.poll(() => nav.locator(".hint-dock-label").evaluateAll(labels => labels.map(label => getComputedStyle(label).fontSize))).toEqual(Array(5).fill("22px"));
+    // Text reflow moves the dock perch even though the mascot slot stays 64px.
+    await expect.poll(() => page.evaluate(() => Math.abs(
+      document.querySelector(".hint-guide-actor")!.getBoundingClientRect().top -
+      document.querySelector('[data-guide-selected="true"]')!.getBoundingClientRect().top,
+    )), { message: "the mascot follows the resized dock without a scroll" }).toBeLessThanOrEqual(1);
     const metrics = await nav.locator("a").evaluateAll(links => links.map(link => {
       const rect = link.getBoundingClientRect();
       const label = link.querySelector<HTMLElement>(".hint-dock-label");

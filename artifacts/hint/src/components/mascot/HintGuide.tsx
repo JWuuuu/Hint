@@ -108,6 +108,7 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
     let disposed = false;
     const stage = overlay.current, drawing = canvas.current;
     let activeNode: HTMLDivElement | null = null, previousWidth = 0;
+    let activeDock: Element | null = null;
     let deliveryNode: HTMLDivElement | null = null, hadDelivery = false;
     const resize = new ResizeObserver(() => synchronize.current(true));
     let clip = "", vacantSince = 0, holdTimer = 0, slotVisible = false;
@@ -150,7 +151,8 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
         stopWatchingVacancy();
         if (holdTimer) { window.clearTimeout(holdTimer);holdTimer = 0; }
         selected.current = null;lastContext.current = "";
-        if (activeNode) { resize.unobserve(activeNode); delete activeNode.dataset.guideSelected; } activeNode = null;setClip("");
+        if (activeNode) { resize.unobserve(activeNode); delete activeNode.dataset.guideSelected; } activeNode = null;
+        if (activeDock) resize.unobserve(activeDock);activeDock = null;setClip("");
         player.current.setContext({ room: "away", phase: "idle", audioPlaying: false });
         player.current.setMotionPolicy({ reduced: currentPolicy.current.reduced, visible: currentPolicy.current.pageVisible });return;
       }
@@ -159,6 +161,11 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
       if (activeNode !== slot.node) {
         if (activeNode) { resize.unobserve(activeNode); delete activeNode.dataset.guideSelected; }
         activeNode = slot.node; activeNode.dataset.guideSelected = "true"; resize.observe(activeNode);
+        // Larger navigation labels move the perch without resizing its 64px slot.
+        // Observe the dock as well so Hint follows that reflow without a scroll.
+        if (activeDock) resize.unobserve(activeDock);
+        activeDock = slot.node.closest("[data-app-tabbar]");
+        if (activeDock) resize.observe(activeDock);
       }
       const bounds = slot.node.getBoundingClientRect(), screen = stage.getBoundingClientRect();
       const target = slot.delivery?.target.current ?? null;
