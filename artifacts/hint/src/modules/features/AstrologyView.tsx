@@ -3,6 +3,7 @@ import { rt } from "../astrology/reportCopy";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Heart, Sparkles } from "lucide-react";
 import { AppScreen, SpaceNavigation } from "@/components/app/AppChrome";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
   BirthProfileForm,
   type BirthProfileDraft,
@@ -25,6 +26,7 @@ import {
 } from "@/lib/astro/astroClient";
 import { normalizeClientNatal } from "@/lib/astro/normalizeClientAstro";
 import { at } from "../astrology/astrologyCopy";
+import { bodyName, signName, signArticle } from "../astrology/astrologyLibrary";
 import {
   chartContext,
   migrateLegacyChart,
@@ -42,6 +44,8 @@ import {
   TransitReading,
 } from "../astrology/components/AstrologyGuide";
 import { TogetherReading } from "../astrology/components/TogetherReading";
+import { ZodiacPortrait } from "../astrology/components/ZodiacPortrait";
+import "../astrology/components/astrology-approved-shell.css";
 import type {
   AstroTransitsResponse,
   BirthProfile,
@@ -89,12 +93,13 @@ export function AstrologyView() {
   );
   const clearVersionRef = useRef(clearVersion);
   const { reduced, pageVisible } = useMotionPolicy();
-  const [onScreen, setOnScreen] = useState(true);
-  const headerRef = useRef<HTMLDivElement>(null);
+  const roomRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [date, setDate] = useState(localDate);
   const [range, setRange] = useState<"daily" | "weekly">("daily");
   const [review, setReview] = useState<BirthProfileDraft | null>(null);
+  const [portraitOpen, setPortraitOpen] = useState(false);
+  const portraitOpener = useRef<HTMLElement | null>(null);
   const [savedDraft, setSavedDraft] = useState<BirthProfileDraft | null>(null);
   const [saveError, setSaveError] = useState(false);
   const saving = useRef(false);
@@ -140,6 +145,11 @@ export function AstrologyView() {
   const activeTransit =
     transitState?.key === transitKey ? transitState.data : null;
   const ready = personalChartReady(profile);
+  const birthConflict = getBirthProfileConflict();
+  const natalEnabled = !birthConflict && (tab === "chart" || tab === "transits" ||
+    (tab === "signs" && !sign && !chart && !clearVersion && natalAttempt <= 1));
+
+  useEffect(() => setPortraitOpen(false), [context, tab, sign]);
 
   useEffect(() => {
     const sync = () => {
@@ -168,15 +178,6 @@ export function AstrologyView() {
       window.removeEventListener("hint.birthProfile.updated", sync);
       window.removeEventListener("popstate", pop);
     };
-  }, []);
-  useEffect(() => {
-    if (!headerRef.current || typeof IntersectionObserver === "undefined")
-      return;
-    const observer = new IntersectionObserver(([entry]) =>
-      setOnScreen(entry.isIntersecting),
-    );
-    observer.observe(headerRef.current);
-    return () => observer.disconnect();
   }, []);
   useEffect(() => {
     const update = () => setDate(localDate());
@@ -208,7 +209,7 @@ export function AstrologyView() {
     if (
       !profile ||
       !ready ||
-      !["chart", "transits"].includes(tab) ||
+      !natalEnabled ||
       (clearVersion && natalAttempt === 0 && !chart)
     )
       return;
@@ -261,7 +262,7 @@ export function AstrologyView() {
         natalRequested.current = "";
       setNatalLoading(false);
     };
-  }, [context, tab, natalAttempt, ready]);
+  }, [context, tab, natalEnabled, natalAttempt, ready]);
 
   useEffect(() => {
     if (tab !== "transits" || !profile || !ready || !chart) return;
@@ -321,10 +322,14 @@ export function AstrologyView() {
     writeAstroLocation(next, nextSign, nextSelection);
     setReview(null);
     setSaveError(false);
-    if (next !== tab || nextSign !== sign)
-      requestAnimationFrame(() =>
-        sectionRef.current?.scrollIntoView({ block: "start" }),
-      );
+    if (next !== tab || nextSign !== sign) requestAnimationFrame(() => {
+      if (nextSign || next === "birth") {
+        sectionRef.current?.scrollIntoView({ block: "start" });
+      } else {
+        const scroller = roomRef.current?.closest(".hint-app-scroll");
+        if (scroller) scroller.scrollTop = 0;
+      }
+    });
   }
   function saveReviewed() {
     if (!review || saving.current) return;
@@ -406,56 +411,90 @@ export function AstrologyView() {
     </AstroPanel>
   );
 
+  const personalZodiac = tab === "signs" && !sign && ready && !birthConflict ? chart : null;
+  const portraitDetails = personalZodiac?.placements.filter(p =>
+    p.sign && (p.body === "sun" || p.body === "moon" || p.body === "rising")) ?? [];
+
   return (
-    <AppScreen>
+    <AppScreen contentStyle={{ paddingTop: "calc(var(--hint-safe-top) + 2px)" }}>
       <div
+        ref={roomRef}
         className="astro-guide astro-theme astro-guide-stack"
+        data-approved-layout={personalZodiac || tab === "chart" ? "true" : undefined}
         data-testid="astrology-screen"
         data-motion={reduced || !pageVisible ? "off" : "on"}
       >
-        <SpaceNavigation />
-        <div ref={headerRef} data-glow-visible={onScreen}>
-          {tab === "signs" && !sign ? <AstrologyOrientation /> : <p className="astro-guide-eyebrow astro-compact-title">{at(language,"room")}</p>}
-        </div>
-        <nav className="astro-guide-nav" aria-label={at(language, "sections")}>
-          {(["signs", "chart", "transits"] as const).map((value) => (
-            <button
-              type="button"
-              key={value}
-              aria-pressed={
-                tab === value || (value === "chart" && tab === "birth")
-              }
-              onClick={() => navigate(value)}
-            >
-              {at(
-                language,
-                value === "signs"
-                  ? "explore"
-                  : value === "transits"
-                    ? "now"
-                    : "chart",
-              )}
-            </button>
-          ))}
-        </nav>
+        <header className="astro-header">
+          <div className="astro-masthead">
+            <SpaceNavigation />
+            <h1 className="astro-guide-eyebrow">{at(language, "astrologyTitle")}</h1>
+          </div>
+          <nav className="astro-guide-nav" aria-label={at(language, "sections")}>
+            {(["signs", "chart", "together"] as const).map((value) => (
+              <button
+                type="button"
+                key={value}
+                aria-pressed={
+                  tab === value || (value === "chart" && ["birth", "transits", "reports"].includes(tab))
+                }
+                onClick={() => navigate(value)}
+              >
+                {at(
+                  language,
+                  value === "signs"
+                    ? "zodiacTab"
+                    : value === "together"
+                      ? "togetherTab"
+                      : "chart",
+                )}
+              </button>
+            ))}
+          </nav>
+        </header>
         <div
           ref={sectionRef}
           className="astro-guide-stack"
           style={{ scrollMarginTop: "20px" }}
         >
-          {getBirthProfileConflict() && (
+          {birthConflict && (
             <p role="alert">{t("quality.birthConflict")}</p>
           )}
           {tab === "signs" && (
-            <ZodiacGuide
-              chart={chart}
-              selected={sign}
-              onSign={(value: ZodiacSign | null) => navigate("signs", value)}
-              onChart={(next) => navigate("chart", null, next)}
-            />
+            <>
+              {!sign && !ready && <AstrologyOrientation />}
+              {personalZodiac ? (
+                <ZodiacPortrait
+                  chart={personalZodiac}
+                  language={language}
+                  onOpenPortrait={() => {
+                    portraitOpener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+                    setPortraitOpen(true);
+                  }}
+                  onSelectPlacement={(body) => navigate("chart", null, { kind: "body", id: body })}
+                />
+              ) : !sign && !birthConflict ? (
+                <AstroPanel title={at(language, "portraitTitle")} className="astro-approved-portrait-setup">
+                  <p>{at(language, "portraitIntro")}</p>
+                  {natalLoading ? (
+                    <p role="status">{at(language, "calculating")}</p>
+                  ) : (
+                    <button type="button" className="astro-guide-button" onClick={() => navigate(ready ? "chart" : "birth")}>
+                      {at(language, ready ? "chart" : profile ? "edit" : "create")}<ArrowRight size={16} aria-hidden="true" />
+                    </button>
+                  )}
+                  {natalError && <p role="alert">{at(language, "chartError")}</p>}
+                </AstroPanel>
+              ) : null}
+              <ZodiacGuide
+                chart={birthConflict ? null : chart}
+                selected={sign}
+                onSign={(value: ZodiacSign | null) => navigate("signs", value)}
+                onChart={(next) => navigate("chart", null, next)}
+              />
+            </>
           )}
           {tab === "chart" &&
-            (chart ? (
+            (chart && !birthConflict ? (
               <>
                 <NatalReading
                   chart={chart}
@@ -493,9 +532,7 @@ export function AstrologyView() {
                   </div>
                 )}
               </>
-            ) : (
-              setup
-            ))}
+            ) : setup)}
           {tab === "transits" &&
             (chart ? (
               <TransitReading
@@ -641,6 +678,27 @@ export function AstrologyView() {
         )}
         <p className="astro-guide-note">{at(language, "footer")}</p>
       </div>
+      {personalZodiac && (
+        <Dialog open={portraitOpen} onOpenChange={setPortraitOpen}>
+          <DialogContent className="astro-portrait-dialog" onCloseAutoFocus={(event) => {
+            if (!portraitOpener.current?.isConnected) return;
+            event.preventDefault();
+            portraitOpener.current.focus({ preventScroll: true });
+          }}>
+            <DialogTitle>{at(language, "portraitTitle")}</DialogTitle>
+            <DialogDescription>{at(language, "portraitIntro")}</DialogDescription>
+            {portraitDetails.length ? portraitDetails.map(p => {
+              const sign = p.sign!;
+              const article = signArticle(sign, language);
+              const reading = p.body === "sun" ? article.sun : p.body === "moon" ? article.moon : article.rising;
+              return <section key={p.body}>
+                <h3>{bodyName(p.body, language)} · {signName(sign, language)}</h3>
+                <p>{reading}</p>
+              </section>;
+            }) : <p>{at(language, "unavailable")}</p>}
+          </DialogContent>
+        </Dialog>
+      )}
     </AppScreen>
   );
 }

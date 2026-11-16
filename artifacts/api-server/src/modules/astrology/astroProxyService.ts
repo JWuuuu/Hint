@@ -347,12 +347,13 @@ export async function getNatalProxy(profile: AstroProfile) {
   }
 
   const key = hash({ kind: "natal", profile, houseSystem: envValue("HOUSE_SYSTEM") || "placidus" });
-  const cached = cacheGet<ReturnType<typeof normalizeNatalResponse>>(natalCache, key);
+  const cached = cacheGet<ReturnType<typeof normalizeNatalResponse> & { chart: { additionalPlacements?: NormalizedBirthChart["additionalPlacements"] } }>(natalCache, key);
   if (cached) return { ...cached, cached: true };
 
   const input = toProviderInput(profile);
   const chart = await calculateBirthChart(input, { force: false });
-  const response = normalizeNatalResponse(chart, profile, chart.source === "api" ? "live" : "fallback", false);
+  const base = normalizeNatalResponse(chart, profile, chart.source === "api" ? "live" : "fallback", false);
+  const response = { ...base, chart: { ...base.chart, additionalPlacements: chart.additionalPlacements } };
   if (response.mode === "live") cacheSet(natalCache, key, response, 30 * DAY);
   return response;
 }

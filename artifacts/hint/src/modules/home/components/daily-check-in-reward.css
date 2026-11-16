@@ -1,0 +1,79 @@
+.hint-daily-checkin-reward {
+  position: absolute;
+  z-index: 30;
+  top: -10px;
+  right: -36px;
+  width: 104px;
+  pointer-events: none;
+  user-select: none;
+  animation: hint-checkin-reward-rise 2s both;
+}
+
+.hint-daily-checkin-reward-badge {
+  display: grid;
+  grid-template-columns: 15px auto;
+  align-items: center;
+  justify-content: center;
+  gap: 1px 6px;
+  padding: 10px 13px 9px;
+  border: 1px solid rgba(244, 215, 163, 0.62);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(67, 49, 55, 0.97), rgba(37, 29, 37, 0.97));
+  color: #f5dba4;
+  box-shadow: 0 0 20px rgba(241, 202, 128, 0.18), 0 8px 24px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 244, 220, 0.1);
+}
+
+.hint-daily-checkin-reward-badge strong {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.hint-daily-checkin-reward-badge > span {
+  grid-column: 1 / -1;
+  color: #f1dfc4;
+  font-family: var(--font-sans, sans-serif);
+  font-size: 10px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.hint-daily-checkin-spark {
+  position: absolute;
+  color: #f8deaa;
+  font-size: 10px;
+  text-shadow: 0 0 8px rgba(255, 225, 158, 0.6);
+  animation: hint-checkin-reward-spark 1.6s both;
+}
+
+.hint-daily-checkin-spark-one { left: -10px; top: 11px; }
+.hint-daily-checkin-spark-two { right: 4px; top: -13px; font-size: 8px; animation-delay: 0.12s; }
+.hint-daily-checkin-spark-three { right: -9px; bottom: 3px; font-size: 7px; animation-delay: 0.22s; }
+
+@keyframes hint-checkin-reward-rise {
+  0% { opacity: 0; transform: translateY(14px) scale(0.82); }
+  15% { opacity: 1; transform: translateY(0) scale(1.04); }
+  28% { opacity: 1; transform: translateY(-2px) scale(1); }
+  72% { opacity: 1; transform: translateY(-10px) scale(1); }
+  100% { opacity: 0; transform: translateY(-28px) scale(0.98); }
+}
+
+@keyframes hint-checkin-reward-spark {
+  0% { opacity: 0; transform: translateY(6px) scale(0.5); }
+  25% { opacity: 0.9; transform: translateY(-2px) scale(1); }
+  100% { opacity: 0; transform: translateY(-18px) scale(0.7); }
+}
+
+@keyframes hint-checkin-reward-fade {
+  0%, 100% { opacity: 0; }
+  15%, 72% { opacity: 1; }
+}
+
+.hint-daily-checkin-reward[data-reduced="true"] { animation-name: hint-checkin-reward-fade; }
+.hint-daily-checkin-reward[data-reduced="true"] .hint-daily-checkin-spark { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hint-daily-checkin-reward { animation-name: hint-checkin-reward-fade; }
+  .hint-daily-checkin-spark { display: none; }
+}

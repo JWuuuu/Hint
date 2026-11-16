@@ -71,22 +71,24 @@ test("zodiac learning works without an account and sections survive back and ref
   await seed(page, { loggedIn: false });
   await go(page, "signs");
   await expect(page.getByRole("heading", { name: "Your sign is a beginning. Your chart is the whole conversation." })).toBeVisible();
-  await expect(page.locator(".astro-sign-choice")).toHaveCount(12);
+  const signIndex = page.getByRole("list", { name: "Signs", exact: true });
   for (const sign of ["Aries", "Virgo", "Sagittarius", "Pisces"]) {
-    await page.locator(".astro-sign-choice").filter({ has: page.getByText(sign, { exact: true }) }).click();
+    await page.locator(".astro-library-details > summary").click();
+    await expect(signIndex.getByRole("button")).toHaveCount(12);
+    await signIndex.getByRole("button", { name: sign, exact: true }).click();
     await expect(page.getByRole("heading", { name: sign, exact: true })).toBeVisible();
     await expect(page).toHaveURL(new RegExp(`sign=${sign.toLowerCase()}`));
     await expect(page.getByRole("heading", { name: "In everyday life", exact: true })).toBeVisible();
-    await page.getByRole("button", { name: "All twelve signs", exact: true }).click();
+    await page.getByRole("button", { name: "Back to Zodiac", exact: true }).click();
   }
-  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My chart", exact: true }).click();
+  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My Chart", exact: true }).click();
   await expect(page.getByRole("heading", { name: "The moment you arrived" })).toBeVisible();
   await page.getByRole("button", { name: "Create my birth chart", exact: true }).click();
   await expect(page.getByLabel("Name", { exact: true })).toBeVisible();
   await expect(page.getByRole("textbox", { name: /email/i })).toHaveCount(0);
   await page.goBack();
   await page.goBack();
-  await expect(page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "Explore signs", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "Zodiac", exact: true })).toHaveAttribute("aria-pressed", "true");
   await page.reload();
   await expect(page.getByRole("heading", { name: "Your sign is a beginning. Your chart is the whole conversation." })).toBeVisible();
   await expect(page.getByTestId("astro-wheel")).toHaveCount(0);
@@ -99,8 +101,9 @@ test("unknown birth time never produces an invented personal chart", async ({ pa
   await go(page);
   await expect(page.getByText("Time unknown? Save what you know. We won’t invent a Moon, Ascendant or houses.", { exact: true })).toBeVisible();
   await expect(page.getByTestId("astro-wheel")).toHaveCount(0);
-  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "Explore signs", exact: true }).click();
-  await expect(page.locator(".astro-sign-choice")).toHaveCount(12);
+  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "Zodiac", exact: true }).click();
+  await page.locator(".astro-library-details > summary").click();
+  await expect(page.getByRole("list", { name: "Signs", exact: true }).getByRole("button")).toHaveCount(12);
   expect(requests).toBe(0);
 });
 
@@ -113,9 +116,13 @@ test("fallback chart is never presented as personal and explicit retry recovers"
   await expect(page.getByTestId("astro-wheel")).toHaveCount(0);
   calculated = true;
   await page.getByRole("button", { name: "Calculate birth chart", exact: true }).click();
-  await expect(page.getByTestId("astro-wheel")).toBeVisible();
-  await expect(page.locator(".astro-placement-list").first()).toContainText("24.5°");
-  await expect(page.locator("section").filter({ has: page.getByRole("heading", { name: "Aspects", exact: true }) })).toContainText("Not supplied");
+  const wheel = page.getByTestId("astro-wheel");
+  await expect(wheel).toBeVisible();
+  await expect(wheel.locator(".astro-aspect-line")).toHaveCount(0);
+  await wheel.getByRole("button", { name: "Sun", exact: true }).click();
+  const placement = page.getByRole("dialog", { name: "Sun · Taurus" });
+  await expect(placement).toContainText("24.5°");
+  await placement.getByRole("button", { name: "Close", exact: true }).click();
   await page.reload();
   await expect(page.getByTestId("astro-wheel")).toBeVisible();
 });
@@ -127,7 +134,7 @@ test("transit failure and empty success never insert sample rows or fabricated d
   await page.route("**/api/astro/transits", (route) => route.fulfill({ json: available ? { source: "astrologyapi", mode: "live", date: "2026-09-09", transits: [] } : { source: "fallback", mode: "fallback", date: "2026-09-09", transits: [{ title: "FAKE SAMPLE" }] } }));
   await go(page);
   await expect(page.getByTestId("astro-wheel")).toBeVisible();
-  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "Transits now", exact: true }).click();
+  await page.getByRole("button", { name: "Transits now", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("Personal transits are unavailable");
   await expect(page.getByText("FAKE SAMPLE")).toHaveCount(0);
   available = true;
@@ -161,12 +168,13 @@ for (const theme of ["bright", "dark"]) {
     await page.route("**/api/astro/natal", (route) => route.fulfill({ json: natal }));
     await go(page);
     await expect(page.getByTestId("astro-wheel")).toBeVisible();
-    for (const tab of ["My chart", "Explore signs", "Edit birth details", "Read the full report"]) {
+    for (const tab of ["My Chart", "Zodiac", "Edit birth details", "Read the full report"]) {
       const navigation = page.getByRole("navigation", { name: "Astrology sections" });
-      if (tab === "My chart" || tab === "Explore signs") {
+      if (tab === "My Chart" || tab === "Zodiac") {
         await navigation.getByRole("button", { name: tab, exact: true }).click();
       } else {
-        await navigation.getByRole("button", { name: "My chart", exact: true }).click();
+        await navigation.getByRole("button", { name: "My Chart", exact: true }).click();
+        if (tab === "Edit birth details") await page.getByText("Birth details", { exact: true }).click();
         await page.getByRole("button", { name: tab, exact: true }).click();
       }
       const metrics = await page.getByTestId("astrology-screen").evaluate((el) => ({ width: el.clientWidth, scroll: el.scrollWidth }));
@@ -219,13 +227,15 @@ test("birth place edits clear old coordinates and ignore stale search matches", 
   await expect(page.getByText("Save an accurate birth time and a place with verified coordinates and time zone to calculate personal placements.", { exact: true })).toBeVisible();
 });
 
-test("Chinese sign learning does not trigger a personal calculation", async ({ page }) => {
-  await seed(page, { language: "zh" });
+test("Chinese sign learning works without calculating a chart for a guest", async ({ page }) => {
+  await seed(page, { language: "zh", loggedIn: false });
   let requests = 0;
   await page.route("**/api/astro/natal", (route) => { requests++; return route.fulfill({ json: natal }); });
   await go(page, "signs");
-  await expect(page.locator(".astro-sign-choice")).toHaveCount(12);
-  await page.locator(".astro-sign-choice").last().click();
+  await page.locator(".astro-library-details > summary").click();
+  const signIndex = page.getByRole("list", { name: "星座", exact: true });
+  await expect(signIndex.getByRole("button")).toHaveCount(12);
+  await signIndex.getByRole("button", { name: "双鱼座", exact: true }).click();
   await expect(page.getByRole("heading", { name: "双鱼座", exact: true })).toBeVisible();
   await expect(page).toHaveURL(/sign=pisces/);
   await page.reload();
@@ -242,10 +252,11 @@ test("dense chart and expanded details remain readable above bottom navigation",
   await go(page);
   const wheel = page.getByTestId("astro-wheel");
   await expect(wheel).toBeVisible();
-  expect(await wheel.locator("circle[r='84']").evaluate(el => getComputedStyle(el).fill)).not.toBe("rgb(0, 0, 0)");
+  expect(await wheel.locator(".astro-traditional-face").evaluate(el => getComputedStyle(el).fill)).not.toBe("rgb(0, 0, 0)");
   await wheel.scrollIntoViewIfNeeded();
   await page.screenshot({path: testInfo.outputPath("dense-chart-wheel.png")});
-  await page.locator(".astro-placement-list").getByRole("button", { name: /Sun · Moon.*Conjunction/ }).click();
+  await expect(wheel.locator(".astro-aspect-line")).toHaveCount(1);
+  await page.goto("/app/astrology?hintPreview=embedded&tab=chart&aspect=sun%3Aconjunction%3Amoon");
   await expect(page.getByRole("dialog", { name: "Sun · Conjunction · Moon" })).toBeVisible();
   await expect(page.getByRole("dialog")).not.toContainText("NaN");
   await expect(page.getByRole("dialog")).not.toContainText("0.0° orb");
@@ -278,7 +289,7 @@ test("chart points and enlarged chart support keyboard, history and direct detai
   await expect(page.getByRole("dialog")).toHaveCount(0);
   const enlarge = page.getByRole("button", { name: "Enlarge chart", exact: true });
   await enlarge.click();
-  const dialog = page.getByRole("dialog", { name: "Your celestial signature", exact: true });
+  const dialog = page.getByRole("dialog", { name: "Your natal chart", exact: true });
   await expect(dialog).toBeVisible();
   for (let step = 0; step < 5; step++) {
     await page.keyboard.press("Tab");

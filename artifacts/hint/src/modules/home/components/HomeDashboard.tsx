@@ -70,6 +70,9 @@ import type { DailyReport, DailyScore } from "../types/home.types";
 import { LuckyIllustration } from "./LuckyIllustration";
 import { SkyEvidence } from "../../../components/tarot/SkyEvidence";
 import { SafeImage } from "../../../shared/ui/SafeImage";
+import { HomeCheckIn } from "./HomeCheckIn";
+import { DailyCheckInReward } from "./DailyCheckInReward";
+import { claimHomeCheckIn } from "../data/homeCheckIn";
 
 const SKY_DECK_CARD_BACK_IMAGE = getTarotCardBackImage(getDefaultTarotCardBackForStyle("nocturne"));
 const DAILY_SIGNAL_INTRO_COMPLETIONS_KEY = "hint_home_daily_signal_intro_completions_v1";
@@ -2798,12 +2801,14 @@ export function ReferenceDailyRevealOverlay({
   open,
   revealing,
   report,
+  checkInCredits = null,
   onClose,
   onCardRevealed,
 }: {
   open: boolean;
   revealing: boolean;
   report: DailyReport;
+  checkInCredits?: number | null;
   onClose: () => void;
   onCardRevealed: () => void;
 }) {
@@ -2969,6 +2974,7 @@ export function ReferenceDailyRevealOverlay({
           className="relative mt-[52px] h-[clamp(228px,34svh,326px)] w-[clamp(142px,21.15svh,203px)] shrink-0 min-[420px]:mt-[54px]"
           style={{ perspective: "1300px" }}
         >
+          <DailyCheckInReward active={detailsReady} credits={checkInCredits} />
           <motion.span
             aria-hidden
             className="absolute inset-[-42px] rounded-full"
@@ -3411,7 +3417,7 @@ function ReferenceEnergyPanel({ report }: { report: DailyReport }) {
         className="hint-pressable hint-home-details-link font-serif"
       >
         <span><LocalizedText text="See details" /></span>
-        <ArrowRight size={15} strokeWidth={1.5} aria-hidden />
+        <ArrowRight size={16} strokeWidth={1.5} aria-hidden />
       </Link>
     </section>
   );
@@ -3732,7 +3738,6 @@ function ReferenceSpaces({ cards }: { cards: RoomShortcutData[] }) {
     <section className="hint-home-spaces" aria-labelledby="hint-home-spaces-title">
       <div className="hint-home-spaces-header">
         <h3 id="hint-home-spaces-title" className="hint-home-eyebrow"><LocalizedText text="Your spaces" /></h3>
-        <span className="hint-home-rule" />
         <span aria-hidden className="hint-home-space-star">✦</span>
       </div>
       <div className="hint-home-spaces-grid">
@@ -3768,20 +3773,24 @@ function ReferenceSpaces({ cards }: { cards: RoomShortcutData[] }) {
 function ReferenceHomePage({
   report,
   roomShortcuts,
+  dailyReceipt,
   dailyCardRevealed,
   dailyCardRevealing,
   dailyReceiptReady,
   dailyRevealOverlayOpen,
+  dailyCheckInCredits,
   onReveal,
   onCloseRevealOverlay,
   onCardRevealed,
 }: {
   report: DailyReport;
   roomShortcuts: RoomShortcutData[];
+  dailyReceipt: DailyReceipt | null;
   dailyCardRevealed: boolean;
   dailyCardRevealing: boolean;
   dailyReceiptReady: boolean;
   dailyRevealOverlayOpen: boolean;
+  dailyCheckInCredits: number | null;
   onReveal: () => void | Promise<void>;
   onCloseRevealOverlay: () => void;
   onCardRevealed: () => void;
@@ -3805,6 +3814,14 @@ function ReferenceHomePage({
           </Link>
         </header>
 
+        <HomeCheckIn
+          today={report.date}
+          receipt={dailyReceipt}
+          ready={dailyReceiptReady}
+          revealing={dailyCardRevealing}
+          onReveal={onReveal}
+        />
+
         <div className="hint-home-sections">
           <ReferenceHero
             report={report}
@@ -3822,6 +3839,7 @@ function ReferenceHomePage({
         open={dailyRevealOverlayOpen}
         revealing={dailyCardRevealing}
         report={report}
+        checkInCredits={dailyCheckInCredits}
         onClose={onCloseRevealOverlay}
         onCardRevealed={onCardRevealed}
       />
@@ -3842,6 +3860,7 @@ export function HomeDashboard() {
   const [dailyCardRevealed, setDailyCardRevealed] = useState(initialDailySignalComplete);
   const [dailyCardRevealing, setDailyCardRevealing] = useState(false);
   const [dailyRevealOverlayOpen, setDailyRevealOverlayOpen] = useState(false);
+  const [dailyCheckInCredits, setDailyCheckInCredits] = useState<number | null>(null);
   const [signalIntroComplete, setSignalIntroComplete] = useState(initialDailySignalComplete);
   const [dailyReceipt, setDailyReceipt] = useState<DailyReceipt | null>(null);
   const [dailyReceiptReady, setDailyReceiptReady] = useState(false);
@@ -3899,6 +3918,7 @@ export function HomeDashboard() {
     setDailyCardRevealed(false);
     setDailyCardRevealing(false);
     setDailyRevealOverlayOpen(false);
+    setDailyCheckInCredits(null);
     revealInFlight.current = false;
     getOrCreateDailyReceipt("daily-card", {
       fallbackAssignedCardId: report.card.cardId,
@@ -3942,6 +3962,7 @@ export function HomeDashboard() {
   function revealDailyCard() {
     if (revealInFlight.current || !dailyReceiptReady) return;
     if (dailyCardRevealed) {
+      setDailyCheckInCredits(null);
       setDailyRevealOverlayOpen(true);
       return;
     }
@@ -3950,14 +3971,25 @@ export function HomeDashboard() {
     revealInFlight.current = true;
     const generation = ++revealGeneration.current;
     const day = currentDay;
+    const owner = getAnonId();
+    const alreadyOpened = Boolean(getCachedDailyReceipt("daily-card", { anonId: owner, dailyKey: day })?.openedAt);
+    setDailyCheckInCredits(null);
     try {
       const sync = openDailyReceipt("daily-card", {
+        anonId: owner,
         dailyKey: day,
         fallbackAssignedCardId: report.card.cardId,
       });
       // The local receipt freezes identity synchronously; network latency never delays the reveal.
       const openedReceipt = getCachedDailyReceipt("daily-card", { dailyKey: day });
       if (!openedReceipt) return;
+      if (openedReceipt.anonId === owner && openedReceipt.dailyKey === day &&
+          openedReceipt.featureType === "daily-card" && openedReceipt.openedAt) {
+        try {
+          const { awardedCredits } = claimHomeCheckIn(owner, day);
+          if (!alreadyOpened && awardedCredits > 0) setDailyCheckInCredits(awardedCredits);
+        } catch { /* A day/profile transition must never create a reward for the new context. */ }
+      }
       markDailySignalIntroComplete(openedReceipt.anonId || getAnonId(), openedReceipt.dailyKey);
       setDailyReceipt(openedReceipt);
       setDailyCardRevealed(true);
@@ -3984,6 +4016,7 @@ export function HomeDashboard() {
 
   function closeDailyRevealOverlay() {
     completeSignalIntro();
+    setDailyCheckInCredits(null);
     setDailyRevealOverlayOpen(false);
   }
 
@@ -4039,10 +4072,12 @@ export function HomeDashboard() {
     <ReferenceHomePage
       report={report}
       roomShortcuts={roomShortcuts}
+      dailyReceipt={dailyReceipt}
       dailyCardRevealed={dailyCardRevealed && dailyReceipt?.dailyKey === currentDay}
       dailyCardRevealing={dailyCardRevealing}
       dailyReceiptReady={dailyReceiptReady}
       dailyRevealOverlayOpen={dailyRevealOverlayOpen}
+      dailyCheckInCredits={dailyCheckInCredits}
       onReveal={revealDailyCard}
       onCloseRevealOverlay={closeDailyRevealOverlay}
       onCardRevealed={markDailyCardRevealed}

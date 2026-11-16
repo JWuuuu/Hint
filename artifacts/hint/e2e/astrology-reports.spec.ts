@@ -357,20 +357,6 @@ for (const language of ["en", "zh", "es", "ja", "ko"] as const)
     page,
   }, info) => {
     await installLetters(page, language, "dark", true, true);
-    await page.goto("/app/astrology?hintPreview=embedded&tab=signs");
-    await expect(page.locator(".astro-sign-choice img")).toHaveCount(12);
-    await expect
-      .poll(() =>
-        page
-          .locator(".astro-sign-choice img")
-          .evaluateAll((images) =>
-            images
-              .slice(0, 4)
-              .every((img) => (img as HTMLImageElement).naturalWidth > 0),
-          ),
-      )
-      .toBe(true);
-    await page.screenshot({ path: info.outputPath("gallery.png") });
     await page.goto("/app/astrology?hintPreview=embedded&tab=chart");
     await expect(page.getByTestId("astro-wheel")).toBeVisible();
     await page

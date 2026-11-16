@@ -274,7 +274,7 @@ function AppNavigationChrome({
     <nav
       aria-label="App"
       data-app-tabbar
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-[21px] pb-[calc(var(--hint-safe-bottom)+0.35rem)]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-[21px] pb-[max(4px,calc(var(--hint-safe-bottom)-2px))]"
     >
       <div
         aria-hidden

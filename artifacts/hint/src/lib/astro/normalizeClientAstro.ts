@@ -1,5 +1,5 @@
 import type { AstroNatalResponse } from "./astroClient";
-import type { Aspect, BirthProfile, ElementBalance, ModalityBalance, NatalChart, PlanetBody, PlanetPlacement, ZodiacSign } from "../../types/astrology";
+import { ADDITIONAL_CHART_BODIES, type AdditionalChartBody, type AdditionalChartPlacement, type Aspect, type BirthProfile, type ElementBalance, type ModalityBalance, type NatalChart, type PlanetBody, type PlanetPlacement, type ZodiacSign } from "../../types/astrology";
 
 const SIGN_MEANINGS: Record<ZodiacSign, string> = {
   aries: "You move directly and need a clear yes or no.",
@@ -26,6 +26,10 @@ function isSign(value: unknown): value is ZodiacSign {
 
 function isBody(value: unknown): value is PlanetBody {
   return typeof value === "string" && BODIES.includes(value as PlanetBody);
+}
+
+function isAdditionalBody(value: string): value is AdditionalChartBody {
+  return ADDITIONAL_CHART_BODIES.includes(value as AdditionalChartBody);
 }
 
 /** Count only returned planets, never an assumed default or a chart angle. */
@@ -72,6 +76,21 @@ export function normalizeClientNatal(profile: BirthProfile, response: AstroNatal
       strength: aspect.strength,
       meaning: "This aspect describes how two chart points exchange pressure, ease, or focus.",
     }));
+  const additionalPlacements: AdditionalChartPlacement[] = [];
+  if (Array.isArray(response.chart.additionalPlacements)) {
+    for (const row of response.chart.additionalPlacements) {
+      if (!row || !isAdditionalBody(row.body) ||
+          !isSign(row.sign) || typeof row.degree !== "number" ||
+          !Number.isFinite(row.degree) || row.degree < 0 || row.degree >= 30 ||
+          additionalPlacements.some(p => p.body === row.body)) continue;
+      additionalPlacements.push({
+        body: row.body, sign: row.sign, degree: row.degree,
+        house: Number.isInteger(row.house) && row.house! >= 1 && row.house! <= 12 ? row.house : undefined,
+        retrograde: typeof row.retrograde === "boolean" ? row.retrograde : undefined,
+        meaning: SIGN_MEANINGS[row.sign],
+      });
+    }
+  }
   const sunSign = placements.find((placement) => placement.body === "sun")?.sign;
   const moonSign = placements.find((placement) => placement.body === "moon")?.sign;
   const risingSign = placements.find((placement) => placement.body === "rising")?.sign;
@@ -87,6 +106,7 @@ export function normalizeClientNatal(profile: BirthProfile, response: AstroNatal
     calculatedAt: response.fetchedAt,
     birthProfile: structuredClone(profile),
     placements,
+    additionalPlacements,
     aspects,
     houses: (response.chart.houses ?? []).filter(house => Number.isInteger(house.house) && house.house >= 1 && house.house <= 12).map((house) => ({
       ...house,

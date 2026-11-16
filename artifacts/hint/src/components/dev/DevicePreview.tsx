@@ -198,7 +198,6 @@ export function DevicePreview() {
             ) : (
               <span className="hint-preview-earpiece" />
             )}
-            {device.safeBottom > 0 ? <span className="hint-preview-home-indicator" /> : null}
           </div>
         </div>
       </div>

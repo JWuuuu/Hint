@@ -1,0 +1,399 @@
+.astro-natal-reading,
+.astro-traditional-wheel {
+  --natal-ink: #462748;
+  --natal-muted: #70546b;
+  --natal-rule: #d8c4d7;
+  --natal-table: rgba(255, 250, 246, .57);
+  --natal-lilac: #efdeed;
+  --natal-surface: #fff7f3;
+  --natal-axis: #765078;
+  --natal-cusp: #baa2ba;
+  --natal-tick: #a38ba2;
+  --natal-fire: #9f4963;
+  --natal-earth: #8b5b36;
+  --natal-air: #7655a5;
+  --natal-water: #5667a5;
+  --natal-fire-fill: #f7e4e9;
+  --natal-earth-fill: #f8eadf;
+  --natal-air-fill: #f0e5f4;
+  --natal-water-fill: #f3e9f4;
+  --natal-conjunction: #ae713c;
+  --natal-sextile: #508a78;
+  --natal-square: #bb5777;
+  --natal-trine: #6475b9;
+  --natal-opposition: #9d60ae;
+  --natal-symbol-font: "Apple Symbols", "Segoe UI Symbol", "Noto Sans Symbols 2", serif;
+}
+
+[data-hint-theme="dark"] :is(.astro-natal-reading, .astro-traditional-wheel) {
+  --natal-ink: #f4e7f3;
+  --natal-muted: #d3bdd3;
+  --natal-rule: #695269;
+  --natal-table: rgba(46, 32, 52, .64);
+  --natal-lilac: #48344d;
+  --natal-surface: #2c2234;
+  --natal-axis: #d0b4d5;
+  --natal-cusp: #866b8a;
+  --natal-tick: #9a809d;
+  --natal-fire: #e3a2b5;
+  --natal-earth: #e0b691;
+  --natal-air: #c8b0ef;
+  --natal-water: #aebcf2;
+  --natal-fire-fill: #422c3b;
+  --natal-earth-fill: #43323a;
+  --natal-air-fill: #3e2d4d;
+  --natal-water-fill: #34304e;
+  --natal-conjunction: #dfa46e;
+  --natal-sextile: #91c8b3;
+  --natal-square: #de86a2;
+  --natal-trine: #9baaf1;
+  --natal-opposition: #d09add;
+}
+
+.astro-natal-reading {
+  width: 100%;
+  max-width: 450px;
+  margin-inline: auto;
+  gap: 24px;
+}
+
+.astro-natal-section {
+  padding-block-start: 6px;
+  min-block-size: calc(100dvh - var(--hint-safe-top, 0px) - 8rem);
+  color: var(--natal-ink);
+  text-align: center;
+  min-width: 0;
+}
+
+.astro-natal-section > header h2 {
+  margin: 0 0 12px;
+  color: var(--natal-ink);
+  font-family: var(--font-serif);
+  font-size: clamp(29px, 8vw, 37px);
+  font-weight: 600;
+  line-height: 1.04;
+}
+
+.astro-natal-section > header h2 {
+  margin-bottom: 4px;
+}
+
+.astro-natal-section > header p {
+  margin: 0;
+  color: var(--natal-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.astro-natal-canvas {
+  position: relative;
+  margin-top: 5px;
+}
+
+.astro-traditional-wheel {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  color: var(--natal-ink);
+}
+
+.astro-traditional-face {
+  fill: var(--natal-surface);
+  stroke: var(--natal-rule);
+  stroke-width: .75;
+}
+
+.astro-traditional-sign > path {
+  stroke: var(--natal-rule);
+  stroke-width: .75;
+}
+
+.astro-traditional-sign svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+
+.astro-traditional-element-0 { fill: var(--natal-fire-fill); color: var(--natal-fire); }
+.astro-traditional-element-1 { fill: var(--natal-earth-fill); color: var(--natal-earth); }
+.astro-traditional-element-2 { fill: var(--natal-air-fill); color: var(--natal-air); }
+.astro-traditional-element-3 { fill: var(--natal-water-fill); color: var(--natal-water); }
+
+.astro-traditional-tick-ring {
+  fill: none;
+  stroke: var(--natal-tick);
+  stroke-width: .5;
+  stroke-opacity: .8;
+}
+
+.astro-traditional-tick {
+  stroke: var(--natal-tick);
+  stroke-width: .4;
+  stroke-opacity: .72;
+}
+
+.astro-traditional-tick.is-major { stroke-width: .72; }
+
+.astro-traditional-house > line {
+  stroke: var(--natal-cusp);
+  stroke-width: .7;
+}
+
+.astro-traditional-house[data-selected="true"] > line {
+  stroke: var(--natal-axis);
+  stroke-width: 1.5;
+}
+
+.astro-traditional-house text,
+.astro-traditional-axis text {
+  fill: var(--natal-ink);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.astro-traditional-axis > line {
+  stroke: var(--natal-axis);
+  stroke-width: 1.25;
+}
+
+.astro-traditional-aspect {
+  stroke: var(--natal-conjunction);
+  stroke-width: 1;
+  opacity: .75;
+}
+
+.astro-traditional-aspect[data-aspect="sextile"] { stroke: var(--natal-sextile); }
+.astro-traditional-aspect[data-aspect="square"] { stroke: var(--natal-square); }
+.astro-traditional-aspect[data-aspect="trine"] { stroke: var(--natal-trine); }
+.astro-traditional-aspect[data-aspect="opposition"] { stroke: var(--natal-opposition); }
+.astro-traditional-aspect[data-selected="true"] { stroke-width: 1.9; opacity: 1; }
+.astro-traditional-aspect[data-dimmed="true"] { opacity: .23; }
+
+.astro-traditional-point > line {
+  stroke: var(--natal-tick);
+  stroke-width: .7;
+}
+
+.astro-traditional-point > circle { fill: var(--natal-axis); }
+.astro-traditional-point[data-selected="true"] > circle { fill: var(--natal-opposition); }
+
+.astro-traditional-glyph { outline: none; }
+.astro-traditional-glyph[role="button"] { cursor: pointer; }
+.astro-traditional-glyph > circle { fill: transparent; stroke: transparent; }
+
+.astro-traditional-glyph:focus-visible > circle,
+.astro-traditional-glyph[aria-pressed="true"] > circle {
+  fill: var(--natal-lilac);
+  stroke: var(--natal-axis);
+}
+
+.astro-traditional-point text {
+  fill: var(--natal-ink);
+  font-family: var(--natal-symbol-font);
+  font-size: 21px;
+}
+
+.astro-traditional-retrograde { font-size: 12px; }
+
+.astro-natal-expand {
+  position: absolute;
+  right: 7px;
+  bottom: 8px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid var(--natal-rule);
+  border-radius: 13px;
+  background: var(--natal-table);
+  box-shadow: 0 4px 11px rgba(75, 48, 76, .085);
+  color: var(--natal-ink);
+}
+
+.astro-natal-layer-settings {
+  margin: 16px auto 0;
+  max-width: 325px;
+  color: var(--natal-muted);
+  font-size: 12px;
+}
+
+.astro-natal-layer-settings > summary { cursor: pointer; padding: 7px; }
+
+.astro-natal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 8px 3px 12px;
+  text-align: start;
+}
+
+.astro-natal-help {
+  margin: 0;
+  color: var(--natal-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.astro-natal-details-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  max-width: 62%;
+  min-height: 44px;
+  padding: 4px 13px;
+  border: 1px solid var(--natal-rule);
+  border-radius: 99px;
+  background: var(--natal-table);
+  color: var(--natal-ink);
+  font: 600 13px var(--font-sans);
+}
+
+.astro-chart-details {
+  --details-page: #fcfaf6;
+  --details-ink: #462748;
+  --details-muted: #70546b;
+  --details-rule: #e1d5dc;
+  --details-row-rule: #ece3e7;
+  --details-tabs: #f2e7ef;
+  --details-tab-active: #fffaf6;
+  --details-table: #fffcf8;
+  --details-table-header: #f5eaf1;
+  --details-symbol: #765478;
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: calc(var(--hint-safe-top, 0px) + 3px) 16px calc(var(--hint-safe-bottom, 0px) + 9px);
+  background: var(--details-page);
+  color: var(--details-ink);
+  font: 500 13px/1.15 var(--font-sans);
+}
+
+[data-hint-theme="dark"] .astro-chart-details {
+  --details-page: #17151e;
+  --details-ink: #f4e7f3;
+  --details-muted: #d3bdd3;
+  --details-rule: #695269;
+  --details-row-rule: #4b384d;
+  --details-tabs: #3b2b3e;
+  --details-tab-active: #554059;
+  --details-table: #261d2c;
+  --details-table-header: #39283b;
+  --details-symbol: #d0b4d5;
+}
+
+.astro-chart-details-inner {
+  max-width: 450px;
+  margin-inline: auto;
+}
+
+.astro-chart-details-header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 7px;
+}
+
+.astro-chart-details-header button {
+  display: grid;
+  width: 44px;
+  min-height: 44px;
+  place-items: center;
+  border: 1px solid var(--details-rule);
+  border-radius: 50%;
+  background: var(--details-tab-active);
+}
+
+.astro-chart-details-header h2 {
+  margin: 0;
+  text-align: center;
+  font: 600 30px/1.1 var(--font-serif);
+}
+
+.astro-chart-details-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+  margin: 12px 0;
+  padding: 3px;
+  border: 1px solid var(--details-rule);
+  border-radius: 24px;
+  background: var(--details-tabs);
+}
+
+.astro-chart-details-tabs button {
+  min-height: 40px;
+  padding: 4px 6px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.astro-chart-details-tabs button[aria-pressed="true"] { background: var(--details-tab-active); }
+
+.astro-chart-details table {
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--details-rule);
+  border-radius: 13px;
+  background: var(--details-table);
+}
+
+.astro-chart-details :is(td, th) {
+  height: 40px;
+  padding: 5px 7px;
+  border-bottom: 1px solid var(--details-row-rule);
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.astro-chart-details thead th {
+  height: 28px;
+  background: var(--details-table-header);
+  font-size: 11px;
+}
+
+.astro-chart-details thead th:nth-child(1) { width: 36%; }
+.astro-chart-details thead th:nth-child(2) { width: 39%; }
+.astro-chart-details thead th:nth-child(3) { width: 15%; }
+.astro-chart-details :is(td, th):nth-child(n+3) { padding-inline: 3px; text-align: center; }
+.astro-chart-details tbody tr:last-child :is(th, td) { border-bottom: 0; }
+.astro-chart-details tbody th { font-weight: 600; }
+.astro-chart-details abbr { text-decoration: none; }
+
+.astro-chart-details-body,
+.astro-chart-details-sign {
+  display: flex;
+  align-items: flex-start;
+}
+
+.astro-chart-details-body { align-items: center; }
+
+.astro-chart-details-glyph {
+  flex: 0 0 26px;
+  color: var(--details-symbol);
+  font: 400 15px "Apple Symbols", "Segoe UI Symbol", serif;
+}
+
+.astro-chart-details-glyph[data-short="true"] { font: 400 10px var(--font-sans); }
+
+.astro-chart-details-sign svg {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  margin-inline-end: 4px;
+  color: var(--details-symbol);
+}
+
+.astro-chart-details :is(small, .astro-chart-details-unavailable) { color: var(--details-muted); }
+.astro-chart-details small { display: block; font-size: 11px; font-variant-numeric: tabular-nums; }

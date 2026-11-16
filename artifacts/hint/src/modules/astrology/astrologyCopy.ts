@@ -4,13 +4,6 @@ export type AstroCopy = readonly [string, string, string, string, string];
 export const astroText = (language: HintLanguage, copy: AstroCopy) =>
   copy[({ en: 0, zh: 1, es: 2, ja: 3, ko: 4 } as const)[language]];
 const copy = {
-  room: [
-    "THE CELESTIAL ATELIER",
-    "月光星象室",
-    "EL ATELIER CELESTE",
-    "月光のアトリエ",
-    "달빛 아틀리에",
-  ],
   title: [
     "A sky of your own",
     "属于你的天空",
@@ -32,7 +25,18 @@ const copy = {
     "星座を知る",
     "별자리 탐색",
   ],
-  chart: ["My chart", "我的星盘", "Mi carta", "私のチャート", "나의 차트"],
+  chart: ["My Chart", "我的星盘", "Mi carta", "私のチャート", "나의 차트"],
+  zodiacTab: ["Zodiac", "星座", "Zodíaco", "星座", "별자리"],
+  togetherTab: ["Together", "合盘", "Juntos", "ふたり", "함께"],
+  astrologyTitle: ["Astrology", "占星", "Astrología", "占星術", "점성술"],
+  portraitTitle: ["Your zodiac portrait", "你的星座画像", "Tu retrato zodiacal", "あなたの星座ポートレート", "나의 별자리 초상"],
+  portraitIntro: [
+    "See how your Sun, Moon and Rising express different parts of you.",
+    "看看太阳、月亮与上升如何描绘你的不同面向。",
+    "Descubre qué facetas de ti muestran tu Sol, Luna y Ascendente.",
+    "太陽・月・アセンダントから、あなたのさまざまな面を見てみましょう。",
+    "태양, 달, 상승궁이 보여 주는 나의 다양한 면을 살펴봐요.",
+  ],
   now: [
     "Transits now",
     "此刻行运",
@@ -67,13 +71,6 @@ const copy = {
   what: ["The theme", "什么主题", "El tema", "テーマ", "주제"],
   how: ["The expression", "如何表达", "La expresión", "表し方", "표현 방식"],
   where: ["The life area", "生活领域", "El ámbito", "生活の領域", "삶의 영역"],
-  library: [
-    "Twelve ways of being",
-    "十二种表达方式",
-    "Doce formas de ser",
-    "12の表現のかたち",
-    "열두 가지 표현 방식",
-  ],
   learning: [
     "Zodiac guide · general learning",
     "星座指南 · 一般知识",
@@ -89,11 +86,11 @@ const copy = {
     "열대황도 별자리를 다뤄요. 천문학의 별자리 구역이나 성격 진단은 아니에요.",
   ],
   backSigns: [
-    "All twelve signs",
-    "返回十二星座",
-    "Los doce signos",
-    "12星座に戻る",
-    "열두 별자리로",
+    "Back to Zodiac",
+    "返回星座",
+    "Volver a Zodíaco",
+    "星座に戻る",
+    "별자리로 돌아가기",
   ],
   everyday: [
     "In everyday life",

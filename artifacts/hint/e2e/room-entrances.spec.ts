@@ -131,7 +131,7 @@ async function attachEvidence(page: Page, info: TestInfo, label: string) {
 
 const homeEntries = [
   { feature: "tarot", ready: (page: Page) => page.getByPlaceholder("Type your question...") },
-  { feature: "astrology", ready: (page: Page) => page.getByRole("heading", { name: "Twelve ways of being", exact: true }) },
+  { feature: "astrology", ready: (page: Page) => page.getByRole("navigation", { name: "Astrology sections", exact: true }) },
   { feature: "collection", ready: (page: Page) => page.getByRole("heading", { name: "Your deck memory", exact: true }) },
   { feature: "personalities", ready: (page: Page) => page.getByRole("heading", { name: "Find Your Type", exact: true }) },
 ] as const;
@@ -276,7 +276,7 @@ for (const entry of meEntries) {
     await expect(entry.ready(page)).toBeVisible();
     if (entry.space === "chart") {
       expect(new URL(page.url()).searchParams.get("tab")).toBe("chart");
-      await expect(page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My chart", exact: true })).toHaveAttribute("aria-pressed", "true");
+      await expect(page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My Chart", exact: true })).toHaveAttribute("aria-pressed", "true");
     }
     await attachEvidence(page, info, `me-${entry.space}`);
   });

@@ -26,6 +26,13 @@ export type AstroNatalResponse = {
     message?: string | null;
   };
   chart?: {
+    additionalPlacements?: Array<{
+      body: string;
+      sign?: string;
+      degree?: number;
+      house?: number;
+      retrograde?: boolean;
+    }>;
     placements: Array<{
       body: string;
       sign?: string;

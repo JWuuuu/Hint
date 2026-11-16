@@ -45,6 +45,22 @@ pnpm install
 
 ## Run locally
 
+### Prepared local backend on this Mac
+
+Double-click `Start Hint Backend.command` to start the project-local PostgreSQL
+database, apply its migrations, build the API, and run it on port 5050. The
+database runtime and persistent data are under the ignored `.local` directory.
+The root `.env` already contains its local database connection.
+
+For real birth-chart calculations, set `ASTROLOGYAPI_API_KEY` in the root `.env`.
+A wallet access token beginning with lowercase `ak-` works without a User ID;
+subscription API keys also require `ASTROLOGYAPI_USER_ID`.
+Stop and restart the backend after changing these values.
+These values stay on the backend; do not put them in a `VITE_` variable.
+An API response with `source: "fallback"` is not a verified live calculation.
+
+### Manual setup
+
 Terminal 1 - API:
 
 ```bash

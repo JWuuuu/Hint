@@ -72,12 +72,12 @@ test("Astrology detail returns to signs, birth settings returns to chart, and bo
   await page.reload();
   await expect(page.getByRole("heading", { name: "Taurus", exact: true })).toBeVisible();
   await expect(page.locator("[data-space-navigation] [data-space-home]")).toBeVisible();
-  await page.getByRole("button", { name: "All twelve signs", exact: true }).click();
+  await page.getByRole("button", { name: "Back to Zodiac", exact: true }).click();
   await expect(page).not.toHaveURL(/sign=taurus/);
-  await expect(page.locator(".astro-sign-grid")).toBeVisible();
+  await expect(page.locator(".astro-library-details")).toBeVisible();
   await page.goto("/app/astrology?tab=birth&hintPreview=embedded");
   await expect(page.locator("form")).toBeVisible();
-  await page.locator(".astro-guide-link").filter({ hasText: "My chart" }).first().click();
+  await page.locator(".astro-guide-link").filter({ hasText: "My Chart" }).first().click();
   await expect(page).toHaveURL(/tab=chart/);
   await expect(page.locator("[data-space-navigation] [data-space-home]")).toBeVisible();
   await page.screenshot({ path: info.outputPath("astrology-parent-and-home.png") });

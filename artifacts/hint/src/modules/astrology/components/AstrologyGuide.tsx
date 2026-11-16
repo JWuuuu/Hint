@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,10 +16,9 @@ import {
 import type {
   AstroTransitsResponse,
   NatalChart,
-  PlanetBody,
   ZodiacSign,
 } from "@/types/astrology";
-import { at } from "../astrologyCopy";
+import { astroText, at } from "../astrologyCopy";
 import {
   SIGN_ORDER,
   SIGN_SYMBOLS,
@@ -32,7 +31,7 @@ import {
   aspectDescription,
   canonicalBody,
 } from "../astrologyLibrary";
-import { NatalWheel, ZodiacSymbol, BODY_SYMBOLS, aspectId } from "./NatalWheel";
+import { NatalWheel, ZodiacSymbol, BODY_SYMBOLS, CHART_POINT_SYMBOLS, aspectId, chartPointName } from "./NatalWheel";
 import type { ChartSelection } from "../chartState";
 import { rt } from "../reportCopy";
 import {
@@ -41,7 +40,9 @@ import {
   aspectReading,
 } from "../interpretationLibrary";
 import { ElementDistribution, zodiacArt } from "./CelestialReports";
+import { NatalChartDetails } from "./NatalChartDetails";
 import "./astrology-guide.css";
+import "./natal-chart-approved.css";
 export { SIGN_ORDER, SIGN_SYMBOLS, signName };
 export const label = (value: string) =>
   value.charAt(0).toUpperCase() + value.slice(1);
@@ -69,16 +70,7 @@ export function AstrologyOrientation() {
   const { language } = useLanguage();
   return (
     <header className="astro-guide-intro">
-      <div className="astro-moon-seal" aria-hidden="true">
-        <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="43" />
-          <circle cx="50" cy="50" r="37" />
-          <path d="M62 23a29 29 0 1 0 15 44A31 31 0 0 1 62 23Z" />
-          <path d="M73 20v12M67 26h12M30 70v8M26 74h8" />
-        </svg>
-      </div>
-      <p className="astro-guide-eyebrow">{at(language, "room")}</p>
-      <h1>{at(language, "title")}</h1>
+      <h2>{at(language, "title")}</h2>
       <p>{at(language, "intro")}</p>
     </header>
   );
@@ -235,38 +227,6 @@ export function ZodiacGuide({
   }
   return (
     <div className="astro-guide-stack astro-page-enter">
-      <section aria-label={at(language, "library")}>
-        <div className="astro-section-heading">
-          <h2>{at(language, "library")}</h2>
-          <span aria-hidden="true">01 — 12</span>
-        </div>
-        <div className="astro-sign-grid">
-          {SIGN_ORDER.map((sign, i) => (
-            <button
-              type="button"
-              className="astro-sign-choice"
-              key={sign}
-              onClick={() => onSign(sign)}
-            >
-              <span className="astro-sign-number" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <img
-                src={zodiacArt(sign)}
-                alt=""
-                width="800"
-                height="800"
-                loading={i < 4 ? "eager" : "lazy"}
-                decoding="async"
-              />
-              <strong>{signName(sign, language)}</strong>
-              <span className="astro-sign-element">
-                {signArticle(sign, language).element}
-              </span>
-            </button>
-          ))}
-        </div>
-      </section>
       <AstroPanel
         eyebrow={at(language, "building")}
         title={at(language, "difference")}
@@ -278,6 +238,16 @@ export function ZodiacGuide({
         <summary>{at(language, "building")}</summary>
         <LearningKey />
         <p className="astro-guide-note">{at(language, "signNote")}</p>
+        <h3>{at(language, "signs")}</h3>
+        <ul className="astro-sign-index" role="list" aria-label={at(language, "signs")}>
+          {SIGN_ORDER.map((sign) => (
+            <li key={sign}>
+              <button type="button" className="astro-guide-link" onClick={() => onSign(sign)}>
+                {signName(sign, language)}
+              </button>
+            </li>
+          ))}
+        </ul>
         <h3>{at(language, "planets")}</h3>
         {Object.keys(BODY_SYMBOLS).map((body) => (
           <div key={body}>
@@ -344,7 +314,8 @@ export function chartDate(
 
 function PlacementValue({ chart, body }: { chart: NatalChart; body: string }) {
   const { language } = useLanguage();
-  const p = chart.placements.find((p) => p.body === body);
+  const p = chart.placements.find((p) => p.body === body)
+    ?? chart.additionalPlacements?.find((p) => p.body === body);
   return (
     <>
       {p?.sign ? signName(p.sign, language) : at(language, "unavailable")}
@@ -355,6 +326,20 @@ function PlacementValue({ chart, body }: { chart: NatalChart; body: string }) {
     </>
   );
 }
+
+const natalPageCopy = {
+  chart: ["Your natal chart", "你的本命星盘", "Tu carta natal", "あなたの出生図", "나의 출생 차트"],
+  details: ["Tap a symbol for details", "点按符号查看详情", "Toca un símbolo para ver más", "記号をタップして詳細を見る", "기호를 눌러 자세히 보기"],
+} as const;
+
+function birthClock(value: string | undefined, language: HintLanguage) {
+  const match = /^([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?$/.exec(value ?? "");
+  if (!match) return value;
+  // Format the stored local clock time without shifting it to the device's zone.
+  return new Intl.DateTimeFormat(language, { hour: "numeric", minute: "2-digit", timeZone: "UTC" })
+    .format(new Date(Date.UTC(2000, 0, 1, Number(match[1]), Number(match[2]))));
+}
+
 export function NatalReading({
   chart,
   selection,
@@ -375,6 +360,7 @@ export function NatalReading({
   error?: string;
 }) {
   const { language } = useLanguage();
+  const chartId = useId();
   const [zoom, setZoom] = useState(false);
   const [layers, setLayers] = useState({
     planets: true,
@@ -384,6 +370,10 @@ export function NatalReading({
   const opener = useRef<HTMLElement | null>(null);
   const readingRoot = useRef<HTMLDivElement>(null);
   const activeDialog = useRef<string | null>(null);
+  const placements = [...chart.placements, ...(chart.additionalPlacements ?? [])];
+  const formattedBirthDate = chartDate(chart.birthProfile.birthDate, language);
+  const formattedBirthTime = birthClock(chart.birthProfile.birthTime, language);
+  const chartTitle = astroText(language, natalPageCopy.chart);
   function rememberOpener(event: import("react").SyntheticEvent) {
     const target = event.target as Element;
     if (target.closest('[role="dialog"]')) return;
@@ -406,7 +396,7 @@ export function NatalReading({
   }, [selection]);
   const p =
     selection?.kind === "body"
-      ? chart.placements.find((p) => p.body === selection.id)
+      ? placements.find((p) => p.body === selection.id)
       : null;
   const h =
     selection?.kind === "house"
@@ -417,155 +407,53 @@ export function NatalReading({
       ? chart.aspects.find((a) => aspectId(a) === selection.id)
       : null;
   const article = p?.sign ? signArticle(p.sign, language) : null;
+  const standardPlacement = p && chart.placements.find((placement) => placement.body === p.body);
   activeDialog.current = p || h || a ? "detail" : zoom ? "zoom" : null;
   const title = p
-    ? `${bodyName(p.body, language)} · ${p.sign ? signName(p.sign, language) : at(language, "unavailable")}`
+    ? `${chartPointName(p.body, language)} · ${p.sign ? signName(p.sign, language) : at(language, "unavailable")}`
     : h
       ? `${at(language, "house")} ${h.house}`
       : a
-        ? `${bodyName(a.from, language)} · ${aspectName(a.type, language)} · ${bodyName(a.to, language)}`
+        ? `${chartPointName(a.from, language)} · ${aspectName(a.type, language)} · ${chartPointName(a.to, language)}`
         : "";
   return (
     <div
       ref={readingRoot}
       onClickCapture={rememberOpener}
       onKeyDownCapture={rememberOpener}
-      className="astro-guide-stack astro-page-enter"
+      className="astro-guide-stack astro-page-enter astro-natal-reading"
     >
       {selection && !p && !h && !a && (
         <p role="status">{at(language, "missingSelection")}</p>
       )}
-      <AstroPanel
-        eyebrow={at(language, "birthSky")}
-        title={chart.birthProfile.name}
-        className="astro-personal-summary"
-      >
-        <p>{at(language, "chartIntro")}</p>
-        <button type="button" className="astro-guide-link" onClick={onEdit}>
-          <Settings2 size={15} />
-          {at(language, "edit")}
-        </button>
-        <div className="astro-core-grid">
-          {(["sun", "moon", "rising"] as PlanetBody[]).map((body) => {
-            const placement = chart.placements.find((p) => p.body === body);
-            return (
-              <button
-                type="button"
-                key={body}
-                disabled={!placement}
-                onClick={() => onSelection({ kind: "body", id: body })}
-              >
-                <span aria-hidden="true">{BODY_SYMBOLS[body]}</span>
-                <small>{bodyName(body, language)}</small>
-                <strong>
-                  {placement?.sign
-                    ? signName(placement.sign, language)
-                    : at(language, "unavailable")}
-                </strong>
-              </button>
-            );
-          })}
+      <section className="astro-natal-section" aria-labelledby={chartId}>
+        <header>
+          <h2 id={chartId}>{chartTitle}</h2>
+          <p>{[formattedBirthDate, formattedBirthTime].filter(Boolean).join(" · ")}</p>
+          {chart.birthProfile.birthPlace && <p>{chart.birthProfile.birthPlace}</p>}
+        </header>
+        <div className="astro-natal-canvas">
+          <NatalWheel variant="traditional" chart={chart} selection={selection ?? highlight} onSelect={onSelection} layers={layers} />
+          <button type="button" className="astro-natal-expand" aria-label={at(language, "zoom")} onClick={() => setZoom(true)}>
+            <Expand size={17} aria-hidden="true" />
+          </button>
         </div>
-      </AstroPanel>
-      <AstroPanel title={at(language, "wheel")} className="astro-wheel-panel">
-        <NatalWheel
-          chart={chart}
-          selection={selection ?? highlight}
-          onSelect={onSelection}
-          layers={layers}
-        />
-        <div
-          className="astro-chart-modes"
-          role="group"
-          aria-label={rt(language, "layers")}
-        >
+        <div className="astro-natal-actions">
+          <p className="astro-natal-help">{astroText(language, natalPageCopy.details)}</p>
+          <NatalChartDetails chart={chart} />
+        </div>
+      </section>
+      <details className="astro-natal-layer-settings">
+        <summary>{rt(language, "layers")}</summary>
+        <div className="astro-chart-modes" role="group" aria-label={rt(language, "layers")}>
           {(["planets", "houses", "aspects"] as const).map((key) => (
-            <button
-              type="button"
-              key={key}
-              aria-pressed={layers[key]}
-              onClick={() =>
-                setLayers((value) => ({ ...value, [key]: !value[key] }))
-              }
-            >
+            <button type="button" key={key} aria-pressed={layers[key]}
+              onClick={() => setLayers((value) => ({ ...value, [key]: !value[key] }))}>
               {at(language, key)}
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          className="astro-guide-link"
-          onClick={() => setZoom(true)}
-        >
-          <Expand size={16} />
-          {at(language, "zoom")}
-        </button>
-        <p className="astro-guide-note">{at(language, "wheelHelp")}</p>
-        <div className="astro-wheel-legend">
-          <span>
-            <i className="astro-legend-ease" />
-            {aspectName("trine", language)} / {aspectName("sextile", language)}
-          </span>
-          <span>
-            <i className="astro-legend-tension" />
-            {aspectName("square", language)} /{" "}
-            {aspectName("opposition", language)}
-          </span>
-        </div>
-      </AstroPanel>
-      <ElementDistribution chart={chart} />
-      <AstroPanel title={at(language, "placements")}>
-        <div className="astro-placement-list">
-          {chart.placements.map((p) => (
-            <button
-              type="button"
-              key={p.body}
-              data-selected={
-                (selection ?? highlight)?.kind === "body" &&
-                (selection ?? highlight)?.id === p.body
-              }
-              onClick={() => onSelection({ kind: "body", id: p.body })}
-            >
-              <span>
-                <i aria-hidden="true">{BODY_SYMBOLS[p.body]}</i>
-                <strong>{bodyName(p.body, language)}</strong>
-              </span>
-              <span>
-                <PlacementValue chart={chart} body={p.body} />
-                {p.house && (
-                  <small>
-                    {at(language, "house")} {p.house}
-                  </small>
-                )}
-              </span>
-              <ArrowRight size={14} />
-            </button>
-          ))}
-        </div>
-      </AstroPanel>
-      <AstroPanel title={at(language, "aspects")}>
-        <div className="astro-placement-list">
-          {chart.aspects.map((a, i) => (
-            <button
-              type="button"
-              key={`${aspectId(a)}:${i}`}
-              onClick={() => onSelection({ kind: "aspect", id: aspectId(a) })}
-            >
-              <span>
-                {bodyName(a.from, language)} · {bodyName(a.to, language)}
-              </span>
-              <span>
-                {aspectName(a.type, language)}
-                {typeof a.orb === "number" && (
-                  <small>{a.orb.toFixed(1)}°</small>
-                )}
-              </span>
-              <ArrowRight size={14} />
-            </button>
-          ))}
-        </div>
-        {!chart.aspects.length && <p>{at(language, "unavailable")}</p>}
-      </AstroPanel>
+      </details>
       <AstroPanel title={at(language, "houses")}>
         <div className="astro-placement-list">
           {chart.houses.map((h) => (
@@ -593,6 +481,7 @@ export function NatalReading({
         </div>
         {!chart.houses.length && <p>{at(language, "unavailable")}</p>}
       </AstroPanel>
+      <ElementDistribution chart={chart} />
       <AstroPanel title={at(language, "transitTitle")}>
         <p>{at(language, "transitIntro")}</p>
         <button
@@ -619,6 +508,10 @@ export function NatalReading({
           {chart.calculation?.houseSystem || at(language, "unavailable")}
         </p>
         <p>{at(language, "returnedOnly")}</p>
+        <button type="button" className="astro-guide-link" onClick={onEdit}>
+          <Settings2 size={15} aria-hidden="true" />
+          {at(language, "edit")}
+        </button>
         <button
           className="astro-guide-link"
           type="button"
@@ -647,18 +540,20 @@ export function NatalReading({
                 <p className="astro-detail-evidence">
                   <PlacementValue chart={chart} body={p.body} />
                 </p>
-                <p>{bodyDescription(p.body, language)}</p>
-                {placementReading(p, language).map((text, i) => (
-                  <p key={i}>{text}</p>
-                ))}
+                {standardPlacement && (
+                  <>
+                    <p>{bodyDescription(p.body, language)}</p>
+                    {placementReading(standardPlacement, language).map((text, i) => <p key={i}>{text}</p>)}
+                  </>
+                )}
                 {p.house && (
                   <section>
                     <h3>
                       {at(language, "house")} {p.house}
                     </h3>
-                    {placementHouseReading(p, language).map((text, i) => (
-                      <p key={i}>{text}</p>
-                    ))}
+                    {standardPlacement
+                      ? placementHouseReading(standardPlacement, language).map((text, i) => <p key={i}>{text}</p>)
+                      : <p>{houseDescription(p.house, language)}</p>}
                   </section>
                 )}
                 {p.retrograde && <p>{at(language, "retroNote")}</p>}
@@ -674,9 +569,9 @@ export function NatalReading({
                           onSelection({ kind: "aspect", id: aspectId(a) })
                         }
                       >
-                        {bodyName(a.from, language)} ·{" "}
+                        {chartPointName(a.from, language)} ·{" "}
                         {aspectName(a.type, language)} ·{" "}
-                        {bodyName(a.to, language)}
+                        {chartPointName(a.to, language)}
                       </button>
                     ))}
                 </div>
@@ -702,7 +597,7 @@ export function NatalReading({
                 </p>
                 <p>{houseDescription(h.house, language)}</p>
                 <div className="astro-placement-list">
-                  {chart.placements
+                  {placements
                     .filter((p) => p.house === h.house)
                     .map((p) => (
                       <button
@@ -712,7 +607,7 @@ export function NatalReading({
                           onSelection({ kind: "body", id: p.body })
                         }
                       >
-                        {bodyName(p.body, language)} ·{" "}
+                        {chartPointName(p.body, language)} ·{" "}
                         <PlacementValue chart={chart} body={p.body} />
                       </button>
                     ))}
@@ -745,14 +640,18 @@ export function NatalReading({
           onCloseAutoFocus={restoreFocus}
           className="astro-theme astro-detail-dialog astro-zoom-dialog"
         >
-          <DialogTitle>{at(language, "wheel")}</DialogTitle>
+          <DialogTitle>{chartTitle}</DialogTitle>
           <DialogDescription>{at(language, "wheelHelp")}</DialogDescription>
           <div className="astro-dialog-scroll">
             <div className="astro-zoom-canvas">
-              <NatalWheel chart={chart} selection={selection ?? highlight} />
+              <NatalWheel variant="traditional" chart={chart} selection={selection ?? highlight} layers={layers}
+                onSelect={(next) => {
+                  setZoom(false);
+                  onSelection(next);
+                }} />
             </div>
             <div className="astro-placement-list">
-              {chart.placements.map((p) => (
+              {placements.map((p) => (
                 <button
                   type="button"
                   key={p.body}
@@ -761,7 +660,7 @@ export function NatalReading({
                     onSelection({ kind: "body", id: p.body });
                   }}
                 >
-                  <span>{bodyName(p.body, language)}</span>
+                  <span>{chartPointName(p.body, language)}</span>
                   <PlacementValue chart={chart} body={p.body} />
                 </button>
               ))}

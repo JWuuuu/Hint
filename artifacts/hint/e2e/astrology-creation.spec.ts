@@ -27,9 +27,10 @@ test("fresh Astrology journey verifies a birthplace, reviews details and restore
     } } });
   });
   await page.goto("/app/astrology?hintPreview=embedded");
-  await page.locator(".astro-sign-choice").filter({ has: page.getByText("Aries", { exact: true }) }).click();
+  await page.locator(".astro-library-details > summary").click();
+  await page.getByRole("list", { name: "Signs", exact: true }).getByRole("button", { name: "Aries", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Aries", exact: true })).toBeVisible();
-  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My chart", exact: true }).click();
+  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My Chart", exact: true }).click();
   await page.getByRole("button", { name: "Create my birth chart", exact: true }).click();
   await page.getByLabel("Name", { exact: true }).fill("Fictional New Reader");
   await page.getByLabel("Birth date", { exact: true }).fill("1995-05-15");
@@ -47,7 +48,7 @@ test("fresh Astrology journey verifies a birthplace, reviews details and restore
   expect(timezoneRequests).toEqual([{ latitude: 41.87, longitude: -87.62, dateISO: "1995-05-15" }]);
   expect(calculations).toHaveLength(1);
   expect(calculations[0].profile).toMatchObject({ id: owner, name: "Fictional New Reader", birthDate: "1995-05-15", birthTime: "10:20", latitude: 41.87, longitude: -87.62, timezone: "America/Chicago", timezoneOffset: -5 });
-  await page.locator(".astro-core-grid").getByRole("button", { name: /Sun/ }).click();
+  await page.getByTestId("astro-wheel").getByRole("button", { name: "Sun", exact: true }).click();
   await expect(page.getByRole("dialog").getByRole("heading", { level: 2 })).toHaveText("Sun · Taurus");
   await page.keyboard.press("Escape");
   await page.reload();

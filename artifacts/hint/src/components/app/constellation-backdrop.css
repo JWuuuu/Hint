@@ -1,4 +1,4 @@
-.hint-app-shell-root.hint-constellation-shell {
+.hint-app-shell-root.hint-constellation-shell[data-hint-theme] {
   isolation: isolate;
   background: #fcfaf6;
 }

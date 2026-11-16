@@ -1,0 +1,422 @@
+.astro-guide:has(.zodiac-portrait) .astro-guide-nav {
+  border-color: color-mix(in srgb, var(--astro-lavender) 30%, var(--astro-inner));
+  background: linear-gradient(145deg, var(--astro-inner), color-mix(in srgb, var(--astro-selected) 66%, var(--astro-inner)));
+}
+
+.astro-guide:has(.zodiac-portrait) .astro-guide-nav button {
+  color: color-mix(in srgb, var(--astro-text) 72%, var(--astro-muted));
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+.astro-guide:has(.zodiac-portrait) .astro-guide-nav button[aria-pressed="true"] {
+  color: var(--astro-text);
+  font-weight: 600;
+}
+
+.zodiac-portrait {
+  --portrait-ink: #361e38;
+  --portrait-secondary: #524255;
+  --portrait-accent: #9467a6;
+  --portrait-pearl: #fffaf6;
+  --portrait-tint-strength: 88%;
+  --portrait-light: rgba(255, 254, 248, .6);
+  --portrait-highlight: rgba(255, 255, 255, .83);
+  --portrait-outline: color-mix(in srgb, var(--hint-gold-bright, #e2c992) 46%, transparent);
+  --portrait-trail: color-mix(in srgb, var(--hint-gold, #cba66f) 67%, transparent);
+  --portrait-shadow: rgba(96, 54, 85, .17);
+  width: min(100%, 27rem);
+  min-width: 0;
+  margin-inline: auto;
+  padding: .35rem 0 .75rem;
+  text-align: center;
+  color: var(--portrait-ink);
+  container-type: inline-size;
+}
+
+[data-hint-theme="dark"] .zodiac-portrait {
+  --portrait-ink: var(--astro-text, #f6eaf3);
+  --portrait-secondary: var(--astro-muted, #c7b2c5);
+  --portrait-accent: var(--astro-lavender, #b9a4d1);
+  --portrait-pearl: #302337;
+  --portrait-tint-strength: 24%;
+  --portrait-light: rgba(238, 205, 233, .13);
+  --portrait-highlight: rgba(247, 229, 245, .28);
+  --portrait-outline: color-mix(in srgb, var(--hint-gold-bright, #fff0c7) 32%, transparent);
+  --portrait-shadow: rgba(9, 4, 13, .44);
+}
+
+.zodiac-portrait .zodiac-portrait-heading {
+  max-width: 16ch;
+  margin: 0 auto clamp(1.25rem, 8.7cqi, 2rem);
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(1.65rem, 9.15cqi, 2.55rem);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: .98;
+  text-wrap: balance;
+}
+
+.zodiac-portrait-grid {
+  position: relative;
+  display: grid;
+  grid-template-areas:
+    "rising sun moon"
+    "mercury center venus"
+    "mars north-node juno";
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(.25rem, 1.85cqi, .56rem);
+  isolation: isolate;
+}
+
+.zodiac-portrait-tile {
+  --tile-rotation: 0deg;
+  --tile-offset: 0rem;
+  --tile-tint: #eac6da;
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: .22rem;
+  width: 100%;
+  min-width: 0;
+  min-height: 5.45rem;
+  margin-top: var(--tile-offset);
+  padding: .62rem .18rem .68rem;
+  border-radius: clamp(.85rem, 4.55cqi, 1.2rem);
+  text-align: center;
+  color: inherit;
+}
+
+.zodiac-portrait-tile::before {
+  --tile-reflection: var(--tile-reflection-strength, 30%);
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border: 1px solid var(--portrait-outline);
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      ellipse 102% 113% at var(--tile-reflection-origin, 19% 6%),
+      transparent 64%,
+      color-mix(in srgb, var(--portrait-light) var(--tile-reflection), transparent) 76%,
+      color-mix(in srgb, var(--portrait-highlight) var(--tile-reflection), transparent) 79%,
+      transparent 81%
+    ),
+    radial-gradient(ellipse at 15% -16%, var(--portrait-light), transparent 77%),
+    radial-gradient(ellipse at 66% 124%, var(--portrait-light), transparent 56%),
+    linear-gradient(146deg, var(--portrait-pearl) -18%, color-mix(in srgb, var(--tile-tint) var(--portrait-tint-strength), var(--portrait-pearl)) 93%);
+  box-shadow: inset 0 0 0 .7px var(--portrait-highlight), 0 .25rem .5rem -.22rem var(--portrait-shadow);
+  transform: rotate(calc(var(--tile-rotation) * var(--tile-tilt, 1)));
+  pointer-events: none;
+  content: "";
+}
+
+button.zodiac-portrait-tile {
+  cursor: pointer;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .astro-guide[data-motion="on"] button.zodiac-portrait-tile::before {
+    transition: transform 180ms ease;
+  }
+
+  .astro-guide[data-motion="on"] button.zodiac-portrait-tile:hover::before {
+    transform: translateY(-1px) rotate(calc(var(--tile-rotation) * var(--tile-tilt, 1)));
+  }
+}
+
+.zodiac-portrait :is(button.zodiac-portrait-tile, .zodiac-portrait-cta):focus-visible {
+  z-index: 2;
+  outline: 2px solid var(--portrait-accent);
+  outline-offset: 3px;
+}
+
+.zodiac-portrait-tile[data-placement="rising"] {
+  grid-area: rising;
+  --tile-offset: 1.05rem;
+  --tile-rotation: -4deg;
+  --tile-reflection-strength: 42%;
+}
+
+.zodiac-portrait-tile[data-placement="sun"] {
+  grid-area: sun;
+  --tile-tint: #f7d5b2;
+  --tile-reflection-origin: 17% 74%;
+  --tile-reflection-strength: 73%;
+}
+
+.zodiac-portrait-tile[data-placement="moon"] {
+  grid-area: moon;
+  --tile-tint: #ded1ed;
+  --tile-offset: 1.05rem;
+  --tile-rotation: 3.4deg;
+  --tile-reflection-origin: 86% 4%;
+}
+
+.zodiac-portrait-tile[data-placement="mercury"] {
+  grid-area: mercury;
+  --tile-tint: #eedacf;
+  --tile-rotation: -1.3deg;
+}
+
+.zodiac-portrait-tile[data-placement="venus"] {
+  grid-area: venus;
+  --tile-tint: #f2c9d4;
+  --tile-rotation: 1.8deg;
+  --tile-reflection-origin: 83% 14%;
+}
+
+.zodiac-portrait-tile[data-placement="mars"] {
+  grid-area: mars;
+  --tile-tint: #f5cbb8;
+  --tile-rotation: -2.8deg;
+}
+
+.zodiac-portrait-tile[data-placement="north_node"] {
+  grid-area: north-node;
+  z-index: 0;
+  justify-self: center;
+  width: calc(100% + .85rem);
+  --tile-tint: #dfcbe7;
+  --tile-offset: 2.5rem;
+}
+
+.zodiac-portrait-tile[data-placement="juno"] {
+  grid-area: juno;
+  --tile-tint: #d8c7e2;
+  --tile-rotation: 3deg;
+  --tile-reflection-origin: 14% 3%;
+  --tile-reflection-strength: 59%;
+}
+
+.zodiac-portrait-glyph {
+  display: block;
+  width: 1.24rem;
+  height: 1.24rem;
+  margin-bottom: .07rem;
+}
+
+.zodiac-portrait-asc {
+  width: auto;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1.24rem;
+}
+
+.zodiac-portrait-placement,
+.zodiac-portrait-result {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.zodiac-portrait-placement {
+  font-size: clamp(.71875rem, 3.45cqi, .91rem);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--portrait-secondary);
+}
+
+.zodiac-portrait-result {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(1.04rem, 6.1cqi, 1.65rem);
+  font-weight: 600;
+  letter-spacing: -.025em;
+  line-height: 1.02;
+}
+
+.zodiac-portrait-tile[data-unavailable="true"] .zodiac-portrait-result {
+  font-family: inherit;
+  font-size: clamp(.675rem, 3.15cqi, .86rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--portrait-secondary);
+}
+
+.zodiac-portrait-center {
+  grid-area: center;
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: .52rem;
+  min-width: 0;
+  min-height: 5.3rem;
+  padding: .22rem .1rem;
+  color: var(--portrait-accent);
+}
+
+.zodiac-portrait-center > span {
+  max-width: 100%;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(.625rem, 3.3cqi, .95rem);
+  font-weight: 700;
+  letter-spacing: .16em;
+  line-height: 1.12;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.zodiac-portrait-waves {
+  display: block;
+  width: min(82%, 5.35rem);
+  height: auto;
+}
+
+.zodiac-portrait-sign-symbol {
+  display: block;
+  width: min(65%, 3.95rem);
+  height: auto;
+}
+
+.zodiac-portrait-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  min-height: 2.75rem;
+  min-width: min(100%, 13.15rem);
+  max-width: 100%;
+  margin: clamp(1.25rem, 9.8cqi, 2.4rem) auto .35rem;
+  padding: .5rem clamp(.9rem, 7cqi, 1.55rem);
+  border: 1px solid var(--portrait-outline);
+  border-radius: 999px;
+  background: linear-gradient(145deg, var(--astro-pearl), color-mix(in srgb, var(--astro-selected) 88%, var(--astro-pearl)));
+  box-shadow: inset 0 1px 0 var(--portrait-highlight), 0 .3rem .7rem -.4rem var(--portrait-shadow);
+  color: var(--portrait-ink);
+  font-size: clamp(.9rem, 4.1cqi, 1.07rem);
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.zodiac-portrait-cta svg {
+  flex: none;
+}
+
+.zodiac-portrait-cta-rim {
+  position: absolute;
+  inset: -1px;
+  overflow: hidden;
+  padding: 1px;
+  border-radius: inherit;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.zodiac-portrait-cta-trail {
+  position: absolute;
+  top: 0;
+  left: 65%;
+  width: 5.75rem;
+  height: 2.375rem;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--portrait-trail) 32%, transparent) 32%,
+    var(--portrait-trail) 72%,
+    transparent
+  );
+  mask-image: linear-gradient(transparent, #000 29% 71%, transparent);
+}
+
+@supports (offset-path: inset(0 round 999px)) {
+  .zodiac-portrait-cta-trail {
+    left: 0;
+    transform: none;
+    offset-path: inset(0 round 999px);
+    offset-rotate: auto;
+    offset-distance: 12%;
+    animation: zodiac-portrait-border-flow 9s linear infinite;
+  }
+}
+
+@keyframes zodiac-portrait-border-flow {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+@media (min-height: 741px) {
+  .zodiac-portrait {
+    min-block-size: calc(100dvh - var(--hint-safe-top) - 8rem);
+  }
+}
+
+@media (max-height: 740px) {
+  .zodiac-portrait .zodiac-portrait-heading {
+    margin-bottom: 1.1rem;
+  }
+
+  .zodiac-portrait-grid {
+    row-gap: .36rem;
+  }
+
+  .zodiac-portrait-tile {
+    min-height: 4.9rem;
+    padding-block: .45rem;
+  }
+
+  .zodiac-portrait-tile:is([data-placement="rising"], [data-placement="moon"]) {
+    --tile-offset: .65rem;
+  }
+
+  .zodiac-portrait-tile[data-placement="north_node"] {
+    --tile-offset: 1.75rem;
+  }
+
+  .zodiac-portrait-center {
+    min-height: 4.85rem;
+  }
+
+  .zodiac-portrait-waves {
+    width: min(80%, 4.75rem);
+  }
+
+  .zodiac-portrait-cta {
+    margin-top: 1.1rem;
+  }
+}
+
+@container (max-width: 17rem) {
+  .zodiac-portrait-grid {
+    --tile-tilt: 0;
+  }
+
+  .zodiac-portrait-tile[data-placement="north_node"] {
+    --tile-offset: 1.4rem;
+  }
+
+  .zodiac-portrait-placement {
+    font-size: .71875rem;
+  }
+}
+
+@container (max-width: 12rem) {
+  .zodiac-portrait-grid {
+    grid-template-areas:
+      "center center"
+      "rising sun"
+      "moon mercury"
+      "venus mars"
+      "north-node juno";
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zodiac-portrait-tile {
+    margin-top: 0;
+  }
+
+  .zodiac-portrait-tile[data-placement="north_node"] {
+    width: 100%;
+  }
+}
