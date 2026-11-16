@@ -67,6 +67,19 @@ server is draining. Readiness and authentication logic are unchanged.
 Local checks (from `artifacts/api-server`, with existing pinned dependencies):
 
 ```text
+pnpm test
+```
+
+The canonical API command, also used by candidate verification, runs all Vitest
+suites and then the production provenance suite with Node's test runner. Only
+`build.provenance.test.mjs` is excluded from Vitest discovery because it uses
+`node:test`; it is executed explicitly, with all nested checks preserved. Full
+database integration coverage still requires the isolated quality-test database
+and `HINT_ISOLATED_DB=1`, as configured in candidate verification.
+
+Focused provenance checks:
+
+```text
 node node_modules/vitest/vitest.mjs run src/lib/buildProvenance.test.ts src/routes/healthProvenance.test.ts
 node --test build.provenance.test.mjs
 ```

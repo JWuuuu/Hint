@@ -58,7 +58,7 @@ jobs:
       - run: pnpm run typecheck
       - run: pnpm --filter @workspace/hint exec vitest run
       - run: pnpm --filter @workspace/hint exec node --test scripts/release-config.test.mjs scripts/check-native-assets.test.mjs scripts/ios-build-config.test.mjs
-      - run: pnpm --filter @workspace/api-server exec vitest run
+      - run: pnpm --filter @workspace/api-server test
       - run: pnpm run build:api
       - if: ${{ inputs.mobile }}
         run: pnpm run mobile:build
