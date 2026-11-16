@@ -617,28 +617,238 @@
   .receipt-printer__power-light { transform: none !important; transition: none !important; }
 }
 
-/* Integrated sharing: the printer remains Tiantian's artwork; content is live. */
+/* Integrated sharing: reference-matched printer artwork and live receipt content. */
 .receipt-share-dialog { position: fixed; inset: 0; z-index: 230; display: flex; flex-direction: column; min-width: 0; color: var(--hint-text); background: var(--hint-page-bg, #fbf6f3); outline: none; }
+/* The sharing scene follows the app's appearance preference. */
+.receipt-share-dialog { isolation: isolate; }
+.receipt-share-dialog[data-hint-theme="bright"] {
+  --hint-text: #49323e;
+  --hint-muted: #89717e;
+  --hint-border: rgba(176, 110, 136, .17);
+  /* The shell's existing homepage backdrop remains visible behind the printer. */
+  background: transparent;
+}
+.receipt-share-dialog[data-hint-theme="dark"] {
+  --hint-text: #f6eef0;
+  --hint-muted: #c5b5c2;
+  --hint-border: rgba(189, 148, 177, .17);
+  isolation: isolate;
+  background: #120e18;
+}
+.receipt-share-sky {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 53% 31%, rgba(93, 54, 87, .27), transparent 45%),
+    radial-gradient(ellipse at 92% 13%, rgba(77, 46, 78, .19), transparent 33%),
+    radial-gradient(ellipse at 54% 90%, rgba(77, 46, 76, .25), transparent 42%),
+    linear-gradient(115deg, #0e0b13, #19111f 48%, #110d17);
+}
+.receipt-share-sky > svg { display: block; width: 100%; height: 100%; }
+.receipt-share-sky__constellations { fill: #a0748c; fill-opacity: .37; stroke: #9c6985; stroke-width: .55; stroke-opacity: .24; }
+.receipt-share-sky__constellations polyline { fill: none; }
+.receipt-share-sky__moon { opacity: .73; }
+.receipt-share-sky__star {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: receipt-sky-twinkle var(--star-duration) ease-in-out var(--star-delay) infinite;
+}
+@keyframes receipt-sky-twinkle {
+  0%, 100% { opacity: .32; transform: scale(.88); }
+  48% { opacity: .94; transform: scale(1.06); }
+  68% { opacity: .62; transform: scale(.97); }
+}
+.receipt-share-sky[data-paused="true"] .receipt-share-sky__star { animation-play-state: paused; }
+.receipt-share-sky[data-reduced="true"] .receipt-share-sky__star { animation: none; opacity: .7; }
+@media (prefers-reduced-motion: reduce) {
+  .receipt-share-sky__star { animation: none; opacity: .7; }
+}
+.hint-app-shell-root:has(> .receipt-share-dialog) > :is([data-room-content], [data-app-tabbar]) { visibility: hidden; }
+.hint-app-shell-root > .receipt-share-dialog > :is(.receipt-share-header, .receipt-share-footer) { background: transparent; }
 .receipt-share-header { display: flex; flex: none; align-items: center; gap: 12px; padding: calc(var(--hint-safe-top) + 12px) 16px 12px; border-bottom: 1px solid var(--hint-border); }
 .receipt-share-header button { display: grid; place-items: center; min-width: 44px; min-height: 44px; }
+.receipt-share-header > div { flex: 1; min-width: 0; }
+.receipt-share-body { position: relative; display: flex; flex: 1; min-height: 0; }
+.receipt-share-skip {
+  --receipt-skip-fill: #87516a;
+  position: absolute;
+  z-index: 4;
+  isolation: isolate;
+  top: 12px;
+  right: 12px;
+  min-width: 72px;
+  min-height: 44px;
+  padding: 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+  color: #fffaf8;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.receipt-share-skip::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 6px 0;
+  border: 1px solid var(--receipt-skip-fill);
+  border-radius: inherit;
+  background: var(--receipt-skip-fill);
+  box-shadow: 0 2px 6px rgb(53 27 42 / 16%);
+  pointer-events: none;
+}
+.receipt-share-dialog[data-hint-theme="dark"] .receipt-share-skip { --receipt-skip-fill: #c1a5cf; color: #2b1c33; }
 .receipt-share-header h2 { font-family: var(--app-font-serif); font-size: 26px; line-height: 1.15; }
 .receipt-share-header p { font-size: 13px; line-height: 1.5; color: var(--hint-muted); }
-.receipt-share-scroll { min-height: 0; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px 12px 28px; overscroll-behavior: contain; }
-.receipt-share-private { display: flex; align-items: start; gap: 10px; margin: 0 auto 16px; padding: 12px; max-width: 380px; min-height: 44px; font-size: 14px; line-height: 1.5; }
-.receipt-share-private input { margin-top: 4px; flex: none; width: 18px; height: 18px; accent-color: #915f7b; }
+.receipt-share-scroll { min-height: 0; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 52px 12px 28px; overscroll-behavior: contain; }
 .receipt-share-footer { flex: none; border-top: 1px solid var(--hint-border); padding: 8px 16px calc(var(--hint-safe-bottom) + 12px); background: var(--hint-surface); }
-.receipt-share-footer p { min-height: 20px; font-size: 12px; text-align: center; }
-.receipt-share-footer > div { display: flex; flex-wrap: wrap; gap: 10px; }
+.receipt-share-footer p { margin: 0 0 8px; font-size: 12px; text-align: center; }
+.receipt-share-footer > div { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .receipt-share-footer button, .receipt-share-error button, .receipt-share-trigger { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; padding: 12px 16px; border-radius: 24px; border: 1px solid var(--hint-border); font-size: 14px; line-height: 1.4; }
-.receipt-share-footer button { flex: 1 1 120px; }
-.receipt-share-footer button:last-child { background: #825770; color: #fff8f4; }
+.receipt-share-footer button { min-width: 0; padding: 10px 8px; font-size: 12px; }
+.receipt-share-footer button svg { flex: none; }
+.receipt-share-footer button { background: #b16e8a; color: #fff8f4; }
 .receipt-share-dialog button:disabled, .receipt-share-trigger:disabled { opacity: .45; }
 .receipt-share-dialog button:focus-visible, .receipt-share-trigger:focus-visible { outline: 2px solid var(--hint-text); outline-offset: 3px; }
 .receipt-share-image { width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto; }
 .receipt-share-link { display: block; min-height: 44px; padding: 12px; margin: 12px auto 0; text-decoration: underline; }
 .receipt-share-error { padding: 16px; margin: 12px auto; max-width: 380px; font-size: 14px; line-height: 1.5; }
 .receipt-share-trigger { color: var(--hint-text); background: var(--hint-surface-soft); }
-.receipt-printer--share { --receipt-asset-width: min(320px, calc(100vw - 48px)); --receipt-source-unit-y: calc(min(340px, calc(100vw - 32px)) * .8 / 340); }
+.receipt-printer--share {
+  --receipt-case-shadow: rgba(73, 35, 50, .10);
+  --receipt-resting-shadow: rgba(83, 48, 58, .15);
+  --receipt-case-light: rgba(255, 253, 244, .48);
+  --receipt-case-light-soft: rgba(255, 244, 230, .08);
+  --receipt-button-shadow: rgba(133, 52, 78, .24);
+  --receipt-button-cast: rgba(121, 51, 68, .30);
+  --receipt-button-glow: rgba(255, 155, 185, .30);
+  /* Native coordinates of the transparent 1434 × 1097 midnight printer. */
+  --receipt-asset-width: min(300px, calc(100vw - 40px), var(--receipt-fitted-width, 300px));
+  --receipt-source-unit-y: calc(var(--receipt-asset-width) / 1434);
+  --receipt-image-height: calc(var(--receipt-source-unit-y) * 1097);
+  --receipt-paper-y: calc(var(--receipt-source-unit-y) * 790);
+  --receipt-roll-left: calc(var(--receipt-source-unit-y) * 239);
+  --receipt-roll-width: calc(var(--receipt-source-unit-y) * 952);
+  --receipt-tear-height: 0px;
+  --receipt-machine-mask: url("/receipt-printer/hint-printer-midnight.png");
+}
+/* Reserve the completed height once; only the paper moves during a print. */
+.receipt-printer--share,
+.receipt-printer--share:is([data-phase="printing"], [data-phase="complete"]) {
+  height: max(var(--receipt-image-height), calc(var(--receipt-paper-y) + var(--receipt-result-height) + 4px));
+  transition: none;
+}
+.receipt-printer--share[data-phase] .receipt-printer__reference-frame { animation: none; }
+.receipt-printer--share .receipt-printer__reference-image {
+  mask: none;
+  filter: none;
+}
+.receipt-printer--share .receipt-printer__machine-layer--back { filter: drop-shadow(0 5px 7px var(--receipt-case-shadow)); }
+.receipt-printer--share::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 18%;
+  top: calc(var(--receipt-source-unit-y) * 1020);
+  width: 68%;
+  height: calc(var(--receipt-source-unit-y) * 65);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--receipt-resting-shadow), transparent 72%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+.receipt-printer--share::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 14%;
+  top: calc(var(--receipt-source-unit-y) * 1000);
+  width: 72%;
+  height: calc(var(--receipt-source-unit-y) * 155);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 20%, rgba(190, 131, 188, .22), rgba(127, 78, 133, .10) 40%, transparent 74%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+.receipt-printer__lower-reflection {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  height: var(--receipt-image-height);
+  mask: var(--receipt-machine-mask) center / 100% 100% no-repeat;
+  background:
+    radial-gradient(ellipse 42% 9% at 50% 86%, rgba(223, 174, 209, .16), transparent 80%),
+    linear-gradient(180deg, transparent 82%, rgba(208, 154, 199, .10) 88%, rgba(228, 185, 218, .18) 90%, rgba(168, 119, 181, .09) 96%, transparent 98%);
+  pointer-events: none;
+}
+/* A single source image owns the lip: no widened copies or old receipt pixels. */
+.receipt-printer--share .receipt-printer__slot-frame,
+.receipt-printer--share .receipt-printer__slot-occluder::after { display: none; }
+.receipt-printer--share .receipt-printer__slot-occluder {
+  height: var(--receipt-image-height);
+  background-image: var(--receipt-machine-mask);
+  mask: none;
+  clip-path: inset(0 0 calc(100% - var(--receipt-paper-y) - 1px) 0);
+  filter: none;
+}
+.receipt-printer--share .receipt-printer__paper-window,
+.receipt-printer--share:is([data-phase="printing"], [data-phase="complete"]) .receipt-printer__paper-window {
+  top: var(--receipt-paper-y);
+  left: var(--receipt-roll-left);
+  width: var(--receipt-roll-width);
+  height: calc(var(--receipt-result-height) + 2px);
+  overflow: hidden;
+  overflow: clip;
+}
+.receipt-printer--share .receipt-printer__paper {
+  height: auto;
+  transform: translate3d(0, calc(-100% + var(--receipt-feed-start)), 0);
+  filter: drop-shadow(0 2px 2px rgba(78, 42, 44, .10));
+}
+.receipt-printer--share .receipt-printer__result-content {
+  width: 100%;
+  margin: 0;
+  visibility: visible;
+}
+.receipt-printer--share .receipt-printer__result-content::before {
+  inset: 0;
+  width: auto;
+  border: 0;
+  background: #efdee4;
+  filter: none;
+  transform: none;
+  mask: none;
+}
+.receipt-printer--share .receipt-printer__slot-shadow,
+.receipt-printer--share:is([data-phase="printing"], [data-phase="complete"]) .receipt-printer__slot-shadow {
+  top: 1px;
+  left: 0;
+  width: 100%;
+  height: 9px;
+  background: linear-gradient(rgba(50, 23, 28, .30), rgba(77, 40, 44, .09) 38%, transparent);
+}
+.receipt-printer--share .receipt-printer__paper::after,
+.receipt-printer--share .receipt-printer__tear-edge { display: none; }
+.receipt-printer--share[data-phase="printing"] .receipt-printer__paper {
+  will-change: transform;
+  animation: receipt-roll-feed var(--receipt-print-duration) cubic-bezier(.12, .09, .86, .96) both;
+}
+.receipt-printer--share[data-phase="printing"] .receipt-printer__result-content > * { animation: none; }
+.receipt-printer--share[data-phase="complete"] .receipt-printer__paper { transform: translate3d(0, 0, 0); }
+.receipt-printer--share[data-phase="complete"] .receipt-printer__power-light { animation: none; }
+@keyframes receipt-roll-feed {
+  from { transform: translate3d(0, calc(-100% + var(--receipt-feed-start)), 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
 .receipt-printer--share .receipt-printer__result-content { color: #293d46; }
 .receipt-printer--share .receipt-printer__result-content :is(h2,p,small,strong,span) { overflow-wrap: anywhere; }
 .receipt-printer--share .receipt-printer__result-header { flex-wrap: wrap; gap: 8px; }
@@ -654,3 +864,328 @@
 .receipt-share-header button { flex: none; }
 .receipt-share-dialog :is(p, label, button) { overflow-wrap: anywhere; }
 .receipt-share-dialog .receipt-printer__result-content footer { margin-top: 24px; text-align: center; font-size: 12px; }
+
+/* Each illustrated sheet carries its own ticket outline, not the printer's paper crop. */
+.daily-receipt-paper, .tarot-receipt-paper { width: 100%; margin: 0 auto; }
+.daily-receipt-paper > svg, .tarot-receipt-paper > svg { display: block; width: 100%; height: auto; overflow: visible; }
+.receipt-printer--illustrated .receipt-printer__result-content { padding: 0; }
+.receipt-printer--illustrated .receipt-printer__result-content::before,
+.receipt-printer--illustrated .receipt-printer__tear-edge,
+.receipt-printer--illustrated .receipt-printer__paper::after { display: none; }
+
+.receipt-share-dialog:has(.daily-receipt-paper, .tarot-receipt-paper) .receipt-share-scroll { padding: 56px 20px 28px; }
+.receipt-share-dialog[data-receipt-kind="tarot"] .receipt-share-scroll { padding: 14px 16px 28px; }
+.receipt-share-dialog[data-receipt-kind="tarot"] .receipt-share-printer-stage { animation: receipt-stage-enter 360ms ease-out both; }
+.receipt-share-printer-stage:focus { outline: none; }
+.receipt-printer--share[data-variant="tarot"] {
+  --receipt-asset-width: min(420px, calc(100vw - 32px));
+  --receipt-roll-width: calc(var(--receipt-asset-width) * 952 / 1434);
+  --receipt-roll-left: calc((var(--receipt-asset-width) - var(--receipt-roll-width)) / 2);
+  left: 50%;
+  margin-left: 0;
+  margin-right: 0;
+  transform: translateX(-50%);
+}
+@keyframes receipt-stage-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .receipt-share-dialog[data-receipt-kind="tarot"] .receipt-share-printer-stage { animation: none; }
+}
+
+/* Leave room around the sheet for its changing silhouette and soft cast shadow. */
+.receipt-printer--illustrated[data-phase] {
+  height: max(var(--receipt-image-height), calc(var(--receipt-paper-y) + var(--receipt-result-height) + 28px));
+}
+.receipt-printer--illustrated[data-phase] .receipt-printer__paper-window {
+  left: calc(var(--receipt-roll-left) - 20px);
+  width: calc(var(--receipt-roll-width) + 40px);
+  height: calc(var(--receipt-result-height) + 28px);
+}
+.receipt-printer--illustrated .receipt-printer__paper {
+  width: var(--receipt-roll-width);
+  margin-left: 20px;
+}
+.receipt-printer--illustrated[data-phase] .receipt-printer__slot-shadow {
+  left: 20px;
+  width: var(--receipt-roll-width);
+}
+.receipt-printer__physical-paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+}
+.receipt-printer--illustrated:is([data-surface="preview"], [data-surface="ready"]) .receipt-printer__physical-paper { opacity: 1; }
+.receipt-printer--illustrated:is([data-surface="preview"], [data-surface="ready"]) .receipt-printer__slot-shadow { display: none; }
+/* Keep the vector original in the accessibility tree and as a measured fallback. */
+.receipt-printer--illustrated:is([data-surface="preview"], [data-surface="ready"]) .receipt-printer__paper {
+  opacity: 0;
+  animation: none;
+  transform: none;
+  filter: none;
+}
+.receipt-printer--share[data-phase] .receipt-printer__power-light { display: none; }
+
+/* The rigid case and flexible paper are siblings, with independent motion. */
+.receipt-printer--share .receipt-printer__interaction {
+  position: relative;
+  transform: none;
+  transition: none;
+}
+.receipt-printer__machine-layer {
+  position: absolute;
+  inset: 0;
+  height: var(--receipt-image-height);
+  transform-origin: 50% var(--receipt-paper-y);
+}
+.receipt-printer__machine-layer--back { z-index: 0; }
+.receipt-printer__machine-layer--front { z-index: 3; pointer-events: none; }
+.receipt-printer__machine-layer--front .receipt-printer__print-button { pointer-events: auto; }
+.receipt-printer--share .receipt-printer__paper-window { transform-origin: 50% 0; }
+.receipt-printer__tap-zone {
+  position: absolute;
+  z-index: 1;
+  left: 4%;
+  top: 5%;
+  width: 92%;
+  height: 91%;
+  border: 0;
+  border-radius: 20px;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.receipt-printer__tap-zone:disabled { cursor: default; }
+.receipt-printer--share[data-phase="warming"] .receipt-printer__reference-frame {
+  transform-origin: 50% calc(var(--receipt-source-unit-y) * 1020);
+  animation: receipt-machine-start 420ms ease-out both;
+}
+.receipt-printer--share:is([data-phase="printing"], [data-intro="true"]) .receipt-printer__reference-frame {
+  transform-origin: 50% calc(var(--receipt-source-unit-y) * 1020);
+  animation: receipt-machine-motor 840ms linear infinite;
+}
+.receipt-printer--share[data-phase="complete"] .receipt-printer__reference-frame {
+  transform-origin: 50% calc(var(--receipt-source-unit-y) * 1020);
+  animation: receipt-machine-stop 460ms ease-out both;
+}
+.receipt-printer__surface-sheen {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  height: var(--receipt-image-height);
+  mask-image: var(--receipt-machine-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 83.1% 100%, 83.1% 70.4%, 16.7% 70.4%, 16.7% 100%, 0 100%);
+  background: radial-gradient(ellipse at var(--printer-light-x, 50%) 28%, var(--receipt-case-light), var(--receipt-case-light-soft) 36%, transparent 62%);
+  opacity: .2;
+  pointer-events: none;
+}
+.receipt-printer__print-button {
+  position: absolute;
+  z-index: 6;
+  left: calc(var(--receipt-source-unit-y) * 1212 - 22px);
+  top: calc(var(--receipt-source-unit-y) * 614 - 22px);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.receipt-share-dialog .receipt-printer__print-button:disabled { opacity: 1; cursor: progress; }
+.receipt-printer__print-button:focus-visible { outline: 2px solid #dc8b9e; outline-offset: 1px; }
+.receipt-printer__button-cap {
+  position: relative;
+  display: block;
+  width: calc(var(--receipt-source-unit-y) * 114);
+  height: calc(var(--receipt-source-unit-y) * 114);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  transition: transform 120ms ease-out, box-shadow 120ms ease-out;
+  pointer-events: none;
+}
+.receipt-printer__button-cap::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at 42% 32%, rgba(255, 247, 226, .9), rgba(255, 225, 225, .2) 60%, transparent);
+  box-shadow: 0 0 5px 1px rgba(255, 247, 240, .45), 0 0 12px 3px var(--receipt-button-glow);
+  opacity: .3;
+  animation: receipt-button-ready 3600ms ease-in-out infinite;
+}
+.receipt-printer:is([data-phase="warming"], [data-phase="printing"], [data-intro="true"]) .receipt-printer__button-cap::after {
+  inset: 1px;
+  background: radial-gradient(ellipse at 40% 30%, #fffefa 0 24%, #f9eaff 48%, rgba(225, 189, 255, .94) 76%, rgba(189, 144, 235, .6));
+  box-shadow: 0 0 7px 3px rgba(255, 247, 255, .94), 0 0 19px 7px rgba(216, 169, 255, .7), 0 0 30px 10px rgba(201, 146, 248, .2);
+  animation: receipt-button-working 1250ms ease-in-out infinite;
+}
+.receipt-printer[data-phase="warming"] .receipt-printer__button-cap,
+.receipt-printer__print-button:active .receipt-printer__button-cap {
+  transform: translateY(1px) scale(.94);
+  box-shadow: inset 0 1px 3px var(--receipt-button-shadow), 0 .5px 1px var(--receipt-button-cast);
+}
+@keyframes receipt-machine-start {
+  0% { transform: translateY(0); }
+  28% { transform: translateY(1.8px) rotate(.18deg); }
+  65% { transform: translateY(-.5px) rotate(-.08deg); }
+  100% { transform: translateY(0); }
+}
+@keyframes receipt-machine-motor {
+  0%, 22%, 50%, 76%, 100% { transform: translateY(0) rotate(0); }
+  8%, 60% { transform: translateY(.24px) rotate(.065deg); }
+  15%, 67% { transform: translateY(-.16px) rotate(-.045deg); }
+  37%, 89% { transform: translateY(.16px) rotate(.04deg); }
+}
+@keyframes receipt-machine-stop {
+  0% { transform: translateY(.5px) rotate(.06deg); }
+  40% { transform: translateY(-.3px) rotate(-.035deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@keyframes receipt-button-ready { 0%, 100% { opacity: .25; } 50% { opacity: .52; } }
+@keyframes receipt-button-working { 0%, 100% { opacity: .82; } 45% { opacity: 1; } }
+.receipt-printer[data-paused="true"] *, .receipt-printer[data-paused="true"] *::after { animation-play-state: paused !important; }
+.receipt-printer[data-reduced="true"] *, .receipt-printer[data-reduced="true"] *::after { animation: none !important; transition: none !important; }
+.receipt-printer[data-reduced="true"] .receipt-printer__interaction { transform: none !important; }
+
+/* The short invitation becomes the blank foot of the finished receipt. */
+.receipt-printer__invitation {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: var(--receipt-roll-width);
+  height: calc(var(--receipt-feed-start) - 5px);
+  margin: 0;
+  padding: 5px 8px 2px;
+  border: 0;
+  border-inline: 1px solid #b79baa;
+  color: #755480;
+  background: #efdee4;
+  font: italic 14px/1.25 Georgia, "Times New Roman", serif;
+  cursor: pointer;
+  touch-action: manipulation;
+  clip-path: polygon(0 0, 100% 0, 100% 94%, 96% 100%, 92% 94%, 88% 100%, 84% 94%, 80% 100%, 76% 94%, 72% 100%, 68% 94%, 64% 100%, 60% 94%, 56% 100%, 52% 94%, 48% 100%, 44% 94%, 40% 100%, 36% 94%, 32% 100%, 28% 94%, 24% 100%, 20% 94%, 16% 100%, 12% 94%, 8% 100%, 4% 94%, 0 100%);
+  -webkit-tap-highlight-color: transparent;
+}
+.receipt-printer--illustrated .receipt-printer__invitation { left: 20px; }
+.receipt-printer__invitation::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 24px;
+  pointer-events: none;
+  background: linear-gradient(rgba(53, 27, 31, .58), rgba(67, 36, 39, .36) 15%, rgba(84, 48, 47, .16) 40%, rgba(102, 65, 56, .035) 72%, transparent);
+}
+.receipt-printer__invitation-star { font-size: 12px; color: #81628f; }
+.receipt-printer__invitation-label {
+  position: absolute;
+  inset: 40% 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transform: translateY(-50%);
+}
+.receipt-printer__invitation-arrow {
+  position: absolute;
+  left: 50%;
+  top: 74%;
+  width: 12px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(#81628f, #81628f) center top / 1.2px 8px no-repeat;
+}
+.receipt-printer__invitation-arrow::after {
+  content: "";
+  position: absolute;
+  left: 3.5px;
+  bottom: 1px;
+  width: 5px;
+  height: 5px;
+  border-right: 1.2px solid #81628f;
+  border-bottom: 1.2px solid #81628f;
+  transform: rotate(45deg);
+}
+.receipt-printer__invitation:focus-visible { outline: 2px solid #a85d77; outline-offset: -5px; }
+.receipt-printer:is([data-phase="idle"], [data-phase="warming"]) .receipt-printer__paper { opacity: 0; }
+.receipt-printer--illustrated:is([data-surface="loading"], [data-surface="preview"], [data-surface="ready"]) .receipt-printer__invitation { background: transparent; border-color: transparent; }
+.receipt-printer--illustrated:is([data-surface="loading"], [data-surface="preview"], [data-surface="ready"]) .receipt-printer__invitation > *,
+.receipt-printer--illustrated:is([data-surface="loading"], [data-surface="preview"], [data-surface="ready"]) .receipt-printer__invitation::before { opacity: 0; }
+.receipt-printer:is([data-phase="idle"], [data-phase="warming"]) .receipt-printer__slot-shadow { display: none; }
+.receipt-printer[data-phase="warming"] .receipt-printer__invitation { opacity: 1; pointer-events: none; }
+.receipt-printer[data-phase="printing"] .receipt-printer__invitation { animation: receipt-invitation-feed 220ms ease-out both; pointer-events: none; }
+.receipt-printer[data-phase="complete"] .receipt-printer__invitation { visibility: hidden; pointer-events: none; }
+@keyframes receipt-invitation-feed {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(2px); }
+}
+
+/* The artwork supplies the case finish; only ambient light is overlaid. */
+[data-hint-theme="dark"] .receipt-printer--share {
+  --receipt-case-shadow: rgba(6, 4, 17, .30);
+  --receipt-resting-shadow: rgba(3, 2, 10, .65);
+  --receipt-case-light: rgba(207, 164, 191, .13);
+  --receipt-case-light-soft: rgba(154, 100, 143, .025);
+  --receipt-button-shadow: rgba(47, 30, 67, .38);
+  --receipt-button-cast: rgba(19, 12, 36, .36);
+  --receipt-button-glow: rgba(204, 186, 244, .18);
+}
+[data-hint-theme="dark"] .receipt-printer__surface-sheen {
+  background:
+    radial-gradient(ellipse at var(--printer-light-x, 50%) 28%, var(--receipt-case-light), var(--receipt-case-light-soft) 36%, transparent 62%),
+    linear-gradient(180deg, transparent 12%, rgba(24, 19, 35, .04) 35%, rgba(20, 16, 30, .22) 61%, transparent 63%);
+}
+[data-hint-theme="dark"] .receipt-printer__button-cap::after {
+  background: radial-gradient(ellipse at 42% 32%, rgba(243, 236, 255, .86), rgba(215, 198, 244, .2) 60%, transparent);
+}
+[data-hint-theme="dark"] .receipt-printer__print-button:focus-visible { outline-color: #cbbdf4; }
+.receipt-share-dialog[data-hint-theme="dark"] .receipt-share-footer button { background: #705374; color: #fff8f4; }
+
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer--share {
+  --receipt-machine-mask: url("/receipt-printer/hint-printer-blush-soft-base.png");
+  --receipt-case-shadow: rgba(113, 69, 80, .08);
+  --receipt-resting-shadow: rgba(113, 69, 80, .12);
+}
+.receipt-share-dialog[data-hint-theme="bright"] :is(.receipt-printer__reference-image, .receipt-printer__slot-occluder) {
+  mask: url("/receipt-printer/hint-printer-midnight.png") center / 100% 100% no-repeat;
+}
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer__lower-reflection {
+  mask-image: url("/receipt-printer/hint-printer-midnight.png");
+  background: linear-gradient(180deg, transparent 84%, rgba(255, 246, 232, .1) 89%, transparent 93%);
+}
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer--share::before {
+  top: calc(var(--receipt-source-unit-y) * 1034);
+  height: calc(var(--receipt-source-unit-y) * 42);
+  filter: blur(4px);
+}
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer--share::after {
+  display: none;
+}
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer__invitation,
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer__result-content::before { background: #fffaf5; }
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer__invitation { color: #a45e79; border-color: #d7acb6; }
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer--illustrated:is([data-surface="loading"], [data-surface="preview"], [data-surface="ready"]) .receipt-printer__invitation { background: transparent; border-color: transparent; }
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer__invitation-star { color: #bb6b86; }
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer__invitation-arrow { background-image: linear-gradient(#bb6b86, #bb6b86); }
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer__invitation-arrow::after { border-color: #bb6b86; }
+.receipt-share-dialog[data-hint-theme="bright"] .receipt-printer:is([data-phase="warming"], [data-phase="printing"], [data-intro="true"]) .receipt-printer__button-cap::after {
+  background: radial-gradient(ellipse at 40% 30%, #fffef5 0 24%, #fff0f3 48%, rgba(255, 204, 221, .96) 76%, rgba(241, 147, 179, .65));
+  box-shadow: 0 0 7px 3px rgba(255, 246, 239, .96), 0 0 19px 7px rgba(255, 165, 196, .78), 0 0 30px 10px rgba(244, 152, 185, .22);
+}

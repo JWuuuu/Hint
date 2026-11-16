@@ -73,7 +73,6 @@ import { LuckyIllustration } from "./LuckyIllustration";
 import { SkyEvidence } from "../../../components/tarot/SkyEvidence";
 import { SafeImage } from "../../../shared/ui/SafeImage";
 import { HintGuideSlot, useHintGuideGesture } from "../../../components/mascot/HintGuide";
-import { HintCorner } from "../../../components/mascot/RoomCompanion";
 import { useDailyReveal } from "../../../components/mascot/useDailyReveal";
 import { useDailyDelivery } from "../../../components/mascot/useDailyDelivery";
 import { dailyGuideContext } from "../../../components/mascot/hintGuideContext";
@@ -2307,33 +2306,6 @@ const REFERENCE_SCORE_ICONS: Record<DailyScore["key"], LucideIcon> = {
   people: UsersRound,
 };
 
-function ReferenceHintLogo() {
-  return (
-    <Link
-      href="/app/profile"
-      aria-label="Open profile"
-      onPointerDown={() => triggerFeedback("select")}
-      className="hint-pressable relative grid size-[62px] shrink-0 place-items-center overflow-hidden rounded-full border text-center active:scale-95"
-      style={{
-        color: REFERENCE_TYPE.ink,
-        background: "var(--hint-home-logo-bg, linear-gradient(145deg, rgba(255,254,250,0.70), rgba(248,239,230,0.40)))",
-        borderColor: "var(--hint-home-logo-border, rgba(191, 159, 132, 0.105))",
-        boxShadow: "var(--hint-home-logo-shadow, inset 0 1px 0 rgba(255,255,255,0.54), 0 10px 22px rgba(98,78,64,0.026))",
-      }}
-    >
-      <span
-        aria-hidden
-        className="absolute inset-x-2 top-1 h-px rounded-full"
-        style={{ background: "var(--hint-home-logo-sheen, linear-gradient(90deg, transparent, rgba(255,255,255,0.86), transparent))" }}
-      />
-      <span className="grid justify-items-center">
-        <Sparkles size={19} strokeWidth={1.5} />
-        <span className="font-serif text-[15px] leading-none"><LocalizedText text={"hint"} /></span>
-      </span>
-    </Link>
-  );
-}
-
 function referenceDailyCardImage(cardId: string) {
   return (
     getTarotCardImage(cardId, "hint-card-2") ??
@@ -3302,38 +3274,24 @@ function ReferenceEnergyPanel({ report, receiptReady }: { report: DailyReport; r
           <p className="hint-home-theme-copy font-serif" role={receiptReady ? undefined : "status"}>{receiptReady ? referenceThemeLine(report) : <LocalizedText text="Checking today's signal..." />}</p>
         </div>
       </div>
-      <button
-        type="button"
-        onClick={toggleDetails}
-        aria-expanded={detailsOpen}
-        aria-controls="hint-home-energy-details"
-        aria-label={translateText("See details", report.language)}
-        className="hint-pressable hint-home-scores"
-      >
+      <div className="hint-home-scores">
         {scores.map((score) => <ReferenceScoreItem key={score.key} score={score} />)}
-      </button>
+      </div>
       <button
         type="button"
         onClick={toggleDetails}
         aria-expanded={detailsOpen}
         aria-controls="hint-home-energy-details"
+        disabled={!receiptReady}
         className="hint-pressable hint-home-details-link font-serif"
       >
         <span><LocalizedText text="See details" /></span>
         <ArrowRight size={16} strokeWidth={1.5} aria-hidden
           style={{ transform: detailsOpen ? "rotate(90deg)" : undefined, transition: "transform 180ms ease" }} />
       </button>
-      {detailsOpen ? (
+      {detailsOpen && receiptReady ? (
         <div id="hint-home-energy-details" className="hint-home-energy-details hint-home-detail-content">
-          <p className="font-serif">{report.title}</p>
-          <dl>
-            {scores.map((score) => (
-              <div key={score.key}>
-                <dt>{score.label}</dt>
-                <dd className="font-serif">{score.score}</dd>
-              </div>
-            ))}
-          </dl>
+          <ReferenceEnergyDetails report={report} />
         </div>
       ) : null}
     </section>
@@ -3488,8 +3446,7 @@ function skySignalExplanation({
   };
 }
 
-function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
-  const [expanded, setExpanded] = useState(false);
+function ReferenceEnergyDetails({ report }: { report: DailyReport }) {
   const [activeEvidenceId, setActiveEvidenceId] = useState<string | null>(null);
   const sky = report.card.skyGuided;
   const reading = useMemo(
@@ -3525,24 +3482,7 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
   }, [activeEvidenceId, evidenceSignals]);
 
   return (
-    <section className="hint-home-evidence" aria-labelledby="hint-home-evidence-title">
-      <div className="hint-home-evidence-header">
-        <h3 id="hint-home-evidence-title" className="font-serif"><LocalizedText text="Why this hint?" /></h3>
-        <button
-          type="button"
-          onClick={() => {
-            triggerFeedback("select");
-            setExpanded((open) => !open);
-          }}
-          aria-expanded={expanded}
-          aria-controls="hint-home-sky-details"
-          className="hint-pressable hint-home-sky-toggle font-serif"
-        >
-          <LocalizedText text={sky ? "Sky Evidence ✦" : "Card reflection ✦"} />
-          <ChevronDown size={13} strokeWidth={1.5} aria-hidden
-            style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 180ms ease" }} />
-        </button>
-      </div>
+    <div className="hint-home-evidence">
       <div className="hint-home-evidence-signals">
         {evidenceSignals.map((signal, index) => {
           const selected = activeEvidenceId === signal.id;
@@ -3597,12 +3537,10 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
         </motion.div>
       ) : null}
 
-      {expanded ? (
-        <motion.div
+      <motion.div
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          id="hint-home-sky-details"
           className="hint-home-detail-content hint-home-evidence-card"
           style={{
             background: "var(--hint-home-detail-bg, linear-gradient(145deg, rgba(255,252,248,0.34), rgba(255,246,241,0.23)))",
@@ -3644,9 +3582,8 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
               ><LocalizedText text={" Ask about this hint "} /></Link>
             ) : null}
           </div>
-        </motion.div>
-      ) : null}
-    </section>
+      </motion.div>
+    </div>
   );
 }
 
@@ -3723,15 +3660,8 @@ function ReferenceHomePage({
     <div
       className="reference-home-crisp hint-home-page relative h-full w-full overflow-x-hidden overflow-y-auto overscroll-none"
     >
-      {/* Hint keeps the same corner here as on every other page. */}
-      <span className="hint-guide-corner-layer">
-        <HintCorner priority={50} context={dailyGuideContext({ ready: dailyReceiptReady, revealed: dailyCardRevealed, opening: dailyCardRevealing, resting: true })} />
-      </span>
       <div className="hint-home-content relative z-10 mx-auto w-full">
-        <header className="hint-home-header">
-          <h1 className="sr-only"><LocalizedText text="Today" /></h1>
-          <ReferenceHintLogo />
-        </header>
+        <h1 className="sr-only"><LocalizedText text="Today" /></h1>
 
         <HomeCheckIn
           today={report.date}
@@ -3752,7 +3682,6 @@ function ReferenceHomePage({
             statusMessage={receiptStatusMessage}
           />
           <ReferenceEnergyPanel report={report} receiptReady={dailyReceiptReady} />
-          <ReferenceEvidencePanel report={report} />
           <ReferenceSpaces cards={roomShortcuts} />
         </div>
       </div>

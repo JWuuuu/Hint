@@ -53,6 +53,7 @@ export function AskHint() {
   }, [chat.messages.length, chat.isThinking, reduced]);
 
   const empty = chat.messages.length === 0;
+  const companionInHeader = guideEnabled && (!empty || keyboardOpen || chat.isThinking);
   const starters = [t("ask.starter.1"), t("ask.starter.2"), t("ask.starter.3")];
 
   return (
@@ -61,7 +62,7 @@ export function AskHint() {
       onBlurCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setKeyboardOpen(false); }}>
       <div ref={layoutRef} className="flex h-full min-h-0 w-full max-w-[42rem] flex-col overflow-y-auto">
         {/* Header */}
-        <header className="flex shrink-0 items-center justify-between px-5 pb-3 pt-[calc(var(--hint-safe-top)+1rem)]">
+        <header className="flex shrink-0 items-center justify-between gap-2 px-5 pb-1 pt-[calc(var(--hint-safe-top)+0.5rem)]">
           <Link
             href="/app"
             className="inline-flex min-h-11 items-center gap-2 rounded-[8px] border px-3 font-sans text-[11px] uppercase tracking-[0.18em] transition-colors duration-700"
@@ -71,12 +72,14 @@ export function AskHint() {
             {t("common.home")}
           </Link>
           <span
-            className="font-serif text-[12px] uppercase tracking-[0.32em]"
+            className="min-w-0 flex-1 text-center font-serif text-[12px] uppercase tracking-[0.24em]"
             style={{ color: IVORY.mute }}
           >
             {t("ask.room")}
           </span>
-          <span className="w-[60px]" aria-hidden />
+          {companionInHeader
+            ? <HintGuideSlot context={guideContext} className="h-16 w-16 shrink-0" />
+            : <span className="h-16 w-16 shrink-0" aria-hidden />}
         </header>
         <div className="shrink-0 px-5 text-xs">
           {chat.canRestoreDraft && <div className="mb-2 rounded-2xl border p-3" style={{ borderColor: "var(--hint-border)", color: "var(--hint-muted)" }}>
@@ -93,11 +96,6 @@ export function AskHint() {
           {chat.historySaved === false && <p role="alert">{t("quality.askUnsaved")} <button type="button" className="min-h-11 underline" onClick={chat.retrySaveHistory}>{t("quality.retry")}</button></p>}
           {chat.historySaved === true && <p role="status">{t("quality.askSaved")}</p>}
         </div>
-
-        {guideEnabled && (!empty || keyboardOpen) && <div className="flex shrink-0 items-center gap-1 px-5">
-          <HintGuideSlot context={guideContext} className="h-24 w-24 shrink-0" />
-          <p className="font-serif text-base" style={{ color: IVORY.body }}>{chat.isThinking ? t("ask.thinking") : "Hint"}</p>
-        </div>}
 
         {/* Scrollable thread */}
         <div
@@ -116,7 +114,7 @@ export function AskHint() {
                   boxShadow: "var(--hint-elevated-shadow)",
                 }}
               >
-                {!(guideEnabled && keyboardOpen) && <HintGuideSlot context={guideContext} className="mx-auto -my-4 aspect-square w-60 max-w-full [@media(max-height:700px)]:w-48" fallback={<div
+                {!companionInHeader && <HintGuideSlot context={guideContext} className="mx-auto -my-4 aspect-square w-60 max-w-full [@media(max-height:700px)]:w-48" fallback={<div
                   className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-[8px]"
                   style={{
                     color: GOLD.ink,

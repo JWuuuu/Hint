@@ -11,21 +11,9 @@
 
 .hint-home-content {
   max-width: 430px;
-  padding: calc(1.7rem + var(--hint-safe-top)) 23px 0;
+  padding: calc(10px + var(--hint-safe-top)) 23px 0;
 }
 
-.hint-home-header {
-  display: flex;
-  align-items: center;
-  /* Profile on the left; Hint stands in the shared corner on the right. The
-     height is the one the header had while it held the 112px guide. */
-  justify-content: flex-start;
-  gap: 16px;
-  min-height: 72px;
-  margin-bottom: 3px;
-}
-
-.hint-home-header > a { width: 52px; height: 52px; flex-shrink: 0; }
 .hint-home-share-status {
   display: flex;
   align-items: center;
@@ -192,16 +180,8 @@
   background: none;
 }
 .hint-home-details-link > svg { flex-shrink: 0; }
+.hint-home-details-link:disabled { opacity: .55; cursor: default; }
 .hint-home-detail-content { padding: 0; margin-top: var(--hint-home-section-gap); color: #64596b; }
-.hint-home-energy-details > p { color: #46414b; font-size: 16px; line-height: 1.4; }
-.hint-home-energy-details dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; row-gap: 6px; margin-top: 8px; }
-.hint-home-energy-details dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-.hint-home-energy-details dt { font-size: 12px; }
-.hint-home-energy-details dd { font-size: 18px; font-variant-numeric: lining-nums tabular-nums; }
-
-.hint-home-evidence-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-.hint-home-evidence-header h3 { font-size: 24px; line-height: 1.1; font-weight: 500; }
-.hint-home-sky-toggle { display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px; min-height: 44px; font-size: 15px; color: #9574a9; background: none; white-space: nowrap; }
 .hint-home-evidence-signals { display: grid; gap: 1px; margin-top: 5px; }
 .hint-home-evidence-signal { display: flex; align-items: center; gap: 10px; min-height: 44px; width: 100%; padding: 2px 0; color: #6f6475; font-family: var(--app-font-serif); font-size: 14px; line-height: 1.25; text-align: left; background: none; }
 .hint-home-evidence-signal[data-selected="true"] { color: #806190; }

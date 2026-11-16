@@ -1,0 +1,101 @@
+import type { CardOrientation } from "./createHiddenDeck";
+
+// Short public copy for the narrow columns of a printed receipt. These never
+// incorporate archived names, questions, generated answers, or chat messages.
+type CaptionPair = readonly [upright: string, reversed: string];
+const major: Record<string, CaptionPair> = {
+  "0-fool": ["Begin with an open heart.", "Pause before taking the leap."],
+  "1-magician": ["Use the tools you already have.", "Gather your scattered energy."],
+  "2-high-priestess": ["Trust your quiet inner knowing.", "Listen to the signal you ignore."],
+  "3-empress": ["Give what matters room to grow.", "Care for yourself before giving more."],
+  "4-emperor": ["Build a steady foundation.", "Trade control for steady support."],
+  "5-hierophant": ["Let trusted guidance support you.", "Question what no longer fits."],
+  "6-lovers": ["Choose what honors your values.", "Notice where your values diverge."],
+  "7-chariot": ["Choose a direction and commit.", "Find your direction before pushing."],
+  "8-strength": ["Be brave without becoming harsh.", "Meet self-doubt with patience."],
+  "9-hermit": ["Step back and listen inward.", "Let someone into your quiet world."],
+  "10-wheel": ["Stay open as the cycle turns.", "Notice the pattern repeating."],
+  "11-justice": ["Choose honesty and balance.", "Face the truth you are avoiding."],
+  "12-hanged-man": ["Pause to see another perspective.", "Release the view keeping you stuck."],
+  "13-death": ["Make room for a new chapter.", "Let an overdue ending unfold."],
+  "14-temperance": ["Find your balance. Move gently.", "Return to a gentler rhythm."],
+  "15-devil": ["Notice what keeps you attached.", "Loosen the pattern holding you."],
+  "16-tower": ["Let the truth reshape your plans.", "Face the change you keep delaying."],
+  "17-star": ["Let hope and healing return.", "Take one small step toward hope."],
+  "18-moon": ["Let uncertainty settle before acting.", "Give emerging clarity time to settle."],
+  "19-sun": ["Let your confidence shine.", "Give joy a little room to return."],
+  "20-judgement": ["Answer the call to grow.", "Release harsh self-judgment."],
+  "21-world": ["Celebrate how far you have come.", "Finish what still needs closure."],
+};
+const minor: Record<string, Record<string, CaptionPair>> = {
+  wands: {
+    ace: ["Follow the spark of inspiration.", "Give your spark time to return."],
+    two: ["Look ahead and choose your path.", "Turn hesitation into a small plan."],
+    three: ["Let your vision reach further.", "Adjust your plans as you learn."],
+    four: ["Celebrate the support around you.", "Restore a sense of belonging."],
+    five: ["Use friction to find common ground.", "Step back from needless conflict."],
+    six: ["Let your progress be seen.", "Find confidence beyond applause."],
+    seven: ["Stand calmly for what matters.", "Choose which battles deserve energy."],
+    eight: ["Be ready when things move quickly.", "Slow down and clear the confusion."],
+    nine: ["Protect your energy. Keep going.", "Rest before your strength runs thin."],
+    ten: ["Share the weight you carry.", "Set down what is no longer yours."],
+    page: ["Explore what sparks your curiosity.", "Find one idea worth nurturing."],
+    knight: ["Let courage become focused action.", "Give your impulse a direction."],
+    queen: ["Trust your warmth and confidence.", "Bring your energy back to yourself."],
+    king: ["Lead with a clear, generous vision.", "Lead without forcing your will."],
+  },
+  cups: {
+    ace: ["Open yourself to a new feeling.", "Make space for your own feelings."],
+    two: ["Meet each other with openness.", "Restore honesty in the connection."],
+    three: ["Let friendship lift your spirit.", "Choose company that feels nourishing."],
+    four: ["Notice the care being offered.", "Open your eyes to a fresh chance."],
+    five: ["Notice what remains beyond the loss.", "Let yourself begin to heal."],
+    six: ["Receive the warmth of simple joys.", "Let the past inform, not hold you."],
+    seven: ["Choose what is real among the dreams.", "Narrow your choices. Find clarity."],
+    eight: ["Leave room for deeper fulfillment.", "Ask what keeps you from leaving."],
+    nine: ["Savor what already feels enough.", "Look beneath the wish for more."],
+    ten: ["Nurture the bonds that feel like home.", "Make room for honest feelings at home."],
+    page: ["Stay open to a tender beginning.", "Listen gently to unspoken feelings."],
+    knight: ["Let your heart guide a kind gesture.", "Balance romance with what is real."],
+    queen: ["Care deeply while honoring boundaries.", "Protect your own emotional space."],
+    king: ["Hold your feelings with calm care.", "Pause before emotions take the lead."],
+  },
+  swords: {
+    ace: ["Let one clear truth guide you.", "Clear the noise before deciding."],
+    two: ["Face the choice with an open mind.", "Stop postponing the honest choice."],
+    three: ["Let yourself feel and begin healing.", "Release a little of the old hurt."],
+    four: ["Rest before making your next move.", "Give yourself a real pause."],
+    five: ["Ask whether winning costs too much.", "Choose repair over another argument."],
+    six: ["Move gently toward calmer waters.", "Revisit what keeps you from moving on."],
+    seven: ["Act carefully and stay honest.", "Bring what is hidden into the open."],
+    eight: ["Question the limits you believe in.", "Take back one small piece of freedom."],
+    nine: ["Share the worry you carry alone.", "Let support ease the spiral."],
+    ten: ["Let this ending become a release.", "Allow recovery to begin slowly."],
+    page: ["Stay curious. Check what you hear.", "Pause before jumping to conclusions."],
+    knight: ["Speak clearly and act with purpose.", "Slow down before words become sharp."],
+    queen: ["Choose clear truth and kind boundaries.", "Let clarity soften into compassion."],
+    king: ["Let fairness guide your decision.", "Use your judgment without control."],
+  },
+  pentacles: {
+    ace: ["Build on a practical new beginning.", "Prepare the ground before starting."],
+    two: ["Find a rhythm you can sustain.", "Simplify what you are juggling."],
+    three: ["Let shared effort build something real.", "Clarify how you work together."],
+    four: ["Protect stability without closing off.", "Loosen your grip on what feels safe."],
+    five: ["Reach for the support within reach.", "Let yourself receive practical help."],
+    six: ["Give and receive with balance.", "Notice where giving feels unequal."],
+    seven: ["Give steady effort time to grow.", "Rethink where your effort is going."],
+    eight: ["Build confidence through practice.", "Bring care back to the small steps."],
+    nine: ["Enjoy what your effort has built.", "Let your worth exceed your results."],
+    ten: ["Nurture what can last beyond today.", "Review the foundations you rely on."],
+    page: ["Take one practical step toward growth.", "Turn the idea into a small action."],
+    knight: ["Let steady steps carry you forward.", "Refresh the routine keeping you stuck."],
+    queen: ["Care for what sustains your life.", "Put your own needs back in balance."],
+    king: ["Build stability with generous care.", "Let security serve more than control."],
+  },
+};
+
+export function getReceiptCardCaption(cardId: string, orientation: CardOrientation) {
+  const [rank, suit] = cardId.split("-");
+  const pair = major[cardId] ?? minor[suit]?.[rank];
+  return pair?.[orientation === "reversed" ? 1 : 0] ?? "Pause and choose one thoughtful step.";
+}

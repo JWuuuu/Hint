@@ -313,5 +313,6 @@ class HintBridgeViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         bridge?.registerPluginInstance(HintSpeechRecognitionPlugin())
         bridge?.registerPluginInstance(HintDeviceCredentialPlugin())
+        bridge?.registerPluginInstance(HintPhotoLibraryPlugin())
     }
 }

@@ -1,2 +1,3 @@
 "NSMicrophoneUsageDescription" = "Use the microphone to speak your question. You can type instead.";
 "NSSpeechRecognitionUsageDescription" = "Turn your spoken question into text so you can review it before sending.";
+"NSPhotoLibraryAddUsageDescription" = "Save the receipt images you choose to your photo library.";

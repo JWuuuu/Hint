@@ -51,10 +51,10 @@ describe("receipt text and artwork layout", () => {
     expect(() => wrapReceiptText("a👨‍👩‍👧‍👦", 15, (value) => value.includes("👨") ? 30 : measure(value))).toThrow();
   });
 
-  it.each([1, 3, 5, 7, 9])("keeps %i cards legible with at most three columns", (count) => {
+  it.each([[1, 1, 1], [2, 2, 1], [3, 3, 1], [4, 2, 2], [5, 3, 2], [6, 3, 2], [7, 3, 3], [8, 3, 3], [9, 3, 3]])("lays out %i cards in %i columns and %i rows", (count, columns, rows) => {
     const layout = getTarotReceiptCardLayout(count);
-    expect(layout.columns).toBe(Math.min(3, count));
-    expect(layout.rows).toBe(Math.ceil(count / 3));
+    expect(layout.columns).toBe(columns);
+    expect(layout.rows).toBe(rows);
     expect(layout.cardWidth).toBeGreaterThanOrEqual(144);
     expect(layout.startX).toBeGreaterThanOrEqual(70);
     expect(layout.startX + layout.visibleWidth).toBeLessThanOrEqual(830);

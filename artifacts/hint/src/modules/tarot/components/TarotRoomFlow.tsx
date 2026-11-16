@@ -128,6 +128,7 @@ import {
 import { ReadingReveal } from "./ReadingReveal";
 import { TarotHintReadingChat } from "./TarotHintReadingChat";
 import { SpreadPreviewCarousel } from "./SpreadPreviewCarousel";
+import { getSpreadPreviewLayout } from "../logic/spreadPreviewLayout";
 import { readBirthProfile } from "../../../lib/astro/userBirthProfile";
 import { useProfile } from "../../../lib/useProfile";
 import { zodiacSign } from "../../me/utils";
@@ -830,105 +831,6 @@ function spreadCardSize(spread: SpreadChoice) {
   if (spread.cardCount >= 5)
     return { width: 32, height: 50, radius: 9, inner: 6, number: 17 };
   return { width: 40, height: 64, radius: 11, inner: 7, number: 20 };
-}
-
-function centerSpreadPreviewLayout(points: Array<{ x: number; y: number }>) {
-  if (points.length <= 1) return [{ x: 50, y: 50 }];
-
-  const minX = Math.min(...points.map((point) => point.x));
-  const maxX = Math.max(...points.map((point) => point.x));
-  const minY = Math.min(...points.map((point) => point.y));
-  const maxY = Math.max(...points.map((point) => point.y));
-  const rawWidth = Math.max(1, maxX - minX);
-  const rawHeight = Math.max(1, maxY - minY);
-  const rawCenterX = (minX + maxX) / 2;
-  const rawCenterY = (minY + maxY) / 2;
-  const scale = Math.min(1.18, 68 / rawWidth, 56 / rawHeight);
-
-  return points.map((point) => ({
-    x: 50 + (point.x - rawCenterX) * scale,
-    y: 50 + (point.y - rawCenterY) * scale,
-  }));
-}
-
-function getSpreadPreviewLayout(spread: SpreadChoice) {
-  if (spread.id === "three") {
-    return [
-      { x: 24, y: 50 },
-      { x: 50, y: 50 },
-      { x: 76, y: 50 },
-    ];
-  }
-
-  if (spread.id === "single") {
-    return [{ x: 50, y: 50 }];
-  }
-
-  if (spread.id === "futureLover") {
-    return [
-      { x: 14, y: 28 },
-      { x: 26, y: 38 },
-      { x: 38, y: 52 },
-      { x: 50, y: 66 },
-      { x: 62, y: 52 },
-      { x: 74, y: 38 },
-      { x: 86, y: 28 },
-    ];
-  }
-
-  if (spread.id === "peachBlossom" || spread.id === "trueHeart") {
-    return [
-      { x: 28, y: 30 },
-      { x: 72, y: 30 },
-      { x: 28, y: 66 },
-      { x: 72, y: 66 },
-      { x: 50, y: 48 },
-    ];
-  }
-
-  if (spread.id === "reconciliation") {
-    return [
-      { x: 34, y: 26 },
-      { x: 66, y: 26 },
-      { x: 78, y: 48 },
-      { x: 66, y: 70 },
-      { x: 50, y: 78 },
-      { x: 34, y: 70 },
-      { x: 22, y: 48 },
-    ];
-  }
-
-  if (spread.id === "loveTree") {
-    return [
-      { x: 50, y: 80 },
-      { x: 50, y: 58 },
-      { x: 28, y: 54 },
-      { x: 72, y: 54 },
-      { x: 38, y: 34 },
-      { x: 62, y: 34 },
-      { x: 50, y: 18 },
-    ];
-  }
-
-  if (spread.id === "xRelationship") {
-    return [
-      { x: 24, y: 26 },
-      { x: 38, y: 40 },
-      { x: 50, y: 54 },
-      { x: 62, y: 40 },
-      { x: 76, y: 26 },
-      { x: 62, y: 68 },
-      { x: 50, y: 80 },
-      { x: 38, y: 68 },
-      { x: 24, y: 80 },
-    ];
-  }
-
-  return centerSpreadPreviewLayout(
-    spread.layout
-      .slice(0, spread.cardCount)
-      .map((point) => ({ x: point.x, y: point.y })),
-  );
 }
 
 function getSpreadPreviewLabelStyle(

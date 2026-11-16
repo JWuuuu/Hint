@@ -10,6 +10,7 @@ public class MainActivity extends BridgeActivity {
         // App-local plugins must be registered before the bridge is created.
         registerPlugin(HintDeviceCredentialPlugin.class);
         registerPlugin(HintSpeechRecognitionPlugin.class);
+        registerPlugin(HintPhotoLibraryPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
