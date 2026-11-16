@@ -17,12 +17,14 @@ export type StableTarotFlowStep = Exclude<
 
 export type TarotFlowState = {
   step: TarotFlowStep;
+  generation: number;
   settingsMode: boolean;
   settingsReturnStep: TarotFlowStep | null;
 };
 
 export type TarotFlowEvent =
   | { type: "NAVIGATE"; step: TarotFlowStep }
+  | { type: "ADVANCE"; from: TarotFlowStep; generation: number; step: TarotFlowStep }
   | { type: "OPEN_SETTINGS" }
   | { type: "CLOSE_SETTINGS" }
   | { type: "RESET" };
@@ -33,6 +35,7 @@ export function createTarotFlowState(
 ): TarotFlowState {
   return {
     step,
+    generation: 0,
     settingsMode,
     settingsReturnStep: null,
   };
@@ -52,11 +55,17 @@ export function tarotFlowReducer(
 ): TarotFlowState {
   switch (event.type) {
     case "NAVIGATE":
-      return { ...state, step: event.step };
+      return { ...state, step: event.step, generation: state.generation + 1 };
+    case "ADVANCE":
+      // Exiting stages may still be mounted. Only the current run may finish,
+      // even if Back/restart has since returned to the same stage.
+      if (state.settingsMode || state.step !== event.from || state.generation !== event.generation) return state;
+      return { ...state, step: event.step, generation: state.generation + 1 };
     case "OPEN_SETTINGS":
       if (state.settingsMode && state.step === "design") return state;
       return {
         step: "design",
+        generation: state.generation + 1,
         settingsMode: true,
         settingsReturnStep: state.step,
       };
@@ -64,11 +73,12 @@ export function tarotFlowReducer(
       if (!state.settingsReturnStep) return state;
       return {
         step: state.settingsReturnStep,
+        generation: state.generation + 1,
         settingsMode: false,
         settingsReturnStep: null,
       };
     case "RESET":
-      return createTarotFlowState("question");
+      return { ...createTarotFlowState("question"), generation: state.generation + 1 };
     default:
       return state;
   }

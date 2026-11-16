@@ -16,6 +16,7 @@ import { HintGuideSlot, useHintGuideEnabled } from "../../components/mascot/Hint
 import { askGuideContext } from "../../components/mascot/hintGuideContext";
 import { useHintTyping } from "../../components/mascot/useHintTyping";
 import { useTarotSpeechPlayback } from "../tarot/logic/useTarotSpeechPlayback";
+import { useAskComposerVisibility } from "./useAskComposerVisibility";
 
 /**
  * Ask Hint — a standalone ambient chat. No cards on the table, no
@@ -30,6 +31,7 @@ export function AskHint() {
   const { reduced } = useMotionPolicy();
   const inputRef = useRef<FollowUpInputHandle | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const layoutRef = useAskComposerVisibility();
   const [history, setHistory] = useState(() => listAskHistory(getAnonId()));
   const guideEnabled = useHintGuideEnabled();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
@@ -57,7 +59,7 @@ export function AskHint() {
     <div className="flex h-full min-h-0 w-full flex-col items-center"
       onFocusCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setKeyboardOpen(true); }}
       onBlurCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setKeyboardOpen(false); }}>
-      <div className="flex h-full min-h-0 w-full max-w-[42rem] flex-col">
+      <div ref={layoutRef} className="flex h-full min-h-0 w-full max-w-[42rem] flex-col overflow-y-auto">
         {/* Header */}
         <header className="flex shrink-0 items-center justify-between px-5 pb-3 pt-[calc(var(--hint-safe-top)+1rem)]">
           <Link
@@ -100,7 +102,7 @@ export function AskHint() {
         {/* Scrollable thread */}
         <div
           ref={scrollRef}
-          className="hint-app-scroll flex-1 space-y-8 px-5 py-6"
+          className="hint-app-scroll flex-1 scroll-pb-12 space-y-8 px-5 py-6"
         >
           {empty ? (
             <div

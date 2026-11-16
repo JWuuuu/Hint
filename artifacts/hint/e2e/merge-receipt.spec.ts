@@ -1,3 +1,4 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { appHref, test, expect, type Page } from "./fixtures";
 import { getTarotCardImage } from "../src/modules/tarot/logic/cardImageMap";
 import { readFile } from "node:fs/promises";
@@ -14,13 +15,15 @@ async function prepare(page: Page, language = "en", theme = "bright", appReduced
     localStorage.setItem("hint.preferences.v1", JSON.stringify({ theme, reduceMotion: appReduced, soundAndHaptics: false }));
   }, { language, theme, appReduced });
   await page.emulateMedia({ reducedMotion: systemReduced ? "reduce" : "no-preference" });
+  await mockDailyTarot(page);
   await page.goto("/app?hintPreview=embedded");
   await expect(page.getByTestId("home-reveal-action")).toBeEnabled();
 }
 async function reveal(page: Page) {
   await page.getByTestId("home-reveal-action").click();
   await expect(page.getByTestId("home-daily-reveal")).toBeVisible();
-  await page.keyboard.press("Escape");
+  await expect(page.getByTestId("home-daily-reveal").locator('a[href$="/app/daily"]')).toBeVisible();
+  await page.getByTestId("home-daily-reveal").locator("button").last().click();
   await expect(page.getByTestId("home-daily-reveal")).toHaveCount(0);
 }
 const copy = {
@@ -100,13 +103,17 @@ test("Home, Daily and receipt keep the locked card after refresh and export an a
   await expect(dialog.locator(".receipt-printer__card-block h2")).toHaveText(title);
 });
 
-test("a saved historical Daily card wins over an unopened allocation and shares without invented scores", async ({ page }) => {
+test("a server-confirmed historical Daily card wins over browser storage and shares without invented scores", async ({ page }) => {
   await prepare(page);
   await page.evaluate(() => {
     const owner = localStorage.getItem("hint_anon_id");
     localStorage.setItem("hint_local_daily_readings", JSON.stringify([{ id: "daily-2026-09-27", anonId: owner, source: "daily-pull", cardId: "18-moon", cardName: "The Moon", spreadType: "daily-pull", question: "daily", whisper: "A saved reflection.", createdAt: "2026-09-27T12:00:00Z" }]));
     localStorage.setItem("hint_daily_receipt_fallbacks_v1", JSON.stringify([{ anonId: owner, anonymousDeviceId: owner, featureType: "daily-card", dailyKey: "2026-09-27", assignedCardId: "17-star", assignedAt: "2026-09-27T12:00:00Z", openedAt: null, expiresAt: "2026-09-28T00:00:00Z", source: "local" }]));
   });
+  await page.route("**/api/daily-pull", route => route.fulfill({ json: {
+    id: "saved-historical-pull", anonId: "isolated-server-owner", pullDate: route.request().postDataJSON().date ?? "2026-09-28",
+    cardId: "18-moon", cardName: "The Moon", whisper: "A saved reflection.", isFlipped: true, note: "", createdAt: "2026-09-27T12:00:00Z",
+  } }));
   await page.goto("/app/daily?hintPreview=embedded");
   await page.getByRole("button", { name: "Previous Day", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Saved daily card" })).toBeVisible();
@@ -148,10 +155,11 @@ test("selectable iPhone frame keeps Home, Daily and receipt controls inside safe
   await page.screenshot({ path: info.outputPath("phone-home.png") });
   await phone.getByTestId("home-reveal-action").click();
   await expect(phone.getByTestId("home-daily-reveal")).toBeVisible();
-  await page.keyboard.press("Escape");
-  const syncStatusTop = await phone.getByText("Saved on this device; waiting to sync.", { exact: true })
-    .evaluate(element => element.getBoundingClientRect().top);
-  expect(syncStatusTop, "the offline status remains below the iPhone status bar / island").toBeGreaterThanOrEqual(info.project.name === "iphone-se" ? 20 : 59);
+  await expect(phone.getByTestId("home-daily-reveal").locator('a[href$="/app/daily"]')).toBeVisible();
+  await phone.getByTestId("home-daily-reveal").locator("button").last().click();
+  await expect(phone.getByText("Saved on this device; waiting to sync.", { exact: true })).toHaveCount(0);
+  const controlTop = await phone.getByTestId("home-reveal-trigger").evaluate(element => element.getBoundingClientRect().top);
+  expect(controlTop, "the confirmed card control stays below the iPhone status bar / island").toBeGreaterThanOrEqual(info.project.name === "iphone-se" ? 20 : 59);
   await phone.getByRole("button", { name: "Share receipt", exact: true }).click();
   const dialog = phone.getByTestId("receipt-share-dialog");
   await expect(dialog.getByRole("button", { name: "Share receipt", exact: true })).toBeEnabled();
@@ -170,7 +178,7 @@ test("selectable iPhone frame keeps Home, Daily and receipt controls inside safe
   await expect(dialog.locator(".receipt-printer__result-content footer")).toBeInViewport();
   await page.screenshot({ path: info.outputPath("phone-receipt-bottom.png") });
   await page.keyboard.press("Escape");
-  await phone.locator('.hint-app-dock a[href$="/app/daily"]').click();
+  await phone.locator('.hint-mascot-dock a[href$="/app/daily"]').click();
   await expect(phone.getByTestId("daily-date-strip")).toBeVisible();
   await page.screenshot({ path: info.outputPath("phone-daily.png") });
 });

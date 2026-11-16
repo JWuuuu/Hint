@@ -1,3 +1,4 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { test, expect } from "./fixtures";
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
@@ -8,17 +9,20 @@ test.beforeEach(async ({ page }) => {
   await page.route("**/api/profile**", route => route.fulfill({ json: null }));
 });
 test("Daily failed notes survive date changes and reload, then retry saves", async ({ page }) => {
+  await mockDailyTarot(page, { cardId: "0-fool", opened: true });
   let fail = true;
   const saved = new Map<string, string>();
   await page.route("**/api/daily-pull", route => {
     const data = route.request().postDataJSON();
+    data.date ??= new Date().toISOString().slice(0, 10);
     if (route.request().method() === "PATCH") {
       if (fail) return route.fulfill({ status: 503, json: { error: "offline" } });
       saved.set(data.date, data.note);
     }
-    return route.fulfill({ json: { anonId: data.anonId, pullDate: data.date, cardId: "0-the-fool", cardName: "The Fool", whisper: "A beginning", isFlipped: true, note: saved.get(data.date) ?? "", createdAt: new Date().toISOString() } });
+    return route.fulfill({ json: { anonId: data.anonId, pullDate: data.date, cardId: "0-fool", cardName: "The Fool", whisper: "A beginning", isFlipped: true, note: saved.get(data.date) ?? "", createdAt: new Date().toISOString() } });
   });
   await page.goto("/app/daily?hintPreview=embedded");
+  await expect(page.getByRole("heading", { name: "The Fool", exact: true })).toBeVisible();
   const note = page.getByTestId("input-pull-note");
   await note.fill("My recoverable note");
   await note.blur();
@@ -45,7 +49,33 @@ test("Ask failed question is still editable after reload", async ({ page }) => {
   await page.reload();
   await expect(question).toHaveValue("How can I make room to rest?");
 });
-test("the offline daily card stays identical through Daily, Home and Collection", async ({ page }) => {
+
+test("offline Today cannot reveal a forged browser card and reconnect restores the server assignment", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("hint_anon_id", "forged-daily-fixture");
+    localStorage.setItem("hint.preferences.v1", JSON.stringify({ reduceMotion: true, soundAndHaptics: false }));
+    const now = new Date().toISOString();
+    localStorage.setItem("hint_daily_receipt_fallbacks_v1", JSON.stringify([{
+      id: "forged", anonId: "forged-daily-fixture", anonymousDeviceId: "forged-daily-fixture",
+      featureType: "daily-card", dailyKey: now.slice(0, 10), assignedCardId: "18-moon",
+      assignedAt: now, openedAt: now, expiresAt: "2099-01-01T00:00:00Z", source: "server", syncStatus: "synced",
+    }]));
+  });
+  await page.goto("/app?hintPreview=embedded");
+  await expect(page.getByTestId("home-reveal-action")).toBeDisabled();
+  await expect(page.getByTestId("home-daily-reveal")).toHaveCount(0);
+  await mockDailyTarot(page, { cardId: "17-star" });
+  await page.evaluate(() => window.dispatchEvent(new Event("online")));
+  await expect(page.getByTestId("home-reveal-action")).toBeEnabled();
+  await page.getByTestId("home-reveal-action").click();
+  await expect(page.getByTestId("home-daily-reveal")).toBeVisible();
+  await expect(page.locator(".hint-home-hero")).toHaveAttribute("data-daily-card-id", "17-star");
+  await page.reload();
+  await expect(page.locator(".hint-home-hero")).toHaveAttribute("data-revealed", "true");
+  await expect(page.locator(".hint-home-hero")).toHaveAttribute("data-daily-card-id", "17-star");
+});
+test("the server daily card stays identical through Daily, Home and Collection", async ({ page }) => {
+  await mockDailyTarot(page);
   await page.goto("/app/daily?hintPreview=embedded");
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("hint_daily_receipt_fallbacks_v1") ?? "[]").find((r: any) => r.featureType === "daily-card")?.openedAt)).toBeTruthy();
   const original = await page.evaluate(() => JSON.parse(localStorage.getItem("hint_daily_receipt_fallbacks_v1")!)[0].assignedCardId);
@@ -61,9 +91,7 @@ test("the offline daily card stays identical through Daily, Home and Collection"
   await expect(page.getByText(new RegExp(`${title} is your saved daily card`))).toBeVisible();
   await page.goto("/app/collection?hintPreview=embedded");
   await expect(page.getByText(title, { exact: true }).first()).toBeVisible();
-  await page.route("**/api/daily-receipts/sync", route => route.fulfill({ status: 409, json: { error: "conflict" } }));
   await page.goto("/app/daily?hintPreview=embedded");
-  await expect(page.getByText(/A different revealed server card prevents synchronization/)).toBeVisible();
   await expect(page.getByText(title, { exact: true }).first()).toBeVisible();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("hint_daily_receipt_fallbacks_v1")!).find((r: any) => r.featureType === "daily-card").assignedCardId)).toBe(original);
 });
@@ -152,6 +180,7 @@ test("leaving during Animal Tarot reveal retains the already visible animal", as
 });
 
 test("history errors retain local records and provide retry", async ({ page }) => {
+  await mockDailyTarot(page);
   await page.goto("/app/daily?hintPreview=embedded");
   await expect.poll(() => page.evaluate(() => localStorage.getItem("hint_local_daily_readings"))).toBeTruthy();
   await page.goto("/app/readings?hintPreview=embedded");
@@ -186,9 +215,11 @@ test("history deletion failure preserves data and successful retry keeps prefere
 });
 
 test("Daily late save responses cannot clear a newer draft", async ({ page }) => {
+  await mockDailyTarot(page, { cardId: "0-fool", opened: true });
   let release!: () => void;
   await page.route("**/api/daily-pull", async route => {
     const data = route.request().postDataJSON();
+    data.date ??= new Date().toISOString().slice(0, 10);
     if (route.request().method() === "PATCH") await new Promise<void>(resolve => { release = resolve; });
     await route.fulfill({ json: { anonId: data.anonId, pullDate: data.date, cardId: "0-fool", cardName: "The Fool", whisper: "A beginning", isFlipped: true, note: data.note ?? "", createdAt: new Date().toISOString() } });
   });
@@ -205,6 +236,7 @@ test.describe("calendar rollover", () => {
   test.use({ timezoneId: "UTC" });
   test("midnight starts a new dated receipt while preserving the previous revealed card", async ({ page }) => {
     await page.clock.install({ time: new Date("2026-09-09T23:59:50Z") });
+    await mockDailyTarot(page);
     await page.goto("/app/daily?hintPreview=embedded");
     const receipts = () => page.evaluate(() => JSON.parse(localStorage.getItem("hint_daily_receipt_fallbacks_v1") ?? "[]").filter((item: any) => item.featureType === "daily-card"));
     await expect.poll(async () => (await receipts()).find((item: any) => item.dailyKey === "2026-09-09")?.openedAt).toBeTruthy();

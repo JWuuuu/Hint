@@ -1,6 +1,7 @@
 import {clamp,ease,gestures,sampleActivity,sampleGesture,neutralPose,idleBlink,blendPose,samplePaws,blendPaws,pawVelocity,carryMotion} from './motion.js';
 import {applyJourneyReaction,sampleEntrance,WAVE_START,ENTRANCE_END} from './entrance-motion.js';
 import {sampleDailyDelivery,dailyDeliveryDuration} from './daily-delivery-motion.js';
+import {createGestureCoordinator} from './gesture-coordinator.js';
 
 export function describeHintContext(context) {
   const voice=context.room==='voice';
@@ -36,6 +37,8 @@ const sceneTargets={
   welcome:{x:.5,y:.415,width:.82},avatar:{x:.16,y:.142,width:.26},
   voice:{x:.5,y:.4,width:.86},away:{x:1.3,y:.23,width:.58}
 };
+// Clear of any status bar or notch: above this line only a slot vouches for the space.
+const TOP_MARGIN=.1;
 const drift=(seconds,duration=.22)=>{
   const u=clamp(seconds/duration);
   return duration*(u-2.5*u**4+3*u**5-u**6);
@@ -43,6 +46,7 @@ const drift=(seconds,duration=.22)=>{
 const numericMix=(a,b,t)=>a+(b-a)*t;
 
 export function createHintSceneDirector(options={}) {
+  const now=options.now||(()=>performance.now()),coordinator=createGestureCoordinator(now);
   let context={room:'ask',phase:'idle',hasMessages:false,keyboardOpen:false,typing:false,audioPlaying:false,...options.context};
   let description=describeHintContext(context),clock=0,manualPaused=false,reduced=false,visible=true,speed=1,destroyed=false;
   let activity={id:description.activity,start:0},gesture=null,reaction=null,nextWink='wink-left',poseTransition=null,queuedGesture=null;
@@ -50,7 +54,20 @@ export function createHintSceneDirector(options={}) {
   let actorTarget={...sceneTargets[placement]},anchored=false,aspect=.5,look={x:0,y:0,targetX:0,targetY:0};
   let accentsVisible=true,entry=true;
   let introduction=null,introExit=null,introduced=false,letter='delivered';
-  let delivery=null,pawTransition=null;
+  let delivery=null,pawTransition=null,greeted=false;
+
+  function cancelGestures(){
+    if(destroyed)return;
+    queuedGesture=null;
+    // The approved introduction and finite paper delivery retain their own clocks.
+    if(gesture||reaction){
+      const source=visible&&!reduced?capturePose(true):null;
+      const paws=source&&options.pawGeometry?captureDeliverySource():null;
+      gesture=null;reaction=null;
+      poseTransition=source?{...source,at:clock,duration:.26}:null;
+      pawTransition=paws?{paws:paws.paws,velocity:paws.pawVelocity,at:clock,duration:.26}:null;
+    }
+  }
 
   function captureDeliverySource(){
     const source=sample(),now=clock,elapsed=delivery?.time,epsilon=1e-5;
@@ -129,7 +146,11 @@ export function createHintSceneDirector(options={}) {
     const t=Math.max(0,time-actorAt),u=ease(t/actorDuration),out={};
     for(const key of ['x','y','width'])out[key]=numericMix(actorFrom[key]+actorVelocity[key]*drift(t),actorTarget[key],u);
     const distance=Math.hypot(actorTarget.x-actorFrom.x,actorTarget.y-actorFrom.y);
-    out.y-=Math.min(.05,distance*.09)*Math.sin(Math.PI*u);
+    // Near the top edge the arc never lifts Hint above the higher of its two
+    // places, so a glide along a header stays on the screen. Lower down, where
+    // there is room, the arc keeps its lift.
+    const ceiling=Math.min(actorFrom.y-actorFrom.width*aspect/2,actorTarget.y-actorTarget.width*aspect/2,TOP_MARGIN)+out.width*aspect/2;
+    out.y=Math.max(out.y-Math.min(.05,distance*.09)*Math.sin(Math.PI*u),Math.min(out.y,ceiling));
     return out;
   }
   function capturePose(includeReaction=false){
@@ -248,26 +269,35 @@ export function createHintSceneDirector(options={}) {
       // A greeting yields to composing; explicit save/reading feedback can finish.
       if(merged.typing&&queuedGesture?.id==='welcome-back')queuedGesture=null;
       if(introduction&&merged.room!=='welcome')leaveIntroduction();
-      if(!roomChanged&&!phaseChanged&&gesture&&!(merged.typing&&gesture.id==='welcome-back')){
+      if(!roomChanged&&(!phaseChanged||cue)&&gesture&&!(merged.typing&&gesture.id==='welcome-back')){
         if(activity.id!==target.activity)activity={id:target.activity,start:clock};
       }else changeActivity(target.activity,target.activity==='thinking'?.9:target.activity==='listening'?.8:.6,roomChanged);
       context=merged;description=target;changePlacement(target.placement);
       if(context.room==='welcome')beginIntroduction();
       if(!['welcome','profile'].includes(context.room))letter='delivered';
-      if(cue&&!reduced&&visible&&!(cue==='welcome-back'&&merged.typing))queuedGesture={id:cue,after:clock+(roomChanged?.9:.2),expires:clock+4};
+      // Keep the first greeting, after stable navigation. Other feedback is
+      // admitted now or dropped; it cannot replay after a higher-priority cue.
+      if(cue==='welcome-back'&&!greeted&&!reduced&&visible&&!merged.typing){
+        const delay=Math.max(.7,entry?1.2-clock:0);
+        queuedGesture={id:cue,after:clock+delay,expires:clock+delay+.4,requestedAt:now()+delay*1000};
+      }else if(cue&&cue!=='welcome-back')api.playGesture(cue);
       return true;
     },
-    playGesture(id,{interrupt=false}={}){
-      if(destroyed||delivery&&!delivery.done||!visible||placement==='away'||introduction||!gestures[id]||['offer-letter','deliver-letter'].includes(id)||gesture&&!interrupt||reaction&&!interrupt||manualPaused||description.frozen||reduced)return false;
-      const source=capturePose(interrupt);
+    playGesture(id,{interrupt=false,requestedAt=now()}={}){
+      if(destroyed||delivery&&!delivery.done||!visible||placement==='away'||introduction||!gestures[id]||['offer-letter','deliver-letter'].includes(id)||manualPaused||description.frozen||reduced)return false;
+      // Explicit interrupt remains available to the library's isolated motion
+      // review tools. App feedback uses the coordinated default.
+      if(!interrupt&&!coordinator.accept(id,{active:gesture?.id||reaction?.id,requestedAt}))return false;
+      const source=capturePose(true);
       const pawSource=options.pawGeometry&&(source.pose.pawWave>0||id==='welcome'||pawTransition)?captureDeliverySource():null;
-      if(interrupt)reaction=null;
+      reaction=null;
       queuedGesture=null;gesture={id,start:clock};poseTransition={...source,at:clock,duration:.26};
       if(pawSource)pawTransition={paws:pawSource.paws,velocity:pawSource.pawVelocity,at:clock,duration:.38};
       return true;
     },
     react(){
-      if(destroyed||delivery&&!delivery.done||!visible||reaction||manualPaused||description.frozen||reduced||entry||placement==='away'||introduction&&introAt(clock).time<WAVE_START)return false;
+      if(destroyed||delivery&&!delivery.done||!visible||gesture||reaction||manualPaused||description.frozen||reduced||entry||placement==='away'||introduction&&introAt(clock).time<WAVE_START)return false;
+      queuedGesture=null;
       const id=nextWink;reaction={id,start:clock,duration:gestures[id].duration};nextWink=id==='wink-left'?'wink-right':'wink-left';return true;
     },
     advance(seconds){
@@ -287,13 +317,14 @@ export function createHintSceneDirector(options={}) {
         poseTransition={...source,at:clock,duration:.5};options.onComplete?.({gesture:id});
       }
       if(queuedGesture&&clock>=queuedGesture.expires)queuedGesture=null;
-      if(queuedGesture&&clock>=queuedGesture.after&&!entry&&!introduction&&!gesture&&!reaction&&!poseTransition){
-        const cue=queuedGesture;queuedGesture=null;api.playGesture(cue.id);
+      if(queuedGesture&&clock>=queuedGesture.after){
+        const cue=queuedGesture;queuedGesture=null;
+        if(!entry&&!poseTransition&&api.playGesture(cue.id,{requestedAt:cue.requestedAt})&&cue.id==='welcome-back')greeted=true;
       }
       const follow=1-Math.exp(-dt*7);look.x+=(look.targetX-look.x)*follow;look.y+=(look.targetY-look.y)*follow;
     },
     setMotionPolicy(policy){
-      if('visible'in policy){visible=Boolean(policy.visible);if(!visible)queuedGesture=null;}
+      if('visible'in policy){visible=Boolean(policy.visible);if(!visible)cancelGestures();}
       if('reduced'in policy){
         reduced=Boolean(policy.reduced);
         if(reduced&&delivery)finishDelivery();
@@ -302,6 +333,7 @@ export function createHintSceneDirector(options={}) {
     },
     setViewport(width,height){if(width>0&&height>0)aspect=width/height;},
     setPointer(x,y){look.targetX=clamp(x,-1,1);look.targetY=clamp(y,-1,1);},
+    cancelGestures,
     setAccentsVisible(value){accentsVisible=Boolean(value);},
     pause(){manualPaused=true;},resume(){manualPaused=false;},
     setSpeed(value){if(Number.isFinite(value))speed=clamp(value,.25,1);},

@@ -1,8 +1,8 @@
 import { useId } from "react";
-import { useLanguage } from "@/lib/i18n";
+import { useLanguage, type HintLanguage } from "@/lib/i18n";
 import type { NatalChart } from "@/types/astrology";
 import { SIGN_ORDER, bodyName } from "../astrologyLibrary";
-import { at } from "../astrologyCopy";
+import { astroText, at } from "../astrologyCopy";
 import type { ChartSelection } from "../chartState";
 
 // Original line drawings, shared by the library and the calculated wheel.
@@ -55,6 +55,16 @@ export const BODY_SYMBOLS: Record<string, string> = {
   neptune: "♆",
   pluto: "♇",
 };
+export const CHART_POINT_SYMBOLS: Record<string, string> = {
+  ...BODY_SYMBOLS,
+  north_node: "☊",
+  juno: "⚵",
+};
+export function chartPointName(body: string, language: HintLanguage) {
+  if (body === "north_node") return astroText(language, ["North Node", "北交点", "Nodo norte", "ノースノード", "북쪽 노드"]);
+  if (body === "juno") return astroText(language, ["Juno", "婚神星", "Juno", "ジュノー", "주노"]);
+  return bodyName(body, language);
+}
 export const aspectId = (a: NatalChart["aspects"][number]) =>
   `${a.from}:${a.type}:${a.to}`;
 export function longitude(sign?: string, degree?: number): number | null {
@@ -97,17 +107,20 @@ export function wheelLayout(chart: NatalChart) {
   });
   return { asc, points, labels };
 }
-export function NatalWheel({
-  chart,
-  selection,
-  onSelect,
-  layers = { planets: true, houses: true, aspects: true },
-}: {
+type NatalWheelProps = {
   chart: NatalChart;
   layers?: { planets: boolean; houses: boolean; aspects: boolean };
   selection?: ChartSelection | null;
   onSelect?: (selection: ChartSelection) => void;
-}) {
+};
+
+const allLayers = { planets: true, houses: true, aspects: true };
+
+export function NatalWheel({ variant, ...props }: NatalWheelProps & { variant?: "traditional" }) {
+  return variant === "traditional" ? <TraditionalWheel {...props} /> : <GuidedWheel {...props} />;
+}
+
+function GuidedWheel({ chart, selection, onSelect, layers = allLayers }: NatalWheelProps) {
   const { language } = useLanguage();
   const id = useId().replace(/:/g, "");
   const { asc, points, labels } = wheelLayout(chart);
@@ -326,6 +339,175 @@ export function NatalWheel({
             </g>
           );
         })}
+    </svg>
+  );
+}
+
+const quadrantHouseSystems = new Set([
+  "placidus", "koch", "porphyry", "regiomontanus", "campanus", "alcabitius", "topocentric",
+]);
+
+export function usesQuadrantHouses(chart: NatalChart) {
+  const system = chart.calculation?.houseSystem?.trim().toLowerCase().replace(/[\s_-]+houses?$/, "");
+  return system !== undefined && quadrantHouseSystems.has(system);
+}
+
+function bodyKey(body: string) {
+  const compact = body.toLowerCase().replace(/[\s_-]/g, "");
+  if (compact === "asc" || compact === "ascendant") return "rising";
+  return compact === "northnode" ? "north_node" : compact;
+}
+
+function TraditionalWheel({ chart, selection, onSelect, layers = allLayers }: NatalWheelProps) {
+  const { language } = useLanguage();
+  const placements = new Map([...chart.placements, ...(chart.additionalPlacements ?? [])].flatMap((placement) => {
+    const lon = longitude(placement.sign, placement.degree);
+    return lon === null ? [] : [[bodyKey(placement.body), { ...placement, lon }] as const];
+  }));
+  const cusps = new Map(chart.houses.flatMap((house) => {
+    const lon = longitude(house.sign, house.degree);
+    return lon === null || !Number.isInteger(house.house) || house.house < 1 || house.house > 12
+      ? [] : [[house.house, lon] as const];
+  }));
+  const ascendant = placements.get("rising");
+  const orientation = ascendant?.lon ?? cusps.get(1) ?? 0;
+  const midheaven = placements.get("midheaven")?.lon ?? placements.get("mc")?.lon
+    ?? (usesQuadrantHouses(chart) ? cusps.get(10) : undefined);
+  const axes = [
+    { start: "ASC", end: "DSC", lon: ascendant?.lon, body: ascendant?.body },
+    { start: "MC", end: "IC", lon: midheaven },
+  ];
+  const aspectPoints = new Map(Array.from(placements, ([key, p]) => [key, point(p.lon, 89, orientation)]));
+  const selectedAspect = chart.aspects.find((aspect) => selection?.kind === "aspect" && aspectId(aspect) === selection.id);
+  const glyphAngles: number[] = [];
+
+  return (
+    <svg
+      className="astro-natal-wheel astro-traditional-wheel"
+      viewBox="-185 -185 370 370"
+      role="group"
+      aria-label={at(language, "wheel")}
+      data-testid="astro-wheel"
+    >
+      <circle className="astro-traditional-face" r="165" />
+      {SIGN_ORDER.map((sign, index) => {
+        const first = point(index * 30, 165, orientation);
+        const last = point((index + 1) * 30, 165, orientation);
+        const innerFirst = point(index * 30, 140, orientation);
+        const innerLast = point((index + 1) * 30, 140, orientation);
+        const center = point(index * 30 + 15, 152.5, orientation);
+        return (
+          <g key={sign} className={`astro-traditional-sign astro-traditional-element-${index % 4}`}>
+            <path d={`M${first.x} ${first.y}A165 165 0 0 0 ${last.x} ${last.y}L${innerLast.x} ${innerLast.y}A140 140 0 0 1 ${innerFirst.x} ${innerFirst.y}Z`} />
+            <svg width="19" height="19" x={center.x - 9.5} y={center.y - 9.5} viewBox="0 0 24 24" aria-hidden="true">
+              <path d={SIGN_PATHS[index]} />
+            </svg>
+          </g>
+        );
+      })}
+      <circle className="astro-traditional-tick-ring" r="140" />
+      <circle className="astro-traditional-tick-ring" r="134" />
+      {Array.from({ length: 360 }, (_, degree) => {
+        const a = point(degree, 140, orientation);
+        const b = point(degree, degree % 30 === 0 ? 134 : degree % 5 === 0 ? 136 : 138, orientation);
+        return <line key={degree} className={`astro-traditional-tick${degree % 5 === 0 ? " is-major" : ""}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} />;
+      })}
+      {layers.houses && Array.from(cusps, ([house, lon]) => {
+        const a = point(lon, 134, orientation);
+        const nextCusp = cusps.get((house % 12) + 1);
+        const span = nextCusp === undefined ? 0 : (nextCusp - lon + 360) % 360;
+        const b = point(lon + (span ? span / 2 : 4), 122, orientation);
+        const selected = selection?.kind === "house" && selection.id === String(house);
+        return (
+          <g key={house} data-selected={selected} className="astro-traditional-house">
+            <line x1="0" y1="0" x2={a.x} y2={a.y} />
+            <text x={b.x} y={b.y} textAnchor="middle" dominantBaseline="central">{house}</text>
+          </g>
+        );
+      })}
+      {layers.houses && axes.map((axis) => {
+        if (axis.lon === undefined) return null;
+        const a = point(axis.lon, 136, orientation);
+        const b = point(axis.lon, 171, orientation);
+        const showSelection = axis.body && selection?.kind === "body" && selection.id === axis.body;
+        const body = axis.body;
+        const selectAscendant = onSelect && body ? () => onSelect({ kind: "body", id: body }) : undefined;
+        return (
+          <g key={axis.start} className="astro-traditional-axis">
+            <line x1={a.x} y1={a.y} x2={-a.x} y2={-a.y} />
+            <g
+              className="astro-traditional-glyph"
+              role={selectAscendant ? "button" : undefined}
+              tabIndex={selectAscendant ? 0 : undefined}
+              aria-label={body ? chartPointName(body, language) : undefined}
+              aria-pressed={selectAscendant ? Boolean(showSelection) : undefined}
+              onClick={selectAscendant}
+              onKeyDown={(event) => {
+                if (selectAscendant && (event.key === "Enter" || event.key === " ")) {
+                  event.preventDefault();
+                  selectAscendant();
+                }
+              }}
+            >
+              <circle cx={b.x} cy={b.y} r="13" />
+              <text x={b.x} y={b.y} textAnchor="middle" dominantBaseline="central">{axis.start}</text>
+            </g>
+            <text x={-b.x} y={-b.y} textAnchor="middle" dominantBaseline="central">{axis.end}</text>
+          </g>
+        );
+      })}
+      {layers.aspects && chart.aspects.map((aspect, index) => {
+        const from = bodyKey(aspect.from);
+        const to = bodyKey(aspect.to);
+        const a = aspectPoints.get(from);
+        const b = aspectPoints.get(to);
+        if (!a || !b || from === to) return null;
+        const selected = selection?.kind === "aspect" ? selection.id === aspectId(aspect)
+          : selection?.kind === "body" && [from, to].includes(bodyKey(selection.id));
+        return (
+          <line key={`${aspectId(aspect)}:${index}`} className="astro-aspect-line astro-traditional-aspect"
+            data-aspect={aspect.type} data-selected={selected} data-dimmed={Boolean(selection && !selected)}
+            x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+        );
+      })}
+      {layers.planets && Array.from(placements, ([key, p]) => {
+        if ((p === ascendant && layers.houses) || key === "mc" || key === "midheaven") return null;
+        const glyph = CHART_POINT_SYMBOLS[key];
+        if (!glyph) return null;
+        const anchor = aspectPoints.get(key)!;
+        // Keep the aspect endpoint at its true longitude and move only a crowded glyph.
+        let angle = p.lon;
+        for (let step = 0; glyphAngles.some((existing) => Math.abs((angle - existing + 540) % 360 - 180) < 13 - 1e-6); step++) {
+          const distance = Math.floor(step / 2 + 1) * 13;
+          angle = p.lon + (step % 2 === 0 ? distance : -distance);
+        }
+        glyphAngles.push(angle);
+        const position = point(angle, 106, orientation);
+        const leader = point(angle, 98, orientation);
+        const selected = (selection?.kind === "body" && selection.id === p.body)
+          || Boolean(selectedAspect && [bodyKey(selectedAspect.from), bodyKey(selectedAspect.to)].includes(key));
+        const select = () => onSelect?.({ kind: "body", id: p.body });
+        return (
+          <g key={key} data-body={p.body} data-selected={selected} className="astro-traditional-point">
+            <line x1={anchor.x} y1={anchor.y} x2={leader.x} y2={leader.y} />
+            <circle cx={anchor.x} cy={anchor.y} r="2.15" onClick={onSelect ? select : undefined} />
+            <g className="astro-traditional-glyph" role={onSelect ? "button" : undefined}
+              aria-label={chartPointName(p.body, language)} aria-pressed={onSelect ? selected : undefined}
+              tabIndex={onSelect ? 0 : undefined} onClick={onSelect ? select : undefined}
+              onKeyDown={(event) => {
+                if (onSelect && (event.key === "Enter" || event.key === " ")) {
+                  event.preventDefault();
+                  select();
+                }
+              }}>
+              <circle cx={position.x} cy={position.y} r="10.5" />
+              <text x={position.x} y={position.y} textAnchor="middle" dominantBaseline="central">
+                {glyph}{p.retrograde ? <tspan className="astro-traditional-retrograde" dx="1">ˎ</tspan> : null}
+              </text>
+            </g>
+          </g>
+        );
+      })}
     </svg>
   );
 }

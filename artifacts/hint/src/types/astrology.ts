@@ -50,6 +50,14 @@ export type PlanetPlacement = {
   meaning: string;
 };
 
+export const ADDITIONAL_CHART_BODIES = [
+  "chiron", "ceres", "pallas", "juno", "vesta", "north_node", "south_node",
+  "lilith", "fortune", "vertex", "east_point", "descendant", "imum_coeli", "midheaven",
+] as const;
+
+export type AdditionalChartBody = (typeof ADDITIONAL_CHART_BODIES)[number];
+export type AdditionalChartPlacement = Omit<PlanetPlacement, "body"> & { body: AdditionalChartBody };
+
 export type Aspect = {
   from: PlanetBody | string;
   to: PlanetBody | string;
@@ -99,6 +107,7 @@ export type NatalChart = {
   calculatedAt: string;
   birthProfile: BirthProfile;
   placements: PlanetPlacement[];
+  additionalPlacements?: AdditionalChartPlacement[];
   aspects: Aspect[];
   houses: HouseCusp[];
   sunSign?: ZodiacSign;

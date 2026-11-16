@@ -1,3 +1,4 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { test, expect, type Locator, type Page } from "./fixtures";
 
 const owner = "isolated-period-history-owner";
@@ -56,12 +57,10 @@ test.beforeEach(async ({ page }) => {
   await page.route("**/api/reading-days**", route => route.fulfill({ json: [] }));
   await page.route("**/api/daily-pull", route => {
     const data = route.request().postDataJSON();
+    data.date ??= today;
     return route.fulfill({ json: { anonId: owner, pullDate: data.date, cardId: "17-star", cardName: "The Star", whisper: "Fictional stable daily card.", isFlipped: true, note: `Fictional note for ${data.date}`, createdAt: now } });
   });
-  await page.route("**/api/daily-receipts/**", route => {
-    const data = route.request().postDataJSON();
-    return route.fulfill({ json: { ...data, anonId: owner, anonymousDeviceId: owner, assignedCardId: data.assignedCardId ?? "17-star", assignedAt: now, openedAt: now, expiresAt: "2026-09-10T00:00:00.000Z", source: "server" } });
-  });
+  await mockDailyTarot(page, { opened: true });
 });
 
 test("Daily day, week, month and year controls retain calendar-selected periods", async ({ page }, testInfo) => {
@@ -84,9 +83,10 @@ test("Daily day, week, month and year controls retain calendar-selected periods"
   const calendar = page.getByTestId("daily-calendar-jump-menu");
   await expect(calendar).toBeVisible();
   await expectTouchTargets(calendar.getByRole("button"));
-  await calendar.getByRole("button", { name: "17", exact: true }).click();
+  // The six-week grid also includes October 7; select the saved September day.
+  await calendar.getByRole("button", { name: "7", exact: true }).first().click();
   await expect(calendar).toHaveCount(0);
-  await expect(note).toHaveValue("Fictional note for 2026-09-17");
+  await expect(note).toHaveValue("Fictional note for 2026-09-07");
 
   await page.getByRole("button", { name: "Week", exact: true }).click();
   await page.getByTestId("button-calendar-jump").click();

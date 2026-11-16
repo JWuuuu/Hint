@@ -1,4 +1,4 @@
-import { combineRequestSignals, setAuthFailureHandler, setAuthTokenGetter, setBaseUrl, setRequestIdentityGetter } from "@workspace/api-client-react";
+import { createRequestLifetime, setAuthFailureHandler, setAuthTokenGetter, setBaseUrl, setRequestIdentityGetter } from "@workspace/api-client-react";
 import { isNativeShell } from "./mobile";
 import { getDeviceSessionToken, invalidateDeviceSession } from "./deviceSession";
 import { captureIdentityContext, startIdentityCoordination } from "./identity";
@@ -32,13 +32,14 @@ export async function apiFetch(input: string, init: RequestInit = {}): Promise<R
       target.username || target.password || !target.pathname.startsWith(prefix)) throw new Error("Invalid API destination");
   init.signal?.throwIfAborted();
   const identity = captureIdentityContext();
-  const { signal, dispose } = combineRequestSignals(init.signal, identity.signal);
+  const { signal, dispose, waitFor } = createRequestLifetime(init.signal, identity.signal);
   try {
-    const token = await getDeviceSessionToken();
+    signal.throwIfAborted(); identity.assertCurrent();
+    const token = await waitFor(getDeviceSessionToken());
     signal?.throwIfAborted(); identity.assertCurrent();
     const headers = new Headers(init.headers);
     headers.set("Authorization", `Bearer ${token}`);
-    const response = await fetch(input, { ...init, signal, headers, credentials: "omit", redirect: "error" });
+    const response = await waitFor(fetch(input, { ...init, signal, headers, credentials: "omit", redirect: "error" }));
     signal?.throwIfAborted(); identity.assertCurrent();
     if (response.status === 401) invalidateDeviceSession(token);
     // Current direct API callers consume complete JSON or audio bodies. Finish
@@ -46,7 +47,7 @@ export async function apiFetch(input: string, init: RequestInit = {}): Promise<R
     // WebKit can expose an empty stream for a bodyless network response. The
     // Response constructor still requires null for these HTTP statuses.
     const bodyless = init.method?.toUpperCase() === "HEAD" || [204, 205, 304].includes(response.status);
-    const body = bodyless || response.body === null ? null : await response.arrayBuffer();
+    const body = bodyless || response.body === null ? null : await waitFor(response.arrayBuffer());
     signal?.throwIfAborted(); identity.assertCurrent();
     return new Response(body, { status: response.status, statusText: response.statusText, headers: response.headers });
   } finally { dispose(); }

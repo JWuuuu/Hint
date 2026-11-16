@@ -6,6 +6,7 @@ import { useHintTyping } from "../../../components/mascot/useHintTyping";
 import { voiceGuideContext } from "../../../components/mascot/hintGuideContext";
 import {
   useEffect,
+  useLayoutEffect,
   useReducer,
   useRef,
   useState,
@@ -14,7 +15,7 @@ import {
   type ReactNode,
   type WheelEvent,
 } from "react";
-import { AnimatePresence, animate, motion, useMotionValue } from "framer-motion";
+import { AnimatePresence, animate, motion, useIsPresent, useMotionValue } from "framer-motion";
 import "./spread-recommendation.css";
 import { CrisisSupportPanel } from "./CrisisSupportPanel";
 import { detectCrisis } from "../../../lib/crisisSupport";
@@ -100,6 +101,7 @@ import {
 import {
   createInitialWashRitualState,
   createWashFrameClock,
+  createManualWashFrameClock,
   getWashRitualTiming,
   washRitualReducer,
 } from "../logic/washRitualMachine";
@@ -113,6 +115,7 @@ import {
   createTarotFlowState,
   getTarotStableRecoveryStep,
   tarotFlowReducer,
+  type TarotFlowEvent,
   type TarotFlowStep,
 } from "../logic/ritualFlowMachine";
 import type { RitualCard } from "../types/ritual.types";
@@ -1026,10 +1029,10 @@ function SpreadDiagram({
                     }}
                   />}
                   {!quiet && <span
-                    className="absolute left-1/2 top-1/2 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#f6dfaa]/70 bg-[#fff8ee]/92 text-[10px] font-black text-[#473250] shadow-[0_6px_14px_rgba(36,20,52,0.24)]"
+                    className="absolute left-1/2 top-1/2 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#f6dfaa]/70 bg-[#fff8ee]/92 text-[11px] font-black text-[#473250] shadow-[0_6px_14px_rgba(36,20,52,0.24)]"
                     style={{
-                      width: size.number,
-                      height: size.number,
+                      width: `max(${size.number}px, 1.4em)`,
+                      height: `max(${size.number}px, 1.4em)`,
                       ...SPREAD_PREVIEW_TEXT_STYLE,
                     }}
                   >
@@ -1038,7 +1041,7 @@ function SpreadDiagram({
                 </div>
                 {showLabels ? (
                   <span
-                    className={quiet ? "tarot-spread-position-label" : "mt-3 block h-[11px] w-[58px] truncate whitespace-nowrap text-center text-[8px] font-black uppercase leading-none tracking-[0.075em] text-[#6e5968]/84"}
+                    className={quiet ? "tarot-spread-position-label" : "mt-3 block min-h-[11px] w-[58px] [overflow-wrap:anywhere] text-center text-[11px] font-black uppercase leading-none tracking-[0.075em] text-[#6e5968]/84"}
                     style={SPREAD_PREVIEW_TEXT_STYLE}
                     title={label}
                   >
@@ -1115,10 +1118,10 @@ function SpreadDiagram({
             />
           </div>
           <span
-            className="absolute left-1/2 top-1/2 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#f6dfaa]/70 bg-[#fff8ee]/92 text-[10px] font-black text-[#473250] shadow-[0_6px_14px_rgba(36,20,52,0.24)]"
+            className="absolute left-1/2 top-1/2 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[#f6dfaa]/70 bg-[#fff8ee]/92 text-[11px] font-black text-[#473250] shadow-[0_6px_14px_rgba(36,20,52,0.24)]"
             style={{
-              width: size.number,
-              height: size.number,
+              width: `max(${size.number}px, 1.4em)`,
+              height: `max(${size.number}px, 1.4em)`,
               ...SPREAD_PREVIEW_TEXT_STYLE,
             }}
           >
@@ -1593,7 +1596,7 @@ function QuestionStep({
 
           {question ? (
             <div className="mt-5 rounded-[24px] border border-white/66 bg-white/46 p-4 shadow-[0_16px_46px_rgba(102,72,105,0.10)] backdrop-blur-xl">
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#a28398]">
+              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#a28398]">
                 {t("tarot.flow.question.current")}
               </p>
               <p className="mt-2 text-[14px] font-bold leading-relaxed text-[#3d3348]">
@@ -1602,11 +1605,11 @@ function QuestionStep({
             </div>
           ) : null}
 
-          <div className="mt-5 flex items-center justify-between gap-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#9c7d92]">
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#9c7d92]">
               {t("tarot.flow.question.suggested")}
             </p>
-            <p className="rounded-full border border-white/56 bg-white/42 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-[#8a7888] shadow-[0_8px_22px_rgba(96,72,104,0.08)] backdrop-blur-xl">
+            <p className="rounded-full border border-white/56 bg-white/42 px-2.5 py-1 text-[11px] font-black uppercase tracking-[0.12em] text-[#8a7888] shadow-[0_8px_22px_rgba(96,72,104,0.08)] backdrop-blur-xl">
               {t("tarot.flow.question.autoSpread")}
             </p>
           </div>
@@ -1657,19 +1660,12 @@ function QuestionStep({
                     <span className="grid h-7 w-7 place-items-center rounded-full border border-[#b997c9]/20 bg-[#fff9f4]/72 text-[#6f5878]">
                       <QuestionIcon icon={card.icon} />
                     </span>
-                    <span className="min-w-0 truncate text-[9px] font-black uppercase tracking-[0.18em] text-[#9d7c84]">
+                    <span className="min-w-0 [overflow-wrap:anywhere] text-[11px] font-black uppercase tracking-[0.18em] text-[#9d7c84]">
                       {localizedCategory}
                     </span>
                   </span>
                   <span
-                    className="relative z-10 mt-2.5 block min-h-[2.6rem] max-w-[calc(100%-32px)] overflow-hidden text-[11.5px] font-bold leading-[1.2] text-[#3e3448]"
-                    style={{
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      // The prompts take up to three lines at normal text size; with large text
-                      // the narrower column needs more, so the card grows instead of hiding them.
-                      WebkitLineClamp: 6,
-                    }}
+                    className="relative z-10 mt-2.5 block min-h-[2.6rem] max-w-[calc(100%-32px)] [overflow-wrap:anywhere] text-[11.5px] font-bold leading-[1.2] text-[#3e3448]"
                   >
                     {localizedQuestion}
                   </span>
@@ -1688,7 +1684,7 @@ function QuestionStep({
             rows={1}
             onChange={(event) => setQuestion(event.target.value)}
             placeholder={t("tarot.flow.question.placeholder")}
-            className="min-h-11 min-w-[min(100%,8rem)] flex-1 resize-none rounded-[22px] bg-transparent px-3 py-3 text-[14px] font-bold leading-snug text-[#382f45] outline-none placeholder:text-[#9b8c9e]"
+            className="min-h-11 min-w-[min(100%,8rem)] flex-1 resize-none rounded-[22px] bg-transparent px-3 py-3 text-[16px] font-bold leading-snug text-[#382f45] outline-none placeholder:text-[#9b8c9e]"
           />
           <button
             type="button"
@@ -2083,9 +2079,9 @@ function RoomDesignStudioStep({
               style={{ background: getTarotRoomSurfaceBackground(design.backgroundId) }}
             >
               <div className="absolute inset-0 opacity-60 [background-image:radial-gradient(circle_at_20%_28%,rgba(255,255,255,0.88)_0_1px,transparent_1px),radial-gradient(circle_at_76%_18%,rgba(198,148,73,0.38)_0_1px,transparent_1px)] [background-size:72px_82px]" />
-              <div className="relative z-10 flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="text-[9px] font-black uppercase tracking-[0.18em] text-[#9b7a8d]">
+              <div className="relative z-10 flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0 flex-[1_1_10rem]">
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#9b7a8d]">
                     {settingsMode
                       ? t("tarot.flow.design.livePreview")
                       : t("tarot.flow.design.readySetup")}
@@ -2100,7 +2096,7 @@ function RoomDesignStudioStep({
                       : displaySpread.label}
                   </p>
                 </div>
-                <span className="shrink-0 rounded-full border border-white/58 bg-white/62 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.12em] text-[#8d6f82]">
+                <span className="max-w-full [overflow-wrap:anywhere] rounded-full border border-white/58 bg-white/62 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.12em] text-[#8d6f82]">
                   {settingsMode
                     ? t("tarot.flow.design.roomStyle")
                     : formatCopy(t("tarot.flow.recommendation.cardCount"), {
@@ -2114,9 +2110,9 @@ function RoomDesignStudioStep({
                   {summaryItems.map((item) => (
                     <div
                       key={item.label}
-                      className="flex min-h-11 items-center justify-between gap-3 px-1"
+                      className="flex min-h-11 flex-wrap items-center justify-between gap-2 px-1 py-1"
                     >
-                      <span className="text-[8px] font-black uppercase tracking-[0.15em] text-[#9b7a8d]">
+                      <span className="text-[11px] font-black uppercase tracking-[0.15em] text-[#9b7a8d]">
                         {item.label}
                       </span>
                       <span className="min-w-0 text-right text-[12px] font-black leading-tight text-[#43394a] text-balance [overflow-wrap:anywhere]">
@@ -2125,7 +2121,7 @@ function RoomDesignStudioStep({
                     </div>
                   ))}
                 </div>
-                <div className="relative h-[136px] min-w-0 overflow-hidden rounded-[20px] border border-white/46 bg-white/24 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)]">
+                <div className="relative min-h-[136px] min-w-0 overflow-hidden rounded-[20px] border border-white/46 bg-white/24 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.42)]">
                   <div
                     className="absolute -inset-6 rounded-full blur-2xl"
                     style={{ backgroundColor: design.glow }}
@@ -2134,15 +2130,15 @@ function RoomDesignStudioStep({
                     <div className="flex min-w-0 flex-col items-center justify-center rounded-[17px] border border-white/46 bg-white/28 px-1 py-2">
                       <TarotBack
                         cardBackId={design.cardBackId}
-                        className="h-[82px] w-[52px] rounded-[10px]"
+                        className="h-[82px] w-[52px] shrink-0 rounded-[10px]"
                       />
-                      <span className="mt-2 block text-[8px] font-black uppercase tracking-[0.12em] text-[#8f7185]">
+                      <span className="mt-2 block max-w-full text-center [overflow-wrap:anywhere] text-[11px] font-black uppercase tracking-[0.12em] text-[#8f7185]">
                         {t("tarot.flow.design.back")}
                       </span>
                     </div>
                     <div className="flex min-w-0 flex-col items-center justify-center rounded-[17px] border border-white/46 bg-white/28 px-1 py-2">
                       {frontPreviewImage ? (
-                        <span className="block h-[82px] w-[52px] overflow-hidden rounded-[10px] border border-white/82 shadow-[0_12px_24px_rgba(90,65,95,0.16)]">
+                        <span className="block h-[82px] w-[52px] shrink-0 overflow-hidden rounded-[10px] border border-white/82 shadow-[0_12px_24px_rgba(90,65,95,0.16)]">
                           <img
                             src={frontPreviewImage}
                             alt=""
@@ -2156,7 +2152,7 @@ function RoomDesignStudioStep({
                           H
                         </span>
                       )}
-                      <span className="mt-2 block text-[8px] font-black uppercase tracking-[0.12em] text-[#8f7185]">
+                      <span className="mt-2 block max-w-full text-center [overflow-wrap:anywhere] text-[11px] font-black uppercase tracking-[0.12em] text-[#8f7185]">
                         {t("tarot.flow.design.front")}
                       </span>
                     </div>
@@ -2175,7 +2171,7 @@ function RoomDesignStudioStep({
               aria-expanded={customizeOpen}
             >
               <span>
-                <span className="block text-[10px] font-black uppercase tracking-[0.16em] text-[#9c7d92]">
+                <span className="block text-[11px] font-black uppercase tracking-[0.16em] text-[#9c7d92]">
                   {t("tarot.flow.design.customize")}
                 </span>
                 <span className="mt-0.5 block text-[12px] font-black">
@@ -2208,10 +2204,10 @@ function RoomDesignStudioStep({
                             : "text-[#8a7588]"
                         }`}
                       >
-                        <span className="block text-[9px] font-black uppercase tracking-[0.14em]">
+                        <span className="block min-w-0 text-balance [overflow-wrap:anywhere] text-[11px] font-black uppercase tracking-[0.14em]">
                           {panel.label}
                         </span>
-                        <span className="mt-0.5 block truncate text-[10px] font-black">
+                        <span className="mt-0.5 block [overflow-wrap:anywhere] text-[11px] font-black">
                           {panel.value}
                         </span>
                       </button>
@@ -2223,7 +2219,7 @@ function RoomDesignStudioStep({
                   {activePanel === "room" ? (
                     <section>
                       <div className="mb-3">
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
+                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
                           {t("tarot.flow.design.roomBackground")}
                         </p>
                         <p className="mt-1 text-[12px] font-bold text-[#6b596c]">
@@ -2263,7 +2259,7 @@ function RoomDesignStudioStep({
                                 className="block h-16 rounded-[14px] border border-white/54"
                                 style={{ background: item.preview }}
                               />
-                              <span className="mt-2 block truncate text-[10px] font-black text-[#4a4050]">
+                              <span className="mt-2 block [overflow-wrap:anywhere] text-[11px] font-black text-[#4a4050]">
                                 {t(`tarot.background.${item.id}.label`)}
                               </span>
                             </button>
@@ -2276,7 +2272,7 @@ function RoomDesignStudioStep({
                   {activePanel === "front" ? (
                     <section>
                       <div className="mb-3">
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
+                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
                           {t("tarot.flow.design.cardFront")}
                         </p>
                         <p className="mt-1 text-[12px] font-bold text-[#6b596c]">
@@ -2329,7 +2325,7 @@ function RoomDesignStudioStep({
                                   </span>
                                 ))}
                               </span>
-                              <span className="mt-1 block truncate text-[10px] font-black text-[#4a4050]">
+                              <span className="mt-1 block [overflow-wrap:anywhere] text-[11px] font-black text-[#4a4050]">
                                 {t(`tarot.cardFace.${item.id}.label`)}
                               </span>
                             </button>
@@ -2342,7 +2338,7 @@ function RoomDesignStudioStep({
                   {activePanel === "back" ? (
                     <section>
                       <div className="mb-3">
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
+                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[#9c7d92]">
                           {t("tarot.flow.design.cardBack")}
                         </p>
                         <p className="mt-1 text-[12px] font-bold leading-snug text-[#6b596c]">
@@ -2390,11 +2386,11 @@ function RoomDesignStudioStep({
                                 className={`mx-auto h-24 w-[62px] rounded-[11px] object-cover shadow-[0_10px_18px_rgba(90,65,95,0.16)] ${locked ? "saturate-[0.75]" : ""}`}
                                 draggable={false}
                               />
-                              <p className="mt-2 truncate text-[10px] font-black text-[#4a4050]">
+                              <p className="mt-2 [overflow-wrap:anywhere] text-[11px] font-black text-[#4a4050]">
                                 {compactCardBackLabel(item.label)}
                               </p>
                               {locked ? (
-                                <span className="absolute right-2 top-2 inline-flex h-7 items-center gap-1 rounded-full border border-white/60 bg-white/78 px-2 text-[8px] font-black uppercase tracking-[0.12em] text-[#7a6074] shadow-[0_8px_18px_rgba(72,52,82,0.14)]">
+                                <span className="absolute right-2 top-2 inline-flex min-h-7 max-w-[calc(100%-1rem)] items-center gap-1 rounded-full border border-white/60 bg-white/78 px-2 py-1 [overflow-wrap:anywhere] text-[11px] font-black uppercase tracking-[0.12em] text-[#7a6074] shadow-[0_8px_18px_rgba(72,52,82,0.14)]">
                                   <Lock size={10} />
                                   {t("tarot.flow.design.token")}
                                 </span>
@@ -2448,12 +2444,15 @@ function PrepareStep({
 }) {
   const { t } = useLanguage();
   const reduceMotion = useTarotReducedMotion();
+  const present = useIsPresent();
+  const { pageVisible } = useMotionPolicy();
   const displaySpread = localizeSpreadChoice(spread, t);
 
   useEffect(() => {
+    if (!present || !pageVisible) return;
     const timer = window.setTimeout(onDone, reduceMotion ? 80 : 1300);
     return () => window.clearTimeout(timer);
-  }, [onDone, reduceMotion]);
+  }, [onDone, reduceMotion, present, pageVisible]);
 
   return (
     <StepShell>
@@ -2498,10 +2497,16 @@ function RitualShuffleStep({
 }: {
   design: RoomDesign;
   deck: RitualCard[];
-  onComplete: (deck: RitualCard[]) => void;
+  onComplete: (deck: RitualCard[], headerHeight: number) => void;
 }) {
   const reduceMotion = useTarotReducedMotion();
   const { pageVisible } = useMotionPolicy();
+  const present = useIsPresent();
+  const active = useRef(false);
+  useLayoutEffect(() => {
+    active.current = present && pageVisible;
+    return () => { active.current = false; };
+  }, [present, pageVisible]);
   const washProxyCount = deck.length;
   const [deckState, setDeckState] = useState<FlowDeckState>(() =>
     ({
@@ -2573,10 +2578,18 @@ function RitualShuffleStep({
   }, []);
 
   useEffect(() => {
-    if (!pageVisible || reduceMotion || stage !== "washing" || autoWashing || washMode !== "manual") return undefined;
+    if (!present || !pageVisible) {
+      autoWashingRef.current = false;
+      clearTimers();
+    }
+  }, [present, pageVisible]);
+
+  useEffect(() => {
+    if (!present || !pageVisible || reduceMotion || stage !== "washing" || autoWashing || washMode !== "manual") return undefined;
     let frame = 0;
-    const nextFrame = createWashFrameClock(performance.now());
+    const nextFrame = createManualWashFrameClock(performance.now());
     const tick = (now: number) => {
+      if (!active.current) return;
       const steps = nextFrame(now);
       const pointer = pendingWashPointerRef.current;
       if (pointer) {
@@ -2595,10 +2608,10 @@ function RitualShuffleStep({
     };
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
-  }, [autoWashing, pageVisible, reduceMotion, stage, washMode]);
+  }, [autoWashing, pageVisible, present, reduceMotion, stage, washMode]);
 
   function beginWash() {
-    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    if (!active.current || stageRef.current !== "washing" || autoWashingRef.current) return;
     if (washMode === null) {
       hapticPulse([6, 22, 8]);
       dispatchWash({ type: "MANUAL_START" });
@@ -2611,7 +2624,7 @@ function RitualShuffleStep({
   }
 
   function applyWashPointer(pointer: WashPointer) {
-    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    if (!active.current || stageRef.current !== "washing" || autoWashingRef.current) return;
     if (washMode === null) dispatchWash({ type: "MANUAL_START" });
     const now = Date.now();
     if (now - lastWashHapticAtRef.current > 88) {
@@ -2649,7 +2662,7 @@ function RitualShuffleStep({
   }
 
   function wash(pointer: WashPointer) {
-    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    if (!active.current || stageRef.current !== "washing" || autoWashingRef.current) return;
     const pending = pendingWashPointerRef.current;
     pendingWashPointerRef.current = pending
       ? {
@@ -2664,7 +2677,7 @@ function RitualShuffleStep({
   }
 
   function finishWash() {
-    if (stageRef.current !== "washing") return;
+    if (!active.current || stageRef.current !== "washing") return;
     flushPendingWash();
     stageRef.current = "gathering";
     autoWashingRef.current = false;
@@ -2688,14 +2701,14 @@ function RitualShuffleStep({
   }
 
   function cancelWash() {
-    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    if (!active.current || stageRef.current !== "washing" || autoWashingRef.current) return;
     flushPendingWash();
     setDeckState(deckStateRef.current);
     dispatchWash({ type: "MANUAL_CANCEL" });
   }
 
   function squareGatheredDeck() {
-    if (ritualDoneRef.current || stageRef.current !== "gathering" || squareStartedRef.current) return;
+    if (!active.current || ritualDoneRef.current || stageRef.current !== "gathering" || squareStartedRef.current) return;
     squareStartedRef.current = true;
     squareStartedAtRef.current = performance.now();
     hapticTick(5);
@@ -2709,7 +2722,7 @@ function RitualShuffleStep({
   }
 
   function completeGather() {
-    if (ritualDoneRef.current || stageRef.current !== "gathering") return;
+    if (!active.current || ritualDoneRef.current || stageRef.current !== "gathering") return;
     if (!squareStartedRef.current) {
       if (performance.now() - gatherStartedAtRef.current >= washTiming.squareMs) squareGatheredDeck();
       return;
@@ -2722,11 +2735,11 @@ function RitualShuffleStep({
     dispatchWash({ type: "GATHER_COMPLETE" });
     hapticPulse([5, 24, 5]);
     clearTimers();
-    onComplete(deckStateRef.current.hiddenDeckOrder);
+    onComplete(deckStateRef.current.hiddenDeckOrder, washRitualRef.current?.getHeaderHeight() ?? 0);
   }
 
   function startAutoWash() {
-    if (stageRef.current !== "washing" || autoWashingRef.current) return;
+    if (!active.current || stageRef.current !== "washing" || autoWashingRef.current) return;
     autoWashingRef.current = true;
     dispatchWash({ type: "AUTO_START" });
     hapticPulse([7, 26, 8]);
@@ -2737,7 +2750,7 @@ function RitualShuffleStep({
     const nextFrame = createWashFrameClock(startedAt);
     const duration = washTiming.autoWashMs;
     const tick = (now: number) => {
-      if (!autoWashingRef.current || stageRef.current !== "washing") return;
+      if (!active.current || !autoWashingRef.current || stageRef.current !== "washing") return;
       const elapsed = now - startedAt;
       const steps = nextFrame(now);
       if (steps > 0 && !reduceMotion) {
@@ -2989,14 +3002,24 @@ function RitualDeckInterleave({
 function CutStep({
   design,
   deck,
+  headerHeight,
   onDone,
 }: {
   design: RoomDesign;
   deck: RitualCard[];
+  headerHeight: number;
   onDone: (deck: RitualCard[]) => void;
 }) {
   const { t } = useLanguage();
   const reduceMotion = useTarotReducedMotion();
+  const present = useIsPresent();
+  const { pageVisible } = useMotionPolicy();
+  const active = useRef(false);
+  useLayoutEffect(() => {
+    active.current = present && pageVisible;
+    return () => { active.current = false; };
+  }, [present, pageVisible]);
+  const started = useRef(false);
   const [{ pileOrder, finalDeck }] = useState(() => {
     const nextPiles = createThreePiles(deck);
     const nextOrder = createAutomaticPileOrder();
@@ -3032,25 +3055,30 @@ function CutStep({
     next: typeof phase,
     haptic: number | number[],
   ) {
-    if (phaseRef.current !== expected) return;
+    if (!active.current || phaseRef.current !== expected) return;
     phaseRef.current = next;
     setPhase(next);
     hapticPulse(haptic);
   }
 
   function finishCut() {
-    if (completedRef.current) return;
+    if (!active.current || completedRef.current) return;
     completedRef.current = true;
     onDoneRef.current(finalDeck);
   }
 
   useEffect(() => {
-    hapticPulse([8, 28, 9]);
+    if (!present || !pageVisible) return;
+    if (!started.current) {
+      started.current = true;
+      hapticPulse([8, 28, 9]);
+    }
     const watchdog = window.setTimeout(finishCut, reduceMotion ? 700 : 11_000);
     return () => window.clearTimeout(watchdog);
-  }, [finalDeck, reduceMotion]);
+  }, [finalDeck, reduceMotion, present, pageVisible]);
 
   useEffect(() => {
+    if (!present || !pageVisible) return;
     const phaseRecoveryMs = reduceMotion
       ? 70
       : {
@@ -3076,7 +3104,11 @@ function CutStep({
       }
     }, phaseRecoveryMs);
     return () => window.clearTimeout(recovery);
-  }, [deck.length, phase, reduceMotion]);
+  }, [deck.length, phase, reduceMotion, present, pageVisible]);
+
+  // The cut owns the child riffle's animation and timers as well as its result.
+  // Unmount that timeline on exit/background; foreground recovery starts at Prepare.
+  if (!present || !pageVisible) return null;
 
   const instruction =
     phase === "splitting" || phase === "showing"
@@ -3095,6 +3127,7 @@ function CutStep({
   return (
     <CardWashRitual
       stage="cutting"
+      minimumHeaderHeight={headerHeight}
       ritualCards={[]}
       deckCount={deck.length}
       theme={getWashTheme(design)}
@@ -3697,7 +3730,7 @@ function PickStep({
       <div
         ref={pickStageRef}
         data-testid="tarot-pick-stage"
-        className="relative -mx-5 -mb-[calc(var(--hint-safe-bottom)+1.25rem)] flex min-h-0 flex-1 flex-col overflow-clip px-5"
+        className="relative -mx-5 -mb-[calc(var(--hint-safe-bottom)+1.25rem)] flex min-h-0 flex-1 flex-col overflow-clip px-5 pt-2"
       >
         <div
           className={`pointer-events-none relative z-50 text-center transition duration-300 ${
@@ -3769,7 +3802,7 @@ function PickStep({
                   </span>
                 </div>
               )}
-              <span className="absolute left-1/2 top-[calc(100%+0.35rem)] max-w-[5.5rem] -translate-x-1/2 truncate text-[8px] font-black uppercase tracking-[0.12em] text-[#654f63]">
+              <span className="absolute left-1/2 top-[calc(100%+0.35rem)] w-[6.5rem] -translate-x-1/2 text-center [overflow-wrap:anywhere] text-[11px] font-black uppercase tracking-[0.04em] text-[#654f63]">
                 {displaySpread.positionLabels[index] ??
                   formatCopy(t("tarot.flow.pick.card"), { number: index + 1 })}
               </span>
@@ -3974,7 +4007,7 @@ export function TarotRoomFlow() {
     }
     return null;
   });
-  const [{ step, settingsMode, settingsReturnStep }, dispatchFlow] = useReducer(
+  const [flow, dispatchFlow] = useReducer(
     tarotFlowReducer,
     createTarotFlowState(
       setupRequested
@@ -3985,8 +4018,32 @@ export function TarotRoomFlow() {
       setupRequested,
     ),
   );
+  const { step, settingsMode, settingsReturnStep, generation } = flow;
+  const [cutHeaderHandoff, setCutHeaderHandoff] = useState<{ generation: number; height: number } | null>(null);
+  const flowRef = useRef(flow);
+  useLayoutEffect(() => {
+    flowRef.current = flow;
+  }, [flow]);
+  function sendFlow(event: TarotFlowEvent) {
+    const next = tarotFlowReducer(flowRef.current, event);
+    if (next === flowRef.current) return false;
+    // Invalidate synchronously: a second callback in this same event turn must
+    // not commit before React renders the new stage.
+    flowRef.current = next;
+    stepRef.current = next.step;
+    dispatchFlow(event);
+    return true;
+  }
   function setStep(nextStep: TarotFlowStep) {
-    dispatchFlow({ type: "NAVIGATE", step: nextStep });
+    sendFlow({ type: "NAVIGATE", step: nextStep });
+  }
+  function advanceRitual(
+    from: TarotFlowStep,
+    next: TarotFlowStep,
+    accepted?: () => void,
+  ) {
+    if (!visitOpen.current || backgroundedRitualRef.current || document.visibilityState === "hidden") return;
+    if (sendFlow({ type: "ADVANCE", from, generation, step: next })) accepted?.();
   }
   const [question, setQuestion] = useState(
     archivedReading?.question ?? restoredSession?.question ?? "",
@@ -4078,7 +4135,9 @@ export function TarotRoomFlow() {
   });
 
   useEffect(() => {
+    visitOpen.current = true;
     return () => {
+      visitOpen.current = false;
       spreadRecommendationControllerRef.current?.abort();
       spreadRecommendationControllerRef.current = null;
     };
@@ -4102,7 +4161,7 @@ export function TarotRoomFlow() {
       if (!interrupted) return;
       stepRef.current = "prepare";
       setRitualRecoveryVersion((version) => version + 1);
-      dispatchFlow({ type: "NAVIGATE", step: "prepare" });
+      sendFlow({ type: "NAVIGATE", step: "prepare" });
     };
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
@@ -4245,7 +4304,7 @@ export function TarotRoomFlow() {
 
   function restoreStepAfterRoomSettings() {
     if (!settingsReturnStep) return false;
-    dispatchFlow({ type: "CLOSE_SETTINGS" });
+    sendFlow({ type: "CLOSE_SETTINGS" });
     return true;
   }
 
@@ -4274,20 +4333,22 @@ export function TarotRoomFlow() {
       return;
     }
 
-    if (step === "prepare") {
+    // Back lands on an interactive step, never the timed Prepare interlude
+    // which would immediately send the reader forward again.
+    if (step === "prepare" || step === "shuffle") {
       setStep("design");
       return;
     }
 
-    if (step === "shuffle" || step === "cut") {
-      setStep("prepare");
+    if (step === "cut") {
+      setStep("shuffle");
       return;
     }
 
     if (step === "pick") {
       setSelectedCards([]);
       setRevealedIds([]);
-      setStep("prepare");
+      setStep("shuffle");
       return;
     }
 
@@ -4299,7 +4360,7 @@ export function TarotRoomFlow() {
   function openRoomSettings() {
     hapticTick(8);
     if (settingsMode && step === "design") return;
-    dispatchFlow({ type: "OPEN_SETTINGS" });
+    sendFlow({ type: "OPEN_SETTINGS" });
   }
 
   if (step === "reading") {
@@ -4357,7 +4418,7 @@ export function TarotRoomFlow() {
               setDeck(createHiddenDeck());
               setSpreadRecommendation(null);
               setSpreadRecommendationPending(false);
-              dispatchFlow({ type: "RESET" });
+              sendFlow({ type: "RESET" });
               navigate("/app/tarot", { replace: true });
             }}
           />
@@ -4394,7 +4455,7 @@ export function TarotRoomFlow() {
           onClick={openRoomSettings}
           aria-label={t("me.settings.tarotTitle")}
           aria-pressed={settingsMode && step === "design"}
-          className="absolute right-5 top-[calc(var(--hint-safe-top)+0.9rem)] z-[80] flex min-h-11 items-center gap-2 rounded-full border border-white/58 bg-white/46 px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8e7082] shadow-[0_9px_24px_rgba(92,72,105,0.1)] backdrop-blur-xl transition active:scale-[0.97] aria-pressed:border-[#d4b5c7]/70 aria-pressed:bg-white/64"
+          className="absolute right-5 top-[calc(var(--hint-safe-top)+0.5rem)] z-[80] flex min-h-11 items-center gap-2 rounded-full border border-white/58 bg-white/46 max-w-[calc(100%-8rem)] px-3 py-0 text-[11px] leading-[1.1] [overflow-wrap:anywhere] font-black uppercase tracking-[0.04em] text-[#8e7082] shadow-[0_9px_24px_rgba(92,72,105,0.1)] backdrop-blur-xl transition active:scale-[0.97] aria-pressed:border-[#d4b5c7]/70 aria-pressed:bg-white/64"
         >
           <WandSparkles size={13} />
           {t("tarot.room")}
@@ -4473,8 +4534,7 @@ export function TarotRoomFlow() {
               spread={spread}
               design={design}
               onDone={() => {
-                hapticTick(10);
-                setStep("shuffle");
+                advanceRitual("prepare", "shuffle", () => hapticTick(10));
               }}
             />
           )}
@@ -4483,10 +4543,13 @@ export function TarotRoomFlow() {
               key="shuffle"
               design={design}
               deck={deck}
-              onComplete={(nextDeck) => {
-                hapticPulse([8, 34, 12]);
-                setDeck(nextDeck);
-                setStep("cut");
+              onComplete={(nextDeck, headerHeight) => {
+                advanceRitual("shuffle", "cut", () => {
+                  hapticPulse([8, 34, 12]);
+                  setDeck(nextDeck);
+                  // Bind the measured header to this accepted transition only.
+                  setCutHeaderHandoff({ generation: flowRef.current.generation, height: headerHeight });
+                });
               }}
             />
           )}
@@ -4495,9 +4558,9 @@ export function TarotRoomFlow() {
               key="cut"
               design={design}
               deck={deck}
+              headerHeight={cutHeaderHandoff?.generation === generation ? cutHeaderHandoff.height : 0}
               onDone={(nextDeck) => {
-                setDeck(nextDeck);
-                setStep("pick");
+                advanceRitual("cut", "pick", () => setDeck(nextDeck));
               }}
             />
           )}

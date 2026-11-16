@@ -1,0 +1,15 @@
+[data-hint-theme="dark"] .hint-legal-about h1,
+[data-hint-theme="dark"] .hint-legal-reading :is(p,li > span:last-child) {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
+}
+
+[data-hint-theme="dark"] .hint-legal-reading p[style*="--hint-muted"],
+[data-hint-theme="dark"] .hint-legal-reading li > span:last-child {
+  color: rgb(from var(--hint-muted) r g b / 1) !important;
+}
+[data-hint-theme="dark"] .hint-legal-reading li > span:last-child {
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
+}

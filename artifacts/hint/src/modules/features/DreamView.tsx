@@ -1,4 +1,5 @@
-import { LocalizedText } from "../../lib/LocalizedText";
+import "./action-state.css";
+import { LocalizedText, translateText } from "../../lib/LocalizedText";
 import { Link, useLocation } from "wouter";
 import { PenLine } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
@@ -29,7 +30,8 @@ const FRAGMENTS = [
 ];
 
 export function DreamView() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const journalLinkLabel = translateText("Write in my journal", language);
   const [, navigate] = useLocation();
 
   return (
@@ -71,13 +73,13 @@ export function DreamView() {
           <PenLine size={16} aria-hidden="true" className="mt-0.5 shrink-0" style={{ color: GLASS.muted }} />
         </div>
         <Link href="/app/journal"
-          className="inline-flex items-center justify-center w-full h-11 rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em]"
+          className="hint-dream-journal-link inline-flex items-center justify-center w-full min-h-11 rounded-[8px] py-2 text-center font-serif text-[12px] uppercase tracking-[0.24em]"
           style={{
             background: "rgba(206,178,110,0.12)",
             border: "1px solid rgba(206,178,110,0.3)",
             color: ACCENT.gold,
           }}
-        ><LocalizedText text={" Write in my journal "} /></Link>
+        ><span className="hint-action-ink"><span aria-hidden="true" className="hint-action-shadow" data-copy={journalLinkLabel} />{journalLinkLabel}</span></Link>
       </GlassPanel>
 
       <section className="mb-6">
@@ -90,7 +92,7 @@ export function DreamView() {
               style={{ background: GLASS.panel, border: `1px solid ${GLASS.border}` }}
             >
               <span
-                className="shrink-0 font-serif text-[10px] uppercase tracking-[0.2em] w-16 pt-0.5"
+                className="shrink-0 font-serif text-[10px] uppercase tracking-[0.2em] w-16 pt-0.5 [overflow-wrap:anywhere]"
                 style={{ color: GLASS.faint }}
               >
                 {t(f.dateKey)}

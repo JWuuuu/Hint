@@ -30,7 +30,6 @@ export const QUARANTINED: ReadonlyArray<{ file: string; title: string; reason: s
   { file: "motion-performance.spec.ts", title: "web frame regression app=true OS=true: Home, scroll, modal, Animal and Tarot", reason: FRAME_BUDGET },
   { file: "room-entrances.spec.ts", title: "the arriving Tarot question accepts pointer input within its first 300ms", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
   { file: "tarot-room.spec.ts", title: "Auto Wash avoids sustained animation stalls", project: "iphone-17-pro-max", reason: PRO_MAX_A4 },
-  { file: "tarot-wash-refinement.spec.ts", title: "a stationary hand lets the cards rest and keeps only clockwise guidance", reason: BOTH_PHONES_A4 },
 ];
 
 export function quarantineReason(file: string, title: string, project?: string): string | undefined {

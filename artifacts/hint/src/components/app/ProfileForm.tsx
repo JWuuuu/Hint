@@ -1,5 +1,5 @@
 import { validBirthDate, birthDetailsError } from "../../lib/birthDetails";
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ACCENT, GLASS } from "../../modules/hold/atmosphere";
 import type { Profile, ProfileInput } from "@workspace/api-client-react";
 import { useLanguage } from "../../lib/i18n";
@@ -80,14 +80,24 @@ export function ProfileForm({
   const [birthDate, setBirthDate] = useState(formatBirthDateInput(initial?.birthDate ?? ""));
   const [birthTime, setBirthTime] = useState(initial?.birthTime ?? "");
   const [birthPlace, setBirthPlace] = useState(initial?.birthPlace ?? "");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<"required" | "save" | null>(null);
+  const errorId = useId();
+  const nameInput = useRef<HTMLInputElement>(null);
+  const dateInput = useRef<HTMLInputElement>(null);
+  const timeInput = useRef<HTMLInputElement>(null);
+  const errorMessage = useRef<HTMLParagraphElement>(null);
+  const nameInvalid = !name.trim();
+  const dateInvalid = !isCompleteBirthDate(birthDate);
+  const timeInvalid = !dateInvalid && Boolean(birthDetailsError({ birthDate, birthTime }));
+  useEffect(() => { if (error === "save") errorMessage.current?.focus(); }, [error]);
 
   const canSubmit = name.trim().length > 0 && isCompleteBirthDate(birthDate) && !birthDetailsError({ birthDate, birthTime });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit) {
-      setError(t("profile.requiredError"));
+      setError("required");
+      (nameInvalid ? nameInput : dateInvalid ? dateInput : timeInput).current?.focus();
       return;
     }
     setError(null);
@@ -101,12 +111,12 @@ export function ProfileForm({
       birthTime: birthTime.trim() || undefined,
       birthPlace: birthPlace.trim() || undefined,
     })).catch(() => {
-      setError("Could not save your birth details. Please try again.");
+      setError("save");
     });
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form aria-busy={Boolean(isSaving)} onSubmit={handleSubmit} className="flex flex-col gap-5">
       <Field label={t("profile.nameLabel")}>
         <input
           type="text"
@@ -116,6 +126,9 @@ export function ProfileForm({
           autoComplete="name"
           className={inputClass}
           style={inputStyle}
+          ref={nameInput}
+          aria-invalid={error === "required" && nameInvalid}
+          aria-describedby={error === "required" && nameInvalid ? errorId : undefined}
           data-testid="input-name"
         />
       </Field>
@@ -133,6 +146,9 @@ export function ProfileForm({
           pattern="\d{4}-\d{2}-\d{2}"
           className={inputClass}
           style={inputStyle}
+          ref={dateInput}
+          aria-invalid={error === "required" && dateInvalid}
+          aria-describedby={error === "required" && dateInvalid ? errorId : undefined}
           data-testid="input-birthdate"
         />
       </Field>
@@ -145,7 +161,10 @@ export function ProfileForm({
             onChange={(e) => setBirthTime(e.target.value)}
             className={inputClass}
             style={inputStyle}
-            data-testid="input-birthtime"
+            ref={timeInput}
+          aria-invalid={error === "required" && timeInvalid}
+          aria-describedby={error === "required" && timeInvalid ? errorId : undefined}
+          data-testid="input-birthtime"
           />
         </Field>
         <Field label={t("profile.placeLabel")} optional optionalText={t("profile.optional")}>
@@ -162,8 +181,8 @@ export function ProfileForm({
       </div>
 
       {error && (
-        <p role="alert" className="font-sans text-[12px] leading-relaxed [overflow-wrap:anywhere]" style={{ color: ACCENT.lavender }}>
-          {translateText(error, language)}
+        <p ref={errorMessage} id={errorId} tabIndex={-1} role="alert" className="font-sans text-[12px] leading-relaxed [overflow-wrap:anywhere]" style={{ color: GLASS.text }}>
+          {error === "required" ? t("profile.requiredError") : translateText("Could not save your birth details. Please try again.", language)}
         </p>
       )}
 
@@ -177,6 +196,7 @@ export function ProfileForm({
             border: "1px solid rgba(206,178,110,0.34)",
             color: ACCENT.gold,
           }}
+          aria-describedby={error ? errorId : undefined}
           data-testid="button-save-profile"
         >
           {isSaving ? t("profile.keeping") : submitLabel}

@@ -1,9 +1,10 @@
 /** @vitest-environment jsdom */
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { createPortal } from "react-dom";
 import { afterEach, expect, it, vi } from "vitest";
 import { Router } from "wouter";
 import { memoryLocation } from "wouter/memory-location";
-import { ScreenHeader, SpaceNavigation } from "./AppChrome";
+import { AppScreen, ScreenHeader, SpaceNavigation } from "./AppChrome";
 import { TRANSLATIONS, type HintLanguage } from "../../lib/i18n";
 
 const state = vi.hoisted(() => ({ language: "en" as HintLanguage }));
@@ -12,7 +13,7 @@ vi.mock("../../lib/i18n", async importOriginal => ({
   useLanguage: () => ({ language: state.language, t: (key: string) => TRANSLATIONS[state.language][key] ?? key }),
 }));
 vi.mock("../../lib/motionPolicy", () => ({ useMotionPolicy: () => ({ reduced: true, pageVisible: true }) }));
-afterEach(() => { cleanup(); state.language = "en"; });
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); state.language = "en"; });
 
 it.each(["en", "zh", "es", "ja", "ko"] as const)("provides a named Home destination in %s after a direct link", language => {
   state.language = language;
@@ -40,4 +41,24 @@ it("uses one Home control for top-level headers and respects a scoped app base",
   expect(home.getAttribute("href")).toBe("/preview/app");
   fireEvent.click(home);
   expect(route.history?.at(-1)).toBe("/preview/app");
+});
+
+it("does not scroll the background when a React descendant focuses inside a portal", () => {
+  const frames: FrameRequestCallback[] = [];
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => { frames.push(callback); return frames.length; });
+  vi.stubGlobal("cancelAnimationFrame", vi.fn());
+  render(<AppScreen><p>Background content</p>{createPortal(<div role="dialog"><button>Dialog action</button></div>, document.body)}</AppScreen>);
+  const scroller = document.querySelector<HTMLElement>(".hint-app-scroll")!;
+  const button = screen.getByRole("button", { name: "Dialog action" });
+  vi.spyOn(scroller, "getBoundingClientRect").mockReturnValue(new DOMRect(0, 0, 375, 600));
+  vi.spyOn(button, "getBoundingClientRect").mockReturnValue(new DOMRect(20, 900, 100, 44));
+  scroller.style.scrollPaddingTop = "20px";
+  scroller.style.scrollPaddingBottom = "120px";
+  scroller.scrollTop = 120;
+  act(() => button.focus());
+  expect(document.activeElement).toBe(button);
+  expect(scroller.contains(button)).toBe(false);
+  expect(frames.length).toBeGreaterThan(0);
+  act(() => { for (const frame of frames.splice(0)) frame(performance.now()); });
+  expect(scroller.scrollTop).toBe(120);
 });

@@ -91,3 +91,15 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* Keep the existing ink readable where individual stars cross its glyphs. */
+[data-hint-theme="dark"] .hint-journal :is(.journal-notice, .journal-label, .journal-body) {
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
+}
+
+[data-hint-theme="dark"] .hint-journal .journal-label {
+  color: rgb(from var(--hint-muted) r g b / 1);
+}
+[data-hint-theme="dark"] .hint-journal .journal-body {
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
+}

@@ -1,6 +1,6 @@
 /* The shell paints the sky's base colour so the first frame, before the
    canvas draws, already matches the constellation background. */
-.hint-app-shell-root.hint-sky-shell {
+.hint-app-shell-root.hint-sky-shell[data-hint-theme] {
   isolation: isolate;
   background: #fcfaf6;
 }

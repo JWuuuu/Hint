@@ -4,7 +4,7 @@ import { LocalizedText } from "../../../lib/LocalizedText";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import "./daily-report-card.css";
 import { motion } from "../../../lib/quietMotion";
-import { useLocalDay } from "../../../lib/useLocalDay";
+import { useDailyTarotDay } from "../../../lib/useDailyTarotDay";
 import { Link } from "wouter";
 import {
   ArrowRight,
@@ -289,7 +289,7 @@ export function DailyReportCard({
   statusMessage,
 }: DailyReportCardProps) {
   const { language, t } = useLanguage();
-  const currentDay = useLocalDay();
+  const currentDay = useDailyTarotDay();
   const { profile } = useProfile();
   const [birthProfile, setBirthProfile] = useState(() => readBirthProfile());
   const [historyVersion, setHistoryVersion] = useState(0);
@@ -313,7 +313,7 @@ export function DailyReportCard({
     () =>
       getDailyReport({
         anonId: getAnonId(),
-        date: dateOverride,
+        date: dateOverride ?? new Date(`${currentDay}T12:00:00`),
         language,
         birthDetails: activeBirthDetails ?? undefined,
         dailyHistory: localDailyHistory,
@@ -362,6 +362,8 @@ export function DailyReportCard({
     setChecked(report.tasks.map(() => false));
   }, [report.date, report.tasks]);
 
+  const cardReady = cardOverride !== null;
+
   // A past date is a saved card record, never a freshly generated historical forecast.
   if (report.date !== currentDay) {
     return <section className={`hint-daily-report ${className}`} data-appearance={appearance}>
@@ -374,7 +376,7 @@ export function DailyReportCard({
 
   return (
     <motion.section
-      data-daily-card-id={card.cardId}
+      data-daily-card-id={cardReady ? card.cardId : undefined}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.72, ease: "easeOut" }}
@@ -395,11 +397,11 @@ export function DailyReportCard({
         }}
       />}
       <div className="hint-report-content relative p-3 sm:p-4 lg:p-5">
-        <div className="hint-report-card-preview mb-3 lg:hidden">
+        {cardReady && <div className="hint-report-card-preview mb-3 lg:hidden">
           <MiniDailyCard card={card} interactive={!detailed} action={detailed ? <DailyReceiptButton report={{ ...report, card }} compact disabled={!getCachedDailyReceipt("daily-card", { dailyKey: report.date })?.openedAt && !getLocalDailyReadingForDateKey(report.date)} /> : undefined} />
-        </div>
+        </div>}
 
-        {statusMessage && <p className="hint-report-sync-status" role="status">{statusMessage}</p>}
+        {(!cardReady || statusMessage) && <p className="hint-report-sync-status" role="status">{statusMessage || <LocalizedText text="Checking today's signal..." />}</p>}
         <header className="hint-report-header mb-3 flex items-start justify-between gap-4 lg:mb-4">
           <div className="min-w-0">
             <p
@@ -536,11 +538,11 @@ export function DailyReportCard({
           </div>
         </div>
 
-        <div className="mt-4 hidden lg:block">
+        {cardReady && <div className="mt-4 hidden lg:block">
           <MiniDailyCard card={card} interactive={!detailed} action={detailed ? <DailyReceiptButton report={{ ...report, card }} compact disabled={!getCachedDailyReceipt("daily-card", { dailyKey: report.date })?.openedAt && !getLocalDailyReadingForDateKey(report.date)} /> : undefined} />
-        </div>
+        </div>}
 
-        {detailed && <CardGuidanceGrid card={card} why={cardWhy} />}
+        {detailed && cardReady && <CardGuidanceGrid card={card} why={cardWhy} />}
 
         <div className="hint-report-lucky-grid mt-3 grid grid-cols-3 gap-2">
           {report.lucky.map((item) => (

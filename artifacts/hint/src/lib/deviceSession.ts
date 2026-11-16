@@ -34,10 +34,16 @@ const key = () => `hint_device_session_v1:${encodeURIComponent(base())}:${encode
 
 async function nativeStore() {
   const { registerPlugin } = await import("@capacitor/core");
-  return registerPlugin<{
+  const plugin = registerPlugin<{
     read: (args: { key: string }) => Promise<{ value: string | null }>;
     write: (args: { key: string; value: string }) => Promise<void>;
   }>("HintDeviceCredential");
+  // A Capacitor proxy exposes `then` as a native method. Resolve a plain
+  // adapter so this async return cannot assimilate the plugin as a promise.
+  return {
+    read: (args: { key: string }) => plugin.read(args),
+    write: (args: { key: string; value: string }) => plugin.write(args),
+  };
 }
 
 function manager() {

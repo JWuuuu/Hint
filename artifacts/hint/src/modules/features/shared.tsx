@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { ACCENT, GLASS } from "../hold/atmosphere";
 import { GlassPanel } from "../../components/app/AppChrome";
 import { useLanguage } from "../../lib/i18n";
+import "./feature-footer.css";
 
 /** A quiet "in preview" badge used across the feature shells. */
 export function PreviewBadge() {
@@ -39,11 +40,11 @@ export function FeatureFooter({ note }: { note: string }) {
       </p>
       <Link
         href="/app/ask"
-        className="inline-flex items-center justify-center w-full h-11 rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em]"
+        className="hint-feature-footer-action inline-flex items-center justify-center w-full min-h-11 py-2 text-center rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em]"
         style={{
               background: "var(--hint-teal-action-bg, rgba(100,156,158,0.16))",
               border: "1px solid var(--hint-teal-action-border, rgba(100,156,158,0.32))",
-              color: "var(--hint-teal-action-text, rgba(150,206,208,0.95))",
+              color: "var(--hint-feature-footer-text, var(--hint-teal-action-text, rgba(150,206,208,0.95)))",
             }}
       >
         {t("feature.askInstead")}

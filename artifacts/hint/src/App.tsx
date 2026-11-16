@@ -101,11 +101,11 @@ function App() {
                 <Route key={`${route}/*`} path={`${route}/*`} component={LegacyProductRedirect} />
               ))}
               <Route path="*">
-                <main className="hint-app-scroll h-full overflow-y-auto px-6 pb-32 pt-16" style={{ color: "var(--hint-text)" }}>
+                <div className="hint-app-scroll h-full overflow-y-auto px-6 pb-32 pt-16" style={{ color: "var(--hint-text)" }}>
                   <h1 className="font-serif text-3xl"><LocalizedText text="Page not found" /></h1>
                   <p className="mt-3"><LocalizedText text="This page may have moved. Choose a room to continue." /></p>
                   <Link href="/app" className="mt-5 inline-flex min-h-11 items-center rounded-full border px-5"><LocalizedText text="Back to Today" /></Link>
-                </main>
+                </div>
               </Route>
             </Switch>
           </AppShell>

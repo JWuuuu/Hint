@@ -33,7 +33,7 @@ vi.mock("./lib/analytics", () => ({ trackEvent: vi.fn() }));
 vi.mock("./lib/feedback", () => ({ triggerFeedback: vi.fn() }));
 vi.mock("./lib/motionPolicy", () => ({ useMotionPolicy: () => ({ reduced: true, pageVisible: true }) }));
 vi.mock("./lib/i18n", () => ({ useLanguage: () => ({ language: "en", t: (key: string) => key }) }));
-vi.mock("./lib/LocalizedText", () => ({ LocalizedText: ({ text }: { text: string }) => <>{text}</> }));
+vi.mock("./lib/LocalizedText", () => ({ translateText: (text: string) => text, LocalizedText: ({ text }: { text: string }) => <>{text}</> }));
 vi.mock("./lib/useProfile", () => ({
   useProfile: () => ({ anonId: "fixture", profile: { name: "Fixture", birthDate: "2000-02-29" }, saveProfile: vi.fn().mockResolvedValue({}), isSaving: false }),
 }));
@@ -68,7 +68,7 @@ function TestApp({ base = "" }: { base?: string }) {
   );
 }
 
-const appNav = () => screen.queryByRole("navigation", { name: "App" });
+const appNav = () => screen.queryByRole("navigation", { name: "Main navigation" });
 
 async function completeOnboardingWithSavedAccount() {
   fireEvent.click(screen.getByTestId("button-start-onboarding"));

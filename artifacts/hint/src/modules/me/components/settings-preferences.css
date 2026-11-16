@@ -1,0 +1,7 @@
+/* Recovery stays within Me preferences and uses its existing theme tokens. */
+.me-preferences .me-preference-status { padding: .65rem 1rem; color: var(--me-ink); font-size: .8125rem; line-height: 1.6; overflow-wrap: anywhere; }
+.me-preferences .me-mood .me-preference-status { padding: .2rem 0 0; }
+.me-preferences .me-preference-status[data-empty] { padding: 0; border-top: 0; }
+.me-preferences .me-preference-status p { margin: 0; text-wrap: pretty; }
+.me-preferences .me-preference-retry { display: block; max-width: 100%; min-height: 44px; margin-top: .35rem; padding: .4rem .5rem; border: 1px solid var(--me-gilt-strong); border-radius: .6rem; font: inherit; text-align: start; text-wrap: balance; text-decoration: underline; text-underline-offset: .15em; overflow-wrap: anywhere; }
+.me-preferences .me-preference-retry:focus-visible { outline: 2px solid var(--me-accent); outline-offset: 2px; }

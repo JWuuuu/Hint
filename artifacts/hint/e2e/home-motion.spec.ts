@@ -1,6 +1,7 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { appHref, expect, test, type Page } from "./fixtures";
 
-async function prepare(page: Page, app: boolean, system: boolean) {
+async function prepare(page: Page, app: boolean, system: boolean, cardId = "17-star", opened = false) {
   await page.addInitScript(app => {
     localStorage.setItem("hint_onboarding_complete_v3", "1");
     localStorage.setItem("hint_anon_id", "motion-fixture");
@@ -9,24 +10,33 @@ async function prepare(page: Page, app: boolean, system: boolean) {
   }, app);
   await page.emulateMedia({ reducedMotion: system ? "reduce" : "no-preference" });
   await page.route("**/api/**", route => route.fulfill({ status: 503, json: { error: "Isolated fixture" } }));
+  await mockDailyTarot(page, { cardId, opened });
   await page.goto("/app?hintPreview=embedded");
-  await expect(page.getByRole("button", { name: "Reveal today's Hint card" })).toBeEnabled();
+  if (opened) await expect(page.locator(".hint-home-hero")).toHaveAttribute("data-revealed", "true");
+  else await expect(page.getByRole("button", { name: "Reveal today's Hint card" })).toBeEnabled();
 }
 for (const [app, system] of [[false, false], [true, false], [false, true], [true, true]]) {
-  test(`Home respects app=${app} OS=${system}, reveals without sync, and restores modal focus`, async ({ page }) => {
+  test(`Home respects app=${app} OS=${system}, waits for server reveal, and restores modal focus`, async ({ page }) => {
     await prepare(page, app!, system!);
-    // Keep synchronization pending; a local reveal must remain usable.
+    // A reveal must stay closed until the server confirms persistence.
     let release!: () => void;
     const pending = new Promise<void>(resolve => { release = resolve; });
-    await page.route("**/api/daily-receipts/sync", async route => { await pending; await route.fulfill({ status: 503, json: {} }).catch(() => {}); });
+    await page.route("**/api/daily-receipts/open", async route => { await pending; await route.fallback(); });
     try {
       const reveal = page.getByRole("button", { name: "Reveal today's Hint card" });
+      const opening = page.waitForRequest(request => request.url().endsWith("/api/daily-receipts/open"));
       await reveal.click();
+      await opening;
+      await expect(page.getByTestId("home-daily-reveal")).toHaveCount(0);
+      release();
       // With motion on, the Oct 27-30 Today redesign first plays the mascot's letter delivery.
       const motion = !app && !system;
       if (motion) await page.getByRole("button", { name: "Show my card", exact: true }).click({ timeout: 15000 });
       // The card then turns (about 1.9 s by design) before the interpretation link appears.
       await expect(page.getByRole("link", { name: "Read interpretation" })).toBeVisible({ timeout: motion ? 10000 : 3000 });
+      // The full-height card layer must not intercept the visible companion's tap target.
+      await page.getByTestId("home-daily-reveal").getByRole("button", { name: "Hint", exact: true }).click();
+      await expect(page.getByTestId("home-daily-reveal")).toBeVisible();
       await expect(page.locator("html")).toHaveAttribute("data-hint-reduce-motion", String(app || system));
       if (app || system) await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === "running" && animation.effect?.getTiming().iterations === Infinity).length)).toBe(0);
       await page.keyboard.press("Tab");
@@ -88,6 +98,7 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) {
     });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.route("**/api/**", route => route.fulfill({ status: 503, json: { error: "Isolated fixture" } }));
+    await mockDailyTarot(page);
     await page.goto("/app?hintPreview=embedded");
     const action = page.getByTestId("home-reveal-action");
     await expect(action).toBeEnabled();
@@ -106,12 +117,8 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) {
     await expect(page.getByTestId("home-daily-reveal")).toBeVisible();
   });
   test(`Home long card result at 200% text stays readable and scrollable (${locale})`, async ({ page }, info) => {
-    await prepare(page, true, false);
-    await page.evaluate(locale => {
-      localStorage.setItem("hint-language", locale);
-      const now = new Date(); const day = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-      localStorage.setItem("hint_daily_receipt_fallbacks_v1", JSON.stringify([{ anonId: "motion-fixture", anonymousDeviceId: "motion-fixture", dailyKey: day, featureType: "daily-card", assignedCardId: "knight-pentacles", assignedAt: now.toISOString(), expiresAt: new Date(now.getTime() + 86400000).toISOString(), openedAt: now.toISOString(), source: "local-fallback", persistence: "local", syncStatus: "pending" }]));
-    }, locale);
+    await prepare(page, true, false, "knight-pentacles", true);
+    await page.evaluate(locale => localStorage.setItem("hint-language", locale), locale);
     await page.reload();
     await page.getByTestId("home-reveal-trigger").click();
     const dialog = page.getByTestId("home-daily-reveal");

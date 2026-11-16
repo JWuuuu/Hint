@@ -1,0 +1,4 @@
+/* Reuse the night theme's cream ink against the unchanged teal glass. */
+[data-hint-theme="dark"] .hint-feature-footer-action {
+  --hint-feature-footer-text: var(--hint-text);
+}

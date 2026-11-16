@@ -13,13 +13,55 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getAnonId } from "../../lib/identity";
 import { useLanguage } from "../../lib/i18n";
 import { historyClearVersion } from "../../lib/clearHistory";
-import { clearSavedJournalDraft, EMPTY_JOURNAL_DRAFT, readJournalDraftRecord, writeJournalDraftRecord, type JournalDraft } from "./journalDraft";
+import { triggerFeedback } from "../../lib/feedback";
+import { addNativeAppStateListener } from "../../lib/mobile/appLifecycle";
+import { clearSavedJournalDraft, EMPTY_JOURNAL_DRAFT, readJournalDraftRecord, writeJournalDraftRecord, type JournalDraft, type JournalSubmission } from "./journalDraft";
 import { markRoomVisitStarted, roomVisitWasClosed } from "../../components/app/roomVisits";
 import { useRoomVisit } from "../../components/app/RoomVisitBoundary";
 import { roomResumeText } from "../../components/app/roomResumeCopy";
 import "./journal.css";
 
 const MOODS = ["tender", "lighter", "heavy", "still", "hopeful"] as const;
+
+// An explicit save may finish after a brief background/return. Remember that
+// interruption independently of the data-save guards so it cannot replay a cue.
+function useJournalSaveFeedback() {
+  const scope = useRef({ epoch: 0, mounted: true, nativeActive: true, pageHidden: false });
+  useEffect(() => {
+    const current = scope.current;
+    current.mounted = true;
+    const visibility = () => { if (document.visibilityState === "hidden") current.epoch++; };
+    const hide = () => { current.pageHidden = true; current.epoch++; };
+    const show = () => { current.pageHidden = false; };
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("pagehide", hide);
+    window.addEventListener("pageshow", show);
+    let disposed = false;
+    let remove: (() => Promise<void>) | undefined;
+    void addNativeAppStateListener(active => {
+      if (disposed) return;
+      current.nativeActive = active;
+      if (!active) current.epoch++;
+    }, { emitCurrentState: true }).then(listener => {
+      if (disposed) void listener();
+      else remove = listener;
+    }).catch(() => { /* Browser visibility and shared feedback policy still apply. */ });
+    return () => {
+      disposed = true; current.mounted = false; current.epoch++;
+      document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("pagehide", hide);
+      window.removeEventListener("pageshow", show);
+      void remove?.();
+    };
+  }, []);
+  const eligible = () => scope.current.mounted && scope.current.nativeActive && !scope.current.pageHidden && document.visibilityState !== "hidden";
+  return {
+    capture: () => eligible() ? scope.current.epoch : null,
+    success(epoch: number | null) {
+      if (epoch !== null && epoch === scope.current.epoch && eligible()) triggerFeedback("success");
+    },
+  };
+}
 
 function formatDate(iso: string, language: string, todayLabel: string): string {
   const date = new Date(iso);
@@ -39,11 +81,13 @@ export function JournalView() {
   const [entry] = useState(() => ({ fresh: roomVisitWasClosed("journal"), record: readJournalDraftRecord(anonId) }));
   const [draft, setDraft] = useState(() => entry.fresh ? { ...EMPTY_JOURNAL_DRAFT } : entry.record.draft);
   const draftRevision = useRef(entry.fresh ? null : entry.record.revision);
+  const draftSubmission = useRef<JournalSubmission | undefined>(entry.fresh ? undefined : entry.record.submission);
   const [recoverableDraft, setRecoverableDraft] = useState<JournalDraft | null>(entry.fresh ? entry.record.draft : null);
-  const [draftStored, setDraftStored] = useState(true);
+  const [draftStored, setDraftStored] = useState(entry.record.storageFailed !== true);
   const [saved, setSaved] = useState(false);
   const saving = useRef(false);
   const saveGeneration = useRef(0);
+  const feedback = useJournalSaveFeedback();
   const { t, language } = useLanguage();
   const { title, body, mood } = draft;
   const hasDraft = Boolean(title || body || mood);
@@ -56,9 +100,10 @@ export function JournalView() {
     const fresh = roomVisitWasClosed("journal");
     setDraft(fresh ? { ...EMPTY_JOURNAL_DRAFT } : stored.draft);
     draftRevision.current = fresh ? null : stored.revision;
+    draftSubmission.current = fresh ? undefined : stored.submission;
     setRecoverableDraft(fresh ? stored.draft : null);
     setSaved(false);
-    setDraftStored(true);
+    setDraftStored(stored.storageFailed !== true);
     saving.current = false;
     createMutation.reset();
     const syncClear = () => {
@@ -69,8 +114,9 @@ export function JournalView() {
       saving.current = false;
       const stored = readJournalDraftRecord(anonId);
       setDraft(stored.draft); draftRevision.current = stored.revision; setRecoverableDraft(null);
+      draftSubmission.current = stored.submission;
       setSaved(false);
-      setDraftStored(true);
+      setDraftStored(stored.storageFailed !== true);
       createMutation.reset();
     };
     window.addEventListener("storage", syncClear);
@@ -83,6 +129,7 @@ export function JournalView() {
     setDraft(next);
     const result = writeJournalDraftRecord(anonId, next);
     draftRevision.current = result.revision;
+    draftSubmission.current = result.submission;
     setDraftStored(result.saved);
     setSaved(false);
     createMutation.reset();
@@ -91,15 +138,25 @@ export function JournalView() {
   async function handleSave() {
     if (!body.trim() || body.length > 8000 || title.length > 200 || saving.current) return;
     saving.current = true;
+    const feedbackEpoch = feedback.capture();
     setSaved(false);
     const submitted = { ...draft };
+    // Upgrade legacy drafts once, before sending. Retries and restored drafts
+    // reuse the original timestamp/key even when the first response was lost.
+    if (!draftSubmission.current) {
+      const prepared = writeJournalDraftRecord(anonId, submitted);
+      draftRevision.current = prepared.revision;
+      draftSubmission.current = prepared.submission;
+      setDraftStored(prepared.saved);
+    }
+    const submission = draftSubmission.current;
     const submittedRevision = draftRevision.current;
     const generation = ++saveGeneration.current;
     const clearVersion = historyClearVersion(anonId);
     const current = () => generation === saveGeneration.current && getAnonId() === anonId && historyClearVersion(anonId) === clearVersion;
     try {
       const entry = await createMutation.mutateAsync({ data: {
-        anonId, title: title.trim() || undefined, body: body.trim(), mood: mood ?? undefined, editedAt: new Date().toISOString(),
+        anonId, title: submitted.title.trim() || undefined, body: submitted.body.trim(), mood: submitted.mood ?? undefined, ...submission,
       } });
       // Navigation does not undo a confirmed server save. Remove only its exact
       // draft, even after unmount, so returning cannot accidentally submit it twice.
@@ -111,10 +168,15 @@ export function JournalView() {
       if (!current()) return;
       queryClient.setQueryData<JournalEntry[]>(queryKey, (previous = []) => [entry, ...previous.filter((item) => item.id !== entry.id)]);
       void queryClient.invalidateQueries({ queryKey });
+      if (draftRevision.current !== submittedRevision) return;
       setDraftStored(draftCleared);
       setDraft({ ...EMPTY_JOURNAL_DRAFT });
       draftRevision.current = null;
+      draftSubmission.current = undefined;
       setSaved(true);
+      // This continuation runs once for the explicit accepted submit, after all
+      // async/current-draft checks. A muted milestone is never queued for replay.
+      feedback.success(feedbackEpoch);
     } catch {
       // Keep the full draft for a deliberate retry; the mutation exposes the error.
     } finally {
@@ -138,9 +200,9 @@ export function JournalView() {
           <p>{roomResumeText(language, "draftReady")}</p>
           <button type="button" className="min-h-11 py-2 text-left underline" onClick={() => {
             const stored = readJournalDraftRecord(anonId);
-            const restored = writeJournalDraftRecord(anonId, stored.draft);
-            markRoomVisitStarted("journal"); setDraft(stored.draft); draftRevision.current = restored.revision;
-            setRecoverableDraft(null); setDraftStored(restored.saved); setSaved(false);
+            markRoomVisitStarted("journal"); setDraft(stored.draft); draftRevision.current = stored.revision;
+            draftSubmission.current = stored.submission;
+            setRecoverableDraft(null); setDraftStored(stored.storageFailed !== true); setSaved(false);
           }}>{roomResumeText(language, "restoreDraft")}</button>
         </div>}
         <GlassPanel hero className="mb-6">

@@ -1,6 +1,6 @@
 import { DailyReceiptButton } from "../../receipt-printer/ReceiptShareDialog";
 import { LocalizedText, translateText } from "../../../lib/LocalizedText";
-import { useLocalDay } from "../../../lib/useLocalDay";
+import { useDailyTarotDay } from "../../../lib/useDailyTarotDay";
 import { withDailyCardIdentity } from "../data/dailyCardSync";
 import { getCachedDailyReceipt, subscribeToDailyReceiptFallbacks } from "../../../lib/dailyReceipts";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
@@ -56,6 +56,7 @@ import {
   type SkyCardReading,
 } from "../../../lib/readings/generateSkyCardReading";
 import type { SkySignal } from "../../../lib/tarot/skyGuidedTarot";
+import { skySignalLabel } from "../../../lib/tarot/skySignalCopy";
 import { THEME_LABELS } from "../../../lib/tarot/tarotThemeMap";
 import {
   listLocalDailyReadings,
@@ -65,15 +66,20 @@ import {
 } from "../../readings/localDailyReadings";
 import { useProfile } from "../../../lib/useProfile";
 import { readBirthProfile } from "../../../lib/astro/userBirthProfile";
-import { triggerFeedback } from "../../../lib/feedback";
+import { triggerFeedback, type FeedbackIntent } from "../../../lib/feedback";
+import { addNativeAppStateListener } from "../../../lib/mobile/appLifecycle";
 import type { DailyReport, DailyScore } from "../types/home.types";
 import { LuckyIllustration } from "./LuckyIllustration";
 import { SkyEvidence } from "../../../components/tarot/SkyEvidence";
 import { SafeImage } from "../../../shared/ui/SafeImage";
 import { HintGuideSlot, useHintGuideGesture } from "../../../components/mascot/HintGuide";
+import { HintCorner } from "../../../components/mascot/RoomCompanion";
 import { useDailyReveal } from "../../../components/mascot/useDailyReveal";
 import { useDailyDelivery } from "../../../components/mascot/useDailyDelivery";
 import { dailyGuideContext } from "../../../components/mascot/hintGuideContext";
+import { HomeCheckIn } from "./HomeCheckIn";
+import { DailyCheckInReward } from "./DailyCheckInReward";
+import { claimHomeCheckIn } from "../data/homeCheckIn";
 
 const SKY_DECK_CARD_BACK_IMAGE = getTarotCardBackImage(getDefaultTarotCardBackForStyle("nocturne"));
 const DAILY_SIGNAL_INTRO_COMPLETIONS_KEY = "hint_home_daily_signal_intro_completions_v1";
@@ -89,6 +95,51 @@ const REFERENCE_REVEAL_DUST = [
 ] as const;
 
 type DailySignalIntroCompletions = Record<string, string>;
+
+// A later flip is new bridge work, so remember interruptions of its original
+// request as well. A quick hide/resume must not turn it into a fresh gesture.
+function useTodayFeedbackScope() {
+  const { pageVisible } = useMotionPolicy();
+  const visible = useRef(pageVisible);
+  visible.current = pageVisible;
+  const scope = useRef({ epoch: 0, mounted: true, nativeActive: true, pageHidden: false });
+  useEffect(() => {
+    const current = scope.current;
+    current.mounted = true;
+    const visibility = () => { if (document.visibilityState === "hidden") current.epoch++; };
+    const hide = () => { current.pageHidden = true; current.epoch++; };
+    const show = () => { current.pageHidden = false; };
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("pagehide", hide);
+    window.addEventListener("pageshow", show);
+    let disposed = false;
+    let remove: (() => Promise<void>) | undefined;
+    void addNativeAppStateListener(active => {
+      if (disposed) return;
+      current.nativeActive = active;
+      if (!active) current.epoch++;
+    }, { emitCurrentState: true }).then(listener => {
+      if (!disposed) remove = listener;
+      else void listener();
+    }).catch(() => { /* Browser visibility still invalidates interrupted work. */ });
+    return () => {
+      disposed = true;
+      current.mounted = false; current.epoch++;
+      document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("pagehide", hide);
+      window.removeEventListener("pageshow", show);
+      void remove?.();
+    };
+  }, []);
+  return {
+    capture: () => scope.current.epoch,
+    deliver(intent: FeedbackIntent, epoch: number) {
+      const current = scope.current;
+      if (current.mounted && current.epoch === epoch && current.nativeActive && !current.pageHidden &&
+          visible.current && document.visibilityState !== "hidden") triggerFeedback(intent);
+    },
+  };
+}
 
 function dailySignalIntroCompletionKey(anonId: string, dailyKey: string) {
   return `${anonId}:${dailyKey}`;
@@ -164,7 +215,7 @@ function formatAppDate(date: string, language: string) {
 }
 
 function compactCardKeyword(keyword?: string) {
-  return keyword?.split(/[·,|/]/)[0]?.trim();
+  return keyword?.split(/[·・,|/]/)[0]?.trim();
 }
 
 function referenceThemeTitle(report: DailyReport) {
@@ -2350,37 +2401,6 @@ function ReferenceFloatingHintCard({
       style={{ position: "absolute", overflow: "visible", right: 16, top: 13, height: 190, width: 106, perspective: 620 }}
       whileTap={receiptReady && !revealing ? { scale: 0.985 } : undefined}
     >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 bottom-[-29px] z-0 h-[62px] w-[194px] -translate-x-1/2 rounded-full"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 50%, rgba(255,252,237,0.70) 0%, rgba(255,239,210,0.42) 28%, rgba(245,206,177,0.18) 54%, rgba(192,157,199,0.07) 70%, transparent 82%)",
-          filter: "blur(0.9px)",
-        }}
-      />
-      <svg
-        aria-hidden
-        viewBox="0 0 196 70"
-        className="pointer-events-none absolute left-1/2 bottom-[-31px] z-0 h-[66px] w-[204px] -translate-x-1/2"
-      >
-        <defs>
-          <radialGradient id="reference-card-base-glow" cx="50%" cy="42%" r="54%">
-            <stop offset="0" stopColor="#fffdf0" stopOpacity="0.82" />
-            <stop offset="0.38" stopColor="#ffedca" stopOpacity="0.42" />
-            <stop offset="1" stopColor="#ffdfb8" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        <ellipse cx="98" cy="35" rx="70" ry="17" fill="url(#reference-card-base-glow)" />
-        <ellipse cx="98" cy="34" rx="48" ry="9" fill="rgba(255,253,241,0.34)" />
-        <g fill="none" strokeLinecap="round">
-          <ellipse cx="98" cy="35" rx="58" ry="10" stroke="rgba(255,250,229,0.66)" strokeWidth="0.92" />
-          <ellipse cx="98" cy="35" rx="75" ry="16" stroke="rgba(255,228,190,0.42)" strokeWidth="0.78" />
-          <ellipse cx="98" cy="35" rx="91" ry="23" stroke="rgba(238,199,151,0.26)" strokeWidth="0.66" />
-          <path d="M28 36 C56 49 139 49 169 36" stroke="rgba(255,248,224,0.50)" strokeWidth="0.78" />
-          <path d="M43 35 C67 42 128 42 153 35" stroke="rgba(255,254,244,0.46)" strokeWidth="0.72" />
-        </g>
-      </svg>
       <motion.span
         className="relative z-10 block h-full w-full"
         animate={{
@@ -2398,38 +2418,9 @@ function ReferenceFloatingHintCard({
         style={{
           transformStyle: "preserve-3d",
           transformOrigin: "43% 52%",
-          filter: "drop-shadow(0 18px 24px rgba(86,58,116,0.06)) drop-shadow(0 0 10px rgba(255,238,205,0.16))",
+          filter: "drop-shadow(0 18px 24px rgba(86,58,116,0.06))",
         }}
       >
-      <span
-        aria-hidden
-        className="absolute inset-[-6px] rounded-[20px]"
-        style={{
-          background: "linear-gradient(90deg, rgba(255,247,218,0.28), rgba(255,244,230,0.07))",
-          filter: "blur(2px)",
-          transform: "translateX(5px)",
-        }}
-      />
-      <motion.span
-        aria-hidden
-        className="absolute left-1/2 top-1/2 h-[180px] w-[158px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          background:
-            "conic-gradient(from 45deg, transparent 0deg, rgba(255,244,211,0.11) 54deg, transparent 92deg, rgba(208,178,220,0.07) 168deg, transparent 228deg, rgba(255,244,211,0.10) 306deg, transparent 360deg)",
-          filter: "blur(3px)",
-          mixBlendMode: "screen",
-        }}
-        animate={{
-          opacity: revealing ? [0, 0.46, 0.18] : revealed ? [0.08, 0.16, 0.08] : [0.04, 0.10, 0.04],
-          rotate: revealing ? [0, 160] : [0, 34, 0],
-          scale: revealing ? [0.82, 1.24, 1.02] : [0.96, 1.05, 0.96],
-        }}
-        transition={{
-          duration: revealing ? 1 : 7,
-          repeat: revealing ? 0 : Infinity,
-          ease: "easeInOut",
-        }}
-      />
       <span
         aria-hidden
         className="absolute -right-[12px] top-[8px] h-[calc(100%-12px)] w-[82%] rounded-[16px] border"
@@ -2447,7 +2438,7 @@ function ReferenceFloatingHintCard({
           background: "linear-gradient(90deg, rgba(255,250,236,0.98), rgba(242,222,216,0.82) 36%, rgba(202,174,207,0.46) 78%, rgba(119,93,145,0.20))",
           borderColor: "rgba(255,233,203,0.36)",
           transform: "translateZ(-2px) rotateY(6deg)",
-          boxShadow: "inset 3px 0 0 rgba(255,255,255,0.42), 5px 8px 14px rgba(85,58,108,0.055), 0 0 8px rgba(255,237,205,0.16)",
+          boxShadow: "inset 3px 0 0 rgba(255,255,255,0.42), 5px 8px 14px rgba(85,58,108,0.055)",
         }}
       />
       <motion.div
@@ -2461,7 +2452,7 @@ function ReferenceFloatingHintCard({
           backgroundSize: "cover",
           borderColor: "rgba(255,242,219,0.82)",
           boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.80), inset 0 0 0 1px rgba(255,238,206,0.48), inset 0 -18px 26px rgba(88,58,107,0.06), 0 0 0 1px rgba(255,246,226,0.24), 0 0 10px rgba(255,238,206,0.18)",
+            "inset 0 1px 0 rgba(255,255,255,0.80), inset 0 0 0 1px rgba(255,238,206,0.48), inset 0 -18px 26px rgba(88,58,107,0.06), 0 0 0 1px rgba(255,246,226,0.24)",
         }}
       >
         {revealed && cardImage ? (
@@ -2659,168 +2650,12 @@ function ReferenceHeroArt({
       className={["pointer-events-none grid place-items-center overflow-visible", className].join(" ")}
       style={{ position: "absolute", inset: 0 }}
     >
-      <span
-        aria-hidden
-        className="hint-home-atmosphere absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(246,226,222,0.10) 0%, rgba(232,205,216,0.15) 34%, rgba(193,159,190,0.30) 66%, rgba(151,120,173,0.48) 100%)",
-        }}
-      />
-      <span
-        aria-hidden
-        className="hint-home-atmosphere absolute inset-0 opacity-[0.78]"
-        style={{
-          background:
-            "radial-gradient(circle at 74% 62%, rgba(255,244,203,0.34), transparent 24%), radial-gradient(circle at 83% 24%, rgba(255,255,255,0.16), transparent 18%), radial-gradient(circle at 61% 42%, rgba(220,184,222,0.18), transparent 48%), linear-gradient(90deg, rgba(253,226,236,0) 0%, rgba(241,207,224,0.08) 32%, rgba(143,109,166,0.38) 100%)",
-        }}
-      />
-      <span
-        aria-hidden
-        className="hint-home-atmosphere absolute inset-0 opacity-[0.32]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 12% 20%, rgba(90,61,49,0.05) 0 0.45px, transparent 0.8px), radial-gradient(circle at 66% 64%, rgba(255,245,226,0.18) 0 0.55px, transparent 1px), radial-gradient(circle at 88% 42%, rgba(80,55,94,0.08) 0 0.5px, transparent 0.9px)",
-          backgroundSize: "7px 7px, 9px 9px, 13px 13px",
-          mixBlendMode: "overlay",
-        }}
-      />
-      <svg viewBox="0 0 380 248" className="absolute inset-0 h-full w-full" preserveAspectRatio="none">
-        <g fill="none" strokeLinecap="round">
-          <path d="M179 5 C150 45 139 78 139 119 C139 157 157 189 192 223" stroke="rgba(255,255,255,0.22)" strokeWidth="0.65" />
-          <path d="M157 101 C203 52 301 47 375 83" stroke="rgba(255,236,197,0.19)" strokeWidth="0.72" />
-          <path d="M180 155 C226 127 307 126 380 153" stroke="rgba(255,248,224,0.24)" strokeWidth="0.76" />
-          <path d="M250 75 C294 48 342 49 383 75" stroke="rgba(255,244,215,0.12)" strokeWidth="0.58" />
-          <ellipse cx="300" cy="132" rx="88" ry="24" transform="rotate(-24 300 132)" stroke="rgba(255,247,218,0.34)" strokeWidth="0.72" />
-          <ellipse cx="301" cy="135" rx="74" ry="18" transform="rotate(18 301 135)" stroke="rgba(255,236,199,0.27)" strokeWidth="0.68" />
-          <path d="M226 197 C261 219 333 216 372 179" stroke="rgba(255,248,224,0.15)" strokeWidth="0.64" />
-          <path d="M223 67 L235 84 L254 77 L270 103 L292 92 L310 124 L338 108" stroke="rgba(255,255,255,0.22)" strokeWidth="0.48" />
-          <path d="M209 127 L226 111 L252 119 L269 99" stroke="rgba(255,255,255,0.18)" strokeWidth="0.44" />
-        </g>
-        <g fill="rgba(255,248,220,0.66)">
-          <circle cx="206" cy="96" r="1.35" />
-          <circle cx="310" cy="70" r="1.15" />
-          <circle cx="331" cy="136" r="1.45" />
-          <circle cx="284" cy="195" r="1.1" />
-          <circle cx="248" cy="83" r="0.9" />
-          <circle cx="355" cy="177" r="0.9" />
-          <circle cx="188" cy="160" r="1" />
-          <circle cx="237" cy="147" r="0.75" />
-          <circle cx="349" cy="108" r="0.85" />
-        </g>
-        <g fill="rgba(255,255,255,0.62)">
-          <circle cx="235" cy="84" r="1.3" />
-          <circle cx="270" cy="103" r="1.2" />
-          <circle cx="338" cy="108" r="1.3" />
-          <circle cx="226" cy="111" r="1" />
-          <circle cx="252" cy="119" r="0.9" />
-        </g>
-        <g stroke="rgba(255,245,212,0.44)" strokeLinecap="round">
-          <path d="M180 67 L180 77 M175 72 L185 72" />
-          <path d="M335 96 L335 104 M331 100 L339 100" />
-          <path d="M252 116 L252 122 M249 119 L255 119" opacity="0.54" />
-          <path d="M206 171 L206 177 M203 174 L209 174" opacity="0.58" />
-        </g>
-      </svg>
-      <motion.svg
-        aria-hidden
-        viewBox="0 0 210 188"
-        className="absolute right-[-16px] top-[38px] z-[2] h-[182px] w-[230px]"
-        animate={{
-          opacity: revealing ? [0.42, 0.72, 0.58] : [0.24, 0.40, 0.24],
-          rotate: revealing ? [0, 10, 0] : [0, 2, 0],
-        }}
-        transition={{ duration: revealing ? 1.05 : 6.4, repeat: revealing ? 0 : Infinity, ease: "easeInOut" }}
-      >
-        <g fill="none" strokeLinecap="round">
-          <ellipse cx="118" cy="100" rx="92" ry="26" transform="rotate(-24 118 100)" stroke="#fff2c9" strokeOpacity="0.30" strokeWidth="0.82" />
-          <ellipse cx="120" cy="106" rx="82" ry="20" transform="rotate(19 120 106)" stroke="#fff6db" strokeOpacity="0.30" strokeWidth="0.74" />
-          <ellipse cx="115" cy="132" rx="78" ry="15" stroke="#ffe4bd" strokeOpacity="0.22" strokeWidth="0.74" />
-          <path d="M33 128 C63 148 154 150 198 119" stroke="#fff2c9" strokeOpacity="0.16" strokeWidth="0.7" />
-        </g>
-        <g fill="#fff3cf" opacity="0.38">
-          <circle cx="48" cy="72" r="1.3" />
-          <circle cx="176" cy="68" r="1.1" />
-          <circle cx="167" cy="138" r="1.25" />
-          <circle cx="79" cy="149" r="1" />
-        </g>
-      </motion.svg>
       <ReferenceFloatingHintCard
         revealed={revealed}
         revealing={revealing}
         receiptReady={receiptReady}
         report={report}
         onActivate={onCardActivate}
-      />
-      <motion.svg
-        aria-hidden
-        viewBox="0 0 230 182"
-        className="absolute right-[-35px] top-[48px] z-[18] h-[176px] w-[254px]"
-        animate={{ opacity: revealing ? [0.54, 0.82, 0.62] : [0.42, 0.58, 0.42] }}
-        transition={{ duration: revealing ? 1 : 5.6, repeat: revealing ? 0 : Infinity, ease: "easeInOut" }}
-        style={{ transform: "perspective(620px) rotateY(-20deg) rotateZ(-2deg)" }}
-      >
-        <g fill="none" strokeLinecap="round">
-          <path
-            d="M16 135 C70 80 158 70 222 102"
-            stroke="rgba(255,248,222,0.68)"
-            strokeWidth="1.08"
-          />
-          <path
-            d="M23 140 C75 164 171 159 220 113"
-            stroke="rgba(239,202,150,0.34)"
-            strokeWidth="0.82"
-          />
-        </g>
-        <g fill="rgba(255,246,214,0.78)">
-          <circle cx="42" cy="128" r="1.7" />
-          <circle cx="128" cy="101" r="2.1" />
-          <circle cx="199" cy="105" r="2.8" />
-        </g>
-        <g stroke="rgba(255,246,218,0.62)" strokeLinecap="round" strokeWidth="0.78">
-          <path d="M199 99 L199 111 M193 105 L205 105" />
-          <path d="M42 124 L42 132 M38 128 L46 128" opacity="0.72" />
-        </g>
-      </motion.svg>
-      <span
-        aria-hidden
-        className="absolute bottom-[18px] right-[-2px] h-[58px] w-[190px] rounded-full"
-        style={{
-          background: "radial-gradient(ellipse, rgba(255,249,224,0.38), rgba(255,229,190,0.14) 52%, transparent 76%)",
-          filter: "blur(1px)",
-        }}
-      />
-      <span
-        aria-hidden
-        className="absolute bottom-[43px] right-[46px] h-3 w-[96px] rounded-full"
-        style={{ background: "rgba(255,249,222,0.32)", filter: "blur(2px)" }}
-      />
-      <motion.svg
-        viewBox="0 0 182 58"
-        className="absolute bottom-[16px] right-[-8px] h-[62px] w-[202px]"
-        animate={{ opacity: revealing ? [0.42, 0.74, 0.58] : [0.28, 0.44, 0.28], scale: revealing ? [0.94, 1.05, 1] : [1, 1.018, 1] }}
-        transition={{ duration: revealing ? 1 : 4.8, repeat: revealing ? 0 : Infinity, ease: "easeInOut" }}
-      >
-        <g fill="none" stroke="rgba(255,235,199,0.36)" strokeWidth="0.86">
-          <ellipse cx="84" cy="27" rx="62" ry="11" />
-          <ellipse cx="84" cy="27" rx="79" ry="18" />
-          <ellipse cx="84" cy="27" rx="44" ry="7" />
-          <ellipse cx="84" cy="27" rx="29" ry="4.5" opacity="0.54" />
-          <path d="M24 28 C48 38 119 38 145 28" opacity="0.42" />
-        </g>
-      </motion.svg>
-      <span
-        aria-hidden
-        className="hint-home-atmosphere absolute inset-y-0 left-0 w-[78%]"
-        style={{ background: "linear-gradient(90deg, rgba(255,248,244,0.52), rgba(250,235,238,0.30) 42%, rgba(250,235,238,0.09) 70%, rgba(250,235,238,0))" }}
-      />
-      <span
-        aria-hidden
-        className="hint-home-atmosphere absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(circle at 74% 70%, rgba(255,240,210,0.20), transparent 30%), linear-gradient(180deg, rgba(255,255,255,0.06), transparent 52%, rgba(83,55,105,0.035))",
-        }}
       />
     </div>
   );
@@ -2831,16 +2666,20 @@ export function ReferenceDailyRevealOverlay({
   revealing,
   fresh = true,
   report,
+  checkInCredits = null,
   onClose,
   onCardRevealed,
+  onRevealFeedback,
   reviewControls,
 }: {
   open: boolean;
   revealing: boolean;
   fresh?: boolean;
   report: DailyReport;
+  checkInCredits?: number | null;
   onClose: () => void;
   onCardRevealed: () => void;
+  onRevealFeedback?: () => void;
   reviewControls?: ReactNode;
 }) {
   const { t } = useLanguage();
@@ -2851,12 +2690,20 @@ export function ReferenceDailyRevealOverlay({
   const keyword = report.card.keyword?.split("·")[0]?.trim() || report.card.cardName;
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState(false);
+  const saveConfirmed = useRef(false);
+  const feedback = useTodayFeedbackScope();
+  const cueKey = `${report.date}:${report.card.cardId}:${open}:${fresh}`;
+  const revealCue = useRef({ key: cueKey, fired: false, epoch: feedback.capture() });
+  if (revealCue.current.key !== cueKey) revealCue.current = { key: cueKey, fired: false, epoch: feedback.capture() };
   const opener = useRef<HTMLElement | null>(null);
   const delivery = useDailyDelivery({ open, fresh, preparing: revealing, identity: report.date + ':' + report.card.cardId, cardBack: SKY_DECK_CARD_BACK_IMAGE });
 
   useEffect(() => {
     if (!open) return;
-    const refresh = () => setSaved(getCardCollectionSummary().cards.some(card => card.cardId === report.card.cardId && card.unlocked));
+    const refresh = () => {
+      saveConfirmed.current = getCardCollectionSummary().cards.some(card => card.cardId === report.card.cardId && card.unlocked);
+      setSaved(saveConfirmed.current);
+    };
     refresh();
     setSaveError(false);
     const unlocks = subscribeToLocalCollectionUnlocks(refresh);
@@ -2865,17 +2712,34 @@ export function ReferenceDailyRevealOverlay({
   }, [open, report.card.cardId]);
 
   function saveCard() {
-    if (saved || revealing || !detailsReady) return;
+    if (!open || saved || saveConfirmed.current || revealing || !detailsReady) return;
+    const epoch = feedback.capture();
     const result = saveLocalCollectionUnlock(report.card.cardId, "daily");
+    saveConfirmed.current = Boolean(result);
     setSaved(Boolean(result));
     setSaveError(!result);
     playGuideGesture?.(result ? "celebration" : "reassure");
+    if (result) feedback.deliver("complete", epoch);
+  }
+
+  function announceRevealFeedback() {
+    const cue = revealCue.current;
+    if (!open || revealing || !fresh || cue.key !== cueKey || cue.fired) return;
+    cue.fired = true;
+    if (onRevealFeedback) onRevealFeedback();
+    else feedback.deliver("reveal", cue.epoch);
   }
 
   const { flipped, detailsReady, rotation, flip: handleFlipCard } = useDailyReveal({
     open, preparing: revealing || delivery.active, fresh, identity: report.date + ':' + report.card.cardId,
     delivered: delivery.delivered,
-    onRevealed: onCardRevealed, onFlip: () => triggerFeedback("reveal"),
+    onRevealed: () => {
+      // Reduced motion has no turn callback: use the same single reveal cue
+      // when the confirmed card becomes immediately readable.
+      if (reduced) announceRevealFeedback();
+      onCardRevealed();
+    },
+    onFlip: announceRevealFeedback,
   });
   const still = reduced || !pageVisible;
 
@@ -2969,7 +2833,7 @@ export function ReferenceDailyRevealOverlay({
         {saved ? <Check size={18} strokeWidth={1.7} /> : <Bookmark size={18} strokeWidth={1.7} />}
       </button>
 
-      <div className="absolute left-1/2 top-[calc(var(--hint-safe-top)+0.1rem)] -translate-x-1/2">
+      <div className="absolute z-20 left-1/2 top-[calc(var(--hint-safe-top)+0.1rem)] -translate-x-1/2">
         <HintGuideSlot priority={210}
           delivery={delivery.slot}
           context={dailyGuideContext({ ready: !revealing, revealed: detailsReady, opening: fresh && !detailsReady, error: saveError })}
@@ -2988,6 +2852,7 @@ export function ReferenceDailyRevealOverlay({
           className="relative mt-[52px] h-[clamp(228px,34svh,326px)] w-[clamp(142px,21.15svh,203px)] shrink-0 min-[420px]:mt-[54px]"
           style={{ perspective: "1300px", visibility: delivery.materialVisible ? "visible" : "hidden" }}
         >
+          <DailyCheckInReward active={detailsReady} credits={checkInCredits} />
           <motion.div className="pointer-events-none absolute inset-0" style={{ opacity: delivery.handoff }}>
           <motion.span
             aria-hidden
@@ -3316,7 +3181,6 @@ function ReferenceHero({
   const keyword = report.card.keyword?.split("·")[0]?.trim() || report.card.cardName;
 
   function handleRevealClick() {
-    triggerFeedback(revealed ? "tap" : "reveal");
     void Promise.resolve(onReveal());
   }
 
@@ -3416,7 +3280,7 @@ function ReferenceEnergyValue({ score }: { score: number }) {
   );
 }
 
-function ReferenceEnergyPanel({ report }: { report: DailyReport }) {
+function ReferenceEnergyPanel({ report, receiptReady }: { report: DailyReport; receiptReady: boolean }) {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const scores = report.scores;
 
@@ -3434,8 +3298,8 @@ function ReferenceEnergyPanel({ report }: { report: DailyReport }) {
         </div>
         <div className="hint-home-theme">
           <p className="hint-home-eyebrow"><LocalizedText text="Today’s theme" /></p>
-          <p className="hint-home-theme-title font-serif">{referenceThemeTitle(report)}</p>
-          <p className="hint-home-theme-copy font-serif">{referenceThemeLine(report)}</p>
+          <p className="hint-home-theme-title font-serif" aria-hidden={!receiptReady || undefined}>{receiptReady ? referenceThemeTitle(report) : "\u00a0"}</p>
+          <p className="hint-home-theme-copy font-serif" role={receiptReady ? undefined : "status"}>{receiptReady ? referenceThemeLine(report) : <LocalizedText text="Checking today's signal..." />}</p>
         </div>
       </div>
       <button
@@ -3456,7 +3320,7 @@ function ReferenceEnergyPanel({ report }: { report: DailyReport }) {
         className="hint-pressable hint-home-details-link font-serif"
       >
         <span><LocalizedText text="See details" /></span>
-        <ArrowRight size={15} strokeWidth={1.5} aria-hidden
+        <ArrowRight size={16} strokeWidth={1.5} aria-hidden
           style={{ transform: detailsOpen ? "rotate(90deg)" : undefined, transition: "transform 180ms ease" }} />
       </button>
       {detailsOpen ? (
@@ -3695,7 +3559,7 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
               data-selected={selected}
             >
               <span className="hint-home-signal-symbol" aria-hidden>{skySignalSymbol(signal, index)}</span>
-              <span>{signal.label}</span>
+              <span>{skySignalLabel(signal, report.language)}</span>
             </button>
           );
         })}
@@ -3714,7 +3578,7 @@ function ReferenceEvidencePanel({ report }: { report: DailyReport }) {
           }}
         >
           <p className="font-sans text-[10px] font-medium uppercase tracking-[0.18em]" style={{ color: REFERENCE_TYPE.faint }}>
-            {activeEvidence.label}
+            {skySignalLabel(activeEvidence, report.language)}
           </p>
           <div className="mt-1.5 grid gap-1.5">
             <p className="font-sans text-[12px] font-normal leading-snug" style={{ color: REFERENCE_TYPE.body }}>
@@ -3791,7 +3655,6 @@ function ReferenceSpaces({ cards }: { cards: RoomShortcutData[] }) {
     <section className="hint-home-spaces" aria-labelledby="hint-home-spaces-title">
       <div className="hint-home-spaces-header">
         <h3 id="hint-home-spaces-title" className="hint-home-eyebrow"><LocalizedText text="Your spaces" /></h3>
-        <span className="hint-home-rule" />
         <span aria-hidden className="hint-home-space-star">✦</span>
       </div>
       <div className="hint-home-spaces-grid">
@@ -3827,40 +3690,56 @@ function ReferenceSpaces({ cards }: { cards: RoomShortcutData[] }) {
 function ReferenceHomePage({
   report,
   roomShortcuts,
+  dailyReceipt,
   dailyCardRevealed,
   dailyCardRevealing,
   dailyReceiptReady,
   receiptStatusMessage,
   dailyRevealOverlayOpen,
   dailyRevealFresh,
+  dailyCheckInCredits,
   onReveal,
   onCloseRevealOverlay,
   onCardRevealed,
+  onRevealFeedback,
 }: {
   report: DailyReport;
   roomShortcuts: RoomShortcutData[];
+  dailyReceipt: DailyReceipt | null;
   dailyCardRevealed: boolean;
   dailyCardRevealing: boolean;
   dailyReceiptReady: boolean;
   receiptStatusMessage?: string;
   dailyRevealOverlayOpen: boolean;
   dailyRevealFresh: boolean;
+  dailyCheckInCredits: number | null;
   onReveal: () => void | Promise<void>;
   onCloseRevealOverlay: () => void;
   onCardRevealed: () => void;
+  onRevealFeedback: () => void;
 }) {
   return (
     <div className="relative h-full w-full">
     <div
       className="reference-home-crisp hint-home-page relative h-full w-full overflow-x-hidden overflow-y-auto overscroll-none"
     >
+      {/* Hint keeps the same corner here as on every other page. */}
+      <span className="hint-guide-corner-layer">
+        <HintCorner priority={50} context={dailyGuideContext({ ready: dailyReceiptReady, revealed: dailyCardRevealed, opening: dailyCardRevealing, resting: true })} />
+      </span>
       <div className="hint-home-content relative z-10 mx-auto w-full">
         <header className="hint-home-header">
           <h1 className="sr-only"><LocalizedText text="Today" /></h1>
-          <HintGuideSlot context={dailyGuideContext({ ready: dailyReceiptReady, revealed: dailyCardRevealed, opening: dailyCardRevealing, resting: true })}
-            className="-my-5 -ml-4 mr-auto h-28 w-28 shrink-0" />
           <ReferenceHintLogo />
         </header>
+
+        <HomeCheckIn
+          today={report.date}
+          receipt={dailyReceipt}
+          ready={dailyReceiptReady}
+          revealing={dailyCardRevealing}
+          onReveal={onReveal}
+        />
 
         <div className="hint-home-sections">
           {/* Sharing and save status belong to the reading they describe, not the header. */}
@@ -3872,7 +3751,7 @@ function ReferenceHomePage({
             onReveal={onReveal}
             statusMessage={receiptStatusMessage}
           />
-          <ReferenceEnergyPanel report={report} />
+          <ReferenceEnergyPanel report={report} receiptReady={dailyReceiptReady} />
           <ReferenceEvidencePanel report={report} />
           <ReferenceSpaces cards={roomShortcuts} />
         </div>
@@ -3882,8 +3761,10 @@ function ReferenceHomePage({
         fresh={dailyRevealFresh}
         revealing={dailyCardRevealing}
         report={report}
+        checkInCredits={dailyCheckInCredits}
         onClose={onCloseRevealOverlay}
         onCardRevealed={onCardRevealed}
+        onRevealFeedback={onRevealFeedback}
       />
     </div>
     </div>
@@ -3891,7 +3772,7 @@ function ReferenceHomePage({
 }
 
 export function HomeDashboard() {
-  const currentDay = useLocalDay();
+  const currentDay = useDailyTarotDay();
   const { language, t } = useLanguage();
   const { profile } = useProfile();
   const initialDailySignalComplete = useMemo(
@@ -3904,11 +3785,16 @@ export function HomeDashboard() {
   const [dailyCardRevealing, setDailyCardRevealing] = useState(false);
   const [dailyRevealOverlayOpen, setDailyRevealOverlayOpen] = useState(false);
   const [dailyRevealFresh, setDailyRevealFresh] = useState(false);
+  const [dailyCheckInCredits, setDailyCheckInCredits] = useState<number | null>(null);
   const [signalIntroComplete, setSignalIntroComplete] = useState(initialDailySignalComplete);
   const [dailyReceipt, setDailyReceipt] = useState<DailyReceipt | null>(null);
   const [dailyReceiptReady, setDailyReceiptReady] = useState(false);
+  const [dailyReceiptError, setDailyReceiptError] = useState(false);
+  const [dailyRevealError, setDailyRevealError] = useState(false);
   const revealGeneration = useRef(0);
   const revealInFlight = useRef(false);
+  const feedback = useTodayFeedbackScope();
+  const revealFeedback = useRef<{ generation: number; epoch: number; delivered: boolean } | null>(null);
   const activeBirthDetails = profile?.birthDate || birthProfile
     ? {
         birthDate: profile?.birthDate ?? birthProfile?.birthDate,
@@ -3961,30 +3847,48 @@ export function HomeDashboard() {
     setDailyCardRevealed(false);
     setDailyCardRevealing(false);
     setDailyRevealOverlayOpen(false);
+    setDailyRevealError(false);
+    setDailyCheckInCredits(null);
     revealInFlight.current = false;
-    getOrCreateDailyReceipt("daily-card", {
-      fallbackAssignedCardId: report.card.cardId,
-    }).then((receipt) => {
-      if (!mounted) return;
-      const receiptAnonId = receipt.anonId || getAnonId();
-      const openedToday = Boolean(receipt.openedAt);
-      setDailyReceipt(receipt);
-      setDailyCardRevealed(openedToday);
-      setSignalIntroComplete(
-        openedToday || hasCompletedDailySignalIntro(receiptAnonId, receipt.dailyKey),
-      );
-      if (openedToday) markDailySignalIntroComplete(receiptAnonId, receipt.dailyKey);
-      setDailyReceiptReady(true);
-    });
+    revealFeedback.current = null;
+    const restore = () => {
+      void getOrCreateDailyReceipt("daily-card").then((receipt) => {
+        if (!mounted) return;
+        const receiptAnonId = receipt.anonId || getAnonId();
+        const openedToday = Boolean(receipt.openedAt);
+        setDailyReceipt(receipt);
+        setDailyCardRevealed(openedToday);
+        setSignalIntroComplete(openedToday);
+        if (openedToday) markDailySignalIntroComplete(receiptAnonId, receipt.dailyKey);
+        setDailyReceiptReady(true);
+        setDailyReceiptError(false);
+        if (openedToday) setDailyRevealError(false);
+      }).catch(() => {
+        if (!mounted) return;
+        setDailyReceiptError(true);
+        setDailyReceiptReady(false);
+      });
+    };
+    restore();
+    window.addEventListener("online", restore);
+    window.addEventListener("focus", restore);
     return () => {
       mounted = false;
+      window.removeEventListener("online", restore);
+      window.removeEventListener("focus", restore);
       revealGeneration.current++;
     };
   }, [currentDay]);
 
   useEffect(() => subscribeToDailyReceiptFallbacks(() => {
     const cached = getCachedDailyReceipt("daily-card", { dailyKey: currentDay });
-    if (cached) setDailyReceipt(cached);
+    if (cached) {
+      setDailyReceipt(cached);
+      setDailyCardRevealed(Boolean(cached.openedAt));
+      setDailyReceiptReady(true);
+      setDailyReceiptError(false);
+      if (cached.openedAt) setDailyRevealError(false);
+    }
   }), [currentDay]);
 
   useEffect(() => {
@@ -4001,27 +3905,43 @@ export function HomeDashboard() {
     };
   }, []);
 
-  function revealDailyCard() {
+  async function revealDailyCard() {
     if (revealInFlight.current || !dailyReceiptReady) return;
+    setDailyRevealError(false);
     if (dailyCardRevealed || dailyReceipt?.openedAt) {
+      revealFeedback.current = null;
+      feedback.deliver("tap", feedback.capture());
       setDailyRevealFresh(false);
+      setDailyCheckInCredits(null);
       setDailyRevealOverlayOpen(true);
       return;
     }
     setDailyRevealFresh(true);
     setDailyCardRevealing(true);
-    setDailyRevealOverlayOpen(true);
     revealInFlight.current = true;
     const generation = ++revealGeneration.current;
+    const epoch = feedback.capture();
+    revealFeedback.current = { generation, epoch, delivered: false };
+    feedback.deliver("soft", epoch);
     const day = currentDay;
+    const owner = getAnonId();
+    const alreadyOpened = Boolean(getCachedDailyReceipt("daily-card", { anonId: owner, dailyKey: day })?.openedAt);
+    setDailyCheckInCredits(null);
     try {
-      const sync = openDailyReceipt("daily-card", {
-        dailyKey: day,
-        fallbackAssignedCardId: report.card.cardId,
-      });
-      // The local receipt freezes identity synchronously; network latency never delays the reveal.
-      const openedReceipt = getCachedDailyReceipt("daily-card", { dailyKey: day });
-      if (!openedReceipt) return;
+      const openedReceipt = await openDailyReceipt("daily-card", { dailyKey: day });
+      if (generation !== revealGeneration.current) return;
+      if (!openedReceipt.openedAt || openedReceipt.anonId !== owner || openedReceipt.dailyKey !== day ||
+          openedReceipt.featureType !== "daily-card" || !openedReceipt.assignedCardId) {
+        throw new Error("Daily card opening was not confirmed");
+      }
+      setDailyRevealOverlayOpen(true);
+      if (openedReceipt.anonId === owner && openedReceipt.dailyKey === day &&
+          openedReceipt.featureType === "daily-card" && openedReceipt.openedAt) {
+        try {
+          const { awardedCredits } = claimHomeCheckIn(owner, day);
+          if (!alreadyOpened && awardedCredits > 0) setDailyCheckInCredits(awardedCredits);
+        } catch { /* A day/profile transition must never create a reward for the new context. */ }
+      }
       markDailySignalIntroComplete(openedReceipt.anonId || getAnonId(), openedReceipt.dailyKey);
       setDailyReceipt(openedReceipt);
       setDailyCardRevealed(true);
@@ -4032,12 +3952,19 @@ export function HomeDashboard() {
         openedCard,
         openedReceipt.dailyKey ? parseServerDailyKey(openedReceipt.dailyKey) : new Date(),
       );
-      void sync.then(receipt => {
-        if (generation === revealGeneration.current) setDailyReceipt(receipt);
-      });
+    } catch {
+      if (generation !== revealGeneration.current) return;
+      revealFeedback.current = null;
+      feedback.deliver("warning", epoch);
+      setDailyRevealError(true);
+      setDailyRevealOverlayOpen(false);
+      // A retry after midnight restores the new server day; it never selects a local card.
+      void getOrCreateDailyReceipt("daily-card").catch(() => {});
     } finally {
-      setDailyCardRevealing(false);
-      revealInFlight.current = false;
+      if (generation === revealGeneration.current) {
+        setDailyCardRevealing(false);
+        revealInFlight.current = false;
+      }
     }
   }
 
@@ -4047,13 +3974,23 @@ export function HomeDashboard() {
   }
 
   function closeDailyRevealOverlay() {
+    revealFeedback.current = null;
     completeSignalIntro();
+    setDailyCheckInCredits(null);
     setDailyRevealOverlayOpen(false);
   }
 
   function markDailyCardRevealed() {
     completeSignalIntro();
     setDailyCardRevealed(true);
+  }
+
+  function announceDailyReveal() {
+    const cue = revealFeedback.current;
+    if (!cue || cue.delivered || cue.generation !== revealGeneration.current || !dailyRevealOverlayOpen ||
+        !dailyRevealFresh || dailyCardRevealing || !dailyReceipt?.openedAt || dailyReceipt.dailyKey !== currentDay) return;
+    cue.delivered = true;
+    feedback.deliver("reveal", cue.epoch);
   }
 
   function handleToggleRitualTask(index: number) {
@@ -4103,17 +4040,20 @@ export function HomeDashboard() {
     <ReferenceHomePage
       report={report}
       roomShortcuts={roomShortcuts}
+      dailyReceipt={dailyReceipt}
       dailyCardRevealed={dailyCardRevealed && dailyReceipt?.dailyKey === currentDay}
       dailyCardRevealing={dailyCardRevealing}
-      dailyReceiptReady={dailyReceiptReady}
-      receiptStatusMessage={dailyReceipt?.openedAt && dailyReceipt.syncStatus !== "synced"
+      dailyReceiptReady={dailyReceiptReady && dailyReceipt?.dailyKey === currentDay}
+      receiptStatusMessage={dailyRevealError ? t("home.revealFailed") : dailyReceiptError ? t("home.receiptUnavailable") : dailyReceipt?.openedAt && dailyReceipt.syncStatus !== "synced"
         ? t(dailyReceipt.persistence === "memory" ? "quality.cardMemory" : dailyReceipt.syncStatus === "conflict" ? "quality.cardConflict" : "quality.cardPending")
         : undefined}
       dailyRevealOverlayOpen={dailyRevealOverlayOpen}
       dailyRevealFresh={dailyRevealFresh}
+      dailyCheckInCredits={dailyCheckInCredits}
       onReveal={revealDailyCard}
       onCloseRevealOverlay={closeDailyRevealOverlay}
       onCardRevealed={markDailyCardRevealed}
+      onRevealFeedback={announceDailyReveal}
     />
     </div>
     </div>

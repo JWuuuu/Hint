@@ -158,7 +158,7 @@ test("Personality keeps the preview and retries when browser download initiation
 test("Personality ignores a late English export after changing language and creating a new preview", async ({ page }, info) => {
   await quizResult(page);
   await deferExport(page);
-  await page.getByRole("navigation", { name: "App", exact: true }).getByRole("link", { name: "Me", exact: true }).click();
+  await page.getByRole("navigation", { name: "Main navigation", exact: true }).getByRole("link", { name: "Me", exact: true }).click();
   await page.getByRole("button", { name: "Leave and start fresh", exact: true }).click();
   await page.getByTestId("button-language-toggle").first().click();
   await page.getByRole("option", { name: "日本語", exact: true }).click();
@@ -179,7 +179,7 @@ test("Personality ignores a late English export after changing language and crea
 test("Leaving Personality cancels a pending export without reopening a preview on return", async ({ page }) => {
   await quizResult(page);
   await deferExport(page);
-  await page.getByRole("banner").getByRole("link", { name: /Home$/ }).click();
+  await page.getByRole("main").getByRole("link", { name: /Home$/ }).click();
   await page.getByRole("button", { name: "Leave and start fresh", exact: true }).click();
   await expect(page.getByTestId("personality-share")).toHaveCount(0);
   await releaseExport(page);

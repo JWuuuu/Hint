@@ -1,0 +1,20 @@
+/* Local text treatments retain the theme palette and leave decorative accents intact. */
+.hint-app-shell-root {
+  --hint-readable-copy: var(--hint-text);
+  --hint-readable-nav: color-mix(in srgb, var(--hint-text) 80%, transparent);
+  --hint-readable-nav-shadow: var(--hint-readable-shadow);
+  --hint-readable-gold: var(--hint-gold-bright);
+  --hint-readable-rose: color-mix(in srgb, var(--hint-rose) 70%, var(--hint-text));
+  --hint-readable-action-bg: var(--hint-special-action-bg);
+  --hint-readable-shadow: .04em 0 .04em var(--hint-navy-0), -.04em 0 .04em var(--hint-navy-0), 0 .04em .04em var(--hint-navy-0), 0 -.04em .04em var(--hint-navy-0), 0 0 .16em var(--hint-navy-0);
+}
+.hint-app-shell-root[data-hint-theme="bright"] {
+  --hint-readable-copy: color-mix(in srgb, var(--hint-text) 86%, transparent);
+  --hint-readable-nav: color-mix(in srgb, var(--hint-text) 82%, transparent);
+  --hint-readable-nav-shadow: .04em 0 .04em var(--hint-pearl, #fffaf6), -.04em 0 .04em var(--hint-pearl, #fffaf6), 0 .04em .04em var(--hint-pearl, #fffaf6), 0 -.04em .04em var(--hint-pearl, #fffaf6), 0 0 .16em var(--hint-pearl, #fffaf6);
+  --hint-readable-gold: color-mix(in srgb, var(--hint-gold) 40%, var(--hint-text));
+  --hint-readable-rose: color-mix(in srgb, var(--hint-rose) 40%, var(--hint-text));
+  --hint-readable-action-bg: linear-gradient(color-mix(in srgb, var(--hint-text) 40%, transparent), color-mix(in srgb, var(--hint-text) 40%, transparent)), var(--hint-special-action-bg);
+  --hint-readable-shadow: none;
+}
+.hint-readable-text { text-shadow: var(--hint-readable-shadow); }

@@ -35,6 +35,49 @@ describe("calculated astrology data", () => {
     expect(chart.risingSign).toBeUndefined();
     expect(chart.houses).toEqual([{ house: 1, sign: "libra", degree: 17.2 }]);
   });
+  it("preserves the returned asteroid, chart point and angle parameters separately from the planets", async () => {
+    const fetchMock = vi.fn(async url => new Response(JSON.stringify(String(url).endsWith("planets/tropical")
+      ? [
+        { name: "Sun", sign: "Aquarius", normDegree: 21.83 },
+        { name: "Ketu", sign: "Sagittarius", normDegree: 5, isRetro: true },
+        { name: "Black Moon Lilith", sign: "Taurus", normDegree: 0.5 },
+      ]
+      : { houses: [
+        { house_id: 3, planets: [{ name: "Node", sign: "Gemini", full_degree: 65.2, is_retro: "true" }] },
+        { house_id: 8, planets: [{ name: "Juno", sign: "Scorpio", full_degree: 228.75 }] },
+        { house_id: 10, asteroids: [{ name: "Chiron", sign: "Capricorn", full_degree: 284.5 }] },
+      ],
+      asteroids: [
+        { name: "Pallas Athena", sign: "Pisces", norm_degree: 7.5 },
+        { name: "Ceres", sign: "Aries", norm_degree: 19, house: 1 },
+        { name: "Vesta", sign: "Libra", norm_degree: 12, house: 7 },
+      ],
+      points: [{ name: "Part of Fortune", sign: "Cancer", norm_degree: 13 }, { name: "East Point", sign: "Pisces", norm_degree: 26 }],
+      angles: [{ name: "IC", sign: "Gemini", norm_degree: 27.5 }, { name: "DSC", sign: "Virgo", norm_degree: 25.5 }],
+      midheaven: 267.5,
+      vertex: 178.5,
+      }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    const response = await getNatalProxy({ ...profile, birthDate: "1998-02-11", id: "additional-points-fixture" });
+    expect(response.chart.placements.map(p => p.body)).toEqual(["sun"]);
+    expect(response.chart).toMatchObject({ additionalPlacements: [
+      { body: "north_node", sign: "gemini", degree: expect.closeTo(5.2), house: 3, retrograde: true },
+      { body: "juno", sign: "scorpio", degree: 18.75, house: 8 },
+      { body: "chiron", sign: "capricorn", degree: 14.5, house: 10 },
+      { body: "pallas", sign: "pisces", degree: 7.5 },
+      { body: "ceres", sign: "aries", degree: 19, house: 1 },
+      { body: "vesta", sign: "libra", degree: 12, house: 7 },
+      { body: "fortune", sign: "cancer", degree: 13 },
+      { body: "east_point", sign: "pisces", degree: 26 },
+      { body: "imum_coeli", sign: "gemini", degree: 27.5 },
+      { body: "descendant", sign: "virgo", degree: 25.5 },
+      { body: "midheaven", sign: "sagittarius", degree: 27.5 },
+      { body: "vertex", sign: "virgo", degree: 28.5 },
+      { body: "south_node", sign: "sagittarius", degree: 5, retrograde: true },
+      { body: "lilith", sign: "taurus", degree: 0.5 },
+    ] });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
   it.each([undefined, "whole_sign"])("does not label a %s house-one cusp as an explicitly calculated Ascendant", async houseSystem => {
     vi.stubGlobal("fetch", vi.fn(async url => new Response(JSON.stringify(String(url).endsWith("planets/tropical")
       ? [{ name: "Sun", sign: "Taurus", normDegree: 24.5 }]

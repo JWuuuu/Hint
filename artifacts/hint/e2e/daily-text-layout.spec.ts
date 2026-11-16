@@ -1,3 +1,4 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { test, expect, appHref } from "./fixtures";
 
 const copy = {
@@ -25,10 +26,7 @@ for (const locale of ["zh", "es", "ja", "ko"] as const) for (const theme of ["br
     await page.route("**/api/readings**", route => route.fulfill({ json: [] }));
     await page.route("**/api/reading-days**", route => route.fulfill({ json: [] }));
     await page.route("**/api/daily-pull", route => route.fulfill({ json: { anonId: "daily-text-fixture-35", pullDate: "2026-09-09", cardId: "17-star", cardName: "The Star", isFlipped: true, note: "", createdAt: "2026-09-09T12:00:00Z" } }));
-    await page.route("**/api/daily-receipts/**", route => {
-      const data = route.request().postDataJSON();
-      return route.fulfill({ json: { ...data, anonId: "daily-text-fixture-35", anonymousDeviceId: "daily-text-fixture-35", assignedCardId: "17-star", assignedAt: "2026-09-09T12:00:00Z", openedAt: "2026-09-09T12:00:00Z", expiresAt: "2026-09-10T00:00:00Z", source: "server" } });
-    });
+    await mockDailyTarot(page, { opened: true });
     await page.goto("/app/daily?hintPreview=embedded");
     await expect(page.getByTestId("input-pull-note")).toBeVisible();
     const [jewelry, flower, upright, major] = copy[locale];

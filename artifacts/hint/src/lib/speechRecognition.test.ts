@@ -9,14 +9,15 @@ const native = vi.hoisted(() => {
       speechRecognition: "granted",
       microphone: "granted",
     })),
-    start: vi.fn(async () => ({ matches: [] as string[] })),
+    start: vi.fn(async (_options: { language: string; sessionId: string }) => ({ matches: [] as string[] })),
     stop: vi.fn(async () => undefined),
     cancel: vi.fn(async () => undefined),
     addListener: vi.fn(async (
       event: string,
       callback: (result: Record<string, unknown>) => void,
     ) => {
-      listeners.set(event, callback);
+      // Events from the current native task carry the caller's session token.
+      listeners.set(event, result => callback({ sessionId: plugin.start.mock.lastCall?.[0].sessionId, ...result }));
       const remove = vi.fn(async () => undefined);
       removers.push(remove);
       return { remove };
@@ -170,6 +171,9 @@ describe("native Hint speech recognition", () => {
     await vi.waitFor(() => expect(native.plugin.start).toHaveBeenCalledOnce());
     controller.abort();
     native.listeners.get("partialResults")?.({ matches: ["Late private transcript"] });
+    // Cancellation must reach the microphone even while start() is still pending.
+    expect(native.plugin.cancel).toHaveBeenCalledOnce();
+    expect(callbacks.onEnd).toHaveBeenCalledOnce();
     start.resolve({ matches: ["Late private transcript"] });
     await rejected;
     expect(native.plugin.cancel).toHaveBeenCalledOnce();

@@ -106,10 +106,17 @@ paths:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
+      description: Returns server health status. Optional self-reported build headers identify emitted artifacts and expected migration digests, not deployment acceptance, applied migrations or provider health.
       responses:
         "200":
           description: Healthy
+          headers:
+            X-Hint-Build:
+              description: SHA-256 of the versioned emitted-artifact manifest, verified at process startup; unknown when unavailable or invalid.
+              schema: { type: string, pattern: '^(sha256:[a-f0-9]{64}|unknown)$' }
+            X-Hint-Schema:
+              description: Opaque SHA-256 of the embedded expected migration manifest; unknown unless build verification succeeds. Does not prove migrations ran.
+              schema: { type: string, pattern: '^(sha256:[a-f0-9]{64}|unknown)$' }
           content:
             application/json:
               schema:
@@ -382,7 +389,7 @@ paths:
     patch:
       operationId: updateDailyPull
       tags: [history]
-      summary: Update the flipped state or note on a saved daily pull
+      summary: Reveal the server-assigned daily card or update its note
       requestBody:
         required: true
         content:
@@ -561,6 +568,7 @@ paths:
     post:
       operationId: syncOfflineDailyReceipt
       summary: Idempotently synchronize a previously revealed card without replacing its identity
+      description: For daily-card and daily-tarot, only an existing server assignment can be acknowledged. Card and orientation must match; openedAt is set by the server. Unopened past readings cannot be revealed. Other receipt features retain their offline synchronization behavior.
       requestBody:
         required: true
         content:
@@ -582,7 +590,8 @@ paths:
                   historyExcluded: { type: boolean }
                 additionalProperties: true
         '400': { description: Invalid date or card identity }
-        '409': { description: Another card was already revealed; retain the local card as unsynchronized }
+        '404': { description: No server-issued Daily Tarot reading exists for that date }
+        '409': { description: Conflicting card or unavailable date; Daily Tarot clients must restore the server reading }
         '503': { description: Unavailable; safe to retry the same receipt }
   /compatibility/invite:
     post:
@@ -962,7 +971,6 @@ components:
       type: object
       required:
         - anonId
-        - date
       properties:
         anonId:
           type: string
@@ -970,13 +978,12 @@ components:
         date:
           type: string
           minLength: 1
-          description: The user's local calendar date (YYYY-MM-DD)
+          description: Optional server UTC date (YYYY-MM-DD). Omit for today; past dates restore saved readings only and future dates are rejected.
 
     DailyPullUpdate:
       type: object
       required:
         - anonId
-        - date
       properties:
         anonId:
           type: string
@@ -986,6 +993,7 @@ components:
           minLength: 1
         isFlipped:
           type: boolean
+          description: Only true is accepted; a saved reveal cannot be undone.
         note:
           type: string
         editedAt:
@@ -1033,7 +1041,11 @@ components:
         editedAt:
           type: string
           format: date-time
-          description: Original submission time, retained while the request is in flight. A submission predating Clear History is rejected. Optional for legacy clients.
+          description: Original submission time, retained across every retry. Required when clientRequestId is supplied. A submission predating Clear History is rejected. Optional for legacy clients without a retry key.
+        clientRequestId:
+          type: string
+          format: uuid
+          description: Optional owner-scoped retry key. Retain this key, editedAt and identical content until this deliberate save succeeds. A replay returns the same entry; changed content with the same key returns 409. Use a new key for a deliberate new entry.
 
     AstroNatalRequest:
       type: object

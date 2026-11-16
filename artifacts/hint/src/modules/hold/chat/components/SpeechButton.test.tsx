@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 const transport = vi.hoisted(() => ({ fetch: vi.fn() }));
 const native = vi.hoisted(() => ({ state: (_active: boolean) => {} }));
 vi.mock("../../../../lib/api", () => ({ apiFetch: transport.fetch, apiUrl: (path: string) => path }));
@@ -10,13 +10,14 @@ import { SpeechButton } from "./SpeechButton";
 import { useTarotSpeechPlayback } from "../../../tarot/logic/useTarotSpeechPlayback";
 
 const audioInstances: Array<{ play: ReturnType<typeof vi.fn>; pause: ReturnType<typeof vi.fn>; onended: (() => void) | null; onerror: (() => void) | null }> = [];
-let createUrl: ReturnType<typeof vi.fn>;
-let revokeUrl: ReturnType<typeof vi.fn>;
+let createUrl: Mock<typeof URL.createObjectURL>;
+let revokeUrl: Mock<typeof URL.revokeObjectURL>;
 let playbackStart: Promise<void>;
 beforeEach(() => {
   transport.fetch.mockReset(); audioInstances.length = 0;
   playbackStart = Promise.resolve();
-  createUrl = vi.fn(() => "blob:speech-fixture"); revokeUrl = vi.fn();
+  createUrl = vi.fn<typeof URL.createObjectURL>(() => "blob:speech-fixture");
+  revokeUrl = vi.fn<typeof URL.revokeObjectURL>();
   vi.stubGlobal("Audio", class {
     play = vi.fn(() => playbackStart); pause = vi.fn(); onended = null; onerror = null;
     constructor() { audioInstances.push(this); }

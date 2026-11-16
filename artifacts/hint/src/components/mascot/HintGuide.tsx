@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import { useLocation } from "wouter";
 import { useMotionPolicy } from "../../lib/motionPolicy";
 import { useDecorationsCovered } from "../../lib/decorationCover";
 import type { GestureId, HintSceneContext, HintSceneFrame, HintScenePlayer } from "../../../mascot-library/versions/v3.2/src/index";
@@ -20,6 +21,9 @@ type Review = { speed?: number; holdAt?: number; paused?: boolean; onPauseChange
 const PlaybackContext = createContext({ speed: 1, paused: false });
 type Area = { top: number; right: number; bottom: number; left: number };
 const clips = (overflow: string) => Boolean(overflow) && overflow !== "visible";
+// Brief slot registration gaps get a grace period. A real route loader owns
+// its whole wait instead; slow devices must not make Hint leave halfway through.
+const VACANCY_HOLD = 1200, NAVIGATION_WINDOW = 1000;
 
 /** Narrows the stage to the boxes of the ancestors that scroll or clip a node. */
 function clipArea(node: Element, stage: Area): Area {
@@ -67,6 +71,13 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
   const synchronize = useRef<(followLayout?: boolean) => void>(() => {});
   const syncQueued = useRef(false);
   const [requested, setRequested] = useState(false);
+  const [location] = useLocation();
+  const navigatedAt = useRef(Number.NEGATIVE_INFINITY), visited = useRef(location);
+  useLayoutEffect(() => { if (visited.current !== location) {
+    visited.current = location;navigatedAt.current = performance.now();
+    player.current?.cancelGestures();
+    queueMicrotask(() => synchronize.current());
+  } }, [location]);
   const scheduleSync = useCallback(() => {
     if (syncQueued.current) return;
     syncQueued.current = true;
@@ -84,7 +95,9 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
   // Measure the final registration set rather than briefly departing the room.
   const unmount = useCallback((key: symbol) => { slots.current.delete(key);scheduleSync(); }, [scheduleSync]);
   const react = useCallback(() => { player.current?.react(); }, []);
-  const playGesture = useCallback((id: GestureId) => { player.current?.playGesture(id, { interrupt: true }); }, []);
+  const playGesture = useCallback((id: GestureId) => {
+    if (currentPolicy.current.pageVisible && !currentPolicy.current.reduced) player.current?.playGesture(id);
+  }, []);
   const subscribe = useCallback((listener: (frame: HintSceneFrame) => void) => {
     listeners.current.add(listener);return () => { listeners.current.delete(listener); };
   }, []);
@@ -97,7 +110,9 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
     let activeNode: HTMLDivElement | null = null, previousWidth = 0;
     let deliveryNode: HTMLDivElement | null = null, hadDelivery = false;
     const resize = new ResizeObserver(() => synchronize.current(true));
-    let clip = "";
+    let clip = "", vacantSince = 0, holdTimer = 0, slotVisible = false;
+    let vacancyObserver: MutationObserver | null = null;
+    function stopWatchingVacancy() { vacancyObserver?.disconnect();vacancyObserver = null; }
     function setClip(value: string) {
       if (value === clip) return;
       clip = value;stage.style.clipPath = value;stage.dataset.clip = value || "none";
@@ -111,15 +126,40 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
         .sort((a, b) => b[1].priority - a[1].priority || b[1].order - a[1].order)[0];
       if (!player.current) return;
       if (!entry) {
+        player.current.cancelGestures();
+        const now = performance.now();
+        if (!vacantSince) vacantSince = now;
+        // A removed modal must not keep delivering its letter while another
+        // room loads, even if its last placement is temporarily held.
         if (hadDelivery) player.current.setDelivery(null);hadDelivery = false;
         if (deliveryNode) resize.unobserve(deliveryNode);deliveryNode = null;
+        const loading = Boolean(document.querySelector("[data-room-loading]"));
+        const grace = vacantSince - navigatedAt.current < NAVIGATION_WINDOW && now - vacantSince < VACANCY_HOLD;
+        if (selected.current && (loading || grace)) {
+          // Observe only the vacancy, including an error/no-slot destination
+          // which has no slot callback. No polling or fixed loading deadline.
+          if (!vacancyObserver) {
+            vacancyObserver = new MutationObserver(scheduleSync);
+            vacancyObserver.observe(document.body, { childList: true, subtree: true });
+          }
+          if (loading && holdTimer) { window.clearTimeout(holdTimer);holdTimer = 0; }
+          else if (!loading && !holdTimer) holdTimer = window.setTimeout(() => { holdTimer = 0;if (!disposed) sync(); }, VACANCY_HOLD - (now - vacantSince) + 1);
+          player.current.setMotionPolicy({ reduced: currentPolicy.current.reduced, visible: currentPolicy.current.pageVisible && slotVisible });
+          return;
+        }
+        stopWatchingVacancy();
+        if (holdTimer) { window.clearTimeout(holdTimer);holdTimer = 0; }
         selected.current = null;lastContext.current = "";
-        if (activeNode) resize.unobserve(activeNode);activeNode = null;setClip("");
+        if (activeNode) { resize.unobserve(activeNode); delete activeNode.dataset.guideSelected; } activeNode = null;setClip("");
         player.current.setContext({ room: "away", phase: "idle", audioPlaying: false });
         player.current.setMotionPolicy({ reduced: currentPolicy.current.reduced, visible: currentPolicy.current.pageVisible });return;
       }
+      stopWatchingVacancy();vacantSince = 0;if (holdTimer) { window.clearTimeout(holdTimer);holdTimer = 0; }
       const [key, slot] = entry, changed = selected.current !== key;
-      if (activeNode !== slot.node) { if (activeNode) resize.unobserve(activeNode);activeNode = slot.node;resize.observe(activeNode); }
+      if (activeNode !== slot.node) {
+        if (activeNode) { resize.unobserve(activeNode); delete activeNode.dataset.guideSelected; }
+        activeNode = slot.node; activeNode.dataset.guideSelected = "true"; resize.observe(activeNode);
+      }
       const bounds = slot.node.getBoundingClientRect(), screen = stage.getBoundingClientRect();
       const target = slot.delivery?.target.current ?? null;
       const targetBounds = target?.isConnected ? target.getBoundingClientRect() : null;
@@ -136,6 +176,7 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
         : area.bottom <= area.top || area.right <= area.left ? "inset(50%)"
         : `inset(${px(area.top - screen.top)} ${px(screen.right - area.right)} ${px(screen.bottom - area.bottom)} ${px(area.left - screen.left)})`);
       const visible = delivering || bounds.width > 0 && bounds.height > 0 && bounds.bottom > area.top && bounds.top < area.bottom && bounds.right > area.left && bounds.left < area.right;
+      slotVisible = visible;
       stage.style.zIndex = String(Math.max(20, slot.priority));
       player.current.setMotionPolicy({ reduced: currentPolicy.current.reduced, visible: currentPolicy.current.pageVisible && visible });
       if (changed || contextChanged) player.current.setContext(slot.context);
@@ -241,7 +282,7 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
       if (import.meta.env.DEV && currentReview.current?.paused) instance.pause();sync();resumeTracking();
     }).catch(() => { if (!disposed) setUnavailable(true); });
     return () => {
-      disposed = true;synchronize.current = () => {};resize.disconnect();
+      disposed = true;if (activeNode) delete activeNode.dataset.guideSelected;synchronize.current = () => {};resize.disconnect();window.clearTimeout(holdTimer);stopWatchingVacancy();
       cancelAnimationFrame(frameRequest);motions.clear();window.removeEventListener("hint:room-motion", roomMotion);
       window.removeEventListener("resize", follow);window.removeEventListener("scroll", follow, true);
       window.visualViewport?.removeEventListener("resize", follow);window.visualViewport?.removeEventListener("scroll", follow);
@@ -272,8 +313,8 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
   </div>}</Context.Provider></PlaybackContext.Provider>;
 }
 
-export function HintGuideSlot({ context, delivery, priority = 50, className = "", fallback }: {
-  context: HintSceneContext; delivery?: Delivery; priority?: number; className?: string; fallback?: ReactNode;
+export function HintGuideSlot({ context, delivery, priority = 50, className = "", fallback, interactive = true }: {
+  context: HintSceneContext; delivery?: Delivery; priority?: number; className?: string; fallback?: ReactNode; interactive?: boolean;
 }) {
   const guide = useContext(Context), node = useRef<HTMLDivElement>(null), key = useRef(Symbol("hint-slot"));
   const contextRef = useRef(context);contextRef.current = context;
@@ -287,7 +328,7 @@ export function HintGuideSlot({ context, delivery, priority = 50, className = ""
   useLayoutEffect(() => { if (guide?.enabled) guide.update(key.current, contextRef.current, deliveryRef.current); }, [guide, contextKey, delivery?.key, delivery?.cardBack, delivery?.done, delivery?.target]);
   if (!guide?.enabled) return <>{fallback}</>;
   return <div ref={node} className={`hint-guide-slot ${className}`} data-hint-guide-slot>
-    <button type="button" aria-label="Hint" className="hint-guide-hit" onClick={guide.react} />
+    {interactive && <button type="button" aria-label="Hint" className="hint-guide-hit" onClick={guide.react} />}
   </div>;
 }
 
@@ -295,8 +336,11 @@ export function useHintGuideEnabled() { return useContext(Context)?.enabled ?? f
 export function useHintGuidePlayback() { return useContext(PlaybackContext); }
 export function useHintGuideGesture() {
   const play = useContext(Context)?.playGesture, mounted = useRef(false);
+  const [location] = useLocation(), visit = useRef({ location, epoch: 0 });
+  if (visit.current.location !== location) visit.current = { location, epoch: visit.current.epoch + 1 };
+  const epoch = visit.current.epoch;
   useLayoutEffect(() => { mounted.current = true;return () => { mounted.current = false; }; }, []);
-  return useCallback((id: GestureId) => { if (mounted.current) play?.(id); }, [play]);
+  return useCallback((id: GestureId) => { if (mounted.current && visit.current.epoch === epoch) play?.(id); }, [play, epoch]);
 }
 export function useHintGuideFrames(listener: (frame: HintSceneFrame) => void) {
   const guide = useContext(Context), latest = useRef(listener);latest.current = listener;

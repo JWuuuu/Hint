@@ -1,0 +1,36 @@
+/* Protection follows text only; panel materials and decorative stars are unchanged. */
+[data-hint-theme="dark"] .hint-personality-result :is(p,button),
+[data-hint-theme="dark"] .hint-personality-result .rounded-full {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
+}
+
+/* Keep the serif halo beneath its translucent fill, with no duplicate spoken text. */
+.hint-action-ink { position: relative; isolation: isolate; display: block; }
+.hint-action-shadow { display: none; }
+[data-hint-theme="dark"] .hint-action-shadow {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+[data-hint-theme="dark"] .hint-action-shadow::before {
+  content: attr(data-copy);
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
+}
+
+[data-hint-theme="dark"] .hint-personality-result .hint-action-shadow::before {
+  text-shadow: 0 0 2px var(--hint-night);
+}
+[data-hint-theme="dark"] .hint-personality-result .min-h-28 > p:first-child,
+[data-hint-theme="dark"] .hint-dream-journal-link {
+  color: var(--hint-gold-bright) !important;
+}
+[data-hint-theme="dark"] .hint-personality-result p[style*="--hint-muted"] {
+  color: rgb(from var(--hint-muted) r g b / 1) !important;
+}

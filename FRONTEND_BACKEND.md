@@ -43,7 +43,7 @@ and backend changes in sync without publishing packages or copying types.
 ## Deploy Flow
 
 1. Render deploys the backend with `pnpm run build:api` and `pnpm run start:api`.
-2. Render runs `pnpm run db:push` before starting the API.
+2. After migration review and backup, an authorized Render deployment runs `pnpm --filter @workspace/db run migrate` before starting the API. Use `migrate:check` for read-only ledger verification; never schema-push an existing database.
 3. Vercel deploys the frontend with `pnpm run build:web`.
 4. Vercel routes `/api/*` to the Render API service.
 

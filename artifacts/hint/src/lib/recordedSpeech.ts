@@ -51,7 +51,9 @@ export async function startRecordedSpeech(options: HintSpeechOptions): Promise<H
   function cancel() {
     request.abort();
     finish();
-    if (recorder?.state === "recording") recorder.stop();
+    try {
+      if (recorder?.state === "recording") recorder.stop();
+    } catch { /* Tracks and listeners have already been released. */ }
   }
   function fail(reason: SpeechFailure) {
     if (ended) return;
@@ -61,15 +63,19 @@ export async function startRecordedSpeech(options: HintSpeechOptions): Promise<H
   function stop() {
     if (ended || stopping) return completion;
     stopping = true;
+    // Some interrupted recorders never emit their final stop event.
+    timeout = setTimeout(() => fail("failed"), 2500);
     if (recorder?.state === "recording") {
       options.onProcessing?.();
-      recorder.stop();
-      releaseMicrophone();
+      try { recorder.stop(); }
+      catch { fail("failed"); }
+      finally { releaseMicrophone(); }
     }
     return completion;
   }
   async function transcribe() {
     if (ended) return;
+    clearTimeout(timeout);
     releaseMicrophone();
     const recording = new Blob(chunks, { type: recorder?.mimeType || chunks[0]?.type || "audio/webm" });
     chunks.length = 0;
@@ -96,10 +102,11 @@ export async function startRecordedSpeech(options: HintSpeechOptions): Promise<H
     // Check the service before holding the microphone in a nonfunctional session.
     timeout = setTimeout(() => fail("backend"), 8000);
     const available = await apiFetch(apiUrl("/api/speech/transcription/status"), { signal: request.signal });
-    clearTimeout(timeout);
     if (ended) return { stop, cancel: async () => cancel() };
     if (!available.ok) { fail("backend"); return { stop, cancel: async () => cancel() }; }
     const capability = await available.json() as { available?: boolean };
+    clearTimeout(timeout);
+    if (ended) return { stop, cancel: async () => cancel() };
     if (capability.available !== true) { fail("backend"); return { stop, cancel: async () => cancel() }; }
     stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true }, video: false });
     if (ended) { releaseMicrophone(); return { stop, cancel: async () => cancel() }; }

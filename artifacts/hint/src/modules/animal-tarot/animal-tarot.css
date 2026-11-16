@@ -26,6 +26,21 @@
     inset 0 0 42px color-mix(in srgb, var(--hint-rose, #f0b6cf) 9%, transparent);
 }
 
+/* On the bright theme the hero's rose glow ends in a hard edge that lines up with
+   the orbit ring, so it reads as a pink disc cut off by the card corner. Fade the
+   glows out further and quiet the ring so they read as light, not a shape. */
+[data-hint-theme="bright"] .animal-tarot-hero {
+  background:
+    radial-gradient(circle at 18% 20%, color-mix(in srgb, var(--hint-aqua, #9dded9) 12%, transparent), transparent 44%),
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--hint-rose, #f0b6cf) 12%, transparent), transparent 46%),
+    var(--hint-liquid-panel);
+}
+
+[data-hint-theme="bright"] .animal-hero-orbit {
+  border-color: color-mix(in srgb, var(--hint-gold, #dcc383) 14%, transparent);
+  box-shadow: none;
+}
+
 .animal-hero-orbit::before,
 .animal-hero-orbit::after {
   content: "";
@@ -430,4 +445,31 @@
     opacity: 1;
     transform: rotateY(0deg);
   }
+}
+
+/* A separate decorative layer keeps the soft halo beneath the readable ink. */
+.animal-reading .hint-action-shadow { display: none; }
+[data-hint-theme="dark"] .animal-reading .hint-app-card p {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+[data-hint-theme="dark"] .animal-reading .hint-app-card p:first-child {
+  color: var(--hint-text) !important;
+}
+[data-hint-theme="dark"] .animal-reading .hint-app-card p:not(:first-child) {
+  color: rgb(from var(--hint-muted) r g b / 1) !important;
+}
+[data-hint-theme="dark"] .animal-reading .hint-action-shadow {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+[data-hint-theme="dark"] .animal-reading .hint-action-shadow::before {
+  content: attr(data-copy);
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
 }

@@ -93,7 +93,8 @@ for (const language of languages) for (const [app, os] of policies) for (const t
     await expect(page.getByTestId("astrology-screen")).toHaveAttribute("data-motion", app || os ? "off" : "on");
     const nav = page.getByRole("navigation", { name: at(language, "sections") });
     for (const control of await nav.getByRole("button").all()) await reachable(control);
-    const sun = page.locator(".astro-core-grid").getByRole("button", { name: new RegExp(bodyName("sun", language)) });
+    await reachable(page.locator(".astro-natal-details-trigger"));
+    const sun = page.getByTestId("astro-wheel").getByRole("button", { name: bodyName("sun", language), exact: true });
     await reachable(sun); await sun.click();
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -111,16 +112,19 @@ for (const language of languages) for (const [app, os] of policies) for (const t
     await expect(page).not.toHaveURL(/body=/);
     await capturePositions(page, info, app && os ? "chart-200text" : "chart");
 
-    await nav.getByRole("button", { name: at(language, "explore"), exact: true }).click();
-    await expect(page.locator(".astro-sign-choice")).toHaveCount(12);
-    const lastSign = page.locator(".astro-sign-choice").last();
+    await nav.getByRole("button", { name: at(language, "zodiacTab"), exact: true }).click();
+    await page.locator(".astro-library-details > summary").click();
+    const signButtons = page.getByRole("list", { name: at(language, "signs"), exact: true }).getByRole("button");
+    await expect(signButtons).toHaveCount(12);
+    const lastSign = signButtons.last();
     await reachable(lastSign); await lastSign.click();
     await expect(page.getByRole("heading", { name: signName("pisces", language), exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: at(language, "everyday"), exact: true })).toHaveCount(1);
     await page.reload();
     await expect(page.getByRole("heading", { name: signName("pisces", language), exact: true })).toBeVisible();
     await capturePositions(page, info, "sign-story");
-    await nav.getByRole("button", { name: at(language, "now"), exact: true }).click();
+    await nav.getByRole("button", { name: at(language, "chart"), exact: true }).click();
+    await page.getByRole("button", { name: at(language, "now"), exact: true }).click();
     const connections = page.locator(".astro-transit-connection");
     await expect(connections).toHaveCount(2);
     await expect(connections.nth(1).getByRole("button")).toHaveCount(0);
@@ -144,7 +148,7 @@ test("Astrology unknown saved selection remains recoverable and does not invent 
   await expect(page.getByTestId("astro-wheel")).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByRole("status")).toContainText(at("en", "missingSelection"));
-  await page.locator(".astro-core-grid").getByRole("button", { name: /Sun/ }).click();
+  await page.getByTestId("astro-wheel").getByRole("button", { name: "Sun", exact: true }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page).not.toHaveURL(/body=/);
@@ -167,7 +171,7 @@ test("Astrology host frame samples during chart, detail and scrolling", async ({
   }));
   const idle = await sample();
   const active = sample();
-  await page.locator(".astro-core-grid").getByRole("button", { name: /Sun/ }).click();
+  await page.getByTestId("astro-wheel").getByRole("button", { name: "Sun", exact: true }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   await page.locator(".hint-app-scroll").last().evaluate(el => new Promise<void>(resolve => {

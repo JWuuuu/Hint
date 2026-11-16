@@ -1,4 +1,4 @@
-import { providerSignal, trackProviderWork } from "../../lib/providerCancellation";
+import { withProviderDeadline } from "../../lib/providerCancellation";
 import crypto from "node:crypto";
 
 export type ZodiacSign =
@@ -53,11 +53,36 @@ export type AstrologyPlacement = {
   modality?: AstrologyModality;
 };
 
+type AdditionalAstrologyBody =
+  | "chiron" | "ceres" | "pallas" | "juno" | "vesta"
+  | "north_node" | "south_node" | "lilith" | "fortune" | "vertex" | "east_point"
+  | "descendant" | "imum_coeli" | "midheaven";
+
+type AdditionalAstrologyPlacement = Omit<AstrologyPlacement, "body"> & { body: AdditionalAstrologyBody };
+
+const ADDITIONAL_BODY_NAMES = new Map<string, AdditionalAstrologyBody>([
+  ["chiron", "chiron"], ["ceres", "ceres"], ["pallas", "pallas"], ["pallasathena", "pallas"],
+  ["juno", "juno"], ["vesta", "vesta"],
+  ["node", "north_node"], ["northnode", "north_node"], ["truenode", "north_node"],
+  ["truenorthnode", "north_node"], ["meannode", "north_node"], ["meannorthnode", "north_node"],
+  ["rahu", "north_node"],
+  ["southnode", "south_node"], ["truesouthnode", "south_node"], ["meansouthnode", "south_node"],
+  ["ketu", "south_node"],
+  ["lilith", "lilith"], ["blackmoonlilith", "lilith"], ["blackmoon", "lilith"],
+  ["fortune", "fortune"], ["partoffortune", "fortune"], ["lotoffortune", "fortune"], ["pof", "fortune"],
+  ["vertex", "vertex"], ["vx", "vertex"], ["vtx", "vertex"],
+  ["eastpoint", "east_point"], ["eastascendant", "east_point"], ["ep", "east_point"],
+  ["descendant", "descendant"], ["dc", "descendant"], ["dsc", "descendant"],
+  ["imumcoeli", "imum_coeli"], ["ic", "imum_coeli"], ["nadir", "imum_coeli"],
+  ["midheaven", "midheaven"], ["mediumcoeli", "midheaven"], ["mc", "midheaven"],
+]);
+
 export type NormalizedBirthChart = {
   provider: "astrologyapi" | "fallback";
   calculatedAt: string;
   input: BirthProfileInput;
   placements: AstrologyPlacement[];
+  additionalPlacements?: AdditionalAstrologyPlacement[];
   sunSign?: ZodiacSign;
   moonSign?: ZodiacSign;
   risingSign?: ZodiacSign;
@@ -518,16 +543,18 @@ function providerHeaders(config: ReturnType<typeof providerConfig>) {
 }
 
 async function providerPost(endpoint: string, payload: Record<string, unknown>) {
-  return trackProviderWork(async () => {
+  // One 15-second budget covers headers AND body, below the 120-second client backstop.
+  return withProviderDeadline(15_000, async signal => {
     const config = providerConfig();
     const response = await fetch(`${config.baseUrl}/${endpoint.replace(/^\/+/, "")}`, {
       method: "POST",
       headers: providerHeaders(config),
       body: JSON.stringify(payload),
-      signal: providerSignal(),
+      signal,
     });
 
     if (!response.ok) {
+      await response.body?.cancel();
       throw new Error(`ASTROLOGY_PROVIDER_${response.status}`);
     }
 
@@ -647,6 +674,57 @@ function readProviderAspects(payload: unknown): NonNullable<NormalizedBirthChart
   return aspects;
 }
 
+// Some Western chart responses place optional points inside the house rows.
+// Keep these separate from the planets used in balances and shared readings.
+function readAdditionalPlacements(planetsPayload: unknown, chartPayload: unknown) {
+  const results = new Map<AdditionalAstrologyBody, AdditionalAstrologyPlacement>();
+  const readRows = (items: unknown, houseNumber?: number) => {
+    if (!Array.isArray(items)) return;
+    for (const item of items) {
+      if (!item || typeof item !== "object") continue;
+      const row = item as Record<string, unknown>;
+      const name = String(row.name ?? row.planet ?? row.body ?? "").toLowerCase().replace(/[^a-z]/g, "");
+      const body = ADDITIONAL_BODY_NAMES.get(name);
+      if (!body || results.has(body)) continue;
+      const full = readNumber(row.fullDegree ?? row.full_degree);
+      const longitude = full !== undefined && full >= 0 && full < 360 ? full : undefined;
+      const sign = normalizeSign(row.sign ?? row.signName ?? row.sign_name ?? row.zodiac) ??
+        (longitude === undefined ? undefined : ZODIAC_SIGNS[Math.floor(longitude / 30)]);
+      const degree = readNumber(row.normDegree ?? row.norm_degree ?? row.degree) ??
+        (longitude === undefined ? undefined : longitude % 30);
+      if (!sign || degree === undefined || degree < 0 || degree >= 30) continue;
+      const house = houseNumber ?? readNumber(row.house);
+      results.set(body, { body, sign, degree,
+        house: Number.isInteger(house) && house! >= 1 && house! <= 12 ? house : undefined,
+        retrograde: readBoolean(row.isRetro ?? row.is_retro ?? row.retrograde) });
+    }
+  };
+  const chart = chartPayload as Record<string, unknown> | null | undefined;
+  if (Array.isArray(chart?.houses)) for (const item of chart.houses) {
+    if (!item || typeof item !== "object") continue;
+    const house = item as Record<string, unknown>;
+    const number = readNumber(house.house_id ?? house.house ?? house.number);
+    readRows(house.planets, number);
+    readRows(house.asteroids, number);
+    readRows(house.points, number);
+  }
+  const planets = planetsPayload as Record<string, unknown> | null | undefined;
+  for (const payload of [chart, planets]) {
+    if (!payload) continue;
+    readRows(payload.planets ?? payload.planet ?? payload.planets_position ?? payload);
+    readRows(payload.asteroids);
+    readRows(payload.points);
+    readRows(payload.angles);
+    readRows(payload.additionalPlacements);
+    for (const [name, value] of Object.entries(payload)) {
+      if (!ADDITIONAL_BODY_NAMES.has(name.toLowerCase().replace(/[^a-z]/g, ""))) continue;
+      if (value && typeof value === "object") readRows([{ name, ...value }]);
+      else readRows([{ name, fullDegree: value }]);
+    }
+  }
+  return [...results.values()];
+}
+
 function normalizeProviderChart(input: BirthProfileInput, planetsPayload: unknown, chartPayload?: unknown): NormalizedBirthChart {
   const providerPlacements = readProviderPlacements(planetsPayload);
   if (!providerPlacements.length) {
@@ -671,6 +749,7 @@ function normalizeProviderChart(input: BirthProfileInput, planetsPayload: unknow
     calculatedAt: new Date().toISOString(),
     input,
     placements,
+    additionalPlacements: readAdditionalPlacements(planetsPayload, chartPayload),
     sunSign: placements.find((placement) => placement.body === "sun")?.sign,
     moonSign: placements.find((placement) => placement.body === "moon")?.sign,
     risingSign: placements.find((placement) => placement.body === "rising")?.sign,

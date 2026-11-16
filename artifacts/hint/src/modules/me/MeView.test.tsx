@@ -20,7 +20,7 @@ vi.mock("../../lib/auth", () => ({ useLocalAccount: () => null }));
 vi.mock("../../lib/motionPolicy", () => ({ useMotionPolicy: () => ({ reduced: state.reduced, pageVisible: true }) }));
 vi.mock("../../lib/clearHistory", () => ({ deleteHistory: state.deleteHistory }));
 vi.mock("../../lib/identity", () => ({ getAnonId: () => "fictional-me-owner" }));
-vi.mock("../../lib/preferences", () => ({ HINT_PREFERENCES_UPDATED_EVENT: "hint:preferences-updated", useHintPreferences: () => ({ preferences: { reduceMotion: false, soundAndHaptics: false }, setPreference: state.setPreference }), setHintThemePreference: state.setTheme }));
+vi.mock("../../lib/preferences", () => ({ HINT_PREFERENCES_UPDATED_EVENT: "hint:preferences-updated", useHintPreferences: () => ({ preferences: { reduceMotion: false, soundAndHaptics: false }, persistence: { preferences: "idle", theme: "idle", pendingTheme: null }, setPreference: state.setPreference }), setHintThemePreference: state.setTheme }));
 vi.mock("../../components/LanguageToggle", () => ({ LanguageToggle: () => <button type="button">Language selector</button> }));
 vi.mock("../../components/app/LocalProfileSwitcher", () => ({ LocalProfileSwitcher: () => <details><summary>Local profiles</summary></details> }));
 vi.mock("../../components/app/DeviceConnectionStatus", () => ({ DeviceConnectionStatus: () => null }));
@@ -188,7 +188,7 @@ for (const language of ["en", "zh", "es", "ja", "ko"] as const) {
     expect(screen.getByText(ME_COPY[language].unknownTime)).toBeTruthy();
     expect(screen.getByText("Fictional City")).toBeTruthy();
     expect(screen.getByRole("link", { name: ME_COPY[language].openChart }).getAttribute("href")).toBe("/app/astrology?tab=chart");
-    expect(screen.getByRole("status").textContent).not.toMatch(/undefined|quality\./);
+    for (const status of screen.getAllByRole("status")) expect(status.textContent).not.toMatch(/undefined|quality\./);
     // No calculated chart: no Sun/Moon/Rising placements are shown. February 29
     // is far from a sign change, so the letter shows the Sun constellation the
     // date alone decides.

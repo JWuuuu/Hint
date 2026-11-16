@@ -75,21 +75,20 @@
   min-width: 0;
 }
 .astro-guide-intro {
-  position: relative;
   text-align: center;
-  padding: 5px 12px 8px;
+  padding: 0 10px 2px;
 }
-.astro-guide-intro h1 {
-  font-size: clamp(36px, 10vw, 46px);
+.astro-guide-intro h2 {
+  font-size: clamp(32px, 9vw, 40px);
   line-height: 1.06;
-  margin: 12px 0;
+  margin: 8px 0;
   letter-spacing: -0.03em;
 }
-.astro-guide-intro > p:last-child {
+.astro-guide-intro > p {
   color: var(--astro-muted);
   font-size: 13px;
   line-height: 1.7;
-  max-width: 270px;
+  max-width: 340px;
   margin: auto;
 }
 .astro-guide .astro-guide-eyebrow,
@@ -100,21 +99,6 @@
   text-transform: uppercase;
   color: var(--astro-gold-bright);
   line-height: 1.65;
-}
-.astro-moon-seal {
-  width: 76px;
-  height: 76px;
-  margin: 0 auto 12px;
-  color: var(--astro-gold);
-}
-.astro-moon-seal svg {
-  width: 100%;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 0.65;
-}
-.astro-moon-seal path:first-of-type {
-  fill: color-mix(in srgb, var(--astro-gold) 12%, transparent);
 }
 .astro-guide-panel {
   min-width: 0;
@@ -147,19 +131,21 @@
 .astro-guide-nav {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 3px;
-  border: 1px solid var(--astro-border);
+  width: min(100%, 22rem);
+  justify-self: center;
+  gap: 2px;
+  border: 1px solid color-mix(in srgb, var(--astro-gold) 24%, var(--astro-inner));
   border-radius: 99px;
-  padding: 5px;
+  padding: 2px;
   background: var(--astro-inner);
 }
 .astro-guide-nav button {
   min-width: 0;
-  min-height: 48px;
-  padding: 10px 4px;
+  min-height: 44px;
+  padding: 4px;
   border-radius: 26px;
   color: var(--astro-muted);
-  font-size: 12px;
+  font-size: .6875rem;
   line-height: 1.4;
   transition:
     background 0.2s,
@@ -259,64 +245,10 @@
   font-size: 10px;
   line-height: 1.5;
 }
-.astro-section-heading {
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 8px 0 16px;
-}
-.astro-section-heading h2 {
-  font-size: 25px;
-  line-height: 1.2;
-}
-.astro-section-heading > span {
-  flex-shrink: 0;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--astro-muted);
-}
-.astro-sign-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-.astro-sign-choice {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  min-width: 0;
-  min-height: 132px;
-  padding: 19px 4px 14px;
-  border: 1px solid var(--astro-border);
-  border-radius: 48px 48px 17px 17px;
-  background: var(--astro-surface);
-  color: var(--astro-text);
-}
-.astro-sign-choice svg {
-  width: 30px;
-  height: 30px;
-  color: var(--astro-gold-bright);
-  margin: 6px 0 3px;
-}
-.astro-sign-choice strong {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.4;
-}
-.astro-sign-number {
-  position: absolute;
-  top: 11px;
-  font-size: 7px;
-  letter-spacing: 0.12em;
-  color: var(--astro-muted);
-}
-.astro-sign-element {
-  font-size: 10px;
-  line-height: 1.4;
-  color: var(--astro-muted);
+.astro-sign-index { display: flex; flex-wrap: wrap; gap: 0 .75rem; }
+.astro-guide .astro-sign-index .astro-guide-link {
+  min-width: 44px;
+  padding-inline: 6px;
 }
 .astro-sign-story {
   position: relative;
@@ -778,9 +710,6 @@
 .astro-ring-draw {
   animation: astro-ring-appear 0.6s ease-out both;
 }
-.astro-guide[data-motion="on"] [data-glow-visible="true"] .astro-moon-seal {
-  animation: astro-pearl-glow 9s ease-in-out infinite alternate;
-}
 @keyframes astro-page-appear {
   from {
     opacity: 0.25;
@@ -797,14 +726,6 @@
   }
   to {
     stroke-dasharray: 1 1;
-  }
-}
-@keyframes astro-pearl-glow {
-  from {
-    opacity: 0.7;
-  }
-  to {
-    opacity: 1;
   }
 }
 .astro-guide[data-motion="off"] *,
@@ -827,26 +748,12 @@
   .astro-wheel-panel {
     padding-inline: 5px;
   }
-  .astro-guide-nav button {
-    font-size: 11px;
-  }
   .astro-core-grid strong {
     font-size: 19px;
   }
 }
 
 /* Pearl letters: art leads, the calculated geometry remains a separate reading surface. */
-.astro-guide-intro { padding: 0 10px 2px; }
-.astro-moon-seal { width: 42px; height: 42px; margin-bottom: 6px; }
-.astro-guide-intro h1 { font-size: clamp(32px, 9vw, 40px); margin: 8px 0; }
-.astro-guide-intro > p:last-child { max-width: 340px; }
-.astro-compact-title { text-align: center; margin: 0; }
-.astro-sign-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; }
-.astro-sign-choice { padding: 0 0 10px; border: 0; border-radius: 0; background: none; gap: 5px; }
-.astro-sign-choice img { display:block; width:100%; height:auto; aspect-ratio:1; object-fit:contain; border-radius:48% 48% 18px 18px; margin-bottom: 9px; box-shadow:0 8px 22px #62475910; }
-.astro-sign-choice strong { font-family:var(--font-serif); font-size:24px; line-height:1.2; }
-.astro-sign-choice .astro-sign-number { top: 12px; left:14px; color:#65535c; z-index:1; font-size:9px; }
-.astro-sign-choice .astro-sign-element { font-size:12px; }
 .astro-sign-illustration { width:min(100%, 420px); height:auto; aspect-ratio:1; object-fit:contain; border-radius:48% 48% 22px 22px; margin:0 auto 24px; }
 .astro-sign-story { padding-inline:0; }
 .astro-sign-story h2 { font-size:clamp(44px,12vw,58px); }
@@ -903,7 +810,7 @@
 .astro-guide [aria-pressed=true], .astro-theme [data-selected=true] { transition:background 200ms,color 200ms; }
 .astro-theme button:focus-visible, .astro-theme a:focus-visible { outline:2px solid var(--astro-gold-bright); outline-offset:3px; }
 .astro-theme svg { flex-shrink:0; }
-[data-hint-theme=dark] .astro-sign-choice img, [data-hint-theme=dark] .astro-sign-illustration, [data-hint-theme=dark] .astro-letter-cover > img { filter:brightness(.83) saturate(.85); }
+[data-hint-theme=dark] .astro-sign-illustration, [data-hint-theme=dark] .astro-letter-cover > img { filter:brightness(.83) saturate(.85); }
 .astro-guide[data-motion=off] *, [data-hint-reduce-motion=true] .astro-theme * { animation-duration:.01ms!important; transition-duration:.01ms!important; }
 @media (prefers-reduced-motion:reduce) { .astro-theme * { animation-duration:.01ms!important; transition-duration:.01ms!important; } }
 

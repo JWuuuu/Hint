@@ -1,3 +1,4 @@
+import "./legal-reading.css";
 import { Link } from "wouter";
 import { Info, Mail, ShieldCheck, ScrollText } from "lucide-react";
 import { ACCENT, GLASS } from "../hold/atmosphere";
@@ -75,6 +76,7 @@ export function PrivacyPolicyView() {
   const { t } = useLegalLanguage();
   return (
     <AppScreen>
+      <div className="hint-legal-reading">
       <ScreenHeader
         eyebrow={t("legal.eyebrow")}
         title={t("me.privacyPolicy")}
@@ -102,6 +104,7 @@ export function PrivacyPolicyView() {
       </section>
 
       <LegalLinks />
+      </div>
     </AppScreen>
   );
 }
@@ -110,6 +113,7 @@ export function AboutView() {
   const { t } = useLegalLanguage();
   return (
     <AppScreen>
+      <div className="hint-legal-reading hint-legal-about">
       <ScreenHeader
         eyebrow={t("legal.aboutEyebrow")}
         title={t("legal.aboutTitle")}
@@ -135,6 +139,7 @@ export function AboutView() {
       </section>
 
       <LegalLinks />
+      </div>
     </AppScreen>
   );
 }
@@ -143,6 +148,7 @@ export function TermsView() {
   const { t } = useLegalLanguage();
   return (
     <AppScreen>
+      <div className="hint-legal-reading">
       <ScreenHeader
         eyebrow={t("legal.eyebrow")}
         title={t("me.terms")}
@@ -168,6 +174,7 @@ export function TermsView() {
       </section>
 
       <LegalLinks />
+      </div>
     </AppScreen>
   );
 }
@@ -176,6 +183,7 @@ export function DisclaimerView() {
   const { t } = useLegalLanguage();
   return (
     <AppScreen>
+      <div className="hint-legal-reading">
       <ScreenHeader
         eyebrow={t("legal.eyebrow")}
         title={t("legal.disclaimerTitle")}
@@ -201,6 +209,7 @@ export function DisclaimerView() {
       </section>
 
       <LegalLinks />
+      </div>
     </AppScreen>
   );
 }
@@ -227,7 +236,7 @@ export function ContactView() {
           </LegalText>
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-[8px] font-serif text-[12px] uppercase tracking-[0.24em] transition-opacity hover:opacity-90"
+            className="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-[8px] px-3 py-2 text-center font-serif text-[12px] uppercase tracking-[0.24em] transition-opacity hover:opacity-90"
             style={{
               background: "var(--hint-teal-action-bg, rgba(100,156,158,0.16))",
               border: "1px solid var(--hint-teal-action-border, rgba(100,156,158,0.32))",

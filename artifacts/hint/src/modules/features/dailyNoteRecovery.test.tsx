@@ -12,14 +12,14 @@ vi.mock("@workspace/api-client-react", () => ({
 }));
 vi.mock("@tanstack/react-query", () => ({ useQuery: () => ({ data: state.days }) }));
 vi.mock("../../lib/useProfile", () => ({ useProfile: () => ({ profile: null }) }));
-vi.mock("../../lib/useLocalDay", () => ({ useLocalDay: () => "2026-09-10" }));
+vi.mock("../../lib/useDailyTarotDay", () => ({ useDailyTarotDay: () => "2026-09-10" }));
 vi.mock("../../lib/dailyReceipts", () => ({
   getCachedDailyReceipt: () => null,
   getOrCreateDailyReceipt: () => new Promise(() => {}),
   openDailyReceipt: vi.fn(),
   subscribeToDailyReceiptFallbacks: () => () => {},
 }));
-vi.mock("../home/components/DailyReportCard", () => ({ DailyReportCard: () => <div>Daily card</div> }));
+vi.mock("../home/components/DailyReportCard", () => ({ DailyReportCard: ({ cardOverride }: { cardOverride?: { cardId: string } }) => <div data-testid="daily-card" data-card-id={cardOverride?.cardId}>Daily card</div> }));
 vi.mock("../../lib/i18n", async importOriginal => {
   const original = await importOriginal<typeof import("../../lib/i18n")>();
   return { ...original, useLanguage: () => ({ language: "en", t: (key: string) => original.TRANSLATIONS.en[key] ?? key }) };
@@ -36,6 +36,14 @@ beforeEach(() => {
   state.draws.length = 0; state.update.mockReset();
 });
 afterEach(cleanup);
+
+it("does not display an assigned card until the server has saved its reveal", async () => {
+  render(<DailyPullView />);
+  await act(async () => state.draws[0]!({ ...pull(""), isFlipped: false }));
+  expect(screen.getByTestId("daily-card").getAttribute("data-card-id")).toBeNull();
+  await act(async () => state.draws[0]!(pull("")));
+  expect(screen.getByTestId("daily-card").getAttribute("data-card-id")).toBe("0-fool");
+});
 
 it("a late initial Daily response cannot replace a newer successfully saved note", async () => {
   state.update.mockResolvedValue(pull("My newly saved note"));

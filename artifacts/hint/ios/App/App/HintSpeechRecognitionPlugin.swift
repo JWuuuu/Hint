@@ -19,7 +19,14 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private var tapInstalled = false
+    private var audioInputEnded = true
     private var activeRecognitionId: UUID?
+    private var activeClientSessionId: String?
+    private var gracefulStopTimeout: DispatchWorkItem?
+    // Bridge calls can be cancelled before their queued main-thread work runs.
+    private let speechCommandLock = NSLock()
+    private var speechCommandGeneration: UInt64 = 0
+    private var speechCommandSessionId: String?
     /// The app's audio category before dictation switched it to record-only.
     private var previousAudioCategory: (category: AVAudioSession.Category, mode: AVAudioSession.Mode, options: AVAudioSession.CategoryOptions)?
 
@@ -65,12 +72,51 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc public func start(_ call: CAPPluginCall) {
+        let sessionId = call.getString("sessionId") ?? UUID().uuidString
+        let command = nextSpeechCommand(sessionId: sessionId)
         DispatchQueue.main.async { [weak self] in
-            self?.startRecognition(call)
+            guard let self else {
+                call.reject("Speech recognition is unavailable")
+                return
+            }
+            guard self.isCurrentSpeechCommand(command) else {
+                call.reject("Speech recognition startup was cancelled")
+                return
+            }
+            self.stopRecognition(notify: false)
+            guard UIApplication.shared.applicationState == .active else {
+                call.reject("Speech recognition startup was cancelled")
+                return
+            }
+            self.startRecognition(call, sessionId: sessionId)
         }
     }
 
-    private func startRecognition(_ call: CAPPluginCall) {
+    private func nextSpeechCommand(sessionId: String? = nil) -> UInt64 {
+        speechCommandLock.lock()
+        defer { speechCommandLock.unlock() }
+        speechCommandGeneration &+= 1
+        if let sessionId { speechCommandSessionId = sessionId }
+        return speechCommandGeneration
+    }
+
+    private func nextSpeechCommand(matching sessionId: String?) -> UInt64? {
+        speechCommandLock.lock()
+        defer { speechCommandLock.unlock() }
+        // A late Stop/cancel from an older web session must not invalidate a
+        // newer start, including while that start is queued on the main thread.
+        guard sessionId == nil || speechCommandSessionId == sessionId else { return nil }
+        speechCommandGeneration &+= 1
+        return speechCommandGeneration
+    }
+
+    private func isCurrentSpeechCommand(_ command: UInt64) -> Bool {
+        speechCommandLock.lock()
+        defer { speechCommandLock.unlock() }
+        return speechCommandGeneration == command
+    }
+
+    private func startRecognition(_ call: CAPPluginCall, sessionId: String) {
         guard SFSpeechRecognizer.authorizationStatus() == .authorized,
               AVAudioSession.sharedInstance().recordPermission == .granted else {
             call.reject("Speech recognition permission is required")
@@ -84,12 +130,13 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
             return
         }
 
-        stopRecognition(notify: false)
         let recognitionId = UUID()
         activeRecognitionId = recognitionId
+        activeClientSessionId = sessionId
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
         recognitionRequest = request
+        audioInputEnded = false
 
         do {
             let session = AVAudioSession.sharedInstance()
@@ -116,22 +163,27 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
             recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
                 DispatchQueue.main.async {
                     guard let self, self.activeRecognitionId == recognitionId else { return }
+                    guard UIApplication.shared.applicationState == .active else {
+                        self.stopRecognition(notify: true)
+                        return
+                    }
                     if let transcript = result?.bestTranscription.formattedString,
                        !transcript.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                         self.notifyListeners("partialResults", data: [
                             "matches": [transcript],
-                            "isFinal": result?.isFinal ?? false
+                            "isFinal": result?.isFinal ?? false,
+                            "sessionId": sessionId
                         ])
                     }
-                    if let error {
-                        self.notifyListeners("speechError", data: ["message": error.localizedDescription])
+                    if let error, result?.isFinal != true {
+                        self.notifyListeners("speechError", data: ["message": error.localizedDescription, "sessionId": sessionId])
                     }
                     if result?.isFinal == true || error != nil {
-                        self.stopRecognition(notify: true)
+                        self.stopRecognition(notify: true, cancelTask: result?.isFinal != true)
                     }
                 }
             }
-            notifyListeners("listeningState", data: ["status": "started"])
+            notifyListeners("listeningState", data: ["status": "started", "sessionId": sessionId])
             call.resolve(["matches": []])
         } catch {
             stopRecognition(notify: false)
@@ -140,14 +192,29 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc public func stop(_ call: CAPPluginCall) {
+        guard let command = nextSpeechCommand(matching: call.getString("sessionId")) else {
+            call.resolve()
+            return
+        }
         DispatchQueue.main.async { [weak self] in
-            self?.stopRecognition(notify: true)
+            if let self, self.isCurrentSpeechCommand(command) {
+                self.finishRecognition()
+            }
             call.resolve()
         }
     }
 
     @objc public func cancel(_ call: CAPPluginCall) {
-        stop(call)
+        guard let command = nextSpeechCommand(matching: call.getString("sessionId")) else {
+            call.resolve()
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            if let self, self.isCurrentSpeechCommand(command) {
+                self.stopRecognition(notify: true)
+            }
+            call.resolve()
+        }
     }
 
     @objc private func handleAppDidEnterBackground() {
@@ -165,8 +232,10 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     private func stopForLifecycleChange() {
+        let command = nextSpeechCommand()
         DispatchQueue.main.async { [weak self] in
             guard let self,
+                  self.isCurrentSpeechCommand(command),
                   self.audioEngine.isRunning || self.recognitionTask != nil else {
                 return
             }
@@ -174,9 +243,24 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
         }
     }
 
-    private func stopRecognition(notify: Bool) {
-        // A cancelled task can report results after the next recording has started.
-        activeRecognitionId = nil
+    private func finishRecognition() {
+        guard let recognitionId = activeRecognitionId, recognitionTask != nil else {
+            stopRecognition(notify: true)
+            return
+        }
+        if gracefulStopTimeout != nil { return }
+        // Stop microphone input now; keep this task alive for its final words.
+        stopAudioInput()
+        recognitionTask?.finish()
+        let timeout = DispatchWorkItem { [weak self] in
+            guard let self, self.activeRecognitionId == recognitionId else { return }
+            self.stopRecognition(notify: true)
+        }
+        gracefulStopTimeout = timeout
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: timeout)
+    }
+
+    private func stopAudioInput() {
         if audioEngine.isRunning {
             audioEngine.stop()
         }
@@ -184,14 +268,29 @@ public class HintSpeechRecognitionPlugin: CAPPlugin, CAPBridgedPlugin {
             audioEngine.inputNode.removeTap(onBus: 0)
             tapInstalled = false
         }
-        recognitionRequest?.endAudio()
-        recognitionTask?.cancel()
+        if !audioInputEnded {
+            audioInputEnded = true
+            recognitionRequest?.endAudio()
+        }
+        if previousAudioCategory != nil {
+            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+            restoreAudioCategory()
+        }
+    }
+
+    private func stopRecognition(notify: Bool, cancelTask: Bool = true) {
+        // A cancelled task can report results after the next recording has started.
+        let sessionId = activeClientSessionId
+        activeRecognitionId = nil
+        activeClientSessionId = nil
+        gracefulStopTimeout?.cancel()
+        gracefulStopTimeout = nil
+        stopAudioInput()
+        if cancelTask { recognitionTask?.cancel() }
         recognitionTask = nil
         recognitionRequest = nil
-        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
-        restoreAudioCategory()
-        if notify {
-            notifyListeners("listeningState", data: ["status": "stopped"])
+        if notify, let sessionId {
+            notifyListeners("listeningState", data: ["status": "stopped", "sessionId": sessionId])
         }
     }
 

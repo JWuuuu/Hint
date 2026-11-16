@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import { createWriteStream, existsSync, mkdirSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -54,7 +54,7 @@ try {
   for (const port of [5057, 5256]) await new Promise((resolve, reject) => {
     const probe = createServer(); probe.once("error", reject); probe.listen(port, "127.0.0.1", () => probe.close(resolve));
   });
-  start("api", ["--import", loader, "scripts/app-api-qa-server.ts"]);
+  start("api", ["--import", pathToFileURL(loader).href, "scripts/app-api-qa-server.ts"]);
   await ready("http://127.0.0.1:5057/api/readyz");
   start("preview", [path.join(path.dirname(require.resolve("vite/package.json")), "bin/vite.js"), "preview", "--host", "127.0.0.1", "--port", "5256", "--strictPort", "--outDir", assets]);
   await ready("http://127.0.0.1:5256/app");

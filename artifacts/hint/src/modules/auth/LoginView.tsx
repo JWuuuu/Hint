@@ -1,5 +1,5 @@
 import { validBirthDate } from "../../lib/birthDetails";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   AlertCircle,
@@ -19,6 +19,7 @@ import { ASTROLOGY_TESTER_ACCOUNT } from "../../lib/testerAccount";
 import { useProfile } from "../../lib/useProfile";
 import { useLanguage } from "../../lib/i18n";
 import { LocalProfileSwitcher } from "../../components/app/LocalProfileSwitcher";
+import "./login.css";
 
 type AuthMode = "login" | "signup";
 type AuthMethod = "email" | "phone";
@@ -110,6 +111,22 @@ export function LoginView() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const form = useRef<HTMLFormElement>(null);
+  const codeInput = useRef<HTMLInputElement>(null);
+  const errorMessage = useRef<HTMLParagraphElement>(null);
+  const messageId = useId();
+  const errorId = `${messageId}-error`;
+  const codeLabelId = `${messageId}-code-label`;
+  const codeHelpId = `${messageId}-code-help`;
+  const placeLabelId = `${messageId}-place-label`;
+  const placeHelpId = `${messageId}-place-help`;
+  useEffect(() => { if (pending) codeInput.current?.focus(); }, [pending]);
+  useEffect(() => {
+    if (error) {
+      const invalid = form.current?.querySelector<HTMLInputElement>('[aria-invalid="true"]');
+      (invalid ?? errorMessage.current)?.focus();
+    }
+  }, [error]);
   const busy = useRef(false);
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
@@ -160,6 +177,7 @@ export function LoginView() {
       return;
     }
     if (verificationCode.trim() !== pending.code) {
+      codeInput.current?.focus();
       setError(t("login.error.codeMismatch"));
       return;
     }
@@ -251,7 +269,7 @@ export function LoginView() {
         backLabel={t("me.settings")}
       />
 
-      <div className="flex flex-col gap-4">
+      <div className="hint-login flex flex-col gap-4">
         <LocalProfileSwitcher />
         <GlassPanel hero>
           {account ? (
@@ -286,6 +304,7 @@ export function LoginView() {
                 <button
                   type="button"
                   onClick={handleSignOut}
+                  disabled={submitting}
                   className="inline-flex h-11 items-center justify-center rounded-[8px] border font-sans text-[12px] font-black uppercase tracking-[0.1em]"
                   style={{ background: "rgba(255,255,255,0.04)", borderColor: GLASS.border, color: GLASS.muted }}
                 >
@@ -304,6 +323,7 @@ export function LoginView() {
                 key={item}
                 type="button"
                 disabled={submitting}
+                aria-pressed={mode === item}
                 onClick={() => {
                   if (busy.current) return;
                   setMode(item);
@@ -333,6 +353,8 @@ export function LoginView() {
                 key={item}
                 type="button"
                 onClick={() => resetVerification(item)}
+                disabled={submitting}
+                aria-pressed={method === item}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] border font-sans text-[12px] font-black uppercase tracking-[0.1em]"
                 style={{
                   background: method === item ? "rgba(100,156,158,0.16)" : "rgba(255,255,255,0.04)",
@@ -346,7 +368,7 @@ export function LoginView() {
             ))}
           </div>
 
-          <form onSubmit={pending ? handleVerify : handleRequestCode} className="mt-4">
+          <form ref={form} aria-busy={submitting} onSubmit={pending ? handleVerify : handleRequestCode} className="mt-4">
             <fieldset disabled={submitting} className="grid min-w-0 gap-4 border-0 p-0">
             {mode === "signup" ? (
               <label className="block">
@@ -360,7 +382,8 @@ export function LoginView() {
                   placeholder={t("login.namePlaceholder")}
                   autoComplete="name"
                   aria-invalid={error === t("login.error.name")}
-                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
+                  aria-describedby={error === t("login.error.name") ? errorId : undefined}
+                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[16px] outline-none"
                   style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-name"
                 />
@@ -383,7 +406,8 @@ export function LoginView() {
                     maxLength={10}
                     pattern="\d{4}-\d{2}-\d{2}"
                     aria-invalid={error === t("login.error.birthDate")}
-                    className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
+                  aria-describedby={error === t("login.error.birthDate") ? errorId : undefined}
+                    className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[16px] outline-none"
                     style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                     data-testid="input-login-birthdate"
                   />
@@ -396,13 +420,13 @@ export function LoginView() {
                     value={birthTime}
                     onChange={(event) => setBirthTime(event.target.value)}
                     type="time"
-                    className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
+                    className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[16px] outline-none"
                     style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                     data-testid="input-login-birthtime"
                   />
                 </label>
                 <label className="block">
-                  <span className="font-serif text-[10px] uppercase tracking-[0.28em]" style={{ color: GLASS.muted }}>
+                  <span id={placeLabelId} className="font-serif text-[10px] uppercase tracking-[0.28em]" style={{ color: GLASS.muted }}>
                     {t("birthProfile.birthPlace")}
                   </span>
                   <input
@@ -411,11 +435,13 @@ export function LoginView() {
                     onChange={(event) => setBirthPlace(event.target.value)}
                     placeholder={t("login.birthPlacePlaceholder")}
                     autoComplete="address-level2"
-                    className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
+                    className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[16px] outline-none"
                     style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
+                    aria-labelledby={placeLabelId}
+                    aria-describedby={placeHelpId}
                     data-testid="input-login-birthplace"
                   />
-                  <p className="mt-2 font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}>
+                  <p id={placeHelpId} className="mt-2 font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}>
                     {t("login.birthHelp")}
                   </p>
                 </label>
@@ -438,7 +464,8 @@ export function LoginView() {
                   autoComplete="email"
                   inputMode="email"
                   aria-invalid={error === t("login.error.email")}
-                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
+                  aria-describedby={error === t("login.error.email") ? errorId : undefined}
+                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[16px] outline-none"
                   style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-email"
                 />
@@ -459,7 +486,8 @@ export function LoginView() {
                   autoComplete="tel"
                   inputMode="tel"
                   aria-invalid={error === t("login.error.phone")}
-                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
+                  aria-describedby={error === t("login.error.phone") ? errorId : undefined}
+                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[16px] outline-none"
                   style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-phone"
                 />
@@ -468,7 +496,7 @@ export function LoginView() {
 
             {pending ? (
               <label className="block">
-                <span className="font-serif text-[10px] uppercase tracking-[0.28em]" style={{ color: GLASS.muted }}>
+                <span id={codeLabelId} className="font-serif text-[10px] uppercase tracking-[0.28em]" style={{ color: GLASS.muted }}>
                   {t("login.verificationCode")}
                 </span>
                 <input
@@ -480,26 +508,30 @@ export function LoginView() {
                   autoComplete="one-time-code"
                   maxLength={6}
                   aria-invalid={error === t("login.error.codeMismatch")}
-                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[15px] outline-none"
+                  aria-describedby={error === t("login.error.codeMismatch") ? `${codeHelpId} ${errorId}` : codeHelpId}
+                  aria-labelledby={codeLabelId}
+                  ref={codeInput}
+                  className="mt-2 h-12 w-full rounded-[8px] bg-transparent px-4 font-serif text-[16px] outline-none"
                   style={{ background: "var(--hint-form-field-bg, rgba(0,0,0,0.25))", border: `1px solid ${GLASS.border}`, color: GLASS.text }}
                   data-testid="input-login-code"
                 />
-                <p className="mt-2 font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}>
+                <p id={codeHelpId} className="mt-2 font-sans text-[11px] leading-relaxed" style={{ color: GLASS.faint }}>
                   {t("login.betaCodePrefix")} <span style={{ color: ACCENT.gold }}>{pending.code}</span>. {t("login.betaCodeSuffix")}
                 </p>
               </label>
             ) : null}
 
             {notice ? (
-              <p className="flex gap-2 rounded-[8px] border p-3 font-sans text-[12px] leading-relaxed" style={{ borderColor: GLASS.border, color: GLASS.muted }}>
+              <p role="status" className="flex gap-2 rounded-[8px] border p-3 font-sans text-[12px] leading-relaxed" style={{ borderColor: GLASS.border, color: GLASS.muted }}>
                 <AlertCircle size={14} className="mt-0.5 shrink-0" />
                 {notice}
               </p>
             ) : null}
-            {error ? <p role="alert" className="font-sans text-[12px]" style={{ color: ACCENT.lavender }}>{error}</p> : null}
+            {error ? <p ref={errorMessage} id={errorId} tabIndex={-1} role="alert" className="font-sans text-[12px]" style={{ color: GLASS.text }}>{error}</p> : null}
 
             <button
               type="submit"
+              aria-describedby={error ? errorId : undefined}
               className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] font-serif text-[12px] uppercase tracking-[0.22em] transition-opacity disabled:opacity-45"
               style={{
                 background: "rgba(206,178,110,0.14)",
@@ -541,6 +573,7 @@ export function LoginView() {
                     key={provider.id}
                     type="button"
                     onClick={() => handleSocialProvider(provider.id)}
+                    disabled={submitting}
                     className="flex h-11 items-center justify-center gap-2 rounded-[8px] border font-sans text-[12px] font-black transition-opacity hover:opacity-85"
                     style={{
                       background: "rgba(255,255,255,0.045)",
@@ -548,7 +581,7 @@ export function LoginView() {
                       color: GLASS.text,
                     }}
                   >
-                    <span className="grid size-5 place-items-center rounded-full border text-[11px]" style={{ borderColor: GLASS.border }}>
+                    <span aria-hidden="true" className="grid size-5 place-items-center rounded-full border text-[11px]" style={{ borderColor: GLASS.border }}>
                       {provider.mark}
                     </span>
                     {provider.label}

@@ -2,7 +2,7 @@ import { LocalizedText } from "../../lib/LocalizedText";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Lock, Sparkles } from "lucide-react";
-import { ACCENT, GLASS } from "../../modules/hold/atmosphere";
+import { GLASS } from "../../modules/hold/atmosphere";
 import type { CollectionCard } from "../../shared/tarot/cardCollection";
 import { SafeImage } from "../../shared/ui/SafeImage";
 import "./rare-card-unlock.css";
@@ -97,12 +97,16 @@ export function RareCardUnlock({
   onUnlock,
   rewardOpened = card.unlocked,
   lockedMessage,
+  canUnlock = false,
+  statusMessage,
 }: {
   card: CollectionCard;
   autoUnlockKey?: number;
-  onUnlock: (cardId: string) => void;
+  onUnlock: (cardId: string) => boolean;
   rewardOpened?: boolean;
   lockedMessage?: string;
+  canUnlock?: boolean;
+  statusMessage?: string;
 }) {
   const { reduced, pageVisible } = useMotionPolicy();
   const { t } = useLanguage();
@@ -114,12 +118,14 @@ export function RareCardUnlock({
   const frameRef = useRef<number | null>(null);
   const lastAutoUnlockKeyRef = useRef(0);
   const playingRef = useRef(false);
+  const revealedRef = useRef(card.unlocked || rewardOpened);
 
   const cardImage = card.image ?? FALLBACK_IMAGE;
   const frontVisible = isAnimating || revealComplete;
   const unlockStateClass = isAnimating ? "is-unlocking" : revealComplete ? "is-saved" : "";
 
   useEffect(() => {
+    revealedRef.current = card.unlocked || rewardOpened;
     setRevealComplete(card.unlocked || rewardOpened);
   }, [card.cardId, card.unlocked, rewardOpened]);
 
@@ -148,17 +154,21 @@ export function RareCardUnlock({
   }, [autoUnlockKey]);
 
   function playRareMoment() {
-    if (playingRef.current) return;
-    const shouldPersistUnlock = !rewardOpened;
+    if (playingRef.current || !pageVisible) return;
+    if (!revealedRef.current && !canUnlock) return;
+    playingRef.current = true;
+    if (!revealedRef.current && !onUnlock(card.cardId)) {
+      playingRef.current = false;
+      return;
+    }
 
     if (timerRef.current) window.clearTimeout(timerRef.current);
     if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
 
     setIsAnimating(false);
+    revealedRef.current = true;
     setRevealComplete(true);
-    if (shouldPersistUnlock) onUnlock(card.cardId);
-    if (reduced || !pageVisible) return;
-    playingRef.current = true;
+    if (reduced) { playingRef.current = false; return; }
 
     frameRef.current = window.requestAnimationFrame(() => {
       frameRef.current = null;
@@ -176,23 +186,25 @@ export function RareCardUnlock({
   return (
     <section className="rare-unlock-panel">
       <div className="rare-unlock-copy">
-        <p className="font-sans text-[10.5px] font-bold uppercase tracking-[0.2em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Rare card unlock "} /></p>
-        <h3 className="mt-4 font-serif text-[28px] font-light leading-tight sm:text-[40px]" style={{ color: GLASS.text }}><LocalizedText text={" Some nights, the deck gives back. "} /></h3>
-        <p className="mt-4 max-w-md font-sans text-[13.5px] leading-relaxed sm:text-[15px]" style={{ color: GLASS.muted }}>
+        <p className="hint-readable-text font-sans text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: "var(--hint-readable-gold)" }}><LocalizedText text={" Rare card unlock "} /></p>
+        <h2 className="mt-4 font-serif text-[28px] font-light leading-tight sm:text-[40px]" style={{ color: GLASS.text }}><LocalizedText text={" Some nights, the deck gives back. "} /></h2>
+        <p className="hint-readable-text mt-4 max-w-md font-sans text-[13.5px] leading-relaxed sm:text-[15px]" style={{ color: "var(--hint-readable-copy)" }}>
           {lockedMessage ?? "Keep a streak and rarer arcana surface. Turn tonight's reward and see what came up for you."}
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
           <button
             type="button"
             onClick={playRareMoment}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 font-sans text-[13px] font-black"
+            disabled={!canUnlock && !revealComplete}
+            aria-describedby="collection-reward-status"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 font-sans text-[13px] font-black disabled:cursor-wait disabled:opacity-70"
             style={{ color: "#231d2a", background: "linear-gradient(135deg, #f6df9f, #cba866)", boxShadow: "0 16px 30px rgba(219,142,85,0.22)" }}
           >
             <Sparkles size={15} />
             {t(revealComplete ? "quality.replayRare" : "quality.openRare").replace("{card}", card.name)}
           </button>
         </div>
-        {card.unlocked && <p role="status" className="mt-3 text-sm">{t("quality.savedLocal")}</p>}
+        <p id="collection-reward-status" role="status" aria-live="polite" className="hint-readable-text mt-3 text-sm" style={{ color: "var(--hint-readable-copy)" }}>{statusMessage ?? (card.unlocked ? t("quality.savedLocal") : "")}</p>
       </div>
 
       <div className={`rare-unlock-stage ${unlockStateClass}`}>

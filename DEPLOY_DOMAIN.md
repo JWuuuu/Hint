@@ -27,7 +27,7 @@ Render will create:
 
 ## 3. Database schema
 
-`render.yaml` runs `pnpm run db:push` before the API starts, so the production tables are created during deploy.
+`render.yaml` runs `pnpm --filter @workspace/db run migrate` before the API starts. Review the numbered SQL and back up the existing database before an authorized deployment. The runner checks SHA-256 digests of applied migrations and records each new migration transactionally. Use `pnpm --filter @workspace/db run migrate:check` for a read-only ledger check. Never use schema push against an existing database; see `lib/db/migrations/README.md`.
 
 ## 4. Connect the domain
 

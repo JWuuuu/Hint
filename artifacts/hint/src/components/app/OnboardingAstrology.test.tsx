@@ -8,7 +8,7 @@ vi.mock('wouter', () => ({ useLocation: () => [route.path, vi.fn()], Link: ({chi
 vi.mock('../../lib/auth', () => ({useLocalAccount: () => null, saveLocalAccount: vi.fn()}));
 vi.mock('../../lib/useProfile', () => ({useProfile: () => ({anonId:'isolated',profile:null,saveProfile:vi.fn()})}));
 vi.mock('../../lib/i18n', () => ({useLanguage: () => ({t:(key:string) => key,language:'en'})}));
-vi.mock('../../lib/LocalizedText', () => ({LocalizedText: ({text}:{text:string}) => <>{text}</>}));
+vi.mock('../../lib/LocalizedText', () => ({translateText: (text:string) => text, LocalizedText: ({text}:{text:string}) => <>{text}</>}));
 vi.mock('./LocalProfileSwitcher', () => ({LocalProfileSwitcher: () => null}));
 beforeEach(() => {localStorage.clear();window.history.replaceState({},'', '/app/astrology');});
 afterEach(cleanup);

@@ -31,6 +31,30 @@ export function trackProviderWork<T>(work: () => Promise<T>): Promise<T> {
   return pending;
 }
 
+/** Abort the actual transport, including body reads, and keep it tracked until
+ * it settles. A Promise.race would release the lease while work could still run.
+ */
+export function withProviderDeadline<T>(timeoutMs: number, work: (signal: AbortSignal) => Promise<T>): Promise<T> {
+  return trackProviderWork(async () => {
+    const parent = providerSignal();
+    const controller = new AbortController();
+    const cancel = () => controller.abort(parent?.reason);
+    parent?.addEventListener("abort", cancel, { once: true });
+    if (parent?.aborted) cancel();
+    const timer = setTimeout(() => controller.abort(new DOMException("Provider request timed out", "TimeoutError")), timeoutMs);
+    timer.unref();
+    try {
+      controller.signal.throwIfAborted();
+      const result = await work(controller.signal);
+      controller.signal.throwIfAborted();
+      return result;
+    } finally {
+      clearTimeout(timer);
+      parent?.removeEventListener("abort", cancel);
+    }
+  });
+}
+
 export function providerSignal(timeoutMs?: number): AbortSignal | undefined {
   const signal = scopes.getStore()?.controller.signal;
   if (timeoutMs === undefined) return signal;

@@ -18,8 +18,8 @@ async function seed(page: Page) {
 
 async function leaveHome(page: Page) {
   const home = new URL(page.url()).pathname.endsWith("/ask")
-    ? page.getByRole("banner").getByRole("link", { name: "Home", exact: true })
-    : page.getByRole("navigation", { name: "App", exact: true }).locator(`a[href="${appHref("/app")}"]`);
+    ? page.getByRole("main").getByRole("link", { name: "Home", exact: true })
+    : page.getByRole("navigation", { name: "Main navigation", exact: true }).locator(`a[href="${appHref("/app")}"]`);
   await home.click();
   const prompt = page.getByRole("dialog", { name: "Leave this space?", exact: true });
   await expect(prompt).toContainText("Saved drafts can be reopened when you choose.");

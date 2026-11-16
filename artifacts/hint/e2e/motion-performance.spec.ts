@@ -1,3 +1,4 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { expect, test, type Page, type TestInfo } from "./fixtures";
 import { writeFile } from "node:fs/promises";
 
@@ -46,7 +47,8 @@ for (const [app, os] of [[false, false], [true, false], [false, true], [true, tr
     }, app);
     await page.emulateMedia({ reducedMotion: os ? "reduce" : "no-preference" });
     await page.route("**/api/tarot/spread-recommendation", route => route.fulfill({ json: { spreadType: "three", reason: "Three clear positions.", focusLabel: "Clear signal", confidence: "high", source: "api" } }));
-    await page.goto("/app?hintPreview=embedded");
+    await mockDailyTarot(page);
+  await page.goto("/app?hintPreview=embedded");
     await expect(page.getByRole("button", { name: "Reveal today's Hint card" })).toBeEnabled();
     await page.evaluate(() => document.fonts.ready);
     const baseline = await sample(page, info, "home-idle", async () => {});

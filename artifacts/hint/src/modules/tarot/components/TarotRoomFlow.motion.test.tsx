@@ -7,12 +7,16 @@ import { TarotRoomFlow } from "./TarotRoomFlow";
 import { MotionPolicyProvider } from "../../../lib/motionPolicy";
 import { LanguageProvider } from "../../../lib/i18n";
 import { saveActiveTarotSession } from "../logic/activeTarotSession";
-const mock = vi.hoisted(() => ({ listeners: new Set<(active: boolean) => void>(), paintCards: vi.fn() }));
+import type { WashPointer } from "../logic/washPhysics";
+import type { RitualCard } from "../types/ritual.types";
+import { getAnonId } from "../../../lib/identity";
+const mock = vi.hoisted(() => ({ listeners: new Set<(active: boolean) => void>(), paintCards: vi.fn(), wash: (_pointer: WashPointer) => {} }));
 vi.mock("../../../lib/mobile/appLifecycle", () => ({
   addNativeAppStateListener: vi.fn(async callback => { mock.listeners.add(callback); return async () => { mock.listeners.delete(callback); }; }),
 }));
 vi.mock("./CardWashRitual", () => ({
-  CardWashRitual: forwardRef(({ onBeginWash }: { onBeginWash: () => void }, ref) => {
+  CardWashRitual: forwardRef(({ onBeginWash, onWash }: { onBeginWash: () => void; onWash: (pointer: WashPointer) => void }, ref) => {
+    mock.wash = onWash;
     useImperativeHandle(ref, () => ({ paintCards: mock.paintCards }));
     return createElement("button", { onClick: onBeginWash }, "Begin manual wash");
   }),
@@ -30,10 +34,73 @@ vi.mock("framer-motion", async importOriginal => {
     } }),
   };
 });
+
+it.each([
+  { name: "120 Hz", callbacks: Array.from({ length: 96 }, (_, i) => (i + 1) * 1000 / 120) },
+  { name: "60 Hz", callbacks: Array.from({ length: 48 }, (_, i) => (i + 1) * 1000 / 60) },
+  { name: "30 Hz", callbacks: Array.from({ length: 24 }, (_, i) => (i + 1) * 1000 / 30) },
+  { name: "15 Hz", callbacks: Array.from({ length: 12 }, (_, i) => (i + 1) * 1000 / 15) },
+  { name: "10 Hz", callbacks: Array.from({ length: 8 }, (_, i) => (i + 1) * 100) },
+  { name: "5 Hz", callbacks: [200, 400, 600, 800] },
+  { name: "irregular callbacks", callbacks: [33, 160, 177, 310, 500, 515, 640, 800] },
+  { name: "a delayed callback", callbacks: [500, 800] },
+])("settles the held manual wash in wall time with $name", async ({ callbacks }) => {
+  saveActiveTarotSession({ phase: "prepare", question: "Fictional settling check", spreadId: "three", focusLabel: "Clear signal", design: {
+    id: "sea", label: "Sea", mood: "Fixture", deckStyleId: "rose", backStyle: "rose", cardBackId: "01_Final_Eight_Set/02_Moon_Tide_Lavender_Gold.png", cardArtId: "hint-classic", backgroundId: "sea", background: "#ffffff", glow: "#ffffff",
+  }, selectedCards: [], revealedIds: [] });
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+  const page = render(<QueryClientProvider client={client}><LanguageProvider><MotionPolicyProvider><TarotRoomFlow /></MotionPolicyProvider></LanguageProvider></QueryClientProvider>);
+  const button = await screen.findByRole("button", { name: "Begin manual wash" }, { timeout: 4000 });
+  let now = performance.now();
+  vi.spyOn(performance, "now").mockImplementation(() => now);
+  const flush = (at: number) => {
+    now = at;
+    const pending = [...frames.values()];
+    frames.clear();
+    act(() => pending.forEach(callback => callback(now)));
+  };
+  const latest = () => mock.paintCards.mock.calls.at(-1)![0] as RitualCard[];
+  fireEvent.click(button);
+  // Drive the real manual effect with one clockwise hand circle, then hold.
+  // Only frame delivery is mocked; force, damping, queued input and paint data
+  // are production code. The browser case's 500/300 ms windows stay intact.
+  let previous = { x: 0.77 * 400, y: 0.52 * 400 };
+  for (let i = 1; i <= 24; i += 1) {
+    const point = { x: (0.5 + Math.cos(i / 24 * Math.PI * 2) * 0.27) * 400,
+      y: (0.52 + Math.sin(i / 24 * Math.PI * 2) * 0.25) * 400 };
+    act(() => mock.wash({ ...point, movementX: point.x - previous.x, movementY: point.y - previous.y, width: 400, height: 400, spinDirection: 1 }));
+    flush(now + 24);
+    previous = point;
+  }
+  const heldAt = now;
+  const moving = latest();
+  expect(moving).toHaveLength(78);
+  expect(moving.some(card => Math.hypot(card.velocityX ?? 0, card.velocityY ?? 0) > 0.1)).toBe(true);
+  for (const offset of callbacks.filter(time => time <= 500)) flush(heldAt + offset);
+  const resting = latest();
+  for (const offset of callbacks.filter(time => time > 500)) flush(heldAt + offset);
+  const later = latest();
+  for (const { width, height } of [{ width: 440, height: 956 }, { width: 375, height: 667 }]) {
+    const distance = Math.max(...later.map((card, i) => Math.hypot(
+      (card.x - resting[i]!.x) / 100 * width, (card.y - resting[i]!.y) / 100 * height,
+    )));
+    expect(distance).toBeLessThan(0.5);
+  }
+  expect(later.map(card => [card.visualId, card.cardId, card.orientation])).toEqual(moving.map(card => [card.visualId, card.cardId, card.orientation]));
+  expect(later.every(card => !card.revealed && !card.selected)).toBe(true);
+  // Once the hand moves again, fresh input still moves the resting cards.
+  act(() => mock.wash({ x: 300, y: 210, movementX: 0, movementY: 16, width: 400, height: 400, spinDirection: 1 }));
+  flush(now + 24);
+  expect(latest().some((card, i) => Math.hypot(card.x - later[i]!.x, card.y - later[i]!.y) > 0.1)).toBe(true);
+  page.unmount(); client.clear();
+  expect(frames.size).toBe(0);
+  expect(fetch).not.toHaveBeenCalled();
+});
 let sequence = 0;
 let frames = new Map<number, FrameRequestCallback>();
 beforeEach(() => {
   localStorage.clear(); sessionStorage.clear(); frames = new Map(); sequence = 0; mock.listeners.clear(); mock.paintCards.mockClear();
+  localStorage.setItem("hint_anon_id", getAnonId());
   window.history.replaceState({}, "", "/app/tarot?hintPreview=embedded");
   Object.defineProperty(document, "visibilityState", { configurable: true, get: () => "visible" });
   localStorage.setItem("hint.preferences.v1", JSON.stringify({ reduceMotion: false, soundAndHaptics: false }));

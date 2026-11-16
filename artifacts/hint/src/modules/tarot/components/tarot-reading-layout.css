@@ -32,6 +32,13 @@
   --reading-transcript: rgba(55, 48, 74, .96);
   --reading-hover: rgba(173, 151, 201, .12);
 }
+/* The detail header sits on the shared sky, outside the reading's text panels. */
+.tarot-reading-theme .tarot-card-detail-header {
+  --tarot-page-muted: var(--reading-body);
+}
+[data-hint-theme="dark"] .tarot-reading-theme .tarot-card-detail-header {
+  --tarot-page-ink: var(--hint-ivory);
+}
 /* Soften stars beneath copy without adding another visible panel. */
 .tarot-reading-copy {
   position: relative;

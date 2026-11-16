@@ -17,6 +17,7 @@ import { RotateCw } from "lucide-react";
 import { triggerHaptic } from "../../../lib/feedback";
 import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
 import { useLanguage } from "../../../lib/i18n";
+import { useMotionPolicy } from "../../../lib/motionPolicy";
 import type { RitualCard } from "../logic/createHiddenDeck";
 import type { WashPointer } from "../logic/washPhysics";
 import {
@@ -59,11 +60,13 @@ type CardWashRitualProps = {
   showControls?: boolean;
   heading?: string;
   helper?: string;
+  minimumHeaderHeight?: number;
   children?: ReactNode;
 };
 
 export type CardWashRitualHandle = {
   paintCards: (cards: readonly RitualCard[]) => void;
+  getHeaderHeight: () => number;
 };
 
 type IntroStep = "stack" | "spread" | "closing" | "gather";
@@ -188,6 +191,7 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
   onCardsSettled,
   heading,
   helper,
+  minimumHeaderHeight = 0,
   children,
 }: CardWashRitualProps, ref) {
   const { t, language } = useLanguage();
@@ -195,8 +199,11 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
   const deckNoteButton = useRef<HTMLButtonElement>(null);
   const deckCopy = ritualCopy(language);
   const reduceMotion = useTarotReducedMotion();
+  const { pageVisible } = useMotionPolicy();
   const lightSurface = theme.surface === "light";
   const tableRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const [washHeaderHeight, setWashHeaderHeight] = useState(0);
   const lastPoint = useRef<{ x: number; y: number } | null>(null);
   const activePointer = useRef<number | null>(null);
   const washing = useRef(false);
@@ -211,6 +218,19 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
   const [washIntroSettled, setWashIntroSettled] = useState(
     () => stage === "washing",
   );
+
+  useLayoutEffect(() => {
+    if (stage === "washing" && !autoWashing && pageVisible) return;
+    // A phase change or interruption discards the old hand, including its
+    // eventual release. Returning to manual wash requires a fresh pointerdown.
+    const pointer = activePointer.current;
+    washing.current = false;
+    activePointer.current = null;
+    lastPoint.current = null;
+    washDistance.current = 0;
+    const table = tableRef.current;
+    if (pointer !== null && table?.hasPointerCapture(pointer)) table.releasePointerCapture(pointer);
+  }, [autoWashing, pageVisible, stage]);
 
   useLayoutEffect(() => {
     const table = tableRef.current;
@@ -230,7 +250,24 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
     return () => window.removeEventListener("resize", measure);
   }, []);
 
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    if (stage !== "washing" || !header) return;
+    // Keep the table still when gathering removes the wash instructions.
+    // Measure the current language and text size instead of fixing their height.
+    const measure = () => setWashHeaderHeight(header.getBoundingClientRect().height);
+    measure();
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(measure);
+      observer.observe(header);
+      return () => observer.disconnect();
+    }
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [stage]);
+
   useImperativeHandle(ref, () => ({
+    getHeaderHeight: () => headerRef.current?.getBoundingClientRect().height ?? 0,
     paintCards(cards) {
       const table = tableRef.current;
       if (!table || stage !== "washing") return;
@@ -416,7 +453,7 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
   }
 
   function handleKeyboardWash(event: KeyboardEvent<HTMLDivElement>) {
-    if (stage !== "washing" || autoWashing || activePointer.current !== null || !tableRef.current) return;
+    if (!pageVisible || stage !== "washing" || autoWashing || activePointer.current !== null || !tableRef.current) return;
 
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -459,7 +496,7 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
     <section
       data-ritual-stage={stage}
       data-intro-step={isFullDeckStage ? introStep : ""}
-      className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden px-4 pb-[calc(var(--hint-safe-bottom)+4.5rem)] pt-[calc(var(--hint-safe-top)+1rem)] [@media(max-height:740px)]:pt-[calc(var(--hint-safe-top)+5rem)] ${lightSurface ? "text-[#332d45]" : "text-[#f7ead0]"}`}
+      className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden px-4 pb-[calc(var(--hint-safe-bottom)+4.5rem)] pt-[calc(var(--hint-safe-top)+5rem)] ${lightSurface ? "text-[#332d45]" : "text-[#f7ead0]"}`}
     >
       <div className="pointer-events-none absolute inset-0" style={{ background: theme.chamberOverlay }} />
       <motion.div
@@ -498,8 +535,14 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
         }}
       />
 
-      <div className="relative z-10 mt-4 min-h-[136px] shrink-0 text-center">
-        <div data-testid="tarot-deck-count" className={`mx-auto mb-2 w-fit rounded-full border px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] backdrop-blur-md ${lightSurface ? "border-[#d8b96e]/38 bg-white/52 text-[#876c79] shadow-[0_8px_24px_rgba(96,72,104,0.08)]" : "border-[#f1d390]/28 bg-white/10 text-[#f6e0ce]/78 shadow-[0_10px_28px_rgba(0,0,0,0.16)]"}`}>
+      <div
+        ref={headerRef}
+        className="relative z-10 mt-4 min-h-[136px] shrink-0 text-center"
+        style={isDeckStackStage && Math.max(washHeaderHeight, minimumHeaderHeight) > 0
+          ? { minHeight: Math.max(washHeaderHeight, minimumHeaderHeight) }
+          : undefined}
+      >
+        <div data-testid="tarot-deck-count" className={`mx-auto mb-2 w-fit max-w-full [overflow-wrap:anywhere] rounded-full border px-3 py-1 text-[11px] font-black uppercase tracking-[0.18em] backdrop-blur-md ${lightSurface ? "border-[#d8b96e]/38 bg-white/52 text-[#876c79] shadow-[0_8px_24px_rgba(96,72,104,0.08)]" : "border-[#f1d390]/28 bg-white/10 text-[#f6e0ce]/78 shadow-[0_10px_28px_rgba(0,0,0,0.16)]"}`}>
           {deckCountLabel}
         </div>
         <motion.h1
@@ -525,7 +568,7 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
         {stage === "washing" ? (
           <motion.div
             aria-live="polite"
-            className={`mx-auto mt-2 flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] ${
+            className={`mx-auto mt-2 flex w-fit max-w-full [overflow-wrap:anywhere] items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-black uppercase tracking-[0.12em] ${
               lightSurface
                 ? "border-[#d8b96e]/30 bg-white/48 text-[#806879]"
                 : "border-[#f1d390]/24 bg-white/8 text-[#f0dce3]/76"
@@ -559,7 +602,7 @@ export const CardWashRitual = forwardRef<CardWashRitualHandle, CardWashRitualPro
             : undefined,
         }}
         onPointerDown={(event) => {
-          if (autoWashing || activePointer.current !== null || event.button > 0) return;
+          if (!pageVisible || autoWashing || activePointer.current !== null || event.button > 0) return;
           if (stage === "gathering" || stage === "cutReady" || stage === "cutting") return;
           if (stage === "placed" && !introReady) return;
           activePointer.current = event.pointerId;

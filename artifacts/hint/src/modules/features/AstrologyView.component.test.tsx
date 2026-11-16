@@ -29,7 +29,7 @@ vi.mock("@/components/app/AppChrome", async importOriginal => ({
 vi.mock("@/components/astro/BirthProfileForm", () => ({ BirthProfileForm: () => <div data-testid="birth-form" /> }));
 vi.mock("../astrology/components/TogetherReading", () => ({ TogetherReading: () => <div /> }));
 vi.mock("../astrology/components/AstrologyGuide", () => ({
-  AstrologyOrientation: () => <h1>Astrology</h1>,
+  AstrologyOrientation: () => <h2>A sky of your own</h2>,
   AstroPanel: ({ children, title }: PropsWithChildren<{ title: string }>) => <section><h2>{title}</h2>{children}</section>,
   ZodiacGuide: () => <div data-testid="zodiac-guide" />,
   NatalReading: ({ chart, refreshing, onRefresh, error }: { chart: NatalChart; refreshing: boolean; onRefresh: () => void; error: string }) => <section data-testid="personal-chart"><p>{chart.id}</p><button disabled={refreshing} onClick={onRefresh}>Recalculate</button>{refreshing && <p role="status">Calculating</p>}{error && <p role="alert">{error}</p>}</section>,
@@ -108,9 +108,9 @@ it("does not stay stuck loading after cancelling a recalculation and returning t
   seed(profile); storeChart(profile.id, profile, response); render(<AstrologyView />);
   fireEvent.click(screen.getByRole("button", { name: "Recalculate" }));
   await waitFor(() => expect(mocks.natal).toHaveBeenCalledTimes(1));
-  fireEvent.click(screen.getByRole("button", { name: /^Explore signs$/ }));
+  fireEvent.click(screen.getByRole("button", { name: /^Zodiac$/ }));
   expect((mocks.natal.mock.calls[0]![1] as AbortSignal).aborted).toBe(true);
-  fireEvent.click(screen.getByRole("button", { name: /^My chart$/ }));
+  fireEvent.click(screen.getByRole("button", { name: /^My Chart$/ }));
   await waitFor(() => {
     const canRetry = !(screen.getByRole("button", { name: "Recalculate" }) as HTMLButtonElement).disabled;
     expect(canRetry || mocks.natal.mock.calls.length > 1).toBe(true);
@@ -152,8 +152,8 @@ it("reuses a completed manual refresh when returning from the signs tab", async 
   render(<AstrologyView />);
   fireEvent.click(screen.getByRole("button", { name: "Recalculate" }));
   await waitFor(() => expect((screen.getByRole("button", { name: "Recalculate" }) as HTMLButtonElement).disabled).toBe(false));
-  fireEvent.click(screen.getByRole("button", { name: /^Explore signs$/ }));
-  fireEvent.click(screen.getByRole("button", { name: /^My chart$/ }));
+  fireEvent.click(screen.getByRole("button", { name: /^Zodiac$/ }));
+  fireEvent.click(screen.getByRole("button", { name: /^My Chart$/ }));
   expect(screen.getByTestId("personal-chart").textContent).toContain("verified-chart");
   expect(mocks.natal).toHaveBeenCalledTimes(1);
 });

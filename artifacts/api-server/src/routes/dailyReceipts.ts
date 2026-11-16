@@ -1,3 +1,5 @@
+import { authenticatedOwner } from "../lib/deviceSession.js";
+import { dailyTarot, DailyTarotError, isDailyTarotFeature } from "../modules/hint/dailyTarot.js";
 import { Router } from "express";
 import * as z from "zod";
 import {
@@ -39,6 +41,13 @@ router.post("/daily-receipts/get-or-create", async (req, res) => {
     return;
   }
 
+  if (isDailyTarotFeature(parsed.data.featureType)) {
+    const result = await dailyTarot({ owner: authenticatedOwner(req), feature: parsed.data.featureType,
+      dailyKey: parsed.data.dailyKey, open: req.method === "PATCH" });
+    res.json(serializeDailyReceipt(result.receipt, result.serverTime));
+    return;
+  }
+
   const now = new Date();
   const receipt = await getOrCreateDailyReceipt({
     anonymousDeviceId,
@@ -64,6 +73,13 @@ router.patch("/daily-receipts/open", async (req, res) => {
     return;
   }
 
+  if (isDailyTarotFeature(parsed.data.featureType)) {
+    const result = await dailyTarot({ owner: authenticatedOwner(req), feature: parsed.data.featureType,
+      dailyKey: parsed.data.dailyKey, open: req.method === "PATCH" });
+    res.json(serializeDailyReceipt(result.receipt, result.serverTime));
+    return;
+  }
+
   const now = new Date();
   const receipt = await openDailyReceipt({
     anonymousDeviceId,
@@ -84,11 +100,17 @@ router.post("/daily-receipts/sync", async (req, res) => {
   const parsed = syncSchema.safeParse(req.body);
   if (!parsed.success || !getDeviceId(parsed.data)) { res.status(400).json({ error: "Invalid revealed receipt" }); return; }
   try {
-    const receipt = await syncRevealedDailyReceipt({ ...parsed.data, anonymousDeviceId: getDeviceId(parsed.data)! });
+    const receipt = await syncRevealedDailyReceipt({ ...parsed.data, anonymousDeviceId: authenticatedOwner(req) });
     res.json(serializeDailyReceipt(receipt));
   } catch (error) {
+    if (error instanceof DailyTarotError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
     res.status(error instanceof DailyReceiptConflict ? 409 : error instanceof DailyReceiptInputError ? 400 : 503).json({ error: error instanceof DailyReceiptConflict ? error.message : "Could not synchronize the revealed card" });
   }
 });
+
+router.use(((error, _req, res, next) => {
+  if (error instanceof DailyTarotError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
+  next(error);
+}) as import("express").ErrorRequestHandler);
 
 export default router;

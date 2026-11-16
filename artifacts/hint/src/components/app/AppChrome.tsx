@@ -10,8 +10,8 @@ import { motion } from "../../lib/quietMotion";
 import { Link } from "wouter";
 import { ArrowLeft, House } from "lucide-react";
 import { useLanguage } from "../../lib/i18n";
-import { useState } from "react";
-import { RoomCompanion, RoomComposition } from "../mascot/RoomCompanion";
+import { useEffect, useRef, useState } from "react";
+import { HintCornerLayer, RoomCompanion, RoomComposition } from "../mascot/RoomCompanion";
 import { useHintTyping } from "../mascot/useHintTyping";
 
 /**
@@ -27,19 +27,53 @@ export function AppScreen({ children, allowHorizontalPan = false, contentStyle }
 }) {
   const [composition, setComposition] = useState("");
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [corner, setCorner] = useState<HTMLElement | null>(null);
   const typing = useHintTyping(composition);
+  const focusFrame = useRef<number | null>(null);
+  const cancelFocusScroll = () => {
+    if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
+    focusFrame.current = null;
+  };
+  useEffect(() => cancelFocusScroll, []);
   return (
     <RoomComposition.Provider value={{ typing, keyboardOpen }}>
     <div
-      className="hint-app-scroll h-full w-full flex flex-col items-center pb-[calc(7.75rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))] scroll-pt-[calc(1.25rem+var(--hint-safe-top))]"
-      onInputCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setComposition(event.target.value); }}
-      onFocusCapture={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setKeyboardOpen(true); }}
-      onBlurCapture={() => { setKeyboardOpen(false); setComposition(""); }}
+      className="hint-app-scroll h-full w-full flex flex-col items-center pb-[calc(7.75rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))] scroll-pt-[calc(1.25rem+var(--hint-safe-top))] scroll-pb-[calc(7.75rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))]"
+      onInput={event => { if (event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement) setComposition(event.target.value); }}
+      onFocusCapture={event => {
+        cancelFocusScroll();
+        const target = event.target;
+        if (target instanceof HTMLTextAreaElement || target instanceof HTMLInputElement) setKeyboardOpen(true);
+        const scroller = event.currentTarget;
+        focusFrame.current = requestAnimationFrame(() => {
+          focusFrame.current = null;
+          if (!scroller.isConnected || !scroller.contains(target) || document.activeElement !== target) return;
+          // WebKit may reveal only a textarea's caret. Keep the whole focused
+          // control inside the same padded scroll area, without moving outer pages.
+          const viewport = scroller.getBoundingClientRect();
+          const control = target.getBoundingClientRect();
+          const style = getComputedStyle(scroller);
+          const top = viewport.top + parseFloat(style.scrollPaddingTop || "0");
+          const bottom = viewport.bottom - parseFloat(style.scrollPaddingBottom || "0");
+          // If a field exceeds the available height, retain the browser's caret
+          // position instead of forcing an impossible whole-control fit.
+          if (control.height > bottom - top) return;
+          if (control.top < top) scroller.scrollTop += control.top - top;
+          else if (control.bottom > bottom) scroller.scrollTop += Math.min(control.bottom - bottom, control.top - top);
+        });
+      }}
+      onBlurCapture={() => { cancelFocusScroll(); setKeyboardOpen(false); setComposition(""); }}
+      onWheelCapture={cancelFocusScroll}
+      onTouchMoveCapture={cancelFocusScroll}
+      onPointerDownCapture={cancelFocusScroll}
       style={{ background: "transparent", touchAction: allowHorizontalPan ? "pan-x pan-y" : undefined }}
     >
+      <span ref={setCorner} className="hint-guide-corner-layer" data-hint-guide-corner-layer />
+      <HintCornerLayer.Provider value={corner}>
       <div className="w-full max-w-[var(--hint-app-width)] px-3.5 pt-[calc(1rem+var(--hint-safe-top))] sm:px-4" style={contentStyle}>
         {children}
       </div>
+      </HintCornerLayer.Provider>
     </div>
     </RoomComposition.Provider>
   );
@@ -105,6 +139,7 @@ export function ScreenHeader({
   backLabel,
   backClassName,
   showBack = true,
+  readable = false,
 }: {
   eyebrow?: string;
   title: string;
@@ -114,6 +149,7 @@ export function ScreenHeader({
   backLabel?: string;
   backClassName?: string;
   showBack?: boolean;
+  readable?: boolean;
 }) {
   return (
     <motion.header
@@ -142,14 +178,14 @@ export function ScreenHeader({
         <div className="min-w-0">
           {eyebrow && (
             <p
-              className="mb-1.5 font-sans text-[10px] font-black uppercase tracking-[0.18em]"
-              style={{ color: "var(--hint-rose)" }}
+              className={`${readable ? "hint-readable-text " : ""}mb-1.5 font-sans text-[10px] font-black uppercase tracking-[0.18em]`}
+              style={{ color: readable ? "var(--hint-readable-rose)" : "var(--hint-rose)" }}
             >
               <LocalizedText text={eyebrow} />
             </p>
           )}
           <h1
-            className="hint-app-title font-serif text-[29px] font-normal leading-none"
+            className="hint-app-title font-serif text-[29px] font-normal leading-none [overflow-wrap:anywhere]"
             style={{ color: "var(--hint-text)" }}
           >
             <LocalizedText text={title} />
@@ -158,8 +194,8 @@ export function ScreenHeader({
       </div>
       {subtitle && (
         <p
-          className="mt-2.5 max-w-md font-sans text-[13px] leading-relaxed"
-          style={{ color: "var(--hint-muted)" }}
+          className={`${readable ? "hint-readable-text " : ""}mt-2.5 max-w-md font-sans text-[13px] leading-relaxed`}
+          style={{ color: readable ? "var(--hint-readable-copy)" : "var(--hint-muted)" }}
         >
           <LocalizedText text={subtitle} />
         </p>
@@ -288,7 +324,7 @@ export function CardBack({
   );
 }
 
-export function SectionLabel({ children }: { children: ReactNode }) {
+export function SectionLabel({ children, readable = false }: { children: ReactNode; readable?: boolean }) {
   return (
     <div className="flex items-center gap-3 mb-4 px-1">
       <span
@@ -296,8 +332,8 @@ export function SectionLabel({ children }: { children: ReactNode }) {
         style={{ background: "var(--hint-rose)" }}
       />
       <p
-        className="font-sans text-[11px] font-medium uppercase tracking-[0.14em]"
-        style={{ color: "var(--hint-muted)" }}
+        className={`${readable ? "hint-readable-text " : ""}font-sans text-[11px] font-medium uppercase tracking-[0.14em]`}
+        style={{ color: readable ? "var(--hint-readable-copy)" : "var(--hint-muted)" }}
       >
         {children}
       </p>

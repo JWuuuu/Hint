@@ -98,7 +98,7 @@ export function useReadingDictation({ draft, onDraft, onComplete, language, t }:
           transcript = text;
           latest.current.onDraft([prefix, text.trim()].filter(Boolean).join(" "));
           if (silence.current) clearTimeout(silence.current);
-          if (text.trim()) silence.current = setTimeout(finish, 1200);
+          if (text.trim() && submitOnEnd.current) silence.current = setTimeout(finish, 1200);
         },
         onError: reason => {
           if (!current()) return;

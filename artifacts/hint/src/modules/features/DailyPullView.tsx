@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiFetch, apiUrl } from "../../lib/api";
 import { countReadingDays } from "../../lib/readingDays";
 import { LocalizedText, translateText } from "../../lib/LocalizedText";
-import { useLocalDay } from "../../lib/useLocalDay";
+import { useDailyTarotDay } from "../../lib/useDailyTarotDay";
 import { getCachedDailyReceipt, getOrCreateDailyReceipt, openDailyReceipt, subscribeToDailyReceiptFallbacks, type DailyReceipt } from "../../lib/dailyReceipts";
 import { getDailyPullById } from "../home/data/dailyPulls";
 import { withDailyCardIdentity } from "../home/data/dailyCardSync";
@@ -725,9 +725,10 @@ export function DailyPullView() {
     () => listLocalDailyReadingMemory().slice(0, 30),
     [historyVersion],
   );
-  const currentDay = useLocalDay();
+  const currentDay = useDailyTarotDay();
   const today = useMemo(() => startOfLocalDay(new Date(`${currentDay}T12:00:00`)), [currentDay]);
   const [receiptVersion, setReceiptVersion] = useState(0);
+  const [receiptError, setReceiptError] = useState(false);
   const activeOffset = period === "day" ? selectedOffset : periodOffsets[period];
   const selectedDate = useMemo(() => getPeriodAnchor(period, today, activeOffset), [activeOffset, period, today]);
   const selectedDateKey = useMemo(() => getLocalDateString(selectedDate), [selectedDate]);
@@ -735,11 +736,6 @@ export function DailyPullView() {
     () => {
       const cached = getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey });
       if (selectedDateKey !== currentDay) {
-        const archived = listLocalDailyReadings().find(row => row.id === `daily-${selectedDateKey}`);
-        if (archived?.cardId) {
-          const saved = getDailyPullById(archived.cardId, language);
-          return saved.cardId === archived.cardId ? saved : null;
-        }
         const serverCard = getSyncedDailyCard(pull, selectedDateKey, language);
         if (pull?.isFlipped && serverCard && serverCard.cardId === pull.cardId) return serverCard;
         if (cached?.openedAt && cached.assignedCardId) {
@@ -748,11 +744,11 @@ export function DailyPullView() {
         }
         return null;
       }
-      if (cached?.assignedCardId) {
+      if (cached?.openedAt && cached.assignedCardId) {
         const base = getDailyReport({ anonId: getAnonId(), date: selectedDate, language }).card;
         return withDailyCardIdentity(base, cached.assignedCardId, language);
       }
-      return getSyncedDailyCard(pull, selectedDateKey, language);
+      return pull?.isFlipped ? getSyncedDailyCard(pull, selectedDateKey, language) : null;
     },
     [language, pull, selectedDateKey, receiptVersion, currentDay, historyVersion],
   );
@@ -761,13 +757,19 @@ export function DailyPullView() {
     let active = true;
     if (period !== "day" || selectedDateKey !== currentDay) return;
     const dailyKey = selectedDateKey;
-    const fallbackAssignedCardId = getDailyReport({ anonId: getAnonId(), date: selectedDate, language }).card.cardId;
-    void getOrCreateDailyReceipt("daily-card", { dailyKey, fallbackAssignedCardId }).then(async receipt => {
-      if (!active || dailyKey !== currentDay) return;
-      const revealed = receipt.openedAt ? receipt : await openDailyReceipt("daily-card", { dailyKey, fallbackAssignedCardId: receipt.assignedCardId });
-      if (revealed.assignedCardId) saveLocalDailyReading(getDailyPullById(revealed.assignedCardId, language), new Date(`${dailyKey}T12:00:00`));
-    });
-    return () => { active = false; };
+    const restore = () => {
+      void getOrCreateDailyReceipt("daily-card").then(async receipt => {
+        if (!active || receipt.dailyKey !== dailyKey) return;
+        const revealed = receipt.openedAt ? receipt : await openDailyReceipt("daily-card", { dailyKey: receipt.dailyKey });
+        if (!active) return;
+        setReceiptError(false);
+        if (revealed.assignedCardId) saveLocalDailyReading(getDailyPullById(revealed.assignedCardId, language), new Date(`${revealed.dailyKey}T12:00:00`));
+      }).catch(() => { if (active) setReceiptError(true); });
+    };
+    restore();
+    window.addEventListener("online", restore);
+    window.addEventListener("focus", restore);
+    return () => { active = false; window.removeEventListener("online", restore); window.removeEventListener("focus", restore); };
   }, [selectedDateKey, currentDay, period]);
   const activeLabel = formatPeriodButtonLabel(period, activeOffset, selectedDate, t);
   const activeDetail = formatPeriodRange(period, selectedDate);
@@ -843,10 +845,10 @@ export function DailyPullView() {
     setNoteError(false);
     let current = true;
     drawMutation.mutate(
-      { data: { anonId: getAnonId(), date: pullDate } },
+      { data: { anonId: getAnonId(), ...(pullDate === currentDay ? {} : { date: pullDate }) } },
       {
         onSuccess: (data) => {
-          if (!current || activePullDateRef.current !== pullDate) return;
+          if (!current || activePullDateRef.current !== pullDate || data.pullDate !== pullDate) return;
           setPull(data);
           // The initial request can finish after a PATCH has saved newer text and
           // cleared its draft. Its older snapshot must not hydrate the note again.
@@ -1096,7 +1098,7 @@ export function DailyPullView() {
             cardOverride={syncedDailyCard}
             dailyHistory={dailyHistory}
             statusMessage={
-              getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "conflict"
+              selectedDateKey === currentDay && receiptError ? t("dailyPull.error") : getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "conflict"
                 ? t("quality.cardConflict")
                 : getCachedDailyReceipt("daily-card", { dailyKey: selectedDateKey })?.syncStatus === "pending"
                   ? t("quality.cardPending")
@@ -1105,9 +1107,9 @@ export function DailyPullView() {
           />
         )}
 
-        {period === "day" && drawMutation.isError && (
+        {period === "day" && drawMutation.isError && !receiptError && (
           <p className="font-serif italic text-[15px] leading-[1.6] text-center" style={{ color: GLASS.muted }}>
-            {t("dailyPull.error")}
+            {t("dailyPull.notesUnavailable")}
           </p>
         )}
 

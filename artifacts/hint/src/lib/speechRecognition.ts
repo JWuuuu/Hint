@@ -68,15 +68,16 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
       speechRecognition: "granted" | "denied";
       microphone: "granted" | "denied";
     }>;
-    start: (options: { language: string }) => Promise<{ matches?: string[] }>;
-    stop: () => Promise<void>;
-    cancel: () => Promise<void>;
+    start: (options: { language: string; sessionId: string }) => Promise<{ matches?: string[] }>;
+    stop: (options: { sessionId: string }) => Promise<void>;
+    cancel: (options: { sessionId: string }) => Promise<void>;
     addListener: (
       event: "partialResults" | "listeningState" | "speechError",
-      callback: (result: { matches?: string[]; status?: string; message?: string }) => void,
+      callback: (result: { sessionId?: string; matches?: string[]; isFinal?: boolean; status?: string; message?: string }) => void,
     ) => Promise<ListenerHandle>;
   };
   const SpeechRecognition = registerPlugin<NativeSpeechPlugin>("HintSpeechRecognition");
+  const sessionId = crypto.randomUUID();
   let errorReported = false;
   const reportError = (reason: Parameters<HintSpeechOptions["onError"]>[0]) => {
     if (errorReported) return;
@@ -86,13 +87,19 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
   let cleanedUp = false;
   let ended = false;
   let startRequested = false;
-  let closePromise: Promise<void> | null = null;
+  let stopping = false;
+  let stopTimeout: ReturnType<typeof setTimeout> | undefined;
+  let resolveStopped!: () => void;
+  const stopped = new Promise<void>(resolve => { resolveStopped = resolve; });
   const listenerHandles: ListenerHandle[] = [];
   const finish = () => {
     if (ended) return;
     ended = true;
+    clearTimeout(stopTimeout);
     options.signal?.removeEventListener("abort", onAbort);
+    void removeListeners();
     options.onEnd();
+    resolveStopped();
   };
   const removeListeners = async () => {
     if (cleanedUp) return;
@@ -100,20 +107,25 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
     await Promise.all(listenerHandles.map((handle) => handle.remove().catch(() => undefined)));
   };
   const cleanup = (cancel: boolean): Promise<void> => {
-    if (closePromise) return closePromise;
-    if (ended) return Promise.resolve();
-    finish();
-    closePromise = (async () => {
+    if (ended) return stopped;
+    if (cancel) {
+      // Invalidate callbacks immediately, even if the bridge never acknowledges.
+      finish();
       try {
-        if (cancel) await SpeechRecognition.cancel();
-        else await SpeechRecognition.stop();
-      } catch {
-        // Listener cleanup must still complete if the native session has ended.
-      } finally {
-        await removeListeners();
-      }
-    })();
-    return closePromise;
+        if (startRequested) void SpeechRecognition.cancel({ sessionId }).catch(() => undefined);
+      } catch { /* The native lifecycle guard also releases interrupted capture. */ }
+    } else if (!stopping) {
+      stopping = true;
+      // Stop ends input, then allows the same session's final buffered words.
+      // Match the browser's bound; never wait forever for a bridge acknowledgement.
+      stopTimeout = setTimeout(() => { void cleanup(true); }, 2500);
+      options.onProcessing?.();
+      if (ended) return stopped;
+      const failed = () => { if (!ended) { reportError("failed"); void cleanup(true); } };
+      try { void SpeechRecognition.stop({ sessionId }).catch(failed); }
+      catch { failed(); }
+    }
+    return stopped;
   };
   const onAbort = () => { void cleanup(true); };
   const checkCancelled = () => options.signal?.throwIfAborted();
@@ -143,19 +155,19 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
     }
     const partialHandle = await SpeechRecognition.addListener(
       "partialResults",
-      ({ matches }) => {
-        if (ended || options.signal?.aborted) return;
+      ({ matches, isFinal, sessionId: source }) => {
+        if (source !== sessionId || ended || options.signal?.aborted) return;
         const transcript = matches?.[0]?.trim();
         if (transcript) options.onTranscript(transcript);
+        if (isFinal) finish();
       },
     );
     listenerHandles.push(partialHandle);
     checkCancelled();
     const stateHandle = await SpeechRecognition.addListener(
       "listeningState",
-      ({ status }) => {
-        if (status !== "stopped") return;
-        void removeListeners();
+      ({ status, sessionId: source }) => {
+        if (source !== sessionId || status !== "stopped") return;
         finish();
       },
     );
@@ -163,17 +175,20 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
     checkCancelled();
     const errorHandle = await SpeechRecognition.addListener(
       "speechError",
-      () => {
-        if (ended || options.signal?.aborted) return;
+      ({ sessionId: source }) => {
+        if (source !== sessionId || ended || options.signal?.aborted) return;
         reportError("failed");
         void cleanup(true);
       },
     );
     listenerHandles.push(errorHandle);
     checkCancelled();
+    // Cancellation must reach the bridge while its startup call is pending.
+    options.signal?.addEventListener("abort", onAbort, { once: true });
     startRequested = true;
     result = await SpeechRecognition.start({
       language: options.language,
+      sessionId,
     });
     checkCancelled();
   } catch (error) {
@@ -186,7 +201,6 @@ async function startNativeSpeech(options: HintSpeechOptions): Promise<HintSpeech
   const directTranscript = result.matches?.[0]?.trim();
   if (!ended) {
     if (directTranscript) options.onTranscript(directTranscript);
-    options.signal?.addEventListener("abort", onAbort, { once: true });
     options.onStart?.();
   }
   return {

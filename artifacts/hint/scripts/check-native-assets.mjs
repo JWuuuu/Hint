@@ -1,13 +1,13 @@
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
-import { resolve, relative } from "node:path";
+import { resolve, relative, sep } from "node:path";
 
 function files(root, directory = root) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
     const path = resolve(directory, entry.name);
     if (entry.isDirectory()) return files(root, path);
     const content = readFileSync(path);
-    return [{ path: relative(root, path), bytes: content.length, hash: createHash("sha256").update(content).digest("hex") }];
+    return [{ path: relative(root, path).split(sep).join("/"), bytes: content.length, hash: createHash("sha256").update(content).digest("hex") }];
   });
 }
 const web = files(resolve(process.argv[2] || "dist/public"));

@@ -24,29 +24,31 @@ describe.skipIf(!enabled)("isolated PostgreSQL persistence", () => {
     origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
   });
   afterAll(async () => { await new Promise<void>(resolve => server?.close(() => resolve())); await dbModule?.pool.end(); });
-  it("syncs an offline reveal once, rejects a conflicting reveal and keeps the original row", async () => {
+  it("syncs a server-issued reveal once, rejects a conflicting reveal and keeps the original row", async () => {
     const owner = `sync-${crypto.randomUUID()}`;
-    const receipt = { anonId: owner, featureType: "daily-card", dailyKey: "2026-09-09", assignedCardId: "3-empress", openedAt: "2026-09-09T12:00:00.000Z" };
+    const assigned = await (await request("/api/daily-receipts/get-or-create", { anonId: owner, featureType: "daily-card" })).json() as { dailyKey: string; assignedCardId: string };
+    const receipt = { anonId: owner, featureType: "daily-card", dailyKey: assigned.dailyKey, assignedCardId: assigned.assignedCardId, openedAt: new Date().toISOString() };
     const responses = await Promise.all([request("/api/daily-receipts/sync", receipt), request("/api/daily-receipts/sync", receipt)]);
     expect(responses.map(r => r.status)).toEqual([200, 200]);
     const rows = await dbModule.pool.query("SELECT card_id FROM daily_pulls WHERE anon_id=$1", [owner]);
-    expect(rows.rows).toEqual([{ card_id: "3-empress" }]);
-    expect((await request("/api/daily-receipts/sync", { ...receipt, assignedCardId: "18-moon" })).status).toBe(409);
+    expect(rows.rows).toEqual([{ card_id: assigned.assignedCardId }]);
+    expect((await request("/api/daily-receipts/sync", { ...receipt, assignedCardId: assigned.assignedCardId === "18-moon" ? "3-empress" : "18-moon" })).status).toBe(409);
     expect((await dbModule.pool.query("SELECT card_id FROM daily_pulls WHERE anon_id=$1", [owner])).rows).toEqual(rows.rows);
   });
   it("history deletion preserves the profile and reveal lock; re-entering cannot revive history", async () => {
     const owner = `clear-${crypto.randomUUID()}`;
     const profile = { anonId: owner, name: "Fixture", birthDate: "2000-02-29", birthPlace: "Tokyo", latitude: 35.67, longitude: 139.65, timezone: "Asia/Tokyo", timezoneOffset: 9 };
     expect((await request("/api/profile", profile)).status).toBe(200);
-    const receipt = { anonId: owner, featureType: "daily-card", dailyKey: "2026-09-09", assignedCardId: "3-empress", openedAt: "2026-09-09T12:00:00.000Z" };
+    const assigned = await (await request("/api/daily-receipts/get-or-create", { anonId: owner, featureType: "daily-card" })).json() as { dailyKey: string; assignedCardId: string };
+    const receipt = { anonId: owner, featureType: "daily-card", dailyKey: assigned.dailyKey, assignedCardId: assigned.assignedCardId, openedAt: new Date().toISOString() };
     await request("/api/daily-receipts/sync", receipt);
     expect((await request(`/api/history?anonId=${owner}`, undefined, "DELETE")).status).toBe(204);
-    await request("/api/daily-pull", { anonId: owner, date: "2026-09-09" });
+    await request("/api/daily-pull", { anonId: owner, date: receipt.dailyKey });
     await request("/api/daily-receipts/sync", receipt);
     expect((await dbModule.pool.query("SELECT * FROM daily_pulls WHERE anon_id=$1", [owner])).rows).toHaveLength(0);
     const kept = await (await request(`/api/profile?anonId=${owner}`, undefined, "GET")).json();
     expect(kept).toMatchObject(profile);
-    expect((await dbModule.pool.query("SELECT assigned_card_id,history_excluded FROM daily_receipts WHERE anonymous_device_id=$1", [owner])).rows).toEqual([{ assigned_card_id: "3-empress", history_excluded: true }]);
+    expect((await dbModule.pool.query("SELECT assigned_card_id,history_excluded FROM daily_receipts WHERE anonymous_device_id=$1", [owner])).rows).toEqual([{ assigned_card_id: assigned.assignedCardId, history_excluded: true }]);
   });
   it("does not resurrect an in-flight journal entry after clearing history", async () => {
     const owner = `journal-race-${crypto.randomUUID()}`;
@@ -123,19 +125,76 @@ describe.skipIf(!enabled)("isolated PostgreSQL persistence", () => {
     expect((await fresh.readCompatibilityResult(completed.resultId!, accepter)).id).toBe(stored.id);
   });
 
-  it("does not resurrect a receipt first uploaded after deletion", async () => {
+  it("clears a recipient's saved shared result and cannot publish an in-flight result after clearing", async () => {
+    const store = await import("../modules/astrology/compatibilityStore");
+    const owner = await sessionOwner(); const recipient = await sessionOwner();
+    const creator = { name: "Creator", birthday: "2000-01-01" };
+    const friend = { name: "Recipient", birthday: "2001-01-01" };
+    const result = () => ({ id: crypto.randomUUID(), source: "api", people: {
+      user: { name: creator.name, chart: { source: "api" } }, friend: { name: friend.name, chart: { source: "api" } },
+    } } as any);
+    const finished = await store.createCompatibilityInvite(owner, creator);
+    const completed = await store.completeCompatibilityInvite(finished.token, friend, true, async () => result(), recipient);
+    const pending = await store.createCompatibilityInvite(owner, creator);
+    let finish!: () => void; let started!: () => void;
+    const began = new Promise<void>(resolve => { started = resolve; });
+    const work = store.completeCompatibilityInvite(pending.token, friend, true, async () => {
+      await new Promise<void>(resolve => { finish = resolve; started(); }); return result();
+    }, recipient);
+    const settled = work.catch(error => error);
+    await began;
+    try {
+      expect((await request(`/api/history?anonId=${recipient}`, undefined, "DELETE")).status).toBe(204);
+      await expect(store.readCompatibilityResult(completed.resultId!, recipient)).rejects.toMatchObject({ status: 404 });
+      await expect(store.readCompatibilityResult(completed.resultId!, owner)).rejects.toMatchObject({ status: 404 });
+      expect((await dbModule.pool.query("SELECT * FROM compatibility_invites WHERE accepter_owner_id=$1", [recipient])).rows).toHaveLength(0);
+    } finally { finish(); }
+    expect(await settled).toMatchObject({ status: 409 });
+  });
+
+  it("rejects a delayed acceptance whose recipient cleared history before its claim", async () => {
+    const store = await import("../modules/astrology/compatibilityStore");
+    const recipient = await sessionOwner();
+    const invite = await store.createCompatibilityInvite(await sessionOwner(), { name: "Creator", birthday: "2000-01-01" });
+    const blocker = await dbModule.pool.connect();
+    let done = false; let computations = 0;
+    await blocker.query("BEGIN");
+    await blocker.query("SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", [recipient]);
+    const work = store.completeCompatibilityInvite(invite.token, { name: "Friend", birthday: "2001-01-01" }, true, async () => {
+      computations++; return { id: crypto.randomUUID(), source: "api", people: { user: { chart: { source: "api" } }, friend: { chart: { source: "api" } } } } as any;
+    }, recipient).catch(error => error).finally(() => { done = true; });
+    try {
+      const until = Date.now() + 5000;
+      while (!done && !(await dbModule.pool.query("SELECT 1 FROM pg_stat_activity WHERE wait_event='advisory' AND query LIKE '%hashtextextended%' AND pid <> pg_backend_pid()")).rowCount) {
+        if (Date.now() > until) throw new Error("Acceptance did not reach the clear-history barrier");
+        await new Promise(resolve => setTimeout(resolve, 5));
+      }
+      // Commit the same watermark used by DELETE /history while its owner lock
+      // is held. The waiting acceptance started before this clear transaction.
+      await blocker.query("INSERT INTO history_clears(owner_id,cleared_at,through_day) VALUES ($1,clock_timestamp(),'2026-11-10')", [recipient]);
+      await blocker.query("COMMIT");
+      expect(await work).toMatchObject({ status: 409 });
+      expect(computations).toBe(0);
+      expect((await dbModule.pool.query("SELECT friend_input FROM compatibility_invites WHERE id=$1", [invite.id])).rows).toEqual([{ friend_input: null }]);
+    } finally { await blocker.query("ROLLBACK"); blocker.release(); await work; }
+  });
+
+  it("rejects unissued offline cards after deletion and keeps a deliberate new note on the server assignment", async () => {
     const owner = `late-offline-${crypto.randomUUID()}`;
-    expect((await request(`/api/history?anonId=${owner}&throughDay=2026-09-09`, undefined, "DELETE")).status).toBe(204);
-    const uploaded = await request("/api/daily-receipts/sync", { anonId: owner, featureType: "daily-card", dailyKey: "2026-09-09", assignedCardId: "18-moon", openedAt: "2026-09-09T01:00:00.000Z" });
-    expect(uploaded.status).toBe(200);
-    expect(await uploaded.json()).toMatchObject({ assignedCardId: "18-moon", historyExcluded: true });
-    await request("/api/daily-pull", { anonId: owner, date: "2026-09-09" });
+    const day = new Date().toISOString().slice(0, 10);
+    expect((await request(`/api/history?anonId=${owner}&throughDay=${day}`, undefined, "DELETE")).status).toBe(204);
+    const uploaded = await request("/api/daily-receipts/sync", { anonId: owner, featureType: "daily-card", dailyKey: day, assignedCardId: "18-moon", openedAt: new Date().toISOString() });
+    expect(uploaded.status).toBe(404);
+    expect((await dbModule.pool.query("SELECT * FROM daily_receipts WHERE anonymous_device_id=$1", [owner])).rows).toHaveLength(0);
+    const assigned = await (await request("/api/daily-receipts/open", { anonId: owner, featureType: "daily-card" }, "PATCH")).json() as { assignedCardId: string; historyExcluded: boolean };
+    expect(assigned.historyExcluded).toBe(true);
+    await request("/api/daily-pull", { anonId: owner, date: day });
     expect((await dbModule.pool.query("SELECT * FROM daily_pulls WHERE anon_id=$1", [owner])).rows).toHaveLength(0);
-    const stale = await request("/api/daily-pull", { anonId: owner, date: "2026-09-09", note: "Old delayed draft", editedAt: "2026-09-09T00:00:00.000Z" }, "PATCH");
+    const stale = await request("/api/daily-pull", { anonId: owner, date: day, note: "Old delayed draft", editedAt: "2000-01-01T00:00:00.000Z" }, "PATCH");
     expect(stale.status).toBe(404);
-    const current = await request("/api/daily-pull", { anonId: owner, date: "2026-09-09", note: "New deliberate note", editedAt: new Date().toISOString() }, "PATCH");
+    const current = await request("/api/daily-pull", { anonId: owner, date: day, note: "New deliberate note", editedAt: new Date().toISOString() }, "PATCH");
     expect(current.status).toBe(200);
-    expect(await current.json()).toMatchObject({ cardId: "18-moon", note: "New deliberate note" });
+    expect(await current.json()).toMatchObject({ cardId: assigned.assignedCardId, note: "New deliberate note" });
   });
 
   it("rolls back every history deletion when one database operation fails", async () => {

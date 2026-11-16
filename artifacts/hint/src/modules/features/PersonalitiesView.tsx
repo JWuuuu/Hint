@@ -1,6 +1,7 @@
 import { personalityCopy } from "./personalityCopy";
 import { wrapReceiptText } from "../tarot/logic/receiptLayout";
 import { LocalizedText, translateText } from "../../lib/LocalizedText";
+import "./action-state.css";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../components/ui/dialog";
 import { useLanguage, type HintLanguage } from "../../lib/i18n";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -626,6 +627,7 @@ export function PersonalitiesView() {
     };
     window.addEventListener("storage", changed); return () => window.removeEventListener("storage", changed);
   }, [owner]);
+  const shareButtonRef = useRef<HTMLButtonElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [sharing, setSharing] = useState(false);
   const shareGeneration = useRef(0);
@@ -716,7 +718,12 @@ export function PersonalitiesView() {
   return (
     <AppScreen>
       <Dialog open={Boolean(previewUrl)} onOpenChange={open => { if (!open) setPreviewUrl(null); }}>
-        <DialogContent className="max-h-[90dvh] overflow-y-auto">
+        <DialogContent className="max-h-[90dvh] overflow-y-auto" onCloseAutoFocus={(event) => {
+          if (shareButtonRef.current?.isConnected) {
+            event.preventDefault();
+            shareButtonRef.current.focus({ preventScroll: true });
+          }
+        }}>
           <DialogTitle className="pr-8">{t("quality.sharePreview")}</DialogTitle>
           <DialogDescription>{t("quality.sharePrivacy")}</DialogDescription>
           {previewUrl && <img src={previewUrl} alt={t("quality.sharePreview")} className="h-auto w-full" />}
@@ -787,15 +794,13 @@ export function PersonalitiesView() {
             </p>
           </div>
         ) : null}
-        <p className="mt-3 font-sans text-[12px] leading-relaxed" style={{ color: GLASS.muted }}>
-          {tx("This quiz uses your answers. With a birthday, zodiac themes add a small symbolic influence; no personal chart is calculated.")}
-        </p>
       </GlassPanel>
 
       {result && resultName ? (
-        <GlassPanel hero className="mb-5">
+        <GlassPanel hero className="hint-personality-result mb-5">
           <div className="relative rounded-[22px] p-1">
             <div
+              role="img"
               aria-label={t("quality.character").replace("{name}", personalityCopy(resultName, RESULT_COPY[resultName], language).name)}
               className="absolute right-0 top-0 h-24 w-24 rounded-[22px] border sm:h-28 sm:w-28"
               style={{
@@ -811,7 +816,10 @@ export function PersonalitiesView() {
             <div className="mb-4 min-h-28 pr-28 sm:min-h-32 sm:pr-36">
               <p className="mb-2 font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Your assigned personality "} /></p>
               <h2 className="font-serif text-[29px] leading-none sm:text-[34px]" style={{ color: "var(--hint-text)" }}>
-                {personalityCopy(resultName, RESULT_COPY[resultName], language).name}
+                <span className="hint-action-ink">
+                  <span aria-hidden="true" className="hint-action-shadow" data-copy={personalityCopy(resultName, RESULT_COPY[resultName], language).name} />
+                  {personalityCopy(resultName, RESULT_COPY[resultName], language).name}
+                </span>
               </h2>
               <p className="mt-2 font-serif text-[15px] italic leading-snug" style={{ color: GLASS.text }}>
                 {result.subtitle}
@@ -843,8 +851,9 @@ export function PersonalitiesView() {
           <button
             type="button"
             disabled={sharing}
+            ref={shareButtonRef}
             data-testid="personality-share" onClick={() => void shareResult()}
-            className="mt-5 h-11 w-full rounded-full border font-sans text-[11px] font-black uppercase tracking-[0.18em]"
+            className="mt-5 min-h-11 w-full rounded-full py-2 border font-sans text-[11px] font-black uppercase tracking-[0.18em]"
             style={{
               borderColor: "color-mix(in srgb, var(--hint-aqua) 34%, var(--hint-border))",
               background: "color-mix(in srgb, var(--hint-aqua) 10%, var(--hint-surface-soft))",
@@ -859,7 +868,7 @@ export function PersonalitiesView() {
           <button
             type="button"
             onClick={restart}
-            className="mt-5 h-11 w-full rounded-full border font-sans text-[11px] font-black uppercase tracking-[0.18em]"
+            className="mt-5 min-h-11 w-full rounded-full py-2 border font-sans text-[11px] font-black uppercase tracking-[0.18em]"
             style={{
               borderColor: "color-mix(in srgb, var(--hint-lavender) 34%, var(--hint-border))",
               background: "color-mix(in srgb, var(--hint-lavender) 10%, var(--hint-surface-soft))",

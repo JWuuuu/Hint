@@ -87,6 +87,7 @@ export async function createHintScenePlayer(canvas,options){
     },
     setContext:context=>invoke('setContext',context),react:()=>invoke('react'),playGesture:(id,settings)=>invoke('playGesture',id,settings),
     setAnchor:(anchor,settings)=>invoke('setAnchor',anchor,settings),
+    cancelGestures:()=>invoke('cancelGestures'),
     pause(){director.pause();stop();draw();},resume(){director.resume();stop();draw();start();},
     setMotionPolicy(policy){
       const reduced='reduced'in policy?Boolean(policy.reduced):appReduced;

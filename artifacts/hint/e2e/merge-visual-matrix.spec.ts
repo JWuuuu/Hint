@@ -1,3 +1,4 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { appHref, test, expect, type Page, type TestInfo } from "./fixtures";
 import { getTarotCardImage } from "../src/modules/tarot/logic/cardImageMap";
 
@@ -64,10 +65,11 @@ async function inspectScroll(page: Page, selector: string, name: string, info: T
 }
 
 async function inspectDock(page: Page) {
-  const labels = await page.locator(".hint-app-tab-label").evaluateAll(nodes => nodes.map(node => {
+  await expect(page.locator(".hint-dock-label")).toHaveCount(5);
+  const labels = await page.locator(".hint-dock-label").evaluateAll(nodes => nodes.map(node => {
     const text = node.getBoundingClientRect();
     const button = node.closest("a")!.getBoundingClientRect();
-    const orb = node.closest("a")!.querySelector(".hint-app-tab-orb")?.getBoundingClientRect();
+    const orb = node.closest("a")!.querySelector(".hint-dock-perch")?.getBoundingClientRect();
     const ink = getComputedStyle(node).color.match(/[\d.]+/g)!.slice(0, 3).map(Number).reduce((sum, value) => sum + value, 0) / 3;
     return { label: node.textContent, top: text.top, bottom: text.bottom, left: text.left, right: text.right,
       button: { top: button.top, bottom: button.bottom, left: button.left, right: button.right }, orbBottom: orb?.bottom,
@@ -99,10 +101,12 @@ for (const scale of [100, 200]) {
       localStorage.setItem("hint.preferences.v1", JSON.stringify({ reduceMotion: appReduced, soundAndHaptics: false }));
     }, { language, theme, appReduced });
     await page.emulateMedia({ reducedMotion: systemReduced ? "reduce" : "no-preference" });
-    await page.goto("/app?hintPreview=embedded");
+    await mockDailyTarot(page);
+  await page.goto("/app?hintPreview=embedded");
     await page.getByTestId("home-reveal-action").click();
     await expect(page.getByTestId("home-daily-reveal")).toBeVisible();
-    await page.keyboard.press("Escape");
+    await expect(page.getByTestId("home-daily-reveal").locator('a[href$="/app/daily"]')).toBeVisible();
+    await page.getByTestId("home-daily-reveal").locator("button").last().click();
     const id = await page.locator(".hint-home-hero").getAttribute("data-daily-card-id");
     await enlarge(page, ".hint-home-content", scale);
     await enlarge(page, "[data-app-tabbar]", scale);

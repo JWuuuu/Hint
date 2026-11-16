@@ -34,10 +34,21 @@ export const WASH_FRAME_MS = 1000 / 60;
 /** Simulate at 60 Hz on both 60 Hz and ProMotion displays; never replay a
  * background pause as a burst of hundreds of physics updates. */
 export function createWashFrameClock(startedAt: number) {
+  return createFrameClock(startedAt, 50);
+}
+
+/** Passive manual momentum must decay with wall time, including slow frames.
+ * One second covers its bounded velocity's settling time without replaying an
+ * unbounded pause. Active input still applies once per delivered frame. */
+export function createManualWashFrameClock(startedAt: number) {
+  return createFrameClock(startedAt, 1000);
+}
+
+function createFrameClock(startedAt: number, maxElapsedMs: number) {
   let previous = startedAt;
   let remainder = 0;
   return (now: number) => {
-    remainder += Math.min(50, Math.max(0, now - previous));
+    remainder += Math.min(maxElapsedMs, Math.max(0, now - previous));
     previous = now;
     const steps = Math.floor((remainder + 0.001) / WASH_FRAME_MS);
     remainder = Math.max(0, remainder - steps * WASH_FRAME_MS);

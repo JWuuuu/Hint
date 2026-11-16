@@ -167,6 +167,37 @@ afterEach(() => {
 });
 
 describe("Tarot Room components", () => {
+  it.each([
+    { reduced: false, phase: "prepare" as const, keyboard: false },
+    { reduced: false, phase: "pick" as const, keyboard: true },
+    { reduced: true, phase: "prepare" as const, keyboard: true },
+    { reduced: true, phase: "pick" as const, keyboard: false },
+  ])("Back from $phase returns to an interactive step and stays there, reduced=$reduced keyboard=$keyboard", async ({ reduced, phase, keyboard }) => {
+    localStorage.setItem(HINT_PREFERENCES_STORAGE_KEY, JSON.stringify({ reduceMotion: reduced, soundAndHaptics: false }));
+    vi.mocked(window.matchMedia).mockImplementation(query => ({ matches: false, media: query, onchange: null, addListener: vi.fn(), removeListener: vi.fn(), addEventListener: vi.fn(), removeEventListener: vi.fn(), dispatchEvent: vi.fn() }));
+    const deck = createHiddenDeck();
+    saveActiveTarotSession({ phase, question: "Keep this fictional question", spreadId: "three", focusLabel: "Clear signal",
+      design: { id: "sea", label: "Deep Sea", mood: "Fixture", deckStyleId: "rose", backStyle: "rose", cardBackId: ORIGINAL_SKY_BACK, cardArtId: "hint-classic", backgroundId: "sea", background: "#fff", glow: "#fff" },
+      selectedCards: [], revealedIds: [], deck,
+    });
+    renderWithProviders(<TarotRoomFlow />);
+    if (phase === "prepare") await screen.findByRole("button", { name: "Auto Wash" }, { timeout: 4500 });
+    else await screen.findByRole("heading", { name: "Pick Cards" });
+    const back = screen.getByRole("button", { name: /^Back$/ });
+    if (keyboard) { back.focus();await userEvent.setup().keyboard("{Enter}"); }
+    else await userEvent.setup().click(back);
+    const control = phase === "pick" ? "Auto Wash" : "Begin the ritual";
+    await screen.findByRole("button", { name: control }, { timeout: 4500 });
+    await act(async () => { await new Promise(resolve => setTimeout(resolve, 1600)); });
+    expect(screen.getByRole("button", { name: control })).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: "Cutting the deck." })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Pick Cards" })).toBeNull();
+    expect(loadActiveTarotSession()?.question).toBe("Keep this fictional question");
+    expect(loadActiveTarotSession()?.spreadId).toBe("three");
+    expect(document.querySelector('[data-room-background="sea"]')).toBeTruthy();
+    if (keyboard) expect(document.activeElement).toBe(back);
+  }, 15000);
+
   it("does not mistake next for an ex-partner when recommending an offline spread", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => jsonResponse({ error: "Offline test" }, 503)));
     renderWithProviders(<TarotRoomFlow />);
@@ -388,7 +419,7 @@ describe("Tarot Room components", () => {
     const signal = create.mock.calls[0]![1]!.signal!;
     if (departure === "unmount") view.unmount();
     else {
-      await user.click(dialog.getByRole("button", { name: "Back to reading" }));
+      await user.click(dialog.getByRole("button", { name: "Back" }));
       await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     }
     expect(signal.aborted).toBe(true);
@@ -771,7 +802,7 @@ describe("Tarot Room components", () => {
 
     await chooseReadingOption("Receive");
     expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Back to reading" }));
+    await user.click(within(screen.getByRole("dialog", { name: "A letter to keep" })).getByRole("button", { name: "Back" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     storage.failing = false;
     await user.click(screen.getByRole("button", { name: "Try saving again" }));
@@ -1156,8 +1187,8 @@ describe("Tarot Room components", () => {
     expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
     expect((screen.getByRole("checkbox") as HTMLInputElement).checked).toBe(false);
     expect(screen.getByRole("button", { name: "Share receipt" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Back to reading" })).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Back to reading" }));
+    expect(within(screen.getByRole("dialog", { name: "A letter to keep" })).getByRole("button", { name: "Back" })).toBeTruthy();
+    await user.click(within(screen.getByRole("dialog", { name: "A letter to keep" })).getByRole("button", { name: "Back" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
     const composer = screen.getByPlaceholderText(

@@ -36,8 +36,11 @@ it("changes reward on midnight while ignoring yesterday's late assignment and lo
   expect(screen.getByTestId("reward").textContent).toBe("魔術師");
 });
 it("keeps collection retry visible until the actual unlock is persisted", async () => {
-  mocks.getReceipt.mockResolvedValue({ assignedCardId: "0-fool", dailyKey: "2026-09-09" });
-  mocks.open.mockResolvedValue({ assignedCardId: "0-fool", dailyKey: "2026-09-09", openedAt: "2026-09-09T23:59:50" });
+  mocks.getReceipt.mockResolvedValue({ anonId: "fixture", assignedCardId: "0-fool", dailyKey: "2026-09-09" });
+  mocks.open.mockImplementation(() => {
+    mocks.cached = { anonId: "fixture", assignedCardId: "0-fool", dailyKey: "2026-09-09", openedAt: "2026-09-09T23:59:50" };
+    return Promise.resolve(mocks.cached);
+  });
   mocks.unlock.mockReturnValueOnce(null).mockReturnValue({});
   render(<CardCollectionView />); await act(async () => {});
   await act(async () => fireEvent.click(screen.getByTestId("reward")));

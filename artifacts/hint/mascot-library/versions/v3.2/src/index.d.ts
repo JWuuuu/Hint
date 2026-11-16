@@ -114,6 +114,7 @@ export interface HintScenePlayer {
   setAnchor(anchor: {x: number; y: number; width: number}, options?: {followLayout?: boolean}): boolean;
   react(): boolean;
   playGesture(id: GestureId, options?: {interrupt?: boolean}): boolean;
+  cancelGestures(): void;
   pause(): void;
   resume(): void;
   setMotionPolicy(policy: {reduced?: boolean; visible?: boolean}): void;

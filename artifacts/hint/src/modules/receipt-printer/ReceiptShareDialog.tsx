@@ -43,14 +43,15 @@ export function ReceiptShareDialog({ source, onClose }: { source: ReceiptSource;
   const [includePersonal, setIncludePersonal] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const [preview, setPreview] = useState(false);
-  const [printRun, setPrintRun] = useState(0);
-  const [printedKey, setPrintedKey] = useState<string | null>(null);
-  const [skip, setSkip] = useState(false);
-  const [image, setImage] = useState<{ blob: Blob; url: string; model: TarotReceiptModel } | null>(null);
+  const [printedKey, setPrintedKey] = useState<number | null>(null);
+  const [skippedKey, setSkippedKey] = useState<number | null>(null);
+  const [image, setImage] = useState<{ blob: Blob; url: string; model: TarotReceiptModel; attempt: number } | null>(null);
   const [error, setError] = useState<"retry" | "long" | "shareError" | null>(null);
   const [status, setStatus] = useState<"idle" | "busy" | "shared" | "downloaded">("idle");
   const closeRef = useRef(onClose); closeRef.current = onClose;
   const shareAbort = useRef<AbortController | null>(null);
+  const scroll = useRef<HTMLDivElement>(null);
+  const skipButton = useRef<HTMLButtonElement>(null);
   const { model, invalid } = useMemo(() => {
     try {
       const value = snapshot.kind === "tarot"
@@ -59,9 +60,16 @@ export function ReceiptShareDialog({ source, onClose }: { source: ReceiptSource;
       return { model: value, invalid: false };
     } catch { return { model: null, invalid: true }; }
   }, [snapshot, includePersonal, language, includeDailyScores]);
-  const printKey = `${includePersonal}:${language}:${attempt}:${printRun}`;
+  const [printRun, setPrintRun] = useState({ model, attempt, key: 0 });
+  // Reset before rendering children. A public -> private -> public change is
+  // three distinct runs, even when the middle run has not finished.
+  if (printRun.model !== model || printRun.attempt !== attempt) {
+    setPrintRun({ model, attempt, key: printRun.key + 1 });
+  }
+  const printKey = printRun.key;
   const printed = printedKey === printKey;
-  const currentImage = image?.model === model ? image : null;
+  const currentImage = image?.model === model && image.attempt === attempt ? image : null;
+  const showingPreview = preview && Boolean(currentImage) && printed;
   function assertCurrent() {
     identity.assertCurrent();
     if (historyClearVersion(identity.owner) !== clearVersion) throw new DOMException("Reading cleared", "AbortError");
@@ -78,7 +86,7 @@ export function ReceiptShareDialog({ source, onClose }: { source: ReceiptSource;
     const controller = new AbortController();
     let url: string | undefined;
     shareAbort.current?.abort(); shareAbort.current = null;
-    setImage(null); setStatus("idle"); setError(null); setPreview(false); setSkip(false);
+    setImage(null); setStatus("idle"); setError(null); setPreview(false);
     if (!model || invalid) { setError("retry"); return; }
     void (async () => {
       try {
@@ -88,7 +96,7 @@ export function ReceiptShareDialog({ source, onClose }: { source: ReceiptSource;
         const blob = await createTarotReceiptBlob(model, { signal: controller.signal });
         if (controller.signal.aborted) return;
         assertCurrent();
-        url = URL.createObjectURL(blob); setImage({ blob, url, model });
+        url = URL.createObjectURL(blob); setImage({ blob, url, model, attempt });
       } catch (err) {
         if (controller.signal.aborted) return;
         if (err instanceof DOMException && err.name === "AbortError") { closeRef.current(); return; }
@@ -112,22 +120,26 @@ export function ReceiptShareDialog({ source, onClose }: { source: ReceiptSource;
     } finally { if (shareAbort.current === controller) shareAbort.current = null; }
   }
   function replay() {
-    setPreview(false); setSkip(false); setPrintedKey(null); setPrintRun(value => value + 1);
+    setPreview(false); setPrintedKey(null); setPrintRun(value => ({ ...value, key: value.key + 1 }));
+    setStatus("idle"); setError(value => value === "shareError" ? null : value);
   }
   return <Dialog open onOpenChange={open => { if (!open) onClose(); }}><DialogPortal>
     <DialogSurface className="receipt-share-dialog" data-testid="receipt-share-dialog" onCloseAutoFocus={event => { event.preventDefault(); if (opener.current?.isConnected) opener.current.focus({ preventScroll: true }); }}>
       <header className="receipt-share-header"><button type="button" onClick={onClose} aria-label={text("close")}><ArrowLeft size={22} /></button><div><DialogTitle>{text("title")}</DialogTitle><DialogDescription>{text("subtitle")}</DialogDescription></div></header>
-      <div className="receipt-share-scroll">
+      <div ref={scroll} className="receipt-share-scroll" tabIndex={0}>
         {snapshot.kind === "tarot" && <label className="receipt-share-private"><input type="checkbox" checked={includePersonal} disabled={status === "busy"} onChange={event => setIncludePersonal(event.target.checked)} />{text("include")}</label>}
-        {model && !preview && <ReceiptPrinter key={printKey} skip={skip} onPrintComplete={() => setPrintedKey(printKey)}><Paper model={model} /></ReceiptPrinter>}
-        {preview && currentImage && <img className="receipt-share-image" src={currentImage.url} alt={text("preview")} data-testid="receipt-image-preview" />}
-        {error && <div className="receipt-share-error" role="alert"><p>{text(error)}</p><button type="button" onClick={() => { if (error === "long") setIncludePersonal(false); else if (error === "shareError") void share(); else setAttempt(value => value + 1); }}>{text(error === "long" ? "public" : "tryAgain")}</button></div>}
+        {model && <div className={showingPreview ? "sr-only" : undefined}><ReceiptPrinter key={printKey} skip={skippedKey === printKey} onPrintComplete={() => {
+          setPrintedKey(printKey);
+          if (document.activeElement === skipButton.current) scroll.current?.focus({ preventScroll: true });
+        }}><Paper model={model} /></ReceiptPrinter></div>}
+        {showingPreview && currentImage && <img className="receipt-share-image" src={currentImage.url} alt={text("previewAlt")} data-testid="receipt-image-preview" />}
+        {error && <div className="receipt-share-error" role="alert"><p>{text(error)}</p><button type="button" disabled={error === "shareError" && (!currentImage || !printed || status === "busy")} onClick={() => { if (error === "long") setIncludePersonal(false); else if (error === "shareError") void share(); else setAttempt(value => value + 1); }}>{text(error === "long" ? "public" : "tryAgain")}</button></div>}
       </div>
       <footer className="receipt-share-footer">
-        {!printed && !preview && <button type="button" className="receipt-share-link" onClick={() => setSkip(true)}>{text("skip")}</button>}
+        {!printed && !showingPreview && <button ref={skipButton} type="button" className="receipt-share-link" onClick={() => setSkippedKey(printKey)}>{text("skip")}</button>}
 
-        <p role="status">{status === "shared" ? text("shared") : status === "downloaded" ? text("downloaded") : !currentImage && !error ? text("preparing") : !printed ? text("printing") : ""}</p>
-        <div><button type="button" disabled={status === "busy"} onClick={replay}>{text("replay")}</button><button type="button" disabled={!currentImage || !printed || status === "busy"} onClick={() => setPreview(value => !value)}>{preview ? text("paper") : text("preview")}</button><button type="button" disabled={!currentImage || !printed || status === "busy"} onClick={() => void share()}><Share2 size={16} />{text("share")}</button></div>
+        <p role="status" aria-live={error ? "off" : "polite"}>{error ? text(error) : status === "busy" ? text("sharing") : status === "shared" ? text("shared") : status === "downloaded" ? text("downloaded") : !currentImage ? text("preparing") : !printed ? text("printing") : text("ready")}</p>
+        <div><button type="button" disabled={status === "busy"} onClick={replay}>{text("replay")}</button><button type="button" disabled={!currentImage || !printed || status === "busy"} onClick={() => setPreview(value => !value)}>{showingPreview ? text("paper") : text("preview")}</button><button type="button" disabled={!currentImage || !printed || status === "busy"} onClick={() => void share()}><Share2 size={16} />{text("share")}</button></div>
       </footer>
     </DialogSurface>
   </DialogPortal></Dialog>;

@@ -16,23 +16,25 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) {
     const nav = page.locator("[data-app-tabbar]");
     await expect(nav).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
-    const dock = nav.locator(".hint-app-dock");
+    const dock = nav.locator(".hint-mascot-dock");
+    await expect(nav.locator(".hint-dock-label")).toHaveCount(5);
     const scroll = page.locator(".hint-app-scroll").last();
     const baseline = await dock.evaluate(element => element.getBoundingClientRect().height);
     const padding = await scroll.evaluate(element => parseFloat(getComputedStyle(element).paddingBottom));
     await page.screenshot({ path: info.outputPath(`navigation-${locale}-normal.png`) });
 
     // Web text magnification exercises reflow; physical iOS Dynamic Type remains a device check.
-    await nav.locator(".hint-app-tab-label").evaluateAll(labels => {
+    await nav.locator(".hint-dock-label").evaluateAll(labels => {
       const sizes = labels.map(label => [label as HTMLElement, parseFloat(getComputedStyle(label).fontSize)] as const);
       for (const [label, size] of sizes) label.style.fontSize = `${size * 2}px`;
     });
     await expect.poll(async () => dock.evaluate(element => element.getBoundingClientRect().height)).toBeGreaterThan(baseline);
     const magnified = await dock.evaluate(element => element.getBoundingClientRect().height);
     await expect.poll(async () => scroll.evaluate(element => parseFloat(getComputedStyle(element).paddingBottom))).toBeGreaterThanOrEqual(padding + magnified - baseline - 1);
+    await expect.poll(() => nav.locator(".hint-dock-label").evaluateAll(labels => labels.map(label => getComputedStyle(label).fontSize))).toEqual(Array(5).fill("22px"));
     const metrics = await nav.locator("a").evaluateAll(links => links.map(link => {
       const rect = link.getBoundingClientRect();
-      const label = link.querySelector<HTMLElement>(".hint-app-tab-label");
+      const label = link.querySelector<HTMLElement>(".hint-dock-label");
       const labelRect = label?.getBoundingClientRect();
       const range = document.createRange();
       if (label) range.selectNodeContents(label);
@@ -59,7 +61,7 @@ for (const locale of ["en", "zh", "es", "ja", "ko"]) {
     await page.screenshot({ path: info.outputPath(`navigation-${locale}-200.png`) });
 
     // Reducing text restores clearance instead of accumulating height across updates.
-    await nav.locator(".hint-app-tab-label").evaluateAll(labels => labels.forEach(label => (label as HTMLElement).style.removeProperty("font-size")));
+    await nav.locator(".hint-dock-label").evaluateAll(labels => labels.forEach(label => (label as HTMLElement).style.removeProperty("font-size")));
     await expect.poll(async () => dock.evaluate(element => element.getBoundingClientRect().height)).toBe(baseline);
     await expect.poll(async () => scroll.evaluate(element => parseFloat(getComputedStyle(element).paddingBottom))).toBe(padding);
     await nav.locator('a[href$="/app/ask"]').click();

@@ -49,9 +49,10 @@ catalog:
   tailwind-merge: ^3.3.1
   tailwindcss: ^4.1.14
   tsx: ^4.21.0
-  vite: ^7.3.2
+  vite: 7.3.7
   wouter: ^3.3.5
-  zod: ^3.25.76
+  # 4.6.6 rejects oversized bounded collections before visiting their elements.
+  zod: 4.6.6
 
 autoInstallPeers: false
 
@@ -62,9 +63,23 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 overrides:
-  # drizzle-kit uses esbuild internally on an older version that's vulnerable, this overrides it
-  "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
-  esbuild: "0.27.3"
+  # Same-major parser security fixes for upstream's exact development-tool pins.
+  # Keep these scoped to the reviewed parents; codegen and CSS builds cover them.
+  "orval@8.22.0>js-yaml": "4.3.2"
+  "@tailwindcss/typography@0.5.19>postcss-selector-parser": "6.1.5"
+  # Exact-parent compatibility validated with generated SQL, API worker transports
+  # and Windows traversal regressions. These are local compatibility declarations,
+  # not upstream support claims; revisit when the parents adopt patched esbuild.
+  "drizzle-kit@0.31.10>esbuild": "0.28.2"
+  "esbuild-plugin-pino@2.3.3>esbuild": "0.28.2"
+  # Preserve the accepted deprecated-loader replacement, scoped to its only parent.
+  "drizzle-kit@0.31.10>@esbuild-kit/esm-loader": "npm:tsx@4.23.15"
+  # Paired with the exact TypeDoc patch below to use minimatch's public partial API.
+  # This local compatibility declaration requires review on parent updates.
+  "typedoc@0.28.19>minimatch": "11.0.5"
+
+patchedDependencies:
+  "typedoc@0.28.19": "patches/typedoc@0.28.19.patch"
 
 allowBuilds:
   esbuild: true

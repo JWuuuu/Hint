@@ -14,8 +14,8 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 it("reduces the decorative wait without postponing the actual unlock", () => {
   setHintPreference("reduceMotion", true);
-  const unlock = vi.fn();
-  render(<LanguageProvider><MotionPolicyProvider><RareCardUnlock card={card} onUnlock={unlock} /></MotionPolicyProvider></LanguageProvider>);
+  const unlock = vi.fn(() => true);
+  render(<LanguageProvider><MotionPolicyProvider><RareCardUnlock card={card} canUnlock onUnlock={unlock} /></MotionPolicyProvider></LanguageProvider>);
   fireEvent.click(screen.getByRole("button", { name: "Open today's rare reward for The Sun" }));
   expect(unlock).toHaveBeenCalledExactlyOnceWith("19-sun");
   expect(screen.queryByTestId("rare-card-popout")).toBeNull();
@@ -24,8 +24,8 @@ it("cancels a normal popout when the preference changes during its animation", (
   let frame: FrameRequestCallback = () => {};
   vi.spyOn(window, "requestAnimationFrame").mockImplementation(callback => { frame = callback; return 1; });
   vi.spyOn(window, "cancelAnimationFrame").mockImplementation(() => {});
-  const unlock = vi.fn();
-  render(<LanguageProvider><MotionPolicyProvider><RareCardUnlock card={card} onUnlock={unlock} /></MotionPolicyProvider></LanguageProvider>);
+  const unlock = vi.fn(() => true);
+  render(<LanguageProvider><MotionPolicyProvider><RareCardUnlock card={card} canUnlock onUnlock={unlock} /></MotionPolicyProvider></LanguageProvider>);
   const button = screen.getByRole("button", { name: "Open today's rare reward for The Sun" });
   fireEvent.click(button); fireEvent.click(button);
   expect(unlock).toHaveBeenCalledOnce();
@@ -33,4 +33,31 @@ it("cancels a normal popout when the preference changes during its animation", (
   expect(screen.queryByTestId("rare-card-popout")).not.toBeNull();
   act(() => setHintPreference("reduceMotion", true));
   expect(screen.queryByTestId("rare-card-popout")).toBeNull();
+});
+it("does not reveal or animate when the business action rejects the card", () => {
+  const unlock = vi.fn(() => false);
+  render(<LanguageProvider><MotionPolicyProvider><RareCardUnlock card={card} canUnlock onUnlock={unlock} /></MotionPolicyProvider></LanguageProvider>);
+  fireEvent.click(screen.getByRole("button"));
+  expect(unlock).toHaveBeenCalledOnce();
+  expect(screen.getByRole("button").textContent).toContain("Open today's");
+  expect(document.querySelector(".rare-unlock-stage.is-saved, .rare-unlock-stage.is-unlocking")).toBeNull();
+  expect(screen.queryByTestId("rare-card-popout")).toBeNull();
+});
+it("consumes an ineligible automatic activation without reviving it when ready", () => {
+  const unlock = vi.fn(() => true);
+  const view = (ready: boolean) => <LanguageProvider><MotionPolicyProvider><RareCardUnlock card={card} canUnlock={ready} autoUnlockKey={1} onUnlock={unlock} /></MotionPolicyProvider></LanguageProvider>;
+  const { rerender } = render(view(false));
+  expect(screen.getByRole("button").hasAttribute("disabled")).toBe(true);
+  rerender(view(true));
+  expect(unlock).not.toHaveBeenCalled();
+  expect(screen.queryByTestId("rare-card-popout")).toBeNull();
+});
+it("reduced-motion rapid input accepts once and keeps accepted replay local", () => {
+  setHintPreference("reduceMotion", true);
+  const unlock = vi.fn(() => true);
+  render(<LanguageProvider><MotionPolicyProvider><RareCardUnlock card={card} canUnlock onUnlock={unlock} /></MotionPolicyProvider></LanguageProvider>);
+  const button = screen.getByRole("button");
+  fireEvent.click(button); fireEvent.click(button); fireEvent.click(button);
+  expect(unlock).toHaveBeenCalledOnce();
+  expect(button.textContent).toContain("Replay");
 });

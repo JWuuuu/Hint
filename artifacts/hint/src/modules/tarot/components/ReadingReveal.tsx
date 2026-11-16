@@ -169,7 +169,7 @@ export function ReadingReveal({
       <div className="relative z-30 mx-auto mb-7 max-w-3xl sm:mb-9">
         <p className="font-serif text-[30px] leading-tight text-[#332d45]">{title}</p>
         <p className="mt-3 font-sans text-sm text-[#746276]">{subtitle}</p>
-        <div className="mx-auto mt-4 flex w-fit flex-wrap items-center justify-center gap-2 rounded-full border border-[#d8b96e]/30 bg-white/48 px-3 py-2 font-sans text-[10px] uppercase tracking-[0.14em] text-[#756777] shadow-[0_8px_22px_rgba(86,62,92,0.08)] backdrop-blur-md">
+        <div className="mx-auto mt-4 flex w-fit flex-wrap items-center justify-center gap-2 rounded-full border border-[#d8b96e]/30 bg-white/48 px-3 py-2 font-sans text-[11px] uppercase tracking-[0.14em] text-[#756777] shadow-[0_8px_22px_rgba(86,62,92,0.08)] backdrop-blur-md">
           <span className="text-[#9a7442]">
             {allRevealed
               ? t("tarot.flow.reveal.spreadRevealed")
@@ -271,7 +271,7 @@ export function ReadingReveal({
                 />
               </motion.div>
               <div className="grid justify-items-center gap-1.5">
-                <p className="max-w-[7rem] rounded-[14px] border border-[#7b5b91]/14 bg-white/52 px-3 py-1.5 text-center font-sans text-[10px] font-bold uppercase leading-tight tracking-[0.14em] text-[#6d5d70] text-balance shadow-[0_6px_18px_rgba(83,65,92,0.06)] [overflow-wrap:anywhere]">
+                <p className="max-w-[7rem] rounded-[14px] border border-[#7b5b91]/14 bg-white/52 px-3 py-1.5 text-center font-sans text-[11px] font-bold uppercase leading-tight tracking-[0.14em] text-[#6d5d70] text-balance shadow-[0_6px_18px_rgba(83,65,92,0.06)] [overflow-wrap:anywhere]">
                   {label}
                 </p>
                 {revealed && (

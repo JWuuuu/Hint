@@ -11,10 +11,11 @@ describe("tarotFlowReducer", () => {
     const settings = tarotFlowReducer(picking, { type: "OPEN_SETTINGS" });
     expect(settings).toEqual({
       step: "design",
+      generation: 1,
       settingsMode: true,
       settingsReturnStep: "pick",
     });
-    expect(tarotFlowReducer(settings, { type: "CLOSE_SETTINGS" })).toEqual(picking);
+    expect(tarotFlowReducer(settings, { type: "CLOSE_SETTINGS" })).toEqual({ ...picking, generation: 2 });
   });
 
   it("keeps standalone room setup open until its caller handles navigation", () => {
@@ -25,7 +26,7 @@ describe("tarotFlowReducer", () => {
   it("resets the complete ritual flow to a clean question stage", () => {
     const reading = createTarotFlowState("reading");
     expect(tarotFlowReducer(reading, { type: "RESET" })).toEqual(
-      createTarotFlowState("question"),
+      { ...createTarotFlowState("question"), generation: 1 },
     );
   });
 
@@ -42,4 +43,28 @@ describe("tarotFlowReducer", () => {
       expect(getTarotStableRecoveryStep(step)).toBe(step);
     },
   );
+
+  it.each(["prepare", "shuffle", "cut"] as const)("rejects a late %s completion after Back and a same-stage restart", from => {
+    const original = createTarotFlowState(from);
+    const abandoned = { type: "ADVANCE" as const, from, generation: original.generation, step: "pick" as const };
+    const back = tarotFlowReducer(original, { type: "NAVIGATE", step: "design" });
+    expect(tarotFlowReducer(back, abandoned)).toBe(back);
+    const restarted = tarotFlowReducer(back, { type: "NAVIGATE", step: from });
+    expect(tarotFlowReducer(restarted, abandoned)).toBe(restarted);
+    const completed = tarotFlowReducer(restarted, { ...abandoned, generation: restarted.generation });
+    expect(completed.step).toBe("pick");
+    expect(tarotFlowReducer(completed, { ...abandoned, generation: restarted.generation })).toBe(completed);
+  });
+
+  it("invalidates a running completion across settings and reset without reusing a generation", () => {
+    const cutting = createTarotFlowState("cut");
+    const completion = { type: "ADVANCE" as const, from: "cut" as const, generation: cutting.generation, step: "pick" as const };
+    const settings = tarotFlowReducer(cutting, { type: "OPEN_SETTINGS" });
+    expect(tarotFlowReducer(settings, completion)).toBe(settings);
+    const returned = tarotFlowReducer(settings, { type: "CLOSE_SETTINGS" });
+    expect(tarotFlowReducer(returned, completion)).toBe(returned);
+    const reset = tarotFlowReducer(returned, { type: "RESET" });
+    const newCut = tarotFlowReducer(reset, { type: "NAVIGATE", step: "cut" });
+    expect(tarotFlowReducer(newCut, completion)).toBe(newCut);
+  });
 });

@@ -1,5 +1,5 @@
 import { validBirthDate } from "../../lib/birthDetails";
-import { LocalizedText } from "../../lib/LocalizedText";
+import { LocalizedText, translateText } from "../../lib/LocalizedText";
 import { useLanguage } from "../../lib/i18n";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation } from "wouter";
@@ -67,7 +67,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!guideEnabled) { guideHasFrame.current = false;formArrival.current = null;setLeavingWelcome(false); }
   }, [guideEnabled]);
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [location, navigate] = useLocation();
   const account = useLocalAccount();
   const { anonId, profile, saveProfile, isSaving } = useProfile();
@@ -238,13 +238,13 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
       </div>
       {guideEnabled && <HintOnboardingBackdrop />}
 
-      <main className="hint-onboarding-scroll hint-app-scroll relative z-10 mx-auto h-full w-full max-w-[430px] overflow-y-auto">
+      <div className="hint-onboarding-scroll hint-app-scroll relative z-10 mx-auto h-full w-full max-w-[430px] overflow-y-auto">
         {step !== "welcome" ? (
           <header className="sticky top-0 z-20 flex items-center justify-between px-5 pb-3 pt-[calc(var(--hint-safe-top)+0.9rem)] backdrop-blur-xl">
             <button type="button" onClick={goBack} className="hint-onboarding-icon-button" aria-label={t("common.back")}>
               <ArrowLeft size={18} />
             </button>
-            <div className="flex items-center gap-1.5" aria-label={t("quality.onboardingStep").replace("{step}", String(stepIndex))}>
+            <div className="flex items-center gap-1.5" role="group" aria-label={t("quality.onboardingStep").replace("{step}", String(stepIndex))}>
               {[1, 2, 3].map((item) => (
                 <span key={item} className="h-1 rounded-full transition-all" style={{ width: item === stepIndex ? 28 : 7, background: item <= stepIndex ? "var(--hint-onboarding-progress-on, #7d596f)" : "var(--hint-onboarding-progress-off, rgba(74,54,68,0.16))" }} />
               ))}
@@ -267,7 +267,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
               <span className="hint-onboarding-zodiac left-[8%] top-[24%]"><LocalizedText text={"LEO"} /></span>
               <span className="hint-onboarding-zodiac right-[3%] top-[42%]"><LocalizedText text={"PISCES"} /></span>
               <span className="hint-onboarding-zodiac bottom-[17%] left-[12%]"><LocalizedText text={"LIBRA"} /></span>
-              <div className="hint-onboarding-card" aria-label="Hint card">
+              <div className="hint-onboarding-card" role="img" aria-label={translateText("Hint card", language)}>
                 <span className="text-[9px] font-bold uppercase tracking-[0.2em]"><LocalizedText text={"Hint"} /></span>
                 <span className="font-serif text-[70px] leading-none">H</span>
                 <Sparkles size={17} strokeWidth={1.45} />
@@ -321,7 +321,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
                   <input type="time" value={birthTime} onChange={(event) => setBirthTime(event.target.value)} data-testid="onboarding-birthtime" />
                 </OnboardingField>
                 <OnboardingField label="Birth city" detail="Optional" icon={MapPin}>
-                  <input value={birthPlace} onChange={(event) => setBirthPlace(event.target.value)} placeholder="City" autoComplete="address-level2" data-testid="onboarding-birthplace" />
+                  <input value={birthPlace} onChange={(event) => setBirthPlace(event.target.value)} placeholder={translateText("City", language)} autoComplete="address-level2" data-testid="onboarding-birthplace" />
                 </OnboardingField>
               </div>
             </div>
@@ -336,7 +336,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
         {step === "focus" ? (
           <section className="hint-onboarding-step">
             <StepHeading eyebrow="One intention" title="What should Hint notice first?" body="Choose the area you want your first readings to lean toward. You can change this later." />
-            <div className="mt-8 grid gap-3" role="radiogroup" aria-label="Reading focus">
+            <div className="mt-8 grid gap-3" role="radiogroup" aria-label={translateText("Reading focus", language)}>
               {FOCUS_OPTIONS.map((option) => {
                 const Icon = option.icon;
                 const selected = focus === option.id;
@@ -367,7 +367,7 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
                   <span className="hint-onboarding-choice-icon"><Mail size={18} /></span>
                   <span className="min-w-0 flex-1 text-left">
                     <span className="block text-[11px] uppercase tracking-[0.14em] text-[#9a7b8e]"><LocalizedText text={"Continue as"} /></span>
-                    <span className="mt-1 block truncate text-[14px] font-semibold text-[#3d3039]">{account.email}</span>
+                    <span className="hint-onboarding-account-email mt-1 block [overflow-wrap:anywhere] text-[14px] font-semibold text-[#3d3039]">{account.email}</span>
                   </span>
                   <ArrowRight size={17} />
                 </button>
@@ -400,17 +400,17 @@ export function OnboardingGate({ children }: { children: ReactNode }) {
             </div>
           </section>
         ) : null}
-      </main>
+      </div>
     </div>
   );
 }
 
 function StepHeading({ eyebrow, title, body }: { eyebrow: string; title: string; body: string }) {
-  return <div><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9a7189]"><LocalizedText text={eyebrow} /></p><h1 tabIndex={-1} className="mt-3 max-w-[350px] font-serif text-[38px] leading-[1.02] text-[#30252f] outline-none"><LocalizedText text={title} /></h1><p className="mt-4 max-w-[355px] text-[13.5px] leading-6 text-[#7e7179]"><LocalizedText text={body} /></p></div>;
+  return <div><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#9a7189]"><LocalizedText text={eyebrow} /></p><h1 tabIndex={-1} className="mt-3 max-w-[350px] font-serif text-[38px] leading-[1.02] [overflow-wrap:anywhere] text-[#30252f] outline-none"><LocalizedText text={title} /></h1><p className="mt-4 max-w-[355px] text-[13.5px] leading-[1.7777777778] text-[#7e7179]"><LocalizedText text={body} /></p></div>;
 }
 
 function OnboardingField({ label, detail, icon: Icon, children }: { label: string; detail?: string; icon: typeof UserRound; children: ReactNode }) {
-  return <label className="block min-w-0"><span className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#796873]"><Icon size={13} strokeWidth={1.7} /><LocalizedText text={label} />{detail ? <span className="ml-auto text-[9px] font-medium normal-case tracking-normal text-[#a6969f]"><LocalizedText text={detail} /></span> : null}</span><span className="hint-onboarding-input">{children}</span></label>;
+  return <label className="block min-w-0"><span className="mb-2 flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#796873]"><Icon size={13} strokeWidth={1.7} /><span className="flex-[1_1_min-content]"><LocalizedText text={label} /></span>{detail ? <span className="ml-auto text-[9px] font-medium normal-case tracking-normal text-[#a6969f]"><LocalizedText text={detail} /></span> : null}</span><span className="hint-onboarding-input">{children}</span></label>;
 }
 
 function InlineError({ message }: { message: string | null }) {

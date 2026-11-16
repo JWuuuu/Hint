@@ -1,13 +1,15 @@
 // @vitest-environment jsdom
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { navigate } from "wouter/use-browser-location";
 import { act, cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { HintGuideProvider, HintGuideSlot, useHintGuideGesture, useHintGuidePlayback } from "./HintGuide";
 import { askGuideContext, voiceGuideContext } from "./hintGuideContext";
+import { HintCornerLayer, RoomCompanion } from "./RoomCompanion";
 
 const state = vi.hoisted(() => ({
   policy: { reduced: false, pageVisible: true },
-  player: { setContext: vi.fn(), setAnchor: vi.fn(), setDelivery: vi.fn(), setMotionPolicy: vi.fn(), react: vi.fn(), playGesture: vi.fn(), destroy: vi.fn(), pause: vi.fn(), resume: vi.fn(), setSpeed: vi.fn() },
+  player: { setContext: vi.fn(), setAnchor: vi.fn(), setDelivery: vi.fn(), setMotionPolicy: vi.fn(), react: vi.fn(), playGesture: vi.fn(), cancelGestures: vi.fn(), destroy: vi.fn(), pause: vi.fn(), resume: vi.fn(), setSpeed: vi.fn() },
   createPlayer: vi.fn(),
 }));
 vi.mock("../../lib/motionPolicy", () => ({ useMotionPolicy: () => state.policy }));
@@ -25,9 +27,9 @@ beforeEach(() => {
       : { x: 0, y: 0, left: 0, top: 0, right: 1024, bottom: 768, width: 1024, height: 768, toJSON() {} };
   });
 });
-afterEach(() => { cleanup();vi.restoreAllMocks();vi.unstubAllGlobals();vi.unstubAllEnvs();window.history.replaceState({}, "", "/"); });
+afterEach(() => { cleanup();vi.useRealTimers();vi.restoreAllMocks();vi.unstubAllGlobals();vi.unstubAllEnvs();window.history.replaceState({}, "", "/"); });
 
-it("gives explicit app feedback priority over a decorative gesture", async () => {
+it("lets the scene coordinator decide priority for explicit app feedback", async () => {
   function SavedCard() {
     const playGesture = useHintGuideGesture();
     return <button onClick={() => playGesture?.("celebration")}>Save card</button>;
@@ -35,7 +37,7 @@ it("gives explicit app feedback priority over a decorative gesture", async () =>
   const view = render(<HintGuideProvider enabled><HintGuideSlot context={askGuideContext({ messageCount: 0, thinking: false })} /><SavedCard /></HintGuideProvider>);
   await waitFor(() => expect(state.player.setContext).toHaveBeenCalled());
   fireEvent.click(view.getByRole("button", { name: "Save card" }));
-  expect(state.player.playGesture).toHaveBeenCalledWith("celebration", { interrupt: true });
+  expect(state.player.playGesture).toHaveBeenCalledWith("celebration");
 });
 
 function Scene({ voice = false, active = true, enabled = true }: { voice?: boolean; active?: boolean; enabled?: boolean }) {
@@ -44,6 +46,31 @@ function Scene({ voice = false, active = true, enabled = true }: { voice?: boole
     {voice && <HintGuideSlot priority={100} context={voiceGuideContext("listening", "idle")} />}
   </HintGuideProvider>;
 }
+
+it("lets a noninteractive dock yield the single actor to delivery and recover its ownership", async () => {
+  const context = { ...askGuideContext({ messageCount: 0, thinking: false }), room: "home" as const, resting: true };
+  const target = { current: document.createElement("div") }; document.body.append(target.current);
+  function DockScene({ delivering = false }: { delivering?: boolean }) {
+    return <HintGuideProvider enabled>
+      <HintGuideSlot priority={35} context={context} className="corner" />
+      <a href="/app/ask"><HintGuideSlot priority={70} context={context} interactive={false} className="dock" />Ask</a>
+      {delivering && <HintGuideSlot priority={210} context={context} delivery={{key:"letter", cardBack:"/card.png", target, done:false}} className="delivery" />}
+    </HintGuideProvider>;
+  }
+  const view = render(<DockScene />);
+  await waitFor(() => expect(view.container.querySelector(".dock")?.getAttribute("data-guide-selected")).toBe("true"));
+  expect(view.container.querySelector("a button")).toBeNull();
+  expect(view.container.querySelector(".corner")?.hasAttribute("data-guide-selected")).toBe(false);
+  view.rerender(<DockScene delivering />);
+  await waitFor(() => expect(view.container.querySelector(".delivery")?.getAttribute("data-guide-selected")).toBe("true"));
+  expect(view.container.querySelector(".dock")?.hasAttribute("data-guide-selected")).toBe(false);
+  expect(state.player.setDelivery).toHaveBeenLastCalledWith(expect.objectContaining({key:"letter",done:false}));
+  view.rerender(<DockScene />);
+  await waitFor(() => expect(view.container.querySelector(".dock")?.getAttribute("data-guide-selected")).toBe("true"));
+  expect(state.createPlayer).toHaveBeenCalledTimes(1);
+  expect(state.player.setDelivery).toHaveBeenLastCalledWith(null);
+  target.current.remove();
+});
 
 it("keeps the original invitation and avoids loading assets when disabled", async () => {
   const view = render(<Scene enabled={false} />);
@@ -394,4 +421,183 @@ it("discards delayed feedback from a screen that has closed", async () => {
   await act(async () => view.rerender(content(false)));
   await act(async () => finish());
   expect(state.player.playGesture).not.toHaveBeenCalled();
+});
+
+it("discards a callback captured before navigation even when its component stays mounted", async () => {
+  let finish!: () => void;
+  function SavingScreen() {
+    const play = useHintGuideGesture();
+    return <button onClick={() => { finish = () => play("nod"); }}>Save</button>;
+  }
+  const view = render(<HintGuideProvider enabled><HintGuideSlot context={askGuideContext({ messageCount: 0, thinking: false })} /><SavingScreen /></HintGuideProvider>);
+  await waitFor(() => expect(state.createPlayer).toHaveBeenCalled());
+  fireEvent.click(view.getByRole("button", { name: "Save" }));
+  await act(async () => navigate("/app/daily"));
+  expect(state.player.cancelGestures).toHaveBeenCalled();
+  act(() => finish());expect(state.player.playGesture).not.toHaveBeenCalled();
+  await act(async () => navigate("/"));
+  act(() => finish());expect(state.player.playGesture).not.toHaveBeenCalled();
+});
+
+it("drops feedback while the player loads without replaying it when ready", async () => {
+  let finish!: (player: typeof state.player) => void;
+  state.createPlayer.mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+  function SavingScreen() { const play = useHintGuideGesture();return <button onClick={() => play("nod")}>Save</button>; }
+  const view = render(<HintGuideProvider enabled><HintGuideSlot context={askGuideContext({ messageCount: 0, thinking: false })} /><SavingScreen /></HintGuideProvider>);
+  await waitFor(() => expect(state.createPlayer).toHaveBeenCalled());
+  fireEvent.click(view.getByRole("button", { name: "Save" }));
+  await act(async () => finish(state.player));
+  expect(state.player.playGesture).not.toHaveBeenCalled();
+});
+
+function Page({ room, loading = false }: { room?: "daily" | "history"; loading?: boolean }) {
+  return <HintGuideProvider enabled>
+    {loading && <div data-room-loading>Opening the room…</div>}
+    {room && <HintGuideSlot context={{ room, phase: "idle", hasMessages: false, keyboardOpen: false, typing: false, audioPlaying: false }} />}
+  </HintGuideProvider>;
+}
+const pause = (ms: number) => act(async () => { await new Promise(resolve => setTimeout(resolve, ms)); });
+
+function vacancyClock() {
+  let now = performance.now();
+  vi.spyOn(performance, "now").mockImplementation(() => now);
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  return async (ms: number) => { now += ms;await act(async () => { await vi.advanceTimersByTimeAsync(ms); }); };
+}
+
+it.each([false, true])("keeps the existing slot throughout a slow loader, reduced=%s", async reduced => {
+  state.policy = { reduced, pageVisible: true };
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenCalled());
+  const tick = vacancyClock();state.player.setContext.mockClear();
+  await act(async () => { navigate("/app/readings");view.rerender(<Page loading />); });
+  await tick(9000);
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+  await act(async () => view.rerender(<Page room="history" />));
+  expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "history" }));
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+});
+
+it("applies visibility and reduced motion while the loader holds the old slot", async () => {
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenCalled());
+  const tick = vacancyClock();
+  await act(async () => { navigate("/app/readings");view.rerender(<Page loading />); });
+  state.policy = { reduced: true, pageVisible: false };view.rerender(<Page loading />);
+  expect(state.player.setMotionPolicy).toHaveBeenLastCalledWith({ reduced: true, visible: false });
+  await tick(9000);
+  state.policy = { reduced: true, pageVisible: true };view.rerender(<Page loading />);
+  expect(state.player.setMotionPolicy).toHaveBeenLastCalledWith({ reduced: true, visible: true });
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+});
+
+it("releases the held slot when the loader finishes without a destination slot", async () => {
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenCalled());
+  const tick = vacancyClock();state.player.setContext.mockClear();
+  await act(async () => { navigate("/app/login");view.rerender(<Page loading />); });
+  await tick(9000);
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+  // The route error/no-slot destination mounts without any slot callback.
+  await act(async () => view.rerender(<Page />));
+  expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "away" }));
+});
+
+it("cancels a removed letter delivery while holding its place for the next room", async () => {
+  const target = document.createElement("div");document.body.append(target);
+  const delivery = { key: "today:moon", cardBack: "/actual-back.png", done: false, target: { current: target } };
+  const context = { ...askGuideContext({ messageCount: 0, thinking: false }), room: "home" as const };
+  const view = render(<HintGuideProvider enabled><HintGuideSlot context={context} delivery={delivery} /></HintGuideProvider>);
+  await waitFor(() => expect(state.player.setDelivery).toHaveBeenCalledWith(expect.objectContaining({ key: "today:moon" })));
+  const tick = vacancyClock();state.player.setContext.mockClear();
+  await act(async () => { navigate("/app/daily");view.rerender(<HintGuideProvider enabled><div data-room-loading /></HintGuideProvider>); });
+  expect(state.player.setDelivery).toHaveBeenLastCalledWith(null);
+  await tick(9000);
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+  expect(state.player.setDelivery).toHaveBeenLastCalledWith(null);target.remove();
+});
+
+it("does not reveal a previously offscreen companion during a loader", async () => {
+  phone(() => ({ left: 20, top: -200, width: 80, height: 80 }));
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setMotionPolicy).toHaveBeenLastCalledWith({ reduced: false, visible: false }));
+  const tick = vacancyClock();
+  await act(async () => { navigate("/app/readings");view.rerender(<Page loading />); });
+  await tick(9000);
+  expect(state.player.setMotionPolicy).toHaveBeenLastCalledWith({ reduced: false, visible: false });
+});
+
+it("stops observing a pending loader after the provider is unmounted", async () => {
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenCalled());
+  const tick = vacancyClock();
+  await act(async () => { navigate("/app/readings");view.rerender(<Page loading />); });
+  view.unmount();state.player.setContext.mockClear();state.player.setMotionPolicy.mockClear();
+  await act(async () => { const node = document.createElement("div");document.body.append(node);node.remove(); });
+  await tick(9000);
+  expect(state.player.setContext).not.toHaveBeenCalled();
+  expect(state.player.setMotionPolicy).not.toHaveBeenCalled();
+  expect(state.player.destroy).toHaveBeenCalledTimes(1);
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it("does not let a late loader or vacancy timer replace the last destination", async () => {
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenCalled());
+  const tick = vacancyClock();state.player.setContext.mockClear();
+  await act(async () => { navigate("/app/readings");view.rerender(<Page loading />); });
+  await tick(600);
+  await act(async () => { navigate("/app/daily");view.rerender(<Page room="daily" />); });
+  await tick(9000);
+  expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "daily" }));
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it("keeps Hint in place across a page change and lets it leave a page without a slot", async () => {
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "daily" })));
+  // The old page's slot goes before the next page's slot arrives.
+  await act(async () => { navigate("/app/readings");view.rerender(<Page />); });
+  await pause(300);
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+  await act(async () => view.rerender(<Page room="history" />));
+  expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "history" }));
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+  // A destination without a slot: Hint waits for it briefly, then leaves.
+  await act(async () => { navigate("/app/login");view.rerender(<Page />); });
+  await pause(300);
+  expect(state.player.setContext).not.toHaveBeenCalledWith(expect.objectContaining({ room: "away" }));
+  await pause(1000);
+  expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "away" }));
+});
+
+it("lets Hint leave at once when its slot goes without a page change", async () => {
+  const view = render(<Page room="daily" />);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "daily" })));
+  await act(async () => view.rerender(<Page />));
+  expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "away" }));
+});
+
+it("stands Hint in the screen's corner while the row keeps its place", async () => {
+  window.history.replaceState({}, "", "/app/daily");
+  function Screen({ corner = true }: { corner?: boolean }) {
+    const [layer, setLayer] = useState<HTMLElement | null>(null);
+    const row = <div data-testid="row"><RoomCompanion /></div>;
+    return <HintGuideProvider enabled>
+      <span ref={setLayer} data-testid="corner" />
+      {corner ? <HintCornerLayer.Provider value={layer}>{row}</HintCornerLayer.Provider> : row}
+    </HintGuideProvider>;
+  }
+  const view = render(<Screen />);
+  await waitFor(() => expect(view.getByTestId("corner").querySelector("[data-hint-guide-slot].hint-guide-corner")).toBeTruthy());
+  expect(view.getByTestId("row").querySelector("[data-hint-guide-reserve]")).toBeTruthy();
+  expect(view.getByTestId("row").querySelector("[data-hint-guide-slot]")).toBeNull();
+  expect(view.getAllByRole("button", { name: "Hint" })).toHaveLength(1);
+  await waitFor(() => expect(state.player.setContext).toHaveBeenLastCalledWith(expect.objectContaining({ room: "daily", phase: "idle" })));
+  // A screen without a corner layer keeps the companion in its row, as before.
+  view.unmount();
+  const plain = render(<Screen corner={false} />);
+  expect(plain.getByTestId("row").querySelector("[data-hint-guide-slot]")).toBeTruthy();
+  expect(plain.getByTestId("corner").querySelector("[data-hint-guide-slot]")).toBeNull();
 });

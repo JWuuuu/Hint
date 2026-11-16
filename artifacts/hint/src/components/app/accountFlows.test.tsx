@@ -8,7 +8,7 @@ import { saveLocalAccount } from "../../lib/auth";
 const mocks = vi.hoisted(() => ({ save: vi.fn(), navigate: vi.fn() }));
 vi.mock("wouter", () => ({ useLocation: () => ["/app", mocks.navigate], Link: ({ children, href }: { children: ReactNode; href: string }) => <a href={href}>{children}</a> }));
 vi.mock("../../lib/i18n", () => ({ useLanguage: () => ({ language: "en", t: (key: string) => key }) }));
-vi.mock("../../lib/LocalizedText", () => ({ LocalizedText: ({ text }: { text: string }) => <>{text}</> }));
+vi.mock("../../lib/LocalizedText", () => ({ translateText: (text: string) => text, LocalizedText: ({ text }: { text: string }) => <>{text}</> }));
 vi.mock("../../lib/useProfile", () => ({ useProfile: () => ({ anonId: "fixture", profile: { name: "Fixture", birthDate: "2000-02-29" }, saveProfile: mocks.save, isSaving: false }) }));
 vi.mock("./AppChrome", () => ({ AppScreen: ({ children }: { children: ReactNode }) => <div>{children}</div>, GlassPanel: ({ children }: { children: ReactNode }) => <div>{children}</div>, SectionLabel: ({ children }: { children: ReactNode }) => <div>{children}</div>, ScreenHeader: () => null }));
 beforeEach(() => { localStorage.clear(); sessionStorage.clear(); mocks.save.mockReset().mockResolvedValue({}); mocks.navigate.mockReset(); });

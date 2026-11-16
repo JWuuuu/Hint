@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
-import { rm, readdir, readFile } from "node:fs/promises";
+import { rm, readdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 
 // Plugins (e.g. 'esbuild-plugin-pino') may use `require` to resolve dependencies
@@ -20,6 +20,7 @@ async function buildAll() {
   })));
 
   await esbuild({
+    absWorkingDir: artifactDir,
     entryPoints: [path.resolve(artifactDir, "src/index.ts")],
     platform: "node",
     bundle: true,
@@ -124,6 +125,16 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
     `,
     },
   });
+
+  // Hash the completed output (including workers/maps), never this sidecar or
+  // an inherited Git revision. No environment values enter the manifest.
+  const files = await Promise.all((await readdir(distDir)).sort().map(async name => ({
+    name, sha256: createHash("sha256").update(await readFile(path.join(distDir, name))).digest("hex"),
+  })));
+  const schemaSha256 = createHash("sha256").update(JSON.stringify(expectedMigrations)).digest("hex");
+  const payload = { format: "hint-api-artifacts-v1", files, schemaSha256 };
+  const artifactSha256 = createHash("sha256").update(JSON.stringify(payload)).digest("hex");
+  await writeFile(path.join(distDir, "build-provenance.json"), JSON.stringify({ ...payload, artifactSha256 }, null, 2) + "\n");
 }
 
 buildAll().catch((err) => {

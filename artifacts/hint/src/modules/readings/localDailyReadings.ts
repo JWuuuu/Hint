@@ -24,7 +24,8 @@ function readAll(): StoredDailyReading[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    // Keep only rows shaped like a reading; a damaged row must not break History or Today.
+    return Array.isArray(parsed) ? parsed.filter((row) => typeof row === "object" && row !== null && typeof row.id === "string") : [];
   } catch {
     return [];
   }

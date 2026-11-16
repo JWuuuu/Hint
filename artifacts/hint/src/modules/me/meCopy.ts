@@ -1,6 +1,9 @@
 import type { HintLanguage } from "../../lib/i18n";
 
 const en = {
+  preferencesUnsaved: "Motion and touch feedback changes apply only for this session. They couldn’t be saved on this device.",
+  preferencesSaved: "Motion and touch feedback saved on this device.", retryPreferences: "Retry saving motion and feedback",
+  themeUnsaved: "Couldn’t save {theme}. Your appearance is unchanged.", themeSaved: "Appearance saved on this device.", retryTheme: "Retry {theme}",
   title: "Your space", subtitle: "The things you keep. The way you feel at home.",
   localProfile: "Your local profile", birthDetails: "Birth details", birthIntro: "Your starting point for a personal chart.",
   date: "Date", time: "Time", place: "Place", unknown: "Not added", unknownTime: "Time unknown",
@@ -36,6 +39,9 @@ export type MeCopy = { [K in keyof typeof en]: string };
 export const ME_COPY: Record<HintLanguage, MeCopy> = {
   en,
   zh: {
+    preferencesUnsaved: "动态效果和触感反馈的更改仅在本次使用期间生效，未能保存到此设备。",
+    preferencesSaved: "动态效果和触感反馈已保存到此设备。", retryPreferences: "重试保存动态效果和触感反馈",
+    themeUnsaved: "未能保存「{theme}」，当前外观保持不变。", themeSaved: "外观已保存到此设备。", retryTheme: "重试「{theme}」",
     title: "我的空间", subtitle: "收藏心意，也找到自己的舒适节奏。", localProfile: "本机个人资料",
     birthDetails: "出生资料", birthIntro: "从这里开始认识你的个人星盘。", date: "日期", time: "时间", place: "地点", unknown: "尚未填写", unknownTime: "时间未知",
     birthMissing: "准备好时，添加出生资料，开始探索你的星盘。", edit: "编辑资料", editIntro: "这些资料会与本机个人档案一同保存。", back: "返回我的空间",
@@ -54,6 +60,9 @@ export const ME_COPY: Record<HintLanguage, MeCopy> = {
     firstLetterAction: "抽今日的牌", dataHeading: "你的数据", ps: "附言", psLead: "你的信件存放在哪里，以及需要时去哪里求助。",
   },
   es: {
+    preferencesUnsaved: "Los cambios de movimiento y respuesta táctil solo se aplican durante esta sesión. No se pudieron guardar en este dispositivo.",
+    preferencesSaved: "Movimiento y respuesta táctil guardados en este dispositivo.", retryPreferences: "Reintentar guardar movimiento y respuesta táctil",
+    themeUnsaved: "No se pudo guardar {theme}. La apariencia no ha cambiado.", themeSaved: "Apariencia guardada en este dispositivo.", retryTheme: "Reintentar {theme}",
     title: "Tu espacio", subtitle: "Lo que guardas. Lo que te hace sentir en casa.", localProfile: "Tu perfil local",
     birthDetails: "Datos de nacimiento", birthIntro: "El punto de partida de tu carta natal.", date: "Fecha", time: "Hora", place: "Lugar", unknown: "Sin añadir", unknownTime: "Hora desconocida", birthMissing: "Añade tus datos cuando quieras explorar tu carta natal.", edit: "Editar datos", editIntro: "Estos datos se guardan con tu perfil local.", back: "Volver a tu espacio",
     personalSpace: "Algo muy tuyo", chart: "Mi carta natal", chartDetail: "Explora tus posiciones planetarias.", history: "Historial de lecturas", historyDetail: "Vuelve a las palabras que te acompañaron.", collection: "Mi colección", collectionDetail: "Tus cartas guardadas, en un solo lugar.",
@@ -71,6 +80,9 @@ export const ME_COPY: Record<HintLanguage, MeCopy> = {
     firstLetterAction: "Sacar la carta de hoy", dataHeading: "Tus datos", ps: "P. D.", psLead: "Dónde se guardan tus cartas y dónde encontrar ayuda.",
   },
   ja: {
+    preferencesUnsaved: "動きと触覚フィードバックの変更は、今回の利用中のみ有効です。この端末に保存できませんでした。",
+    preferencesSaved: "動きと触覚フィードバックの設定をこの端末に保存しました。", retryPreferences: "動きと触覚フィードバックの保存を再試行",
+    themeUnsaved: "「{theme}」を保存できませんでした。外観は変更されていません。", themeSaved: "外観をこの端末に保存しました。", retryTheme: "「{theme}」を再試行",
     title: "あなたの空間", subtitle: "大切にしたいもの。心地よく過ごせる場所。", localProfile: "端末内のプロフィール",
     birthDetails: "出生情報", birthIntro: "あなただけの出生図を知る出発点。", date: "日付", time: "時刻", place: "場所", unknown: "未入力", unknownTime: "時刻不明", birthMissing: "出生図を見てみたくなったら、出生情報を追加しましょう。", edit: "情報を編集", editIntro: "これらの情報は端末内のプロフィールに保存されます。", back: "あなたの空間に戻る",
     personalSpace: "あなたのために", chart: "私の出生図", chartDetail: "あなたの天体配置を見てみましょう。", history: "リーディング履歴", historyDetail: "心に残った言葉を、もう一度。", collection: "マイコレクション", collectionDetail: "保存したカードをひとつの場所に。",
@@ -88,6 +100,9 @@ export const ME_COPY: Record<HintLanguage, MeCopy> = {
     firstLetterAction: "今日のカードを引く", dataHeading: "あなたのデータ", ps: "追伸", psLead: "手紙の保管場所と、困ったときの窓口。",
   },
   ko: {
+    preferencesUnsaved: "움직임과 터치 피드백 변경 사항은 이번 사용 중에만 적용됩니다. 이 기기에 저장하지 못했어요.",
+    preferencesSaved: "움직임과 터치 피드백 설정을 이 기기에 저장했어요.", retryPreferences: "움직임과 터치 피드백 저장 다시 시도",
+    themeUnsaved: "{theme} 테마를 저장하지 못했어요. 화면 테마는 바뀌지 않았어요.", themeSaved: "화면 테마를 이 기기에 저장했어요.", retryTheme: "{theme} 다시 시도",
     title: "나만의 공간", subtitle: "간직하고 싶은 것들. 편안히 머무는 방식.", localProfile: "기기에 저장된 프로필",
     birthDetails: "출생 정보", birthIntro: "나만의 출생 차트를 알아가는 시작점.", date: "날짜", time: "시간", place: "장소", unknown: "입력하지 않음", unknownTime: "시간 모름", birthMissing: "차트를 살펴보고 싶을 때 출생 정보를 추가하세요.", edit: "정보 수정", editIntro: "이 정보는 기기의 로컬 프로필과 함께 저장됩니다.", back: "나만의 공간으로 돌아가기",
     personalSpace: "나를 위한 기록", chart: "나의 출생 차트", chartDetail: "나의 행성 배치를 살펴보세요.", history: "리딩 기록", historyDetail: "마음에 남았던 말을 다시 만나세요.", collection: "나의 컬렉션", collectionDetail: "간직한 카드를 한곳에서 만나세요.",

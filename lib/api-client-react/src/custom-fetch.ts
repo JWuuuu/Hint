@@ -38,6 +38,30 @@ export function combineRequestSignals(...sources: Array<AbortSignal | null | und
   return { signal: controller.signal, dispose: () => { for (const remove of listeners) remove(); } };
 }
 
+/** One deadline covers enrollment, headers and the complete response body.
+ * The race also settles callers when a transport/polyfill ignores abort.
+ * Mutations are never retried here: a lost response can follow a server commit.
+ */
+export function createRequestLifetime(...sources: Array<AbortSignal | null | undefined>) {
+  const deadline = new AbortController();
+  const combined = combineRequestSignals(...sources, deadline.signal);
+  const signal = combined.signal!;
+  // Compatibility can make four sequential chart-provider calls. Keep this
+  // backstop above ordinary provider latency; shorter endpoint signals win.
+  const timer = setTimeout(() => deadline.abort(new DOMException("Request timed out. Please try again.", "TimeoutError")), 120_000);
+  let rejectCancelled!: (reason: unknown) => void;
+  const cancelled = new Promise<never>((_resolve, reject) => { rejectCancelled = reject; });
+  const abort = () => rejectCancelled(signal.reason ?? new DOMException("Request cancelled", "AbortError"));
+  // A caller may fail synchronous validation before its first asynchronous wait.
+  void cancelled.catch(() => {});
+  if (signal.aborted) abort(); else signal.addEventListener("abort", abort, { once: true });
+  return {
+    signal,
+    waitFor: <T>(work: PromiseLike<T> | T): Promise<T> => Promise.race([Promise.resolve(work), cancelled]),
+    dispose: () => { clearTimeout(timer); signal.removeEventListener("abort", abort); combined.dispose(); },
+  };
+}
+
 export function setAuthFailureHandler(handler: ((token: string) => void) | null): void {
   _authFailureHandler = handler;
 }
@@ -367,7 +391,7 @@ export async function customFetch<T = unknown>(
   if (callerSignal?.aborted) throw callerSignal.reason ?? new DOMException("Request cancelled", "AbortError");
   if (_authTokenGetter) assertAuthDestination(input);
   const identity = _requestIdentityGetter?.();
-  const { signal, dispose } = combineRequestSignals(callerSignal, identity?.signal);
+  const { signal, dispose, waitFor } = createRequestLifetime(callerSignal, identity?.signal);
   const checkCancelled = () => {
     if (signal?.aborted) throw signal.reason ?? new DOMException("Request cancelled", "AbortError");
     identity?.assertCurrent();
@@ -398,7 +422,7 @@ export async function customFetch<T = unknown>(
     // The session getter is the sole credential authority for this client.
     if (_authTokenGetter) {
       headers.delete("authorization");
-      const token = await _authTokenGetter();
+      const token = await waitFor(_authTokenGetter());
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
@@ -407,7 +431,7 @@ export async function customFetch<T = unknown>(
     const requestInfo = { method, url: resolveUrl(input) };
 
     checkCancelled();
-    const response = await fetch(input, { ...init, signal, method, headers, redirect: "error", credentials: "omit" });
+    const response = await waitFor(fetch(input, { ...init, signal, method, headers, redirect: "error", credentials: "omit" }));
     checkCancelled();
 
     if (response.status === 401) {
@@ -416,12 +440,12 @@ export async function customFetch<T = unknown>(
     }
 
     if (!response.ok) {
-      const errorData = await parseErrorBody(response, method);
+      const errorData = await waitFor(parseErrorBody(response, method));
       checkCancelled();
       throw new ApiError(response, errorData, requestInfo);
     }
 
-    const result = await parseSuccessBody(response, responseType, requestInfo);
+    const result = await waitFor(parseSuccessBody(response, responseType, requestInfo));
     checkCancelled();
     return result as T;
   } finally { dispose(); }

@@ -9,7 +9,8 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowUpRight, BookOpen, CalendarDays, HelpCircle, MessageCircle, Orbit, Sparkles } from "lucide-react";
 import { AppScreen, ScreenHeader } from "../../components/app/AppChrome";
-import { useListReadings } from "@workspace/api-client-react";
+import { useReadingsHistory } from "./useReadingsHistory";
+import { HISTORY_RECOVERY_COPY } from "./recoveryCopy";
 import type { ReadingSummary } from "@workspace/api-client-react";
 import { getAnonId } from "../../lib/identity";
 import { useLanguage, type HintLanguage } from "../../lib/i18n";
@@ -38,6 +39,7 @@ import { getTarotCardImage } from "../tarot/logic/cardImageMap";
 import { readBirthProfile } from "../../lib/astro/userBirthProfile";
 import type { BirthProfile } from "../../types/astrology";
 import { HISTORY_COPY, HISTORY_LOCALES } from "./historyCopy";
+import { HistoryFilters } from "./HistoryFilters";
 
 /**
  * ReadingsView — the room's memory. A real archive of every reading the user
@@ -371,7 +373,8 @@ function ArchiveSection({ title, children, id }: { title: ReactNode; children: R
 export function ReadingsView() {
   const { language, t } = useLanguage();
   const anonId = getAnonId();
-  const { data, isLoading, isError, refetch } = useListReadings({ anonId });
+  const { data, isPending, isError, fetchStatus, refetch } = useReadingsHistory(anonId);
+  const isPaused = fetchStatus === "paused";
   const [activeTab, setActiveTab] = useState<HistoryTab>("all");
   const [localReadings, setLocalReadings] = useState<ReadingSummary[]>(() =>
     listLocalDailyReadings(anonId),
@@ -472,24 +475,21 @@ export function ReadingsView() {
         backHref="/app"
       />
 
-      {isError && <div role="status" className="hr-error">
-        <p>{t("quality.historyError")}</p>
-        <button type="button" onClick={() => void refetch()}>{t("quality.retry")}</button>
-      </div>}
+      <HistoryRecoveryNotice offline={isPaused} error={isError} onRetry={() => void refetch()} />
       <HistoryLedger
         readingCount={readings.length}
         dailyCount={dailyEntries.length}
         questionCount={displayedQuestionHistory.length}
       />
 
-      <div className="hr-filters" role="group" aria-label={HISTORY_COPY[language].filter}>
+      <HistoryFilters>
         {historyTabs.map((tab) => (
           <button key={tab.key} type="button" className="hr-filter" aria-pressed={activeTab === tab.key} onClick={() => setActiveTab(tab.key)}>
             <span>{tab.label}</span>
             {tab.count !== null && <span className="hr-filter-count">{tab.count}</span>}
           </button>
         ))}
-      </div>
+      </HistoryFilters>
 
       {(activeTab === "all" || activeTab === "questions") && askHistory.length > 0 && <ArchiveSection id="ask" title={t("quality.askHistory")}>
         <ol className="hr-list">{askHistory.map(conversation => <li key={conversation.id}>
@@ -506,7 +506,7 @@ export function ReadingsView() {
       </ArchiveSection>}
       {/* When the server can't be reached, the error above says local records are
           shown below, so the tabs still show them, or their empty states. */}
-      {isLoading && nothingLoaded ? (
+      {isPaused && nothingLoaded ? null : isPending && nothingLoaded ? (
         <p className="hr-loading" role="status">{t("readings.loading")}</p>
       ) : activeTab === "questions" ? (
         <ArchiveSection id="questions" title={t("readings.questions")}>
@@ -574,7 +574,7 @@ export function ReadingDetailView() {
     // Keep the raw identifier if an old saved URL contains malformed escaping.
   }
   const anonId = getAnonId();
-  const { data } = useListReadings({ anonId });
+  const { data, isPending, isError, fetchStatus, refetch } = useReadingsHistory(anonId);
   const tarotReading = getLocalTarotReading(id, anonId);
   const dailyReading = getLocalDailyReading(id, anonId);
   const question = listLocalQuestionHistory(anonId).find((item) => item.id === id);
@@ -690,6 +690,7 @@ export function ReadingDetailView() {
           backHref="/app/readings"
           backLabel={t("nav.history")}
         />
+        <HistoryRecoveryNotice offline={fetchStatus === "paused"} error={isError} detail onRetry={() => void refetch()} />
         <ReadingDetailMeta
           spreadType={String(fallbackReading.spreadType)}
           createdAt={fallbackReading.createdAt}
@@ -727,6 +728,14 @@ export function ReadingDetailView() {
     );
   }
 
+  if (isPending || isError || fetchStatus === "paused") {
+    return <AppScreen><div className="hr-page hr-detail">
+      <ScreenHeader eyebrow={t("nav.history")} title={t("readings.detail")} backHref="/app/readings" backLabel={t("nav.history")} />
+      <HistoryRecoveryNotice offline={fetchStatus === "paused"} error={isError} detail onRetry={() => void refetch()} />
+      {!isError && fetchStatus !== "paused" && <p className="hr-loading" role="status">{t("readings.loading")}</p>}
+    </div></AppScreen>;
+  }
+
   return (
     <AppScreen>
       <div className="hr-page hr-detail">
@@ -741,6 +750,17 @@ export function ReadingDetailView() {
       </div>
     </AppScreen>
   );
+}
+
+function HistoryRecoveryNotice({ offline, error, detail = false, onRetry }: {
+  offline: boolean; error: boolean; detail?: boolean; onRetry: () => void;
+}) {
+  const { language, t } = useLanguage();
+  if (!offline && !error) return null;
+  return <div role="status" className="hr-error">
+    <p>{offline ? HISTORY_RECOVERY_COPY[language].offline : detail ? HISTORY_RECOVERY_COPY[language].detailError : t("quality.historyError")}</p>
+    <button type="button" onClick={onRetry}>{t("quality.retry")}</button>
+  </div>;
 }
 
 /** Detail summary uses the same ledger language as the archive counts. */

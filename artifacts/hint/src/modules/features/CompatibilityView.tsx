@@ -131,7 +131,7 @@ function BirthDetailsForm({
     ...initial, birthPlace: initial.birthPlace ?? "", birthTime: initial.birthTime ?? undefined,
     id: "form", createdAt: "", updatedAt: "",
   } : null;
-  return <div className="grid gap-3">
+  return <div className="hint-compatibility-birth-form grid gap-3">
     <p className="text-sm"><LocalizedText text={subtitle} /></p>
     {requireConsent && <label className="flex gap-3 p-3 text-sm">
       <input type="checkbox" checked={consent} onChange={event => setConsent(event.target.checked)} /><LocalizedText text={" I consent to share these birth details for this compatibility preview. "} /></label>}
@@ -214,7 +214,7 @@ function ResultView({ id }: { id: string }) {
       title={`${result.people.user.name || translateText("You", language)} + ${result.people.friend.name || translateText("Friend", language)}`}
       subtitle={at(language, "togetherIntro")}
     >
-      {error && <p role="status"><LocalizedText text={error} /> <button type="button" className="min-h-11" onClick={() => setRetry(value => value + 1)}><LocalizedText text={"Retry"} /></button></p>}
+      {error && <p role="status"><LocalizedText text={error} /> <button type="button" className="hint-compatibility-result-retry min-h-11" onClick={() => setRetry(value => value + 1)}><LocalizedText text={"Retry"} /></button></p>}
       {result.source === "api" && result.synastry?.natal && result.synastry.calculation?.aspectSource === "hint-geometry" ? <RelationshipReading user={reportProfile(result.people.user.chart,result.people.user.name,"user")} partner={reportProfile(result.people.friend.chart,result.people.friend.name,"partner")} result={result.synastry}/> : <>
       <section className="astro-guide-panel">
         <p className="astro-guide-eyebrow">{togetherText(language, "private")}</p>
@@ -366,13 +366,13 @@ function PanelShell({
   const isNested = /\/compatibility\/[^/?#]+/.test(location);
   return (
     <AppScreen>
-      <main className="hint-compatibility astro-guide astro-guide-stack">
+      <div className="hint-compatibility astro-guide astro-guide-stack">
         <SpaceNavigation backHref={isNested ? "/app/compatibility" : undefined} backLabel={isNested ? at(language, "together") : undefined} />
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0 break-words">
             <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: "var(--hint-gold)" }}><LocalizedText text={eyebrow} /></p>
-            <h1 className="mt-2 font-serif text-[34px] leading-tight" style={{ color: "var(--hint-text)" }}><LocalizedText text={title} /></h1>
-            <p className="mt-3 text-[14px] leading-relaxed" style={{ color: "var(--hint-muted)" }}><LocalizedText text={subtitle} /></p>
+            <h1 className="hint-compatibility-title mt-2 font-serif text-[34px] leading-tight" style={{ color: "var(--hint-text)" }}><span aria-hidden="true" className="hint-compatibility-title-shadow" data-title={translateText(title, language)} /><LocalizedText text={title} /></h1>
+            <p className="hint-compatibility-subtitle mt-3 text-[14px] leading-relaxed"><span aria-hidden="true" className="hint-compatibility-subtitle-shadow" data-subtitle={translateText(subtitle, language)} /><LocalizedText text={subtitle} /></p>
           </div>
           <Link href="/app/astrology" aria-label={t("nav.astrology")} className="grid h-12 w-12 shrink-0 place-items-center rounded-full border" style={{ background: "var(--hint-surface-soft)", borderColor: "var(--hint-border)", color: "var(--hint-text)" }}>
             <Sparkles size={20} />
@@ -380,7 +380,7 @@ function PanelShell({
         </div>
         {children}
         <p className="mt-7 rounded-[20px] border p-4 text-[12px] font-semibold leading-relaxed" style={{ background: "var(--hint-surface-soft)", borderColor: "var(--hint-border)", color: "var(--hint-muted)" }}><LocalizedText text={" Compatibility is a reflective chart preview. It is not a guaranteed prediction, and invite completion requires consent. "} /></p>
-      </main>
+      </div>
     </AppScreen>
   );
 }

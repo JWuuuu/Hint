@@ -6,8 +6,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#080B14",
-  "theme_color": "#080B14",
+  "background_color": "#2e253c",
+  "theme_color": "#2e253c",
   "icons": [
     {
       "src": "brand/hint-icon-64.png",

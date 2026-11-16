@@ -73,6 +73,15 @@ if (failures.length > 0) {
 console.log("iOS release source preflight passed.");
 if (staticOnly) process.exit(0);
 
+let associatedDomain;
+try {
+  const { resolveIosAssociatedDomain } = await import("./ios-build-config.mjs");
+  associatedDomain = resolveIosAssociatedDomain(root);
+} catch (error) {
+  console.error(`iOS build configuration is blocked: ${error.message}`);
+  process.exit(1);
+}
+
 function output(command, args) {
   try {
     return execFileSync(command, args, { encoding: "utf8" }).trim();
@@ -116,7 +125,7 @@ const build = spawnSync(
     "-derivedDataPath",
     "tmp/ios-derived-data",
     "CODE_SIGNING_ALLOWED=NO",
-    `HINT_ASSOCIATED_DOMAIN=${process.env.HINT_ASSOCIATED_DOMAIN || ""}`,
+    `HINT_ASSOCIATED_DOMAIN=${associatedDomain}`,
     "build",
   ],
   { cwd: root, stdio: "inherit" },

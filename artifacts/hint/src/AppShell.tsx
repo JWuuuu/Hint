@@ -1,22 +1,16 @@
 ﻿import type { ReactNode } from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "wouter";
-import {
-  CalendarDays,
-  History,
-  Home,
-  Sparkles,
-  UserRound,
-  type LucideIcon,
-} from "lucide-react";
 import { PointerProvider } from "./modules/hold/atmosphere";
 import { AppLaunchIntro } from "./components/app/AppLaunchIntro";
 import type { LaunchIntroVariant } from "./components/app/AppLaunchIntro";
+import "./components/app/readable-text.css";
 import { ConstellationBackdrop } from "./components/app/ConstellationBackdrop";
 import { useDecorationsCovered } from "./lib/decorationCover";
 import { trackEvent } from "./lib/analytics";
 import {
   getInitialHintTheme,
+  HINT_THEME_BAR_COLORS,
   HINT_THEME_STORAGE_KEY,
   type HintTheme,
 } from "./components/app/theme";
@@ -27,7 +21,9 @@ import { useLanguage } from "./lib/i18n";
 import { triggerFeedback } from "./lib/feedback";
 import { useMotionPolicy } from "./lib/motionPolicy";
 import { RoomTransitions } from "./components/app/RoomTransitions";
-import { useHintGuideEnabled } from "./components/mascot/HintGuide";
+import { HintGuideSlot, useHintGuideEnabled } from "./components/mascot/HintGuide";
+import dockRest from "../mascot-library/versions/v3.2/assets/empty-rest.png";
+import "./components/app/mascot-dock.css";
 import { useOnboardingOwnsScreen } from "./components/app/onboardingState";
 
 /** Full-screen flows own their navigation, so the global bottom nav is hidden there. */
@@ -106,6 +102,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.documentElement.dataset.hintTheme = theme;
     document.documentElement.classList.toggle("dark", theme === "dark");
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", theme === "dark" ? HINT_THEME_BAR_COLORS.dark : HINT_THEME_BAR_COLORS.bright);
 
     try {
       window.localStorage.setItem(HINT_THEME_STORAGE_KEY, theme);
@@ -192,12 +191,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             one, so chat-style pages can pin an input to the bottom while
             scrollable pages (like the home dashboard) handle their own
             overflow. */}
-        <div data-room-content className="absolute inset-0 z-20">
+        <main data-room-content className="absolute inset-0 z-20">
           {children}
-        </div>
+        </main>
 
         {showNav ? (
-          <AppNavigationChrome location={location} theme={theme} creamStyleRoute={creamStyleRoute} />
+          <AppNavigationChrome location={location} theme={theme} />
         ) : null}
 
         {ENABLE_LAUNCH_INTRO &&
@@ -220,93 +219,42 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 }
 
-function AppNavigationChrome({
-  location,
-  theme,
-  creamStyleRoute,
-}: {
-  location: string;
-  theme: HintTheme;
-  creamStyleRoute: boolean;
-}) {
-  const isDark = theme === "dark";
-  const { t } = useLanguage();
+function AppNavigationChrome({ location, theme }: { location: string; theme: HintTheme }) {
+  const { t, language } = useLanguage();
   const dockRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const dock = dockRef.current;
     if (!dock) return;
     const root = document.documentElement;
-    const updateClearance = () => {
-      // Existing screen padding already clears the original 52px dock and orb.
-      // Observe the dock, whose size does not depend on this extra clearance.
+    const update = () => {
+      // The dock sizes intrinsically around labels; only vertical clearance
+      // needs measurement. Center content keeps its existing scroll model.
       const clearance = `${Math.max(0, Math.ceil(dock.getBoundingClientRect().height) - 52)}px`;
-      if (root.style.getPropertyValue("--hint-nav-extra-height") !== clearance) {
-        root.style.setProperty("--hint-nav-extra-height", clearance);
-      }
+      root.style.setProperty("--hint-nav-extra-height", clearance);
     };
-    updateClearance();
-    const observer = new ResizeObserver(updateClearance);
+    let frame = 0;
+    const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
+    const observer = new ResizeObserver(schedule);
     observer.observe(dock);
+    update();
     return () => {
-      observer.disconnect();
+      cancelAnimationFrame(frame); observer.disconnect();
       root.style.removeProperty("--hint-nav-extra-height");
     };
   }, []);
-  const referenceHome = location === "/app" || location === "/";
-  const lightReferenceHome = referenceHome && !isDark;
-  const lightChrome = !isDark && (referenceHome || creamStyleRoute);
-  const chromeSurface = lightReferenceHome
-    ? "linear-gradient(180deg, rgba(255,254,251,0.74), rgba(250,245,239,0.62))"
-    : "var(--hint-dock-bg, var(--hint-nav-bg, var(--hint-liquid-panel)))";
-  const chromeBorder = lightReferenceHome
-    ? "rgba(218,199,187,0.170)"
-    : "var(--hint-dock-border, var(--hint-liquid-border, var(--hint-border)))";
-  const chromeShadow = lightReferenceHome
-    ? "0 16px 36px rgba(102, 79, 67, 0.044), 0 5px 14px rgba(177,137,190,0.018), inset 0 1px 0 rgba(255,255,255,0.56), inset 0 -12px 22px rgba(129,91,111,0.012)"
-    : "var(--hint-dock-shadow, var(--hint-nav-shadow, var(--hint-liquid-shadow)))";
   const appTabs: AppTabItem[] = [
-    { href: "/app", label: t("nav.today"), icon: Home, exact: true },
-    { href: "/app/daily", label: t("nav.daily"), icon: CalendarDays },
-    { href: "/app/ask", label: t("nav.ask"), icon: Sparkles, featured: true },
-    { href: "/app/readings", label: t("nav.history"), icon: History },
-    { href: "/app/profile", label: t("nav.me"), icon: UserRound },
+    { href: "/app", label: t("nav.today"), icon: "today", exact: true },
+    { href: "/app/daily", label: t("nav.daily"), icon: "daily" },
+    { href: "/app/ask", label: t("nav.ask"), accessibleLabel: { en: "Ask Hint", zh: "向 Hint 提问", es: "Preguntar a Hint", ja: "Hintに質問", ko: "Hint에게 질문" }[language], featured: true },
+    { href: "/app/readings", label: t("nav.history"), icon: "history" },
+    { href: "/app/profile", label: t("nav.me"), icon: "me" },
   ];
+  const navigationLabel = { en: "Main navigation", zh: "主导航", es: "Navegación principal", ja: "メインナビゲーション", ko: "주 탐색" }[language];
   return (
-    <nav
-      aria-label="App"
-      data-app-tabbar
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-[21px] pb-[calc(var(--hint-safe-bottom)+0.35rem)]"
-    >
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 -z-10 h-[calc(5.25rem+var(--hint-safe-bottom)+var(--hint-nav-extra-height,0px))]"
-        style={{
-          background: "var(--hint-dock-veil)",
-        }}
-      />
-      {/* The dock's icons and labels have fixed pixel sizes, so its spacing does too:
-          in rem it doubled at 200% text and left "History" too little room. */}
-      <div
-        ref={dockRef}
-        className="hint-glass-nav hint-app-dock pointer-events-auto mx-auto grid min-h-[64px] w-full max-w-[var(--hint-app-width)] grid-cols-5 gap-[4px] overflow-visible rounded-[28px] border p-[6px]"
-        data-reference-home={referenceHome ? "true" : "false"}
-        style={{
-          background: chromeSurface,
-          borderColor: chromeBorder,
-          boxShadow: chromeShadow,
-          backdropFilter: "blur(46px) saturate(1.75) brightness(1.06) contrast(1.02)",
-          WebkitBackdropFilter: "blur(46px) saturate(1.75) brightness(1.06) contrast(1.02)",
-        }}
-      >
-        {appTabs.map((tab) => (
-          <AppTab
-            key={tab.href}
-            item={tab}
-            active={isActiveAppTab(location, tab)}
-            isDark={lightChrome ? false : isDark}
-            referenceHome={lightChrome}
-          />
-        ))}
+    <nav aria-label={navigationLabel} data-app-tabbar data-mascot-dock data-dock-theme={theme} className="hint-mascot-nav"
+      style={{ paddingBottom: "max(4px, calc(var(--hint-safe-bottom, 0px) - 2px))" }}>
+      <div ref={dockRef} className="hint-mascot-dock">
+        {appTabs.map(tab => <AppTab key={tab.href} item={tab} active={isActiveAppTab(location, tab)} />)}
       </div>
     </nav>
   );
@@ -315,106 +263,40 @@ function AppNavigationChrome({
 type AppTabItem = {
   href: string;
   label: string;
-  icon: LucideIcon;
+  icon?: "today" | "daily" | "history" | "me";
   exact?: boolean;
   featured?: boolean;
+  accessibleLabel?: string;
 };
 
-function HintAiMark({ active, referenceHome = false }: { active: boolean; referenceHome?: boolean }) {
-  return (
-    <span
-      aria-hidden
-      className={[
-        "relative grid place-items-center overflow-hidden rounded-full",
-        referenceHome ? "size-[54px]" : "size-[52px]",
-      ].join(" ")}
-      style={{
-        // The dark theme supplies its own pearl through --hint-orb-fill*.
-        background: active
-          ? "var(--hint-orb-fill-active, radial-gradient(circle at 34% 20%, rgba(255,244,252,0.94), rgba(204,164,211,0.64) 40%, rgba(128,92,145,0.88) 100%))"
-          : "var(--hint-orb-fill, radial-gradient(circle at 34% 20%, rgba(255,243,252,0.90), rgba(207,163,216,0.56) 42%, rgba(132,98,151,0.80) 100%))",
-        color: "#fff8f4",
-        // Dark theme swaps the white halo for a ring cut from the dock plate.
-        boxShadow:
-          "0 0 0 5px var(--hint-orb-ring, rgba(255,255,255,0.52)), var(--hint-orb-shadow, 0 11px 22px rgba(105,77,120,0.105), 0 0 24px rgba(195,145,206,0.12)), inset 0 1px 0 rgba(255,255,255,0.54), inset 0 -10px 20px rgba(63,38,83,0.085), inset 0 0 0 1px rgba(255,255,255,0.34)",
-      }}
-    >
-      <span
-        aria-hidden
-        className="absolute inset-[6px] rounded-full border"
-        style={{ borderColor: "rgba(255,255,255,0.34)" }}
-      />
-      <Sparkles size={25} strokeWidth={1.6} />
-    </span>
-  );
+function DockIcon({ kind, active }: { kind: AppTabItem["icon"]; active: boolean }) {
+  return <svg className="hint-dock-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth={active ? 1.85 : 1.6} strokeLinecap="round" strokeLinejoin="round">
+    {kind === "today" && <><rect x="3.5" y="5.5" width="17" height="13" rx="3" /><path d="m4.5 7 7.5 6 7.5-6" /></>}
+    {kind === "daily" && <><rect x="5" y="3.5" width="14" height="17" rx="3" /><path d="M9 3.5v3M15 3.5v3M5 9h14M9 13h2M9 16.5h6" /></>}
+    {kind === "history" && <><path d="M4.4 8A8 8 0 1 1 4 15M4 4.5V8h3.5M12 7.5V12l3 1.8" /></>}
+    {kind === "me" && <><circle cx="12" cy="7.5" r="3.5" /><path d="M5 20v-1.5a7 6 0 0 1 14 0V20" /></>}
+  </svg>;
 }
 
-function AppTab({
-  item,
-  active,
-  isDark,
-  referenceHome,
-}: {
-  item: AppTabItem;
-  active: boolean;
-  isDark: boolean;
-  referenceHome: boolean;
-}) {
-  const Icon = item.icon;
-  const featured = item.featured === true;
-  const glassLift = featured || (active && !referenceHome);
+function AppTab({ item, active }: { item: AppTabItem; active: boolean }) {
   return (
-    <Link
-      href={item.href}
-      aria-current={active ? "page" : undefined}
-      data-active={active ? "true" : "false"}
-      data-featured={featured ? "true" : "false"}
-      onPointerDown={() => triggerFeedback(featured ? "select" : "tap")}
-      className={[
-        "hint-app-tab hint-pressable hint-tap-sparkle relative flex min-w-0 flex-col items-center justify-center px-[4px] text-center transition hover:-translate-y-0.5 active:scale-[0.98]",
-        featured ? "min-h-[50px] overflow-visible rounded-[26px]" : "min-h-[50px] gap-[3px] rounded-[26px] py-1",
-      ].join(" ")}
-      style={{
-        color: featured
-          ? isDark ? "var(--hint-text)" : "var(--hint-special-action-text)"
-          : active
-            ? isDark ? "#f8f1e8" : "#3f3a44"
-            : isDark ? "rgba(248,241,232,0.62)" : "#807982",
-        background: "transparent",
-        border: "1px solid transparent",
-        boxShadow: "none",
-        filter: featured && !active ? "saturate(0.96) brightness(1.01)" : undefined,
-        backdropFilter: glassLift ? "blur(30px) saturate(1.52) brightness(1.04)" : undefined,
-        WebkitBackdropFilter: glassLift ? "blur(30px) saturate(1.52) brightness(1.04)" : undefined,
-      }}
-    >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-x-2 top-1 h-px rounded-full opacity-80"
-        style={{ background: active ? "linear-gradient(90deg, transparent, rgba(255,255,255,0.58), transparent)" : "transparent" }}
-      />
-      {featured ? (
-        <span className={[
-          "hint-app-tab-orb pointer-events-none absolute left-1/2 -translate-x-1/2",
-          referenceHome ? "top-[-18px]" : "top-[-25px]",
-        ].join(" ")}>
-          <HintAiMark active={active} referenceHome={referenceHome} />
+    <Link href={item.href} aria-label={item.accessibleLabel} aria-current={active ? "page" : undefined}
+      data-active={active ? "true" : "false"} data-featured={item.featured ? "true" : "false"}
+      onPointerDown={() => triggerFeedback(item.featured ? "select" : "tap")}
+      className="hint-dock-tab">
+      {item.featured ? <span className="hint-dock-perch" aria-hidden="true">
+        <span className="hint-dock-bounds">
+        {/* A resting navigation context stays stable through tab changes. The
+            same provider still gives the approved delivery slot (210) priority. */}
+        <HintGuideSlot priority={70} interactive={false}
+          context={{ room: "home", phase: "idle", resting: true, hasMessages: false, keyboardOpen: false, typing: false, audioPlaying: false }}
+          className="hint-dock-slot"
+          fallback={<img className="hint-dock-static" src={dockRest} alt="" />} />
+        <img className="hint-dock-loading" src={dockRest} alt="" />
         </span>
-      ) : (
-        <Icon className="size-[21px] shrink-0" strokeWidth={active ? 2.05 : 1.65} />
-      )}
-      {featured && referenceHome ? (
-        <span className="sr-only">{item.label}</span>
-      ) : (
-        <span
-          className={[
-            "hint-app-tab-label max-w-full whitespace-normal [overflow-wrap:anywhere] font-sans font-medium leading-[1.15]",
-            featured ? "absolute inset-x-0 bottom-[4px] text-[10px]" : "text-[11px]",
-          ].join(" ")}
-        >
-          {item.label}
-        </span>
-      )}
+      </span> : <DockIcon kind={item.icon} active={active} />}
+      <span className="hint-dock-label">{item.label}</span>
     </Link>
   );
 }

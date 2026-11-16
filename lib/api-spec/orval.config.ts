@@ -64,6 +64,13 @@ export default defineConfig({
             response: ['bigint', 'date'],
           },
         },
+        operations: {
+          getPersistedCompatibilityResult: {
+            // Path UUIDs are strings already. Zod 4's coerced string has no
+            // .uuid() method; keep this rule in codegen as well as its output.
+            zod: { coerce: { param: false } },
+          },
+        },
         useDates: true,
         useBigInt: true,
       },

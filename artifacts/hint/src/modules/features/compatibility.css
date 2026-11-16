@@ -4,3 +4,43 @@
 .hint-compatibility button, .hint-compatibility a { min-height: 44px; }
 .hint-compatibility button { white-space: normal; }
 .hint-compatibility input:not([type="checkbox"]) { max-width: 100%; }
+
+.hint-compatibility-subtitle { color: var(--astro-muted); }
+.hint-compatibility-result-retry { min-width: 44px; }
+
+/* A separate decorative copy keeps the small halo beneath the text fill. */
+.hint-compatibility-subtitle-shadow,
+.hint-compatibility-title-shadow { display: none; }
+[data-hint-theme="dark"] :is(.hint-compatibility-subtitle, .hint-compatibility-title) {
+  position: relative;
+  isolation: isolate;
+}
+[data-hint-theme="dark"] :is(.hint-compatibility-subtitle-shadow, .hint-compatibility-title-shadow) {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+[data-hint-theme="dark"] .hint-compatibility-subtitle-shadow::before,
+[data-hint-theme="dark"] .hint-compatibility-title-shadow::before {
+  content: attr(data-subtitle);
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 0 0 var(--hint-night),
+    1px 0 0 var(--hint-night), -1px 0 0 var(--hint-night),
+    0 1px 0 var(--hint-night), 0 -1px 0 var(--hint-night),
+    1px 1px 0 var(--hint-night), -1px 1px 0 var(--hint-night),
+    1px -1px 0 var(--hint-night), -1px -1px 0 var(--hint-night),
+    0 0 1px var(--hint-night);
+}
+[data-hint-theme="dark"] .hint-compatibility-title-shadow::before { content: attr(data-title); }
+
+/* The shared birth editor keeps its styling elsewhere; these labels belong to Together. */
+.hint-compatibility-birth-form form :is(p.text-\[9px\], span.text-\[10px\]),
+.hint-compatibility .astro-guide-eyebrow {
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}

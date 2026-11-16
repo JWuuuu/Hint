@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   createInitialWashRitualState,
   createWashFrameClock,
+  createManualWashFrameClock,
   getWashRitualTiming,
   washRitualReducer,
 } from "./washRitualMachine";
@@ -113,6 +114,13 @@ describe("wash ritual machine", () => {
     const clock = createWashFrameClock(0);
     expect(clock(1000 / 60)).toBe(1);
     expect(clock(30_000)).toBeLessThanOrEqual(3);
+  });
+
+  it("bounds manual settling work after a long pause and consumes that elapsed time only once", () => {
+    const clock = createManualWashFrameClock(0);
+    expect(clock(30_000)).toBeLessThanOrEqual(60);
+    expect(clock(30_000)).toBe(0);
+    expect(clock(30_000 + 1000 / 60)).toBe(1);
   });
 
   it("keeps automatic washing quick without making it abrupt", () => {

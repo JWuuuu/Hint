@@ -2,10 +2,12 @@ import { Router, type IRouter } from "express";
 import { HealthCheckResponse } from "@workspace/api-zod";
 import { pool } from "@workspace/db";
 import { expectedMigrations } from "../lib/schemaReadiness";
+import { buildProvenance } from "../lib/buildProvenance";
 
 const router: IRouter = Router();
 
 router.get("/healthz", (_req, res) => {
+  res.set({ "Cache-Control": "no-store", "X-Hint-Build": buildProvenance.build, "X-Hint-Schema": buildProvenance.schema });
   const data = HealthCheckResponse.parse({ status: "ok" });
   res.json(data);
 });

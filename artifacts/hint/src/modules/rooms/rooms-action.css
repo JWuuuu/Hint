@@ -1,0 +1,7 @@
+[data-hint-theme="dark"] .hint-rooms-empty :is(h2,p) {
+  text-shadow: 0 0 2px var(--hint-night), 0 0 2px var(--hint-night);
+}
+
+[data-hint-theme="dark"] .hint-rooms-empty h2 {
+  text-shadow: 0 0 2px var(--hint-night);
+}

@@ -161,10 +161,10 @@ test("a fresh device can learn Astrology and enter birth details without onboard
   await seed(page, "en", false);
   let calculations = 0;
   await page.route("**/api/astro/**", route => { calculations++; return route.fulfill({ status: 503, json: { error: "UNEXPECTED_PERSONAL_CALCULATION" } }); });
-  await page.goto("/app/astrology");
-  await expect(page.getByRole("heading", { name: "Twelve ways of being", exact: true })).toBeVisible();
+  await page.goto("/app/astrology?hintPreview=embedded");
+  await expect(page.locator(".astro-library-details > summary")).toBeVisible();
   await expect(page.getByTestId("onboarding-flow")).toHaveCount(0);
-  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My chart", exact: true }).click();
+  await page.getByRole("navigation", { name: "Astrology sections" }).getByRole("button", { name: "My Chart", exact: true }).click();
   await page.getByRole("button", { name: "Create my birth chart", exact: true }).click();
   await expect(page.getByLabel("Name", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Review birth details", exact: true })).toBeVisible();

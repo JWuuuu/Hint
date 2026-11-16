@@ -56,6 +56,17 @@ describe.skipIf(!enabled)("isolated installation access boundary", () => {
     await request(`/api/history?anonId=${a.ownerId}`, b, undefined, "DELETE");
     expect(await (await request(`/api/journal?anonId=${b.ownerId}`, a)).json()).toHaveLength(1);
   });
+  it("authenticates and charges private budgets before rejecting oversized Tarot collections", async () => {
+    const body = { question: "What should I notice?", spreadType: "single", requiredCardCount: 1, cards: Array(200).fill({}) };
+    expect((await request("/api/tarot/structured-reading", undefined, body, "POST")).status).toBe(401);
+    const response = await request("/api/tarot/structured-reading", outsider, body, "POST");
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: expect.any(String), code: "HTTP_400", requestId: response.headers.get("x-request-id") });
+    const privateBudget = await database.pool.query("SELECT used FROM request_budgets WHERE bucket_key=$1", [`private:owner:${outsider.ownerId}`]);
+    expect(privateBudget.rows.some(row => row.used >= 1)).toBe(true);
+    const providerBudget = await database.pool.query("SELECT used FROM request_budgets WHERE bucket_key=$1", [`tarot_structured_reading:day:${outsider.ownerId}`]);
+    expect(providerBudget.rows).toHaveLength(0);
+  });
   it("keeps invite snapshots/results private and binds one authenticated accepter", async () => {
     const store = await import("../modules/astrology/compatibilityStore");
     const response = await request("/api/compatibility/invite", a, { createdByUserId: b.ownerId, birthProfile: { name: "Creator", birthday: "2000-01-01" } }, "POST");

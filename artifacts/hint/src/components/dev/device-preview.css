@@ -180,18 +180,6 @@
   transform: translateX(-50%);
 }
 
-.hint-preview-home-indicator {
-  position: absolute;
-  bottom: 9px;
-  left: 50%;
-  width: 122px;
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(16, 15, 18, 0.78);
-  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.12);
-  transform: translateX(-50%);
-}
-
 @media (max-width: 520px) {
   .hint-preview-workspace {
     gap: 8px;

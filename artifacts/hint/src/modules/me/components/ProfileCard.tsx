@@ -152,7 +152,7 @@ export function ProfileCard({ profile, onEdit, signs, rhythm = null, reveal = fa
     </div>
 
     {hasBirth ? <div className="me-envelope-actions">
-      <button type="button" onClick={onEdit} aria-label={t("me.editProfile")} data-testid="button-edit-profile">
+      <button type="button" onClick={onEdit} data-testid="button-edit-profile">
         <Pencil size={15} aria-hidden="true" /><span>{copy.edit}</span>
       </button>
       <Link href="/app/astrology?tab=chart"><span>{copy.openChart}</span><ChevronRight size={16} aria-hidden="true" /></Link>

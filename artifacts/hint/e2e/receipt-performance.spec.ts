@@ -1,3 +1,4 @@
+import { mockDailyTarot } from "./daily-tarot-fixture";
 import { test, expect } from "./fixtures";
 
 test("receipt stage profile locates stalls across repeated exports", async ({ page }, info) => {
@@ -11,10 +12,12 @@ test("receipt stage profile locates stalls across repeated exports", async ({ pa
     localStorage.setItem("hint.preferences.v1", JSON.stringify({ reduceMotion: false, soundAndHaptics: false }));
   });
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await mockDailyTarot(page);
   await page.goto("/app?hintPreview=embedded");
   await page.getByTestId("home-reveal-action").click();
   await expect(page.getByTestId("home-daily-reveal")).toBeVisible();
-  await page.keyboard.press("Escape");
+  await expect(page.getByTestId("home-daily-reveal").locator('a[href$="/app/daily"]')).toBeVisible();
+  await page.getByTestId("home-daily-reveal").locator("button").last().click();
   const profiles = [];
   const repetitions = Number(process.env.HINT_RECEIPT_PROFILE_RUNS ?? 10);
   for (let run = 0; run < repetitions; run++) {

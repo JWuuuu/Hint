@@ -4,6 +4,7 @@ import { useLanguage } from "../../lib/i18n";
 import type { TarotTheme } from "../../lib/tarot/tarotThemeMap";
 import { THEME_LABELS } from "../../lib/tarot/tarotThemeMap";
 import type { SkySignal } from "../../lib/tarot/skyGuidedTarot";
+import { skySignalLabel } from "../../lib/tarot/skySignalCopy";
 
 type SkyEvidenceProps = {
   signals: SkySignal[];
@@ -20,7 +21,7 @@ export function SkyEvidence({
   compact = false,
   defaultOpen = false,
 }: SkyEvidenceProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [open, setOpen] = useState(defaultOpen);
   const visibleSignals = signals.slice(0, compact ? 2 : 4);
   const visibleThemes = themes.slice(0, compact ? 3 : 6);
@@ -68,7 +69,7 @@ export function SkyEvidence({
                 borderColor: "var(--hint-border)",
               }}
             >
-              {signal.label}
+              {skySignalLabel(signal, language)}
             </span>
           ))}
         </div>

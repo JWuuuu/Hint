@@ -202,19 +202,23 @@ router.post("/tarot/reading", withAiLease(async (req, res) => {
 
 /* ─── POST /tarot/structured-reading ───────────────────────────── */
 
+// Canonical cards use at most five keywords; allow custom cards some headroom.
+// Keep an upper bound so Zod v4 rejects oversized input before element parsing.
+const MAX_CARD_KEYWORDS = 16;
+
 const structuredReadingCardInputSchema = z.object({
   cardId: z.string().min(1).max(80),
   name: z.string().min(1).max(80),
   orientation: z.enum(["upright", "reversed"]),
   position: z.string().min(1).max(80),
-  keywords: z.array(z.string()).optional(),
+  keywords: z.array(z.string()).max(MAX_CARD_KEYWORDS).optional(),
   upright: z.string().optional(),
   reversed: z.string().optional(),
   arcana: z.enum(["major", "minor"]).optional(),
   suit: z.string().nullable().optional(),
 });
 
-const structuredReadingInputSchema = z.object({
+export const structuredReadingInputSchema = z.object({
   depth: z.enum(["brief", "detailed"]).default("brief"),
   originalReading: structuredTarotReadingSchema.optional(),
   additionalContext: z.string().max(600).optional(),
@@ -322,7 +326,7 @@ const cardDrawSchema = z.object({
     name: z.string(),
     arcana: z.string(),
     suit: z.string().nullable().optional(),
-    keywords: z.array(z.string()),
+    keywords: z.array(z.string()).max(MAX_CARD_KEYWORDS),
     upright: z.string(),
     reversed: z.string(),
   }),
@@ -335,7 +339,7 @@ const chatMessageSchema = z.object({
   content: z.string().min(1).max(4000),
 });
 
-const chatInputSchema = z.object({
+export const chatInputSchema = z.object({
   originalQuestion: z.string().min(1).max(1000),
   territory: z.string().min(1).max(200),
   emotionalContext: z.string().max(2000).nullish(),

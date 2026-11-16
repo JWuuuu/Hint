@@ -7,6 +7,15 @@ its SHA-256 hash. `GET /api/device-session` verifies access; `DELETE` revokes it
 The native client stores the token in Keychain. Revoked/expired credentials return
 401; clients must preserve local data and never silently create another owner.
 
+Production enrollment requires a tester invitation by default. Set
+`HINT_TESTER_INVITES_REQUIRED=1` explicitly for the private demo; `0` disables
+that gate and must not be mistaken for private tester access. Invitation claims
+and session creation share one transaction and enforce the invitation's active
+device cap. Revoking an invitation invalidates its enrolled sessions on their
+next request. Only invitation-code hashes are stored. Administrative invitation
+commands are documented in `lib/db/scripts/invites.mjs`; creation and revocation
+are separate authorized operations, not readiness probes.
+
 Every private route uses the verified server owner. Legacy `anonId`, `userId`,
 `anonymousDeviceId` and `createdByUserId` fields cannot claim someone else's data.
 Old remote data is retained without an automatic ownership migration. Old invites
@@ -38,8 +47,11 @@ participant binding. Owner history deletion invalidates owned invitations/result
 These are request ceilings, not a monetary meter. A compatibility request can use
 multiple provider calls. Provider-dashboard spending caps remain a release gate.
 Counters and global admission leases live in PostgreSQL and survive restarts.
-Finished responses release leases; interrupted jobs retain a conservative ten-minute
-lease, after which another job can proceed. No provider call is made by health checks.
+Request scopes release leases after awaited provider work settles, including
+after cancellation. A disconnected client cannot release capacity while an
+uncancellable provider call is still running. Crashes or release failures retain
+a conservative ten-minute expiry as a recovery fallback. Counters are never
+refunded. No provider call is made by health checks.
 
 Run reviewed migrations before starting the candidate. `/api/healthz` is liveness;
 `/api/readyz` checks the database and migration ledger and fails during shutdown.
@@ -55,6 +67,7 @@ against the exact manifest embedded in the API build.
 | Data | Storage and access | Lifetime and deletion |
 | --- | --- | --- |
 | Installation secret | Plaintext exists only in the creating client; server stores hash, owner UUID, creation/expiry/revocation times in `device_sessions`. | One-year access expiry; explicit revocation stops access. Expiry/revocation does not delete history or silently create another owner. |
+| Tester invitations | `tester_invites`: code hash, operator label, device cap and revocation time; sessions reference the invitation. | Codes are shown only when created. Revocation stops the enrolled sessions; it does not delete their records. |
 | Profile | `profiles`: display name, birth date, optional time/place/coordinates/timezone. Only authenticated owning installation can read/write it. | Preserved by Clear History. No automatic profile purge or cross-device recovery is implemented. |
 | Reading and journal history | `readings`, `daily_pulls`, `journal_entries`: card identity, reading date, optional question/note/journal text and mood. Owner-scoped APIs; some Tarot/chat content stays in client storage rather than these tables. | Clear History transaction deletes the owning installation's server history. Failed deletion retains it. |
 | Reveal locks and deletion markers | `daily_receipts`, `history_clears`: owner, feature/day/card/orientation, reveal timestamps, history exclusion and deletion boundary. | Kept when history is cleared so the card cannot change or recreate deleted history. They are not returned as restored reading history. |
@@ -133,8 +146,9 @@ network behavior, provider accuracy or backup recovery.
   unverified forwarding headers lets a caller evade them.
 - Set pilot enrollment/provider limits and provider-dashboard spending caps, with
   alerts and a named operator able to close enrollment or revoke a credential.
-  New installation enrollment is public by design; TestFlight distribution does
-  not authenticate API enrollment. Per-installation caps are not person-level
+  The enrollment endpoint is unauthenticated but requires a valid tester code
+  in production by default. Failed attempts consume enrollment quotas. TestFlight
+  distribution alone does not authenticate API enrollment. Per-installation caps are not person-level
   account security, and the global ceiling is admission units rather than dollars.
 - Verify edge abuse controls and availability monitoring. Invalid credentials
   are rejected before the private owner budget; the app does not implement a

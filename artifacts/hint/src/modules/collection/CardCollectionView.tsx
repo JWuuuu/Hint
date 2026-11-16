@@ -22,6 +22,7 @@ import {
   saveLocalCollectionUnlock,
 } from "../../shared/tarot/cardCollection";
 import { RareCardUnlock } from "./RareCardUnlock";
+import { rewardCopy } from "./rewardCopy";
 import { getDailyPullById } from "../home/data/dailyPulls";
 
 function formatDate(iso?: string) {
@@ -109,40 +110,54 @@ export function CardCollectionView() {
   const owner = getAnonId();
   const day = useLocalDay();
   const activeDay = useRef(day); activeDay.current = day;
+  const activeOwner = useRef(owner); activeOwner.current = owner;
+  const mounted = useRef(false);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const [saveError, setSaveError] = useState(false);
   const rawCollection = useCardCollection();
   const localizeCard = (card: typeof rawCollection.cards[number]) => ({ ...card, name: getDailyPullById(card.cardId, language).cardName });
   const collection = { ...rawCollection, cards: rawCollection.cards.map(localizeCard), recent: rawCollection.recent.map(localizeCard) };
   const fallbackReward = useMemo(() => getDailyCollectionReward(owner), [owner, day]);
-  const [dailyReward, setDailyReward] = useState<DailyReceipt | null>(null);
+  const [loadedReward, setDailyReward] = useState<DailyReceipt | null>(null);
+  const dailyReward = loadedReward?.anonId === owner && loadedReward.dailyKey === day ? loadedReward : null;
   const rewardCardId = dailyReward?.assignedCardId ?? fallbackReward.cardId;
   const defaultRareCard = collection.cards.find((card) => card.cardId === rewardCardId)
     ?? collection.cards.find((card) => card.rare && !card.unlocked)
     ?? collection.cards.find((card) => card.rare)
     ?? collection.cards[0]!;
   const [selectedRareCardId, setSelectedRareCardId] = useState(defaultRareCard.cardId);
-  const [rareCardClickKey, setRareCardClickKey] = useState(0);
+  const [rareCardActivation, setRareCardActivation] = useState<{ owner: string; day: string; cardId: string; key: number } | null>(null);
+  const activationKey = useRef(0);
   const selectedRareCard = collection.cards.find((card) => card.cardId === selectedRareCardId) ?? defaultRareCard;
   const progress = Math.round((collection.unlocked / collection.total) * 100);
   const rewardCard = collection.cards.find((card) => card.cardId === rewardCardId) ?? defaultRareCard;
   const rewardOpened = Boolean(dailyReward?.openedAt);
+  const rewardReady = Boolean(dailyReward?.anonId === owner && dailyReward.dailyKey === day && dailyReward.assignedCardId);
+  const copy = rewardCopy[language];
+  const rewardStatus = !rewardReady ? copy.preparing
+    : rewardOpened && rewardCard.unlocked && !saveError && dailyReward?.syncStatus === "conflict" ? copy.conflict
+    : rewardOpened && rewardCard.unlocked && !saveError && dailyReward?.syncStatus === "pending" ? copy.pending
+    : undefined;
 
   useEffect(() => {
     let mounted = true;
     const update = () => {
-      if (!mounted || activeDay.current !== day) return;
+      if (!mounted || activeDay.current !== day || activeOwner.current !== owner) return;
       const receipt = getCachedDailyReceipt("collection-rare-reward", { anonId: owner, dailyKey: day });
       if (receipt) setDailyReward(receipt);
     };
     setDailyReward(getCachedDailyReceipt("collection-rare-reward", { anonId: owner, dailyKey: day }));
     setSelectedRareCardId(fallbackReward.cardId);
+    setRareCardActivation(null);
     setSaveError(false);
     const unsubscribe = subscribeToDailyReceiptFallbacks(update);
     getOrCreateDailyReceipt("collection-rare-reward", {
       anonId: owner, dailyKey: day, fallbackAssignedCardId: fallbackReward.cardId,
     }).then((receipt) => {
-      if (!mounted || activeDay.current !== day) return;
+      if (!mounted || activeDay.current !== day || activeOwner.current !== owner) return;
       setDailyReward(receipt);
+      // An old grid activation must never apply to a later assignment.
+      setRareCardActivation(null);
       if (receipt.assignedCardId) setSelectedRareCardId(receipt.assignedCardId);
       if (receipt.openedAt && receipt.assignedCardId && !wasDailyHistoryCleared(owner, day)) {
         setSaveError(!saveLocalCollectionUnlock(receipt.assignedCardId, "reward", owner));
@@ -154,30 +169,43 @@ export function CardCollectionView() {
     };
   }, [fallbackReward.cardId, day, owner]);
 
-  async function unlockRareCard(cardId: string) {
-    if (!dailyReward || cardId !== rewardCardId) return;
-    const openedReward = await openDailyReceipt("collection-rare-reward", {
+  function unlockRareCard(cardId: string): boolean {
+    if (!rewardReady || cardId !== rewardCardId || activeDay.current !== day || activeOwner.current !== owner) return false;
+    const syncing = openDailyReceipt("collection-rare-reward", {
       anonId: owner, dailyKey: day, fallbackAssignedCardId: cardId,
     });
-    if (activeDay.current !== day) return;
+    // Collection freezes its accepted local opening synchronously, before sync.
+    const openedReward = getCachedDailyReceipt("collection-rare-reward", { anonId: owner, dailyKey: day });
+    if (!openedReward?.openedAt || openedReward.assignedCardId !== cardId) return false;
     setDailyReward(openedReward);
-    setSaveError(!saveLocalCollectionUnlock(openedReward.assignedCardId ?? cardId, "reward", owner));
+    setSaveError(!saveLocalCollectionUnlock(cardId, "reward", owner));
+    void syncing.then((receipt) => {
+      if (mounted.current && activeDay.current === day && activeOwner.current === owner
+        && receipt.anonId === owner && receipt.dailyKey === day && receipt.assignedCardId === cardId) setDailyReward(receipt);
+    });
+    return true;
+  }
+
+  function retryLocalSave() {
+    if (rewardReady && rewardOpened) setSaveError(!saveLocalCollectionUnlock(rewardCardId, "reward", owner));
   }
 
   function selectRareCard(cardId: string) {
+    const card = collection.cards.find((candidate) => candidate.cardId === cardId);
+    if (!card?.rare || (!card.unlocked && (!rewardReady || cardId !== rewardCardId))) return;
     setSelectedRareCardId(cardId);
-    setRareCardClickKey((value) => value + 1);
+    setRareCardActivation({ owner, day, cardId, key: ++activationKey.current });
   }
 
   return (
     <AppScreen>
       <SpaceNavigation />
-      {saveError && <button type="button" onClick={() => void unlockRareCard(rewardCardId)} className="min-h-11 text-sm">{t("quality.saveRetry")}</button>}
+      {saveError && <button type="button" onClick={retryLocalSave} className="min-h-11 text-sm">{t("quality.saveRetry")}</button>}
       <header className="mb-7 flex flex-col gap-4">
         <div className="min-w-0">
-          <p className="font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Collection "} /></p>
+          <p className="hint-readable-text font-sans text-[11px] font-black uppercase tracking-[0.24em]" style={{ color: "var(--hint-readable-gold)" }}><LocalizedText text={" Collection "} /></p>
           <h1 className="mt-2 font-serif text-[30px] leading-none" style={{ color: GLASS.text }}><LocalizedText text={" Your deck memory "} /></h1>
-          <p className="mt-3 max-w-xl font-sans text-[13px] leading-relaxed" style={{ color: GLASS.muted }}><LocalizedText text={" Cards enter the collection when they appear in Daily or the Tarot Room. Tonight's rare reward is assigned once and stays open after you unlock it. "} /></p>
+          <p className="hint-readable-text mt-3 max-w-xl font-sans text-[13px] leading-relaxed" style={{ color: "var(--hint-readable-copy)" }}><LocalizedText text={" Cards enter the collection when they appear in Daily or the Tarot Room. Tonight's rare reward is assigned once and stays open after you unlock it. "} /></p>
         </div>
         <Link
           href="/app/tarot"
@@ -192,10 +220,12 @@ export function CardCollectionView() {
       </header>
 
       <RareCardUnlock
-        key={`${selectedRareCard.cardId}-${rareCardClickKey}`}
+        key={`${owner}-${day}-${selectedRareCard.cardId}`}
         card={selectedRareCardId === rewardCardId ? rewardCard : selectedRareCard}
-        autoUnlockKey={rareCardClickKey}
+        autoUnlockKey={rareCardActivation?.owner === owner && rareCardActivation.day === day && rareCardActivation.cardId === selectedRareCard.cardId ? rareCardActivation.key : 0}
         onUnlock={unlockRareCard}
+        canUnlock={rewardReady && selectedRareCardId === rewardCardId}
+        statusMessage={selectedRareCardId === rewardCardId ? rewardStatus : undefined}
         rewardOpened={selectedRareCardId === rewardCardId ? rewardOpened : selectedRareCard.unlocked}
         lockedMessage={
           selectedRareCardId === rewardCardId
@@ -207,7 +237,7 @@ export function CardCollectionView() {
       <GlassPanel className="mb-7 mt-8 hint-shimmer-border">
         <div className="grid gap-5">
           <div>
-            <div className="flex items-end justify-between gap-4">
+            <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <SectionLabel><LocalizedText text={"Progress"} /></SectionLabel>
                 <p className="mt-2 font-serif text-[42px] leading-none" style={{ color: GLASS.text }}>
@@ -239,7 +269,7 @@ export function CardCollectionView() {
             <article key={card.cardId} className="min-w-0">
               <button
                 type="button"
-                disabled={!card.rare || (!card.unlocked && card.cardId !== rewardCardId)}
+                disabled={!card.rare || (!card.unlocked && (!rewardReady || card.cardId !== rewardCardId))}
                 onClick={() => selectRareCard(card.cardId)}
                 className="hint-tap-sparkle block w-full rounded-[14px] text-left disabled:cursor-default disabled:opacity-70"
                 aria-label={
@@ -265,14 +295,14 @@ export function CardCollectionView() {
                   </span>
                 ) : null}
                 {card.cardId === rewardCardId && !rewardOpened ? (
-                  <span className="absolute bottom-1.5 left-1.5 right-1.5 truncate rounded-full px-1.5 py-1 text-center font-sans text-[8px] font-black uppercase tracking-[0.08em]" style={{ background: "var(--hint-special-action-bg)", color: "var(--hint-special-action-text)" }}><LocalizedText text={" Today "} /></span>
+                  <span className="absolute bottom-1.5 left-1.5 right-1.5 break-words rounded-full px-1.5 py-1 text-center font-sans text-[11px] font-black uppercase tracking-[0.08em]" style={{ background: "var(--hint-readable-action-bg)", color: "var(--hint-special-action-text)" }}><LocalizedText text={" Today "} /></span>
                 ) : null}
                 </div>
               </button>
-              <p className="mt-2 truncate font-serif text-[12px]" style={{ color: card.unlocked ? GLASS.text : GLASS.faint }}>
+              <p className="mt-2 break-words font-serif text-[12px]" style={{ color: card.unlocked ? GLASS.text : GLASS.faint }}>
                 <LocalizedText text={card.unlocked ? card.name : "Locked"} />
               </p>
-              <p className="mt-0.5 truncate font-sans text-[10px] uppercase tracking-[0.12em]" style={{ color: GLASS.faint }}>
+              <p className="mt-0.5 break-words font-sans text-[11px] uppercase tracking-[0.12em]" style={{ color: GLASS.faint }}>
                 {formatDate(card.lastSeenAt)}
               </p>
             </article>

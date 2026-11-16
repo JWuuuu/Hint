@@ -9,3 +9,9 @@
 .hint-guide-shadow{position:absolute;height:14px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,#6e526c20,transparent 72%);pointer-events:none}
 .hint-guide-origin{position:absolute;z-index:2;left:50%;top:50%;width:140px;transform:translate(-50%,-50%);opacity:0;filter:drop-shadow(0 0 20px #eed6aa40)}
 .hint-guide-actor{z-index:3}
+/* Hint's shared corner: one box for every header page, measured from the screen
+   edge and the safe-area top, so no page's own padding can move it. The layer
+   has no height; the row that names the companion keeps its space. */
+.hint-guide-corner-layer{display:block;position:relative;z-index:20;align-self:stretch;width:100%;max-width:var(--hint-app-width);height:0;margin:0 auto;pointer-events:none}
+.hint-guide-corner{position:absolute;top:calc(var(--hint-safe-top,0px) + 8px);right:16px;width:80px;height:80px;pointer-events:none}
+.hint-guide-corner .hint-guide-hit{pointer-events:auto}

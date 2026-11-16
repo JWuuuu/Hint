@@ -13,6 +13,15 @@ vi.mock("../../../lib/i18n", async (importOriginal) => ({ ...await importOrigina
 beforeEach(() => { localStorage.clear(); sessionStorage.clear(); });
 afterEach(() => { cleanup(); });
 
+it("does not display a generated daily card while the authoritative reading is unavailable", () => {
+  state.language = "en";
+  const view = render(<DailyReportCard detailed cardOverride={null} />);
+  expect(screen.getByRole("status").textContent).toContain("Checking");
+  expect(view.container.querySelector("[data-daily-card-id]")).toBeNull();
+  view.rerender(<DailyReportCard detailed cardOverride={getDailyPullById("0-fool", "en")} />);
+  expect(view.container.querySelector("[data-daily-card-id]")?.getAttribute("data-daily-card-id")).toBe("0-fool");
+});
+
 it("every canonical lucky option has a complete translated name and advice in all four locales", () => {
   expect(Object.values(DAILY_LUCKY_OPTIONS).reduce((total, options) => total + options.length, 0)).toBe(148);
   for (const language of ["zh", "es", "ja", "ko"] as const) {
@@ -82,12 +91,12 @@ for (const [language, upright, major, minor] of [
 ] as const) {
   it(`${language} daily card metadata renders localized major and minor badges`, () => {
     state.language = language;
-    const view = render(<DailyReportCard detailed cardOverride={getDailyPullById("0-fool", "en")} dateOverride={new Date()} />);
+    const view = render(<DailyReportCard detailed cardOverride={getDailyPullById("0-fool", "en")} dateOverride={new Date(new Date().toISOString().slice(0, 10) + "T12:00:00")} />);
     expect(screen.getByText(upright)).toBeTruthy();
     expect(screen.getByText(major)).toBeTruthy();
     expect(screen.queryByText("Upright")).toBeNull();
     expect(screen.queryByText("Bigger message")).toBeNull();
-    view.rerender(<DailyReportCard detailed cardOverride={getDailyPullById("ace-cups", "en")} dateOverride={new Date()} />);
+    view.rerender(<DailyReportCard detailed cardOverride={getDailyPullById("ace-cups", "en")} dateOverride={new Date(new Date().toISOString().slice(0, 10) + "T12:00:00")} />);
     expect(screen.getByText(minor)).toBeTruthy();
     expect(screen.queryByText("Daily guidance")).toBeNull();
   });

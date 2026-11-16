@@ -14,7 +14,7 @@
 }
 .me-page {
   --me-ink: #473542;
-  --me-muted: #75616e;
+  --me-muted: #53495e;
   /* Text on the envelope pocket (#f2e6e2) and the page needs 4.5:1: this is 5.3:1. */
   --me-accent: #76593f;
   --me-accent-soft: rgba(148, 118, 94, .12);
@@ -53,7 +53,7 @@
   --me-accent: #d3b99c;
   --me-accent-soft: rgba(211, 185, 156, .12);
   --me-line: rgba(226, 202, 226, .17);
-  --me-surface: rgba(71, 61, 92, .5);
+  --me-surface: rgba(46, 37, 60, .9);
   --me-surface-raised: rgba(84, 73, 106, .62);
   --me-soft: rgba(224, 187, 206, .06);
   --me-shadow: 0 18px 44px rgba(18, 13, 28, .26), inset 0 1px 0 rgba(255, 255, 255, .07);
@@ -188,6 +188,8 @@
 .me-envelope-actions > * + * { border-left: 1px solid var(--me-gilt); color: var(--me-accent); }
 .me-envelope-actions > *:active { background: var(--me-accent-soft); }
 .me-envelope-actions svg { flex-shrink: 0; }
+/* Keep the keyboard ring inside the clipped envelope pocket. */
+.me-page .me-envelope-actions > :focus-visible { outline-offset: -3px; }
 
 /* The one filled action on the page: the theme's own primary pearl. */
 .me-primary {
@@ -297,6 +299,7 @@
 .me-switch > span { width: 42px; height: 25px; border-radius: 20px; display: block; position: relative; background: color-mix(in srgb, var(--me-muted) 24%, transparent); border: 1px solid var(--me-line); transition: background-color 120ms ease; }
 .me-switch i { width: 19px; height: 19px; left: 2px; top: 2px; position: absolute; background: #fff7f3; border-radius: 50%; box-shadow: 0 1px 4px #36263b33; transition: transform 120ms ease; }
 .me-switch[aria-checked="true"] > span { background: var(--me-switch-on); border-color: var(--me-switch-on); }
+.hint-cream-route:not([data-hint-theme="dark"]) .me-switch[aria-checked="false"] > span { background: color-mix(in srgb, #75616e 24%, transparent); }
 .me-switch[aria-checked="true"] i { transform: translateX(17px); }
 .me-settings-row { display: flex; align-items: center; gap: .7rem; min-height: 62px; width: 100%; padding: .75rem 1rem; color: var(--me-ink); text-align: left; }
 .me-settings-row:active { background: var(--me-soft); }
@@ -358,11 +361,17 @@ details[open] > .me-disclosure-summary > svg { transform: rotate(180deg); }
 /* Edit and storage pages */
 .me-back { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-size: .8125rem; margin: 0 .35rem 1rem; color: var(--me-ink); }
 .me-back svg { flex-shrink: 0; }
-.me-form { padding: 1.3rem 1.15rem; }
+.me-form { padding: 1.3rem 1.15rem; --hint-faint: var(--me-muted); --hint-gold: var(--me-gilt-ink); }
+[data-hint-theme="bright"] .me-form { --hint-gold: var(--me-accent); }
 .me-form form label > span { font-family: var(--font-sans); font-size: .6875rem; letter-spacing: .08em; color: var(--me-muted) !important; }
 .me-form input { border-radius: .75rem; background: var(--me-soft) !important; border-color: var(--me-line) !important; color: var(--me-ink) !important; font-family: var(--font-sans); }
 .me-form input:focus-visible { outline: 2px solid var(--me-accent); outline-offset: 2px; }
+.me-form input::placeholder { color: var(--me-muted); opacity: 1; }
 .me-form form > div:last-child > button { font-size: .8125rem; line-height: 1.6; letter-spacing: .04em; padding: .85rem 1rem; min-height: 48px; height: auto; }
+
+/* Local ink backing keeps the shared stars visible around account copy. */
+[data-hint-theme="dark"] .me-page :is(.me-heading, .me-kept-head, .me-section-heading, .me-footer, .me-beta-note) { background: rgba(46, 37, 60, .9); }
+.hint-cream-route:not([data-hint-theme="dark"]) .me-primary { background: linear-gradient(rgba(51, 37, 63, .42), rgba(51, 37, 63, .42)), var(--hint-special-action-bg); }
 
 /* Polish, Nov 7: titles wrap into even lines, body text avoids a lone last
    word, list dates line up, and pill buttons and letters give a small press. */

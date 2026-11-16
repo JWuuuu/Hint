@@ -44,7 +44,7 @@ test("non-Tarot route and phone layout inventory", async ({ page }, testInfo) =>
     report.push({ path, ...result, errors: errors.slice(before) });
     await page.screenshot({ path: testInfo.outputPath(`${path.replaceAll("/", "-")}.png`) });
     expect.soft(errors.slice(before), `${path} runtime errors`).toEqual([]);
-    if (!path.startsWith("/app")) await expect(page.getByRole("navigation", { name: "App", exact: true })).toHaveCount(0);
+    if (!path.startsWith("/app")) await expect(page.getByRole("navigation", { name: "Main navigation", exact: true })).toHaveCount(0);
     expect.soft(result.horizontalOverflow, `${path} horizontal overflow`).toEqual([]);
   }
   await writeFile(testInfo.outputPath("audit.json"), JSON.stringify(report, null, 2));

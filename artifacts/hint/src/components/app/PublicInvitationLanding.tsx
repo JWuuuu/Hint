@@ -17,9 +17,9 @@ export function PublicInvitationLanding() {
   const [title, body, action] = copy[language];
   let download: string | null = null;
   try { download = hintDownloadUrl(); } catch { /* Missing release config never becomes a local URL. */ }
-  return <main className="hint-app-scroll flex h-full flex-col justify-center overflow-y-auto px-6 py-16" style={{ color: "var(--hint-text)" }}>
+  return <div className="hint-app-scroll flex h-full flex-col justify-center overflow-y-auto px-6 py-16" style={{ color: "var(--hint-text)" }}>
     <h1 className="font-serif text-3xl">{title}</h1>
     <p className="mt-5 text-base leading-relaxed">{body}</p>
     {download && <a href={download} referrerPolicy="no-referrer" className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full border px-5 py-3">{action}</a>}
-  </main>;
+  </div>;
 }

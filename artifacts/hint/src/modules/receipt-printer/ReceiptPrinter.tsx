@@ -36,7 +36,11 @@ export function ReceiptPrinter({ children, skip = false, onPrintComplete }: Rece
     return () => window.clearTimeout(timer);
   }, [phase, reduced, skip, pageVisible, duration]);
   useEffect(() => {
-    if (phase === "complete" && !completed.current) { completed.current = true; callback.current?.(); }
+    if (phase === "complete") {
+      // Completion belongs to this mount, even if Skip or reduced motion changes.
+      setPhase("complete");
+      if (!completed.current) { completed.current = true; callback.current?.(); }
+    }
   }, [phase]);
   function feedEnd(event: AnimationEvent<HTMLElement>) {
     if (phase === "printing" && event.target === event.currentTarget && event.animationName === "receipt-result-feed") setPhase("complete");

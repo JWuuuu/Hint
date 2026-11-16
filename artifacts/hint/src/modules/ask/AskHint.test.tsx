@@ -11,6 +11,7 @@ const state = vi.hoisted(() => ({
   speech: { id: null as string | null, status: "idle", play: vi.fn(), stop: vi.fn() },
 }));
 vi.mock("./useAskHintChat", () => ({ useAskHintChat: () => state.chat }));
+vi.mock("./useAskComposerVisibility", () => ({ useAskComposerVisibility: () => null }));
 vi.mock("./askHistory", () => ({ listAskHistory: () => [], subscribeToAskHistory: () => () => {} }));
 vi.mock("../../lib/identity", () => ({ getAnonId: () => "scroll-fixture" }));
 vi.mock("../../lib/i18n", () => ({ useLanguage: () => ({ t: (key: string) => key, language: "en" }) }));

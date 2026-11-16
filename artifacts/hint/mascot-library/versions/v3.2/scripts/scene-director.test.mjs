@@ -29,13 +29,14 @@ test('manual feedback replaces a pending automatic cue and respects reduced moti
   d.setMotionPolicy({reduced:false,visible:false});assert.equal(d.playGesture('nod',{interrupt:true}),false);
 });
 
-test('hidden scenes reject taps and discard stale cues without losing a running pose',()=>{
+test('hidden scenes reject taps and discard ordinary feedback without a queued replay',()=>{
   const director=createHintSceneDirector({context:{room:'ask',phase:'thinking'}});advance(director,2);
   director.setContext({phase:'reading'});director.setMotionPolicy({visible:false});
   assert.equal(director.react(),false);assert.equal(director.playGesture('present-card'),false);
   director.setMotionPolicy({visible:true});advance(director,2);assert.equal(director.getState().gesture,null);
   director.playGesture('present-card');advance(director,1);director.setMotionPolicy({visible:false});
   const pose=director.sample().pose;advance(director,20);assert.deepEqual(director.sample().pose,pose);
+  assert.equal(director.getState().gesture,null);
   director.setMotionPolicy({visible:true});assert.deepEqual(director.sample().pose,pose);
   advance(director,3);assert.equal(director.getState().gesture,null);
 });
@@ -229,4 +230,42 @@ test('new reactions enter and leave sustained poses without visible position jum
     for(let i=0;i<600;i++){director.advance(1/120);const frame=director.sample();assert.ok(Object.values(frame.pose).every(Number.isFinite));}
     assert.equal(director.getState().gesture,null);assert.equal(director.getState().activity,phase);
   }
+});
+
+test('Hint greets once in a visit, not at every doorway',()=>{
+  const d=createHintSceneDirector({context:{room:'home',phase:'idle'}});advance(d,2);
+  const greetings=[];
+  for(const room of ['daily','history','settings','daily','astrology']){
+    d.setContext({room});let greeted=false;
+    for(let i=0;i<480;i++){d.advance(1/120);if(d.getState().gesture==='welcome-back')greeted=true;}
+    greetings.push(greeted);
+  }
+  assert.deepEqual(greetings,[true,false,false,false,false]);
+  // A greeting that never played, because the reader was composing, is still owed.
+  const typing=createHintSceneDirector({context:{room:'home',phase:'idle'}});advance(typing,2);
+  typing.setContext({room:'journal',typing:true});advance(typing,5);
+  assert.equal(typing.getState().gesture,null);
+  typing.setContext({room:'daily',typing:false});
+  let later=false;for(let i=0;i<480;i++){typing.advance(1/120);if(typing.getState().gesture==='welcome-back')later=true;}
+  assert.equal(later,true);
+  // Other reactions to what the reader does are unchanged.
+  d.setContext({phase:'error'});advance(d,.5);assert.equal(d.getState().gesture,'reassure');
+});
+
+test('a glide along the top edge never rises above the higher of its two places',()=>{
+  const d=createHintSceneDirector({context:{room:'history',phase:'idle'}});d.setViewport(375,667);
+  const corner={x:(279+40)/375,y:(8+40)/667,width:80/375},left={x:(7+56)/375,y:(7+56)/667,width:112/375};
+  d.setAnchor(corner,{followLayout:true});advance(d,2);
+  const top=()=>d.sample().actor.y;
+  const ceiling=Math.min(corner.y-corner.width*(375/667)/2,left.y-left.width*(375/667)/2);
+  d.setAnchor(left);let highest=1,moved=0;const start=d.sample().actor.x;
+  for(let i=0;i<120;i++){d.advance(1/120);highest=Math.min(highest,top());moved=Math.max(moved,Math.abs(d.sample().actor.x-start));}
+  assert.ok(highest>=ceiling-1e-9,`rose to ${highest}, ceiling ${ceiling}`);
+  assert.ok(moved>.5,'the glide still crosses the header');
+  // With headroom the arc is kept: a glide between two low places still lifts.
+  const low=createHintSceneDirector({context:{room:'ask',phase:'idle'}});low.setViewport(375,667);
+  low.setAnchor({x:.2,y:.6,width:.2},{followLayout:true});advance(low,2);
+  low.setAnchor({x:.8,y:.6,width:.2});let lifted=1;
+  for(let i=0;i<120;i++){low.advance(1/120);lifted=Math.min(lifted,low.sample().actor.y);}
+  assert.ok(lifted<.6-.2*(375/667)/2-.02,'an arc with room above keeps its lift');
 });

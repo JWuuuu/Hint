@@ -1,0 +1,30 @@
+/* Account actions must retain their full labels when text is enlarged. */
+.hint-login { overflow-wrap: anywhere; }
+.hint-login :is(button, a) { min-width: 0; height: auto; min-height: 44px; padding-block: .65rem; line-height: 1.5; }
+.hint-login button[type="submit"] { min-height: 48px; padding-inline: 1rem; }
+.hint-login :is(button, a) > svg { flex-shrink: 0; }
+.hint-login :is(button, a, summary, input):focus-visible { outline: 2px solid var(--hint-text); outline-offset: 3px; }
+.hint-login [role="alert"]:focus { outline: 2px solid var(--hint-text); outline-offset: 3px; }
+.hint-login :is(button, input):disabled { cursor: wait; opacity: .5; }
+.hint-login input { min-width: 0; height: auto; min-height: 48px; padding-block: .65rem; line-height: 1.5; }
+.hint-login [role="alert"] { padding: .75rem; border-radius: 8px; background: var(--hint-form-field-bg, rgba(0,0,0,.25)); }
+
+/* Account help and input hints need body ink on the existing glass. */
+.hint-login { --hint-faint: var(--hint-muted); }
+.hint-login input::placeholder { color: var(--hint-muted); opacity: 1; }
+[data-hint-theme="bright"] .hint-login {
+  --hint-muted: #53495e;
+  --hint-gold: #76593f;
+  --hint-aqua: var(--hint-teal-action-text, #2f6366);
+}
+
+/* Keep the night glass translucent without washing out account text. */
+[data-hint-theme="dark"] .hint-login {
+  --hint-muted: rgba(249, 239, 234, .9);
+  --hint-gold: var(--hint-gold-bright);
+  --hint-surface-soft: rgba(46, 37, 60, .9);
+  --hint-surface-strong: linear-gradient(145deg, rgba(53, 44, 70, .96), rgba(46, 37, 60, .94));
+  --hint-liquid-panel: linear-gradient(145deg, rgba(53, 44, 70, .96), rgba(46, 37, 60, .94));
+}
+[data-hint-theme="dark"] .hint-login .hint-glass-card::before { opacity: .08; }
+[data-hint-theme="dark"] .hint-login > section > div:first-child { background: rgba(46, 37, 60, .9); }

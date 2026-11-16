@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { and, eq, lt, or, sql } from "drizzle-orm";
-import { db, compatibilityInvitesTable as invites, deviceSessionsTable } from "@workspace/db";
+import { db, compatibilityInvitesTable as invites, deviceSessionsTable, historyClearsTable } from "@workspace/db";
 import type { BirthProfileInput, CompatibilityResult } from "./astrologyApiClient.js";
 export class InviteError extends Error { constructor(public status: number, message: string) { super(message); } }
 export async function createCompatibilityInvite(ownerId: string, creatorInput: BirthProfileInput, relationshipType = "unclear") {
@@ -30,6 +30,7 @@ export async function readCompatibilityResult(id: string, viewerOwnerId: string)
 /** Claim with a lease and fencing token. Late jobs cannot publish after retry or deletion. */
 export async function completeCompatibilityInvite(token: string, friend: BirthProfileInput, consent: boolean,
   compute: (creator: BirthProfileInput, friend: BirthProfileInput) => Promise<CompatibilityResult>, accepterOwnerId: string) {
+  const requestStartedAt = new Date();
   if (!consent) throw new InviteError(400, "Consent is required.");
   const found = await findCompatibilityInvite(token);
   if (!accepterOwnerId || found.accepterOwnerId && found.accepterOwnerId !== accepterOwnerId) throw new InviteError(403, "This invitation has already been accepted by another installation.");
@@ -37,10 +38,16 @@ export async function completeCompatibilityInvite(token: string, friend: BirthPr
   if (found.status !== "pending" && !found.accepterOwnerId) throw new InviteError(410, "Create a new invitation for this beta version.");
   if (found.status === "completed" && found.result) return { status: 200, resultId: found.resultId, result: found.result };
   const jobId = crypto.randomUUID();
-  const [claimed] = await db.update(invites).set({ status: "processing", jobId, leaseUntil: new Date(Date.now() + 120000),
+  const claimed = await db.transaction(async tx => {
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${accepterOwnerId}, 0))`);
+    const [cleared] = await tx.select().from(historyClearsTable).where(eq(historyClearsTable.ownerId, accepterOwnerId));
+    if (cleared && requestStartedAt <= cleared.clearedAt) throw new InviteError(409, "History was cleared while accepting this invitation.");
+    const [row] = await tx.update(invites).set({ status: "processing", jobId, leaseUntil: new Date(Date.now() + 120000),
     friendInput: { ...friend }, consentAt: new Date(), accepterOwnerId }).where(and(eq(invites.id, found.id),
     or(eq(invites.accepterOwnerId, accepterOwnerId), sql`${invites.accepterOwnerId} IS NULL`),
     or(eq(invites.status, "pending"), eq(invites.status, "failed"), and(eq(invites.status, "processing"), lt(invites.leaseUntil, new Date()))))).returning();
+    return row;
+  });
   if (!claimed) {
     const latest = await findCompatibilityInvite(token);
     if (latest.accepterOwnerId !== accepterOwnerId) throw new InviteError(403, "This invitation has already been accepted by another installation.");

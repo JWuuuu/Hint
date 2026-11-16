@@ -102,4 +102,43 @@ describe("calculated wheel geometry", () => {
     expect(onSelect).toHaveBeenCalledWith({ kind: "body", id: "sun" });
     expect(point.getAttribute("aria-pressed")).toBe("true");
   });
+
+  it("draws traditional axes only from an Ascendant and a verified quadrant cusp", () => {
+    const chart = fixture([{ body: "sun", sign: "aries", degree: 12, meaning: "" }]);
+    chart.houses = [{ house: 1, sign: "taurus", degree: 0 }, { house: 10, sign: "aquarius", degree: 12 }];
+    chart.calculation = { zodiacSystem: "tropical", requestedHouseSystem: "placidus", houseSystem: "whole_sign", returned: { placements: 1, houses: 2, aspects: 0 } };
+    const { container, rerender } = render(<NatalWheel variant="traditional" chart={chart} />);
+    expect(container.querySelectorAll(".astro-traditional-house")).toHaveLength(2);
+    expect(container.querySelectorAll(".astro-traditional-axis")).toHaveLength(0);
+
+    const verified = {
+      ...chart,
+      calculation: { ...chart.calculation, houseSystem: "Placidus" },
+      placements: [...chart.placements, { body: "rising", sign: "taurus", degree: 6, meaning: "" } as const],
+    };
+    rerender(<NatalWheel variant="traditional" chart={verified} />);
+    expect(container.querySelectorAll(".astro-traditional-axis")).toHaveLength(2);
+    expect(screen.getByText("ASC")).toBeTruthy();
+    expect(screen.getByText("MC")).toBeTruthy();
+  });
+
+  it("keeps real aspect endpoints fixed when nearby glyphs need more space", () => {
+    const chart = fixture([{ body: "sun", sign: "aries", degree: 0, meaning: "" }]);
+    chart.additionalPlacements = [{ body: "north_node", sign: "aries", degree: 1, meaning: "" }];
+    chart.aspects = [
+      { from: "sun", to: "north_node", type: "conjunction", meaning: "" },
+      { from: "moon", to: "sun", type: "square", meaning: "" },
+    ];
+    const onSelect = vi.fn();
+    const { container } = render(<NatalWheel variant="traditional" chart={chart} onSelect={onSelect} />);
+    const [aspect] = container.querySelectorAll(".astro-traditional-aspect");
+    expect(container.querySelectorAll(".astro-traditional-aspect")).toHaveLength(1);
+    expect(Number(aspect.getAttribute("x1"))).toBeCloseTo(-89);
+    expect(Number(aspect.getAttribute("y2"))).toBeCloseTo(Math.sin(Math.PI / 180) * 89);
+
+    const node = screen.getByRole("button", { name: "North Node" });
+    expect(Number(node.querySelector("text")?.getAttribute("y"))).toBeGreaterThan(20);
+    fireEvent.keyDown(node, { key: "Enter" });
+    expect(onSelect).toHaveBeenCalledWith({ kind: "body", id: "north_node" });
+  });
 });

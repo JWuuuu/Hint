@@ -13,6 +13,21 @@ const trustedProxies = process.env.HINT_TRUSTED_PROXIES?.split(",").map(value =>
 if (trustedProxies?.length) app.set("trust proxy", trustedProxies);
 app.use(requestContext);
 
+// Baseline response hardening for a JSON API behind a TLS-terminating proxy.
+app.use((req, res, next) => {
+  res.set("X-Content-Type-Options", "nosniff");
+  res.set("Referrer-Policy", "no-referrer");
+  res.set("X-Frame-Options", "DENY");
+  res.set("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
+  res.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  if (req.secure || req.get("x-forwarded-proto") === "https") {
+    res.set("Strict-Transport-Security", "max-age=15552000; includeSubDomains");
+  }
+  // Private, per-device responses must never be stored by a shared cache.
+  if (req.path !== "/api/healthz" && req.path !== "/api/readyz") res.set("Cache-Control", "no-store");
+  next();
+});
+
 app.use(
   pinoHttp({
     logger,
@@ -35,7 +50,6 @@ app.use(
 );
 app.use(cors({ origin(origin, callback) { callback(allowedOrigin(origin) ? null : Object.assign(new Error("Origin not allowed"), { status: 403 }), allowedOrigin(origin)); }, methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], allowedHeaders: ["Content-Type", "Authorization"], maxAge: 600 }));
 app.use(express.json({ limit: "100kb" }));
-app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 app.use((_req, res) => { res.status(404).json({ error: "API route not found.", code: "ROUTE_NOT_FOUND" }); });

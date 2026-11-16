@@ -29,7 +29,7 @@ test("draft survives departure for manual recovery and reload, then a failed sav
   await page.getByLabel("Your page", { exact: true }).fill("Today I made room for a slow walk.\nIt helped me reset.");
   await page.getByRole("button", { name: "Hopeful", exact: true }).click();
   await expect(page.getByText("Draft saved on this device.", { exact: false })).toBeVisible();
-  await page.getByRole("banner").getByRole("link", { name: "Rooms", exact: true }).click();
+  await page.getByRole("main").getByRole("link", { name: "Rooms", exact: true }).click();
   await page.getByRole("button", { name: "Leave and start fresh", exact: true }).click();
   await expect(page).toHaveURL(/\/app\/rooms/);
   await page.goBack();

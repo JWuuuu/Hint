@@ -5,10 +5,10 @@ import router from "../../routes/tarot.js";
 import { deck } from "./data/deck.js";
 import { structuredTarotReadingSchema } from "./ai/structuredTarotReader.js";
 
-const ai = vi.hoisted(() => ({ reading: vi.fn(), chat: vi.fn(), narrative: vi.fn() }));
+const ai = vi.hoisted(() => ({ reading: vi.fn(), chat: vi.fn(), narrative: vi.fn(), admit: vi.fn() }));
 vi.mock("@workspace/db", () => ({ db: {}, readingsTable: {} }));
 vi.mock("../../lib/logger.js", () => ({ logger: { error: vi.fn() } }));
-vi.mock("../../lib/aiCostGuards.js", async (original) => ({ ...await original<object>(), consumeAiBudget: () => true }));
+vi.mock("../../lib/aiCostGuards.js", async (original) => ({ ...await original<object>(), consumeAiBudget: ai.admit }));
 vi.mock("./ai/structuredTarotReader.js", async (original) => ({ ...await original<object>(), generateStructuredTarotReading: ai.reading }));
 vi.mock("./chat/chatReader.js", () => ({ generateTarotChatReply: ai.chat }));
 vi.mock("./ai/tarotReader.js", () => ({ generateTarotReading: ai.narrative }));
@@ -32,9 +32,27 @@ beforeAll(async () => {
   url = `http://127.0.0.1:${address.port}`;
 });
 afterAll(async () => { server.closeAllConnections(); await new Promise<void>((resolve) => server.close(() => resolve())); });
-beforeEach(() => { ai.reading.mockReset(); ai.chat.mockReset(); ai.narrative.mockReset(); });
+beforeEach(() => { ai.reading.mockReset(); ai.chat.mockReset(); ai.narrative.mockReset(); ai.admit.mockReset().mockResolvedValue(true); });
 
 describe("Tarot HTTP response provenance", () => {
+  it.each([
+    ["/tarot/structured-reading", { ...readingInput, cards: Array(200).fill({}) }],
+    ["/tarot/structured-reading", { ...readingInput, cards: [{ ...cards[0], keywords: Array(17).fill("extra") }] }],
+    ["/tarot/chat", { ...chatInput, cards: Array(200).fill({}) }],
+    ["/tarot/chat", { ...chatInput, messages: Array(200).fill({}) }],
+    ["/tarot/chat", { ...chatInput, cards: [{ ...chatInput.cards[0], card: { ...deck[0], keywords: Array(17).fill("extra") } }] }],
+  ])("returns a safe 400 for oversized collections at %s before provider admission", async (path, body) => {
+    const response = await post(path as string, body);
+    expect(response.status).toBe(400);
+    const value = await response.json() as { error: string };
+    expect(value).toEqual({ error: expect.any(String) });
+    expect(value.error).not.toContain("extra");
+    expect(ai.admit).not.toHaveBeenCalled();
+    expect(ai.reading).not.toHaveBeenCalled();
+    expect(ai.chat).not.toHaveBeenCalled();
+    expect(ai.narrative).not.toHaveBeenCalled();
+  });
+
   it("passes saved spreads through initial readings, detailed readings, and follow-ups", async () => {
     const spreadHistory = JSON.stringify({ availableReadings: 1, includedReadings: 1, omittedReadings: 0,
       readings: [{ id: "earlier", question: "Will we reconnect this month?", cards }] });

@@ -1,4 +1,4 @@
-import { providerSignal, trackProviderWork } from "../../lib/providerCancellation";
+import { providerSignal, trackProviderWork, withProviderDeadline } from "../../lib/providerCancellation";
 import crypto from "node:crypto";
 import { compareChartPositions, SYNASTRY_POLICY } from "./synastryGeometry.js";
 import { getOpenAIClient, openaiApiKey, openaiModel } from "../../lib/openaiConfig.js";
@@ -173,14 +173,6 @@ function timezoneOffsetForZone(timezone: string | undefined, date?: string) {
   }
 }
 
-function nearestFallbackPlace(latitude: number, longitude: number) {
-  return FALLBACK_PLACES.slice().sort((a, b) => {
-    const aDistance = (a.latitude - latitude) ** 2 + (a.longitude - longitude) ** 2;
-    const bDistance = (b.latitude - latitude) ** 2 + (b.longitude - longitude) ** 2;
-    return aDistance - bDistance;
-  })[0];
-}
-
 function providerConfigured() {
   const userId = envValue("ASTROLOGYAPI_USER_ID") || envValue("ASTROLOGY_API_USER_ID");
   const apiKey = envValue("ASTROLOGYAPI_API_KEY") || envValue("ASTROLOGY_API_KEY");
@@ -348,12 +340,13 @@ export async function getNatalProxy(profile: AstroProfile) {
   }
 
   const key = hash({ kind: "natal", profile, houseSystem: envValue("HOUSE_SYSTEM") || "placidus" });
-  const cached = cacheGet<ReturnType<typeof normalizeNatalResponse>>(natalCache, key);
+  const cached = cacheGet<ReturnType<typeof normalizeNatalResponse> & { chart: { additionalPlacements?: NormalizedBirthChart["additionalPlacements"] } }>(natalCache, key);
   if (cached) return { ...cached, cached: true };
 
   const input = toProviderInput(profile);
   const chart = await calculateBirthChart(input, { force: false });
-  const response = normalizeNatalResponse(chart, profile, chart.source === "api" ? "live" : "fallback", false);
+  const base = normalizeNatalResponse(chart, profile, chart.source === "api" ? "live" : "fallback", false);
+  const response = { ...base, chart: { ...base.chart, additionalPlacements: chart.additionalPlacements } };
   if (response.mode === "live") cacheSet(natalCache, key, response, 30 * DAY);
   return response;
 }
@@ -407,14 +400,18 @@ function normalizeTransitRows(payload: unknown, date: string) {
 }
 
 async function astrologyProviderPost(endpoint: string, payload: Record<string, unknown>) {
-  return trackProviderWork(async () => {
+  // Keep the same whole-response deadline as the natal provider helper.
+  return withProviderDeadline(15_000, async signal => {
     const response = await fetch(`${providerBaseUrl()}/${endpoint}`, {
       method: "POST",
       headers: providerHeaders(),
       body: JSON.stringify(payload),
-      signal: providerSignal(),
+      signal,
     });
-    if (!response.ok) throw new Error(`ASTROLOGYAPI_${response.status}`);
+    if (!response.ok) {
+      await response.body?.cancel();
+      throw new Error(`ASTROLOGYAPI_${response.status}`);
+    }
     return response.json() as Promise<unknown>;
   });
 }
@@ -458,7 +455,7 @@ function normalizeGeoRows(payload: unknown, query: string, maxRows: number): Geo
     .slice(0, maxRows);
 }
 
-function normalizeTimezonePayload(payload: unknown, latitude: number, longitude: number, date?: string) {
+function normalizeTimezonePayload(payload: unknown, date?: string) {
   const root = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : {};
   const timezoneId = readString(root.timezoneId ?? root.timezone_id ?? root.timezone ?? root.zoneName ?? root.zone_name);
   const rawOffset = readNumber(root.timezoneOffset ?? root.timezone_offset ?? root.timezone ?? root.tzone ?? root.offset ?? root.gmtOffset ?? root.rawOffset ?? root.timezone_in_ms);
@@ -468,11 +465,12 @@ function normalizeTimezonePayload(payload: unknown, latitude: number, longitude:
       : rawOffset !== undefined && Math.abs(rawOffset) > 14
         ? Math.round((rawOffset / 3600) * 100) / 100
         : rawOffset;
-  const fallback = nearestFallbackPlace(latitude, longitude);
-  const nextTimezoneId = timezoneId ?? fallback?.timezone;
+  // An empty/unusable provider response is not a calculated timezone. In
+  // particular, a nearby local city must not turn a failure into a live cache hit.
+  if (!timezoneId && timezoneOffset === undefined) throw new Error("Missing provider timezone");
   return {
-    timezoneId: nextTimezoneId ?? null,
-    timezoneOffset: timezoneOffset ?? timezoneOffsetForZone(nextTimezoneId, date) ?? fallback?.timezoneOffset ?? null,
+    timezoneId: timezoneId ?? null,
+    timezoneOffset: timezoneOffset ?? timezoneOffsetForZone(timezoneId, date) ?? null,
   };
 }
 
@@ -509,7 +507,7 @@ export async function getGeoDetailsProxy(place: string, maxRows = 6) {
     timezoneId: place.timezoneId ?? place.timezone,
     countryCode: place.countryCode ?? (place.country && place.country.length <= 3 ? place.country : undefined),
   }));
-  cacheSet(geoCache, key, response, DAY);
+  if (mode === "live") cacheSet(geoCache, key, response, DAY);
   return response;
 }
 
@@ -526,7 +524,7 @@ export async function getTimezoneProxy(latitude: number, longitude: number, date
   if (providerConfigured()) {
     try {
       const payload = await astrologyProviderPost("timezone_with_dst", { latitude, longitude, date: astrologyApiDate(date) });
-      timezone = normalizeTimezonePayload(payload, latitude, longitude, date);
+      timezone = normalizeTimezonePayload(payload, date);
       mode = "live";
       source = "astrologyapi";
     } catch {
@@ -535,7 +533,7 @@ export async function getTimezoneProxy(latitude: number, longitude: number, date
   }
 
   const response = { source, mode, cached: false, fetchedAt: new Date().toISOString(), latitude, longitude, ...timezone };
-  cacheSet(timezoneCache, key, response, 30 * DAY);
+  if (mode === "live") cacheSet(timezoneCache, key, response, 30 * DAY);
   return response;
 }
 

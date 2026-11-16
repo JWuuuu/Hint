@@ -224,9 +224,11 @@ function ReadingBlock({
   return (
     <div className="hint-app-card rounded-[16px] border px-4 py-3" style={{ borderColor: GLASS.border }}>
       <p className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: GLASS.faint }}>
+        <span aria-hidden="true" className="hint-action-shadow" data-copy={label} />
         {label}
       </p>
       <p className="mt-2 font-sans text-[13px] leading-relaxed" style={{ color: GLASS.muted }}>
+        <span aria-hidden="true" className="hint-action-shadow" data-copy={children} />
         {children}
       </p>
     </div>
@@ -329,9 +331,9 @@ export function AnimalTarotView() {
       <header className="animal-tarot-hero mb-6">
         <div className="animal-hero-orbit" aria-hidden />
         <div className="relative z-10">
-          <p className="font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: ACCENT.gold }}><LocalizedText text={" Animal Tarot "} /></p>
+          <p className="hint-readable-text font-sans text-[10px] font-black uppercase tracking-[0.24em]" style={{ color: "var(--hint-readable-gold)" }}><LocalizedText text={" Animal Tarot "} /></p>
           <h1 className="mt-2 font-serif text-[34px] leading-none sm:text-[42px]" style={{ color: GLASS.text }}><LocalizedText text={" Animal Terrace "} /></h1>
-          <p className="mt-3 max-w-2xl font-sans text-[13px] leading-relaxed sm:text-[14px]" style={{ color: GLASS.muted }}>{roomResumeText(language, "sameAnimal")}</p>
+          <p className="hint-readable-text mt-3 max-w-2xl font-sans text-[13px] leading-relaxed sm:text-[14px]" style={{ color: "var(--hint-readable-copy)" }}>{roomResumeText(language, "sameAnimal")}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {["animalTarot.chip.instinct", "animalTarot.chip.emotion", "animalTarot.chip.today"].map((item) => (
               <span
@@ -365,7 +367,7 @@ export function AnimalTarotView() {
                 </p>
               </div>
             )}
-            <SectionLabel>{revealed ? animal.title : t("animalTarot.ritual")}</SectionLabel>
+            <SectionLabel readable>{revealed ? animal.title : t("animalTarot.ritual")}</SectionLabel>
             {loading && (
               <div className="py-6">
                 <h2 className="font-serif text-[34px] leading-tight" style={{ color: GLASS.text }}><LocalizedText text={" Finding today’s animal. "} /></h2>

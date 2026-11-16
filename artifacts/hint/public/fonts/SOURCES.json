@@ -1,0 +1,177 @@
+{
+  "capturedAt": "2026-11-10T21:35:14.477709+00:00",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+  "cssRequests": [
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+      "sha256": "ea27c490bfd19cbfa017b7828e449b70ad7cf0da0d3a14aae0d48fc15ba7b8b4",
+      "bytes": 9884,
+      "snapshot": "original-google-0.css",
+      "snapshotLocation": "Review packet font-readiness/original-google-0.css"
+    },
+    {
+      "url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Hanken+Grotesk:wght@300;400;500;600&display=swap",
+      "sha256": "596e928657bcd265aec3eace3e0812d96e040f06aae22e25bddcde8da6a42a55",
+      "bytes": 20701,
+      "snapshot": "original-google-1.css",
+      "snapshotLocation": "Review packet font-readiness/original-google-1.css"
+    }
+  ],
+  "fontFiles": [
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtFmSq17w.woff2",
+      "file": "cormorantgaramond-ae25de0507a445fd.woff2",
+      "sha256": "ae25de0507a445fd9e953e90432ae75b1ee2eccb48370a6ced4934551eb56fc3",
+      "bytes": 25184
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtGmSq17w.woff2",
+      "file": "cormorantgaramond-cd5bf126b2c84ab4.woff2",
+      "sha256": "cd5bf126b2c84ab41b254a6a9a1ffb5c326a0f9f82c22fb4704daa31c9aaa415",
+      "bytes": 34392
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtHmSq17w.woff2",
+      "file": "cormorantgaramond-b8ecb4ae898cd9cc.woff2",
+      "sha256": "b8ecb4ae898cd9ccae2f2d18fd364f6593bb67776060f9b5d833cec65d34d112",
+      "bytes": 11516
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSo.woff2",
+      "file": "cormorantgaramond-6f2f5c3b1abc3d0b.woff2",
+      "sha256": "6f2f5c3b1abc3d0bb035a927f66a90ca873f94fc31c4966c8d024142c2036e55",
+      "bytes": 39260
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtMmSq17w.woff2",
+      "file": "cormorantgaramond-cb13c04533ee98c9.woff2",
+      "sha256": "cb13c04533ee98c94e49a053b9f4d39bf616fd7ba6360d71aead92a78dc571f7",
+      "bytes": 21300
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYp3tKgS4.woff2",
+      "file": "cormorantgaramond-cfa9a397d86f66c5.woff2",
+      "sha256": "cfa9a397d86f66c5c51775a2500a712d5f632a04f0c5eca6930dfaf612d4566d",
+      "bytes": 33736
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYpHtKgS4.woff2",
+      "file": "cormorantgaramond-a4d7cf345b8091e1.woff2",
+      "sha256": "a4d7cf345b8091e1d2c8c5c8fa3bd0f9bb9d00bc8988185471db398ddb5ae4c4",
+      "bytes": 23416
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYpntKgS4.woff2",
+      "file": "cormorantgaramond-6252e819a7665ae5.woff2",
+      "sha256": "6252e819a7665ae512c2d046308a9016ada63c06d0d8f96984c4b29f6c9e1bd2",
+      "bytes": 11220
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2",
+      "file": "cormorantgaramond-d80df8ff5aecd299.woff2",
+      "sha256": "d80df8ff5aecd299a61549f9e29ab1ed0b9b05f4ea71d50fe978e07d5240b235",
+      "bytes": 37640
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYrXtKgS4.woff2",
+      "file": "cormorantgaramond-017fab69b4be8ffc.woff2",
+      "sha256": "017fab69b4be8ffc08ca312823327989ade6dc3d948f0afa125e12ec2e5e7ca1",
+      "bytes": 21168
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpQ59CjCQ.woff2",
+      "file": "hankengrotesk-7ba47c78279dc529.woff2",
+      "sha256": "7ba47c78279dc529afe577dc2476bc8fd3c0e32f78efa26dca9f9382d49a157d",
+      "bytes": 1668
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpS59CjCQ.woff2",
+      "file": "hankengrotesk-992b5d147edde9d6.woff2",
+      "sha256": "992b5d147edde9d637ce22e7bb9cc9e6909c05410226b36a2e581ada9877eb4a",
+      "bytes": 9320
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpT59CjCQ.woff2",
+      "file": "hankengrotesk-768af2923e0ab154.woff2",
+      "sha256": "768af2923e0ab1549f1dfba0a5c8ea749c4c01f01d8e77ffaf7fcd12f57a0a24",
+      "bytes": 19588
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/hankengrotesk/v12/ieVn2YZDLWuGJpnzaiwFXS9tYtpd59A.woff2",
+      "file": "hankengrotesk-e9201eddf1d41d0b.woff2",
+      "sha256": "e9201eddf1d41d0b62253295d869ce3cf65768f7102b797f02c7f8c876b4a9d5",
+      "bytes": 34704
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2",
+      "file": "inter-71d5ee93cc1e9f1d.woff2",
+      "sha256": "71d5ee93cc1e9f1d520a3a8b66456de18c7879d8df09d57fcd2eaff75fef0075",
+      "bytes": 18748
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+      "file": "inter-3100e775e8616cd2.woff2",
+      "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62",
+      "bytes": 48256
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2",
+      "file": "inter-1be3448e292fbf05.woff2",
+      "sha256": "1be3448e292fbf05ffe176fe1e43f135013d50b1e7d324ad1a558f623d3bb6f6",
+      "bytes": 18996
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2",
+      "file": "inter-34b9c504cab7a73e.woff2",
+      "sha256": "34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956",
+      "bytes": 85068
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2",
+      "file": "inter-ca157063339ac4ad.woff2",
+      "sha256": "ca157063339ac4ad418f214f3abfed119b0798ab4d377386ce5c9e5a7a435ebd",
+      "bytes": 25960
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2",
+      "file": "inter-6e9e020a25f9b56d.woff2",
+      "sha256": "6e9e020a25f9b56d418f2c085b1d3c09725a4da23fe693a5b463064606732190",
+      "bytes": 11232
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2",
+      "file": "inter-5c66f9e07e90c6d4.woff2",
+      "sha256": "5c66f9e07e90c6d4ac4922cc68d60de26c17b1858e677fb5e603fce3952b3ff2",
+      "bytes": 10252
+    }
+  ],
+  "totalFontBytes": 542624,
+  "fontEdits": "None; original WOFF2 bytes unchanged",
+  "coverage": "All subsets supplied by the existing exact Google CSS family/weight requests, including Latin extended; existing system CJK fallback retained",
+  "licenses": [
+    {
+      "family": "Hanken Grotesk",
+      "source": "https://github.com/google/fonts/blob/main/ofl/hankengrotesk/OFL.txt",
+      "gitBlobSha": "9c8185d846e13882e03bdd700743e717e67189dc",
+      "method": "GitHub connector fetch_file; license wording unchanged; trailing whitespace and extra EOF newline normalized",
+      "localFile": "hanken-grotesk-OFL.txt",
+      "localSha256": "bb93c61eef5b10204ac305aeb3d204ce74c22c40aa8398f9e2c3bdab2263f2d1"
+    },
+    {
+      "family": "Cormorant Garamond",
+      "source": "https://github.com/google/fonts/blob/main/ofl/cormorantgaramond/OFL.txt",
+      "gitBlobSha": "507d70f4565352dbfcf2dfc9b42eb092b57c0be8",
+      "method": "GitHub connector fetch_file; license wording unchanged; trailing whitespace and extra EOF newline normalized",
+      "localFile": "cormorant-garamond-OFL.txt",
+      "localSha256": "6f5a41d57400577a50aae88475b11f292f3d7de78ee7d5113c69577331d8ad31"
+    },
+    {
+      "family": "Inter",
+      "source": "https://github.com/google/fonts/blob/main/ofl/inter/OFL.txt",
+      "gitBlobSha": "21f6aff961064c2e429f570995e446bcdd555422",
+      "method": "GitHub connector fetch_file; license wording unchanged; trailing whitespace and extra EOF newline normalized",
+      "localFile": "inter-OFL.txt",
+      "localSha256": "5dd548d31a85f756e01d63e00d7faf1e324103ed3e9102fcbbabf2cc2db6dd39"
+    }
+  ]
+}

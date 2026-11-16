@@ -8,6 +8,14 @@ function add(lines: string) {
   }
 }
 add(`
+Birth city|出生城市|Ciudad natal|生まれた都市|태어난 도시
+Tell us what you would like Hint to call you.|请告诉我们你希望 Hint 怎么称呼你。|Dinos cómo quieres que Hint te llame.|Hint に呼んでほしい名前を教えてください。|Hint가 어떻게 불러드리면 좋을지 알려주세요.
+Enter a complete birth date that is not in the future.|请输入完整的出生日期，且不能晚于今天。|Introduce tu fecha de nacimiento completa; no puede ser una fecha futura.|生年月日をすべて入力してください。未来の日付は入力できません。|생년월일을 빠짐없이 입력해 주세요. 미래 날짜는 입력할 수 없어요.
+Hint card|Hint 卡片|Carta de Hint|Hint のカード|Hint 카드
+Reading focus|解读方向|Tema de la lectura|リーディングのテーマ|리딩 주제
+Keep your space|留住你的空间|Conserva tu espacio|あなたの場所を残す|나만의 공간 간직하기
+Sign in to save your Hint.|登录，保存你的 Hint。|Inicia sesión para guardar tu Hint.|ログインして、あなたの Hint を保存。|로그인하고 나만의 Hint를 저장하세요.
+Your profile, readings, and preferences stay connected when you return.|再次回来时，你的资料、解读记录和偏好设置仍会保留。|Tu perfil, lecturas y preferencias siguen contigo cuando vuelvas.|戻ってきたときも、プロフィール、リーディング、設定はそのままです。|다시 돌아왔을 때도 프로필, 리딩, 설정이 그대로 이어져요.
 Card reflection ✦|牌卡反思 ✦|Reflexión de la carta ✦|カードの振り返り ✦|카드 성찰 ✦
 Reveal one daily card for a general reflection. Personal chart calculations are available in Astrology.|揭示一张今日牌，进行一般反思。个人星盘计算请前往占星页面。|Revela una carta diaria para reflexionar. Los cálculos de tu carta personal están en Astrología.|今日のカードで振り返りましょう。個人の出生図は占星術で計算できます。|오늘의 카드로 성찰해 보세요. 개인 차트 계산은 점성술에서 이용할 수 있어요.
 Your profile could not be saved. Keep your details here and try again.|无法保存个人资料，输入仍保留，请重试。|No se pudo guardar el perfil. Tus datos siguen aquí; inténtalo de nuevo.|プロフィールを保存できませんでした。入力内容は残っています。再試行してください。|프로필을 저장하지 못했어요. 입력 정보는 남아 있어요. 다시 시도해 주세요.

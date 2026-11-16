@@ -53,6 +53,7 @@ import { recordRitualCompletion } from "../../home/data/localRitualProgress";
 import { getSpreadPositionLabel } from "../logic/spreadLabels";
 import type { WashRitualTheme } from "./CardWashRitual";
 import { useTarotReducedMotion } from "../logic/useTarotReducedMotion";
+import { useCardPreviewReturnFocus } from "../logic/useCardPreviewReturnFocus";
 import { requestTarotFollowUp } from "../logic/requestTarotFollowUp";
 import { buildTarotChatContext } from "../logic/buildTarotChatContext";
 import { getTarotSpreadHistory } from "../logic/buildTarotSpreadHistory";
@@ -93,14 +94,6 @@ type StructuredCardMeaning = {
 type StructuredTarotReading = LocalStructuredTarotReading;
 
 const MIN_READING_REVEAL_MS = 650;
-
-function useModalReturnFocus() {
-  const opener = useRef(typeof document !== "undefined" && document.activeElement instanceof HTMLElement ? document.activeElement : null);
-  return (event: Event) => {
-    event.preventDefault();
-    if (opener.current?.isConnected) opener.current.focus({ preventScroll: true });
-  };
-}
 
 function formatChatCopy(
   template: string,
@@ -395,6 +388,7 @@ type CardDetailPreviewProps = {
   t: (key: string) => string;
   onSelectIndex: (index: number) => void;
   onClose: () => void;
+  onReturnFocus: (event: Event) => void;
 };
 
 function CardDetailPreview({
@@ -408,8 +402,8 @@ function CardDetailPreview({
   t,
   onSelectIndex,
   onClose,
+  onReturnFocus,
 }: CardDetailPreviewProps) {
-  const restoreFocus = useModalReturnFocus();
   const [zoom, setZoom] = useState(1);
   const zoomValue = useMotionValue(1);
   const pinchRef = useRef<{ distance: number; zoom: number } | null>(null);
@@ -463,16 +457,24 @@ function CardDetailPreview({
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
-    <DialogSurface asChild aria-label={card.name} aria-describedby={undefined} onCloseAutoFocus={restoreFocus}>
+    <DialogSurface asChild aria-label={card.name} aria-describedby={undefined} onCloseAutoFocus={onReturnFocus}>
     <motion.div
       className="absolute inset-0 z-[75] flex flex-col overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: reduceMotion ? 0.01 : 0.2 }}
+      onKeyDown={(event) => {
+        // The focused surface is ready before Radix's layer registration can
+        // settle. Handle an early Escape here if Radix has not handled it.
+        if (event.key === "Escape" && !event.defaultPrevented) {
+          event.preventDefault();
+          onClose();
+        }
+      }}
     >
 
-      <header className="relative z-10 flex items-center justify-between gap-3 px-4 pb-2 pt-[calc(var(--hint-safe-top)+0.65rem)]">
+      <header className="tarot-card-detail-header relative z-10 flex shrink-0 items-center justify-between gap-3 px-4 pb-2 pt-[calc(var(--hint-safe-top)+4rem)]">
         <button
           type="button"
           onClick={onClose}
@@ -483,12 +485,12 @@ function CardDetailPreview({
           <X size={18} strokeWidth={1.8} />
         </button>
         <div className="min-w-0 text-center">
-          <p className="font-sans text-[9px] uppercase tracking-[0.26em] text-[color:var(--tarot-page-muted,#9c7891)]">
+          <p className="font-sans text-[11px] uppercase tracking-[0.26em] text-[color:var(--tarot-page-muted,#9c7891)]">
             {t("tarot.flow.chat.cardPreview")}
           </p>
-          <DialogTitle asChild><p className="mt-0.5 truncate font-serif text-[19px] leading-tight text-[color:var(--tarot-page-ink,#342940)]">{card.name}</p></DialogTitle>
+          <DialogTitle asChild><p className="mt-0.5 [overflow-wrap:anywhere] font-serif text-[19px] leading-tight text-[color:var(--tarot-page-ink,#342940)]">{card.name}</p></DialogTitle>
         </div>
-        <span className="grid h-11 w-11 place-items-center font-sans text-[10px] tabular-nums text-[color:var(--tarot-page-muted,#8b7a88)]">
+        <span className="grid h-11 w-11 place-items-center font-sans text-[11px] tabular-nums text-[color:var(--tarot-page-muted,#8b7a88)]">
           {activeIndex + 1}/{cardCount}
         </span>
       </header>
@@ -588,17 +590,17 @@ function CardDetailPreview({
 
         <div className="relative z-20 mx-3 mb-[calc(var(--hint-safe-bottom)+0.65rem)] rounded-[18px] border border-white/76 bg-white/66 px-4 pb-4 pt-3 shadow-[0_18px_48px_rgba(91,65,100,0.12)] backdrop-blur-md">
           <div className="min-w-0">
-            <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#9a7557]">{interpretation.position}</p>
+            <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-[#44374d]">{interpretation.position}</p>
             <div className="mt-1 flex flex-wrap items-baseline gap-2">
               <h2 className="font-serif text-[21px] leading-tight text-[#342940]">{interpretation.card_name}</h2>
               {interpretation.orientation === "reversed" ? (
-                <span className="font-sans text-[8px] uppercase tracking-[0.14em] text-[#a17b93]">
+                <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-[#44374d]">
                   {t("tarot.flow.chat.reversed")}
                 </span>
               ) : null}
             </div>
           </div>
-          <p className="mt-2 max-h-[76px] overflow-y-auto font-sans text-[12.5px] leading-5 text-[#625467]">
+          <p className="mt-2 max-h-[76px] overflow-y-auto font-sans text-[12.5px] leading-5 text-[#44374d]">
             {interpretation.meaning}
           </p>
         </div>
@@ -652,6 +654,8 @@ export function TarotHintReadingChat({
   const [detailedContext, setDetailedContext] = useState(archivedReading?.detailedContext ?? "");
   const [detailedFeedback, setDetailedFeedback] = useState(archivedReading?.detailedFeedback);
   const [cardPreviewIndex, setCardPreviewIndex] = useState<number | null>(null);
+  const chatContentRef = useRef<HTMLDivElement | null>(null);
+  const { captureOpener, restoreFocus } = useCardPreviewReturnFocus(cardPreviewIndex !== null, chatContentRef);
   const [showDeepReading, setShowDeepReading] = useState(false);
   const deepReadingRef = useRef<HTMLElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -1098,6 +1102,7 @@ export function TarotHintReadingChat({
     >
       {/* The shell's shared sky shows through; this room paints no backdrop. */}
       <div
+        ref={chatContentRef}
         data-tarot-chat-content
         className="contents"
         inert={cardPreviewIndex !== null ? true : undefined}
@@ -1169,7 +1174,7 @@ export function TarotHintReadingChat({
         setShowLatest(messages.length > 0 && !followingConversation.current);
       }} data-testid="tarot-reading-feed" className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-7">
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-5 pb-3">
-          <main className="flex min-w-0 flex-col gap-5">
+          <div className="flex min-w-0 flex-col gap-5">
             {(question || focusLabel) && (
               <div data-testid="tarot-reading-question" className="ml-auto max-w-[88%] rounded-[20px] rounded-tr-md border border-[#7b5b91]/10 bg-[var(--reading-bubble)] px-4 py-3">
                 <p className="font-sans text-[15px] leading-6 text-[var(--reading-ink)]">{question || focusLabel}</p>
@@ -1209,7 +1214,10 @@ export function TarotHintReadingChat({
                             position: card.position, card: card.card_name, orientation: t(`tarot.flow.chat.${card.orientation}`),
                           })}
                           showFrontCaption={false}
-                          onClick={() => setCardPreviewIndex(index)}
+                          onClick={() => {
+                            captureOpener(chatContentRef.current?.querySelector<HTMLElement>(`#tarot-card-meaning-${index} button`) ?? null);
+                            setCardPreviewIndex(index);
+                          }}
                           className="!h-[122px] !w-[76px] min-[400px]:!h-[141px] min-[400px]:!w-[88px] !shadow-[0_5px_14px_rgba(68,55,77,0.16)] focus-visible:ring-2 focus-visible:ring-[#796582] focus-visible:ring-offset-4" /> : <span />}
                         <div className="tarot-reading-copy min-w-0">
                           <h3 className="font-sans text-[15px] font-semibold leading-6 text-[var(--reading-ink)]">{index + 1}. {card.card_name}</h3>
@@ -1306,7 +1314,7 @@ export function TarotHintReadingChat({
                 className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[var(--reading-accent)] hover:bg-[#796582]/8"><RotateCcw size={14} />{t("tarot.flow.chat.retryReply")}</button>
             </div>}
 
-          </main>
+          </div>
         </div>
       </div>
 
@@ -1372,6 +1380,7 @@ export function TarotHintReadingChat({
             t={t}
             onSelectIndex={setCardPreviewIndex}
             onClose={() => setCardPreviewIndex(null)}
+            onReturnFocus={restoreFocus}
           />
         ) : null}
       </AnimatePresence>

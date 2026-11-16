@@ -1,3 +1,4 @@
+import { dailyTarot, isDailyTarotFeature } from "./dailyTarot.js";
 import { and, eq, sql } from "drizzle-orm";
 import { db, dailyReceiptsTable, dailyPullsTable, historyClearsTable } from "@workspace/db";
 import { dailyPullDeck, drawDailyPull, type DailyPullCard } from "./dailyPullDeck.js";
@@ -101,7 +102,7 @@ export async function getOrCreateDailyReceipt({
   anonymousDeviceId,
   featureType,
   userId = null,
-  now = new Date(),
+  now,
   dailyKey,
 }: {
   anonymousDeviceId: string;
@@ -110,6 +111,10 @@ export async function getOrCreateDailyReceipt({
   now?: Date;
   dailyKey?: string;
 }) {
+  if (isDailyTarotFeature(featureType)) {
+    return (await dailyTarot({ owner: anonymousDeviceId, feature: featureType, dailyKey, clock: () => now ?? new Date() })).receipt;
+  }
+  now ??= new Date();
   const dailyWindow = getServerDailyWindow(
     dailyKey ? new Date(`${dailyKey}T12:00:00.000Z`) : now,
   );
@@ -183,7 +188,7 @@ export async function openDailyReceipt({
   anonymousDeviceId,
   featureType,
   userId = null,
-  now = new Date(),
+  now,
   dailyKey,
 }: {
   anonymousDeviceId: string;
@@ -192,6 +197,10 @@ export async function openDailyReceipt({
   now?: Date;
   dailyKey?: string;
 }) {
+  if (isDailyTarotFeature(featureType)) {
+    return (await dailyTarot({ owner: anonymousDeviceId, feature: featureType, dailyKey, open: true, clock: () => now ?? new Date() })).receipt;
+  }
+  now ??= new Date();
   const receipt = await getOrCreateDailyReceipt({
     anonymousDeviceId,
     featureType,
@@ -202,7 +211,8 @@ export async function openDailyReceipt({
   const [updated] = await db
     .update(dailyReceiptsTable)
     .set({
-      openedAt: receipt.openedAt ?? now,
+      // Resolve against the locked row, not the earlier get-or-create snapshot.
+      openedAt: sql`COALESCE(${dailyReceiptsTable.openedAt}, ${now.toISOString()}::timestamptz)`,
       lastSeenAt: now,
     })
     .where(eq(dailyReceiptsTable.id, receipt.id))
@@ -221,6 +231,9 @@ export async function syncRevealedDailyReceipt(input: {
   anonymousDeviceId: string; featureType: DailyReceiptFeature; dailyKey: string;
   assignedCardId: string | null; orientation?: string | null; openedAt: string;
 }) {
+  if (isDailyTarotFeature(input.featureType)) {
+    return (await dailyTarot({ owner: input.anonymousDeviceId, feature: input.featureType, dailyKey: input.dailyKey, sync: input })).receipt;
+  }
   const validCard = input.featureType === "energy-score" ? input.assignedCardId === null
     : input.featureType === "animal-tarot" ? ANIMAL_TAROT_IDS.some(id => id === input.assignedCardId)
     : dailyPullDeck.some(card => card.id === input.assignedCardId);

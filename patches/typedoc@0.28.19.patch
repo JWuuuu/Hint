@@ -1,0 +1,21 @@
+diff --git a/dist/lib/utils/fs.js b/dist/lib/utils/fs.js
+--- a/dist/lib/utils/fs.js
++++ b/dist/lib/utils/fs.js
+@@ -194,6 +194,8 @@
+  */
+ export function glob(pattern, root, options = {}) {
+     const mini = new Minimatch(pattern);
++    // Preserve matchOne traversal semantics: ignore leading negation when pruning.
++    const traversal = new Minimatch(pattern, { flipNegate: true });
+     const shouldIncludeNodeModules = pattern.includes("node_modules");
+     const controller = {
+         matches(path) {
+@@ -208,7 +210,7 @@
+                 !shouldIncludeNodeModules) {
+                 return false;
+             }
+-            return mini.set.some((row) => mini.matchOne(childPath, row, /* partial */ true));
++            return traversal.match(childPath.join("/"), /* partial */ true);
+         },
+         matchDirectories: options.includeDirectories,
+         followSymlinks: options.followSymlinks,

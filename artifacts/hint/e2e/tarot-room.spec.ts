@@ -1189,7 +1189,7 @@ test("completes and restores the full Tarot Room journey", async ({ page }) => {
   await expect(page.locator('[data-room-background="sea"]')).toBeVisible();
   await expect(page.getByRole("main").getByText(followUp, { exact: true })).toBeVisible();
   await expect(page.getByText(followUpReply, { exact: true })).toBeVisible();
-  await expect(page.getByRole("navigation", { name: "App" })).toHaveCount(0);
+  await expect(page.getByRole("navigation", { name: "Main navigation" })).toHaveCount(0);
   await expectNoSeriousAccessibilityViolations(page);
   await expectMinimumTouchTargets(page);
 

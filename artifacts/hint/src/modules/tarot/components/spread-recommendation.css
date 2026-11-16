@@ -216,7 +216,7 @@
   z-index: 1;
   width: 68px;
   color: #746276;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   line-height: 1.4;
   text-align: center;
@@ -246,7 +246,7 @@
 .tarot-spread-position-legend li > span {
   flex-shrink: 0;
   color: #8b7057;
-  font-size: 10px;
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
 

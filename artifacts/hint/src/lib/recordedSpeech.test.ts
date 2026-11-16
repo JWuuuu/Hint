@@ -31,6 +31,59 @@ beforeEach(() => {
 });
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 
+it("does not request microphone permission after cancellation during the capability body", async () => {
+  let resolve!: (value: unknown) => void;
+  const json = vi.fn(() => new Promise(done => { resolve = done; }));
+  api.fetch.mockResolvedValueOnce({ ok: true, json });
+  const options = callbacks(), controller = new AbortController();
+  const pending = startRecordedSpeech({ ...options, signal: controller.signal });
+  await vi.waitFor(() => expect(json).toHaveBeenCalledOnce());
+  controller.abort();
+  resolve({ available: true });
+  await pending;
+  expect(microphone).not.toHaveBeenCalled();
+  expect(options.onEnd).toHaveBeenCalledOnce();
+  expect(options.onError).not.toHaveBeenCalled();
+});
+
+it("times out a stalled capability body without opening the microphone later", async () => {
+  let resolve!: (value: unknown) => void;
+  const json = vi.fn(() => new Promise(done => { resolve = done; }));
+  api.fetch.mockResolvedValueOnce({ ok: true, json });
+  const options = callbacks(), pending = startRecordedSpeech(options);
+  await vi.waitFor(() => expect(json).toHaveBeenCalledOnce());
+  await vi.advanceTimersByTimeAsync(8000);
+  expect(options.onError).toHaveBeenCalledExactlyOnceWith("backend");
+  resolve({ available: true });
+  await pending;
+  expect(microphone).not.toHaveBeenCalled();
+  expect(options.onEnd).toHaveBeenCalledOnce();
+});
+
+it("settles a stop whose recorder never sends its final event", async () => {
+  const options = callbacks(), session = await startRecordedSpeech(options);
+  recording.stop = () => { recording.state = "inactive"; };
+  const settled = vi.fn();
+  void session.stop().then(settled);
+  await vi.advanceTimersByTimeAsync(2500);
+  expect(settled).toHaveBeenCalledOnce();
+  expect(trackStop).toHaveBeenCalled();
+  expect(options.onError).toHaveBeenCalledExactlyOnceWith("failed");
+  expect(options.onEnd).toHaveBeenCalledOnce();
+  expect(api.fetch).toHaveBeenCalledTimes(1);
+});
+
+it.each(["stop", "cancel"] as const)("releases the microphone when recorder.%s throws", async (action) => {
+  const options = callbacks(), session = await startRecordedSpeech(options);
+  recording.stop = () => { throw new DOMException("Recorder interrupted", "InvalidStateError"); };
+  await expect(session[action]()).resolves.toBeUndefined();
+  expect(trackStop).toHaveBeenCalled();
+  expect(options.onEnd).toHaveBeenCalledOnce();
+  expect(options.onTranscript).not.toHaveBeenCalled();
+  if (action === "stop") expect(options.onError).toHaveBeenCalledExactlyOnceWith("failed");
+  else expect(options.onError).not.toHaveBeenCalled();
+});
+
 it("stops the microphone before uploading, keeps the final audio chunk, and delivers one transcript", async () => {
   const options = callbacks();
   const session = await startRecordedSpeech(options);

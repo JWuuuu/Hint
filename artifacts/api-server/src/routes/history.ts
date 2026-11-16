@@ -6,7 +6,7 @@ import { authenticatedOwner } from "../lib/deviceSession";
 
 import { Router } from "express";
 import * as z from "zod";
-import { and, count, desc, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, or, sql } from "drizzle-orm";
 import {
   db,
   dailyPullsTable,
@@ -17,11 +17,7 @@ import {
   compatibilityInvitesTable,
   historyClearsTable,
 } from "@workspace/db";
-import {
-  dailyPullCardById,
-  getOrCreateDailyReceipt,
-  openDailyReceipt,
-} from "../modules/hint/dailyReceipts.js";
+import { dailyTarot, DailyTarotError } from "../modules/hint/dailyTarot.js";
 
 const router = Router();
 
@@ -36,82 +32,6 @@ function serializeDailyPull(row: typeof dailyPullsTable.$inferSelect) {
     note: row.note,
     createdAt: row.createdAt.toISOString(),
   };
-}
-
-async function getOrCreateServerDailyPull(
-  anonId: string,
-  dailyKey?: string,
-  now = new Date(),
-) {
-  return db.transaction(async tx => {
-  await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${anonId}, 0))`);
-  const receipt = await getOrCreateDailyReceipt({
-    anonymousDeviceId: anonId,
-    featureType: "daily-card",
-    dailyKey,
-    now,
-  });
-  const [existing] = await tx
-    .select()
-    .from(dailyPullsTable)
-    .where(and(eq(dailyPullsTable.anonId, anonId), eq(dailyPullsTable.pullDate, receipt.dailyKey)))
-    .limit(1);
-
-  const card = dailyPullCardById(receipt.assignedCardId);
-  if (existing) {
-    const shouldSyncCard =
-      existing.cardId !== card.id ||
-      existing.cardName !== card.name ||
-      existing.whisper !== card.whisper;
-    const shouldSyncReveal = Boolean(receipt.openedAt) && !existing.isFlipped;
-
-    if (!shouldSyncCard && !shouldSyncReveal) return existing;
-
-    const [synced] = await tx
-      .update(dailyPullsTable)
-      .set({
-        ...(shouldSyncCard
-          ? { cardId: card.id, cardName: card.name, whisper: card.whisper }
-          : {}),
-        ...(shouldSyncReveal ? { isFlipped: true } : {}),
-      })
-      .where(and(eq(dailyPullsTable.anonId, anonId), eq(dailyPullsTable.pullDate, receipt.dailyKey)))
-      .returning();
-
-    return synced ?? existing;
-  }
-
-  const [cleared] = await tx.select().from(historyClearsTable).where(eq(historyClearsTable.ownerId, anonId));
-  if (receipt.historyExcluded || (cleared && receipt.dailyKey <= cleared.throughDay)) return {
-    id: receipt.id, anonId, pullDate: receipt.dailyKey, cardId: card.id, cardName: card.name,
-    whisper: card.whisper, isFlipped: Boolean(receipt.openedAt), note: null, createdAt: receipt.assignedAt,
-  };
-
-  const [created] = await tx
-    .insert(dailyPullsTable)
-    .values({
-      anonId,
-      pullDate: receipt.dailyKey,
-      cardId: card.id,
-      cardName: card.name,
-      whisper: card.whisper,
-      isFlipped: Boolean(receipt.openedAt),
-    })
-    .onConflictDoNothing({
-      target: [dailyPullsTable.anonId, dailyPullsTable.pullDate],
-    })
-    .returning();
-
-  if (created) return created;
-
-  const [row] = await tx
-    .select()
-    .from(dailyPullsTable)
-    .where(and(eq(dailyPullsTable.anonId, anonId), eq(dailyPullsTable.pullDate, receipt.dailyKey)))
-    .limit(1);
-
-  return row ?? null;
-  });
 }
 
 function serializeJournal(row: typeof journalEntriesTable.$inferSelect) {
@@ -151,8 +71,8 @@ router.post("/daily-pull", async (req, res) => {
     return;
   }
 
-  const { anonId, date } = parsed.data;
-  const row = await getOrCreateServerDailyPull(anonId, date);
+  const { date } = parsed.data;
+  const { pull: row } = await dailyTarot({ owner: authenticatedOwner(req), feature: "daily-card", dailyKey: date });
 
   if (!row) {
     res.status(500).json({ error: "Could not draw a card tonight" });
@@ -179,49 +99,13 @@ router.patch("/daily-pull", async (req, res) => {
     return;
   }
 
-  const { anonId, date, isFlipped, note, editedAt } = parsed.data;
-  const dailyPull = await getOrCreateServerDailyPull(anonId, date);
-
-  if (!dailyPull) {
-    res.status(500).json({ error: "Could not draw a card tonight" });
+  const { date, isFlipped, note, editedAt } = parsed.data;
+  if (isFlipped === false || (isFlipped !== true && note === undefined)) {
+    res.status(400).json({ error: "A daily reveal cannot be undone; provide a reveal or note" });
     return;
   }
-
-  if (isFlipped === true) {
-    await openDailyReceipt({
-      anonymousDeviceId: anonId,
-      featureType: "daily-card",
-      dailyKey: dailyPull.pullDate,
-    });
-  }
-
-  const set: Partial<typeof dailyPullsTable.$inferInsert> = {};
-  if (isFlipped !== undefined) set.isFlipped = isFlipped;
-  if (note !== undefined) set.note = note;
-
-  if (Object.keys(set).length === 0) {
-    res.status(400).json({ error: "Nothing to update" });
-    return;
-  }
-
-  const row = await db.transaction(async tx => {
-    await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${anonId}, 0))`);
-    const [cleared] = await tx.select().from(historyClearsTable).where(eq(historyClearsTable.ownerId, anonId));
-    if (cleared && dailyPull.pullDate <= cleared.throughDay) {
-      if (note === undefined || !editedAt || new Date(editedAt) <= cleared.clearedAt) return null;
-      // Only a deliberate edit made after deletion may start a new note. Reveal sync
-      // keeps its exclusion flag and therefore cannot recreate the old history.
-      await tx.insert(dailyPullsTable).values({ anonId, pullDate: dailyPull.pullDate, cardId: dailyPull.cardId,
-        cardName: dailyPull.cardName, whisper: dailyPull.whisper, isFlipped: dailyPull.isFlipped, note })
-        .onConflictDoNothing({ target: [dailyPullsTable.anonId, dailyPullsTable.pullDate] });
-    }
-    const [saved] = await tx
-    .update(dailyPullsTable)
-    .set(set)
-    .where(and(eq(dailyPullsTable.anonId, anonId), eq(dailyPullsTable.pullDate, dailyPull.pullDate)))
-    .returning();
-    return saved ?? null;
-  });
+  const { pull: row } = await dailyTarot({ owner: authenticatedOwner(req), feature: "daily-card",
+    dailyKey: date, open: isFlipped === true, note, editedAt });
 
   if (!row) {
     res.status(404).json({ error: "No daily pull found" });
@@ -258,6 +142,9 @@ const journalInputSchema = z.object({
   body: z.string().min(1).max(8000),
   mood: z.string().max(60).optional(),
   editedAt: z.string().datetime().optional(),
+  clientRequestId: z.uuid().optional(),
+}).refine(input => !input.clientRequestId || Boolean(input.editedAt), {
+  message: "A retry key requires the original editedAt timestamp", path: ["editedAt"],
 });
 
 router.post("/journal", async (req, res) => {
@@ -268,7 +155,7 @@ router.post("/journal", async (req, res) => {
     return;
   }
 
-  const { title, body, mood, editedAt } = parsed.data;
+  const { title, body, mood, editedAt, clientRequestId } = parsed.data;
   const anonId = authenticatedOwner(req);
   const row = await db.transaction(async tx => {
     // Serialize creation with Clear History. An insert still in progress must
@@ -276,7 +163,16 @@ router.post("/journal", async (req, res) => {
     await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtextextended(${anonId}, 0))`);
     const [cleared] = await tx.select().from(historyClearsTable).where(eq(historyClearsTable.ownerId, anonId));
     if (cleared && (requestStartedAt <= cleared.clearedAt || (editedAt && new Date(editedAt) <= cleared.clearedAt))) return null;
-    const [created] = await tx.insert(journalEntriesTable).values({ anonId, title: title ?? null, body, mood: mood ?? null }).returning();
+    if (clientRequestId) {
+      const [existing] = await tx.select().from(journalEntriesTable).where(and(
+        eq(journalEntriesTable.anonId, anonId), eq(journalEntriesTable.clientRequestId, clientRequestId),
+      ));
+      if (existing) {
+        if (existing.title !== (title ?? null) || existing.body !== body || existing.mood !== (mood ?? null)) return "conflict" as const;
+        return existing;
+      }
+    }
+    const [created] = await tx.insert(journalEntriesTable).values({ anonId, title: title ?? null, body, mood: mood ?? null, clientRequestId }).returning();
     return created;
   });
 
@@ -285,6 +181,10 @@ router.post("/journal", async (req, res) => {
     return;
   }
 
+  if (row === "conflict") {
+    res.status(409).json({ error: "This save key was already used for a different entry.", code: "IDEMPOTENCY_CONFLICT" });
+    return;
+  }
   res.json(serializeJournal(row));
 });
 
@@ -374,7 +274,13 @@ router.delete("/history", async (req, res) => {
     await tx.insert(historyClearsTable).values({ ownerId: anonId, clearedAt: new Date(), throughDay: requestedDay })
       .onConflictDoUpdate({ target: historyClearsTable.ownerId, set: { clearedAt: new Date(), throughDay: requestedDay } });
     await tx.update(dailyReceiptsTable).set({ historyExcluded: true }).where(eq(dailyReceiptsTable.anonymousDeviceId, anonId));
-    await tx.delete(compatibilityInvitesTable).where(eq(compatibilityInvitesTable.ownerId, anonId));
+    // Either participant can remove a shared private reading, just as its
+    // creator already could. Legacy non-UUID owners have no recipient binding.
+    const recipient = z.uuid().safeParse(anonId);
+    await tx.delete(compatibilityInvitesTable).where(or(
+      eq(compatibilityInvitesTable.ownerId, anonId),
+      recipient.success ? eq(compatibilityInvitesTable.accepterOwnerId, recipient.data) : undefined,
+    ));
     await tx.delete(readingsTable).where(eq(readingsTable.anonId, anonId));
     await tx.delete(journalEntriesTable).where(eq(journalEntriesTable.anonId, anonId));
     await tx.delete(dailyPullsTable).where(eq(dailyPullsTable.anonId, anonId));
@@ -382,5 +288,10 @@ router.delete("/history", async (req, res) => {
 
   res.status(204).send();
 });
+
+router.use(((error, _req, res, next) => {
+  if (error instanceof DailyTarotError) { res.status(error.status).json({ error: error.message, code: error.code }); return; }
+  next(error);
+}) as import("express").ErrorRequestHandler);
 
 export default router;
