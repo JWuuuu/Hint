@@ -36,7 +36,7 @@ it("finds artwork in a later sibling and shows its torn outline before a slow ca
   const contexts = { setTransform: vi.fn(), clearRect: vi.fn(), drawImage: vi.fn(), fill: vi.fn(), stroke: vi.fn(), fillRect: vi.fn(), fillText: vi.fn(), beginPath: vi.fn(), moveTo: vi.fn(), lineTo: vi.fn(), save: vi.fn(), restore: vi.fn(), createLinearGradient: () => ({ addColorStop: vi.fn() }) };
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(contexts as unknown as CanvasRenderingContext2D);
   vi.stubGlobal("Path2D", class { constructor(public path: string) {} });
-  // Deliberately leave the card undecoded: the invitation must not wait for it.
+  // Deliberately leave the card undecoded: the blank paper leader must not wait for it.
   vi.stubGlobal("Image", class { onload = null; onerror = null; src = ""; });
   const props = { ...fixture(), phase: "idle" as const, height: 200 };
   function PrinterWithLaterArtwork() {
@@ -49,10 +49,12 @@ it("finds artwork in a later sibling and shows its torn outline before a slow ca
   expect(props.onReady).not.toHaveBeenCalledWith("ready");
   expect(contexts.fill).toHaveBeenCalledWith(expect.objectContaining({ path: outline }));
   expect(contexts.drawImage).toHaveBeenCalled();
+  advance(INVITATION_PRINT_MS);
+  expect(contexts.fillText).not.toHaveBeenCalledWith("tap to reveal", expect.any(Number), expect.any(Number));
   expect(props.onComplete).not.toHaveBeenCalled();
 });
 
-it("prints only the invitation on entry, then waits for a tap without finishing the receipt", () => {
+it("shows only the paper leader while the export is pending, without finishing the receipt", () => {
   const props = { ...fixture(), phase: "idle" as const, onInvitationReady: vi.fn() };
   const view = render(<ReceiptPaperRoll {...props} />);
   advance(400); expect(props.onInvitationReady).not.toHaveBeenCalled();
@@ -67,7 +69,7 @@ it("prints only the invitation on entry, then waits for a tap without finishing 
   advance(10000); expect(props.onComplete).not.toHaveBeenCalled();
 });
 
-it("shows the invitation immediately when reduced motion is enabled", () => {
+it("shows the paper leader immediately with reduced motion without completing a pending export", () => {
   const props = { ...fixture(), phase: "idle" as const, reduced: true, onInvitationReady: vi.fn() };
   render(<ReceiptPaperRoll {...props} />);
   expect(props.onInvitationReady).toHaveBeenCalledOnce();

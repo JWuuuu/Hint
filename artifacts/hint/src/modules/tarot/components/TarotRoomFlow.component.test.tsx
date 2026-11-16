@@ -415,10 +415,8 @@ describe("Tarot Room components", () => {
     const dialog = within(screen.getByRole("dialog", { name: "A letter to keep" }));
     expect(dialog.queryByRole("checkbox")).toBeNull();
     expect(dialog.queryByRole("button", { name: "Share receipt" })).toBeNull();
-    const reveal = dialog.getByRole("button", { name: "Tap to reveal" });
-    await waitFor(() => expect((reveal as HTMLButtonElement).disabled).toBe(false));
-    await user.click(reveal);
-    const action = dialog.getByRole("button", { name: "Share receipt" });
+    expect(dialog.queryByRole("button", { name: "Tap to reveal" })).toBeNull();
+    const action = dialog.getByText("Share receipt", { selector: "button" });
     fireEvent.click(action);
     fireEvent.click(action);
     await waitFor(() => expect(create).toHaveBeenCalledTimes(1));
@@ -439,10 +437,7 @@ describe("Tarot Room components", () => {
       await chooseReadingOption("Receive");
       const reopened = within(screen.getByRole("dialog", { name: "A letter to keep" }));
       expect(reopened.queryByRole("checkbox")).toBeNull();
-      expect(reopened.queryByRole("button", { name: "Share receipt" })).toBeNull();
-      const invitation = reopened.getByRole("button", { name: "Tap to reveal" });
-      await waitFor(() => expect((invitation as HTMLButtonElement).disabled).toBe(false));
-      await user.click(invitation);
+      expect(reopened.queryByRole("button", { name: "Tap to reveal" })).toBeNull();
       await waitFor(() => expect((reopened.getByRole("button", { name: "Share receipt" }) as HTMLButtonElement).disabled).toBe(false));
       await user.click(reopened.getByRole("button", { name: "Share receipt" }));
       await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
@@ -587,9 +582,7 @@ describe("Tarot Room components", () => {
     await chooseReadingOption("Receive");
     const receipt = within(screen.getByRole("dialog", { name: "A letter to keep" }));
     expect(receipt.queryByRole("checkbox")).toBeNull();
-    const reveal = receipt.getByRole("button", { name: "Tap to reveal" });
-    await waitFor(() => expect((reveal as HTMLButtonElement).disabled).toBe(false));
-    await user.click(reveal);
+    expect(receipt.queryByRole("button", { name: "Tap to reveal" })).toBeNull();
     await waitFor(() => expect(receiptSharing.createTarotReceiptBlob).toHaveBeenCalledOnce());
     const exported = vi.mocked(receiptSharing.createTarotReceiptBlob).mock.calls[0]![0];
     const expected = buildTarotReceiptModel(saved, false, "https://hint.example/download");
@@ -1206,8 +1199,8 @@ describe("Tarot Room components", () => {
     await chooseReadingOption("Receive");
     expect(screen.getByRole("dialog", { name: "A letter to keep" })).toBeTruthy();
     expect(screen.queryByRole("checkbox")).toBeNull();
-    expect(screen.getByRole("button", { name: "Tap to reveal" })).toBeTruthy();
-    expect(screen.queryByRole("button", { name: "Share receipt" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Tap to reveal" })).toBeNull();
+    await waitFor(() => expect((screen.getByRole("button", { name: "Share receipt" }) as HTMLButtonElement).disabled).toBe(false));
     expect(within(screen.getByRole("dialog", { name: "A letter to keep" })).getByRole("button", { name: "Back" })).toBeTruthy();
     await user.click(within(screen.getByRole("dialog", { name: "A letter to keep" })).getByRole("button", { name: "Back" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());

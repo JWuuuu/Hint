@@ -2,7 +2,6 @@ import { useEffect, useRef, type RefObject } from "react";
 import { RECEIPT_LEADER_RATIO } from "./dailyReceiptArtwork";
 
 type RollProps = {
-  theme?: "bright" | "dark";
   source: RefObject<HTMLElement | null>;
   height: number;
   duration: number;
@@ -195,7 +194,7 @@ export function receiptPaperProfile(length: number, tension: number, flutterMs: 
 }
 
 /** A flexible sheet pinned at the rollers; its free end can curl and settle. */
-export function ReceiptPaperRoll({ source, theme = "dark", height, duration, phase, paused, reduced = false, tapImpulse = 0, onReady, onInvitationReady, onComplete }: RollProps) {
+export function ReceiptPaperRoll({ source, height, duration, phase, paused, reduced = false, tapImpulse = 0, onReady, onInvitationReady, onComplete }: RollProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const texture = useRef<PaperTexture | null>(null);
   const buffer = useRef<HTMLCanvasElement | null>(null);
@@ -289,50 +288,8 @@ export function ReceiptPaperRoll({ source, theme = "dark", height, duration, pha
     }
     if (currentTilt !== 0) paper.setTransform(ratio, 0, 0, ratio, 0, 0);
     paper.globalCompositeOperation = "source-atop";
-    // The invitation lives on the very same sheet. Its material coordinates move
-    // with the rollers, so revealing the ink never replaces the paper or its edge.
-    const fed = length - leader;
-    const cueOpacity = isComplete ? 0 : state === "printing" ? 1 - smooth((elapsed.current - 60) / 460) : smooth((introProgress - .62) / .22);
-    const arrowOpacity = isComplete ? 0 : state === "printing" ? 1 - smooth(elapsed.current / 280) : smooth((introProgress - .62) / .22);
-    if (cueOpacity > 0) {
-      const project = (distance: number) => {
-        distance = Math.max(0, Math.min(length, distance));
-        const index = Math.min(Math.floor(distance), profile.length - 1);
-        const a = profile[index];
-        const b = profile[Math.min(index + 1, profile.length - 1)];
-        const portion = clamp((distance - a.distance) / (b.distance - a.distance || 1));
-        return { x: a.x + (b.x - a.x) * portion, y: a.y + (b.y - a.y) * portion };
-      };
-      const center = gutter + width / 2;
-      const label = project(fed + leader * .4);
-      const labelY = label.y;
-      const ink = theme === "bright" ? "164,94,121" : "117,84,128";
-      const accent = theme === "bright" ? "187,107,134" : "129,98,143";
-      paper.fillStyle = `rgba(${ink},${cueOpacity})`;
-      paper.font = "italic 14px Georgia, 'Times New Roman', serif";
-      paper.textAlign = "center";
-      paper.textBaseline = "middle";
-      paper.fillText("tap to reveal", center + label.x, labelY);
-      paper.fillStyle = `rgba(${accent},${cueOpacity})`;
-      paper.font = "12px Georgia, 'Times New Roman', serif";
-      paper.fillText("✧", center + label.x - 50, labelY);
-      paper.fillText("✧", center + label.x + 50, labelY);
-      const arrow = project(fed + leader * .74);
-      const arrowY = arrow.y;
-      const arrowX = center + arrow.x;
-      paper.strokeStyle = `rgba(${accent},${arrowOpacity})`;
-      paper.lineWidth = 1.2;
-      paper.lineCap = "round";
-      paper.lineJoin = "round";
-      paper.beginPath();
-      paper.moveTo(arrowX, arrowY - 4);
-      paper.lineTo(arrowX, arrowY + 4);
-      paper.moveTo(arrowX - 3.5, arrowY + .5);
-      paper.lineTo(arrowX, arrowY + 4);
-      paper.lineTo(arrowX + 3.5, arrowY + .5);
-      paper.stroke();
-    }
-    // Light rolls across the same curved sheet and invitation.
+    // The automatic feed keeps the leader blank; no tap instruction is painted.
+    // Light rolls across the same curved sheet.
     const tipY = profile[profile.length - 1].y;
     const shapeLight = paper.createLinearGradient(0, 0, 0, Math.max(1, tipY));
     for (let stop = 0; stop <= 12; stop++) {

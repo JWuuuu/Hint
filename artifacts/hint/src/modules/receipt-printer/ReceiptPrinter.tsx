@@ -9,9 +9,9 @@ import { ReceiptPaperRoll } from "./ReceiptPaperRoll";
 import { RECEIPT_LEADER_RATIO } from "./dailyReceiptArtwork";
 
 type Phase = "idle" | "warming" | "printing" | "complete";
-export type ReceiptPrinterProps = { children: ReactNode; theme?: "bright" | "dark"; started?: boolean; onStart?: () => void; skip?: boolean; variant?: "classic" | "daily" | "tarot"; onPrintComplete?: () => void; disabled?: boolean };
+export type ReceiptPrinterProps = { children: ReactNode; theme?: "bright" | "dark"; started?: boolean; skip?: boolean; variant?: "classic" | "daily" | "tarot"; onPrintComplete?: () => void; disabled?: boolean };
 /** Reference-matched printer artwork and paper geometry, driven by a live receipt. */
-export function ReceiptPrinter({ children, theme = "dark", started = false, onStart, skip = false, variant = "classic", onPrintComplete, disabled = false }: ReceiptPrinterProps) {
+export function ReceiptPrinter({ children, theme = "dark", started = false, skip = false, variant = "classic", onPrintComplete, disabled = false }: ReceiptPrinterProps) {
   const physicalPaper = variant !== "classic";
   const { reduced, pageVisible } = useMotionPolicy();
   const { language } = useLanguage();
@@ -83,8 +83,7 @@ export function ReceiptPrinter({ children, theme = "dark", started = false, onSt
     if (viewport) observer.observe(viewport);
     return () => observer.disconnect();
   }, [variant, physicalPaper]);
-  // Print the short invitation first; feed the rest only after the user's tap.
-  // Shared by Daily and Tarot, including the canvas and CSS fallback feeds.
+  // Feed automatically once the prepared image starts this Daily or Tarot run.
   const duration = Math.round(Math.min(10100, Math.max(4400, Math.ceil(height / 59 * 1000))) * 0.8);
   useEffect(() => {
     if (reduced || skip) return;
@@ -116,21 +115,17 @@ export function ReceiptPrinter({ children, theme = "dark", started = false, onSt
       <span className="receipt-printer__slot-frame" aria-hidden />
       </div></motion.div>
       <motion.div className="receipt-printer__paper-window" animate={paperMotion}>
-        {physicalPaper && <ReceiptPaperRoll source={result} theme={theme} height={height} duration={duration} phase={phase} paused={!pageVisible} reduced={reduced} tapImpulse={tapImpulse} onReady={value => { setSurface(value); if (value === "fallback") setInvitationReady(true); }} onInvitationReady={() => setInvitationReady(true)} onComplete={() => setPhase("complete")} />}
+        {physicalPaper && <ReceiptPaperRoll source={result} height={height} duration={duration} phase={phase} paused={!pageVisible} reduced={reduced} tapImpulse={tapImpulse} onReady={value => { setSurface(value); if (value === "fallback") setInvitationReady(true); }} onInvitationReady={() => setInvitationReady(true)} onComplete={() => setPhase("complete")} />}
         <article className="receipt-printer__paper" onAnimationEnd={feedEnd}>
           <section ref={result} className="receipt-printer__result-content" aria-hidden={phase !== "complete"}>{children}</section>
           <span className="receipt-printer__tear-edge" aria-hidden />
         </article>
         <span className="receipt-printer__slot-shadow" aria-hidden />
-        <button type="button" className="receipt-printer__invitation" aria-label={receiptText(language, "reveal")} aria-hidden={phase !== "idle"} tabIndex={phase === "idle" ? 0 : -1} disabled={disabled || !invitationReady || phase !== "idle"} onClick={onStart}>
-          <span className="receipt-printer__invitation-label"><span className="receipt-printer__invitation-star" aria-hidden>✧</span><span>tap to reveal</span><span className="receipt-printer__invitation-star" aria-hidden>✧</span></span>
-          <span className="receipt-printer__invitation-arrow" aria-hidden />
-        </button>
       </motion.div>
       <motion.div className="receipt-printer__machine-layer receipt-printer__machine-layer--front" animate={tapMotion}><div className="receipt-printer__reference-frame">
       <span className="receipt-printer__slot-occluder" aria-hidden />
       <span className="receipt-printer__surface-sheen" aria-hidden />
-      <button type="button" className="receipt-printer__print-button" aria-label={receiptText(language, phase === "idle" ? "machineStart" : "machineButton")} title={receiptText(language, phase === "idle" ? "machineStart" : "machineButton")} disabled={disabled || !invitationReady || (phase === "idle" ? !onStart : phase !== "complete")} onClick={phase === "idle" ? onStart : tapMachine}>
+      <button type="button" className="receipt-printer__print-button" aria-label={receiptText(language, "machineButton")} title={receiptText(language, "machineButton")} disabled={disabled || !invitationReady || phase !== "complete"} onClick={tapMachine}>
         <span className="receipt-printer__button-cap" aria-hidden />
       </button>
       </div></motion.div>
