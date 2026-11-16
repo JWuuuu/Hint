@@ -63,7 +63,7 @@ Home delivery with the real daily card, the final review of all 20 gestures unde
 
 ## API and saved data
 
-The frontend runs without copying Mac credentials. Live readings, backend history and speech services need the API and its environment configuration. See [LOCAL_SETUP.md](LOCAL_SETUP.md) and `.env.example` for the variables. Keep secrets in a local `.env`; they are not included in Git or the download.
+The frontend runs without copying Mac credentials. Live readings, backend history and speech services need the API and its environment configuration. See [local setup](docs/LOCAL_SETUP.md) and `.env.example` for the variables. Keep secrets in a local `.env`; they are not included in Git or the download.
 
 For the API on Windows, after configuring a development database and the required environment variables:
 

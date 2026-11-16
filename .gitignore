@@ -71,3 +71,7 @@ artifacts/checkpoints/*.zip
 
 # Frozen mascot backup ZIPs are included in the full Windows release download.
 /artifacts/hint/mascot-library/**/*.zip
+
+# Generated test builds and ad-hoc browser test output.
+/artifacts/hint/dummy-non-existing-folder/
+/artifacts/hint/test-results-*/
