@@ -3,7 +3,7 @@ import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { HintGuideProvider, HintGuideSlot, useHintGuideGesture } from './HintGuide';
 import { MotionPolicyProvider } from '../../lib/motionPolicy';
-import { coverDecorations } from '../../lib/decorationCover';
+import { coverDecorations, useCoverDecorations } from '../../lib/decorationCover';
 
 const native=vi.hoisted(()=>({listener:(_:boolean)=>{},remove:vi.fn()}));
 vi.mock('../../lib/mobile/appLifecycle',()=>({addNativeAppStateListener:vi.fn(async(listener:(active:boolean)=>void)=>{native.listener=listener;return native.remove;})}));
@@ -28,6 +28,30 @@ afterEach(()=>{cleanup();vi.restoreAllMocks();vi.unstubAllGlobals();});
 function Buttons(){const play=useHintGuideGesture();return <><button onClick={()=>play('reassure')}>Failure</button><button onClick={()=>play('celebration')}>Saved</button></>;}
 function Scene(){return <MotionPolicyProvider><HintGuideProvider enabled><HintGuideSlot context={{room:'settings',phase:'idle',hasMessages:false,keyboardOpen:false,typing:false,audioPlaying:false}}/><Buttons/></HintGuideProvider></MotionPolicyProvider>;}
 function advance(ms:number){act(()=>{for(let t=0;t<ms;t+=16){now+=16;const pending=[...raf.values()];raf.clear();pending.forEach(fn=>fn(now));}});}
+
+it('covering surfaces hide the paused guide and restore the same player after the last surface closes',async()=>{
+  function CoveringSurface(){useCoverDecorations();return <div role="dialog"/>;}
+  const content=(covers:number)=><><Scene/>{covers>0&&<CoveringSurface key="receipt"/>}{covers>1&&<CoveringSurface key="second"/>}</>;
+  const view=render(content(0)),layer=await view.findByTestId('hint-guide-layer');
+  await waitFor(()=>expect(layer.dataset.gesture).toBeDefined());advance(1600);
+  const canvas=layer.querySelector('canvas');
+  expect(getComputedStyle(layer).visibility).toBe('visible');
+
+  view.rerender(content(2));
+  expect(getComputedStyle(layer).visibility).toBe('hidden');
+  const clock=layer.dataset.clock;advance(5000);expect(layer.dataset.clock).toBe(clock);
+  fireEvent.click(view.getByRole('button',{name:'Saved'}));
+  view.rerender(content(1));
+  expect(getComputedStyle(layer).visibility).toBe('hidden');
+  advance(1000);expect(layer.dataset.clock).toBe(clock);
+
+  view.rerender(content(0));
+  expect(view.getByTestId('hint-guide-layer')).toBe(layer);
+  expect(layer.querySelector('canvas')).toBe(canvas);
+  expect(getComputedStyle(layer).visibility).toBe('visible');
+  advance(1000);expect(layer.dataset.clock).not.toBe(clock);
+  expect(layer.dataset.gesture).toBe('idle');
+});
 
 it.each(['browser','native','covered'] as const)('actual player drops ordinary feedback during %s suspension',async mode=>{
   const view=render(<Scene/>),layer=await view.findByTestId('hint-guide-layer');

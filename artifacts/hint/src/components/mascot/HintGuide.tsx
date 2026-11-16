@@ -301,7 +301,7 @@ export function HintGuideProvider({ children, enabled: enabledOverride, review }
     if (review?.paused || reviewHeld.current) player.current?.pause();else player.current?.resume();
   }, [review?.holdAt, review?.paused]);
 
-  return <PlaybackContext.Provider value={playback}><Context.Provider value={value}>{children}{enabled && requested && <div ref={overlay} className="hint-guide-overlay" data-testid="hint-guide-layer" aria-hidden="true">
+  return <PlaybackContext.Provider value={playback}><Context.Provider value={value}>{children}{enabled && requested && <div ref={overlay} className="hint-guide-overlay" style={{ visibility: covered ? "hidden" : undefined }} data-testid="hint-guide-layer" aria-hidden="true">
     <span ref={shadow} className="hint-guide-shadow" aria-hidden="true" />
     <canvas ref={canvas} aria-hidden="true" />
     <svg ref={origin} className="hint-guide-origin" viewBox="0 0 220 220" fill="none" aria-hidden="true">
