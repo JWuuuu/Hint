@@ -19,6 +19,7 @@ import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Android counterpart of HintSpeechRecognitionPlugin.swift, with the same
@@ -26,9 +27,9 @@ import java.util.Locale;
  *
  *   available({ language })  -> { available }
  *   requestPermissions()     -> { speechRecognition, microphone }
- *   start({ language })      -> { matches: [] }
- *   stop() / cancel()
- *   events: partialResults { matches, isFinal }, listeningState { status }, speechError { message }
+ *   start({ language, sessionId }) -> { matches: [] }
+ *   stop({ sessionId }) / cancel({ sessionId })
+ *   events carry sessionId: partialResults { matches, isFinal }, listeningState { status }, speechError { message }
  *
  * Android has no separate speech permission, so both answers follow
  * RECORD_AUDIO. When this device has no recognition service, available()
@@ -46,6 +47,8 @@ public class HintSpeechRecognitionPlugin extends Plugin {
     private SpeechRecognizer recognizer;
     /** Callbacks from a cancelled recognizer can arrive after the next one starts. */
     private int activeSession = 0;
+    private String activeClientSessionId;
+    private Runnable stopTimeout;
 
     @PluginMethod
     public void available(PluginCall call) {
@@ -84,21 +87,33 @@ public class HintSpeechRecognitionPlugin extends Plugin {
             return;
         }
         String language = call.getString("language", Locale.getDefault().toLanguageTag());
+        String sessionId = call.getString("sessionId", UUID.randomUUID().toString());
         // SpeechRecognizer must be created and driven from the main thread.
-        main.post(() -> startRecognition(call, language));
+        main.post(() -> startRecognition(call, language, sessionId));
     }
 
     @PluginMethod
     public void stop(PluginCall call) {
         main.post(() -> {
-            stopRecognition(true);
+            if (matchesSession(call)) {
+                try {
+                    finishRecognition();
+                } catch (RuntimeException error) {
+                    stopRecognition(true);
+                    call.reject("Could not stop speech recognition", error);
+                    return;
+                }
+            }
             call.resolve();
         });
     }
 
     @PluginMethod
     public void cancel(PluginCall call) {
-        stop(call);
+        main.post(() -> {
+            if (matchesSession(call)) stopRecognition(true);
+            call.resolve();
+        });
     }
 
     @Override
@@ -114,7 +129,12 @@ public class HintSpeechRecognitionPlugin extends Plugin {
         main.post(() -> stopRecognition(false));
     }
 
-    private void startRecognition(PluginCall call, String language) {
+    private boolean matchesSession(PluginCall call) {
+        String sessionId = call.getString("sessionId");
+        return sessionId == null || sessionId.equals(activeClientSessionId);
+    }
+
+    private void startRecognition(PluginCall call, String language, String sessionId) {
         if (!SpeechRecognizer.isRecognitionAvailable(getContext())) {
             call.reject("Speech recognition is unavailable");
             return;
@@ -129,7 +149,8 @@ public class HintSpeechRecognitionPlugin extends Plugin {
             return;
         }
         recognizer = next;
-        next.setRecognitionListener(new SessionListener(session));
+        activeClientSessionId = sessionId;
+        next.setRecognitionListener(new SessionListener(session, sessionId));
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -144,14 +165,29 @@ public class HintSpeechRecognitionPlugin extends Plugin {
             call.reject("Could not start speech recognition", error);
             return;
         }
-        notifyListeners("listeningState", status("started"));
+        notifyListeners("listeningState", status("started", sessionId));
         JSObject result = new JSObject();
         result.put("matches", new JSArray());
         call.resolve(result);
     }
 
+    private void finishRecognition() {
+        if (recognizer == null || stopTimeout != null) return;
+        final int session = activeSession;
+        stopTimeout = () -> {
+            if (session == activeSession) stopRecognition(true);
+        };
+        main.postDelayed(stopTimeout, 2500);
+        // Stop flushes buffered words; Cancel discards them immediately.
+        recognizer.stopListening();
+    }
+
     private void stopRecognition(boolean notify) {
+        if (stopTimeout != null) main.removeCallbacks(stopTimeout);
+        stopTimeout = null;
         activeSession++;
+        String sessionId = activeClientSessionId;
+        activeClientSessionId = null;
         SpeechRecognizer current = recognizer;
         recognizer = null;
         if (current != null) {
@@ -162,12 +198,13 @@ public class HintSpeechRecognitionPlugin extends Plugin {
             }
             current.destroy();
         }
-        if (notify) notifyListeners("listeningState", status("stopped"));
+        if (notify && sessionId != null) notifyListeners("listeningState", status("stopped", sessionId));
     }
 
-    private static JSObject status(String value) {
+    private static JSObject status(String value, String sessionId) {
         JSObject result = new JSObject();
         result.put("status", value);
+        result.put("sessionId", sessionId);
         return result;
     }
 
@@ -192,9 +229,11 @@ public class HintSpeechRecognitionPlugin extends Plugin {
     private final class SessionListener implements RecognitionListener {
 
         private final int session;
+        private final String sessionId;
 
-        SessionListener(int session) {
+        SessionListener(int session, String sessionId) {
             this.session = session;
+            this.sessionId = sessionId;
         }
 
         private boolean current() {
@@ -211,6 +250,7 @@ public class HintSpeechRecognitionPlugin extends Plugin {
             JSObject data = new JSObject();
             data.put("matches", values);
             data.put("isFinal", isFinal);
+            data.put("sessionId", sessionId);
             notifyListeners("partialResults", data);
         }
 
@@ -237,6 +277,7 @@ public class HintSpeechRecognitionPlugin extends Plugin {
                 JSObject data = new JSObject();
                 data.put("message", describe(error));
                 data.put("code", error);
+                data.put("sessionId", sessionId);
                 notifyListeners("speechError", data);
             }
             stopRecognition(true);
